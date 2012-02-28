@@ -1,0 +1,42 @@
+package sk.qbsw.core.security.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUser;
+
+@Service (value = "cLoginService")
+public class CAuthenticationService implements IAuthenticationService
+{
+	@Autowired
+	private IUserDao userDao;
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.winnetou.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String)
+	 */
+	@Transactional (readOnly = true)
+	public boolean canLogin (String login, String password)
+	{
+		return userDao.findForLogin(login, password) != null;
+	}
+
+	public CUser login (String login, String password)
+	{
+		return userDao.findForLogin(login, password);
+	}
+
+	@Transactional (readOnly = true)
+	public CUser login (String login, String password, CRole role)
+	{
+		return userDao.findByLoginAndRole(login, password, role);
+	}
+
+	@Transactional (readOnly = true)
+	public boolean canLogin (String login, String password, CRole role)
+	{
+		return userDao.findByLoginAndRole(login, password, role) != null;
+	}
+}
