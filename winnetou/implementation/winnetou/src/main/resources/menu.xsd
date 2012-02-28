@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="img">
+		<xs:complexType>
+			<xs:attribute name="key" type="xs:string" use="required" />
+			<xs:attribute name="link" type="xs:string" use="required" />
+			<xs:attribute name="src" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="language">
+		<xs:complexType>
+			<xs:attribute name="img" type="xs:string" use="required" />
+			<xs:attribute name="key" type="xs:string" use="required" />
+			<xs:attribute name="lang" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="languages">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="language" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="linkItem">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="linkItemRole" />
+			</xs:sequence>
+			<xs:attribute name="value" type="xs:string" use="required" />
+			<xs:attribute name="id" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="linkItemRole">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="links">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="linkItem" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="logo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="img" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="menu">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tabs" />
+				<xs:element ref="languages" />
+				<xs:element ref="links" />
+				<xs:element ref="logo" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="tabItem">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tabItemRole" />
+				<xs:element ref="tabSubItems" />
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="icon" type="xs:string" use="optional" />
+			<xs:attribute name="label" type="xs:string" use="optional" />
+			<xs:attribute name="label-key" type="xs:string" use="optional" />
+			<xs:attribute name="hint" type="xs:string" use="optional" />
+			<xs:attribute name="hint-key" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="tabItemRole">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="tabs">
+		<xs:complexType mixed="true">
+			<xs:choice>
+				<xs:element ref="tabItem" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="tabSubItem">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tabSubItemRole" />
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="command" type="xs:string" use="required" />
+			<xs:attribute name="icon" type="xs:string" use="optional" />
+			<xs:attribute name="label" type="xs:string" use="optional" />
+			<xs:attribute name="label-key" type="xs:string" use="optional" />
+			<xs:attribute name="hint" type="xs:string" use="optional" />
+			<xs:attribute name="hint-key" type="xs:string" use="optional" />
+			<xs:attribute name="separator" type="xs:boolean" use="optional"
+				default="false" />
+			<xs:attribute name="enabled" type="xs:boolean" use="optional"
+				default="true" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="tabSubItemRole">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="tabSubItems">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tabSubItem" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

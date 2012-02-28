@@ -22,9 +22,6 @@
 		<hibernate.version>3.6.7.Final</hibernate.version>
 		<hibernate-entitymanager.version>3.6.7.Final</hibernate-entitymanager.version>
 		<log4j.version>1.2.16</log4j.version>
-		<wicket.version>1.5.3</wicket.version>
-		<wicket-spring-annot.version>1.3.7</wicket-spring-annot.version>
-		<wicket-swarm.version>1.4-SNAPSHOT</wicket-swarm.version>
 		<antlr.version>2.7.7</antlr.version>
 		<javaee.version>6.0</javaee.version>
 
