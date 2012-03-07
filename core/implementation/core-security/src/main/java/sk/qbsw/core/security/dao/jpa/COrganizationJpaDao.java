@@ -45,7 +45,7 @@ public class COrganizationJpaDao implements IOrganizationDao
 	 */
 	public COrganization findById (Long id)
 	{
-		String strQuery = "select u from COrganization g where g.pkId=:pkId";
+		String strQuery = "select o from COrganization o where o.pkId=:pkId";
 
 		Query query = this.em.createQuery(strQuery);
 		query.setParameter("pkId", id);
