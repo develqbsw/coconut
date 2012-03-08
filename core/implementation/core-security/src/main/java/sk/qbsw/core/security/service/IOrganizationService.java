@@ -20,5 +20,14 @@ public interface IOrganizationService
 	 * @return organization or null if organization not exist
 	 */
 	public abstract COrganization getOrganizationByNameNull (String name);
+	
+	/**
+	 * Find by name and return NULL if organization not exist - NOT exeption.
+	 *
+	 * @param longitude - longitude of mobile position
+	 * @param latitude - latitude of mobile position
+	 * @return organization or null if organization not exist
+	 */
+	public abstract COrganization getOrganizationByGPS (Float longitude, Float latitude);
 
 }

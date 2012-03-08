@@ -49,5 +49,12 @@ public class COrganizationService implements IOrganizationService
 	{
 		return organizationDao.findByNameNull(name);
 	}
+	
+	//TODO: REWRITE
+	@Transactional (readOnly = true)
+	public COrganization getOrganizationByGPS (Float longitude, Float latitude)
+	{
+		return organizationDao.findById(2L);
+	}
 
 }
