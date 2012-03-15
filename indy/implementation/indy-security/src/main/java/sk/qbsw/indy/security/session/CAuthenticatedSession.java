@@ -6,12 +6,12 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IAuthenticationService;
-
 
 /**
  * Session of the logged user
@@ -31,11 +31,14 @@ public class CAuthenticatedSession extends AuthenticatedWebSession
 	private IAuthenticationService loginService;
 
 	private COrganization organization;
-	
+
 	private CUser user;
+	
+	private CSecurityException securityException;
 
 	/**
 	 * Gets actual session
+	 * 
 	 * @return active session
 	 */
 	public static CAuthenticatedSession get ()
@@ -53,12 +56,24 @@ public class CAuthenticatedSession extends AuthenticatedWebSession
 	 * Authenticates the user for web checkin
 	 * 
 	 * @oaram login is represented by surname
-	 * @param password is represented by ticketNumber
+	 * @param password
+	 *            is represented by ticketNumber
 	 */
 	public boolean authenticate (String login, String password)
 	{
-		
-		return loginService.canLogin(login, password);
+		try
+		{
+			user = loginService.login(login, password);
+			
+			setOrganization(user.getOrganization());
+			
+			return true;
+		}
+		catch (CSecurityException e)
+		{
+			setSecurityException(e);
+			return false;
+		}
 	}
 
 	@Override
@@ -67,16 +82,16 @@ public class CAuthenticatedSession extends AuthenticatedWebSession
 		if (isSignedIn())
 		{
 			Roles roles = new Roles();
-			
+
 			for (CGroup group : user.getGroups())
 			{
 				for (CRole role : group.getRoles())
 				{
 					roles.add(role.getCode());
 				}
-				
+
 			}
-			
+
 			return roles;
 		}
 		return null;
@@ -101,7 +116,15 @@ public class CAuthenticatedSession extends AuthenticatedWebSession
 	{
 		this.user = user;
 	}
-	
-	
+
+	public CSecurityException getSecurityException ()
+	{
+		return securityException;
+	}
+
+	public void setSecurityException (CSecurityException securityException)
+	{
+		this.securityException = securityException;
+	}
 
 }

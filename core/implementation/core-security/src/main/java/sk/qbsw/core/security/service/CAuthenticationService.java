@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.exception.CUserDisabledException;
+import sk.qbsw.core.security.exception.CWrongPasswordException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -18,15 +21,26 @@ public class CAuthenticationService implements IAuthenticationService
 	 * @see sk.qbsw.winnetou.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String)
 	 */
 	@Transactional (readOnly = true)
-	public boolean canLogin (String login, String password)
+	public CUser login (String login, String password) throws CSecurityException
 	{
-		return userDao.findForLogin(login, password) != null;
+		CUser user = userDao.findForLogin(login, password);
+		if (user == null)
+		{
+			throw new CWrongPasswordException("");
+		}
+		else if (user.getFlagEnabled() == false)
+		{
+			throw new CUserDisabledException("");
+		}
+		
+		return user;
 	}
 
-	public CUser login (String login, String password)
-	{
-		return userDao.findForLogin(login, password);
-	}
+	//	@Transactional (readOnly = true)
+	//	public CUser login (String login, String password)
+	//	{
+	//		return userDao.findForLogin(login, password);
+	//	}
 
 	@Transactional (readOnly = true)
 	public CUser login (String login, String password, CRole role)
