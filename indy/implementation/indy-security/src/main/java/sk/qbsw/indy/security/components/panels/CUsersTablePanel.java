@@ -17,7 +17,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -108,7 +108,7 @@ public abstract class CUsersTablePanel extends Panel
 				}
 			};
 			add(link);
-			link.add(new Image("detail", new ContextRelativeResource("/img/button/detail.png")));
+			link.add(new Image("detail", new PackageResourceReference(CUsersTablePanel.class, "detail.png")));
 
 			Link<WebPage> passwdLink = new Link<WebPage>("passwdLink")
 			{
@@ -121,7 +121,7 @@ public abstract class CUsersTablePanel extends Panel
 				}
 			};
 			add(passwdLink);
-			passwdLink.add(new Image("passwd", new ContextRelativeResource("/img/button/password.png")));
+			passwdLink.add(new Image("passwd", new PackageResourceReference(CUsersTablePanel.class, "password.png")));
 		}
 
 
