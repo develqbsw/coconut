@@ -93,6 +93,11 @@
 			<artifactId>wicket-auth-roles</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>minis</artifactId>
+			<version>${wicketstuff.minis}</version>
+		</dependency>
 
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>

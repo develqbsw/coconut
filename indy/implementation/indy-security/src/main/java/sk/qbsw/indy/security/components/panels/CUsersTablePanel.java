@@ -1,5 +1,6 @@
 package sk.qbsw.indy.security.components.panels;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.wicketstuff.minis.behavior.mootip.MootipBehaviour;
+import org.wicketstuff.minis.behavior.mootip.MootipSettings;
 
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -32,13 +35,14 @@ public abstract class CUsersTablePanel extends Panel
 
 	private CUsersDataProvider dataProvider;
 
+
+
 	@SuppressWarnings ({"rawtypes", "unchecked"})
 	public CUsersTablePanel (String id, CGroup group, Boolean enabled, COrganization organization)
 	{
 		super(id);
 
 		List<IColumn<?>> columns = new ArrayList<IColumn<?>>();
-
 
 		columns.add(new PropertyColumn<CUser>(new StringResourceModel("header.name", null), "name"));
 		columns.add(new PropertyColumn<CUser>(new StringResourceModel("header.surname", null), "surname"));
@@ -93,9 +97,20 @@ public abstract class CUsersTablePanel extends Panel
 
 		private static final long serialVersionUID = 1L;
 
+		private Image detailImage;
+		private Image passwdImage;
+
+		private MootipBehaviour detailMootip;
+		private MootipBehaviour passwdMootip;
+
 		public OperationPanel (String id, final CUser user)
 		{
 			super(id);
+
+			MootipSettings mootipSettings = new MootipSettings();
+			mootipSettings.setShowDelay(0);
+			mootipSettings.setHideDelay(0);
+			mootipSettings.setOffsets(new Point(10, 10));
 
 			Link<WebPage> link = new Link<WebPage>("link")
 			{
@@ -108,7 +123,11 @@ public abstract class CUsersTablePanel extends Panel
 				}
 			};
 			add(link);
-			link.add(new Image("detail", new PackageResourceReference(CUsersTablePanel.class, "detail.png")));
+			link.add(detailImage = new Image("detail", new PackageResourceReference(CUsersTablePanel.class, "detail.png")));
+
+			detailMootip = new MootipBehaviour(new StringResourceModel("tooltip.detail", null).getObject(), "");
+			detailMootip.setMootipSettings(mootipSettings);
+			detailImage.add(detailMootip);
 
 			Link<WebPage> passwdLink = new Link<WebPage>("passwdLink")
 			{
@@ -121,7 +140,11 @@ public abstract class CUsersTablePanel extends Panel
 				}
 			};
 			add(passwdLink);
-			passwdLink.add(new Image("passwd", new PackageResourceReference(CUsersTablePanel.class, "password.png")));
+			passwdLink.add(passwdImage = new Image("passwd", new PackageResourceReference(CUsersTablePanel.class, "password.png")));
+
+			passwdMootip = new MootipBehaviour(new StringResourceModel("tooltip.passwd", null).getObject(), "");
+			passwdMootip.setMootipSettings(mootipSettings);
+			passwdImage.add(passwdMootip);
 		}
 
 
