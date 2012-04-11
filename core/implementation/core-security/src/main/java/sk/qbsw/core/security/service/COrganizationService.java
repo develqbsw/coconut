@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +57,12 @@ public class COrganizationService implements IOrganizationService
 	public COrganization getOrganizationByGPS (Float longitude, Float latitude)
 	{
 		return organizationDao.findById(2L);
+	}
+
+	@Override
+	public List<COrganization> getOrganizations ()
+	{		
+		return organizationDao.findAll();
 	}
 
 }

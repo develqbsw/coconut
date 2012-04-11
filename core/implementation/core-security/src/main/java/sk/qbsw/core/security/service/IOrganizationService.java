@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.service;
 
+import java.util.List;
+
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -30,4 +32,10 @@ public interface IOrganizationService
 	 */
 	public abstract COrganization getOrganizationByGPS (Float longitude, Float latitude);
 
+	/**
+	 * Find all organizations
+	 * 
+	 * @return list of organizations
+	 */
+	public abstract List<COrganization> getOrganizations ();	
 }
