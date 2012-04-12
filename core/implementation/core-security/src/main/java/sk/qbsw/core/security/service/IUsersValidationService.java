@@ -10,5 +10,5 @@ public interface IUsersValidationService
 	
 	public abstract Boolean isUserExists (CUser user);
 	
-	public abstract Boolean leastOneAdmin (CUser user, COrganization organization);
+	public abstract Boolean leastOneAdmin (CUser user, COrganization organization, String group);
 }

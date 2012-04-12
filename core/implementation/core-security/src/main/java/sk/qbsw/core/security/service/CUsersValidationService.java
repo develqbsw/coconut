@@ -59,12 +59,12 @@ public class CUsersValidationService implements IUsersValidationService
 		return exists;
 	}
 
-	public Boolean leastOneAdmin (CUser user, COrganization organization)
+	public Boolean leastOneAdmin (CUser user, COrganization organization, String group)
 	{
 
 		Boolean leastOneAdmin = false;
 
-		CGroup adminGroup = groupDao.findByCode("ADMINISTRATOR").get(0);
+		CGroup adminGroup = groupDao.findByCode(group).get(0);
 
 		List<CUser> users = userDao.getOtherActiveUsers(organization, adminGroup, user);
 
