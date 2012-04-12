@@ -9,9 +9,19 @@ public interface IOrganizationService
 {
 
 	/**
-	 * Register new organization and admin user
+	 * Register new organization and admin user with selected group
 	 * 
-	 * @param model
+	 * @param organization
+	 * @param user
+	 * @param group
+	 */
+	public abstract void registerNewOrganization (COrganization organization, CUser user, String group);
+	
+	/**
+	 * Register new organization and admin user with "ADMINISTRATOR" group
+	 * 	
+	 * @param organization
+	 * @param user
 	 */
 	public abstract void registerNewOrganization (COrganization organization, CUser user);
 

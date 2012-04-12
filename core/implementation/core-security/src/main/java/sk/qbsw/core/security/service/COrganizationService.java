@@ -33,6 +33,18 @@ public class COrganizationService implements IOrganizationService
 	@Autowired
 	private IGroupDao groupDao;
 
+	@Override
+	@Transactional
+	public void registerNewOrganization (COrganization organization, CUser user, String group)
+	{
+		organization.setFlagEnabled(true);
+		organizationDao.persit(organization);
+
+		user.addGroup(groupDao.findByCode(group).get(0));
+		user.setFlagEnabled(true);
+		userDao.persit(user);
+	}
+
 	@Transactional
 	public void registerNewOrganization (COrganization organization, CUser user)
 	{
@@ -51,7 +63,7 @@ public class COrganizationService implements IOrganizationService
 	{
 		return organizationDao.findByNameNull(name);
 	}
-	
+
 	//TODO: REWRITE
 	@Transactional (readOnly = true)
 	public COrganization getOrganizationByGPS (Float longitude, Float latitude)
@@ -61,7 +73,7 @@ public class COrganizationService implements IOrganizationService
 
 	@Override
 	public List<COrganization> getOrganizations ()
-	{		
+	{
 		return organizationDao.findAll();
 	}
 
