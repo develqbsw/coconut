@@ -41,6 +41,16 @@ public class COrganizationJpaDao implements IOrganizationDao
 	}
 
 	/**
+	 * Merge.
+	 *
+	 * @param organization the organization
+	 */
+	public void merge (COrganization organization)
+	{
+		this.em.merge(organization);
+	}
+
+	/**
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findById(java.lang.Long)
 	 */
 	public COrganization findById (Long id)

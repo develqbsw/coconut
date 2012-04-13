@@ -24,6 +24,13 @@ public interface IOrganizationDao
 	public void persit (COrganization organization);
 
 	/**
+	 * Merge.
+	 *
+	 * @param organization the organization
+	 */
+	public void merge (COrganization organization);
+
+	/**
 	 * Find by identifier.
 	 *
 	 * @param id entity identifier

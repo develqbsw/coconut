@@ -77,4 +77,10 @@ public class COrganizationService implements IOrganizationService
 		return organizationDao.findAll();
 	}
 
+	@Override
+	public void updateOrganization (COrganization organization)
+	{
+		organizationDao.merge(organization);
+	}
+
 }

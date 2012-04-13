@@ -47,5 +47,12 @@ public interface IOrganizationService
 	 * 
 	 * @return list of organizations
 	 */
-	public abstract List<COrganization> getOrganizations ();	
+	public abstract List<COrganization> getOrganizations ();
+	
+	/**
+	 * Update organization
+	 * 
+	 * @param organization
+	 */
+	public abstract void updateOrganization (COrganization organization);
 }
