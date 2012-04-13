@@ -72,12 +72,14 @@ public class COrganizationService implements IOrganizationService
 	}
 
 	@Override
+	@Transactional (readOnly = true)
 	public List<COrganization> getOrganizations ()
 	{
 		return organizationDao.findAll();
 	}
 
 	@Override
+	@Transactional
 	public void updateOrganization (COrganization organization)
 	{
 		organizationDao.merge(organization);
