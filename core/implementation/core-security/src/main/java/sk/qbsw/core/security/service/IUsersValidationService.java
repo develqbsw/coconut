@@ -8,7 +8,9 @@ public interface IUsersValidationService
 
 	public abstract Boolean isOrganizationExists (COrganization organization);
 	
-	public abstract Boolean isUserExists (CUser user);
+	public abstract Boolean isOrganizationExists (String name);
+	
+	public abstract Boolean isUserExists (CUser user);	
 	
 	public abstract Boolean leastOneAdmin (CUser user, COrganization organization, String group);
 }

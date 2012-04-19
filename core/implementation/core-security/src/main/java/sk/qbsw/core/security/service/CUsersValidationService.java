@@ -33,7 +33,6 @@ public class CUsersValidationService implements IUsersValidationService
 
 	public Boolean isOrganizationExists (COrganization organization)
 	{
-
 		Boolean exists = false;
 
 		COrganization organizationOld = organizationDao.findByNameNull(organization.getName());
@@ -74,5 +73,19 @@ public class CUsersValidationService implements IUsersValidationService
 		}
 
 		return leastOneAdmin;
+	}
+
+	@Override
+	public Boolean isOrganizationExists (String name)
+	{
+		Boolean exists = false;
+
+		COrganization organizationOld = organizationDao.findByNameNull(name);
+		if (organizationOld != null)
+		{
+			exists = true;
+		}
+
+		return exists;
 	}
 }
