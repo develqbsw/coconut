@@ -31,6 +31,7 @@ public class CUsersValidationService implements IUsersValidationService
 	@Autowired
 	private IGroupDao groupDao;
 
+	@Override
 	public Boolean isOrganizationExists (COrganization organization)
 	{
 		Boolean exists = false;
@@ -43,7 +44,8 @@ public class CUsersValidationService implements IUsersValidationService
 
 		return exists;
 	}
-
+	
+	@Override
 	public Boolean isUserExists (CUser user)
 	{
 
@@ -82,6 +84,21 @@ public class CUsersValidationService implements IUsersValidationService
 
 		COrganization organizationOld = organizationDao.findByNameNull(name);
 		if (organizationOld != null)
+		{
+			exists = true;
+		}
+
+		return exists;
+	}
+	
+	@Override
+	public Boolean isUserExists (String login)
+	{
+
+		Boolean exists = false;
+
+		CUser userOld = userDao.findByLoginNull(login);
+		if (userOld != null)
 		{
 			exists = true;
 		}
