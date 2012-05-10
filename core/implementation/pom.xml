@@ -14,6 +14,7 @@
 	</parent>
 
 	<modules>
+		<module>core-paypal</module>
 		<module>core-persistence</module>
 		<module>core-security</module>
 	</modules>
