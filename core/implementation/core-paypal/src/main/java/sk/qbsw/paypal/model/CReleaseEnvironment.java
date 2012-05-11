@@ -1,4 +1,4 @@
-package sk.qbsw.paypal.domain.model;
+package sk.qbsw.paypal.model;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ public class CReleaseEnvironment implements Serializable
 	private String date;
 
 	/** invitation URL. */
-	private String invitationUrl;
+	private String invitationUrl = "http://localhost:8080/airlinesbooking-webtickets/destinations/";
 	
 	/** The owner. */
 	private String owner = "QBSW";

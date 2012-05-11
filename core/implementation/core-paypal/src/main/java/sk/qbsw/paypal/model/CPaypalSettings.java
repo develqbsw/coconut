@@ -1,4 +1,4 @@
-package sk.qbsw.paypal.domain.model;
+package sk.qbsw.paypal.model;
 
 import java.io.Serializable;
 
@@ -20,40 +20,16 @@ public class CPaypalSettings implements Serializable
 
 	// TODO: ENCRYPT THE DATA SOME WAY !!!
 	/** The username. */
-	private String username = "dr01_1304429817_biz_api1.pobox.sk";
+	private String username;// = "dr01_1304429817_biz_api1.pobox.sk";
 
 	/** The password. */
-	private String password = "1304429831";
+	private String password;// = "1304429831";
 
 	/** The signature. */
-	private String signature = "Ak7oWugjZOwjTnx61Z3gGtbRtvaIAqO7PlwHjE9vG6nv1ZM8iHIL9mjW";
+	private String signature;// = "Ak7oWugjZOwjTnx61Z3gGtbRtvaIAqO7PlwHjE9vG6nv1ZM8iHIL9mjW";
 
 	/** The environment. */
 	private Environment environment = Environment.SANDBOX;
-
-	private String okURL;
-	
-	private String errorURL;
-
-	public void setOkURL (String okURL)
-	{
-		this.okURL = okURL;
-	}
-
-	public void setErrorURL (String errorURL)
-	{
-		this.errorURL = errorURL;
-	}
-
-	public String getOkURL ()
-	{
-		return okURL;
-	}
-
-	public String getErrorURL ()
-	{
-		return errorURL;
-	}
 
 	/**
 	 * Switch to live.

@@ -1,6 +1,6 @@
 package sk.qbsw.paypal.service;
 
-import sk.qbsw.paypal.domain.model.CPayPalServiceData;
+import sk.qbsw.paypal.model.CPayPalPaymentData;
 
 /**
  * The Interface IPayPalService.
@@ -17,7 +17,7 @@ public interface IPayPalService
 	 * @param paypalServiceData input service data
 	 * @return URL for redirect to PAYPAL
 	 */
-	public String getRedirectionToPaypalAfterSettingExpressCheckout (CPayPalServiceData paypalServiceData);
+	public String getRedirectionToPaypalAfterSettingExpressCheckout (CPayPalPaymentData paypalPaymentData, String okURL, String errorURL);
 
 	/**
 	 * Do express checkout.
@@ -27,5 +27,5 @@ public interface IPayPalService
 	 * @param license the license
 	 * @return the nVP response
 	 */
-	public Boolean doExpressCheckoutResult (String token, String payerId, CPayPalServiceData paypalServiceData);
+	public Boolean doExpressCheckoutResult (String token, String payerId, CPayPalPaymentData paypalPaymentData);
 }

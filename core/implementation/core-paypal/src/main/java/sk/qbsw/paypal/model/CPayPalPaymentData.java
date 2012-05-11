@@ -1,4 +1,4 @@
-package sk.qbsw.paypal.domain.model;
+package sk.qbsw.paypal.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
