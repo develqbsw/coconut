@@ -62,6 +62,11 @@ public class COrganization implements Serializable
 	@Expose
 	private String name;
 
+	/**
+	 * shopper code
+	 */
+	private String code;
+
 	/** The pk id. */
 	@Id
 	@SequenceGenerator (name = "T_ORGANIZATION_PKID_GENERATOR", sequenceName = "SEC.T_ORGANIZATION_PK_ID_SEQ")
@@ -154,6 +159,25 @@ public class COrganization implements Serializable
 	{
 		return this.name;
 	}
+
+	/**
+	 * Returns shooper code
+	 * @return string
+	 */
+	public String getCode ()
+	{
+		return code;
+	}
+
+	/**
+	 * Sets shopper code
+	 * @param code
+	 */
+	public void setCode (String code)
+	{
+		this.code = code;
+	}
+
 
 	/**
 	 * Gets the pk id.
