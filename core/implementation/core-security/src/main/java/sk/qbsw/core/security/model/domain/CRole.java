@@ -4,7 +4,6 @@
 package sk.qbsw.core.security.model.domain;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -37,7 +36,7 @@ public class CRole implements Serializable
 	/** The pk id. */
 	@Id
 	@SequenceGenerator (name = "T_ROLE_PKID_GENERATOR", sequenceName = "SEC.T_ROLE_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_ROLE_PKID_GENERATOR")
+	@GeneratedValue (strategy = GenerationType.AUTO, generator = "T_ROLE_PKID_GENERATOR")
 	@Column (name = "pk_id")
 	private Long pkId;
 

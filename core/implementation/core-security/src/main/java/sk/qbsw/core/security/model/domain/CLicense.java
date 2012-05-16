@@ -63,7 +63,7 @@ public abstract class CLicense<T> implements Serializable
 	/** The pk id. */
 	@Id
 	@SequenceGenerator (name = "T_LICENCE_PKID_GENERATOR", sequenceName = "SEC.T_LICENCE_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_LICENCE_PKID_GENERATOR")
+	@GeneratedValue (strategy = GenerationType.AUTO, generator = "T_LICENCE_PKID_GENERATOR")
 	@Column (name = "pk_id")
 	private Long pkId;
 

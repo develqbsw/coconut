@@ -4,7 +4,6 @@
 package sk.qbsw.core.security.model.domain;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -35,7 +34,7 @@ public class CGroup implements Serializable
 	/** The pk id. */
 	@Id
 	@SequenceGenerator (name = "T_GROUP_PKID_GENERATOR", sequenceName = "SEC.T_GROUP_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_GROUP_PKID_GENERATOR")
+	@GeneratedValue (strategy = GenerationType.AUTO, generator = "T_GROUP_PKID_GENERATOR")
 	@Column (name = "pk_id")
 	private Long pkId;
 

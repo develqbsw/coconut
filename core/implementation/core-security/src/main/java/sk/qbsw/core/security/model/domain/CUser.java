@@ -40,7 +40,7 @@ public class CUser implements Serializable
 	/** The pk id. */
 	@Id
 	@SequenceGenerator (name = "T_USER_PKID_GENERATOR", sequenceName = "SEC.T_USER_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_USER_PKID_GENERATOR")
+	@GeneratedValue (strategy = GenerationType.AUTO, generator = "T_USER_PKID_GENERATOR")
 	@Column (name = "pk_id")
 	@Expose
 	private Long pkId;
