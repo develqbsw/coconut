@@ -127,4 +127,22 @@ public class CAuthenticatedSession extends AuthenticatedWebSession
 		this.securityException = securityException;
 	}
 
+	/**
+	 * Returns true if logged user has assigned input role  
+	 * @param role input role
+	 * @return boolean value
+	 */
+	public boolean hasRole (String role)
+	{
+		Boolean hasRole = Boolean.FALSE;
+		if (getRoles() == null)
+		{
+			hasRole = Boolean.FALSE;
+		}
+		else
+		{
+			hasRole = getRoles().hasAnyRole(new Roles(role));
+		}
+		return hasRole;
+	} 
 }
