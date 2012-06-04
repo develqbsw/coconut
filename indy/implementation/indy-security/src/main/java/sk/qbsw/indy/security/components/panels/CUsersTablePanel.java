@@ -25,6 +25,7 @@ import org.wicketstuff.minis.behavior.mootip.MootipSettings;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.indy.base.utils.CStringResourceReader;
 import sk.qbsw.indy.security.model.dataprovider.CUsersDataProvider;
 import sk.qbsw.indy.security.model.enums.EFlagEnabled;
 
@@ -56,7 +57,8 @@ public abstract class CUsersTablePanel extends Panel
 			public void populateItem (Item<ICellPopulator<CUser>> cellItem, String componentId, IModel<CUser> model)
 			{
 				CUser user = model.getObject();
-				cellItem.add(new Label(componentId, user.getGroups().iterator().next().getCode()));
+				String groupLabel = "group." + user.getGroups().iterator().next().getCode().toLowerCase();
+				cellItem.add(new Label(componentId, new StringResourceModel(groupLabel, null)));
 			}
 		});
 
