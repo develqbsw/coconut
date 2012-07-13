@@ -37,7 +37,7 @@ public class CUsersValidationService implements IUsersValidationService
 		Boolean exists = false;
 
 		COrganization organizationOld = organizationDao.findByNameNull(organization.getName());
-		if (organizationOld != null && organizationOld.getPkId() != organization.getPkId())
+		if (organizationOld != null && !(organizationOld.getPkId().equals(organization.getPkId())))
 		{
 			exists = true;
 		}
@@ -52,7 +52,7 @@ public class CUsersValidationService implements IUsersValidationService
 		Boolean exists = false;
 
 		CUser userOld = userDao.findByLoginNull(user.getLogin());
-		if (userOld != null && userOld.getPkId() != user.getPkId())
+		if (userOld != null && !(userOld.getPkId().equals(user.getPkId())))
 		{
 			exists = true;
 		}
