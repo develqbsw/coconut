@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -19,7 +20,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.wicketstuff.minis.behavior.mootip.MootipBehaviour;
 import org.wicketstuff.minis.behavior.mootip.MootipSettings;
 
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -101,9 +101,6 @@ public abstract class CUsersTablePanel extends Panel
 		private Image detailImage;
 		private Image passwdImage;
 
-		private MootipBehaviour detailMootip;
-		private MootipBehaviour passwdMootip;
-
 		public OperationPanel (String id, final CUser user)
 		{
 			super(id);
@@ -126,9 +123,7 @@ public abstract class CUsersTablePanel extends Panel
 			add(link);
 			link.add(detailImage = new Image("detail", new PackageResourceReference(CUsersTablePanel.class, "detail.png")));
 
-			detailMootip = new MootipBehaviour(new StringResourceModel("tooltip.detail", null).getObject(), "");
-			detailMootip.setMootipSettings(mootipSettings);
-			detailImage.add(detailMootip);
+			detailImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.detail", null).getObject()));
 
 			Link<WebPage> passwdLink = new Link<WebPage>("passwdLink")
 			{
@@ -143,9 +138,7 @@ public abstract class CUsersTablePanel extends Panel
 			add(passwdLink);
 			passwdLink.add(passwdImage = new Image("passwd", new PackageResourceReference(CUsersTablePanel.class, "password.png")));
 
-			passwdMootip = new MootipBehaviour(new StringResourceModel("tooltip.passwd", null).getObject(), "");
-			passwdMootip.setMootipSettings(mootipSettings);
-			passwdImage.add(passwdMootip);
+			passwdImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.passwd", null).getObject()));
 		}
 
 
