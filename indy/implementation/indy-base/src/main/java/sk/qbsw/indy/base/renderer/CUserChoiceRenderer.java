@@ -26,9 +26,18 @@ public class CUserChoiceRenderer extends ChoiceRenderer<CUser>
 	@Override
 	public Object getDisplayValue (CUser key)
 	{
-		return key.getName() + " " + key.getSurname();
+		String displayValue;
+		if (key.getName() != null && key.getSurname() != null)
+		{
+			displayValue = key.getName() + " " + key.getSurname();
+		}
+		else
+		{
+			displayValue = key.getLogin();
+		}
+		return displayValue;
 	}
-	
+
 	@Override
 	public String getIdValue (CUser object, int index)
 	{
