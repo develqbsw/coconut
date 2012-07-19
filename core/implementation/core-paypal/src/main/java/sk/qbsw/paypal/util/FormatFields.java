@@ -5,7 +5,6 @@
 package sk.qbsw.paypal.util;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -21,16 +20,16 @@ public final class FormatFields implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	/** PayPal's date/time format. */
-	private static final SimpleDateFormat dateTimeFormat;
+	private static final CSimpleDateFormatSafe dateTimeFormat;
 
 	/** Credit card date format - MMYYYY. */
-	private static final SimpleDateFormat cardDateFormat;
+	private static final CSimpleDateFormatSafe cardDateFormat;
 
 	/** instantiates SimpleDateFormat only once */
 	static
 	{
-		dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		cardDateFormat = new SimpleDateFormat("MMyyyy");
+		dateTimeFormat = new CSimpleDateFormatSafe("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		cardDateFormat = new CSimpleDateFormatSafe("MMyyyy");
 	}
 
 	/**
