@@ -3,6 +3,12 @@ package sk.qbsw.paypal.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Thread safe SimpleDateFormat
+ * 
+ * @author Tomas Leken
+ * @version 1.0.0
+ */
 public class CSimpleDateFormatSafe
 {
 	public CSimpleDateFormatSafe(String format){
