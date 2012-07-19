@@ -1,9 +1,16 @@
 package sk.qbsw.indy.base.geocode;
 
+import java.io.Serializable;
 
 
-public class CGeometry
+
+public class CGeometry implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private CLocation location = new CLocation();
 	private CLocation southwest = new CLocation();
 	private CLocation northeast = new CLocation();

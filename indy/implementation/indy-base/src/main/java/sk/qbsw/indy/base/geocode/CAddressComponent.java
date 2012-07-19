@@ -1,10 +1,16 @@
 package sk.qbsw.indy.base.geocode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CAddressComponent
+public class CAddressComponent implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String longName;
 	private String shortName;
 	private List<String> types;

@@ -108,7 +108,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				{
 					if (isValid())
 					{
-						convertInput();
+						CTimeExtendedField.this.convertInput();
 						if (isValid())
 						{
 							validateValidators();
@@ -161,7 +161,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				{
 					if (isValid())
 					{
-						convertInput();
+						CTimeExtendedField.this.convertInput();
 						if (isValid())
 						{
 							validateValidators();

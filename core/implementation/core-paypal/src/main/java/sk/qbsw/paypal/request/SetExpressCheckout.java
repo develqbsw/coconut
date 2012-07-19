@@ -170,7 +170,10 @@ public final class SetExpressCheckout implements Request
 	 */
 	public SetExpressCheckout (Payment payment, String returnUrl, String cancelUrl) throws IllegalArgumentException
 	{
-
+		if (payment == null || returnUrl == null || cancelUrl == null)
+		{
+			throw new IllegalArgumentException("Arguments cannot be null");
+		}
 		/* cancel url and return url has to be less or equal to 2048 chars */
 		if (returnUrl.length() >= 2048)
 		{
@@ -180,10 +183,7 @@ public final class SetExpressCheckout implements Request
 		{
 			throw new IllegalArgumentException("cancelUrl cannot be longer " + "than 2048 characters.");
 		}
-		if (payment == null || returnUrl == null || cancelUrl == null)
-		{
-			throw new IllegalArgumentException("Arguments cannot be null");
-		}
+		
 
 		nvpResponse = new NVPResponse();
 		nvpRequest = new HashMap<String, String>();

@@ -1,8 +1,15 @@
 package sk.qbsw.indy.base.geocode;
 
+import java.io.Serializable;
 
-public class CGeocodeCoordinates
+
+public class CGeocodeCoordinates implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String type;
 	private String city;
 	private CGeometry geometry;
