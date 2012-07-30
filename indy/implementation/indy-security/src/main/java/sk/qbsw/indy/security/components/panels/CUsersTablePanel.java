@@ -123,7 +123,7 @@ public abstract class CUsersTablePanel extends Panel
 			add(link);
 			link.add(detailImage = new Image("detail", new PackageResourceReference(CUsersTablePanel.class, "detail.png")));
 
-			detailImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.detail", null).getObject()));
+			detailImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.detail", null)));
 
 			Link<WebPage> passwdLink = new Link<WebPage>("passwdLink")
 			{
@@ -138,7 +138,7 @@ public abstract class CUsersTablePanel extends Panel
 			add(passwdLink);
 			passwdLink.add(passwdImage = new Image("passwd", new PackageResourceReference(CUsersTablePanel.class, "password.png")));
 
-			passwdImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.passwd", null).getObject()));
+			passwdImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.passwd", null)));
 		}
 
 
