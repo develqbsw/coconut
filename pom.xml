@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sk.qbsw</groupId>
 	<artifactId>winnetou</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<packaging>pom</packaging>
 	<name>Winnetou internal project</name>
 	<properties>
@@ -15,8 +15,8 @@
 		<java.version>1.6</java.version>
 
 		<!-- QBSW dependences -->
-		<indy.version>1.0.0</indy.version>
-		<core.version>1.0.0</core.version>
+		<indy.version>1.1.0</indy.version>
+		<core.version>1.1.0</core.version>
 		
 		<!-- validated -->
 		<spring.version>3.0.5.RELEASE</spring.version>
