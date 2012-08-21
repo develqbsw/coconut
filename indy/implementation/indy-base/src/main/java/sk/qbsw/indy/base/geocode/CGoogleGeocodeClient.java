@@ -93,13 +93,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		}
 	}
 
-	/**
-	 * Find coordinates for selected address. 
-	 * 
-	 * @param address address to find coordinates
-	 * @return CLocation
-	 * @throws CBusinessException
-	 */
+	@Override
 	public CLocation findCoordinates (String address, String country, String language) throws CBusinessException, UnsupportedEncodingException
 	{
 		CLocation location = new CLocation();
@@ -110,7 +104,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		parser.parse();
 
 		for (CGeocodeCoordinates coordinates : parser.getGeocodeCoordinates())
-		{			
+		{
 			if (coordinates.getType().equals("locality") && coordinates.getCity().equalsIgnoreCase(address))
 			{
 				location.setLat(coordinates.getGeometry().getLocation().getLat());
@@ -119,5 +113,81 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		}
 
 		return location;
+	}
+
+	@Override
+	public String getAddressByGPS (Float latitute, Float longitude) throws CBusinessException, UnsupportedEncodingException
+	{
+		String address = "";
+
+		CGoogleGeocodeClient geocode = new CGoogleGeocodeClient();
+
+		String output = new String(geocode.getGeocodeResponseForCoordinates(CGoogleGeocodeClient.OUTPUT_XML, latitute.toString(), longitude.toString()).getBytes(), "utf-8");
+
+		CAddressGeocodeXmlParser parser = new CAddressGeocodeXmlParser(output);
+		parser.parse();
+
+		for (CGeocodeAddress geocodeAddress : parser.getGeocodeAddresses())
+		{
+			if (geocodeAddress.getType().equals("street_address") || geocodeAddress.getType().equals("route"))
+			{
+				address = getAddress(geocodeAddress);
+			}
+		}
+
+		return address;
+	}
+
+	/**
+	 * Get address for CGeocodeAddress
+	 * 
+	 * @param address CGeocodeAddress to find a address
+	 * @return
+	 */
+	private String getAddress (CGeocodeAddress geocodeAddress)
+	{
+		String number = null;
+		String street = null;
+		String city = null;
+		String address = "";
+
+		for (CAddressComponent addressComponent : geocodeAddress.getAddressComponents())
+		{
+			if (addressComponent.getTypes().contains("route"))
+			{
+				street = addressComponent.getLongName();
+			}
+			if (addressComponent.getTypes().contains("street_number"))
+			{
+				number = addressComponent.getLongName();
+			}
+			if (addressComponent.getTypes().contains("locality"))
+			{
+				city = addressComponent.getLongName();
+			}
+		}
+
+		if (street != null)
+		{
+			address = address.concat(street);
+		}
+		if (street != null && number != null)
+		{
+			address = address.concat(" ");
+		}
+		if (number != null)
+		{
+			address = address.concat(number);
+		}
+		if (address.length() > 0)
+		{
+			address = address.concat(", ");
+		}
+		if (city != null)
+		{
+			address = address.concat(city);
+		}
+
+		return address;
 	}
 }

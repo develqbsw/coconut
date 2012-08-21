@@ -68,4 +68,25 @@ public interface IGoogleGeocodeClient
 	 * @throws CBusinessException
 	 */
 	public String getGeocodeResponseForAddress (String output, String language, String address) throws CBusinessException, UnsupportedEncodingException;
+
+	/**
+	 * Find coordinates for selected address and country
+	 * 
+	 * @param address
+	 * @param country
+	 * @param language
+	 * @return
+	 * @throws CBusinessException
+	 * @throws UnsupportedEncodingException
+	 */
+	public CLocation findCoordinates (String address, String country, String language) throws CBusinessException, UnsupportedEncodingException;
+
+	/**
+	 * Get address for GPS position
+	 * 
+	 * @param latitute
+	 * @param longitude
+	 * @return address
+	 */
+	public String getAddressByGPS (Float latitute, Float longitude) throws CBusinessException, UnsupportedEncodingException;
 }
