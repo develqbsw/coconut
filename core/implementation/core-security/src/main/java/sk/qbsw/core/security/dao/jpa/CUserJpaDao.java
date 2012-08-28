@@ -221,6 +221,30 @@ public class CUserJpaDao implements IUserDao
 	}
 
 	@SuppressWarnings ("unchecked")
+	public CUser findByPinNull (String pinCode)
+	{
+
+		CUser userToReturn;
+		String strQuery = "select u from CUser u left join fetch u.organization o where u.pin=:pinCode";
+
+		Query query = this.em.createQuery(strQuery);
+		query.setParameter("pinCode", pinCode);
+
+		List<CUser> users = query.getResultList();
+
+		if (users.size() < 1)
+		{
+			userToReturn = null;
+		}
+		else
+		{
+			userToReturn = users.get(0);
+		}
+
+		return userToReturn;
+	}
+
+	@SuppressWarnings ("unchecked")
 	public CUser findByLoginAndRole (String login, String password, CRole role)
 	{
 		String strQuery = "select distinct u from CUser as u " + "join fetch u.organization o" + " join u.groups g " + " join g.roles r " + " where r.code =:role and " + "u.login = :login and " + "u.password = :password and " + "u.flagEnabled = true";

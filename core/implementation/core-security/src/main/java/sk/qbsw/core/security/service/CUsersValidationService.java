@@ -37,14 +37,14 @@ public class CUsersValidationService implements IUsersValidationService
 		Boolean exists = false;
 
 		COrganization organizationOld = organizationDao.findByNameNull(organization.getName());
-		if (organizationOld != null && !(organizationOld.getPkId().equals(organization.getPkId())))
+		if (organizationOld != null && ! (organizationOld.getPkId().equals(organization.getPkId())))
 		{
 			exists = true;
 		}
 
 		return exists;
 	}
-	
+
 	@Override
 	public Boolean isUserExists (CUser user)
 	{
@@ -52,7 +52,7 @@ public class CUsersValidationService implements IUsersValidationService
 		Boolean exists = false;
 
 		CUser userOld = userDao.findByLoginNull(user.getLogin());
-		if (userOld != null && !(userOld.getPkId().equals(user.getPkId())))
+		if (userOld != null && ! (userOld.getPkId().equals(user.getPkId())))
 		{
 			exists = true;
 		}
@@ -90,7 +90,7 @@ public class CUsersValidationService implements IUsersValidationService
 
 		return exists;
 	}
-	
+
 	@Override
 	public Boolean isUserExists (String login)
 	{
@@ -99,6 +99,20 @@ public class CUsersValidationService implements IUsersValidationService
 
 		CUser userOld = userDao.findByLoginNull(login);
 		if (userOld != null)
+		{
+			exists = true;
+		}
+
+		return exists;
+	}
+
+	@Override
+	public Boolean isUserExistsPin (String pin)
+	{
+		Boolean exists = false;
+
+		CUser user = userDao.findByPinNull(pin);
+		if (user != null)
 		{
 			exists = true;
 		}

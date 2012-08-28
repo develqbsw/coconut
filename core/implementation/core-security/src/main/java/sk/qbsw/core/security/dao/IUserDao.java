@@ -24,16 +24,16 @@ public interface IUserDao
 	 * Make/update persistent entity
 	 * @param user entity
 	 */
-	public void persit(CUser user);
-	
+	public void persit (CUser user);
+
 	/**
 	 * Find by identifier.
 	 *
 	 * @param id entity identifier
 	 * @return the entity
 	 */
-	public CUser findById (Long id);	
-	
+	public CUser findById (Long id);
+
 	/**
 	 * Find for modification.
 	 *
@@ -51,22 +51,30 @@ public interface IUserDao
 	public CUser findByLogin (String login);
 
 	/**
+	 * Find by PIN.
+	 *
+	 * @param pinCode
+	 * @return the c user
+	 */
+	public CUser findByPinNull (String pinCode);
+
+	/**
 	 * Find all users for organization.
 	 *
 	 * @param organization the organization
 	 * @return the list
 	 */
 	public List<CUser> findAllUsers (COrganization organization);
-	
+
 	/**
 	 * Find all users.
 	 *
 	 * @param organization the organization
 	 * @return the list
 	 */
-	
+
 	public List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group);
-	
+
 	/**
 	 * Find all users.
 	 *
@@ -87,7 +95,7 @@ public interface IUserDao
 	 * @return
 	 */
 	public CUser findForLogin (String login, String password);
-	
+
 	/**
 	 * Find by login and return NULL if user not exist - NOT exception.
 	 *
@@ -105,15 +113,15 @@ public interface IUserDao
 	 * @return the c user or (null if user not exist or user haven't role)
 	 */
 	public CUser findByLoginAndRole (String login, String password, CRole role);
-	
+
 	/** Get users without user what come as parameter
 	 * @param organization - organization for which are selected users
 	 * @param group - group for which are selected users
 	 * @param user - user without are users returned
 	 * @return list of users
 	 */
-	public abstract List<CUser> getOtherActiveUsers(COrganization organization, CGroup group, CUser user);
-	
+	public abstract List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user);
+
 	/**
 	 * Find all operator users for organization.
 	 *

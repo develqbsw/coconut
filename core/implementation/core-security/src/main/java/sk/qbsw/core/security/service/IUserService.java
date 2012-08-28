@@ -20,6 +20,8 @@ public interface IUserService
 
 	public abstract CUser getUserByLogin (String login);
 
+	public abstract CUser getUserByPin (String pin);
+
 	public abstract void updateUser (CUser user);
 
 	/**
@@ -37,15 +39,15 @@ public interface IUserService
 	 * 
 	 * @param model
 	 */
-	public void registerNewUser (CUser user, COrganization organization);	
-	
+	public void registerNewUser (CUser user, COrganization organization);
+
 	/** Get users without user what come as parameter
 	 * @param organization - organization for which are selected users
 	 * @param group - group for which are selected users
 	 * @param user - user without are users returned
 	 * @return list of users
 	 */
-	public abstract List<CUser> getOtherActiveUsers(COrganization organization, CGroup group, CUser user);
-	
-	
+	public abstract List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user);
+
+
 }

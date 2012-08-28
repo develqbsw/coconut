@@ -66,6 +66,13 @@ public class CUserService implements IUserService
 	}
 
 	@Transactional (readOnly = true)
+	public CUser getUserByPin (String pin)
+	{
+		return userDao.findByLoginNull(pin);
+	}
+
+
+	@Transactional (readOnly = true)
 	public List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group)
 	{
 
