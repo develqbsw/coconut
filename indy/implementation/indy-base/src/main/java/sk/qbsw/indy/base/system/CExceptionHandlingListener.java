@@ -12,36 +12,31 @@ public class CExceptionHandlingListener implements IRequestCycleListener
 	@Override
 	public void onUrlMapped (RequestCycle arg0, IRequestHandler arg1, Url arg2)
 	{
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 	@Override
 	public void onRequestHandlerScheduled (RequestCycle arg0, IRequestHandler arg1)
 	{
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 	@Override
 	public void onRequestHandlerResolved (RequestCycle arg0, IRequestHandler arg1)
 	{
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 	@Override
 	public void onRequestHandlerExecuted (RequestCycle arg0, IRequestHandler arg1)
 	{
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 	@Override
-	public void onExceptionRequestHandlerResolved (RequestCycle arg0, IRequestHandler arg1, Exception arg2)
+	public void onExceptionRequestHandlerResolved (RequestCycle arg0, IRequestHandler arg1, Exception e)
 	{
-		// TODO Auto-generated method stub
-
+		Logger.getLogger(CExceptionHandlingListener.class).error("Handled by CExceptionHandlingListener", e);
 	}
 
 	@Override
@@ -54,21 +49,18 @@ public class CExceptionHandlingListener implements IRequestCycleListener
 	@Override
 	public void onEndRequest (RequestCycle arg0)
 	{
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 	@Override
 	public void onDetach (RequestCycle arg0)
 	{
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 	@Override
 	public void onBeginRequest (RequestCycle arg0)
 	{
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 }

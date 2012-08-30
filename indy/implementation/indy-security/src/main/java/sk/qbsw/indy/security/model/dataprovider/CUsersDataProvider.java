@@ -44,7 +44,7 @@ public class CUsersDataProvider implements IDataProvider<CUser>
 	@Override
 	public void detach ()
 	{
-		// TODO Auto-generated method stub		
+		// Nothing to do
 	}
 
 	@Override
