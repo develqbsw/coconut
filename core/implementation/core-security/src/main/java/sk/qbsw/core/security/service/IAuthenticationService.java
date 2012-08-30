@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.service;
 
+import java.io.Serializable;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.exception.CSecurityException;
@@ -13,7 +15,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0.0
  *
  */
-public interface IAuthenticationService
+public interface IAuthenticationService extends Serializable
 {
 
 	/**

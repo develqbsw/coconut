@@ -3,6 +3,7 @@
  */
 package sk.qbsw.core.security.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.security.exception.CSecurityException;
@@ -19,7 +20,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.0
  * @since 1.0
  */
-public interface ISecurityService
+public interface ISecurityService extends Serializable
 {
 
 	/**

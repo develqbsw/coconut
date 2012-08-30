@@ -3,6 +3,7 @@
  */
 package sk.qbsw.core.security.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import sk.qbsw.core.security.model.domain.CLicense;
@@ -14,7 +15,7 @@ import sk.qbsw.core.security.model.domain.CLicense;
  * @version 1.0
  * @since 1.0
  */
-public interface ILicenseGenerator
+public interface ILicenseGenerator extends Serializable
 {
 
 	/**

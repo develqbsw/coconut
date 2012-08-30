@@ -25,6 +25,10 @@ import sk.qbsw.core.security.model.domain.CUser;
 public class CUserService implements IUserService
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Autowired
 	private IUserDao userDao;
 

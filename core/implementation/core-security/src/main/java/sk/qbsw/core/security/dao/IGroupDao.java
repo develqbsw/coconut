@@ -3,6 +3,7 @@
  */
 package sk.qbsw.core.security.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -15,7 +16,7 @@ import sk.qbsw.core.security.model.domain.CGroup;
  * @version 1.0
  * @since 1.0
  */
-public interface IGroupDao
+public interface IGroupDao extends Serializable
 {
 
 	/** The I d_ or g_ admin. */

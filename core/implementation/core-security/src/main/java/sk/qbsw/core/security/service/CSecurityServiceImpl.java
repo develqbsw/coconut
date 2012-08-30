@@ -33,6 +33,11 @@ import sk.qbsw.core.security.model.jmx.CLicensingRules;
 @Service ( value = "securityService")
 public class CSecurityServiceImpl implements ISecurityService
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	/** The group dao. */
 	private IRoleDao roleDao; 

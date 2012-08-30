@@ -286,6 +286,7 @@ public class COrganization implements Serializable
 	 */
 	public CLicense<?> getMainLicense ()
 	{
+		// the most valuable license
 		CLicense<?> actualLicense = null;
 		for (CLicense<?> license : getLicences())
 		{

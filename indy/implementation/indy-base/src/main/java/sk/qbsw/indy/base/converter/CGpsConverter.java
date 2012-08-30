@@ -22,9 +22,9 @@ public class CGpsConverter
 	{
 		coordinates = coordinates.replace(" ", "");
 		
-		Integer degrees = Integer.valueOf(coordinates.substring(0, coordinates.indexOf("°"))).intValue();
-		Integer minutes = Integer.valueOf(coordinates.substring(coordinates.indexOf("°") + 1, coordinates.indexOf("'"))).intValue();
-		Float seconds = Float.valueOf(coordinates.substring(coordinates.indexOf("'") + 1, coordinates.indexOf("\""))).floatValue();
+		Integer degrees = Integer.valueOf(coordinates.substring(0, coordinates.indexOf("°")));
+		Integer minutes = Integer.valueOf(coordinates.substring(coordinates.indexOf("°") + 1, coordinates.indexOf("'")));
+		Float seconds = Float.valueOf(coordinates.substring(coordinates.indexOf("'") + 1, coordinates.indexOf("\"")));
 
 		Float decimalMinutes = minutes + (seconds / 60);
 		Float decimalDegrees = degrees + (decimalMinutes / 60);

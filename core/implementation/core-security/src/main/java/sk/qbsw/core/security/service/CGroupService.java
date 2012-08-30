@@ -21,6 +21,10 @@ import sk.qbsw.core.security.model.domain.CGroup;
 public class CGroupService implements IGroupService
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Autowired
 	private IGroupDao groupDao;
 

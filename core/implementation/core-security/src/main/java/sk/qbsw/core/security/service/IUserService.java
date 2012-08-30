@@ -1,5 +1,6 @@
 package sk.qbsw.core.security.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -9,7 +10,7 @@ import sk.qbsw.core.security.model.domain.CUser;
 
 
 
-public interface IUserService
+public interface IUserService extends Serializable
 {
 
 	public abstract List<CUser> getUsers ();

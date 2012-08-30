@@ -9,8 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.security.dao.IUserDao;
@@ -30,7 +28,6 @@ import sk.qbsw.core.security.model.domain.CUser;
 public class CUserJpaDao implements IUserDao
 {
 
-	Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;

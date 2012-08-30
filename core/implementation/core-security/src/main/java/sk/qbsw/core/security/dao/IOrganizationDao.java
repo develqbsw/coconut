@@ -3,6 +3,7 @@
  */
 package sk.qbsw.core.security.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -14,7 +15,7 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * @version 1.0
  * @since 1.0
  */
-public interface IOrganizationDao
+public interface IOrganizationDao extends Serializable
 {
 
 	/**

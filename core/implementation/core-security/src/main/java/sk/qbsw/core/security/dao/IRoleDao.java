@@ -3,6 +3,7 @@
  */
 package sk.qbsw.core.security.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.security.model.domain.CRole;
@@ -15,7 +16,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.0
  * @since 1.0
  */
-public interface IRoleDao
+public interface IRoleDao extends Serializable
 {
 
 	/**

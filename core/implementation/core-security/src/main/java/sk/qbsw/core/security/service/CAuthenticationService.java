@@ -14,6 +14,10 @@ import sk.qbsw.core.security.model.domain.CUser;
 @Service (value = "cLoginService")
 public class CAuthenticationService implements IAuthenticationService
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Autowired
 	private IUserDao userDao;
 

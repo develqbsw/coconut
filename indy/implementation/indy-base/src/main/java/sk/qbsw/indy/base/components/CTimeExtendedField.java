@@ -293,7 +293,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 
 			if ( (hoursValue != null))
 			{
-				calendar = (calendar == null) ? Calendar.getInstance() : calendar;
+				calendar = Calendar.getInstance();
 				calendar.set(Calendar.HOUR_OF_DAY, hoursValue);
 			}
 			if ( (minutesValue != null))

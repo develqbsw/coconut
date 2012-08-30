@@ -14,7 +14,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private final String serviceUrl = "http://maps.googleapis.com/maps/api/geocode/";
+	private final static String serviceUrl = "http://maps.googleapis.com/maps/api/geocode/";
 
 	public static final String OUTPUT_XML = "xml";
 	public static final String OUTPUT_JSON = "json";
