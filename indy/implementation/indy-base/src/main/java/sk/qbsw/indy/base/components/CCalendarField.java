@@ -18,7 +18,7 @@ public class CCalendarField<Calendar> extends TextField<Calendar>
 
 	private static final long serialVersionUID = 1L;
 
-	CCalendarConverter calendarConverter = new CCalendarConverter();
+	private CCalendarConverter calendarConverter = new CCalendarConverter();
 
 	public CCalendarField (String id)
 	{
@@ -41,9 +41,10 @@ public class CCalendarField<Calendar> extends TextField<Calendar>
 		super(id, model, type);
 	}
 
+	@SuppressWarnings ("unchecked")
 	@Override
-	public <C>IConverter<C> getConverter (Class<C> type)
+	public <C>IConverter<C> getConverter (java.lang.Class<C> type)
 	{
-		return this.calendarConverter;
+		return (IConverter<C>) this.calendarConverter;
 	}
 }

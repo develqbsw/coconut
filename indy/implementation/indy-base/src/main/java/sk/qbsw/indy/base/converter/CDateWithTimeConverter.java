@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.apache.log4j.Logger;
 import org.apache.wicket.util.convert.IConverter;
 
-public class CDateWithTimeConverter implements IConverter
+public class CDateWithTimeConverter implements IConverter<Date>
 {
 
 	/**
@@ -17,7 +17,7 @@ public class CDateWithTimeConverter implements IConverter
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Object convertToObject (String value, Locale locale)
+	public Date convertToObject (String value, Locale locale)
 	{
 		DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
 		try
@@ -32,7 +32,7 @@ public class CDateWithTimeConverter implements IConverter
 	}
 
 	@Override
-	public String convertToString (Object value, Locale locale)
+	public String convertToString (Date value, Locale locale)
 	{
 		if (value != null)
 		{

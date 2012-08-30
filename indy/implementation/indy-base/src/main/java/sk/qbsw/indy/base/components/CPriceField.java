@@ -47,7 +47,7 @@ public class CPriceField<BigDecimal> extends TextField<BigDecimal>
 	@Override
 	public <C>IConverter<C> getConverter (Class<C> type)
 	{
-		return this.priceConverter;
+		return (IConverter<C>) this.priceConverter;
 	}
 
 	@Override

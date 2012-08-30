@@ -17,7 +17,7 @@ import sk.qbsw.indy.base.utils.CBigDecimalToMoneyFormat;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class CPriceConverter implements IConverter
+public class CPriceConverter implements IConverter<BigDecimal>
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -36,7 +36,7 @@ public class CPriceConverter implements IConverter
 	 * Converts String to Calendar
 	 */
 	@Override
-	public Object convertToObject (String value, Locale locale)
+	public BigDecimal convertToObject (String value, Locale locale)
 	{
 
 		try
@@ -54,7 +54,7 @@ public class CPriceConverter implements IConverter
 	 * Converts calendar to String
 	 */
 	@Override
-	public String convertToString (Object value, Locale locale)
+	public String convertToString (BigDecimal value, Locale locale)
 	{
 		if (value != null)
 		{

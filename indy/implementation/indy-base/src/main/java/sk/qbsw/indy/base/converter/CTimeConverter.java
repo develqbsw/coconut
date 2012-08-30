@@ -16,7 +16,7 @@ import org.apache.wicket.util.convert.IConverter;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class CTimeConverter implements IConverter
+public class CTimeConverter implements IConverter<Calendar>
 {
 	/**
 	 * 
@@ -27,7 +27,7 @@ public class CTimeConverter implements IConverter
 	 * Converts String to Calendar
 	 */
 	@Override
-	public Object convertToObject (String value, Locale locale)
+	public Calendar convertToObject (String value, Locale locale)
 	{
 		try
 		{
@@ -48,7 +48,7 @@ public class CTimeConverter implements IConverter
 	 * Converts Calendar to String
 	 */
 	@Override
-	public String convertToString (Object value, Locale locale)
+	public String convertToString (Calendar value, Locale locale)
 	{
 		DateFormat formatter = DateFormat.getTimeInstance(DateFormat.SHORT, locale);
 		return formatter.format( ((Calendar) value).getTime());

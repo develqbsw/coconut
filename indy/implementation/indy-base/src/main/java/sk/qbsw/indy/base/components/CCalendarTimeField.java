@@ -41,10 +41,11 @@ public class CCalendarTimeField<Calendar> extends TextField<Calendar>
 		super(id, model, type);
 	}
 
+	@SuppressWarnings ("unchecked")
 	@Override
 	public <C>IConverter<C> getConverter (Class<C> type)
 	{
-		return this.calendarConverter;
+		return (IConverter<C>) this.calendarConverter;
 	}
 
 }

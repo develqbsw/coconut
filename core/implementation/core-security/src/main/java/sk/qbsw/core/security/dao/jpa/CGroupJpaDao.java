@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,7 @@ public class CGroupJpaDao implements IGroupDao
 
 	Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-	@PersistenceContext(name="airlinesPersistenceContext")
+	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
 
 	/**
@@ -37,7 +36,7 @@ public class CGroupJpaDao implements IGroupDao
 	{
 		this.em.persist(group);
 	}
-		
+
 	/**
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findById(java.lang.Long)
 	 */
@@ -50,7 +49,7 @@ public class CGroupJpaDao implements IGroupDao
 		return (CGroup) query.getSingleResult();
 	}
 
-	
+
 	/**
 	 * Find all by flag system.
 	 *
@@ -68,7 +67,7 @@ public class CGroupJpaDao implements IGroupDao
 		return (List<CGroup>) query.getResultList();
 	}
 
-	
+
 	/**
 	 * Find all 
 	 *
@@ -76,14 +75,14 @@ public class CGroupJpaDao implements IGroupDao
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findAll()
 	 */
 	@SuppressWarnings ("unchecked")
-	public List<CGroup> findAll()
+	public List<CGroup> findAll ()
 	{
 		String strQuery = "from CGroup order by code";
 
 		Query query = this.em.createQuery(strQuery);
 		return (List<CGroup>) query.getResultList();
 	}
-	
+
 	/**
 	 * Find all 
 	 *
@@ -91,7 +90,7 @@ public class CGroupJpaDao implements IGroupDao
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findAll()
 	 */
 	@SuppressWarnings ("unchecked")
-	public List<CGroup> findByCode(String code)
+	public List<CGroup> findByCode (String code)
 	{
 		String strQuery = "from CGroup g WHERE g.code=:code order by g.code";
 
@@ -100,5 +99,5 @@ public class CGroupJpaDao implements IGroupDao
 		return (List<CGroup>) query.getResultList();
 	}
 
-	
+
 }

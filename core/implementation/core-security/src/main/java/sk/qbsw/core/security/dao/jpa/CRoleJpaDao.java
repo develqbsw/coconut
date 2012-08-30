@@ -30,7 +30,7 @@ public class CRoleJpaDao implements IRoleDao
 
 	Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-	@PersistenceContext(name="airlinesPersistenceContext")
+	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
 
 	/**
@@ -40,7 +40,7 @@ public class CRoleJpaDao implements IRoleDao
 	{
 		this.em.persist(role);
 	}
-	
+
 	/**
 	 * @see sk.qbsw.core.security.dao.IRoleDao#findById(java.lang.Long)
 	 **/
@@ -71,8 +71,10 @@ public class CRoleJpaDao implements IRoleDao
 		return (List<CRole>) query.getResultList();
 	}
 
-	public List<CRole> findByCode(String code) {
-		
+	@SuppressWarnings ("unchecked")
+	public List<CRole> findByCode (String code)
+	{
+
 		String strQuery = "select r from CRole r where r.code =:code";
 
 		Query query = this.em.createQuery(strQuery);
