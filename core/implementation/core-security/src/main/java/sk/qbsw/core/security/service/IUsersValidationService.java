@@ -16,5 +16,7 @@ public interface IUsersValidationService
 
 	public abstract Boolean isUserExistsPin (String pin);
 
+	public abstract Boolean isUserExistsPin (CUser user);
+
 	public abstract Boolean leastOneAdmin (CUser user, COrganization organization, String group);
 }
