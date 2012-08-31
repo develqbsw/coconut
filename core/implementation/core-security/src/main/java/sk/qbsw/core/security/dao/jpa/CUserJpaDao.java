@@ -220,10 +220,11 @@ public class CUserJpaDao implements IUserDao
 	@SuppressWarnings ("unchecked")
 	public CUser findByPinNull (String pinCode)
 	{
-		if (pinCode==null){
+		if (pinCode == null)
+		{
 			return null;
 		}
-		
+
 		CUser userToReturn;
 		String strQuery = "select u from CUser u left join fetch u.organization o where u.pin=:pinCode";
 

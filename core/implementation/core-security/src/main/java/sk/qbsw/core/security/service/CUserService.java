@@ -72,7 +72,15 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = true)
 	public CUser getUserByPin (String pin)
 	{
-		return userDao.findByPinNull(pin);
+		CUser user = userDao.findByPinNull(pin);
+		if (user.getFlagEnabled())
+		{
+			return user;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 
