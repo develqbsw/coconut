@@ -126,9 +126,7 @@ public class CUsersValidationService implements IUsersValidationService
 
 		CUser user = userDao.findByPinNull(pin);
 		if (user != null) {
-			if (!(pin.equals(user.getPin()))) {
-				exists = true;
-			}
+			exists = true;
 		}
 
 		return exists;
