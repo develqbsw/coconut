@@ -25,8 +25,10 @@ import sk.qbsw.core.security.model.domain.CUser;
 @Repository (value = "roleDao")
 public class CRoleJpaDao implements IRoleDao
 {
-
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
 

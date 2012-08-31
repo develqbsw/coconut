@@ -22,6 +22,11 @@ import sk.qbsw.core.security.model.domain.CGroup;
 public class CGroupJpaDao implements IGroupDao
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
 

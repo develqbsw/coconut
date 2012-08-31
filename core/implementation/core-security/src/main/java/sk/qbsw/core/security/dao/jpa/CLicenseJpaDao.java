@@ -22,12 +22,17 @@ import sk.qbsw.core.security.model.domain.CLicense;
  * @since 1.0
  */
 
-@Repository  (value = "licenceDao")
+@Repository (value = "licenceDao")
 public class CLicenseJpaDao implements ILicenseDao
 {
 
 
-	@PersistenceContext(name="airlinesPersistenceContext")
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
 
 	/**

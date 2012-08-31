@@ -36,6 +36,7 @@ public class CHttpApiPostRequest implements IHttpApiRequest
 	 */
 	public String makeCall (String url, ContentType contentType, String entityInJSon)
 	{
+		InputStreamReader inputReader = null;
 		try
 		{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -58,13 +59,24 @@ public class CHttpApiPostRequest implements IHttpApiRequest
 				throw new CApiHttpException("Failed : HTTP error code:" + response.getStatusLine().getStatusCode(), null, response.getStatusLine().getStatusCode());
 			}
 
-			BufferedReader br = new BufferedReader(new InputStreamReader( (response.getEntity().getContent())));
+			inputReader = new InputStreamReader( (response.getEntity().getContent()));
+			BufferedReader br = new BufferedReader(inputReader);
 
 			StringBuffer output = new StringBuffer();
-			String line;
-			while ( (line = br.readLine()) != null)
+			try
 			{
-				output.append(line);
+				String line;
+				while ( (line = br.readLine()) != null)
+				{
+					output.append(line);
+				}
+			}
+			finally
+			{
+				if (br != null)
+				{
+					br.close();
+				}
 			}
 
 			httpClient.getConnectionManager().shutdown();
@@ -78,6 +90,20 @@ public class CHttpApiPostRequest implements IHttpApiRequest
 		catch (IOException e)
 		{
 			throw new RuntimeException("IOException", e);
+		}
+		finally
+		{
+			if (inputReader != null)
+			{
+				try
+				{
+					inputReader.close();
+				}
+				catch (IOException e)
+				{
+					// nothing to do
+				}
+			}
 		}
 	}
 }

@@ -24,7 +24,10 @@ import sk.qbsw.core.security.model.domain.COrganization;
 @Repository (value = "orgDao")
 public class COrganizationJpaDao implements IOrganizationDao
 {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;

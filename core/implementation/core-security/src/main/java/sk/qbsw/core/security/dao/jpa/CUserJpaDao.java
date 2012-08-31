@@ -27,7 +27,10 @@ import sk.qbsw.core.security.model.domain.CUser;
 @Repository (value = "userDao")
 public class CUserJpaDao implements IUserDao
 {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
