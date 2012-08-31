@@ -1,8 +1,8 @@
-package sk.qbsw.indy.base.geocode;
+package sk.qbsw.core.googlemaps.geocode;
 
 import java.io.UnsupportedEncodingException;
 
-import sk.qbsw.indy.base.exceptions.CBusinessException;
+import sk.qbsw.core.security.exception.CBusinessException;
 
 public interface IGoogleGeocodeClient
 {

@@ -1,4 +1,4 @@
-package sk.qbsw.indy.base.geocode;
+package sk.qbsw.core.googlemaps.geocode;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -6,9 +6,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-import org.apache.wicket.util.io.Streams;
+import org.apache.commons.io.IOUtils;
 
-import sk.qbsw.indy.base.exceptions.CBusinessException;
+import sk.qbsw.core.security.exception.CBusinessException;
 
 public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 {
@@ -83,7 +83,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 			final URL url = new URL(urlString);
 			URLConnection connection = url.openConnection();
 
-			result = Streams.readString(connection.getInputStream());
+			result = IOUtils.toString(connection.getInputStream());
 
 			return result;
 		}

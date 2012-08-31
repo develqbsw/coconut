@@ -17,6 +17,7 @@
 		<module>core-paypal</module>
 		<module>core-persistence</module>
 		<module>core-security</module>
+		<module>core-googlemaps</module>
 	</modules>
 	<repositories>
 		<repository>

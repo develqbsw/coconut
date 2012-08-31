@@ -1,4 +1,4 @@
-package sk.qbsw.indy.base.geocode;
+package sk.qbsw.core.googlemaps.geocode;
 
 import java.io.Serializable;
 

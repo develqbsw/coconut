@@ -1,4 +1,4 @@
-package sk.qbsw.indy.base.geocode;
+package sk.qbsw.core.googlemaps.geocode;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,30 +15,28 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import sk.qbsw.indy.base.exceptions.CBusinessException;
+import sk.qbsw.core.security.exception.CBusinessException;
 
 
-public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Serializable
+public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private List<CGeocodeCoordinates> geocodeCoordinates;
-	private CGeocodeCoordinates tmpCoordinate;
-	private CGeometry tmpGeometry;
-	private CLocation tmpLocation;
+	private List<CGeocodeAddress> geocodeAddresses;
+	private CGeocodeAddress tmpAddress;
+	private CAddressComponent tmpAddressComponent;
 	private String tmpVal;
 	private String toParse;
 	private Boolean resultType;
-	private String tmpShortName;
 
-	public List<CGeocodeCoordinates> getGeocodeCoordinates ()
+	public List<CGeocodeAddress> getGeocodeAddresses ()
 	{
-		return geocodeCoordinates;
+		return geocodeAddresses;
 	}
 
-	public CCoordinatesGeocodeXmlParser (String toParse)
+	public CAddressGeocodeXmlParser (String toParse)
 	{
-		this.geocodeCoordinates = new ArrayList<CGeocodeCoordinates>();
+		this.geocodeAddresses = new ArrayList<CGeocodeAddress>();
 		this.toParse = toParse;
 		this.resultType = false;
 	}
@@ -77,15 +75,11 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		if (qName.equalsIgnoreCase("result"))
 		{
 			//create a new instance of geocode address
-			tmpCoordinate = new CGeocodeCoordinates();
+			tmpAddress = new CGeocodeAddress();
 		}
-		else if (qName.equalsIgnoreCase("geometry"))
+		else if (qName.equalsIgnoreCase("address_component"))
 		{
-			tmpGeometry = new CGeometry();
-		}
-		else if (qName.equalsIgnoreCase("location") || qName.equalsIgnoreCase("southwest") || qName.equalsIgnoreCase("northeast"))
-		{
-			tmpLocation = new CLocation();
+			tmpAddressComponent = new CAddressComponent();
 		}
 	}
 
@@ -100,48 +94,33 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		if (qName.equalsIgnoreCase("result"))
 		{
 			//add it to the list
-			geocodeCoordinates.add(tmpCoordinate);
+			geocodeAddresses.add(tmpAddress);
 			resultType = false;
 		}
 		else if (qName.equalsIgnoreCase("type") && !resultType)
 		{
-			tmpCoordinate.setType(tmpVal);
+			tmpAddress.setType(tmpVal);
 			resultType = true;
+		}
+		else if (qName.equalsIgnoreCase("long_name"))
+		{
+			tmpAddressComponent.setLongName(tmpVal);
 		}
 		else if (qName.equalsIgnoreCase("short_name"))
 		{
-			tmpShortName = tmpVal;
+			tmpAddressComponent.setShortName(tmpVal);
 		}
-		else if(qName.equalsIgnoreCase("type") && resultType)
+		else if (qName.equalsIgnoreCase("type") && resultType)
 		{
-			if(tmpVal.equalsIgnoreCase("locality"))
+			if (tmpAddressComponent != null)
 			{
-				tmpCoordinate.setCity(tmpShortName);
+				tmpAddressComponent.getTypes().add(tmpVal);
 			}
 		}
-		else if (qName.equalsIgnoreCase("geometry"))
+		else if (qName.equalsIgnoreCase("address_component"))
 		{
-			tmpCoordinate.setGeometry(tmpGeometry);
+			tmpAddress.getAddressComponents().add(tmpAddressComponent);
 		}
-		else if (qName.equalsIgnoreCase("location"))
-		{
-			tmpGeometry.setLocation(tmpLocation);
-		}
-		else if (qName.equalsIgnoreCase("southwest"))
-		{
-			tmpGeometry.setSouthwest(tmpLocation);
-		}
-		else if (qName.equalsIgnoreCase("northeast"))
-		{
-			tmpGeometry.setNortheast(tmpLocation);
-		}
-		else if (qName.equalsIgnoreCase("lat"))
-		{
-			tmpLocation.setLat(Double.valueOf(tmpVal).doubleValue());
-		}
-		else if (qName.equalsIgnoreCase("lng"))
-		{
-			tmpLocation.setLng(Double.valueOf(tmpVal).doubleValue());
-		}
+
 	}
 }

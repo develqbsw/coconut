@@ -32,7 +32,7 @@
 		<apache-velocity.version>1.7</apache-velocity.version>
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
-		<commons-io.version>2.0.1</commons-io.version>
+		<commons-io.version>2.4</commons-io.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-fileupload>1.2.2</commons-fileupload>
 		<jpa.version>2.0-cr-1</jpa.version>
