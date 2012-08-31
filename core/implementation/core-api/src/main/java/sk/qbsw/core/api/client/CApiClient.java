@@ -1,5 +1,6 @@
 package sk.qbsw.core.api.client;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 
 import org.apache.http.entity.ContentType;
@@ -40,7 +41,28 @@ public class CApiClient<I, O>
 		this.gson = gsonBuilder.create();
 	}
 
+	/**
+	 * Makes call to API
+	 * @param request request to use
+	 * @param url URL to API
+	 * @param input input parameter
+	 * @param returnClass Class to return
+	 * @return Returned object (instance of returnClass)
+	 */
 	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass)
+	{
+		return makeCall(request, url, input, (Type) returnClass);
+	}
+
+	/**
+	 * Makes call to API
+	 * @param request request to use
+	 * @param url URL to API
+	 * @param input input parameter
+	 * @param returnType Type to return
+	 * @return Returned object (instance of returnClass)
+	 */
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType)
 	{
 		// if needed, initialize Gson
 		if (gson == null)
@@ -55,7 +77,8 @@ public class CApiClient<I, O>
 		String response = request.makeCall(url, ContentType.APPLICATION_JSON, requestJson);
 
 		// process response
-		O responseObject = gson.fromJson(response, returnClass);
+		O responseObject = gson.fromJson(response, returnType);
 		return responseObject;
 	}
+
 }
