@@ -3,6 +3,7 @@ package sk.qbsw.core.api.client.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.InvalidParameterException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -23,6 +24,11 @@ public class CHttpApiGetRequest implements IHttpApiRequest
 {
 
 	/**
+	 * Parameter name for content. Default value is payload
+	 */
+	private String contentParameter = "payload";
+
+	/**
 	 * Makes call.
 	 * 
 	 * @param url
@@ -39,7 +45,22 @@ public class CHttpApiGetRequest implements IHttpApiRequest
 		try
 		{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpGet getRequest = new HttpGet(url);
+
+			String fullURL = url;
+			if (entity != null)
+			{
+				if (contentParameter != null)
+				{
+					fullURL = url + "?" + contentParameter + "=" + entity;
+				}
+				else
+				{
+					throw new InvalidParameterException("Content parameter not set");
+				}
+			}
+
+
+			HttpGet getRequest = new HttpGet(fullURL);
 			getRequest.addHeader("accept", contentType.getMimeType());
 
 			HttpResponse response = httpClient.execute(getRequest);
@@ -95,5 +116,13 @@ public class CHttpApiGetRequest implements IHttpApiRequest
 				}
 			}
 		}
+	}
+
+	/**
+	 * Sets content parameter (parameter using which will be the entity transfered)
+	 */
+	public void setContentParameter (String parameterName)
+	{
+		this.contentParameter = parameterName;
 	}
 }

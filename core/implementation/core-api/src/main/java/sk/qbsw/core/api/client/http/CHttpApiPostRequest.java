@@ -106,4 +106,13 @@ public class CHttpApiPostRequest implements IHttpApiRequest
 			}
 		}
 	}
+
+	/**
+	 * Sets parameter for content.
+	 * The content will send as Entity in the POST request.
+	 */
+	public void setContentParameter (String parameterName)
+	{
+		// nothing to do
+	}
 }
