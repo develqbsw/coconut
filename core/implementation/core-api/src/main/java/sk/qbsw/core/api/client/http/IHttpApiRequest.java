@@ -14,6 +14,11 @@ public interface IHttpApiRequest
 {
 
 	/**
+	 * Parameter for the content
+	 */
+	public void setContentParameter (String parameterName);
+
+	/**
 	 * Makes the HTTP call. Response will be returned
 	 * 
 	 * @param url
