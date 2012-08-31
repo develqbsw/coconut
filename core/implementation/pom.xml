@@ -18,6 +18,7 @@
 		<module>core-persistence</module>
 		<module>core-security</module>
 		<module>core-googlemaps</module>
+		<module>core-api</module>
 	</modules>
 	<repositories>
 		<repository>

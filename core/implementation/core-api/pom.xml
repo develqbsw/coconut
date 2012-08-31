@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>sk.qbsw</groupId>
+	<artifactId>core-api</artifactId>
+	<packaging>jar</packaging>
+	<version>1.2.0</version>
+	<organization>
+		<name>QBSW a.s.</name>
+		<url>http://www.qbsw.sk</url>
+	</organization>
+	<name>Core api</name>
+	<parent>
+		<groupId>sk.qbsw</groupId>
+		<artifactId>core</artifactId>
+		<version>1.2.0</version>
+	</parent>
+	<dependencies>
+
+		<!-- testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- GSON -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+
+		<!-- JACKSON -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<!-- HTTP -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<optimize>true</optimize>
+					<debug>true</debug>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
