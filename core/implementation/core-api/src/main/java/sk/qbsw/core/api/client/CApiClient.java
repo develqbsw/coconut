@@ -2,6 +2,8 @@ package sk.qbsw.core.api.client;
 
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.http.entity.ContentType;
 
@@ -24,6 +26,8 @@ import com.google.gson.GsonBuilder;
 public class CApiClient<I, O>
 {
 
+	private static final Logger LOGGER = Logger.getAnonymousLogger();
+	
 	/**
 	 * GSon instance
 	 */
@@ -76,10 +80,36 @@ public class CApiClient<I, O>
 
 		// process request
 		String response = request.makeCall(url, ContentType.APPLICATION_JSON, requestJson);
-
+		
 		// process response
 		O responseObject = (O)gson.fromJson(response, returnType);
 		return responseObject;
+	}
+	
+	/**
+	 * Makes call to API
+	 * @param request request to use
+	 * @param url URL to API
+	 * @param input input parameter
+	 * @param returnType Type to return
+	 * @return Returned object (instance of returnClass)
+	 */
+	@SuppressWarnings ("unchecked")
+	public String makeCall (IHttpApiRequest request, String url, I input)
+	{
+		// if needed, initialize Gson
+		if (gson == null)
+		{
+			prepareGson();
+		}
+
+		// prepare request
+		String requestJson = gson.toJson(input);
+
+		// process request
+		String response = request.makeCall(url, ContentType.APPLICATION_JSON, requestJson);
+
+		return response;
 	}
 
 }

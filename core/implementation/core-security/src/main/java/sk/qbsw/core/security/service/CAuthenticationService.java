@@ -32,7 +32,7 @@ public class CAuthenticationService implements IAuthenticationService
 		{
 			throw new CWrongPasswordException("");
 		}
-		else if (user.getFlagEnabled() == false)
+		else if (user.getFlagEnabled().equals(false))
 		{
 			throw new CUserDisabledException("");
 		}

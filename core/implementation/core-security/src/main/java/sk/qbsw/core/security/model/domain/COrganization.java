@@ -292,7 +292,7 @@ public class COrganization implements Serializable
 		{
 			if (license.validateLicense())
 			{
-				if (actualLicense == null || actualLicense != null && actualLicense.getPriority() < license.getPriority())
+				if (actualLicense == null || actualLicense != null && actualLicense.getPriority().compareTo(license.getPriority()) < 0)
 				{
 					actualLicense = license;
 				}
