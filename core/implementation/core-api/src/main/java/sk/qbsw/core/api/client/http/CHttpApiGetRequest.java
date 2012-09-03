@@ -3,6 +3,7 @@ package sk.qbsw.core.api.client.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
 import org.apache.http.HttpResponse;
@@ -46,12 +47,13 @@ public class CHttpApiGetRequest implements IHttpApiRequest
 		{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 
+
 			String fullURL = url;
 			if (entity != null)
 			{
 				if (contentParameter != null)
 				{
-					fullURL = url + "?" + contentParameter + "=" + entity;
+					fullURL = URLEncoder.encode(url + "?" + contentParameter + "=" + entity, "UTF-8");
 				}
 				else
 				{

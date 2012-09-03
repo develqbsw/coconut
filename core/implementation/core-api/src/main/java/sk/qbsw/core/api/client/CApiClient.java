@@ -2,8 +2,6 @@ package sk.qbsw.core.api.client;
 
 import java.lang.reflect.Type;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.http.entity.ContentType;
 
@@ -26,23 +24,30 @@ import com.google.gson.GsonBuilder;
 public class CApiClient<I, O>
 {
 
-	private static final Logger LOGGER = Logger.getAnonymousLogger();
-	
 	/**
 	 * GSon instance
 	 */
 	private Gson gson;
 
 	/**
-	 * Prepare gson.
+	 * Prepare gson. Calls prepareGsonBuilder.
 	 */
-	public void prepareGson ()
+	public final void prepareGson ()
 	{
 		// initialize GSON Builder
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Date.class, new CDateJSonSerializer());
+		prepareGsonBuilder(gsonBuilder);
 
 		this.gson = gsonBuilder.create();
+	}
+
+	/**
+	 * Initializes Gson Builder.
+	 * @param builder builder to initialize
+	 */
+	protected void prepareGsonBuilder (GsonBuilder builder)
+	{
+		builder.registerTypeAdapter(Date.class, new CDateJSonSerializer());
 	}
 
 	/**
@@ -80,12 +85,12 @@ public class CApiClient<I, O>
 
 		// process request
 		String response = request.makeCall(url, ContentType.APPLICATION_JSON, requestJson);
-		
+
 		// process response
-		O responseObject = (O)gson.fromJson(response, returnType);
+		O responseObject = (O) gson.fromJson(response, returnType);
 		return responseObject;
 	}
-	
+
 	/**
 	 * Makes call to API
 	 * @param request request to use
@@ -94,7 +99,6 @@ public class CApiClient<I, O>
 	 * @param returnType Type to return
 	 * @return Returned object (instance of returnClass)
 	 */
-	@SuppressWarnings ("unchecked")
 	public String makeCall (IHttpApiRequest request, String url, I input)
 	{
 		// if needed, initialize Gson
