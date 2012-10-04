@@ -13,6 +13,7 @@
 		<!-- compiling projects -->
 		<compiler.version>2.3.2</compiler.version>
 		<java.version>1.6</java.version>
+		<jasypt.version>1.9.0</jasypt.version>
 
 		<!-- QBSW dependences -->
 		<indy.version>1.2.0</indy.version>

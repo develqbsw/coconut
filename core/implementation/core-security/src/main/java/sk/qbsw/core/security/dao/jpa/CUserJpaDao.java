@@ -18,25 +18,28 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
- * The Class CSectionJpaDao.
+ * User DAO implementation
  *
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @version 1.2.0
+ * @since 1.0.0
  */
 @Repository (value = "userDao")
 public class CUserJpaDao implements IUserDao
 {
-	/**
-	 * 
-	 */
+
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The em. */
 	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
 
 
 	/**
+	 * Persit.
+	 *
+	 * @param user the user
 	 * @see sk.qbsw.core.security.dao.IUserDao#persit(sk.qbsw.core.security.model.domain.CUser)
 	 */
 	public void persit (CUser user)
@@ -46,6 +49,10 @@ public class CUserJpaDao implements IUserDao
 	}
 
 	/**
+	 * Find by id.
+	 *
+	 * @param id the id
+	 * @return the c user
 	 * @see sk.qbsw.core.security.dao.IUserDao#findById(java.lang.Long)
 	 */
 	public CUser findById (Long id)
@@ -66,11 +73,21 @@ public class CUserJpaDao implements IUserDao
 	 */
 	public CUser findByLogin (String login)
 	{
-		String strQuery = "select u from CUser u left join fetch u.organization o where u.login=:login";
+		CUser userToReturn = null;
 
+		String strQuery = "select u from CUser u left join fetch u.organization o left join fetch u.groups g left join fetch g.roles g  where u.login=:login";
 		Query query = this.em.createQuery(strQuery);
 		query.setParameter("login", login);
-		return (CUser) query.getSingleResult();
+
+		@SuppressWarnings ("unchecked")
+		List<CUser> users = query.getResultList();
+
+		if (users.size() > 0)
+		{
+			userToReturn = users.get(0);
+		}
+
+		return userToReturn;
 	}
 
 	/**
@@ -94,8 +111,8 @@ public class CUserJpaDao implements IUserDao
 	 * Find all users.
 	 *
 	 * @param organization the organization
-	 * @param group the group
 	 * @param enabled the enabled
+	 * @param group the group
 	 * @return the list
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization)
 	 */
@@ -160,6 +177,9 @@ public class CUserJpaDao implements IUserDao
 		return (CUser) query.getSingleResult();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers()
+	 */
 	@SuppressWarnings ("unchecked")
 	public List<CUser> findAllUsers ()
 	{
@@ -170,56 +190,9 @@ public class CUserJpaDao implements IUserDao
 		return (List<CUser>) query.getResultList();
 	}
 
-
-	@SuppressWarnings ("unchecked")
-	public CUser findForLogin (String login, String password)
-	{
-		String strQuery = "select distinct u from CUser as u " + "join fetch u.organization o" + " join fetch u.groups g " + " join fetch g.roles r where u.login = :login and u.password = :password";
-
-		Query query = this.em.createQuery(strQuery);
-		query.setParameter("login", login);
-		query.setParameter("password", password);
-
-		List<CUser> found = (List<CUser>) query.getResultList();
-
-		if (found.size() > 0)
-		{
-			return found.get(0);
-		}
-		return null;
-	}
-
-	/**
-	 * Find by login  and return NULL if user not exist - NOT exeption.
-	 *
-	 * @param login the login
-	 * @return the c user or null if user not exist
-	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findByPinNull(java.lang.String)
 	 */
-	@SuppressWarnings ("unchecked")
-	public CUser findByLoginNull (String login)
-	{
-
-		CUser userToReturn;
-		String strQuery = "select u from CUser u left join fetch u.organization o where u.login=:login";
-
-		Query query = this.em.createQuery(strQuery);
-		query.setParameter("login", login);
-
-		List<CUser> users = query.getResultList();
-
-		if (users.size() < 1)
-		{
-			userToReturn = null;
-		}
-		else
-		{
-			userToReturn = users.get(0);
-		}
-
-		return userToReturn;
-	}
-
 	@SuppressWarnings ("unchecked")
 	public CUser findByPinNull (String pinCode)
 	{
@@ -248,25 +221,10 @@ public class CUserJpaDao implements IUserDao
 		return userToReturn;
 	}
 
-	@SuppressWarnings ("unchecked")
-	public CUser findByLoginAndRole (String login, String password, CRole role)
-	{
-		String strQuery = "select distinct u from CUser as u " + "join fetch u.organization o" + " join u.groups g " + " join g.roles r " + " where r.code =:role and " + "u.login = :login and " + "u.password = :password and " + "u.flagEnabled = true";
 
-		Query query = this.em.createQuery(strQuery);
-		query.setParameter("login", login);
-		query.setParameter("role", role.getCode());
-		query.setParameter("password", password);
-
-		List<CUser> found = (List<CUser>) query.getResultList();
-
-		if (found.size() > 0)
-		{
-			return found.get(0);
-		}
-		return null;
-	}
-
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#getOtherActiveUsers(sk.qbsw.core.security.model.domain.COrganization, sk.qbsw.core.security.model.domain.CGroup, sk.qbsw.core.security.model.domain.CUser)
+	 */
 	@SuppressWarnings ("unchecked")
 	public List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user)
 	{
@@ -281,6 +239,9 @@ public class CUserJpaDao implements IUserDao
 		return (List<CUser>) query.getResultList();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsersByRole(sk.qbsw.core.security.model.domain.COrganization, sk.qbsw.core.security.model.domain.CRole)
+	 */
 	@SuppressWarnings ("unchecked")
 	public List<CUser> findAllUsersByRole (COrganization organization, CRole role)
 	{

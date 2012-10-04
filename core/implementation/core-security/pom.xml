@@ -65,7 +65,14 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
+		<!-- SECURITY -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>${jasypt.version}</version>
+			<scope>compile</scope>
+		</dependency>
 		<!-- GSON -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -109,8 +116,8 @@
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>${antlr.version}</version>
-		</dependency>		
-		
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

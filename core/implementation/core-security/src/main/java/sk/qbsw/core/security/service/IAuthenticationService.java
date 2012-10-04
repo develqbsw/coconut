@@ -9,11 +9,11 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
+ * Authentication service
  * 
  * @author Dalibor Rak
- * @version 1.0.0
+ * @version 1.2.0
  * @since 1.0.0
- *
  */
 public interface IAuthenticationService extends Serializable
 {
@@ -24,17 +24,7 @@ public interface IAuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return
 	 */
-	@Transactional (readOnly = true)
 	public abstract CUser login (String login, String password) throws CSecurityException;
-
-//	/**
-//	 * Authenticates the user
-//	 * @param login login of the user
-//	 * @param password password of the user
-//	 * @return
-//	 */
-//	@Transactional (readOnly = true)
-//	public abstract CUser login (String login, String password);
 
 
 	/** Find by login and role user must have login and role
@@ -43,7 +33,7 @@ public interface IAuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return user if user have login and role null otherwise
 	 */
-	public abstract CUser login (String login, String password, CRole role);
+	public abstract CUser login (String login, String password, CRole role) throws CSecurityException;
 
 	/**
 	 * Authenticates the user with his role

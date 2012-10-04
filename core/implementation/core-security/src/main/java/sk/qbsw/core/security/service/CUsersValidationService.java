@@ -51,7 +51,7 @@ public class CUsersValidationService implements IUsersValidationService
 
 		Boolean exists = false;
 
-		CUser userOld = userDao.findByLoginNull(user.getLogin());
+		CUser userOld = userDao.findByLogin(user.getLogin());
 		if (userOld != null && ! (userOld.getPkId().equals(user.getPkId())))
 		{
 			exists = true;
@@ -97,7 +97,7 @@ public class CUsersValidationService implements IUsersValidationService
 
 		Boolean exists = false;
 
-		CUser userOld = userDao.findByLoginNull(login);
+		CUser userOld = userDao.findByLogin(login);
 		if (userOld != null)
 		{
 			exists = true;

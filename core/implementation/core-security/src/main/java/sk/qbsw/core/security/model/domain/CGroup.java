@@ -161,4 +161,23 @@ public class CGroup implements Serializable
 	{
 		this.flagSystem = flagSystem;
 	}
+
+	public boolean hasRole (CRole roleToCheck)
+	{
+
+		if (roleToCheck == null)
+		{
+			return true;
+		}
+
+		for (CRole role : roles)
+		{
+			if (role.getCode().equals(roleToCheck.getCode()))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

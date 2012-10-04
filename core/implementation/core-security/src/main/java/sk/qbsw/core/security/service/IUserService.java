@@ -9,20 +9,72 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
 
-
+/**
+ * The Interface IUserService.
+ * 
+ * @author Dalibor Rak
+ * @version 1.2.0
+ * @since 1.0.0
+ */
 public interface IUserService extends Serializable
 {
 
+	/**
+	 * Gets the users.
+	 *
+	 * @return the users
+	 */
 	public abstract List<CUser> getUsers ();
 
+	/**
+	 * Gets the users.
+	 *
+	 * @param organization the organization
+	 * @param role the role
+	 * @return the users
+	 */
 	public abstract List<CUser> getUsers (COrganization organization, CRole role);
 
+	/**
+	 * Gets the users.
+	 *
+	 * @param organization the organization
+	 * @param enabled the enabled
+	 * @param group the group
+	 * @return the users
+	 */
 	public abstract List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group);
 
+	/**
+	 * Gets the user by login.
+	 *
+	 * @param login the login
+	 * @return the user by login
+	 */
 	public abstract CUser getUserByLogin (String login);
 
+	/**
+	 * Gets the user by pin.
+	 *
+	 * @param pin the pin
+	 * @return the user by pin
+	 */
 	public abstract CUser getUserByPin (String pin);
 
+	/**
+	 * Change password.
+	 *
+	 * @param user the user
+	 * @param password the password
+	 */
+	public void changePassword (CUser user, String password);
+
+
+	/**
+	 * Update user.
+	 *
+	 * @param user the user
+	 */
 	public abstract void updateUser (CUser user);
 
 	/**
@@ -33,16 +85,25 @@ public interface IUserService extends Serializable
 	 */
 	public abstract CUser getUserByLoginNull (String login);
 
+	/**
+	 * Gets the.
+	 *
+	 * @param id the id
+	 * @return the c user
+	 */
 	public abstract CUser get (Long id);
 
 	/**
-	 * Register new user
-	 * 
-	 * @param model
+	 * Register new user.
+	 *
+	 * @param user the user
+	 * @param organization the organization
 	 */
 	public void registerNewUser (CUser user, COrganization organization);
 
-	/** Get users without user what come as parameter
+	/**
+	 * Get users without user what come as parameter.
+	 *
 	 * @param organization - organization for which are selected users
 	 * @param group - group for which are selected users
 	 * @param user - user without are users returned

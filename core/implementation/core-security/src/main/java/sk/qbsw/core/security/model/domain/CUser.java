@@ -60,6 +60,9 @@ public class CUser implements Serializable
 	/** The password. */
 	private String password;
 
+	/** Password digest. */
+	private String passwordDigest;
+
 	/** The surname. */
 	@Expose
 	private String surname;
@@ -151,6 +154,26 @@ public class CUser implements Serializable
 	public void setLogin (String login)
 	{
 		this.login = login;
+	}
+
+	/**
+	 * Gets the password digest.
+	 *
+	 * @return the password digest
+	 */
+	public String getPasswordDigest ()
+	{
+		return passwordDigest;
+	}
+
+	/**
+	 * Sets the password digest.
+	 *
+	 * @param passwordDigest the new password digest
+	 */
+	public void setPasswordDigest (String passwordDigest)
+	{
+		this.passwordDigest = passwordDigest;
 	}
 
 	/**
@@ -304,13 +327,45 @@ public class CUser implements Serializable
 		this.email = email;
 	}
 
+	/**
+	 * Gets the pin.
+	 *
+	 * @return the pin
+	 */
 	public String getPin ()
 	{
 		return pin;
 	}
 
+	/**
+	 * Sets the pin.
+	 *
+	 * @param pin the new pin
+	 */
 	public void setPin (String pin)
 	{
 		this.pin = pin;
+	}
+
+	/**
+	 * Authentication by digest
+	 * 
+	 * @return autentication type
+	 */
+	public EAuthenticationType authenticationType ()
+	{
+		return passwordDigest != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
+	}
+
+	public boolean hasRole (CRole role)
+	{
+		for (CGroup group : groups)
+		{
+			if (group.hasRole(role))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
