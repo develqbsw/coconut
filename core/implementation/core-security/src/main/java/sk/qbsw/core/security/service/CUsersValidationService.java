@@ -16,11 +16,11 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Service for validation users
  * 
  * @author Tomas Leken
- *
+ * 
  */
 @Service ("cUsersValidationService")
 public class CUsersValidationService implements IUsersValidationService
-{
+{	
 
 	@Autowired
 	private IOrganizationDao organizationDao;
@@ -107,25 +107,30 @@ public class CUsersValidationService implements IUsersValidationService
 	}
 
 	@Override
-	public Boolean isUserExistsPin(CUser userOld) {
+	public Boolean isUserExistsPin (CUser userOld)
+	{
 		Boolean exists = false;
 
 		CUser user = userDao.findByPinNull(userOld.getPin());
-		if (user != null) {
-			if (!(userOld.getPkId().equals(user.getPkId()))) {
+		if (user != null)
+		{
+			if (! (userOld.getPkId().equals(user.getPkId())))
+			{
 				exists = true;
 			}
 		}
 
 		return exists;
 	}
-	
+
 	@Override
-	public Boolean isUserExistsPin(String pin) {
+	public Boolean isUserExistsPin (String pin)
+	{
 		Boolean exists = false;
 
 		CUser user = userDao.findByPinNull(pin);
-		if (user != null) {
+		if (user != null)
+		{
 			exists = true;
 		}
 
