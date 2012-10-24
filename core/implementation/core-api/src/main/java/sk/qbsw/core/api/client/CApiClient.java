@@ -25,29 +25,35 @@ public class CApiClient<I, O>
 {
 
 	/**
-	 * GSon instance
+	 * Gson builder to create gson
 	 */
-	private Gson gson;
-
-	/**
-	 * Prepare gson. Calls prepareGsonBuilder.
-	 */
-	public final void prepareGson ()
+	private GsonBuilder builder;
+	
+	public CApiClient ()
 	{
-		// initialize GSON Builder
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		prepareGsonBuilder(gsonBuilder);
-
-		this.gson = gsonBuilder.create();
+		//create builder
+		this.builder = new GsonBuilder();
+		//initialize builder and register default adapters
+		this.builder = prepareGsonBuilder(builder);
 	}
 
 	/**
-	 * Initializes Gson Builder.
+	 * Initializes Gson Builder - register standard date serializer/deserializer
 	 * @param builder builder to initialize
 	 */
-	protected void prepareGsonBuilder (GsonBuilder builder)
+	protected GsonBuilder prepareGsonBuilder (GsonBuilder builder)
 	{
-		builder.registerTypeAdapter(Date.class, new CDateJSonSerializer());
+		return this.builder.registerTypeAdapter(Date.class, new CDateJSonSerializer());
+	}
+
+	/**
+	 * register adapter to request on server(If class implements JsonSerializer) and for response from server(If class implements JsonDeserializer)  
+	 * @param type for which is adapter registered
+	 * @param typeAdapter adapter to register
+	 */
+	public void registerTypeAdapter (Type type, Object typeAdapter)
+	{
+		 this.builder = builder.registerTypeAdapter(type, typeAdapter);
 	}
 
 	/**
@@ -74,17 +80,11 @@ public class CApiClient<I, O>
 	@SuppressWarnings ("unchecked")
 	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType)
 	{
-		// if needed, initialize Gson
-		if (gson == null)
-		{
-			prepareGson();
-		}
-
-		// prepare request
-		String requestJson = gson.toJson(input);
+		// create gson from builder
+		Gson gson = this.builder.create();
 
 		// process request
-		String response = request.makeCall(url, ContentType.APPLICATION_JSON, requestJson);
+		String response = makeCall(request, url, input);
 
 		// process response
 		O responseObject = (O) gson.fromJson(response, returnType);
@@ -101,11 +101,8 @@ public class CApiClient<I, O>
 	 */
 	public String makeCall (IHttpApiRequest request, String url, I input)
 	{
-		// if needed, initialize Gson
-		if (gson == null)
-		{
-			prepareGson();
-		}
+		// create gson from builder
+		Gson gson = this.builder.create();
 
 		// prepare request
 		String requestJson = gson.toJson(input);
