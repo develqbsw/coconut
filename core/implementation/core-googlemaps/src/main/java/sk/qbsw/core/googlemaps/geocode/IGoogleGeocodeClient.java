@@ -82,6 +82,19 @@ public interface IGoogleGeocodeClient
 	public CLocation findCoordinates (String address, String country, String language) throws CBusinessException, UnsupportedEncodingException;
 
 	/**
+	 * Find coordinates for selected address, city and country
+	 * 
+	 * @param address
+	 * @param city
+	 * @param country
+	 * @param language
+	 * @return
+	 * @throws CBusinessException
+	 * @throws UnsupportedEncodingException
+	 */
+	public CLocation findCoordinates (String address, String city, String country, String language) throws CBusinessException, UnsupportedEncodingException;
+	
+	/**
 	 * Get address for GPS position
 	 * 
 	 * @param latitute

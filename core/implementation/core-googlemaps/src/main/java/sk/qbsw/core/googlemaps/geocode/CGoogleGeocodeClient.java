@@ -114,6 +114,28 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 		return location;
 	}
+	
+	@Override
+	public CLocation findCoordinates (String address, String city, String country, String language) throws CBusinessException, UnsupportedEncodingException
+	{
+		CLocation location = new CLocation();
+
+		String output = new String(getGeocodeResponseForAddress(CGoogleGeocodeClient.OUTPUT_XML, language, address + "," + city + "," + country).getBytes(), "utf-8");
+
+		CCoordinatesGeocodeXmlParser parser = new CCoordinatesGeocodeXmlParser(output);
+		parser.parse();
+
+		for (CGeocodeCoordinates coordinates : parser.getGeocodeCoordinates())
+		{
+			if ((coordinates.getType().equals("route") || coordinates.getType().equals("street_address")) && coordinates.getCity().equalsIgnoreCase(city))
+			{
+				location.setLat(coordinates.getGeometry().getLocation().getLat());
+				location.setLng(coordinates.getGeometry().getLocation().getLng());
+			}
+		}
+
+		return location;
+	}
 
 	@Override
 	public String getAddressByGPS (Float latitute, Float longitude) throws CBusinessException, UnsupportedEncodingException
