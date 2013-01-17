@@ -85,4 +85,10 @@ public class COrganizationService implements IOrganizationService
 		organizationDao.merge(organization);
 	}
 
+	@Override
+	public COrganization getOrganizationById (Long id)
+	{
+		return organizationDao.findById(id);
+	}
+
 }

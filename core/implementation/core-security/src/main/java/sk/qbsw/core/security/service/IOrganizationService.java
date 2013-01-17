@@ -55,4 +55,12 @@ public interface IOrganizationService
 	 * @param organization
 	 */
 	public abstract void updateOrganization (COrganization organization);
+	
+	/**
+	 * Find organization by id
+	 * 
+	 * @param id id of organization
+	 * @return organization
+	 */
+	public abstract COrganization getOrganizationById (Long id);
 }
