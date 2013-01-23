@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sk.qbsw</groupId>
 	<artifactId>indy-top</artifactId>
-	<version>1.2.0</version>
+	<version>1.3.0</version>
 	<packaging>pom</packaging>
 	<name>Indy top project</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>winnetou</artifactId>
-		<version>1.2.0</version>
+		<version>1.3.0</version>
 	</parent>
 	
 	<modules>
