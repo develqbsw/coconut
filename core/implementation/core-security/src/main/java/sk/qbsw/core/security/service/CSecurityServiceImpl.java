@@ -15,7 +15,6 @@ import sk.qbsw.core.security.dao.ILicenseDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUserDao;
-import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CLicense;
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -119,21 +118,6 @@ public class CSecurityServiceImpl implements ISecurityService
 
 
 	/**
-	 * Disable user.
-	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.service.ISecurityService#disableUser(sk.qbsw.core.security.model.domain.CUser)
-	 */
-	@Transactional (readOnly = false)
-	public void disableUser (CUser user)
-	{
-		CUser toModify = userDao.findById(user.getPkId());
-		toModify.setFlagEnabled(Boolean.FALSE);
-		userDao.persit(toModify);
-	}
-
-
-	/**
 	 * Enable organization.
 	 *
 	 * @param org the org
@@ -148,20 +132,6 @@ public class CSecurityServiceImpl implements ISecurityService
 	}
 
 
-	/**
-	 * Enable user.
-	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.service.ISecurityService#enableUser(sk.qbsw.core.security.model.domain.CUser)
-	 */
-	@Transactional (readOnly = false)
-	public void enableUser (CUser user)
-	{
-		CUser toModify = userDao.findById(user.getPkId());
-		toModify.setFlagEnabled(Boolean.TRUE);
-		userDao.persit(toModify);
-	}
-
 
 	/**
 	 * Gets the all organizations.
@@ -175,18 +145,6 @@ public class CSecurityServiceImpl implements ISecurityService
 		return orgDao.findAll();
 	}
 
-	/**
-	 * Gets the all users.
-	 *
-	 * @param organization the organization
-	 * @return the all users
-	 * @see sk.qbsw.core.security.service.ISecurityService#getAllUsers(sk.qbsw.core.security.model.domain.COrganization)
-	 */
-	@Transactional (readOnly = true)
-	public List<CUser> getAllUsers (COrganization organization)
-	{
-		return userDao.findAllUsers(organization);
-	}
 
 	/** 
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAvailabelLicenses()
@@ -247,19 +205,6 @@ public class CSecurityServiceImpl implements ISecurityService
 		return groupDao.findById(pkId);
 	}
 
-
-	/**
-	 * Gets the user for modification.
-	 *
-	 * @param pkId the pk id
-	 * @return the user for modification
-	 * @see sk.qbsw.core.security.service.ISecurityService#getUserForModification(java.lang.Long)
-	 */
-	@Transactional (readOnly = true)
-	public CUser getUserForModification (Long pkId)
-	{
-		return userDao.findForModification(pkId);
-	}
 
 	/**
 	 * Checks if is login free.
@@ -349,46 +294,6 @@ public class CSecurityServiceImpl implements ISecurityService
 	}
 
 
-	/**
-	 * Renew password.
-	 *
-	 * @param login the login
-	 * @param email the email
-	 * @param password the password
-	 * @throws CSecurityException the c security exception
-	 * @see sk.qbsw.core.security.service.ISecurityService#renewPassword(java.lang.String, java.lang.String)
-	 */
-	@Transactional (readOnly = false)
-	public void renewPassword (String login, String email, String password) throws CSecurityException
-	{
-		CUser user = userDao.findByLogin(login);
-
-		if (user == null)
-		{
-			throw new CSecurityException("error.security.changepassworddenied");
-		}
-
-		if (!email.equals(user.getEmail()))
-		{
-			throw new CSecurityException("error.security.changepassworddenied");
-		}
-
-		user.setPassword(password);
-		userDao.persit(user);
-	}
-
-
-	/**
-	 * Save user.
-	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.service.ISecurityService#saveUser(sk.qbsw.core.security.model.domain.CUser)
-	 */
-	@Transactional (readOnly = false)
-	public void saveUser (CUser user)
-	{
-		userDao.persit(user);
-	}
 
 
 	/**
@@ -401,12 +306,6 @@ public class CSecurityServiceImpl implements ISecurityService
 	public void updateLicense (CLicense<?> license)
 	{
 		licenseDao.persit(license);
-	}
-
-	@Transactional (readOnly = true)
-	public CUser getUser (String login)
-	{
-		return userDao.findByLogin(login);
 	}
 
 	
