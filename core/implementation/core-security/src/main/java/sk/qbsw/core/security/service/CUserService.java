@@ -2,7 +2,6 @@ package sk.qbsw.core.security.service;
 
 import java.util.List;
 
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +12,7 @@ import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.service.signature.IPasswordDigester;
 
 /**
  * Service for user management.
@@ -33,6 +33,10 @@ public class CUserService implements IUserService
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
+	
+	/** Password digester **/
+	@Autowired
+	private IPasswordDigester digester;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#changePassword(sk.qbsw.core.security.model.domain.CUser, java.lang.String)
@@ -43,8 +47,7 @@ public class CUserService implements IUserService
 	{
 		CUser userToSave = userDao.findById(user.getPkId());
 		userToSave.setPassword(null);
-
-		userToSave.setPasswordDigest(generatePasswordDigest(password));
+		userToSave.setPasswordDigest(digester.generateDigest(user.getPassword()));
 
 		userDao.persit(userToSave);
 	}
@@ -167,7 +170,6 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = true)
 	public List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group)
 	{
-
 		return userDao.findAllUsers(organization, enabled, group);
 	}
 
@@ -194,7 +196,7 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = false)
 	public void registerNewUser (CUser user, COrganization organization)
 	{
-		user.setPasswordDigest(generatePasswordDigest(user.getPassword()));
+		user.setPasswordDigest(digester.generateDigest(user.getPassword()));
 		user.setPassword(null);
 		user.setOrganization(organization);
 		userDao.persit(user);
@@ -224,7 +226,7 @@ public class CUserService implements IUserService
 			throw new CSecurityException("error.security.changepassworddenied");
 		}
 
-		user.setPasswordDigest(generatePasswordDigest(user.getPassword()));
+		user.setPasswordDigest(digester.generateDigest(user.getPassword()));
 		user.setPassword(null);
 		userDao.persit(user);
 	}
@@ -238,17 +240,5 @@ public class CUserService implements IUserService
 		userDao.merge(user);
 	}
 
-	/**
-	 * Generate password digest.
-	 *
-	 * @param password the password
-	 * @return the string
-	 */
-	private String generatePasswordDigest (String password)
-	{
-		ConfigurablePasswordEncryptor passwordEncryptor2 = new ConfigurablePasswordEncryptor();
-		passwordEncryptor2.setAlgorithm("SHA-1");
-		passwordEncryptor2.setPlainDigest(true);
-		return passwordEncryptor2.encryptPassword(password);
-	}
+
 }
