@@ -18,10 +18,10 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * Base HTTP client for get requests.
  * 
  * @author Dalibor Rak
- * @version 1.2.0
+ * @version 1.3.0
  * @since 1.2.0
  */
-public class CHttpApiGetRequest implements IHttpApiRequest
+public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiRequest
 {
 
 	/**
@@ -39,8 +39,9 @@ public class CHttpApiGetRequest implements IHttpApiRequest
 	 * @param entity
 	 *            the entity to send in request
 	 * @return response from the HTTP call
+	 * @throws CApiHttpException unsuccessful API call
 	 */
-	public String makeCall (String url, ContentType contentType, String entity)
+	protected String makeOneCall (String url, ContentType contentType, String entity)
 	{
 		InputStreamReader inputReader = null;
 		try

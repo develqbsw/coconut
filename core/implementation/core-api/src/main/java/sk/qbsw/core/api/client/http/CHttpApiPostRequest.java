@@ -17,10 +17,10 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * Post client for API call.
  * 
  * @author Dalibor Rak
- * @version 1.2.0
+ * @version 1.3.0
  * @since 1.2.0
  */
-public class CHttpApiPostRequest implements IHttpApiRequest
+public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequest
 {
 
 	/**
@@ -34,7 +34,7 @@ public class CHttpApiPostRequest implements IHttpApiRequest
 	 *            the entity in JSON
 	 * @return response content
 	 */
-	public String makeCall (String url, ContentType contentType, String entityInJSon)
+	public String makeOneCall (String url, ContentType contentType, String entityInJSon)
 	{
 		InputStreamReader inputReader = null;
 		try

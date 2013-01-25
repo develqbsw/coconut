@@ -6,12 +6,17 @@ import org.apache.http.entity.ContentType;
  * HTTP Client for API calls
  * 
  * @author Dalibor Rak
- * @version 1.2.0
+ * @version 1.3.0
  * @since 1.2.0
  * 
  */
 public interface IHttpApiRequest
 {
+	/**
+	 * Sets repeat count
+	 * @param repeat
+	 */
+	public void setRepeatCount(int repeat);
 
 	/**
 	 * Parameter for the content
