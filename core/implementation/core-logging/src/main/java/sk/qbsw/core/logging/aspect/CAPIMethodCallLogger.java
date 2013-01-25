@@ -9,14 +9,14 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
- * Aspect logger for method call.
+ * Aspect logger for API method call.
  * 
  * @author Tomas Lauro
  * @version 0.1.0
  * @since 0.1.0
  */
 @Aspect
-public class CMethodCallLogger
+public class CAPIMethodCallLogger
 {
 	/** Indicate if aspect logs messages. */
 	@Value ("${aspect.logging}")
@@ -27,7 +27,7 @@ public class CMethodCallLogger
 	 *
 	 * @param request the request
 	 */
-	@Pointcut ("execution(* sk.qbsw.backoffice.rest.controller.*.*(String, ..)) && args(request, *)")
+	@Pointcut ("execution(* *(String, ..)) && args(request, *)")
 	public void request (String request)
 	{
 	}
