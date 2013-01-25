@@ -29,6 +29,7 @@
 		<wicket-swarm.version>1.4-SNAPSHOT</wicket-swarm.version>
 		<antlr.version>2.7.7</antlr.version>
 		<javaee.version>6.0</javaee.version>
+		<aspectj.version>1.7.1</aspectj.version>
 
 		<apache-velocity.version>1.7</apache-velocity.version>
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>

@@ -1,4 +1,4 @@
-package sk.qbsw.backoffice.rest.aspect;
+package sk.qbsw.core.logging.aspect;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -9,14 +9,14 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
- * Aspect logger for api requests.
+ * Aspect logger for method call.
  * 
  * @author Tomas Lauro
  * @version 0.1.0
  * @since 0.1.0
  */
 @Aspect
-public class CApiRequestLogger
+public class CMethodCallLogger
 {
 	/** Indicate if aspect logs messages. */
 	@Value ("${aspect.logging}")
