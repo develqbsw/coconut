@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>core</artifactId>
 	<packaging>pom</packaging>
-	<name>Core - internal project</name>
+	<name>Core cumulative</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>core-top</artifactId>

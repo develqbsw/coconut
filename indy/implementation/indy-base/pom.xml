@@ -9,7 +9,7 @@
 		<name>QBSW a.s.</name>
 		<url>http://www.qbsw.sk</url>
 	</organization>
-	<name>Indy - wicket base project</name>
+	<name>Indy base project</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>indy</artifactId>

@@ -6,7 +6,7 @@
 	<artifactId>winnetou</artifactId>
 	<version>1.3.0</version>
 	<packaging>pom</packaging>
-	<name>Winnetou internal project</name>
+	<name>[Winnetou]</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 

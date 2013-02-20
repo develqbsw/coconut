@@ -9,7 +9,7 @@
 		<name>QBSW a.s.</name>
 		<url>http://www.qbsw.sk</url>
 	</organization>
-	<name>Indy security / security project for Wicket</name>
+	<name>Indy security</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>indy</artifactId>
