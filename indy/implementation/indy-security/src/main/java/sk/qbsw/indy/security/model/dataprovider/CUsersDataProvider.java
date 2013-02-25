@@ -48,7 +48,7 @@ public class CUsersDataProvider implements IDataProvider<CUser>
 	}
 
 	@Override
-	public Iterator<? extends CUser> iterator (int arg0, int arg1)
+	public Iterator<? extends CUser> iterator(long first, long count)
 	{
 		return this.users.iterator();
 	}
@@ -60,7 +60,7 @@ public class CUsersDataProvider implements IDataProvider<CUser>
 	}
 
 	@Override
-	public int size ()
+	public long size ()
 	{
 		this.users = taskService.getUsers(organization, enabled, group);
 

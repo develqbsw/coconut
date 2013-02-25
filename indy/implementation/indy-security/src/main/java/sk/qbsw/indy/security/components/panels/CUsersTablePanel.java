@@ -42,13 +42,12 @@ public abstract class CUsersTablePanel extends Panel
 	{
 		super(id);
 
-		List<IColumn<?>> columns = new ArrayList<IColumn<?>>();
+		List<IColumn<?,?>> columns = new ArrayList<IColumn<?,?>>();
 
-		columns.add(new PropertyColumn<CUser>(new StringResourceModel("header.name", null), "name"));
-		columns.add(new PropertyColumn<CUser>(new StringResourceModel("header.surname", null), "surname"));
-		columns.add(new PropertyColumn<CUser>(new StringResourceModel("header.login", null), "login"));
-
-		columns.add(new AbstractColumn<CUser>(new StringResourceModel("header.role", null))
+		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.name", null), "name"));
+		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.surname", null), "surname"));
+		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.login", null), "login"));
+		columns.add(new AbstractColumn<CUser, String>(new StringResourceModel("header.role", null))
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -61,7 +60,7 @@ public abstract class CUsersTablePanel extends Panel
 			}
 		});
 
-		columns.add(new AbstractColumn<CUser>(new StringResourceModel("header.enabled", null))
+		columns.add(new AbstractColumn<CUser, Boolean>(new StringResourceModel("header.enabled", null))
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -73,7 +72,7 @@ public abstract class CUsersTablePanel extends Panel
 			}
 		});
 
-		columns.add(new AbstractColumn<CUser>(new StringResourceModel("header.operations", null))
+		columns.add(new AbstractColumn<CUser, String>(new StringResourceModel("header.operations", null))
 		{
 			private static final long serialVersionUID = 1L;
 

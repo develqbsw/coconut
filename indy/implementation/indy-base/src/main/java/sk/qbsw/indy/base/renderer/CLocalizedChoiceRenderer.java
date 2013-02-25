@@ -1,7 +1,7 @@
 package sk.qbsw.indy.base.renderer;
 
+import org.apache.wicket.core.util.lang.PropertyResolver;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.util.lang.PropertyResolver;
 
 import sk.qbsw.indy.base.utils.CStringResourceReader;
 
