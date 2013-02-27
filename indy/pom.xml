@@ -9,7 +9,7 @@
 	<name>[Indy Wicket project]</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
-		<artifactId>winnetou</artifactId>
+		<artifactId>coconut</artifactId>
 		<version>1.3.0</version>
 	</parent>
 	

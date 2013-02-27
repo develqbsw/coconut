@@ -1,21 +1,13 @@
 package sk.qbsw.sgwt.winnetou.security.server.service;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.security.IRoles;
-import sk.qbsw.core.security.authentication.ILoginPasswordAuthentication;
-import sk.qbsw.core.security.authorization.IAuthorization;
-import sk.qbsw.core.security.dao.IRoleDao;
-import sk.qbsw.core.security.dao.IUserDao;
-import sk.qbsw.core.security.exception.CAuthenticationException;
-import sk.qbsw.core.security.exception.CUserInactiveException;
-import sk.qbsw.core.security.model.CRole;
-import sk.qbsw.core.security.model.CUser;
+import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.sgwt.winnetou.client.exception.CBusinessException;
 import sk.qbsw.sgwt.winnetou.client.model.security.CLoggedUserRecord;
 import sk.qbsw.sgwt.winnetou.security.client.model.ISecuritySessionAttributes;
@@ -34,55 +26,47 @@ import sk.qbsw.sgwt.winnetou.server.exception.CServletSessionUtils;
 public class CAuthenticationServiceImpl implements IAuthenticationService
 {
 	@Autowired
-	private ILoginPasswordAuthentication authenticator;
-
-	@Autowired
-	private IAuthorization authorizator;
-
-	@Autowired
-	private IUserDao userDao;
-
-	@Autowired
-	private IRoleDao roleDao;
-
+	private sk.qbsw.core.security.service.IAuthenticationService authenticator;
+	
 	@Transactional
 	public CLoggedUserRecord authenticate (String login, String password) throws CBusinessException
 	{
 		try
 		{
-			authenticator.authenticate(login, password);
-			if (!authorizator.containsRole(login, IRoles.R_LOGIN))
+			CRole roleLogin = new CRole();
+			roleLogin.setCode("LOGIN");
+			
+			if (!authenticator.canLogin(login, password, roleLogin))
 			{
 				throw new CBusinessException(CClientExceptionMessages.AUTHORIZATION_INSUFFICIENT_RIGHTS);
 			}
 
 			// prepares object to store on the client side
 			CLoggedUserRecord retVal = new CLoggedUserRecord();
-			CUser user = userDao.findByLogin(login);
+			CUser user = authenticator.login(login, password);
 			retVal.setLogin(user.getLogin());
 			retVal.setName(user.getName());
 			retVal.setSurname(user.getSurname());
-			retVal.setUserId(user.getId());
+			retVal.setUserId(user.getPkId());
 
-			List<CRole> roles = roleDao.findAllValid(login);
-			for (CRole cRole : roles)
-			{
-				retVal.addRole(cRole.getName());
-			}
-
+			retVal.setRoles(user.exportRoles());
+			
 			Logger.getLogger(CAuthenticationServiceImpl.class).debug("CAuthenticationService session : " + CServletSessionUtils.getHttpSession().getId());
 
 			CServletSessionUtils.getHttpSession().setAttribute(ISecuritySessionAttributes.ATTR_LOGGED_USER, retVal);
 			return retVal;
 		}
-		catch (CUserInactiveException ex)
-		{
-			throw new CBusinessException(CClientExceptionMessages.AUTHENTICATION_USER_INACTIVE);
-		}
-		catch (CAuthenticationException ex)
-		{
+		catch(CSecurityException ex){
 			throw new CBusinessException(CClientExceptionMessages.AUTHENTICATION_FAILED);
 		}
+//		catch (CUserInactiveException ex)
+//		{
+//			throw new CBusinessException(CClientExceptionMessages.AUTHENTICATION_USER_INACTIVE);
+//		}
+//		catch (CAuthenticationException ex)
+//		{
+//			throw new CBusinessException(CClientExceptionMessages.AUTHENTICATION_FAILED);
+//		}
 	}
 
 	public CLoggedUserRecord getLoggedUserInfo ()
