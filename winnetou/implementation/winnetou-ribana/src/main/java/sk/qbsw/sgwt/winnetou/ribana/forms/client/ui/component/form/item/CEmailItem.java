@@ -6,8 +6,7 @@ import sk.qbsw.sgwt.winnetou.ribana.forms.client.ui.localization.ILabels;
 
 import com.smartgwt.client.types.Alignment;
 /**
- * TEXT ñLENGTH=50, ALIGN=LEFT, SIZE=150 px
- * Moûno zadaù len malÈ pÌsmen· (a..z) + Ñ@ì + Ñ.ì
+ * Text length = 50, align left, text align left, email validator
  * 
  * @author Dalibor Rak
  * @version 0.1
