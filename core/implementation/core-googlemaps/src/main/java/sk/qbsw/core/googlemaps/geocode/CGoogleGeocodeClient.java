@@ -10,6 +10,14 @@ import org.apache.commons.io.IOUtils;
 
 import sk.qbsw.core.security.exception.CBusinessException;
 
+/**
+ * Google client for API services
+ * 
+ * @author Dalibor Rak
+ * @version 1.3.0
+ * @since 1.2.0
+ *
+ */
 public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -75,6 +83,13 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		return URLEncoder.encode(address, "utf-8");
 	}
 
+	/**
+	 * Gets response from server
+	 * 
+	 * @param urlString url to call
+	 * @return
+	 * @throws CBusinessException
+	 */
 	private String getFromServer (String urlString) throws CBusinessException
 	{
 		String result = "";
@@ -93,6 +108,11 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		}
 	}
 
+	/**
+	 * Searches for Google locality.
+	 * 
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#findCoordinates(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public CLocation findCoordinates (String address, String country, String language) throws CBusinessException, UnsupportedEncodingException
 	{
@@ -114,27 +134,42 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 		return location;
 	}
-	
+
+	/**
+	 * Searches for google route or street address
+	 * 
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#findCoordinates(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
+	
 	public CLocation findCoordinates (String address, String city, String country, String language) throws CBusinessException, UnsupportedEncodingException
 	{
-		CLocation location = new CLocation();
-
-		String output = new String(getGeocodeResponseForAddress(CGoogleGeocodeClient.OUTPUT_XML, language, address + "," + city + "," + country).getBytes(), "utf-8");
-
-		CCoordinatesGeocodeXmlParser parser = new CCoordinatesGeocodeXmlParser(output);
-		parser.parse();
-
-		for (CGeocodeCoordinates coordinates : parser.getGeocodeCoordinates())
+		if (address == null || address.isEmpty())
 		{
-			if ((coordinates.getType().equals("route") || coordinates.getType().equals("street_address")) && coordinates.getCity().equalsIgnoreCase(city))
-			{
-				location.setLat(coordinates.getGeometry().getLocation().getLat());
-				location.setLng(coordinates.getGeometry().getLocation().getLng());
-			}
+			// searches google locality
+			return findCoordinates(city, country, language);
 		}
+		else
+		{
+			// searches google route or street address
+			CLocation location = new CLocation();
 
-		return location;
+			String output = new String(getGeocodeResponseForAddress(CGoogleGeocodeClient.OUTPUT_XML, language, address + "," + city + "," + country).getBytes(), "utf-8");
+
+			CCoordinatesGeocodeXmlParser parser = new CCoordinatesGeocodeXmlParser(output);
+			parser.parse();
+
+			for (CGeocodeCoordinates coordinates : parser.getGeocodeCoordinates())
+			{
+				if ( (coordinates.getType().equals("route") || coordinates.getType().equals("street_address")) && coordinates.getCity().equalsIgnoreCase(city))
+				{
+					location.setLat(coordinates.getGeometry().getLocation().getLat());
+					location.setLng(coordinates.getGeometry().getLocation().getLng());
+				}
+			}
+
+			return location;
+		}
 	}
 
 	@Override
