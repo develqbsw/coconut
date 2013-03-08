@@ -23,20 +23,18 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * @since 1.2.0
  */
 public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequest
-{
+{ 
 
 	/**
 	 * Makes HTTP POST call.
 	 * 
-	 * @param url
-	 *            the url to the api
-	 * @param contentType
-	 *            the content type
-	 * @param entityInJSon
-	 *            the entity in JSON
+	 * @param url the url to the api
+	 * @param contentType the content type
+	 * @param entityInJSon the entity in JSON
+	 * @param characterEncoding encoding of the content
 	 * @return response content
 	 */
-	public String makeOneCall (String url, ContentType contentType, String entityInJSon)
+	public String makeOneCall (String url, ContentType contentType, String entityInJSon, String characterEncoding)
 	{
 		InputStreamReader inputReader = null;
 		try
@@ -45,12 +43,12 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 			HttpParams params = httpClient.getParams();
 			HttpConnectionParams.setConnectionTimeout(params, 10000);
 			HttpConnectionParams.setSoTimeout(params, 10000);
-			
+
 			HttpPost postRequest = new HttpPost(url);
 			postRequest.addHeader("accept", contentType.getMimeType());
 			if (entityInJSon != null)
 			{
-				StringEntity input = new StringEntity(entityInJSon);
+				StringEntity input = new StringEntity(entityInJSon, characterEncoding);
 				input.setContentType(contentType.getMimeType());
 				postRequest.setEntity(input);
 			}
