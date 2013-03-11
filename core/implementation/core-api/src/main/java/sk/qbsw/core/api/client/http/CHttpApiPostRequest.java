@@ -23,7 +23,7 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * @since 1.2.0
  */
 public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequest
-{ 
+{
 
 	/**
 	 * Makes HTTP POST call.
@@ -50,6 +50,10 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 			{
 				StringEntity input = new StringEntity(entityInJSon, characterEncoding);
 				input.setContentType(contentType.getMimeType());
+				if (contentType.getCharset() != null)
+				{
+					input.setContentEncoding(contentType.getCharset().name());
+				}
 				postRequest.setEntity(input);
 			}
 
