@@ -41,7 +41,7 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 	 * @return response from the HTTP call
 	 * @throws CApiHttpException unsuccessful API call
 	 */
-	protected String makeOneCall (String url, ContentType contentType, String entity, String encoding)
+	protected String makeOneCall (String url, ContentType contentType, String entity)
 	{
 		InputStreamReader inputReader = null;
 		try

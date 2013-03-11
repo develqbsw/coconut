@@ -31,14 +31,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.http.IHttpApiRequest#makeCall(java.lang.String, org.apache.http.entity.ContentType, java.lang.String)
 	 */
-	public final String makeCall (String url, ContentType contentType, String entityInJSon){
-		return this.makeCall(url, contentType, entityInJSon, null);		
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.api.client.http.IHttpApiRequest#makeCall(java.lang.String, org.apache.http.entity.ContentType, java.lang.String)
-	 */
-	public final String makeCall (String url, ContentType contentType, String entityInJSon, String characterEncoding)
+	public final String makeCall (String url, ContentType contentType, String entityInJSon)
 	{
 		CApiHttpException lastEx = null;
 
@@ -47,7 +40,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 			try
 			{
 				// try call
-				return makeOneCall(url, contentType, entityInJSon, characterEncoding);
+				return makeOneCall(url, contentType, entityInJSon);
 			}
 			catch (CApiHttpException ex)
 			{
@@ -65,8 +58,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	 * @param url the url
 	 * @param contentType the content type
 	 * @param entityInJSon the entity in j son
-	 * @param encoding character encoding
 	 * @return the string
 	 */
-	protected abstract String makeOneCall (String url, ContentType contentType, String entityInJSon, String encoding);
+	protected abstract String makeOneCall (String url, ContentType contentType, String entityInJSon);
 }

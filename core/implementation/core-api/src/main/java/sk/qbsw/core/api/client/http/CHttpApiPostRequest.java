@@ -34,7 +34,7 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 	 * @param characterEncoding encoding of the content
 	 * @return response content
 	 */
-	public String makeOneCall (String url, ContentType contentType, String entityInJSon, String characterEncoding)
+	public String makeOneCall (String url, ContentType contentType, String entityInJSon)
 	{
 		InputStreamReader inputReader = null;
 		try
@@ -48,12 +48,7 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 			postRequest.addHeader("accept", contentType.getMimeType());
 			if (entityInJSon != null)
 			{
-				StringEntity input = new StringEntity(entityInJSon, characterEncoding);
-				input.setContentType(contentType.getMimeType());
-				if (contentType.getCharset() != null)
-				{
-					input.setContentEncoding(contentType.getCharset().name());
-				}
+				StringEntity input = new StringEntity(entityInJSon, contentType);
 				postRequest.setEntity(input);
 			}
 

@@ -22,12 +22,11 @@ import com.google.gson.GsonBuilder;
  */
 public class CApiClient<I, O>
 {
-
 	/** Gson builder to create gson. */
 	private GsonBuilder builder;
 
 	/**
-	 * Instantiates a new c api client.
+	 * Instantiates a new api client.
 	 */
 	public CApiClient ()
 	{
@@ -38,44 +37,17 @@ public class CApiClient<I, O>
 	}
 
 	/**
-	 * Initializes Gson Builder - register standard date serializer/deserializer.
+	 * Make call to API.
 	 *
-	 * @param builder builder to initialize
-	 * @return the gson builder
+	 * @param request the request
+	 * @param url the url
+	 * @param input the input
+	 * @return the string
 	 */
-	protected GsonBuilder prepareGsonBuilder (GsonBuilder builder)
+	public String makeCall (IHttpApiRequest request, String url, I input)
 	{
-		return this.builder.registerTypeAdapter(Date.class, new CDateJSonSerializer());
+		return this.makeCall(request, url, input, ContentType.APPLICATION_JSON);
 	}
-
-	/**
-	 * register adapter to request on server(If class implements JsonSerializer) and for response from server(If class implements JsonDeserializer).
-	 *
-	 * @param type for which is adapter registered
-	 * @param typeAdapter adapter to register
-	 */
-	public void registerTypeAdapter (Type type, Object typeAdapter)
-	{
-		this.builder = builder.registerTypeAdapter(type, typeAdapter);
-	}
-
-
-
-	/**
-	 * Makes call to API.
-	 *
-	 * @param request request to use
-	 * @param url URL to API
-	 * @param input input parameter
-	 * @param returnClass Class to return
-	 * @param encodingType the encoding type
-	 * @return Returned object (instance of returnClass)
-	 */
-	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass, String encodingType)
-	{
-		return makeCall(request, url, input, (Type) returnClass, encodingType);
-	}
-
 
 	/**
 	 * Makes call to API.
@@ -88,48 +60,49 @@ public class CApiClient<I, O>
 	 */
 	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass)
 	{
-		return makeCall(request, url, input, (Type) returnClass, null);
+		return makeCall(request, url, input, (Type) returnClass);
 	}
 
 	/**
-	 * Makes call to API.
-	 *
-	 * @param request request to use
-	 * @param url URL to API
-	 * @param input input parameter
-	 * @param returnType Type to return
-	 * @param encodingType the encoding type
-	 * @return Returned object (instance of returnClass)
-	 */
-	@SuppressWarnings ("unchecked")
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, String encodingType)
-	{
-		// create gson from builder
-		Gson gson = this.builder.create();
-
-		// process request
-		String response = makeCall(request, url, input, encodingType);
-
-		// process response
-		O responseObject = (O) gson.fromJson(response, returnType);
-		return responseObject;
-	}
-
-	/**
-	 * Make call.
+	 * Make call with specific content.
 	 *
 	 * @param request the request
 	 * @param url the url
 	 * @param input the input
-	 * @return the string
+	 * @param returnClass the return class
+	 * @param type the type
+	 * @return the o
 	 */
-	public String makeCall (IHttpApiRequest request, String url, I input)
+	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass, ContentType type)
 	{
-		return makeCall(request, url, input, (String) null);
+		return makeCall(request, url, input, (Type) returnClass, type);
+	}
+	
+	/**
+	 * Makes call with specific content.
+	 *
+	 * @param request request to use
+	 * @param url URL to API
+	 * @param input input parameter
+	 * @param contentType the content type
+	 * @return Returned object (instance of returnClass)
+	 */
+	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType)
+	{
+		// create gson from builder
+		Gson gson = this.builder.create();
+
+		// prepare request
+		String requestJson = gson.toJson(input);
+
+		// process request
+		String response = request.makeCall(url, contentType, requestJson);
+
+		return response;
 	}
 
 	/**
-	 * Make call.
+	 * Make call to API.
 	 *
 	 * @param request the request
 	 * @param url the url
@@ -139,30 +112,56 @@ public class CApiClient<I, O>
 	 */
 	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType)
 	{
-		return this.makeCall(request, url, input, returnType, (String) null);
+		return this.makeCall(request, url, input, returnType, ContentType.APPLICATION_JSON);
 	}
 
-
 	/**
-	 * Makes call to API.
+	 * Makes call with specific content.
 	 *
 	 * @param request request to use
 	 * @param url URL to API
 	 * @param input input parameter
-	 * @param encodingType the encoding type
+	 * @param returnType Type to return
+	 * @param contentType the content type
 	 * @return Returned object (instance of returnClass)
 	 */
-	public String makeCall (IHttpApiRequest request, String url, I input, String encodingType)
+	@SuppressWarnings ("unchecked")
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType)
 	{
 		// create gson from builder
 		Gson gson = this.builder.create();
 
-		// prepare request
-		String requestJson = gson.toJson(input);
-
 		// process request
-		String response = request.makeCall(url, ContentType.APPLICATION_JSON, requestJson, encodingType);
+		String response = makeCall(request, url, input, contentType);
 
-		return response;
+		// process response
+		O responseObject = (O) gson.fromJson(response, returnType);
+		return responseObject;
+	}
+
+
+	/**
+	 * Initializes Gson Builder - register standard date serializer/deserializer.
+	 *
+	 * @param builder builder to initialize
+	 * @return the gson builder
+	 */
+	protected GsonBuilder prepareGsonBuilder (GsonBuilder builder)
+	{
+		return this.builder.registerTypeAdapter(Date.class, new CDateJSonSerializer());
+	}
+
+
+
+
+	/**
+	 * register adapter to request on server(If class implements JsonSerializer) and for response from server(If class implements JsonDeserializer).
+	 *
+	 * @param type for which is adapter registered
+	 * @param typeAdapter adapter to register
+	 */
+	public void registerTypeAdapter (Type type, Object typeAdapter)
+	{
+		this.builder = builder.registerTypeAdapter(type, typeAdapter);
 	}
 }
