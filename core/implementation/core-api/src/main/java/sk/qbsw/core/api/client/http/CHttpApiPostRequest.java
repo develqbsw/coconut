@@ -48,7 +48,8 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 			postRequest.addHeader("accept", contentType.getMimeType());
 			if (entityInJSon != null)
 			{
-				StringEntity input = new StringEntity(entityInJSon, contentType);
+				StringEntity input = new StringEntity(entityInJSon);
+				input.setContentType(contentType.toString());
 				postRequest.setEntity(input);
 			}
 

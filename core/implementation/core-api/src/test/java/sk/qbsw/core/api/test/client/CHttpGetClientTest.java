@@ -3,7 +3,7 @@ package sk.qbsw.core.api.test.client;
 import org.junit.Test;
 
 import sk.qbsw.core.api.client.CApiClient;
-import sk.qbsw.core.api.client.http.CHttpApiPostRequest;
+import sk.qbsw.core.api.client.http.CHttpApiGetRequest;
 
 /**
  * Creates test call to mscan.qsbw.local (Be sure, that the link is available
@@ -20,9 +20,9 @@ public class CHttpGetClientTest
 	public void test() 
 	{
 		CApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
-		CHttpApiPostRequest post = new CHttpApiPostRequest();
-		post.setRepeatCount(2);
+		CHttpApiGetRequest get = new CHttpApiGetRequest();
+		get.setRepeatCount(2);
 
-		client.makeCall(post, "http://mscan.qbsw.local/admin/index.html", new CCallRequestModel());
+		client.makeCall(get, "http://mscan.qbsw.local/admin/index.html", new CCallRequestModel());
 	}
 }

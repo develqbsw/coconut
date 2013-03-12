@@ -54,7 +54,7 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 			{
 				if (contentParameter != null)
 				{
-					fullURL = URLEncoder.encode(url + "?" + contentParameter + "=" + entity, "UTF-8");
+					fullURL = url + "?" + contentParameter + "=" + URLEncoder.encode(entity, "UTF-8");
 				}
 				else
 				{
