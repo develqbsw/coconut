@@ -23,8 +23,6 @@ public class CHttpPostClientTest
 		CHttpApiPostRequest post = new CHttpApiPostRequest();
 		post.setRepeatCount(2);
 
-		client.makeCall(post, "http://192.168.123.77:8888/kutil-web/synchronize/addAppraisingAttachment", new CCallRequestModel());
-
-//		client.makeCall(post, "http://mscan.qbsw.local/admin/index.html", new CCallRequestModel());
+		client.makeCall(post, "http://mscan.qbsw.local/admin/index.html", new CCallRequestModel());
 	}
 }
