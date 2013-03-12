@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -48,7 +49,7 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 			postRequest.addHeader("accept", contentType.getMimeType());
 			if (entityInJSon != null)
 			{
-				StringEntity input = new StringEntity(entityInJSon);
+				StringEntity input = new StringEntity(entityInJSon, contentType.getCharset().name());
 				input.setContentType(contentType.toString());
 				postRequest.setEntity(input);
 			}
