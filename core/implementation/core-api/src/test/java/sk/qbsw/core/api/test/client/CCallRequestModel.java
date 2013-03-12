@@ -9,7 +9,7 @@ package sk.qbsw.core.api.test.client;
  */
 public class CCallRequestModel
 {
-	private String value = "ľščťžýáíéúô";
+	private String value = "asdfg";
 
 	public String getValue ()
 	{
