@@ -19,6 +19,12 @@ public interface IHttpApiRequest
 	public void setRepeatCount(int repeat);
 
 	/**
+	 * Timeout of HTTP request in miliseconds
+	 * @param timout
+	 */
+	public void setTimeout(int timout);
+	
+	/**
 	 * Parameter for the content
 	 */
 	public void setContentParameter (String parameterName);

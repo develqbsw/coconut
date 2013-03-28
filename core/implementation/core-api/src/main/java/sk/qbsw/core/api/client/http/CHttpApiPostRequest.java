@@ -42,8 +42,8 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 		{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			HttpParams params = httpClient.getParams();
-			HttpConnectionParams.setConnectionTimeout(params, 10000);
-			HttpConnectionParams.setSoTimeout(params, 10000);
+			HttpConnectionParams.setConnectionTimeout(params, getTimeout());
+			HttpConnectionParams.setSoTimeout(params, getTimeout());
 
 			HttpPost postRequest = new HttpPost(url);
 			postRequest.addHeader("accept", contentType.getMimeType());
