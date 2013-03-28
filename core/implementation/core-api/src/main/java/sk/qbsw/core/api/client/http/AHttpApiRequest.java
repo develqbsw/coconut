@@ -7,7 +7,6 @@ import org.apache.http.entity.ContentType;
 
 import sk.qbsw.core.api.exception.CApiHttpException;
 
-// TODO: Auto-generated Javadoc
 /**
  * HttpAPIReqpest repeater support.
  * 
@@ -40,6 +39,13 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	protected int getTimeout ()
 	{
 		return timeout;
+	}
+	
+	/**
+	 * Sets the timeout
+	 */
+	public void setTimeout(int timeout){
+		this.timeout = timeout;
 	}
 
 	/* (non-Javadoc)

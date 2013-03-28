@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.nio.charset.Charset;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;

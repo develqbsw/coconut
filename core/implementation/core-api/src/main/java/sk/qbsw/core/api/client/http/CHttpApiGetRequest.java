@@ -65,7 +65,6 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 
 			HttpGet getRequest = new HttpGet(fullURL);
 			getRequest.addHeader("accept", contentType.getMimeType());
-
 			HttpResponse response = httpClient.execute(getRequest);
 
 			if (response.getStatusLine().getStatusCode() != 200)

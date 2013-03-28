@@ -19,7 +19,7 @@ public interface IHttpApiRequest
 	public void setRepeatCount(int repeat);
 
 	/**
-	 * Timeout of HTTP request in miliseconds
+	 * Timeout of HTTP request in milisecond
 	 * @param timout
 	 */
 	public void setTimeout(int timout);
