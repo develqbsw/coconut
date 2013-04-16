@@ -4,6 +4,7 @@ import java.util.List;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
+// TODO: Auto-generated Javadoc
 /**
  * General DAO interface for entities.
  *
@@ -48,6 +49,14 @@ public interface IEntityDao<PK, T extends IEntity<PK>>
 	 * @return return object
 	 */
 	T findById (PK id);
+
+	/**
+	 * Finds by ids.
+	 *
+	 * @param ids the List of entity ids
+	 * @return the list
+	 */
+	List<T> findById (List<PK> ids);
 
 	/**
 	 * Flushes all.

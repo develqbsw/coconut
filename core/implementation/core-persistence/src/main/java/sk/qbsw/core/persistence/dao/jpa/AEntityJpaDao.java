@@ -53,6 +53,18 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 		return (List<T>) query.getResultList();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findById(java.util.List)
+	 */
+	@SuppressWarnings ("unchecked")
+	public List<T> findById (List<PK> ids)
+	{
+		String str = "select en from " + entityClass.getName() + " en where en.id IN :ids";
+		Query query = em.createQuery(str);
+		query.setParameter("ids", ids);
+		return (List<T>) query.getResultList();
+	}
+
 	/**
 	 * Finds and retirns entity by id.
 	 *
