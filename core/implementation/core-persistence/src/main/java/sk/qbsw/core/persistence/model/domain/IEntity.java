@@ -1,6 +1,19 @@
 package sk.qbsw.core.persistence.model.domain;
 
-public interface IEntity
+/**
+ * Entity basic interface
+ * @param <T> the generic type for the primary key
+ *
+ * @version 1.3.0
+ * @since 1.0.0
+ */
+public interface IEntity<T>
 {
-	Long getId ();
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	T getId ();
 }

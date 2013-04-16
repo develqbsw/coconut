@@ -10,37 +10,82 @@ import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
- * Class contains same base methods for entity JPA DAO implementation
+ * Class implements base methods for entity JPA DAO.
+ *
+ * @param <PK> the generic type for Entity Primary key
+ * @param <T> the generic type for Entity itself
+ * @see sk.qbsw.airlines.dao.IEntityDao
  * 
  * @author Dalibor Rak
  * @since 1.0.0
- * @version 1.0.0
- * 
- * @see sk.qbsw.airlines.dao.IEntityDao
+ * @version 1.3.0
  */
-public abstract class AEntityJpaDao<T extends IEntity> implements IEntityDao<T>
+public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>
 {
 
-	private Class<T> entityClass;
-
+	/** The em. */
 	@PersistenceContext (name = "persistenceContext")
 	private EntityManager em;
 
-	public EntityManager getEntityManager ()
-	{
-		return em;
-	}
+	/** The entity class. */
+	private Class<T> entityClass;
 
+	/**
+	 * Instantiates a new a entity jpa dao.
+	 *
+	 * @param entityClass the entity class
+	 */
 	public AEntityJpaDao (Class<T> entityClass)
 	{
 		this.entityClass = entityClass;
 	}
 
 	/**
-	 * Removes entity from persistent space
-	 * 
-	 * @param object
-	 *            input entity
+	 * Finds and returns all entities.
+	 *
+	 * @return list of entities
+	 */
+	@SuppressWarnings ("unchecked")
+	public List<T> findAll ()
+	{
+		String str = "from " + entityClass.getName();
+		Query query = em.createQuery(str);
+		return (List<T>) query.getResultList();
+	}
+
+	/**
+	 * Finds and retirns entity by id.
+	 *
+	 * @param id the id
+	 * @return entity
+	 */
+	public T findById (PK id)
+	{
+		return em.find(entityClass, id);
+	}
+
+	/**
+	 * Flushes call.
+	 */
+	public void flush ()
+	{
+		em.flush();
+	}
+
+	/**
+	 * Gets the entity manager.
+	 *
+	 * @return the entity manager
+	 */
+	public EntityManager getEntityManager ()
+	{
+		return em;
+	}
+
+	/**
+	 * Removes entity from persistent space.
+	 *
+	 * @param object input entity
 	 */
 	public void remove (T object)
 	{
@@ -48,10 +93,9 @@ public abstract class AEntityJpaDao<T extends IEntity> implements IEntityDao<T>
 	}
 
 	/**
-	 * Save entity to persistent space
-	 * 
-	 * @param object
-	 *            input entity
+	 * Save entity to persistent space.
+	 *
+	 * @param object input entity
 	 */
 	public void save (T object)
 	{
@@ -66,32 +110,12 @@ public abstract class AEntityJpaDao<T extends IEntity> implements IEntityDao<T>
 	}
 
 	/**
-	 * Finds and returns all entities
-	 * 
-	 * @return list of entities
+	 * Sets the entity manager.
+	 *
+	 * @param em the new entity manager
 	 */
-	@SuppressWarnings ("unchecked")
-	public List<T> findAll ()
+	public void setEntityManager (EntityManager em)
 	{
-		String str = "from " + entityClass.getName();
-		Query query = em.createQuery(str);
-		return (List<T>) query.getResultList();
-	}
-
-	/**
-	 * Finds and retirns entity by id
-	 * 
-	 * @return entity
-	 */
-	public T findById (Long id)
-	{
-		return em.find(entityClass, id);
-	}
-
-	/**
-	 * Flushes call
-	 */
-	public void flush(){
-		em.flush();
+		this.em = em;
 	}
 }

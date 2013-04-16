@@ -5,51 +5,52 @@ import java.util.List;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
- * General DAO interface for entities
+ * General DAO interface for entities.
+ *
+ * @param <PK> Primary Key of the entity type
+ * @param <T> Entity Class type
  * 
- * @author rosenberg
- * @since 1.0
- * @version 1.0
+ * @author Rosenberg
+ * @author Rak
  * 
- * @param <T>
- *            required entity class
+ * @since 1.0.0
+ * @version 1.3.0
  */
-public interface IEntityDao<T extends IEntity> {
-	/**
-	 * Save new or update an existing entity
-	 * 
-	 * @param object
-	 *            input entity
-	 */
-	void save(T object);
+public interface IEntityDao<PK, T extends IEntity<PK>>
+{
 
 	/**
-	 * Removes entity from persistent space
-	 * 
-	 * @param object
-	 *            input entity
+	 * Save new or update an existing entity.
+	 *
+	 * @param object input entity
 	 */
-	void remove(T object);
+	void save (T object);
 
 	/**
-	 * Finds and returns all entities
-	 * 
+	 * Removes entity from persistent space.
+	 *
+	 * @param object input entity
+	 */
+	void remove (T object);
+
+	/**
+	 * Finds and returns all entities.
+	 *
 	 * @return list of entities
 	 */
-	List<T> findAll();
+	List<T> findAll ();
 
 	/**
 	 * Returns object associated to input identifier or throws an exception, if
-	 * object not found
-	 * 
-	 * @param id
-	 *            input identifier
+	 * object not found.
+	 *
+	 * @param id input identifier
 	 * @return return object
 	 */
-	T findById(Long id);
-	
+	T findById (PK id);
+
 	/**
-	 * Flushes all
+	 * Flushes all.
 	 */
-	void flush();
+	void flush ();
 }
