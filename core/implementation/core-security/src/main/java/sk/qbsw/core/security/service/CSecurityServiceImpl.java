@@ -26,10 +26,10 @@ import sk.qbsw.core.security.model.jmx.CLicensingRules;
  * The Class CSecurityServiceImpl.
  *
  * @author Dalibor Rak
- * @version 1.0
- * @since 1.0
+ * @version 1.2.1
+ * @since 1.0.0
  */
-@Service ( value = "securityService")
+@Service (value = "securityService")
 public class CSecurityServiceImpl implements ISecurityService
 {
 	/**
@@ -39,8 +39,8 @@ public class CSecurityServiceImpl implements ISecurityService
 
 	@Autowired
 	/** The group dao. */
-	private IRoleDao roleDao; 
-	
+	private IRoleDao roleDao;
+
 	/** The group dao. */
 	@Autowired
 	private IGroupDao groupDao;
@@ -238,7 +238,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = true)
 	public boolean isOrgNameFree (String name, Long pkId)
 	{
-		COrganization organization = orgDao.findByName(name);
+		COrganization organization = orgDao.findByNameNull(name);
 
 		if (organization != null)
 		{
@@ -308,9 +308,10 @@ public class CSecurityServiceImpl implements ISecurityService
 		licenseDao.persit(license);
 	}
 
-	
-	public List<CRole> getRoleByCode(String code) {
-		
+
+	public List<CRole> getRoleByCode (String code)
+	{
+
 		return roleDao.findByCode(code);
 	}
 

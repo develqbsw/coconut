@@ -18,8 +18,8 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * The Class CSectionJpaDao.
  *
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @version 1.2.1
+ * @since 1.0.0
  */
 @Repository (value = "orgDao")
 public class COrganizationJpaDao implements IOrganizationDao

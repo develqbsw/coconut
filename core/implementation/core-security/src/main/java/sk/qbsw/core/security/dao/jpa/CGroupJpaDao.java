@@ -15,18 +15,17 @@ import sk.qbsw.core.security.model.domain.CGroup;
  * The Class CSectionJpaDao.
  *
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @version 1.2.1
+ * @since 1.0.0
  */
 @Repository (value = "groupDao")
 public class CGroupJpaDao implements IGroupDao
 {
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@PersistenceContext (name = "airlinesPersistenceContext")
 	private EntityManager em;
 
@@ -43,7 +42,7 @@ public class CGroupJpaDao implements IGroupDao
 	 */
 	public CGroup findById (Long id)
 	{
-		String strQuery = "select u from CGroup g where g.pkId=:pkId";
+		String strQuery = "select g from CGroup g where g.pkId=:pkId";
 
 		Query query = this.em.createQuery(strQuery);
 		query.setParameter("pkId", id);
@@ -93,7 +92,7 @@ public class CGroupJpaDao implements IGroupDao
 	@SuppressWarnings ("unchecked")
 	public List<CGroup> findByCode (String code)
 	{
-		String strQuery = "from CGroup g WHERE g.code=:code order by g.code";
+		String strQuery = "select g from CGroup g WHERE g.code=:code order by g.code";
 
 		Query query = this.em.createQuery(strQuery);
 		query.setParameter("code", code);
