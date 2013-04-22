@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,7 +54,7 @@ public class COrganization implements Serializable
 
 	//bi-directional many-to-one association to CLicence
 	/** The licences. */
-	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY)
+	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	//@Cascade ({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
 	@OrderBy (value = "pkId")
 	private Set<CLicense<?>> licences;
@@ -77,7 +78,7 @@ public class COrganization implements Serializable
 
 	//bi-directional many-to-one association to CUser
 	/** The users. */
-	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY)
+	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	//@Cascade ({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
 	private List<CUser> users;
 
