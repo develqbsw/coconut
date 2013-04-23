@@ -21,10 +21,15 @@ import sk.qbsw.indy.base.utils.CBigDecimalParser;
 public class CBigDecimalMoneyValidator extends AbstractValidator<BigDecimal>
 {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 5638024896256902410L;
 
+	/** The locale. */
 	private Locale locale = new Locale("sk");
 
+	/* (non-Javadoc)
+	 * @see org.apache.wicket.validation.validator.AbstractValidator#onValidate(org.apache.wicket.validation.IValidatable)
+	 */
 	@Override
 	protected void onValidate (IValidatable<BigDecimal> validatable)
 	{
@@ -44,6 +49,12 @@ public class CBigDecimalMoneyValidator extends AbstractValidator<BigDecimal>
 		}
 	}
 
+	/**
+	 * Check decimal separator.
+	 *
+	 * @param value the value
+	 * @param sessionLocale the session locale
+	 */
 	private void checkDecimalSeparator (Object value, Locale sessionLocale)
 	{
 		char decimalSeperator = new DecimalFormatSymbols(sessionLocale).getDecimalSeparator();
@@ -56,12 +67,22 @@ public class CBigDecimalMoneyValidator extends AbstractValidator<BigDecimal>
 		}
 	}
 
+	/**
+	 * Sets the locale.
+	 *
+	 * @param locale the new locale
+	 */
 	public void setLocale (Locale locale)
 	{
 		this.locale = locale;
 	}
 
 
+	/**
+	 * Gets the session locale.
+	 *
+	 * @return the session locale
+	 */
 	private Locale getSessionLocale ()
 	{
 		return this.locale;
