@@ -5,12 +5,11 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.ILicenseDao;
 import sk.qbsw.core.security.model.domain.CLicense;
 
@@ -23,49 +22,21 @@ import sk.qbsw.core.security.model.domain.CLicense;
  */
 
 @Repository (value = "licenceDao")
-public class CLicenseJpaDao implements ILicenseDao
+public class CLicenseJpaDao extends AEntityJpaDao<CLicense> implements ILicenseDao
 {
-
-
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-
-	@PersistenceContext (name = "airlinesPersistenceContext")
-	private EntityManager em;
+	
 
 	/**
-	 * @see sk.qbsw.core.security.dao.ILicenseDao#persit(sk.qbsw.core.security.model.domain.CLicense)
+	 * Instantiates a new c license jpa dao.
 	 */
-	public void persit (CLicense<?> license)
+	public CLicenseJpaDao ()
 	{
-		this.em.persist(license);
+		super(CLicense.class);
 	}
 
-	/**
-	 * @see sk.qbsw.core.security.dao.ILicenseDao#findById(java.lang.Long)
-	 **/
-	public CLicense<?> findById (Long id)
-	{
-		String strQuery = "select u from CLicence l where l.pkId=:pkId";
-
-		Query query = this.em.createQuery(strQuery);
-		query.setParameter("pkId", id);
-		return (CLicense<?>) query.getSingleResult();
-	}
-
-	/**
-	 * Delete object.
-	 *
-	 * @param license the license
-	 * @see sk.qbsw.core.security.dao.ILicenseDao#delete(sk.qbsw.core.security.model.domain.CLicense)
-	 */
-	public void delete (CLicense<?> license)
-	{
-		this.em.remove(license);
-	}
-
+	
 	/**
 	 * Find by organization id.
 	 *
@@ -78,7 +49,7 @@ public class CLicenseJpaDao implements ILicenseDao
 	{
 		String strQuery = "from CLicense where organization.pkId = :id";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("id", orgId);
 		return (List<CLicense<?>>) query.getResultList();
 	}

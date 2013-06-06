@@ -6,6 +6,7 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -18,22 +19,9 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.0
  * @since 1.0
  */
-public interface IUserDao extends Serializable
+public interface IUserDao extends Serializable, IEntityDao<CUser>
 {
 
-	/**
-	 * Make/update persistent entity
-	 * @param user entity
-	 */
-	public void persit (CUser user);
-
-	/**
-	 * Find by identifier.
-	 *
-	 * @param id entity identifier
-	 * @return the entity
-	 */
-	public CUser findById (Long id);
 
 	/**
 	 * Find for modification.
@@ -75,7 +63,7 @@ public interface IUserDao extends Serializable
 	 */
 
 	public List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group);
-
+	
 	/**
 	 * Find all users.
 	 *
@@ -83,13 +71,6 @@ public interface IUserDao extends Serializable
 	 * @return the list
 	 */
 	public List<CUser> findAllUsers ();
-
-	/**
-	 * Merge.
-	 *
-	 * @param user the user
-	 */
-	public void merge (CUser user);
 
 	/** Get users without user what come as parameter
 	 * @param organization - organization for which are selected users

@@ -170,7 +170,7 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = true)
 	public List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group)
 	{
-		return userDao.findAllUsers(organization, enabled, group);
+		userDao.save(user);
 	}
 
 	/* (non-Javadoc)
@@ -199,7 +199,7 @@ public class CUserService implements IUserService
 		user.setPasswordDigest(digester.generateDigest(user.getPassword()));
 		user.setPassword(null);
 		user.setOrganization(organization);
-		userDao.persit(user);
+		userDao.save(user);
 	}
 
 	/**
@@ -221,14 +221,7 @@ public class CUserService implements IUserService
 			throw new CSecurityException("error.security.changepassworddenied");
 		}
 
-		if (!email.equals(user.getEmail()))
-		{
-			throw new CSecurityException("error.security.changepassworddenied");
-		}
-
-		user.setPasswordDigest(digester.generateDigest(user.getPassword()));
-		user.setPassword(null);
-		userDao.persit(user);
+		userDao.save(userToSave);
 	}
 
 	/* (non-Javadoc)

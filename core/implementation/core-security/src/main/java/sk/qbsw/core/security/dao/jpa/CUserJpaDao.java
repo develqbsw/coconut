@@ -5,12 +5,11 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -25,27 +24,20 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0.0
  */
 @Repository (value = "userDao")
-public class CUserJpaDao implements IUserDao
+public class CUserJpaDao extends  AEntityJpaDao<CUser> implements IUserDao
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The em. */
-	@PersistenceContext (name = "airlinesPersistenceContext")
-	private EntityManager em;
-
-
 	/**
-	 * Persit.
+	 * Instantiates a new c role jpa dao.
 	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.dao.IUserDao#persit(sk.qbsw.core.security.model.domain.CUser)
+	 * @param entityClass the entity class
 	 */
-	public void persit (CUser user)
+	public CUserJpaDao ()
 	{
-		this.em.persist(user);
-
+		super(CUser.class);
 	}
 
 	/**
@@ -59,7 +51,7 @@ public class CUserJpaDao implements IUserDao
 	{
 		String strQuery = "select u from CUser u left join fetch u.organization o join fetch u.groups g where u.pkId=:pkId";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("pkId", id);
 		return (CUser) query.getSingleResult();
 	}
@@ -76,7 +68,7 @@ public class CUserJpaDao implements IUserDao
 		CUser userToReturn = null;
 
 		String strQuery = "select u from CUser u left join fetch u.organization o left join fetch u.groups g left join fetch g.roles g  where u.login=:login";
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("login", login);
 
 		@SuppressWarnings ("unchecked")
@@ -102,7 +94,7 @@ public class CUserJpaDao implements IUserDao
 	{
 		String strQuery = "from CUser where organization=:organization order by login";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("organization", organization);
 		return (List<CUser>) query.getResultList();
 	}
@@ -133,7 +125,7 @@ public class CUserJpaDao implements IUserDao
 
 		strQuery = strQuery.concat("order by u.login ");
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 
 		query.setParameter("organization", organization);
 
@@ -151,17 +143,6 @@ public class CUserJpaDao implements IUserDao
 	}
 
 	/**
-	 * Merge.
-	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.dao.IUserDao#merge(sk.qbsw.core.security.model.domain.CUser)
-	 */
-	public void merge (CUser user)
-	{
-		this.em.merge(user);
-	}
-
-	/**
 	 * Find for modification.
 	 *
 	 * @param pkId id
@@ -172,7 +153,7 @@ public class CUserJpaDao implements IUserDao
 	{
 		String strQuery = "from CUser u left join fetch u.groups where u.pkId=:pkId";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("pkId", pkId);
 		return (CUser) query.getSingleResult();
 	}
@@ -185,7 +166,7 @@ public class CUserJpaDao implements IUserDao
 	{
 		String strQuery = "from CUser order by login";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 
 		return (List<CUser>) query.getResultList();
 	}
@@ -204,7 +185,7 @@ public class CUserJpaDao implements IUserDao
 		CUser userToReturn;
 		String strQuery = "select u from CUser u left join fetch u.organization o where u.pin=:pinCode";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("pinCode", pinCode);
 
 		List<CUser> users = query.getResultList();
@@ -231,7 +212,7 @@ public class CUserJpaDao implements IUserDao
 
 		String strQuery = "select u from CUser as u " + "join u.groups g " + "where g.pkId = :group and " + "u.organization = :organization and " + "u.flagEnabled = true and " + "u != :user";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("group", group.getPkId());
 		query.setParameter("organization", organization);
 		query.setParameter("user", user);
@@ -253,7 +234,7 @@ public class CUserJpaDao implements IUserDao
 		}
 		strQuery = strQuery.concat("order by login");
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("organization", organization);
 		if (role != null)
 		{

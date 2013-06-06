@@ -6,6 +6,7 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -16,22 +17,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.0
  * @since 1.0
  */
-public interface IRoleDao extends Serializable
+public interface IRoleDao extends Serializable, IEntityDao<CRole>
 {
-
-	/**
-	 * Make/update persistent entity
-	 * @param role entity
-	 */
-	public void persit (CRole role);
-
-	/**
-	 * Find by identifier.
-	 *
-	 * @param id entity identifier
-	 * @return the entity
-	 */
-	public CRole findById (Long id);
 
 	/**
 	 * Find all by user.

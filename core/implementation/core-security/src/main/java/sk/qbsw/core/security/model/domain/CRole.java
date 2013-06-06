@@ -18,16 +18,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import sk.qbsw.core.persistence.model.domain.IEntity;
+
 /**
  * The Class CRole.
  *
  * @author Dalibor Rak
- * @version 1.0
+ * @version 1.2.1
  * @since 1.0
  */
 @Entity
 @Table (name = "t_role", schema = "sec")
-public class CRole implements Serializable
+public class CRole implements Serializable, IEntity
 {
 
 	/** The Constant serialVersionUID. */
@@ -115,4 +117,11 @@ public class CRole implements Serializable
 	{
 		this.groups = groups;
 	}
+	
+	@Override
+	public Long getId ()
+	{
+		return getPkId();
+	}
+
 }

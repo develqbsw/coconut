@@ -85,7 +85,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	public void addLicense (CLicense<?> license)
 	{
 		license.recalculateLicensePrice(rules.getDayPricing());
-		licenseDao.persit(license);
+		licenseDao.save(license);
 	}
 
 
@@ -98,7 +98,8 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void deleteLicense (CLicense<?> license)
 	{
-		licenseDao.delete(license);
+		CLicense toModify = licenseDao.findById(license.getPkId());
+		licenseDao.remove(toModify);
 	}
 
 
@@ -113,7 +114,22 @@ public class CSecurityServiceImpl implements ISecurityService
 	{
 		COrganization toModify = orgDao.findById(org.getPkId());
 		toModify.setFlagEnabled(Boolean.FALSE);
-		orgDao.persit(toModify);
+		orgDao.save(toModify);
+	}
+
+
+	/**
+	 * Disable user.
+	 *
+	 * @param user the user
+	 * @see sk.qbsw.core.security.service.ISecurityService#disableUser(sk.qbsw.core.security.model.domain.CUser)
+	 */
+	@Transactional (readOnly = false)
+	public void disableUser (CUser user)
+	{
+		CUser toModify = userDao.findById(user.getPkId());
+		toModify.setFlagEnabled(Boolean.FALSE);
+		userDao.save(toModify);
 	}
 
 
@@ -128,10 +144,23 @@ public class CSecurityServiceImpl implements ISecurityService
 	{
 		COrganization toModify = orgDao.findById(org.getPkId());
 		toModify.setFlagEnabled(Boolean.TRUE);
-		orgDao.persit(toModify);
+		orgDao.save(toModify);
 	}
 
 
+	/**
+	 * Enable user.
+	 *
+	 * @param user the user
+	 * @see sk.qbsw.core.security.service.ISecurityService#enableUser(sk.qbsw.core.security.model.domain.CUser)
+	 */
+	@Transactional (readOnly = false)
+	public void enableUser (CUser user)
+	{
+		CUser toModify = userDao.findById(user.getPkId());
+		toModify.setFlagEnabled(Boolean.TRUE);
+		userDao.save(toModify);
+	}
 
 	/**
 	 * Gets the all organizations.
@@ -260,7 +289,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	{
 		CLicense<?> toModify = licenseDao.findById(license.getPkId());
 		toModify.setFlagPayed(payed);
-		licenseDao.persit(toModify);
+		licenseDao.save(toModify);
 	}
 
 	/**
@@ -290,10 +319,33 @@ public class CSecurityServiceImpl implements ISecurityService
 		org.addUser(manager);
 
 		// save game
-		orgDao.persit(org);
+		orgDao.save(org);
 	}
 
 
+
+
+		if (!email.equals(user.getEmail()))
+		{
+			throw new CSecurityException("error.security.changepassworddenied");
+		}
+
+		user.setPassword(password);
+		userDao.save(user);
+	}
+
+
+	/**
+	 * Save user.
+	 *
+	 * @param user the user
+	 * @see sk.qbsw.core.security.service.ISecurityService#saveUser(sk.qbsw.core.security.model.domain.CUser)
+	 */
+	@Transactional (readOnly = false)
+	public void saveUser (CUser user)
+	{
+		userDao.save(user);
+	}
 
 
 	/**
@@ -305,7 +357,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void updateLicense (CLicense<?> license)
 	{
-		licenseDao.persit(license);
+		licenseDao.save(license);
 	}
 
 

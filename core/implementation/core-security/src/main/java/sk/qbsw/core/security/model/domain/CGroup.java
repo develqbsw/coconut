@@ -15,17 +15,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
  * The Class CGroup.
  *
  * @author Dalibor Rak
- * @version 1.0
+ * @version 1.2.1
  * @since 1.0
  */
 @Entity
 @Table (name = "t_group", schema = "sec")
-public class CGroup implements Serializable
+public class CGroup implements Serializable, IEntity
 {
 
 	/** The Constant serialVersionUID. */
@@ -179,5 +180,11 @@ public class CGroup implements Serializable
 		}
 
 		return false;
+	}
+
+	@Override
+	public Long getId ()
+	{
+		return getPkId();
 	}
 }

@@ -38,11 +38,11 @@ public class COrganizationService implements IOrganizationService
 	public void registerNewOrganization (COrganization organization, CUser user, String group)
 	{
 		organization.setFlagEnabled(true);
-		organizationDao.persit(organization);
+		organizationDao.save(organization);
 
 		user.addGroup(groupDao.findByCode(group).get(0));
 		user.setFlagEnabled(true);
-		userDao.persit(user);
+		userDao.save(user);
 	}
 
 	@Transactional
@@ -50,12 +50,12 @@ public class COrganizationService implements IOrganizationService
 	{
 
 		organization.setFlagEnabled(true);
-		organizationDao.persit(organization);
+		organizationDao.save(organization);
 
 		user.addGroup(groupDao.findByCode("ADMINISTRATOR").get(0));
 		user.setOrganization(organization);
 		user.setFlagEnabled(true);
-		userDao.persit(user);
+		userDao.save(user);
 	}
 
 	@Transactional (readOnly = true)
@@ -82,7 +82,7 @@ public class COrganizationService implements IOrganizationService
 	@Transactional
 	public void updateOrganization (COrganization organization)
 	{
-		organizationDao.merge(organization);
+		organizationDao.save(organization);
 	}
 
 	@Override

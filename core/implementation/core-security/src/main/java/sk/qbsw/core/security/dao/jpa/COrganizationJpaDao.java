@@ -5,12 +5,11 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.model.domain.COrganization;
 
@@ -22,46 +21,18 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * @since 1.0.0
  */
 @Repository (value = "orgDao")
-public class COrganizationJpaDao implements IOrganizationDao
+public class COrganizationJpaDao extends AEntityJpaDao<COrganization> implements IOrganizationDao
 {
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	@PersistenceContext (name = "airlinesPersistenceContext")
-	private EntityManager em;
-
 	/**
-	 * @see sk.qbsw.core.security.dao.IOrganizationDao#persit(sk.qbsw.core.security.model.domain.COrganization)
+	 * Instantiates a new c organization jpa dao.
 	 */
-	public void persit (COrganization organization)
+	public COrganizationJpaDao ()
 	{
-		this.em.persist(organization);
+		super(COrganization.class);
 	}
-
-	/**
-	 * Merge.
-	 *
-	 * @param organization the organization
-	 */
-	public void merge (COrganization organization)
-	{
-		this.em.merge(organization);
-	}
-
-	/**
-	 * @see sk.qbsw.core.security.dao.IGroupDao#findById(java.lang.Long)
-	 */
-	public COrganization findById (Long id)
-	{
-		String strQuery = "select o from COrganization o where o.pkId=:pkId";
-
-		Query query = this.em.createQuery(strQuery);
-		query.setParameter("pkId", id);
-		return (COrganization) query.getSingleResult();
-	}
-
 
 	/**
 	 * Find by name.
@@ -74,7 +45,7 @@ public class COrganizationJpaDao implements IOrganizationDao
 	{
 		String strQuery = "from COrganization where name = :name";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("name", name);
 		return (COrganization) query.getSingleResult();
 	}
@@ -90,17 +61,20 @@ public class COrganizationJpaDao implements IOrganizationDao
 	{
 		String strQuery = "from COrganization order by name";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		return (List<COrganization>) query.getResultList();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findByNameNull(java.lang.String)
+	 */
 	@SuppressWarnings ("unchecked")
 	public COrganization findByNameNull (String name)
 	{
 		COrganization organization;
 		String strQuery = "select o from COrganization o where o.name = :name";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("name", name);
 
 		List<COrganization> organizations = query.getResultList();

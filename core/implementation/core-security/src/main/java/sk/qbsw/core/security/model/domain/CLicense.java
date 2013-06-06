@@ -22,19 +22,21 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import sk.qbsw.core.persistence.model.domain.IEntity;
+
 /**
  * The Class CLicence.
  *
  * @param <T> the generic type
  * @author Dalibor Rak
- * @version 1.0
+ * @version 1.2.1
  * @since 1.0
  */
 @Entity
 @Table (name = "t_licence", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class CLicense<T> implements Serializable
+public abstract class CLicense<T> implements Serializable, IEntity
 {
 
 	/** The Constant serialVersionUID. */
@@ -170,6 +172,12 @@ public abstract class CLicense<T> implements Serializable
 	public Long getPkId ()
 	{
 		return this.pkId;
+	}
+
+	@Override
+	public Long getId ()
+	{
+		return getPkId();
 	}
 
 	/**

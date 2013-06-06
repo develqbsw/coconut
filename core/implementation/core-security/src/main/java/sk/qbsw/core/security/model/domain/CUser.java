@@ -22,18 +22,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import sk.qbsw.core.persistence.model.domain.IEntity;
+
 import com.google.gson.annotations.Expose;
 
 /**
  * The Class CUser.
  * 
  * @author Dalibor Rak
- * @version 1.0
+ * @version 1.2.1
  * @since 1.0
  */
 @Entity
-@Table(name = "t_user", schema = "sec")
-public class CUser implements Serializable {
+@Table (name = "t_user", schema = "sec")
+public class CUser implements Serializable, IEntity
+{
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -360,21 +363,9 @@ public class CUser implements Serializable {
 		return false;
 	}
 
-	/**
-	 * Exports roles assigned to user as list of String
-	 * 
-	 * @return
-	 */
-	public List<String> exportRoles() {
-		// returned roles
-		List<String> retVal = new ArrayList<String>();
-
-		for (CGroup group : getGroups()) {
-			for (CRole role : group.getRoles()) {
-				retVal.add(role.getCode());
-			}
-
-		}
-		return retVal;
+	@Override
+	public Long getId ()
+	{
+		return getPkId();
 	}
 }

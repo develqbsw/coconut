@@ -21,6 +21,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import sk.qbsw.core.persistence.model.domain.IEntity;
+
 import com.google.gson.annotations.Expose;
 
 // import org.hibernate.annotations.Cascade;
@@ -31,12 +33,12 @@ import com.google.gson.annotations.Expose;
  * The Class COrganization.
  *
  * @author Dalibor Rak
- * @version 1.0
+ * @version 1.2.1
  * @since 1.0
  */
 @Entity
 @Table (name = "t_organization", schema = "sec")
-public class COrganization implements Serializable
+public class COrganization implements Serializable, IEntity
 {
 
 	/** The Constant serialVersionUID. */
@@ -302,4 +304,11 @@ public class COrganization implements Serializable
 		}
 		return actualLicense;
 	}
+	
+	@Override
+	public Long getId ()
+	{
+		return getPkId();
+	}
+
 }

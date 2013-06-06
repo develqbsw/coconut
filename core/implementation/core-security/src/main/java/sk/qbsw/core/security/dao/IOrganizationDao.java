@@ -4,8 +4,8 @@
 package sk.qbsw.core.security.dao;
 
 import java.io.Serializable;
-import java.util.List;
 
+import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.COrganization;
 
 /**
@@ -15,30 +15,8 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * @version 1.0
  * @since 1.0
  */
-public interface IOrganizationDao extends Serializable
+public interface IOrganizationDao extends Serializable, IEntityDao<COrganization>
 {
-
-	/**
-	 * Make/update persistent object
-	 * @param organization entity
-	 */
-	public void persit (COrganization organization);
-
-	/**
-	 * Merge.
-	 *
-	 * @param organization the organization
-	 */
-	public void merge (COrganization organization);
-
-	/**
-	 * Find by identifier.
-	 *
-	 * @param id entity identifier
-	 * @return the entity
-	 */
-	public COrganization findById (Long id);
-
 
 	/**
 	 * Find by name.
@@ -47,13 +25,6 @@ public interface IOrganizationDao extends Serializable
 	 * @return the organization
 	 */
 	public COrganization findByName (String name);
-
-	/**
-	 * Find all.
-	 *
-	 * @return the list
-	 */
-	public List<COrganization> findAll ();
 
 	/**
 	 * Find by name and return NULL if organization not exist - NOT exeption.

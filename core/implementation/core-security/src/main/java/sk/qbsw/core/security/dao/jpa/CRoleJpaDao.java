@@ -5,12 +5,11 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -23,36 +22,22 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0
  */
 @Repository (value = "roleDao")
-public class CRoleJpaDao implements IRoleDao
+public class CRoleJpaDao extends AEntityJpaDao<CRole> implements IRoleDao
 {
-	/**
-	 * 
-	 */
+
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	@PersistenceContext (name = "airlinesPersistenceContext")
-	private EntityManager em;
 
 	/**
-	 * @see sk.qbsw.core.security.dao.IRoleDao#persit(sk.qbsw.core.security.model.domain.CRole)
+	 * Instantiates a new c role jpa dao.
+	 *
+	 * @param entityClass the entity class
 	 */
-	public void persit (CRole role)
+	public CRoleJpaDao ()
 	{
-		this.em.persist(role);
+		super(CRole.class);
 	}
-
-	/**
-	 * @see sk.qbsw.core.security.dao.IRoleDao#findById(java.lang.Long)
-	 **/
-	public CRole findById (Long id)
-	{
-		String strQuery = "select u from CRole l where l.pkId=:pkId";
-
-		Query query = this.em.createQuery(strQuery);
-		query.setParameter("pkId", id);
-		return (CRole) query.getSingleResult();
-	}
-
-
+	
 	/**
 	 * Find all by user.
 	 *
@@ -65,18 +50,21 @@ public class CRoleJpaDao implements IRoleDao
 	{
 		String strQuery = "select distinct(r) from CRole r join r.groups g join g.users u where u = :user";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("user", user);
 		return (List<CRole>) query.getResultList();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IRoleDao#findByCode(java.lang.String)
+	 */
 	@SuppressWarnings ("unchecked")
 	public List<CRole> findByCode (String code)
 	{
 
 		String strQuery = "select r from CRole r where r.code =:code";
 
-		Query query = this.em.createQuery(strQuery);
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("code", code);
 		return (List<CRole>) query.getResultList();
 	}

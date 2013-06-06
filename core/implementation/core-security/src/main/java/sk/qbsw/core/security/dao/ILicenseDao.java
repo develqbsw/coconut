@@ -6,6 +6,7 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CLicense;
 
 /**
@@ -15,29 +16,8 @@ import sk.qbsw.core.security.model.domain.CLicense;
  * @version 1.0
  * @since 1.0
  */
-public interface ILicenseDao extends Serializable
+public interface ILicenseDao extends Serializable, IEntityDao<CLicense>
 {
-
-	/**
-	 * Make/update persistent entity
-	 * @param license entity
-	 */
-	public void persit(CLicense<?> license);
-	
-	/**
-	 * Find by identifier.
-	 *
-	 * @param id entity identifier
-	 * @return the entity
-	 */
-	public CLicense<?> findById (Long id);
-	
-	/**
-	 * remove persistent object.
-	 *
-	 * @param license the license
-	 */
-	public void delete (CLicense<?> license);
 
 	/**
 	 * Find by organization id.
@@ -46,6 +26,5 @@ public interface ILicenseDao extends Serializable
 	 * @return the list
 	 */
 	public List<CLicense<?>> findByOrganizationId (Long orgId);
-	
 
 }
