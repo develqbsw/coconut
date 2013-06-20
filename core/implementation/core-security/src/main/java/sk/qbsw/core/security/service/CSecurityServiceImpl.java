@@ -322,19 +322,6 @@ public class CSecurityServiceImpl implements ISecurityService
 		orgDao.save(org);
 	}
 
-
-
-
-		if (!email.equals(user.getEmail()))
-		{
-			throw new CSecurityException("error.security.changepassworddenied");
-		}
-
-		user.setPassword(password);
-		userDao.save(user);
-	}
-
-
 	/**
 	 * Save user.
 	 *

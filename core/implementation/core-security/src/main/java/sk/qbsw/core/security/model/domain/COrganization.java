@@ -38,7 +38,7 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_organization", schema = "sec")
-public class COrganization implements Serializable, IEntity
+public class COrganization implements Serializable, IEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */

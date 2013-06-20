@@ -19,7 +19,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.0
  * @since 1.0
  */
-public interface IUserDao extends Serializable, IEntityDao<CUser>
+public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 {
 
 

@@ -7,7 +7,7 @@ package sk.qbsw.core.persistence.model.domain;
  * @version 1.3.0
  * @since 1.0.0
  */
-public interface IEntity<T>
+public interface IEntity<PK>
 {
 
 	/**
@@ -15,5 +15,5 @@ public interface IEntity<T>
 	 *
 	 * @return the id
 	 */
-	T getId ();
+	PK getId ();
 }

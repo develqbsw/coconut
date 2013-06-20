@@ -33,7 +33,7 @@ public class CUserService implements IUserService
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
-	
+
 	/** Password digester **/
 	@Autowired
 	private IPasswordDigester digester;
@@ -49,7 +49,7 @@ public class CUserService implements IUserService
 		userToSave.setPassword(null);
 		userToSave.setPasswordDigest(digester.generateDigest(user.getPassword()));
 
-		userDao.persit(userToSave);
+		userDao.save(userToSave);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class CUserService implements IUserService
 	{
 		CUser toModify = userDao.findById(user.getPkId());
 		toModify.setFlagEnabled(Boolean.FALSE);
-		userDao.persit(toModify);
+		userDao.save(toModify);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class CUserService implements IUserService
 	{
 		CUser toModify = userDao.findById(user.getPkId());
 		toModify.setFlagEnabled(Boolean.TRUE);
-		userDao.persit(toModify);
+		userDao.save(toModify);
 	}
 
 	/* (non-Javadoc)
@@ -170,7 +170,7 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = true)
 	public List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group)
 	{
-		userDao.save(user);
+		return userDao.findAllUsers(organization, enabled, group);
 	}
 
 	/* (non-Javadoc)
@@ -216,12 +216,12 @@ public class CUserService implements IUserService
 	{
 		CUser user = userDao.findByLogin(login);
 
-		if (user == null)
+		if (user == null || !email.equals(user.getEmail()))
 		{
 			throw new CSecurityException("error.security.changepassworddenied");
 		}
-
-		userDao.save(userToSave);
+		user.setPassword(password);
+		userDao.save(user);
 	}
 
 	/* (non-Javadoc)
@@ -230,8 +230,6 @@ public class CUserService implements IUserService
 	@Transactional
 	public void updateUser (CUser user)
 	{
-		userDao.merge(user);
+		userDao.save(user);
 	}
-
-
 }

@@ -26,7 +26,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 @Entity
 @Table (name = "t_group", schema = "sec")
-public class CGroup implements Serializable, IEntity
+public class CGroup implements Serializable, IEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */

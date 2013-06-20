@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0.0
  */
 @Repository (value = "userDao")
-public class CUserJpaDao extends  AEntityJpaDao<CUser> implements IUserDao
+public class CUserJpaDao extends  AEntityJpaDao<Long, CUser> implements IUserDao
 {
 
 	/** The Constant serialVersionUID. */

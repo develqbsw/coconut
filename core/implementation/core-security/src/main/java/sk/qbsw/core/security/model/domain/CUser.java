@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.management.relation.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,30 +27,35 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 
 import com.google.gson.annotations.Expose;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class CUser.
  * 
  * @author Dalibor Rak
- * @version 1.2.1
+ * @version 1.3.0
  * @since 1.0
+ */
+/**
+ * @author rak
+ *
  */
 @Entity
 @Table (name = "t_user", schema = "sec")
-public class CUser implements Serializable, IEntity
+public class CUser implements Serializable, IEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The pk id. */
 	@Id
-	@SequenceGenerator(name = "T_USER_PKID_GENERATOR", sequenceName = "SEC.T_USER_PK_ID_SEQ")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "T_USER_PKID_GENERATOR")
-	@Column(name = "pk_id")
+	@SequenceGenerator (name = "T_USER_PKID_GENERATOR", sequenceName = "SEC.T_USER_PK_ID_SEQ")
+	@GeneratedValue (strategy = GenerationType.AUTO, generator = "T_USER_PKID_GENERATOR")
+	@Column (name = "pk_id")
 	@Expose
 	private Long pkId;
 
 	/** The flag enabled. */
-	@Column(name = "flag_enabled")
+	@Column (name = "flag_enabled")
 	private Boolean flagEnabled;
 
 	/** The login. */
@@ -76,15 +82,15 @@ public class CUser implements Serializable, IEntity
 
 	// bi-directional many-to-one association to COrganization
 	/** The organization. */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_organization", nullable = false)
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "fk_organization", nullable = false)
 	@Expose
 	private COrganization organization;
 
 	// bi-directional many-to-many association to CGroup
 	/** The groups. */
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(schema = "sec", name = "t_x_group_user", joinColumns = { @JoinColumn(name = "fk_user") }, inverseJoinColumns = { @JoinColumn(name = "fk_group") })
+	@ManyToMany (fetch = FetchType.LAZY)
+	@JoinTable (schema = "sec", name = "t_x_group_user", joinColumns = {@JoinColumn (name = "fk_user")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
 	private Set<CGroup> groups;
 
 	/** The PIN code. */
@@ -94,7 +100,8 @@ public class CUser implements Serializable, IEntity
 	/**
 	 * Instantiates a new c user.
 	 */
-	public CUser() {
+	public CUser ()
+	{
 		groups = new HashSet<CGroup>();
 	}
 
@@ -103,7 +110,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the pk id
 	 */
-	public Long getPkId() {
+	public Long getPkId ()
+	{
 		return this.pkId;
 	}
 
@@ -113,7 +121,8 @@ public class CUser implements Serializable, IEntity
 	 * @param pkId
 	 *            the new pk id
 	 */
-	public void setPkId(Long pkId) {
+	public void setPkId (Long pkId)
+	{
 		this.pkId = pkId;
 	}
 
@@ -122,7 +131,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the flag enabled
 	 */
-	public Boolean getFlagEnabled() {
+	public Boolean getFlagEnabled ()
+	{
 		return this.flagEnabled;
 	}
 
@@ -132,7 +142,8 @@ public class CUser implements Serializable, IEntity
 	 * @param flagEnabled
 	 *            the new flag enabled
 	 */
-	public void setFlagEnabled(Boolean flagEnabled) {
+	public void setFlagEnabled (Boolean flagEnabled)
+	{
 		this.flagEnabled = flagEnabled;
 	}
 
@@ -141,7 +152,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the login
 	 */
-	public String getLogin() {
+	public String getLogin ()
+	{
 		return this.login;
 	}
 
@@ -151,7 +163,8 @@ public class CUser implements Serializable, IEntity
 	 * @param login
 	 *            the new login
 	 */
-	public void setLogin(String login) {
+	public void setLogin (String login)
+	{
 		this.login = login;
 	}
 
@@ -160,7 +173,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the password digest
 	 */
-	public String getPasswordDigest() {
+	public String getPasswordDigest ()
+	{
 		return passwordDigest;
 	}
 
@@ -170,7 +184,8 @@ public class CUser implements Serializable, IEntity
 	 * @param passwordDigest
 	 *            the new password digest
 	 */
-	public void setPasswordDigest(String passwordDigest) {
+	public void setPasswordDigest (String passwordDigest)
+	{
 		this.passwordDigest = passwordDigest;
 	}
 
@@ -179,7 +194,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the name
 	 */
-	public String getName() {
+	public String getName ()
+	{
 		return this.name;
 	}
 
@@ -189,7 +205,8 @@ public class CUser implements Serializable, IEntity
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) {
+	public void setName (String name)
+	{
 		this.name = name;
 	}
 
@@ -198,7 +215,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the password
 	 */
-	public String getPassword() {
+	public String getPassword ()
+	{
 		return this.password;
 	}
 
@@ -208,7 +226,8 @@ public class CUser implements Serializable, IEntity
 	 * @param password
 	 *            the new password
 	 */
-	public void setPassword(String password) {
+	public void setPassword (String password)
+	{
 		this.password = password;
 	}
 
@@ -217,7 +236,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the surname
 	 */
-	public String getSurname() {
+	public String getSurname ()
+	{
 		return this.surname;
 	}
 
@@ -227,7 +247,8 @@ public class CUser implements Serializable, IEntity
 	 * @param surname
 	 *            the new surname
 	 */
-	public void setSurname(String surname) {
+	public void setSurname (String surname)
+	{
 		this.surname = surname;
 	}
 
@@ -236,7 +257,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the organization
 	 */
-	public COrganization getOrganization() {
+	public COrganization getOrganization ()
+	{
 		return this.organization;
 	}
 
@@ -246,7 +268,8 @@ public class CUser implements Serializable, IEntity
 	 * @param organization
 	 *            the new organization
 	 */
-	public void setOrganization(COrganization organization) {
+	public void setOrganization (COrganization organization)
+	{
 		this.organization = organization;
 	}
 
@@ -255,7 +278,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the groups
 	 */
-	public Set<CGroup> getGroups() {
+	public Set<CGroup> getGroups ()
+	{
 		return this.groups;
 	}
 
@@ -265,7 +289,8 @@ public class CUser implements Serializable, IEntity
 	 * @param groups
 	 *            the new groups
 	 */
-	public void setGroups(Set<CGroup> groups) {
+	public void setGroups (Set<CGroup> groups)
+	{
 		this.groups = groups;
 	}
 
@@ -275,7 +300,8 @@ public class CUser implements Serializable, IEntity
 	 * @param grp
 	 *            the grp
 	 */
-	public void addGroup(CGroup grp) {
+	public void addGroup (CGroup grp)
+	{
 		groups.add(grp);
 	}
 
@@ -285,7 +311,8 @@ public class CUser implements Serializable, IEntity
 	 * @param group
 	 *            the new main group
 	 */
-	public void setMainGroup(CGroup group) {
+	public void setMainGroup (CGroup group)
+	{
 		this.groups.clear();
 		this.groups.add(group);
 	}
@@ -295,7 +322,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the main group
 	 */
-	public CGroup getMainGroup() {
+	public CGroup getMainGroup ()
+	{
 		return groups.iterator().next();
 	}
 
@@ -304,7 +332,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the email
 	 */
-	public String getEmail() {
+	public String getEmail ()
+	{
 		return email;
 	}
 
@@ -314,7 +343,8 @@ public class CUser implements Serializable, IEntity
 	 * @param email
 	 *            the new email
 	 */
-	public void setEmail(String email) {
+	public void setEmail (String email)
+	{
 		this.email = email;
 	}
 
@@ -323,7 +353,8 @@ public class CUser implements Serializable, IEntity
 	 * 
 	 * @return the pin
 	 */
-	public String getPin() {
+	public String getPin ()
+	{
 		return pin;
 	}
 
@@ -333,36 +364,65 @@ public class CUser implements Serializable, IEntity
 	 * @param pin
 	 *            the new pin
 	 */
-	public void setPin(String pin) {
+	public void setPin (String pin)
+	{
 		this.pin = pin;
 	}
 
 	/**
-	 * Authentication by digest
-	 * 
+	 * Authentication by digest.
+	 *
 	 * @return autentication type
 	 */
-	public EAuthenticationType authenticationType() {
-		return passwordDigest != null ? EAuthenticationType.BY_PASSWORD_DIGEST
-				: EAuthenticationType.BY_PASSWORD;
+	public EAuthenticationType authenticationType ()
+	{
+		return passwordDigest != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
 	}
 
 	/**
-	 * Checks if the user has role
-	 * 
-	 * @param role
-	 *            needed role
+	 * Checks if the user has role.
+	 *
+	 * @param role needed role
 	 * @return true / false
 	 */
-	public boolean hasRole(CRole role) {
-		for (CGroup group : groups) {
-			if (group.hasRole(role)) {
+	public boolean hasRole (CRole role)
+	{
+		for (CGroup group : groups)
+		{
+			if (group.hasRole(role))
+			{
 				return true;
 			}
 		}
 		return false;
 	}
 
+
+	/**
+	 * Export roles.
+	 *
+	 * @return the list
+	 */
+	public List<String> exportRoles ()
+	{
+		List<String> retVal = new ArrayList<String>();
+
+		for (CGroup group : groups)
+		{
+			Set<CRole> roles = group.getRoles();
+			for (CRole cRole : roles)
+			{
+				retVal.add(cRole.getCode());
+			}
+		}
+
+		return retVal;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
+	 */
 	@Override
 	public Long getId ()
 	{

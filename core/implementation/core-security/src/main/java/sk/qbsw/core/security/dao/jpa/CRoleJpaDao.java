@@ -22,7 +22,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0
  */
 @Repository (value = "roleDao")
-public class CRoleJpaDao extends AEntityJpaDao<CRole> implements IRoleDao
+public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 {
 
 	/** The Constant serialVersionUID. */

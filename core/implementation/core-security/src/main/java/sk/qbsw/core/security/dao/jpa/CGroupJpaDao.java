@@ -19,7 +19,7 @@ import sk.qbsw.core.security.model.domain.CGroup;
  * @since 1.0.0
  */
 @Repository (value = "groupDao")
-public class CGroupJpaDao extends AEntityJpaDao<CGroup> implements IGroupDao
+public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupDao
 {
 	/**
 	 * 

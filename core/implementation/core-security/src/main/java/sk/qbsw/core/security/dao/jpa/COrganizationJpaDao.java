@@ -21,7 +21,7 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * @since 1.0.0
  */
 @Repository (value = "orgDao")
-public class COrganizationJpaDao extends AEntityJpaDao<COrganization> implements IOrganizationDao
+public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> implements IOrganizationDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

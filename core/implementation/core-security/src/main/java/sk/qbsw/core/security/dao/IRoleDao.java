@@ -17,7 +17,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.0
  * @since 1.0
  */
-public interface IRoleDao extends Serializable, IEntityDao<CRole>
+public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 {
 
 	/**

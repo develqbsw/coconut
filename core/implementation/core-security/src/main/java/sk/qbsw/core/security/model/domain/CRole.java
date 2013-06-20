@@ -29,7 +29,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 @Entity
 @Table (name = "t_role", schema = "sec")
-public class CRole implements Serializable, IEntity
+public class CRole implements Serializable, IEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */

@@ -16,7 +16,7 @@ import sk.qbsw.core.security.model.domain.CLicense;
  * @version 1.0
  * @since 1.0
  */
-public interface ILicenseDao extends Serializable, IEntityDao<CLicense>
+public interface ILicenseDao extends Serializable, IEntityDao<Long, CLicense<?>>
 {
 
 	/**

@@ -3,7 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -36,12 +35,8 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 @Table (name = "t_licence", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class CLicense<T> implements Serializable, IEntity
+public abstract class CLicense<T> implements IEntity<Long>
 {
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/** The UNLIMITED. */
 	public final static Integer UNLIMITED = -1;
 

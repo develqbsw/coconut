@@ -22,7 +22,7 @@ import sk.qbsw.core.security.model.domain.CLicense;
  */
 
 @Repository (value = "licenceDao")
-public class CLicenseJpaDao extends AEntityJpaDao<CLicense> implements ILicenseDao
+public class CLicenseJpaDao extends AEntityJpaDao<Long, CLicense<?>> implements ILicenseDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -33,7 +33,7 @@ public class CLicenseJpaDao extends AEntityJpaDao<CLicense> implements ILicenseD
 	 */
 	public CLicenseJpaDao ()
 	{
-		super(CLicense.class);
+		super((Class)CLicense.class);
 	}
 
 	

@@ -15,7 +15,7 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * @version 1.0
  * @since 1.0
  */
-public interface IOrganizationDao extends Serializable, IEntityDao<COrganization>
+public interface IOrganizationDao extends Serializable, IEntityDao<Long, COrganization>
 {
 
 	/**
