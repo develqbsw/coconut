@@ -3,10 +3,16 @@
  */
 package sk.qbsw.core.api.client.http;
 
+import org.apache.http.HttpHost;
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.ContentType;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import sk.qbsw.core.api.exception.CApiHttpException;
 
+// TODO: Auto-generated Javadoc
 /**
  * HttpAPIReqpest repeater support.
  * 
@@ -21,6 +27,9 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 
 	/** Timetout of HTTP request. */
 	private int timeout = 10000;
+
+	/** The proxy. */
+	private HttpHost proxy;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.http.IHttpApiRequest#setRepeatCount(int)
@@ -40,11 +49,14 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	{
 		return timeout;
 	}
-	
+
 	/**
-	 * Sets the timeout
+	 * Sets the timeout in milliseconds.
+	 *
+	 * @param timeout the new timeout in milliseconds
 	 */
-	public void setTimeout(int timeout){
+	public void setTimeout (int timeout)
+	{
 		this.timeout = timeout;
 	}
 
@@ -70,6 +82,50 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 
 		// throws last exception
 		throw new CApiHttpException("Repeated call failed", lastEx, lastEx.getHttpErrorCode());
+	}
+
+	/**
+	 * Sets the proxy.
+	 *
+	 * @param proxy the new proxy
+	 */
+	public void setProxy (HttpHost proxy)
+	{
+		this.proxy = proxy;
+	}
+
+	/**
+	 * Gets the proxy.
+	 *
+	 * @return the proxy
+	 */
+	protected HttpHost getProxy ()
+	{
+		return this.proxy;
+	}
+	
+	/**
+	 * Apply timeouts settings.
+	 *
+	 * @param client the client
+	 */
+	protected void applyTimeouts(HttpClient client){
+		HttpParams params = client.getParams();
+		HttpConnectionParams.setConnectionTimeout(params, getTimeout());
+		HttpConnectionParams.setSoTimeout(params, getTimeout());
+	}
+	
+	/**
+	 * Apply proxy settings.
+	 *
+	 * @param client the client
+	 */
+	protected void applyProxy (HttpClient client)
+	{
+		if (proxy != null)
+		{
+			client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+		}
 	}
 
 	/**

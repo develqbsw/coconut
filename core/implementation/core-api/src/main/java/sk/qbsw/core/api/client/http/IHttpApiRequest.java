@@ -1,5 +1,6 @@
 package sk.qbsw.core.api.client.http;
 
+import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
 
 /**
@@ -29,6 +30,12 @@ public interface IHttpApiRequest
 	 */
 	public void setContentParameter (String parameterName);
 
+	/**
+	 * Sets proxy host for the call
+	 * @param proxy proxy host
+	 */
+	public void setProxy (HttpHost proxy);
+	
 	/**
 	 * Makes the HTTP call. Response will be returned
 	 * 

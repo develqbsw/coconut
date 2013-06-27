@@ -10,8 +10,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 
 import sk.qbsw.core.api.exception.CApiHttpException;
 
@@ -40,10 +38,9 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 		try
 		{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpParams params = httpClient.getParams();
-			HttpConnectionParams.setConnectionTimeout(params, getTimeout());
-			HttpConnectionParams.setSoTimeout(params, getTimeout());
-
+			applyTimeouts(httpClient);
+			applyProxy(httpClient);
+			
 			HttpPost postRequest = new HttpPost(url);
 			postRequest.addHeader("accept", contentType.getMimeType());
 			if (entityInJSon != null)

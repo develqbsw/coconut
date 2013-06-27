@@ -47,8 +47,9 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 		try
 		{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-
-
+			applyProxy(httpClient);
+			applyTimeouts(httpClient);
+			
 			String fullURL = url;
 			if (entity != null)
 			{
@@ -61,7 +62,6 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 					throw new InvalidParameterException("Content parameter not set");
 				}
 			}
-
 
 			HttpGet getRequest = new HttpGet(fullURL);
 			getRequest.addHeader("accept", contentType.getMimeType());

@@ -1,5 +1,7 @@
 package sk.qbsw.core.api.test.client;
 
+import org.apache.http.HttpHost;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sk.qbsw.core.api.client.CApiClient;
@@ -16,13 +18,34 @@ import sk.qbsw.core.api.client.http.CHttpApiGetRequest;
  */
 public class CHttpGetClientTest 
 {
+	/**
+	 * Tests connection without proxy
+	 */
 	@Test
-	public void test() 
+	public void testNoProxy() 
 	{
 		CApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
 		CHttpApiGetRequest get = new CHttpApiGetRequest();
 		get.setRepeatCount(2);
+		get.setTimeout(10000);
 
 		client.makeCall(get, "http://mscan.qbsw.local/admin/index.html", new CCallRequestModel());
 	}
+
+	/**
+	 * Tests connection with proxy settings
+	 */
+	@Ignore
+	@Test
+	public void testWithProxy() 
+	{
+		CApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
+		CHttpApiGetRequest get = new CHttpApiGetRequest();
+		get.setRepeatCount(2);
+		get.setTimeout(10000);
+		get.setProxy(new HttpHost("192.168.121.31", 3128));
+
+		client.makeCall(get, "http://www.sme.sk", new CCallRequestModel());
+	}
+
 }
