@@ -1,5 +1,7 @@
 package sk.qbsw.core.api.client.http;
 
+import java.io.IOException;
+
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
 
@@ -47,5 +49,5 @@ public interface IHttpApiRequest
 	 *            Entity used as parameter
 	 * @return Response as String(may be used for further parsing)
 	 */
-	public String makeCall (String url, ContentType contentType, String entity);
+	public String makeCall (String url, ContentType contentType, String entity) throws IOException;
 }

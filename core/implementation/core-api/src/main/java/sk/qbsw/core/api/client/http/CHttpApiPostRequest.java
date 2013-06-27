@@ -3,7 +3,6 @@ package sk.qbsw.core.api.client.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -32,7 +31,7 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 	 * @param characterEncoding encoding of the content
 	 * @return response content
 	 */
-	public String makeOneCall (String url, ContentType contentType, String entityInJSon)
+	public String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException
 	{
 		InputStreamReader inputReader = null;
 		try
@@ -82,14 +81,6 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 			httpClient.getConnectionManager().shutdown();
 
 			return output.toString();
-		}
-		catch (MalformedURLException e)
-		{
-			throw new RuntimeException("Malformed URL", e);
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException("IOException", e);
 		}
 		finally
 		{

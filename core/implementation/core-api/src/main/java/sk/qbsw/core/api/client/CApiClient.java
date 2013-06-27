@@ -1,5 +1,6 @@
 package sk.qbsw.core.api.client;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Date;
 
@@ -44,7 +45,7 @@ public class CApiClient<I, O>
 	 * @param input the input
 	 * @return the string
 	 */
-	public String makeCall (IHttpApiRequest request, String url, I input)
+	public String makeCall (IHttpApiRequest request, String url, I input) throws IOException
 	{
 		return this.makeCall(request, url, input, ContentType.APPLICATION_JSON);
 	}
@@ -58,7 +59,7 @@ public class CApiClient<I, O>
 	 * @param returnClass Class to return
 	 * @return Returned object (instance of returnClass)
 	 */
-	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass)
+	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass) throws IOException
 	{
 		return makeCall(request, url, input, (Type) returnClass);
 	}
@@ -73,7 +74,7 @@ public class CApiClient<I, O>
 	 * @param type the type
 	 * @return the o
 	 */
-	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass, ContentType type)
+	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass, ContentType type) throws IOException
 	{
 		return makeCall(request, url, input, (Type) returnClass, type);
 	}
@@ -87,7 +88,7 @@ public class CApiClient<I, O>
 	 * @param contentType the content type
 	 * @return Returned object (instance of returnClass)
 	 */
-	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType)
+	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType) throws IOException
 	{
 		// create gson from builder
 		Gson gson = this.builder.create();
@@ -110,7 +111,7 @@ public class CApiClient<I, O>
 	 * @param returnType the return type
 	 * @return the o
 	 */
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType)
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType) throws IOException
 	{
 		return this.makeCall(request, url, input, returnType, ContentType.APPLICATION_JSON);
 	}
@@ -126,7 +127,7 @@ public class CApiClient<I, O>
 	 * @return Returned object (instance of returnClass)
 	 */
 	@SuppressWarnings ("unchecked")
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType)
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType) throws IOException
 	{
 		// create gson from builder
 		Gson gson = this.builder.create();

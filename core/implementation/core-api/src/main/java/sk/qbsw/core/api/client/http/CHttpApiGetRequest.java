@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -41,7 +40,7 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 	 * @return response from the HTTP call
 	 * @throws CApiHttpException unsuccessful API call
 	 */
-	protected String makeOneCall (String url, ContentType contentType, String entity)
+	protected String makeOneCall (String url, ContentType contentType, String entity) throws IOException
 	{
 		InputStreamReader inputReader = null;
 		try
@@ -95,14 +94,6 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 			httpClient.getConnectionManager().shutdown();
 
 			return output.toString();
-		}
-		catch (ClientProtocolException e)
-		{
-			throw new RuntimeException("Client protocol exception", e);
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException("IO exception", e);
 		}
 		finally
 		{
