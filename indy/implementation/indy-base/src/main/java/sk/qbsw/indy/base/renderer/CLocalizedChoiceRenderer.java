@@ -1,68 +1,43 @@
 package sk.qbsw.indy.base.renderer;
 
+import java.security.InvalidParameterException;
+
 import org.apache.wicket.core.util.lang.PropertyResolver;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 import sk.qbsw.indy.base.utils.CStringResourceReader;
 
 /**
- * Default implementation of {@link org.apache.wicket.markup.html.form.IChoiceRenderer}. Usage:
- * <p>
+ * Localized Choice renderer which reads values from properties of object or from property file (for String values and enumerations)
+ * @author Dalibor Rak
+ * @author Tomas Leken
+ * @author Marek Martinkovic
  * 
- * <pre>
- * new DropDownChoice&lt;User&gt;(&quot;users&quot;, new Model&lt;User&gt;(selectedUser), listOfUsers)
- * </pre>
- * 
- * creates a DropDownChoice of users and the display value will be toString() and the id the index
- * of the object in the ListOfUsers.
- * </p>
- * <p>
- * 
- * <pre>
- * new DropDownChoice&lt;User&gt;(&quot;users&quot;, new Model&lt;User&gt;(selectedUser), listOfUsers,
- * 	new ChoiceRenderer&lt;User&gt;(&quot;name&quot;))
- * </pre>
- * 
- * creates a DropDownChoice of users and the display value will be looked up by property expression
- * ("name") and the id the index of the object in the ListOfUsers
- * </p>
- * <p>
- * 
- * <pre>
- * new DropDownChoice&lt;User&gt;(&quot;users&quot;, new Model&lt;User&gt;(selectedUser), listOfUsers,
- * 	new ChoiceRenderer&lt;User&gt;(&quot;name&quot;, &quot;id&quot;))
- * </pre>
- * 
- * creates a DropDownChoice of users and the display value will be looked up by property expression
- * ("name") and the id will be looked up by the property expression "id"
- * </p>
- * 
- * @author jcompagner
- * 
- * @param <T>
- *            The model object type
+ * @version 1.3.0
+ * @since 1.0.0
+ *
+ * @param <T> model for rendering
  */
 public class CLocalizedChoiceRenderer<T> implements IChoiceRenderer<T>
 {
+
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** expression for getting the display value. */
+	/** 
+	 * Property expression for getting the display value. 
+	 **/
 	private final String displayExpression;
 
-	/** expression for getting the id. */
+	/** 
+	 * Property expression for getting the id. 
+	 **/
 	private final String idExpression;
 
-	/**
-	 * Construct. When you use this constructor, the display value will be determined by calling
-	 * toString() on the list object, and the id will be based on the list index. the id value will
-	 * be the index
-	 */
-	public CLocalizedChoiceRenderer()
-	{
-		super();
-		this.displayExpression = null;
-		this.idExpression = null;
-	}
+	/** 
+	 * Prefix for searching in the property file. 
+	 **/
+	private final String prefix;
 
 	/**
 	 * Construct. When you use this constructor, the display value will be determined by executing
@@ -72,11 +47,9 @@ public class CLocalizedChoiceRenderer<T> implements IChoiceRenderer<T>
 	 * @param displayExpression
 	 *            A property expression to get the display value
 	 */
-	public CLocalizedChoiceRenderer(String displayExpression)
+	public CLocalizedChoiceRenderer (String displayExpression)
 	{
-		super();
-		this.displayExpression = displayExpression;
-		this.idExpression = null;
+		this(displayExpression, null, null);
 	}
 
 	/**
@@ -88,58 +61,111 @@ public class CLocalizedChoiceRenderer<T> implements IChoiceRenderer<T>
 	 * @param idExpression
 	 *            A property expression to get the id value
 	 */
-	public CLocalizedChoiceRenderer(String displayExpression, String idExpression)
+	public CLocalizedChoiceRenderer (String displayExpression, String idExpression)
 	{
-		super();
-		this.displayExpression = displayExpression;
-		this.idExpression = idExpression;
+		this(displayExpression, idExpression, null);
 	}
 
 	/**
-	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+	 * Instantiates a new c localized choice renderer.
+	 *
+	 * @param displayExpression the display expression
+	 * @param idExpression the id expression
+	 * @param prefix the prefix used during the reading from property file
 	 */
-	public Object getDisplayValue(T object)
+	public CLocalizedChoiceRenderer (String displayExpression, String idExpression, String prefix)
 	{
-		Object returnValue = object;
-		if ((displayExpression != null) && (object != null))
+		super();
+
+		if (displayExpression == null || displayExpression.length() == 0)
 		{
-			returnValue = PropertyResolver.getValue(displayExpression, object);
-			
-			if(returnValue instanceof String){
-				returnValue =  CStringResourceReader.read((String)returnValue);
-			}
-			
+			throw new InvalidParameterException("Display Expression cannot be null or empty.");
 		}
 
-		if (returnValue == null)
+		this.displayExpression = displayExpression;
+		this.idExpression = idExpression;
+		this.prefix = prefix;
+	}
+
+	/**
+	 * Gets the display value.
+	 *
+	 * @param object the object
+	 * @return the display value
+	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+	 */
+	public Object getDisplayValue (T object)
+	{
+		// object is known - display value should be red from the properties
+		if (object != null)
+		{
+			Object returnValue = PropertyResolver.getValue(displayExpression, object);
+
+			if (returnValue instanceof String)
+			{
+				return getPropertyValue((String) returnValue);
+			}
+			return returnValue;
+		}
+		// object is null - display value should be empty string
+		else
 		{
 			return "";
 		}
-
-		return returnValue;
 	}
 
 	/**
+	 * Gets the id value.
+	 *
+	 * @param object the object
+	 * @param index the index
+	 * @return the id value
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object, int)
 	 */
-	public String getIdValue(T object, int index)
+	public String getIdValue (T object, int index)
 	{
+		// if id expression is not set, return index of the value
 		if (idExpression == null)
 		{
 			return Integer.toString(index);
 		}
 
-		if (object == null)
+		// object is known - id value should be red from the properties
+		if (object != null)
+		{
+			Object returnValue = PropertyResolver.getValue(idExpression, object);
+			return returnValue != null ? returnValue.toString() : "";
+		}
+		// object is known - id value should be empty
+		else
+		{
+			return "";
+		}
+	}
+
+	/**
+	 * Gets the property value.
+	 *
+	 * @param fileExpression the property expression
+	 * @return the property value
+	 */
+	private String getPropertyValue (String fileExpression)
+	{
+		// nothing to read
+		if (fileExpression == null)
 		{
 			return "";
 		}
 
-		Object returnValue = PropertyResolver.getValue(idExpression, object);
-		if (returnValue == null)
+		// property expression is known
+		String expression = fileExpression;
+		if (prefix != null && prefix.length() > 0)
 		{
-			return "";
+			expression = prefix.trim() + "." + fileExpression;
 		}
 
-		return returnValue.toString();
+		// read property from file or return ""
+		String retVal = CStringResourceReader.read(expression);
+		return retVal != null ? retVal : "";
 	}
 }
