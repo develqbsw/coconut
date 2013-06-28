@@ -32,7 +32,7 @@ public class CHttpDeleteClientTest
 		delete.setRepeatCount(2);
 		delete.setTimeout(10000);
 
-		System.out.println(client.makeCall(delete, "http://localhost:8080/RestTest/test", new CCallRequestModel()));
+		client.makeCall(delete, "http://localhost:8080/RestTest/test", new CCallRequestModel());
 	}
 
 	/**

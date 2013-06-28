@@ -13,7 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import sk.qbsw.core.api.exception.CApiHttpException;
 
 /**
- * Post client for API call.
+ * POST client for API call.
  * 
  * @author Dalibor Rak
  * @version 1.3.0

@@ -32,7 +32,7 @@ public class CHttpPutClientTest
 		put.setRepeatCount(2);
 		put.setTimeout(10000);
 
-		System.out.println(client.makeCall(put, "http://localhost:8080/RestTest/test", new CCallRequestModel()));
+		client.makeCall(put, "http://localhost:8080/RestTest/test", new CCallRequestModel());
 	}
 
 	/**
