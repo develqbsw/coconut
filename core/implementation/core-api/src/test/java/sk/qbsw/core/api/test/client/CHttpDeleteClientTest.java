@@ -38,6 +38,7 @@ public class CHttpDeleteClientTest
 	/**
 	 * Tests the connection with proxy settings
 	 */
+	@Ignore
 	@Test
 	public void testWithProxy () throws IOException
 	{
@@ -47,7 +48,7 @@ public class CHttpDeleteClientTest
 		delete.setTimeout(10000);
 		delete.setProxy(new HttpHost("192.168.121.31", 3128, "http"));
 
-		System.out.println(client.makeCall(delete, "http://localhost:8080/RestTest/test", new CCallRequestModel()));
+		client.makeCall(delete, "http://localhost:8080/RestTest/test", new CCallRequestModel());
 	}
 
 }
