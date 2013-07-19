@@ -1,5 +1,7 @@
 package sk.qbsw.core.api.exception;
 
+import sk.qbsw.core.base.exception.CSystemException;
+
 /**
  * HTTP exception call.
  * 
@@ -7,7 +9,7 @@ package sk.qbsw.core.api.exception;
  * @version 1.4.0
  * @since 1.2.0
  */
-public class CApiHttpException extends RuntimeException
+public class CApiHttpException extends CSystemException
 {
 
 	/** The Constant serialVersionUID. */

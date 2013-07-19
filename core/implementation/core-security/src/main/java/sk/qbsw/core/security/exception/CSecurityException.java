@@ -2,16 +2,17 @@
  * 
  */
 package sk.qbsw.core.security.exception;
-
+import sk.qbsw.core.base.exception.CBusinessException;
+ 
 /**
- * The Class CSecurityException.
+ * Security exception
  *
  * @author Dalibor Rak
  * @version 1.0
  * @since 1.0
  */
 @SuppressWarnings ("serial")
-public class CSecurityException extends Exception
+public class CSecurityException extends CBusinessException
 {
 
 	/**

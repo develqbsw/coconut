@@ -8,28 +8,39 @@ import java.net.URLEncoder;
 
 import org.apache.commons.io.IOUtils;
 
-import sk.qbsw.core.security.exception.CBusinessException;
+import sk.qbsw.core.base.exception.CBusinessException;
 
 /**
- * Google client for API services
- * 
+ * Google client for API services.
+ *
  * @author Dalibor Rak
  * @version 1.3.0
  * @since 1.2.0
- *
  */
 public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The Constant serviceUrl. */
 	private final static String serviceUrl = "http://maps.googleapis.com/maps/api/geocode/";
 
+	/** The Constant OUTPUT_XML. */
 	public static final String OUTPUT_XML = "xml";
+	
+	/** The Constant OUTPUT_JSON. */
 	public static final String OUTPUT_JSON = "json";
 
+	/** The Constant LANGUAGE_SK. */
 	public static final String LANGUAGE_SK = "sk";
+	
+	/** The Constant LANGUAGE_EN. */
 	public static final String LANGUAGE_EN = "en";
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForCoordinates(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String getGeocodeResponseForCoordinates (String latitude, String longitude) throws CBusinessException
 	{
@@ -38,6 +49,9 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		return getFromServer(url);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForCoordinates(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String getGeocodeResponseForCoordinates (String output, String latitude, String longitude) throws CBusinessException
 	{
@@ -46,6 +60,9 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		return getFromServer(url);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForCoordinates(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String getGeocodeResponseForCoordinates (String output, String language, String latitude, String longitude) throws CBusinessException
 	{
@@ -54,6 +71,9 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		return getFromServer(url);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForAddress(java.lang.String)
+	 */
 	@Override
 	public String getGeocodeResponseForAddress (String address) throws CBusinessException, UnsupportedEncodingException
 	{
@@ -62,6 +82,9 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		return getFromServer(url);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForAddress(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String getGeocodeResponseForAddress (String output, String address) throws CBusinessException, UnsupportedEncodingException
 	{
@@ -70,6 +93,9 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		return getFromServer(url);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForAddress(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String getGeocodeResponseForAddress (String output, String language, String address) throws CBusinessException, UnsupportedEncodingException
 	{
@@ -78,17 +104,24 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		return getFromServer(url);
 	}
 
+	/**
+	 * Encode address.
+	 *
+	 * @param address the address
+	 * @return the string
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 */
 	private String encodeAddress (String address) throws UnsupportedEncodingException
 	{
 		return URLEncoder.encode(address, "utf-8");
 	}
 
 	/**
-	 * Gets response from server
-	 * 
+	 * Gets response from server.
+	 *
 	 * @param urlString url to call
-	 * @return
-	 * @throws CBusinessException
+	 * @return the from server
+	 * @throws CBusinessException the c business exception
 	 */
 	private String getFromServer (String urlString) throws CBusinessException
 	{
@@ -110,7 +143,13 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 	/**
 	 * Searches for Google locality.
-	 * 
+	 *
+	 * @param address the address
+	 * @param country the country
+	 * @param language the language
+	 * @return the c location
+	 * @throws CBusinessException the c business exception
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
 	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#findCoordinates(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -136,8 +175,15 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	}
 
 	/**
-	 * Searches for google route or street address
-	 * 
+	 * Searches for google route or street address.
+	 *
+	 * @param address the address
+	 * @param city the city
+	 * @param country the country
+	 * @param language the language
+	 * @return the c location
+	 * @throws CBusinessException the c business exception
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
 	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#findCoordinates(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -172,6 +218,9 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getAddressByGPS(java.lang.Float, java.lang.Float)
+	 */
 	@Override
 	public String getAddressByGPS (Float latitute, Float longitude) throws CBusinessException, UnsupportedEncodingException
 	{
@@ -196,10 +245,10 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	}
 
 	/**
-	 * Get address for CGeocodeAddress
-	 * 
-	 * @param address CGeocodeAddress to find a address
-	 * @return
+	 * Get address for CGeocodeAddress.
+	 *
+	 * @param geocodeAddress the geocode address
+	 * @return the address
 	 */
 	private String getAddress (CGeocodeAddress geocodeAddress)
 	{

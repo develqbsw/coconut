@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @version 0.1
  * @since 0.1
  */
-public class CSecurityException extends Exception implements IsSerializable
+public class CSGWTSecurityException extends Exception implements IsSerializable
 {
 
 	private static final long serialVersionUID = 1L;
@@ -21,7 +21,7 @@ public class CSecurityException extends Exception implements IsSerializable
 	/**
 	 * Constructor.
 	 */
-	public CSecurityException()
+	public CSGWTSecurityException()
 	{
 		super();
 	}
@@ -32,7 +32,7 @@ public class CSecurityException extends Exception implements IsSerializable
 	 * @param s
 	 *            message text
 	 */
-	public CSecurityException(String s)
+	public CSGWTSecurityException(String s)
 	{
 		super(s, null);
 		this.message = CErrorConstants.winnetouExceptionPrefix + s;
@@ -46,7 +46,7 @@ public class CSecurityException extends Exception implements IsSerializable
 	 * @param cause
 	 *            {@link Throwable} instance
 	 */
-	public CSecurityException(String s, Throwable cause)
+	public CSGWTSecurityException(String s, Throwable cause)
 	{
 		super(s, cause);
 		this.message = CErrorConstants.winnetouExceptionPrefix + s;

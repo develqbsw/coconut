@@ -20,7 +20,12 @@
 			<artifactId>core-persistence</artifactId>
 			<version>${core.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>sk.qbsw</groupId>
+			<artifactId>core-base</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+		
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>

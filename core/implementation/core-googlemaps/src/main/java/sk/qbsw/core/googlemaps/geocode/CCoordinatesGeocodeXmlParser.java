@@ -15,27 +15,57 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import sk.qbsw.core.security.exception.CBusinessException;
+import sk.qbsw.core.base.exception.CBusinessException;
 
 
+/**
+ * The Class CCoordinatesGeocodeXmlParser.
+ */
 public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Serializable
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The geocode coordinates. */
 	private List<CGeocodeCoordinates> geocodeCoordinates;
+	
+	/** The tmp coordinate. */
 	private CGeocodeCoordinates tmpCoordinate;
+	
+	/** The tmp geometry. */
 	private CGeometry tmpGeometry;
+	
+	/** The tmp location. */
 	private CLocation tmpLocation;
+	
+	/** The tmp val. */
 	private String tmpVal;
+	
+	/** The to parse. */
 	private String toParse;
+	
+	/** The result type. */
 	private Boolean resultType;
+	
+	/** The tmp short name. */
 	private String tmpShortName;
 
+	/**
+	 * Gets the geocode coordinates.
+	 *
+	 * @return the geocode coordinates
+	 */
 	public List<CGeocodeCoordinates> getGeocodeCoordinates ()
 	{
 		return geocodeCoordinates;
 	}
 
+	/**
+	 * Instantiates a new c coordinates geocode xml parser.
+	 *
+	 * @param toParse the to parse
+	 */
 	public CCoordinatesGeocodeXmlParser (String toParse)
 	{
 		this.geocodeCoordinates = new ArrayList<CGeocodeCoordinates>();
@@ -43,6 +73,11 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		this.resultType = false;
 	}
 
+	/**
+	 * Parses the.
+	 *
+	 * @throws CBusinessException the c business exception
+	 */
 	public void parse () throws CBusinessException
 	{
 		try
@@ -55,6 +90,14 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		}
 	}
 
+	/**
+	 * Parses the document.
+	 *
+	 * @param fileContent the file content
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void parseDocument (final String fileContent) throws ParserConfigurationException, SAXException, IOException
 	{
 		//get a factory
@@ -70,6 +113,9 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 	}
 
 	//Event Handlers
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
 	public void startElement (String uri, String localName, String qName, Attributes attributes) throws SAXException
 	{
 		//reset
@@ -89,11 +135,17 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+	 */
 	public void characters (char[] ch, int start, int length) throws SAXException
 	{
 		tmpVal = new String(ch, start, length);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void endElement (String uri, String localName, String qName) throws SAXException
 	{
 

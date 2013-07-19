@@ -15,25 +15,51 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import sk.qbsw.core.security.exception.CBusinessException;
+import sk.qbsw.core.base.exception.CBusinessException;
 
 
+/**
+ * The Class CAddressGeocodeXmlParser.
+ */
 public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializable
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The geocode addresses. */
 	private List<CGeocodeAddress> geocodeAddresses;
+	
+	/** The tmp address. */
 	private CGeocodeAddress tmpAddress;
+	
+	/** The tmp address component. */
 	private CAddressComponent tmpAddressComponent;
+	
+	/** The tmp val. */
 	private String tmpVal;
+	
+	/** The to parse. */
 	private String toParse;
+	
+	/** The result type. */
 	private Boolean resultType;
 
+	/**
+	 * Gets the geocode addresses.
+	 *
+	 * @return the geocode addresses
+	 */
 	public List<CGeocodeAddress> getGeocodeAddresses ()
 	{
 		return geocodeAddresses;
 	}
 
+	/**
+	 * Instantiates a new c address geocode xml parser.
+	 *
+	 * @param toParse the to parse
+	 */
 	public CAddressGeocodeXmlParser (String toParse)
 	{
 		this.geocodeAddresses = new ArrayList<CGeocodeAddress>();
@@ -41,6 +67,11 @@ public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializ
 		this.resultType = false;
 	}
 
+	/**
+	 * Parses the.
+	 *
+	 * @throws CBusinessException the c business exception
+	 */
 	public void parse () throws CBusinessException
 	{
 		try
@@ -53,6 +84,14 @@ public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializ
 		}
 	}
 
+	/**
+	 * Parses the document.
+	 *
+	 * @param fileContent the file content
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void parseDocument (final String fileContent) throws ParserConfigurationException, SAXException, IOException
 	{
 		//get a factory
@@ -68,6 +107,9 @@ public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializ
 	}
 
 	//Event Handlers
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
 	public void startElement (String uri, String localName, String qName, Attributes attributes) throws SAXException
 	{
 		//reset
@@ -83,11 +125,17 @@ public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializ
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+	 */
 	public void characters (char[] ch, int start, int length) throws SAXException
 	{
 		tmpVal = new String(ch, start, length);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void endElement (String uri, String localName, String qName) throws SAXException
 	{
 
