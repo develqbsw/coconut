@@ -4,7 +4,7 @@ package sk.qbsw.core.api.exception;
  * HTTP exception call.
  * 
  * @author Dalibor Rak
- * @version 1.2.0
+ * @version 1.4.0
  * @since 1.2.0
  */
 public class CApiHttpException extends RuntimeException
@@ -15,6 +15,9 @@ public class CApiHttpException extends RuntimeException
 
 	/** HTTP error code. */
 	private int httpErrorCode;
+
+	/** HTTP response. */
+	private String response;
 
 	/**
 	 * Instantiates a new api http exception.
@@ -28,8 +31,22 @@ public class CApiHttpException extends RuntimeException
 	 */
 	public CApiHttpException (String message, Throwable thr, int errorCode)
 	{
+		this(message, thr, errorCode, "");
+	}
+
+	/**
+	 * Instantiates a new c api http exception.
+	 *
+	 * @param message the message
+	 * @param thr the thr
+	 * @param errorCode the error code
+	 * @param response the response
+	 */
+	public CApiHttpException (String message, Throwable thr, int errorCode, String response)
+	{
 		super(message, thr);
 		this.httpErrorCode = errorCode;
+		this.response = response;
 	}
 
 	/**
@@ -40,5 +57,15 @@ public class CApiHttpException extends RuntimeException
 	public int getHttpErrorCode ()
 	{
 		return httpErrorCode;
+	}
+
+	/**
+	 * Gets the response.
+	 *
+	 * @return the response
+	 */
+	public String getResponse ()
+	{
+		return response;
 	}
 }

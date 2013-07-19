@@ -1,8 +1,6 @@
 package sk.qbsw.core.api.client.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
@@ -17,7 +15,7 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * Base HTTP client for get requests.
  * 
  * @author Dalibor Rak
- * @version 1.3.0
+ * @version 1.4.0
  * @since 1.2.0
  */
 public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiRequest
@@ -42,73 +40,38 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 	 */
 	protected String makeOneCall (String url, ContentType contentType, String entity) throws IOException
 	{
-		InputStreamReader inputReader = null;
-		try
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		applyProxy(httpClient);
+		applyTimeouts(httpClient);
+
+		String fullURL = url;
+		if (entity != null)
 		{
-			DefaultHttpClient httpClient = new DefaultHttpClient();
-			applyProxy(httpClient);
-			applyTimeouts(httpClient);
-			
-			String fullURL = url;
-			if (entity != null)
+			if (contentParameter != null)
 			{
-				if (contentParameter != null)
-				{
-					fullURL = url + "?" + contentParameter + "=" + URLEncoder.encode(entity, "UTF-8");
-				}
-				else
-				{
-					throw new InvalidParameterException("Content parameter not set");
-				}
+				fullURL = url + "?" + contentParameter + "=" + URLEncoder.encode(entity, "UTF-8");
 			}
-
-			HttpGet getRequest = new HttpGet(fullURL);
-			getRequest.addHeader("accept", contentType.getMimeType());
-			HttpResponse response = httpClient.execute(getRequest);
-
-			if (response.getStatusLine().getStatusCode() != 200)
+			else
 			{
-				throw new CApiHttpException("Failed : HTTP error code:" + response.getStatusLine().getStatusCode(), null, response.getStatusLine().getStatusCode());
-			}
-			inputReader = new InputStreamReader( (response.getEntity().getContent()));
-			BufferedReader br = new BufferedReader(inputReader);
-
-			// reads output
-			StringBuffer output = new StringBuffer();
-			try
-			{
-				String line;
-				while ( (line = br.readLine()) != null)
-				{
-					output.append(line);
-				}
-			}
-			finally
-			{
-				if (br != null)
-				{
-					br.close();
-				}
-			}
-
-			httpClient.getConnectionManager().shutdown();
-
-			return output.toString();
-		}
-		finally
-		{
-			if (inputReader != null)
-			{
-				try
-				{
-					inputReader.close();
-				}
-				catch (IOException e)
-				{
-					// nothing to do
-				}
+				throw new InvalidParameterException("Content parameter not set");
 			}
 		}
+
+		HttpGet getRequest = new HttpGet(fullURL);
+		getRequest.addHeader("accept", contentType.getMimeType());
+		HttpResponse response = httpClient.execute(getRequest);
+
+		String content = super.getEntityContent(response);
+		
+		if (response.getStatusLine().getStatusCode() != 200)
+		{
+			throw new CApiHttpException("Failed : HTTP error code:" + response.getStatusLine().getStatusCode(), null, response.getStatusLine().getStatusCode(), content);
+		}
+
+
+		httpClient.getConnectionManager().shutdown();
+
+		return content;
 	}
 
 	/**

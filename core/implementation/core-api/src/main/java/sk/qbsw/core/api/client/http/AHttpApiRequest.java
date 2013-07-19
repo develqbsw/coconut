@@ -3,9 +3,12 @@
  */
 package sk.qbsw.core.api.client.http;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.params.ConnRoutePNames;
@@ -19,7 +22,7 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * HttpAPIReqpest repeater support.
  * 
  * @author Dalibor Rak
- * @version 1.3.0
+ * @version 1.4.0
  * @since 1.3.0
  */
 public abstract class AHttpApiRequest implements IHttpApiRequest
@@ -83,7 +86,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 		}
 
 		// throws last exception
-		throw new CApiHttpException("Repeated call failed", lastEx, lastEx.getHttpErrorCode());
+		throw new CApiHttpException("Repeated call failed", lastEx, lastEx.getHttpErrorCode(), lastEx.getResponse());
 	}
 
 	/**
@@ -105,18 +108,19 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	{
 		return this.proxy;
 	}
-	
+
 	/**
 	 * Apply timeouts settings.
 	 *
 	 * @param client the client
 	 */
-	protected void applyTimeouts(HttpClient client){
+	protected void applyTimeouts (HttpClient client)
+	{
 		HttpParams params = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(params, getTimeout());
 		HttpConnectionParams.setSoTimeout(params, getTimeout());
 	}
-	
+
 	/**
 	 * Apply proxy settings.
 	 *
@@ -137,6 +141,58 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	 * @param contentType the content type
 	 * @param entityInJSon the entity in j son
 	 * @return the string
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected abstract String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException;
+
+	/**
+	 * Gets the entity content.
+	 *
+	 * @param response the response
+	 * @return the entity content
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	protected String getEntityContent (HttpResponse response) throws IOException
+	{
+		StringBuffer output = new StringBuffer();
+		InputStreamReader inputReader = null;
+		try
+		{
+			inputReader = new InputStreamReader(response.getEntity().getContent());
+			BufferedReader br = new BufferedReader(inputReader);
+
+			// reads output
+			try
+			{
+				String line;
+				while ( (line = br.readLine()) != null)
+				{
+					output.append(line);
+				}
+			}
+			finally
+			{
+				if (br != null)
+				{
+					br.close();
+				}
+			}
+		}
+		finally
+		{
+			if (inputReader != null)
+			{
+				try
+				{
+					inputReader.close();
+				}
+				catch (IOException e)
+				{
+					// nothing to do
+				}
+			}
+
+		}
+		return output.toString();
+	}
 }
