@@ -23,31 +23,34 @@ import sk.qbsw.core.base.exception.CBusinessException;
  */
 public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Serializable
 {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The geocode coordinates. */
 	private List<CGeocodeCoordinates> geocodeCoordinates;
-	
+
 	/** The tmp coordinate. */
 	private CGeocodeCoordinates tmpCoordinate;
-	
+
 	/** The tmp geometry. */
 	private CGeometry tmpGeometry;
-	
+
 	/** The tmp location. */
 	private CLocation tmpLocation;
-	
+
 	/** The tmp val. */
 	private String tmpVal;
-	
+
 	/** The to parse. */
 	private String toParse;
-	
+
 	/** The result type. */
 	private Boolean resultType;
-	
+
+	/** The result type. */
+	private Boolean shortName;
+
 	/** The tmp short name. */
 	private String tmpShortName;
 
@@ -71,6 +74,7 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		this.geocodeCoordinates = new ArrayList<CGeocodeCoordinates>();
 		this.toParse = toParse;
 		this.resultType = false;
+		this.shortName = false;
 	}
 
 	/**
@@ -154,6 +158,7 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 			//add it to the list
 			geocodeCoordinates.add(tmpCoordinate);
 			resultType = false;
+			shortName = false;
 		}
 		else if (qName.equalsIgnoreCase("type") && !resultType)
 		{
@@ -166,9 +171,15 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		}
 		else if (qName.equalsIgnoreCase("type") && resultType)
 		{
-			if (tmpVal.equalsIgnoreCase("locality"))
+			if (tmpVal.equalsIgnoreCase("locality") && !shortName)
 			{
 				tmpCoordinate.setCity(tmpShortName);
+				shortName = true;
+			}
+			else if (tmpVal.equalsIgnoreCase("sublocality") && !shortName)
+			{
+				tmpCoordinate.setCity(tmpShortName);
+				shortName = true;
 			}
 		}
 		else if (qName.equalsIgnoreCase("geometry"))

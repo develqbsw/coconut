@@ -19,7 +19,7 @@ import sk.qbsw.core.base.exception.CBusinessException;
  */
 public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -28,13 +28,13 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 	/** The Constant OUTPUT_XML. */
 	public static final String OUTPUT_XML = "xml";
-	
+
 	/** The Constant OUTPUT_JSON. */
 	public static final String OUTPUT_JSON = "json";
 
 	/** The Constant LANGUAGE_SK. */
 	public static final String LANGUAGE_SK = "sk";
-	
+
 	/** The Constant LANGUAGE_EN. */
 	public static final String LANGUAGE_EN = "en";
 
@@ -164,7 +164,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 		for (CGeocodeCoordinates coordinates : parser.getGeocodeCoordinates())
 		{
-			if (coordinates.getType().equals("locality") && coordinates.getCity().equalsIgnoreCase(address))
+			if ( (coordinates.getType().equals("sublocality") || coordinates.getType().equals("locality")) && coordinates.getCity().equalsIgnoreCase(address))
 			{
 				location.setLat(coordinates.getGeometry().getLocation().getLat());
 				location.setLng(coordinates.getGeometry().getLocation().getLng());
@@ -187,7 +187,6 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#findCoordinates(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	
 	public CLocation findCoordinates (String address, String city, String country, String language) throws CBusinessException, UnsupportedEncodingException
 	{
 		if (address == null || address.isEmpty())
