@@ -122,6 +122,13 @@
 			<artifactId>antlr</artifactId>
 			<version>${antlr.version}</version>
 		</dependency>
+		
+		<!-- LDAP -->
+		<dependency>
+			<groupId>org.apache.directory.api</groupId>
+			<artifactId>api-all</artifactId>
+			<version>${directory.api.version}</version>
+		</dependency>
 
 	</dependencies>
 	<build>

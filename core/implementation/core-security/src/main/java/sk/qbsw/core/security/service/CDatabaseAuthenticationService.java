@@ -21,7 +21,7 @@ import sk.qbsw.core.security.model.domain.EAuthenticationType;
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
-public class CAuthenticationService implements IAuthenticationService
+public class CDatabaseAuthenticationService implements IAuthenticationService
 {
 
 	/** The Constant serialVersionUID. */

@@ -66,6 +66,9 @@
 		<gwtrpcspring.version>1.01</gwtrpcspring.version>
 		<gwtmavenplugin.version>1.2</gwtmavenplugin.version>
 		<smartgwt.version>2.1</smartgwt.version>
+		
+		<!-- Apache directory API - LDAP -->
+		<directory.api.version>1.0.0-M20</directory.api.version>
 	</properties>
 
 	<modules>
