@@ -15,15 +15,15 @@ import sk.qbsw.core.security.model.domain.CGroup;
  *
  * @author Ladislav Rosenberg
  * @author Dalibor Rak
+ * @author Tomas Lauro
  * @version 1.2.1
  * @since 1.0.0
  */
 @Repository (value = "groupDao")
 public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupDao
 {
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -53,7 +53,7 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 
 
 	/**
-	 * Find all 
+	 * Find all.
 	 *
 	 * @return the list
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findAll()
@@ -68,8 +68,9 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 	}
 
 	/**
-	 * Find all 
+	 * Find all.
 	 *
+	 * @param code the code
 	 * @return the list
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findAll()
 	 */
@@ -83,6 +84,9 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		return (List<CGroup>) query.getResultList();
 	}
 	
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCodeFetchRoles(java.lang.String)
+	 */
 	@SuppressWarnings ("unchecked")
 	public List<CGroup> findByCodeFetchRoles(String code)
 	{
