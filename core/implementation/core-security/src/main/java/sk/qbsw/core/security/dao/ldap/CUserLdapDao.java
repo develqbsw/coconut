@@ -7,17 +7,20 @@ import java.util.Set;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.LdapConnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.jpa.AEntityLdapDao;
+import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -60,10 +63,10 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	/** The ldap group search base dn. */
 	@Value ("${ldap.group_search_base_dn}")
 	private String ldapGroupSearchBaseDn;
-
-	/** The ldap organization search base dn. */
-	@Value ("${ldap.organization_search_base_dn}")
-	private String ldapOrganizationSearchBaseDn;
+	
+	/** The org dao. */
+	@Autowired
+	private IOrganizationDao orgDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
@@ -86,15 +89,8 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 				{
 					throw new CSystemException("The user with login " + login + " is not unique.");
 				}
-
-				CUser user = new CUser();
-				user.setName(userEntry.get("givenName").getString());
-				user.setSurname(userEntry.get("sn").getString());
-				user.setLogin(userEntry.get("uid").getString());
-				user.setGroups(getUserGroups(connection, userEntry.getDn()));
-				user.setOrganization(getUserOrganization(connection));
-
-				return user;
+				
+				return createLdapUser(connection, userEntry);
 			}
 			else
 			{
@@ -164,49 +160,38 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 
 		return groups;
 	}
-
+	
 	/**
-	 * Gets the user organization from LDAP server.
+	 * Creates the LDAP user - check mandatory attribute and fill it.
 	 *
 	 * @param connection the connection
-	 * @return the user organization
+	 * @param userEntry the user entry
+	 * @return the user
+	 * @throws LdapInvalidAttributeValueException the invalid LDAP attribute value exception
 	 */
-	private COrganization getUserOrganization (LdapConnection connection)
+	private CUser createLdapUser(LdapConnection connection, Entry userEntry) throws LdapInvalidAttributeValueException
 	{
-		EntryCursor cursor = null;
-		COrganization organization = null;
-
-		try
+		CUser user = new CUser();
+		
+		Attribute givenName = userEntry.get("givenName");
+		Attribute surname =  userEntry.get("sn");
+		Attribute login = userEntry.get("uid");
+		Attribute organizationUnit = userEntry.get("ou");
+		
+		if (surname == null || login == null || organizationUnit == null)
 		{
-			cursor = connection.search(ldapOrganizationSearchBaseDn, "(objectClass=organization)", SearchScope.OBJECT, "*");
-
-			if (cursor.next() == true)
-			{
-				Entry organizationEntry = cursor.get();
-
-				organization = new COrganization();
-				organization.setName(organizationEntry.get("o").getString());
-			}
+			throw new CSystemException("The mandatory LDAP attribute 'sn', 'uid' or 'ou' is missing.");
 		}
-		catch (CursorException ex)
-		{
-			throw new CSystemException("An CursorException exception raised: " + ex.toString());
-		}
-		catch (LdapException ex)
-		{
-			throw new CSystemException("An LdapException exception raised: " + ex.toString());
-		}
-		finally
-		{
-			if (cursor != null)
-			{
-				cursor.close();
-			}
-		}
-
-		return organization;
+		
+		user.setName(givenName.getString());
+		user.setSurname(surname.getString());
+		user.setLogin(login.getString());
+		user.setOrganizationUnit(organizationUnit.getString());
+		user.setGroups(getUserGroups(connection, userEntry.getDn()));
+		
+		return user;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#save(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */

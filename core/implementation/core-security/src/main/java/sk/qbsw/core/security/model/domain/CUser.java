@@ -96,6 +96,11 @@ public class CUser implements Serializable, IEntity<Long>
 	/** The PIN code. */
 	@Expose
 	private String pin;
+	
+	/** The organization unit. */
+	@Expose
+	@Column (name = "organization_unit")
+	private String organizationUnit;
 
 	/**
 	 * Instantiates a new c user.
@@ -348,6 +353,26 @@ public class CUser implements Serializable, IEntity<Long>
 		this.email = email;
 	}
 
+	/**
+	 * Gets the organization unit.
+	 * 
+	 * @return the organization unit
+	 */
+	public String getOrganizationUnit ()
+	{
+		return organizationUnit;
+	}
+
+	/**
+	 * Sets the organization unit.
+	 * 
+	 * @param organizationUnit the organizationUnit
+	 */
+	public void setOrganizationUnit (String organizationUnit)
+	{
+		this.organizationUnit = organizationUnit;
+	}
+	
 	/**
 	 * Gets the pin.
 	 * 

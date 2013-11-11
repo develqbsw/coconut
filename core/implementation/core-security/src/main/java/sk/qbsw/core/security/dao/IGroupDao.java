@@ -40,4 +40,11 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	 * @return the list
 	 */
 	public List<CGroup> findByCode(String code);
+	
+	/**
+	 * Find groups by code and fetch roles
+	 *
+	 * @return the list
+	 */
+	public List<CGroup> findByCodeFetchRoles(String code);
 }

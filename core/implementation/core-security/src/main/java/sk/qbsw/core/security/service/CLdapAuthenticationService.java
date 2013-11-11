@@ -57,6 +57,10 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	/** The ldap user password. */
 	@Value ("${ldap.user_password}")
 	private String ldapUserPassword;
+	
+	/** The ldap user organization. */
+	@Value ("${ldap.user_organization_id}")
+	private Long ldapUserOrganizationId;
 
 	/** The ldap user search base dn. */
 	@Value ("${ldap.user_search_base_dn}")
@@ -92,7 +96,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 				//reads groups and organization from database and replaces the data from LDAP server in user object
 				//the user object is connected to licenses and roles after this step
 				user.setGroups(getDBGroups(user.getGroups()));
-				user.setOrganization(getDBOrganization(user.getOrganization()));
+				user.setOrganization(getDBOrganization());
 				return user;
 			}
 			else
@@ -154,7 +158,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		//find groups in database
 		for (CGroup ldapGroup : ldapGroups)
 		{
-			List<CGroup> findByCodeResult = groupDao.findByCode(ldapGroup.getCode());
+			List<CGroup> findByCodeResult = groupDao.findByCodeFetchRoles(ldapGroup.getCode());
 
 			dbGroups.addAll(findByCodeResult);
 		}
@@ -165,12 +169,11 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	/**
 	 * Gets the organization from DB based on the informations from LDAP.
 	 *
-	 * @param ldapOrganization the LDAP organization
 	 * @return the DB organization
 	 */
-	private COrganization getDBOrganization (COrganization ldapOrganization)
+	private COrganization getDBOrganization ()
 	{
-		return organizationDao.findByName(ldapOrganization.getName());
+		return organizationDao.findById(ldapUserOrganizationId);
 	}
 
 	/**

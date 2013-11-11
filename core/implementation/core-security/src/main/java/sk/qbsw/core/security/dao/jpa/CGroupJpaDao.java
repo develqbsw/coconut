@@ -82,4 +82,14 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		query.setParameter("code", code);
 		return (List<CGroup>) query.getResultList();
 	}
+	
+	@SuppressWarnings ("unchecked")
+	public List<CGroup> findByCodeFetchRoles(String code)
+	{
+		String strQuery = "select g from CGroup g left join fetch g.roles r WHERE g.code=:code order by g.code";
+
+		Query query = getEntityManager().createQuery(strQuery);
+		query.setParameter("code", code);
+		return (List<CGroup>) query.getResultList();
+	}
 }
