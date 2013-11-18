@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.management.relation.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,7 +48,7 @@ public class CUser implements Serializable, IEntity<Long>
 	/** The pk id. */
 	@Id
 	@SequenceGenerator (name = "T_USER_PKID_GENERATOR", sequenceName = "SEC.T_USER_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.AUTO, generator = "T_USER_PKID_GENERATOR")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_USER_PKID_GENERATOR")
 	@Column (name = "pk_id")
 	@Expose
 	private Long pkId;

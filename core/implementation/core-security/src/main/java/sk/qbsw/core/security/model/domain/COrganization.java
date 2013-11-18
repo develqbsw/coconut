@@ -73,7 +73,7 @@ public class COrganization implements Serializable, IEntity<Long>
 	/** The pk id. */
 	@Id
 	@SequenceGenerator (name = "T_ORGANIZATION_PKID_GENERATOR", sequenceName = "SEC.T_ORGANIZATION_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.AUTO, generator = "T_ORGANIZATION_PKID_GENERATOR")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_ORGANIZATION_PKID_GENERATOR")
 	@Column (name = "pk_id")
 	@Expose
 	private Long pkId;
