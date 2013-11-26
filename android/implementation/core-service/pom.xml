@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>android-core-service</artifactId>
+	<packaging>jar</packaging>
+	<organization>
+		<name>QBSW a.s.</name>
+		<url>http://www.qbsw.sk</url>
+	</organization>
+	<name>Android core service</name>
+	<parent>
+		<groupId>sk.qbsw</groupId>
+		<artifactId>android-core</artifactId>
+		<version>1.6.0-SNAPSHOT</version>
+	</parent>
+	<dependencies>
+
+		<!-- dependency to android -->
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${android-platform.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>sk.qbsw</groupId>
+			<artifactId>android-core-persistence</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>sk.qbsw</groupId>
+			<artifactId>android-core-utils</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<optimize>true</optimize>
+					<debug>true</debug>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
