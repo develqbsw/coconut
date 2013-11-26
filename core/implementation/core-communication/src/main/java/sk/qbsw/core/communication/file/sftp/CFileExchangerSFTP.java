@@ -189,7 +189,7 @@ public class CFileExchangerSFTP implements IFileExchanger, IFileExchangerAuthent
 	@Override
 	public void setCertificateAuthentication (String pathTocertificate)
 	{
-		throw new UnsupportedOperationException("Mthod not implemented");
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	/* (non-Javadoc)
