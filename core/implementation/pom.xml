@@ -11,13 +11,13 @@
 	</parent>
 
 	<modules>
-		
 		<module>core-base</module>
 		<module>core-paypal</module>
 		<module>core-persistence</module>
 		<module>core-security</module>
 		<module>core-googlemaps</module>
 		<module>core-api</module>
+		<module>core-communication</module>
 		<module>core-logging</module>
   </modules>
 	<repositories>
