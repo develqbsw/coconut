@@ -15,13 +15,13 @@ import sk.qbsw.core.communication.file.sftp.CFileExchangerSFTP;
 public class CTestSFTPFE
 {
 
-	private CFileExchangerSFTP fe = new CFileExchangerSFTP("extension.hostignition.com", 34890);
+	private CFileExchangerSFTP fe = new CFileExchangerSFTP("talos.qbsw.local", 22);
 
 	@Before
 	public void initConnection ()
 	{
 		System.out.println("Connecting...");
-		fe.setSimpleAuthentication("dalibor", "xxxx");
+		fe.setSimpleAuthentication("pep", "BCYzwiDdyJ1n70X");
 		fe.connect();
 		System.out.println("Connected.");
 	}
@@ -30,7 +30,7 @@ public class CTestSFTPFE
 	public void testLsFile ()
 	{
 		System.out.println("Listing files:");
-		List<String> content = fe.ls("./public_ftp", EFileType.FILE);
+		List<String> content = fe.ls("./pep", EFileType.FILE);
 		for (String val : content)
 		{
 			System.out.println(val);
@@ -41,7 +41,7 @@ public class CTestSFTPFE
 	public void testLsDir ()
 	{
 		System.out.println("Listing dir:");
-		List<String> content = fe.ls("./public_ftp", EFileType.DIRECTORY);
+		List<String> content = fe.ls("./pep", EFileType.DIRECTORY);
 		for (String val : content)
 		{
 			System.out.println(val);
@@ -52,7 +52,7 @@ public class CTestSFTPFE
 	public void testLsAny ()
 	{
 		System.out.println("Listing any:");
-		List<String> content = fe.ls("./public_ftp", EFileType.ANY);
+		List<String> content = fe.ls("./pep", EFileType.ANY);
 		for (String val : content)
 		{
 			System.out.println(val);
@@ -63,7 +63,7 @@ public class CTestSFTPFE
 	public void testPut () throws FileNotFoundException
 	{
 		System.out.println("Uploading...");
-		fe.put("./public_ftp/1.wsdl", new FileInputStream("/Users/rak/Temp/1.wsdl"));
+		fe.put("./pep/1.wsdl", new FileInputStream("/Users/rak/Temp/1.wsdl"));
 		System.out.println("Uploaded.");
 	}
 
@@ -71,7 +71,7 @@ public class CTestSFTPFE
 	public void testGet () throws IOException
 	{
 		System.out.println("Downloading...");
-		IOUtils.copy(fe.get("./public_ftp/1.wsdl"), System.out);
+		IOUtils.copy(fe.get("./pep/1.wsdl"), System.out);
 		System.out.println("Downloaded.");
 	}
 
@@ -79,7 +79,7 @@ public class CTestSFTPFE
 	public void testRename () throws FileNotFoundException
 	{
 		System.out.println("Renaming...");
-		fe.rename("./public_ftp/1.wsdl", "./public_ftp/incoming/2.wsdl");
+		fe.rename("./pep/1.wsdl", "./pep/incoming/2.wsdl");
 		System.out.println("Renamed.");
 	}
 
@@ -87,7 +87,7 @@ public class CTestSFTPFE
 	public void testRemove () throws FileNotFoundException
 	{
 		System.out.println("Removing...");
-		fe.remove("./public_ftp/incoming/2.wsdl");
+		fe.remove("./pep/incoming/2.wsdl");
 		System.out.println("Removed.");
 	}
 
