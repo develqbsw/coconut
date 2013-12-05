@@ -16,6 +16,7 @@
 		<jasypt.version>1.9.0</jasypt.version>
 
 		<!-- QBSW dependences -->
+		<droid.version>${project.version}</droid.version>
 		<indy.version>${project.version}</indy.version>
 		<core.version>${project.version}</core.version>
 		<winnetou.version>${project.version}</winnetou.version>
@@ -94,7 +95,7 @@
 		<google-play-services.version>4.0.0</google-play-services.version>	</properties>
 
 	<modules>
-		<module>android</module>
+		<module>droid</module>
 		<module>core</module>
 		<module>indy</module>
 		<module>winnetou</module>

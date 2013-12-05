@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                               http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>android-core</artifactId>
+	<artifactId>droid-core</artifactId>
 	<packaging>pom</packaging>
 	<name>Core cumulative</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
-		<artifactId>android-core-top</artifactId>
+		<artifactId>droid-top</artifactId>
 		<version>1.6.0-SNAPSHOT</version>
 	</parent>
 
 	<modules>
-		<module>core-persistence</module>
-		<module>core-logging</module>
-		<module>core-location</module>
-		<module>core-service</module>
-		<module>core-api</module>
-		<module>core-utils</module>
-		<module>core-ui</module>
+		<module>droid-persistence</module>
+		<module>droid-logging</module>
+		<module>droid-location</module>
+		<module>droid-service</module>
+		<module>droid-api</module>
+		<module>droid-utils</module>
+		<module>droid-ui</module>
   </modules>
 </project>
