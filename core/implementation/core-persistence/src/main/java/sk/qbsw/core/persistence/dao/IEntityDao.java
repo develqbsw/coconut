@@ -42,7 +42,7 @@ public interface IEntityDao<PK, T extends IEntity<PK>>
 	List<T> findAll ();
 
 	/**
-	 * Returns object associated to input identifier or throws an exception, if
+	 * Returns object associated to input identifier or null, if
 	 * object not found.
 	 *
 	 * @param id input identifier
