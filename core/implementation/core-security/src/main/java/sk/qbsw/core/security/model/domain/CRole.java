@@ -37,8 +37,8 @@ public class CRole implements Serializable, IEntity<Long>
 
 	/** The pk id. */
 	@Id
-	@SequenceGenerator (name = "T_ROLE_PKID_GENERATOR", sequenceName = "SEC.T_ROLE_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_ROLE_PKID_GENERATOR")
+	@SequenceGenerator (name = "t_role_pkid_generator", sequenceName = "sec.t_role_pk_id_seq")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_role_pkid_generator")
 	@Column (name = "pk_id")
 	private Long pkId;
 

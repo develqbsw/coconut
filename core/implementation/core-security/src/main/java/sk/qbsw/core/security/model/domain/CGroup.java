@@ -34,8 +34,8 @@ public class CGroup implements Serializable, IEntity<Long>
 
 	/** The pk id. */
 	@Id
-	@SequenceGenerator (name = "T_GROUP_PKID_GENERATOR", sequenceName = "SEC.T_GROUP_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_GROUP_PKID_GENERATOR")
+	@SequenceGenerator (name = "t_group_pkid_generator", sequenceName = "sec.t_group_pk_id_seq")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_group_pkid_generator")
 	@Column (name = "pk_id")
 	private Long pkId;
 

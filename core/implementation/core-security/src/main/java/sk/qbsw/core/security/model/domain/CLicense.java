@@ -59,8 +59,8 @@ public abstract class CLicense<T> implements IEntity<Long>
 
 	/** The pk id. */
 	@Id
-	@SequenceGenerator (name = "T_LICENCE_PKID_GENERATOR", sequenceName = "SEC.T_LICENCE_PK_ID_SEQ")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "T_LICENCE_PKID_GENERATOR")
+	@SequenceGenerator (name = "t_licence_pkid_generator", sequenceName = "sec.t_licence_pk_id_seq")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_licence_pkid_generator")
 	@Column (name = "pk_id")
 	private Long pkId;
 
