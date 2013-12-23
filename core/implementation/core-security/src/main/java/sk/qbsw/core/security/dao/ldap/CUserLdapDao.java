@@ -15,7 +15,6 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.base.exception.CSystemException;
@@ -26,6 +25,7 @@ import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
 /**
  * User LDAP DAO implementation.
@@ -40,29 +40,8 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The ldap server name. */
-	@Value ("${ldap.server_name}")
-	private String ldapServerName;
-
-	/** The ldap server port. */
-	@Value ("${ldap.server_port}")
-	private int ldapServerPort;
-
-	/** The ldap dn of an user to authenticate with ldap server. */
-	@Value ("${ldap.user_dn}")
-	private String ldapUserDn;
-
-	/** The ldap user password. */
-	@Value ("${ldap.user_password}")
-	private String ldapUserPassword;
-
-	/** The ldap user search base dn. */
-	@Value ("${ldap.user_search_base_dn}")
-	private String ldapUserSearchBaseDn;
-
-	/** The ldap group search base dn. */
-	@Value ("${ldap.group_search_base_dn}")
-	private String ldapGroupSearchBaseDn;
+	@Autowired
+	private ILdapAuthenticationConfigurator ldapConfigurator;
 	
 	/** The org dao. */
 	@Autowired
@@ -74,12 +53,12 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	@Override
 	public CUser findByLogin (String login)
 	{
-		LdapConnection connection = createConnection(ldapServerName, ldapServerPort);
-		bindOnServer(connection, ldapUserDn, ldapUserPassword);
+		LdapConnection connection = createConnection(ldapConfigurator.getServerName(), ldapConfigurator.getServerPort());
+		bindOnServer(connection, ldapConfigurator.getUserDn(), ldapConfigurator.getUserPassword());
 
 		try
 		{
-			EntryCursor cursor = connection.search(ldapUserSearchBaseDn, "(&(uid=" + login + "))", SearchScope.SUBTREE, "*");
+			EntryCursor cursor = connection.search(ldapConfigurator.getUserSearchBaseDn(), "(&(uid=" + login + "))", SearchScope.SUBTREE, "*");
 
 			if (cursor.next() == true)
 			{
@@ -130,7 +109,7 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 
 		try
 		{
-			cursor = connection.search(ldapGroupSearchBaseDn, "(&(uniqueMember=" + userDn.toString() + "))", SearchScope.SUBTREE, "*");
+			cursor = connection.search(ldapConfigurator.getGroupSearchBaseDn(), "(&(uniqueMember=" + userDn.toString() + "))", SearchScope.SUBTREE, "*");
 
 			while (cursor.next() == true)
 			{
