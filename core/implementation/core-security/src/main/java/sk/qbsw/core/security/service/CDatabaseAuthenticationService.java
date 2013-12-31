@@ -13,9 +13,10 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.EAuthenticationType;
 
+// TODO: Auto-generated Javadoc
 /**
- * Authentication service
- * 
+ * Authentication service.
+ *
  * @author Dalibor Rak
  * @version 1.2.0
  * @since 1.0.0
@@ -132,5 +133,15 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 			throw new CSecurityException("User has no such role");
 		}
 		return user;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public CUser login (String login, String password, String organizationUnit) throws CSecurityException
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

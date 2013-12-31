@@ -21,7 +21,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * The Class CGroup.
  *
  * @author Dalibor Rak
- * @version 1.2.1
+ * @version 1.6.0
  * @since 1.0
  */
 @Entity
@@ -46,6 +46,10 @@ public class CGroup implements Serializable, IEntity<Long>
 	@Column (name = "flag_system")
 	private Boolean flagSystem;
 
+	/** The category. */
+	@Column (name = "category", nullable = true)
+	private String category;
+
 	//bi-directional many-to-many association to CRole
 	/** The roles. */
 	@ManyToMany (mappedBy = "groups")
@@ -64,23 +68,11 @@ public class CGroup implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Gets the pk id.
-	 *
-	 * @return the pk id
+	 * @return the category
 	 */
-	public Long getPkId ()
+	public String getCategory ()
 	{
-		return this.pkId;
-	}
-
-	/**
-	 * Sets the pk id.
-	 *
-	 * @param pkId the new pk id
-	 */
-	public void setPkId (Long pkId)
-	{
-		this.pkId = pkId;
+		return category;
 	}
 
 	/**
@@ -94,13 +86,29 @@ public class CGroup implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Sets the code.
+	 * Gets the flag system.
 	 *
-	 * @param code the new code
+	 * @return the flag system
 	 */
-	public void setCode (String code)
+	public Boolean getFlagSystem ()
 	{
-		this.code = code;
+		return flagSystem;
+	}
+
+	@Override
+	public Long getId ()
+	{
+		return getPkId();
+	}
+
+	/**
+	 * Gets the pk id.
+	 *
+	 * @return the pk id
+	 */
+	public Long getPkId ()
+	{
+		return this.pkId;
 	}
 
 	/**
@@ -114,16 +122,6 @@ public class CGroup implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Sets the roles.
-	 *
-	 * @param roles the new roles
-	 */
-	public void setRoles (Set<CRole> roles)
-	{
-		this.roles = roles;
-	}
-
-	/**
 	 * Gets the users.
 	 *
 	 * @return the users
@@ -131,36 +129,6 @@ public class CGroup implements Serializable, IEntity<Long>
 	public Set<CUser> getUsers ()
 	{
 		return this.users;
-	}
-
-	/**
-	 * Sets the users.
-	 *
-	 * @param users the new users
-	 */
-	public void setUsers (Set<CUser> users)
-	{
-		this.users = users;
-	}
-
-	/**
-	 * Gets the flag system.
-	 *
-	 * @return the flag system
-	 */
-	public Boolean getFlagSystem ()
-	{
-		return flagSystem;
-	}
-
-	/**
-	 * Sets the flag system.
-	 *
-	 * @param flagSystem the new flag system
-	 */
-	public void setFlagSystem (Boolean flagSystem)
-	{
-		this.flagSystem = flagSystem;
 	}
 
 	public boolean hasRole (CRole roleToCheck)
@@ -182,9 +150,61 @@ public class CGroup implements Serializable, IEntity<Long>
 		return false;
 	}
 
-	@Override
-	public Long getId ()
+	/**
+	 * @param category the category to set
+	 */
+	public void setCategory (String category)
 	{
-		return getPkId();
+		this.category = category;
+	}
+
+	/**
+	 * Sets the code.
+	 *
+	 * @param code the new code
+	 */
+	public void setCode (String code)
+	{
+		this.code = code;
+	}
+
+	/**
+	 * Sets the flag system.
+	 *
+	 * @param flagSystem the new flag system
+	 */
+	public void setFlagSystem (Boolean flagSystem)
+	{
+		this.flagSystem = flagSystem;
+	}
+
+	/**
+	 * Sets the pk id.
+	 *
+	 * @param pkId the new pk id
+	 */
+	public void setPkId (Long pkId)
+	{
+		this.pkId = pkId;
+	}
+
+	/**
+	 * Sets the roles.
+	 *
+	 * @param roles the new roles
+	 */
+	public void setRoles (Set<CRole> roles)
+	{
+		this.roles = roles;
+	}
+
+	/**
+	 * Sets the users.
+	 *
+	 * @param users the new users
+	 */
+	public void setUsers (Set<CUser> users)
+	{
+		this.users = users;
 	}
 }

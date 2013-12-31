@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class CRole.
  *
@@ -56,6 +57,16 @@ public class CRole implements Serializable, IEntity<Long>
 	 */
 	public CRole ()
 	{
+	}
+
+	/**
+	 * Instantiates a new c role.
+	 *
+	 * @param code the code
+	 */
+	public CRole (String code)
+	{
+		this.setCode(code);
 	}
 
 	/**
@@ -117,7 +128,10 @@ public class CRole implements Serializable, IEntity<Long>
 	{
 		this.groups = groups;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
+	 */
 	@Override
 	public Long getId ()
 	{

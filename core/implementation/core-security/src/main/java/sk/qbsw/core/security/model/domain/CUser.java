@@ -11,6 +11,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,7 +28,6 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 
 import com.google.gson.annotations.Expose;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CUser.
  * 
@@ -95,11 +96,15 @@ public class CUser implements Serializable, IEntity<Long>
 	/** The PIN code. */
 	@Expose
 	private String pin;
-	
+
 	/** The organization unit. */
 	@Expose
 	@Column (name = "organization_unit")
 	private String organizationUnit;
+
+	@Column (name = "type", nullable = true)
+	@Enumerated (EnumType.STRING)
+	private EUserType userType;
 
 	/**
 	 * Instantiates a new c user.
@@ -371,7 +376,7 @@ public class CUser implements Serializable, IEntity<Long>
 	{
 		this.organizationUnit = organizationUnit;
 	}
-	
+
 	/**
 	 * Gets the pin.
 	 * 

@@ -27,15 +27,15 @@ import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.model.jmx.CLdapAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
+// TODO: Auto-generated Javadoc
 /**
  * The LDAP authentication service.
  * 
  * @author Tomas Lauro
- * @version 1.7.0
- * @since 1.7.0
+ * @version 1.6.0
+ * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
 public class CLdapAuthenticationService implements IAuthenticationService
@@ -43,6 +43,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The data. */
 	@Autowired
 	private ILdapAuthenticationConfigurator data;
 
@@ -242,5 +243,15 @@ public class CLdapAuthenticationService implements IAuthenticationService
 				}
 			}
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public CUser login (String login, String password, String organizationUnit) throws CSecurityException
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

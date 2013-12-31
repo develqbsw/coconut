@@ -26,6 +26,17 @@ public interface IAuthenticationService extends Serializable
 	 */
 	public abstract CUser login (String login, String password) throws CSecurityException;
 
+	/**
+	 * Authenticates the user.
+	 *
+	 * @param login login of the user
+	 * @param password password of the user
+	 * @param organizationUnit the organization unit
+	 * @return the c user
+	 * @throws CSecurityException the c security exception
+	 */
+	public abstract CUser login (String login, String password, String organizationUnit) throws CSecurityException;
+
 
 	/** Find by login and role user must have login and role
 	 * @param login - login of the user
