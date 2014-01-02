@@ -19,11 +19,11 @@ import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.jpa.AEntityLdapDao;
-import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
@@ -40,12 +40,9 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The ldap configurator. */
 	@Autowired
 	private ILdapAuthenticationConfigurator ldapConfigurator;
-	
-	/** The org dao. */
-	@Autowired
-	private IOrganizationDao orgDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
@@ -68,7 +65,7 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 				{
 					throw new CSystemException("The user with login " + login + " is not unique.");
 				}
-				
+
 				return createLdapUser(connection, userEntry);
 			}
 			else
@@ -139,7 +136,22 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 
 		return groups;
 	}
-	
+
+
+	/**
+	 * Gets the user's unit.
+	 *
+	 * @param unitName the name of unit
+	 * @return the unit
+	 */
+	private CUnit getUserDefaultUnit (String unitName)
+	{
+		CUnit unit = new CUnit();
+		unit.setName(unitName);
+
+		return unit;
+	}
+
 	/**
 	 * Creates the LDAP user - check mandatory attribute and fill it.
 	 *
@@ -148,29 +160,29 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	 * @return the user
 	 * @throws LdapInvalidAttributeValueException the invalid LDAP attribute value exception
 	 */
-	private CUser createLdapUser(LdapConnection connection, Entry userEntry) throws LdapInvalidAttributeValueException
+	private CUser createLdapUser (LdapConnection connection, Entry userEntry) throws LdapInvalidAttributeValueException
 	{
 		CUser user = new CUser();
-		
+
 		Attribute givenName = userEntry.get("givenName");
-		Attribute surname =  userEntry.get("sn");
+		Attribute surname = userEntry.get("sn");
 		Attribute login = userEntry.get("uid");
 		Attribute organizationUnit = userEntry.get("ou");
-		
+
 		if (surname == null || login == null || organizationUnit == null)
 		{
 			throw new CSystemException("The mandatory LDAP attribute 'sn', 'uid' or 'ou' is missing.");
 		}
-		
+
 		user.setName(givenName.getString());
 		user.setSurname(surname.getString());
 		user.setLogin(login.getString());
-		user.setOrganizationUnit(organizationUnit.getString());
+		user.setDefaultUnit(getUserDefaultUnit(organizationUnit.getString()));
 		user.setGroups(getUserGroups(connection, userEntry.getDn()));
-		
+
 		return user;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#save(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */

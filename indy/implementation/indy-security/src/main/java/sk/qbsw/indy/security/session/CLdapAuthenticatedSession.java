@@ -14,6 +14,7 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * @version 1.7.0
  * @since 1.7.0
  */
+//TODO: return default organization unit?
 public class CLdapAuthenticatedSession extends AAuthenticatedSession
 {
 	/** The Constant serialVersionUID. */
@@ -24,7 +25,7 @@ public class CLdapAuthenticatedSession extends AAuthenticatedSession
 	private IAuthenticationService loginService;
 	
 	/** The organization unit. */
-	private String organizationUnit;
+	//private String organizationUnit;
 	
 	/**
 	 * Gets actual session.
@@ -62,7 +63,7 @@ public class CLdapAuthenticatedSession extends AAuthenticatedSession
 			user = loginService.login(login, password);
 			
 			setOrganization(user.getOrganization());
-			setOrganizationUnit(user.getOrganizationUnit());
+			//setOrganizationUnit(user.getOrganizationUnit());
 			
 			return true;
 		}
@@ -78,18 +79,18 @@ public class CLdapAuthenticatedSession extends AAuthenticatedSession
 	 *
 	 * @return the organization unit
 	 */
-	public String getOrganizationUnit ()
-	{
-		return organizationUnit;
-	}
+//	public String getOrganizationUnit ()
+//	{
+//		return organizationUnit;
+//	}
 
 	/**
 	 * Sets the organization unit.
 	 *
 	 * @param organizationUnit the new organization unit
 	 */
-	public void setOrganizationUnit (String organizationUnit)
-	{
-		this.organizationUnit = organizationUnit;
-	}
+//	public void setOrganizationUnit (String organizationUnit)
+//	{
+//		this.organizationUnit = organizationUnit;
+//	}
 }

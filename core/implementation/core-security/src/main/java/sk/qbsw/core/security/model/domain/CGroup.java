@@ -28,7 +28,6 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 @Table (name = "t_group", schema = "sec")
 public class CGroup implements Serializable, IEntity<Long>
 {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -60,6 +59,11 @@ public class CGroup implements Serializable, IEntity<Long>
 	@ManyToMany (mappedBy = "groups")
 	private Set<CUser> users;
 
+	//bi-directional many-to-many association to CUnit
+	/** The units. */
+	@ManyToMany (mappedBy = "groups")
+	private Set<CUnit> units;
+
 	/**
 	 * Instantiates a new c group.
 	 */
@@ -68,6 +72,8 @@ public class CGroup implements Serializable, IEntity<Long>
 	}
 
 	/**
+	 * Gets the category.
+	 *
 	 * @return the category
 	 */
 	public String getCategory ()
@@ -95,6 +101,9 @@ public class CGroup implements Serializable, IEntity<Long>
 		return flagSystem;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
+	 */
 	@Override
 	public Long getId ()
 	{
@@ -131,6 +140,12 @@ public class CGroup implements Serializable, IEntity<Long>
 		return this.users;
 	}
 
+	/**
+	 * Checks for role.
+	 *
+	 * @param roleToCheck the role to check
+	 * @return true, if successful
+	 */
 	public boolean hasRole (CRole roleToCheck)
 	{
 
@@ -151,6 +166,8 @@ public class CGroup implements Serializable, IEntity<Long>
 	}
 
 	/**
+	 * Sets the category.
+	 *
 	 * @param category the category to set
 	 */
 	public void setCategory (String category)
@@ -206,5 +223,25 @@ public class CGroup implements Serializable, IEntity<Long>
 	public void setUsers (Set<CUser> users)
 	{
 		this.users = users;
+	}
+
+	/**
+	 * Gets the units.
+	 *
+	 * @return the units
+	 */
+	public Set<CUnit> getUnits ()
+	{
+		return units;
+	}
+
+	/**
+	 * Sets the units.
+	 *
+	 * @param units the new units
+	 */
+	public void setUnits (Set<CUnit> units)
+	{
+		this.units = units;
 	}
 }

@@ -29,7 +29,6 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
-// TODO: Auto-generated Javadoc
 /**
  * The LDAP authentication service.
  * 

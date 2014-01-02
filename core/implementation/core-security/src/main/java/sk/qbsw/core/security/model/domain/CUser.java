@@ -32,12 +32,9 @@ import com.google.gson.annotations.Expose;
  * The Class CUser.
  * 
  * @author Dalibor Rak
- * @version 1.3.0
+ * @author Tomas Lauro
+ * @version 1.6.0
  * @since 1.0
- */
-/**
- * @author rak
- *
  */
 @Entity
 @Table (name = "t_user", schema = "sec")
@@ -97,11 +94,13 @@ public class CUser implements Serializable, IEntity<Long>
 	@Expose
 	private String pin;
 
-	/** The organization unit. */
+	/** The default user's unit. */
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "fk_default_unit", nullable = true)
 	@Expose
-	@Column (name = "organization_unit")
-	private String organizationUnit;
+	private CUnit defaultUnit;
 
+	/** The user type. */
 	@Column (name = "type", nullable = true)
 	@Enumerated (EnumType.STRING)
 	private EUserType userType;
@@ -358,26 +357,6 @@ public class CUser implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Gets the organization unit.
-	 * 
-	 * @return the organization unit
-	 */
-	public String getOrganizationUnit ()
-	{
-		return organizationUnit;
-	}
-
-	/**
-	 * Sets the organization unit.
-	 * 
-	 * @param organizationUnit the organizationUnit
-	 */
-	public void setOrganizationUnit (String organizationUnit)
-	{
-		this.organizationUnit = organizationUnit;
-	}
-
-	/**
 	 * Gets the pin.
 	 * 
 	 * @return the pin
@@ -396,6 +375,26 @@ public class CUser implements Serializable, IEntity<Long>
 	public void setPin (String pin)
 	{
 		this.pin = pin;
+	}
+
+	/**
+	 * Gets the default unit.
+	 *
+	 * @return the default unit
+	 */
+	public CUnit getDefaultUnit ()
+	{
+		return defaultUnit;
+	}
+
+	/**
+	 * Sets the default unit.
+	 *
+	 * @param defaultUnit the new default unit
+	 */
+	public void setDefaultUnit (CUnit defaultUnit)
+	{
+		this.defaultUnit = defaultUnit;
 	}
 
 	/**
