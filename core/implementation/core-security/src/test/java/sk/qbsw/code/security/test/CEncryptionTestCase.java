@@ -1,11 +1,18 @@
-package sk.qbsw;
+package sk.qbsw.code.security.test;
 
 import junit.framework.Assert;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 
-public class CJasyptTestCase
+@RunWith (SpringJUnit4ClassRunner.class)
+@ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
+@TransactionConfiguration (transactionManager = "transactionManager")
+public class CEncryptionTestCase
 {
 
 	@Test
