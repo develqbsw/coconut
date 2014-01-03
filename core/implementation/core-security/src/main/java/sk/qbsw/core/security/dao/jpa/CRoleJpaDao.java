@@ -12,32 +12,32 @@ import org.springframework.stereotype.Repository;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
- * The Class CSectionJpaDao.
+ * The Class CRoleJpaDao.
  *
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @author Tomas Lauro
+ * @version 1.6.0
+ * @since 1.0.0
  */
 @Repository (value = "roleDao")
 public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Instantiates a new c role jpa dao.
 	 *
-	 * @param entityClass the entity class
 	 */
 	public CRoleJpaDao ()
 	{
 		super(CRole.class);
 	}
-	
+
 	/**
 	 * Find all by user.
 	 *
@@ -69,5 +69,26 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 		return (List<CRole>) query.getResultList();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IRoleDao#findByUnitAndCode(sk.qbsw.core.security.model.domain.CUnit, java.lang.String)
+	 */
+	@SuppressWarnings ("unchecked")
+	public CRole findByUnitAndCode (CUnit unit, String code)
+	{
+		String strQuery = "select distinct(r) from CRole r join r.groups g join g.units u where u = :unit and r.code = :code";
 
+		Query query = getEntityManager().createQuery(strQuery);
+		query.setParameter("unit", unit);
+		query.setParameter("code", code);
+		List<CRole> roles = (List<CRole>) query.getResultList();
+
+		if (roles.isEmpty() || roles.size() != 1)
+		{
+			return null;
+		}
+		else
+		{
+			return roles.get(0);
+		}
+	}
 }

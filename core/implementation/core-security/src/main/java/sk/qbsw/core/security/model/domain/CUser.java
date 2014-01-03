@@ -422,6 +422,7 @@ public class CUser implements Serializable, IEntity<Long>
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -447,7 +448,25 @@ public class CUser implements Serializable, IEntity<Long>
 		return retVal;
 	}
 
+	/**
+	 * Checks if the user is in defined unit.
+	 *
+	 * @param unit the unit
+	 * @return true / false
+	 */
+	public boolean isInUnit (CUnit unit)
+	{
+		for (CGroup group : groups)
+		{
+			if (group.hasUnit(unit))
+			{
+				return true;
+			}
+		}
 
+		return false;
+	}
+	
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
 	 */

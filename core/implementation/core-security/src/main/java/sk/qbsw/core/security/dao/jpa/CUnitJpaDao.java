@@ -35,24 +35,11 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IUnitDao#findByName(java.lang.String)
-	 */
-	public CUnit findByName (String name)
-	{
-		String strQuery = "from CUnit where name = :name";
-
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("name", name);
-		return (CUnit) query.getSingleResult();
-	}
-
-	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUnitDao#findByNameNull(java.lang.String)
 	 */
 	@SuppressWarnings ("unchecked")
-	public CUnit findByNameNull (String name)
+	public CUnit findByName (String name)
 	{
-		CUnit unit;
 		String strQuery = "select o from CUnit o where o.name = :name";
 
 		Query query = getEntityManager().createQuery(strQuery);
@@ -60,16 +47,13 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 
 		List<CUnit> units = query.getResultList();
 
-		if (units.isEmpty())
+		if (units.isEmpty() || units.size() != 1)
 		{
-			unit = null;
+			return null;
 		}
 		else
 		{
-			unit = units.get(0);
+			return units.get(0);
 		}
-
-		return unit;
 	}
-
 }

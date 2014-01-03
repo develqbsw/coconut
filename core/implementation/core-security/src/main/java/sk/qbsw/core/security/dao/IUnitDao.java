@@ -18,18 +18,10 @@ import sk.qbsw.core.security.model.domain.CUnit;
 public interface IUnitDao extends Serializable, IEntityDao<Long, CUnit>
 {
 	/**
-	 * Find by name.
+	 * Find by name. Returns null if there is no result or more than 1 result.
 	 *
 	 * @param name the unit name
-	 * @return the unit
+	 * @return the unit or null if there is no result or more than 1 result
 	 */
 	public CUnit findByName (String name);
-
-	/**
-	 * Find by name and return NULL if unit not exist - NOT exception.
-	 *
-	 * @param name the name
-	 * @return the unit or null if unit does not exist
-	 */
-	public CUnit findByNameNull (String name);
 }

@@ -5,32 +5,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.security.dao.IRoleDao;
+import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.exception.CWrongPasswordException;
 import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.EAuthenticationType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Authentication service.
  *
  * @author Dalibor Rak
- * @version 1.2.0
+ * @author Tomas Lauro
+ * @version 1.6.0
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
 public class CDatabaseAuthenticationService implements IAuthenticationService
 {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
+
+	/** The role dao. */
+	@Autowired
+	private IRoleDao roleDao;
+
+	/** The unit dao. */
+	@Autowired
+	private IUnitDao unitDao;
 
 	/**
 	 * Authenticate by digest.
@@ -128,10 +138,23 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	public CUser login (String login, String password, CRole role) throws CSecurityException
 	{
 		CUser user = login(login, password);
-		if (!user.hasRole(role))
+
+		//if the default unit is defines for user find role which are bind to groups with the unit
+		if (user.getDefaultUnit() != null)
 		{
-			throw new CSecurityException("User has no such role");
+			if (roleDao.findByUnitAndCode(user.getDefaultUnit(), role.getCode()) == null)
+			{
+				throw new CSecurityException("User has no such role");
+			}
 		}
+		else
+		{
+			if (!user.hasRole(role))
+			{
+				throw new CSecurityException("User has no such role");
+			}
+		}
+
 		return user;
 	}
 
@@ -139,9 +162,24 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public CUser login (String login, String password, String organizationUnit) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, String password, String unit) throws CSecurityException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		CUser user = login(login, password);
+		CUnit localUnit = unitDao.findByName(unit);
+
+		if (localUnit != null)
+		{
+			if (user.isInUnit(localUnit) == false)
+			{
+				throw new CSecurityException("User is not is unit with name " + localUnit.getName());
+			}
+		}
+		else
+		{
+			throw new CSecurityException("There is not a unit with name " + unit);
+		}
+
+		return user;
 	}
 }

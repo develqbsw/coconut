@@ -70,6 +70,55 @@ public class CGroup implements Serializable, IEntity<Long>
 	public CGroup ()
 	{
 	}
+	
+	/**
+	 * Checks for role.
+	 *
+	 * @param roleToCheck the role to check
+	 * @return true, if successful
+	 */
+	public boolean hasRole (CRole roleToCheck)
+	{
+
+		if (roleToCheck == null)
+		{
+			return true;
+		}
+
+		for (CRole role : roles)
+		{
+			if (role.getCode().equals(roleToCheck.getCode()))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Checks for unit.
+	 *
+	 * @param unitToCheck the unit to check
+	 * @return true, if successful
+	 */
+	public boolean hasUnit (CUnit unitToCheck)
+	{
+		if (unitToCheck == null)
+		{
+			return true;
+		}
+
+		for (CUnit unit : units)
+		{
+			if (unit.getName().equals(unitToCheck.getName()))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * Gets the category.
@@ -138,31 +187,6 @@ public class CGroup implements Serializable, IEntity<Long>
 	public Set<CUser> getUsers ()
 	{
 		return this.users;
-	}
-
-	/**
-	 * Checks for role.
-	 *
-	 * @param roleToCheck the role to check
-	 * @return true, if successful
-	 */
-	public boolean hasRole (CRole roleToCheck)
-	{
-
-		if (roleToCheck == null)
-		{
-			return true;
-		}
-
-		for (CRole role : roles)
-		{
-			if (role.getCode().equals(roleToCheck.getCode()))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**

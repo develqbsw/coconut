@@ -8,6 +8,7 @@ import java.util.List;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
@@ -27,7 +28,7 @@ public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 	 * @return the list
 	 */
 	public List<CRole> findAllByUser (CUser user);
-	
+
 	/**
 	 * Find by code.
 	 *
@@ -35,4 +36,13 @@ public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 	 * @return the list
 	 */
 	public List<CRole> findByCode (String code);
+
+	/**
+	 * Find by unit and code. Returns null if there is no result or more than 1 result.
+	 *
+	 * @param unit the unit
+	 * @param code the code
+	 * @return the unit or null if there is no result or more than 1 result
+	 */
+	public CRole findByUnitAndCode (CUnit unit, String code);
 }

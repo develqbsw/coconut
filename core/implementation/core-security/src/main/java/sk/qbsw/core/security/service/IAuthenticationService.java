@@ -12,12 +12,11 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Authentication service
  * 
  * @author Dalibor Rak
- * @version 1.2.0
+ * @version 1.6.0
  * @since 1.0.0
  */
 public interface IAuthenticationService extends Serializable
 {
-
 	/**
 	 * Authenticates the user
 	 * @param login login of the user
@@ -31,12 +30,11 @@ public interface IAuthenticationService extends Serializable
 	 *
 	 * @param login login of the user
 	 * @param password password of the user
-	 * @param organizationUnit the organization unit
+	 * @param unit the organization unit
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	public abstract CUser login (String login, String password, String organizationUnit) throws CSecurityException;
-
+	public abstract CUser login (String login, String password, String unit) throws CSecurityException;
 
 	/** Find by login and role user must have login and role
 	 * @param login - login of the user
@@ -55,5 +53,4 @@ public interface IAuthenticationService extends Serializable
 	 */
 	@Transactional (readOnly = true)
 	public abstract boolean canLogin (String login, String password, CRole role);
-
 }
