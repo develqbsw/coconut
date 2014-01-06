@@ -3,6 +3,7 @@
  */
 package sk.qbsw.core.security.dao.jpa;
 
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -24,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0.0
  */
 @Repository (value = "userDao")
-public class CUserJpaDao extends  AEntityJpaDao<Long, CUser> implements IUserDao
+public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 {
 
 	/** The Constant serialVersionUID. */
@@ -62,23 +63,61 @@ public class CUserJpaDao extends  AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @param login the login
 	 * @return the c user
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
-	 */
+	 */	
+	@SuppressWarnings ("unchecked")
 	public CUser findByLogin (String login)
 	{
 		CUser userToReturn = null;
 
-		String strQuery = "select u from CUser u left join fetch u.organization o left join fetch u.groups g left join fetch g.roles g  where u.login=:login";
+		String strQuery = "select distinct(us) from CUser us " +
+					"left join fetch us.organization " +
+					"left join fetch us.defaultUnit " +
+					"where us.login=:login";
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("login", login);
 
-		@SuppressWarnings ("unchecked")
+		List<CUser> loginUsers = query.getResultList();
+
+		//1. The user default unit is not null
+		if (loginUsers.size() > 0 && loginUsers.get(0).getDefaultUnit() != null)
+		{
+			strQuery = "select distinct(us) from CUser us " +
+					"left join fetch us.organization " +
+					"left join fetch us.defaultUnit " +
+					"left join fetch us.groups gr " +
+					"left join fetch gr.units un " +
+					"left join fetch gr.roles " +
+					"where us.login=:login and un is not null";	
+		}
+		//2. The user default unit is null
+		else
+		{
+			strQuery = "select distinct(us) from CUser us " +
+					"left join fetch us.organization " +
+					"left join fetch us.defaultUnit " +
+					"left join fetch us.groups gr " +
+					"left join fetch gr.units un " +
+					"left join fetch gr.roles " +
+					"where us.login=:login and un is null";
+		}
+
+		query = getEntityManager().createQuery(strQuery);
+		query.setParameter("login", login);
+		
 		List<CUser> users = query.getResultList();
 
+		//a. there is a user with groups according the select - the list of users is not null
 		if (users.size() > 0)
 		{
 			userToReturn = users.get(0);
 		}
-
+		//b. there is not a user with some groups - the query above returns a null so the list from the very first select is used and to groups is set a empty list
+		else
+		{
+			userToReturn = loginUsers.get(0);
+			userToReturn.setGroups(new HashSet<CGroup>());
+		}
+		
 		return userToReturn;
 	}
 

@@ -139,20 +139,9 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	{
 		CUser user = login(login, password);
 
-		//if the default unit is defines for user find role which are bind to groups with the unit
-		if (user.getDefaultUnit() != null)
+		if (user.hasRole(role) == false)
 		{
-			if (roleDao.findByUnitAndCode(user.getDefaultUnit(), role.getCode()) == null)
-			{
-				throw new CSecurityException("User has no such role");
-			}
-		}
-		else
-		{
-			if (!user.hasRole(role))
-			{
-				throw new CSecurityException("User has no such role");
-			}
+			throw new CSecurityException("User has not a role with code " + role.getCode());
 		}
 
 		return user;
@@ -168,16 +157,16 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		CUser user = login(login, password);
 		CUnit localUnit = unitDao.findByName(unit);
 
-		if (localUnit != null)
+		if (localUnit == null)
+		{
+			throw new CSecurityException("There is not a unit with name " + unit);
+		}
+		else
 		{
 			if (user.isInUnit(localUnit) == false)
 			{
 				throw new CSecurityException("User is not is unit with name " + localUnit.getName());
 			}
-		}
-		else
-		{
-			throw new CSecurityException("There is not a unit with name " + unit);
 		}
 
 		return user;
