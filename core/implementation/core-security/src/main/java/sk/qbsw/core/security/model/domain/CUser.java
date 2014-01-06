@@ -113,6 +113,15 @@ public class CUser implements Serializable, IEntity<Long>
 		groups = new HashSet<CGroup>();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
+	 */
+	@Override
+	public Long getId ()
+	{
+		return getPkId();
+	}
+
 	/**
 	 * Gets the pk id.
 	 * 
@@ -426,7 +435,6 @@ public class CUser implements Serializable, IEntity<Long>
 		return false;
 	}
 
-
 	/**
 	 * Export roles.
 	 *
@@ -467,12 +475,22 @@ public class CUser implements Serializable, IEntity<Long>
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
+	/**
+	 * Checks if the user has a category.
+	 *
+	 * @param category the needed category
+	 * @return true / false
 	 */
-	@Override
-	public Long getId ()
+	public boolean hasCategory (String category)
 	{
-		return getPkId();
+		for (CGroup group : groups)
+		{
+			if (group.getCategory().equals(category))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
@@ -33,10 +32,6 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
-
-	/** The role dao. */
-	@Autowired
-	private IRoleDao roleDao;
 
 	/** The unit dao. */
 	@Autowired
