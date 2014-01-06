@@ -485,7 +485,7 @@ public class CUser implements Serializable, IEntity<Long>
 	{
 		for (CGroup group : groups)
 		{
-			if (group.getCategory().equals(category))
+			if (group.getCategory() != null && group.getCategory().equals(category))
 			{
 				return true;
 			}

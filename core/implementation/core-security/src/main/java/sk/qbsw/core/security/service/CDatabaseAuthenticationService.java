@@ -95,7 +95,67 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	@Transactional (readOnly = true)
 	public CUser login (String login, String password) throws CSecurityException
 	{
-		CUser user = userDao.findByLogin(login);
+		return loginWithUnit(login, password, null);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
+	 */
+	@Transactional (readOnly = true)
+	public CUser login (String login, String password, CRole role) throws CSecurityException
+	{
+		CUser user = loginWithUnit(login, password, null);
+
+		if (user.hasRole(role) == false)
+		{
+			throw new CSecurityException("User has not a role with code " + role.getCode());
+		}
+
+		return user;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	@Transactional (readOnly = true)
+	public CUser login (String login, String password, String unit) throws CSecurityException
+	{
+		CUnit localUnit = unitDao.findByName(unit);
+
+		if (localUnit == null)
+		{
+			throw new CSecurityException("There is not a unit with name " + unit);
+		}
+		else
+		{
+			CUser user = loginWithUnit(login, password, localUnit);
+
+			if (user.isInUnit(localUnit) == true)
+			{
+				return user;
+			}
+			else
+			{
+				throw new CSecurityException("User is not is unit with name " + localUnit.getName());
+			}
+		}
+	}
+
+
+	/**
+	 * Login with unit.
+	 *
+	 * @param login the login
+	 * @param password the password
+	 * @param unit the unit - the unit is optional parameter
+	 * @return the user
+	 * @throws CSecurityException the security exception
+	 */
+	@Transactional (readOnly = true)
+	private CUser loginWithUnit (String login, String password, CUnit unit) throws CSecurityException
+	{
+		CUser user = userDao.findByLogin(login, unit);
 		if (user == null)
 		{
 			throw new CWrongPasswordException("User not recognised");
@@ -120,47 +180,6 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 			if (user.getFlagEnabled().equals(false))
 			{
 				throw new CUserDisabledException("");
-			}
-		}
-
-		return user;
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
-	 */
-	@Transactional (readOnly = true)
-	public CUser login (String login, String password, CRole role) throws CSecurityException
-	{
-		CUser user = login(login, password);
-
-		if (user.hasRole(role) == false)
-		{
-			throw new CSecurityException("User has not a role with code " + role.getCode());
-		}
-
-		return user;
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = true)
-	public CUser login (String login, String password, String unit) throws CSecurityException
-	{
-		CUser user = login(login, password);
-		CUnit localUnit = unitDao.findByName(unit);
-
-		if (localUnit == null)
-		{
-			throw new CSecurityException("There is not a unit with name " + unit);
-		}
-		else
-		{
-			if (user.isInUnit(localUnit) == false)
-			{
-				throw new CSecurityException("User is not is unit with name " + localUnit.getName());
 			}
 		}
 

@@ -31,8 +31,8 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * User LDAP DAO implementation.
  *
  * @author Tomas Lauro
- * @version 1.7.0
- * @since 1.7.0
+ * @version 1.6.0
+ * @since 1.6.0
  */
 @Repository (value = "userLdapDao")
 public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDao
@@ -181,6 +181,15 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 		user.setGroups(getUserGroups(connection, userEntry.getDn()));
 
 		return user;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
+	 */
+	@Override
+	public CUser findByLogin (String login, CUnit unit)
+	{
+		return null;
 	}
 
 	/* (non-Javadoc)

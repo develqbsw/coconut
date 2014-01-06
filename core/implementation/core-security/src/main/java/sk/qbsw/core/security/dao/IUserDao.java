@@ -10,6 +10,7 @@ import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
@@ -21,8 +22,6 @@ import sk.qbsw.core.security.model.domain.CUser;
  */
 public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 {
-
-
 	/**
 	 * Find for modification.
 	 *
@@ -32,13 +31,22 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	public CUser findForModification (Long pkId);
 
 	/**
-	 * Find by login.
+	 * Find by login - there are groups with user default unit in the list.
 	 *
 	 * @param login the login
-	 * @return the c user
+	 * @return the user
 	 */
 	public CUser findByLogin (String login);
 
+	/**
+	 * Find by login - there are groups with unit from parameter in the list.
+	 *
+	 * @param login the login
+	 * @param unit the unit
+	 * @return the user
+	 */
+	public CUser findByLogin (String login, CUnit unit);
+	
 	/**
 	 * Find by PIN.
 	 *

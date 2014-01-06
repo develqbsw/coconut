@@ -38,8 +38,8 @@ public class CDatabaseAuthorizationService implements IAuthorizationService
 	@Override
 	public void checkAccessRights (String login, CRole role, String unit, String category) throws CSecurityException
 	{
-		//find user by login with corresponding groups and roles
-		CUser user = userDao.findByLogin(login);
+		CUnit localUnit = getUnitByName(unit);
+		CUser user = getUserByLoginAndUnit(login, localUnit);
 
 		if (user == null)
 		{
@@ -53,20 +53,11 @@ public class CDatabaseAuthorizationService implements IAuthorizationService
 				throw new CSecurityException("User has not a role with code " + role.getCode());
 			}
 
-			if (unit != null)
+			if (localUnit != null)
 			{
-				CUnit localUnit = unitDao.findByName(unit);
-
-				if (localUnit == null)
+				if (user.isInUnit(localUnit) == false)
 				{
-					throw new CSecurityException("There is not a unit with name " + unit);
-				}
-				else
-				{
-					if (user.isInUnit(localUnit) == false)
-					{
-						throw new CSecurityException("User is not is unit with name " + localUnit.getName());
-					}
+					throw new CSecurityException("User is not is unit with name " + localUnit.getName());
 				}
 			}
 
@@ -74,6 +65,53 @@ public class CDatabaseAuthorizationService implements IAuthorizationService
 			{
 				throw new CSecurityException("User has not a category with name " + category);
 			}
+		}
+	}
+
+	/**
+	 * Gets the user by login and unit.
+	 *
+	 * @param login the login
+	 * @param unit the unit
+	 * @return the user by login and unit
+	 */
+	private CUser getUserByLoginAndUnit (String login, CUnit unit)
+	{
+		if (unit == null)
+		{
+			return userDao.findByLogin(login);
+		}
+		else
+		{
+			return userDao.findByLogin(login, unit);
+		}
+	}
+
+	/**
+	 * Gets the unit from DB by name.
+	 *
+	 * @param unitName the unit name
+	 * @return the unit by name
+	 * @throws CSecurityException the security exception
+	 */
+	private CUnit getUnitByName (String unitName) throws CSecurityException
+	{
+		if (unitName != null)
+		{
+			CUnit localUnit = unitDao.findByName(unitName);
+
+			if (localUnit != null)
+			{
+				return localUnit;
+			}
+			else
+			{
+				throw new CSecurityException("There is not a unit with name " + unitName);
+			}
+		}
+		else
+		{
+			return null;
 		}
 	}
 }
