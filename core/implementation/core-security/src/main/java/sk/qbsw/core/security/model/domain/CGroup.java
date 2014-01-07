@@ -84,6 +84,11 @@ public class CGroup implements Serializable, IEntity<Long>
 		{
 			return true;
 		}
+		
+		if (roles == null)
+		{
+			return false;
+		}
 
 		for (CRole role : roles)
 		{
