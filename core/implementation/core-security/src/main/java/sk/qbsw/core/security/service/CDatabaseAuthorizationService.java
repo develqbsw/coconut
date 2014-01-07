@@ -2,6 +2,7 @@ package sk.qbsw.core.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -36,6 +37,7 @@ public class CDatabaseAuthorizationService implements IAuthorizationService
 	 * @see sk.qbsw.core.security.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.core.security.model.domain.CRole, java.lang.String, java.lang.String)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public void checkAccessRights (String login, CRole role, String unit, String category) throws CSecurityException
 	{
 		CUnit localUnit = getUnitByName(unit);
