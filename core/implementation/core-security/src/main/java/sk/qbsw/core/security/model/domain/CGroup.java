@@ -113,6 +113,11 @@ public class CGroup implements Serializable, IEntity<Long>
 		{
 			return true;
 		}
+		
+		if (units == null)
+		{
+			return false;
+		}
 
 		for (CUnit unit : units)
 		{
