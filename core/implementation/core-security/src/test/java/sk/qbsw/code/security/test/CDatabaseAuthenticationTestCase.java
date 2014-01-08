@@ -23,7 +23,7 @@ import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IAuthenticationService;
 
 /**
- * Checks Authentication service.
+ * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
  * @version 1.6.0
@@ -32,7 +32,7 @@ import sk.qbsw.core.security.service.IAuthenticationService;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
-public class CAuthenticationTestCase
+public class CDatabaseAuthenticationTestCase
 {
 	/** The database data generator. */
 	@Autowired

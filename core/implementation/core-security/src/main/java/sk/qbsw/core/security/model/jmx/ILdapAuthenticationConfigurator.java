@@ -2,21 +2,13 @@ package sk.qbsw.core.security.model.jmx;
 
 /**
  * The Interface ILdapAuthenticationConfigurator.
+ * 
  * @author Dalibor Rak
  * @version 1.6.0
  * @since 1.6.0
  */
-/**
- * @author rak
- *
- */
-/**
- * @author rak
- *
- */
 public interface ILdapAuthenticationConfigurator
 {
-
 	/**
 	 * Gets the server name.
 	 *
@@ -114,5 +106,4 @@ public interface ILdapAuthenticationConfigurator
 	 * @return the group search base dn
 	 */
 	public abstract String getGroupSearchBaseDn ();
-
 }
