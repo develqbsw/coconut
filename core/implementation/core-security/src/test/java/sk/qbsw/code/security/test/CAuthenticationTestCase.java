@@ -49,24 +49,7 @@ public class CAuthenticationTestCase
 	@Test
 	public void testInitialization ()
 	{
-		assertNotNull("Couldnt find Authentication service", authenticationService);
-	}
-
-	/**
-	 * Login user.
-	 *
-	 * @throws CSecurityException the c security exception
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testLogin () throws CSecurityException
-	{
-		databaseDataGenerator.generateDataForAuthenticationTests();
-
-		testLoginWithDefaultUnit();
-		testLoginWithoutDefaultUnit();
-		testLoginWithDefaultUnitAndRole();
+		assertNotNull("Could not find Authentication service", authenticationService);
 	}
 
 	/**
@@ -74,8 +57,13 @@ public class CAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithDefaultUnit () throws CSecurityException
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testLoginWithDefaultUnit () throws CSecurityException
 	{
+		databaseDataGenerator.generateDataForAuthenticationTests();
+
 		CUser user = authenticationService.login("user_with_default_unit", "user_with_default_unit");
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -87,8 +75,13 @@ public class CAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithoutDefaultUnit () throws CSecurityException
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testLoginWithoutDefaultUnit () throws CSecurityException
 	{
+		databaseDataGenerator.generateDataForAuthenticationTests();
+
 		CUser user = authenticationService.login("user_without_default_unit", "user_without_default_unit");
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -96,19 +89,61 @@ public class CAuthenticationTestCase
 	}
 
 	/**
-	 * Test login with default unit and role.
+	 * Test login with default unit and role. The role should be found - login success.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithDefaultUnitAndRole () throws CSecurityException
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testLoginWithDefaultUnitAndRolePositive () throws CSecurityException
 	{
+		databaseDataGenerator.generateDataForAuthenticationTests();
+
 		CRole inputRole = new CRole("role_1");
+		CRole outputRole = testLoginWithDefaultUnitAndRole(inputRole);
+
+		assertNotNull("Authentication with login, password and role failed: user has not a requested role " + inputRole.getCode(), outputRole);
+	}
+
+	/**
+	 * Test login with default unit and role. The role should not be found - login fails.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testLoginWithDefaultUnitAndRoleNegative () throws CSecurityException
+	{
+		databaseDataGenerator.generateDataForAuthenticationTests();
+
+		CRole inputRole = new CRole("role_2");
+		CRole outputRole = testLoginWithDefaultUnitAndRole(inputRole);
+
+		assertNotNull("Authentication with login, password and role failed: user has not a requested role " + inputRole.getCode(), outputRole);
+	}
+
+
+	/**
+	 * Test login with default unit and role. Return role if found else null.
+	 *
+	 * @param inputRole the input role - the role to find for user.
+	 * @return the role or null if not found
+	 * @throws CSecurityException the security exception
+	 */
+	private CRole testLoginWithDefaultUnitAndRole (CRole inputRole) throws CSecurityException
+	{
+		//define output role - found in user
+		CRole outputRole = null;
+
+		//login user
 		CUser user = authenticationService.login("user_with_default_unit", "user_with_default_unit", inputRole);
 		assertNotNull("Authentication with login, password and role failed: user is null", user);
 		assertNotNull("Authentication with login, password and role failed: user groups is null", user.getGroups());
 		Assert.assertEquals("Authentication with login, password and role failed: number of user groups is not 2", user.getGroups().size(), 3);
 
-		CRole outputRole = null;
+		//checks if user has input role
 		Iterator<CGroup> groupIterator = user.getGroups().iterator();
 		while (groupIterator.hasNext())
 		{
@@ -133,6 +168,7 @@ public class CAuthenticationTestCase
 			}
 
 		}
-		assertNotNull("Authentication with login, password and role failed: user has not a requested role " + inputRole.getCode(), outputRole);
+
+		return outputRole;
 	}
 }

@@ -169,11 +169,20 @@ public class CDatabaseDataGenerator
 		Set<CRole> rolesForThirdGroupNotInUnit = new HashSet<CRole>();
 		rolesForThirdGroupNotInUnit.add(secondRole);
 
-		Set<CUser> usersForGroupsInUnit = new HashSet<CUser>();
-		usersForGroupsInUnit.add(userWithDefaultUnit);
+		Set<CUser> usersForFirstGroupsInUnit = new HashSet<CUser>();
+		usersForFirstGroupsInUnit.add(userWithDefaultUnit);
+		
+		Set<CUser> usersForSecondGroupsInUnit = new HashSet<CUser>();
+		usersForSecondGroupsInUnit.add(userWithDefaultUnit);
+		
+		Set<CUser> usersForThirdGroupsInUnit = new HashSet<CUser>();
+		usersForThirdGroupsInUnit.add(userWithDefaultUnit);
 
-		Set<CUser> usersForGroupsNotInUnit = new HashSet<CUser>();
-		usersForGroupsNotInUnit.add(userWithoutDefaultUnit);
+		Set<CUser> usersForFirstGroupsNotInUnit = new HashSet<CUser>();
+		usersForFirstGroupsNotInUnit.add(userWithoutDefaultUnit);
+		
+		Set<CUser> usersForSecondGroupsNotInUnit = new HashSet<CUser>();
+		usersForSecondGroupsNotInUnit.add(userWithoutDefaultUnit);
 
 		firstGroupInUnit.setUnits(unitsForFirstGroupInUnit);
 		secondGroupInUnit.setUnits(unitsForSecondGroupInUnit);
@@ -186,12 +195,12 @@ public class CDatabaseDataGenerator
 		firstGroupNotInUnit.setRoles(rolesForFirstGroupNotInUnit);
 		secondGroupNotInUnit.setRoles(rolesForSecondGroupNotInUnit);
 
-		firstGroupInUnit.setUsers(usersForGroupsInUnit);
-		secondGroupInUnit.setUsers(usersForGroupsInUnit);
-		thirdGroupInUnit.setUsers(usersForGroupsInUnit);
+		firstGroupInUnit.setUsers(usersForFirstGroupsInUnit);
+		secondGroupInUnit.setUsers(usersForSecondGroupsInUnit);
+		thirdGroupInUnit.setUsers(usersForThirdGroupsInUnit);
 
-		firstGroupNotInUnit.setUsers(usersForGroupsNotInUnit);
-		secondGroupNotInUnit.setUsers(usersForGroupsNotInUnit);
+		firstGroupNotInUnit.setUsers(usersForFirstGroupsNotInUnit);
+		secondGroupNotInUnit.setUsers(usersForSecondGroupsNotInUnit);
 
 		//for roles
 		Set<CGroup> groupsForFirstRole = new HashSet<CGroup>();
