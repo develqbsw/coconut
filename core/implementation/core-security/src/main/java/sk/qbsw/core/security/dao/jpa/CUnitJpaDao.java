@@ -40,7 +40,7 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 	@SuppressWarnings ("unchecked")
 	public CUnit findByName (String name)
 	{
-		String strQuery = "select o from CUnit o where o.name = :name";
+		String strQuery = "select distinct(un) from CUnit un left join fetch un.groups left join fetch un.organization where un.name = :name";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("name", name);

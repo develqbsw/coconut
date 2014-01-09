@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
+import sk.qbsw.core.security.model.domain.CUnit;
 
 /**
  * The Class CSectionJpaDao.
@@ -16,13 +17,12 @@ import sk.qbsw.core.security.model.domain.CGroup;
  * @author Ladislav Rosenberg
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.2.1
+ * @version 1.6.0
  * @since 1.0.0
  */
 @Repository (value = "groupDao")
 public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupDao
 {
-	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -34,11 +34,7 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		super(CGroup.class);
 	}
 
-	/**
-	 * Find all by flag system.
-	 *
-	 * @param flagSystem the flag system
-	 * @return the list
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findAllByFlagSystem(boolean)
 	 */
 	@SuppressWarnings ("unchecked")
@@ -51,12 +47,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		return (List<CGroup>) query.getResultList();
 	}
 
-
-	/**
-	 * Find all.
-	 *
-	 * @return the list
-	 * @see sk.qbsw.core.security.dao.IGroupDao#findAll()
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
 	 */
 	@SuppressWarnings ("unchecked")
 	public List<CGroup> findAll ()
@@ -67,12 +59,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		return (List<CGroup>) query.getResultList();
 	}
 
-	/**
-	 * Find all.
-	 *
-	 * @param code the code
-	 * @return the list
-	 * @see sk.qbsw.core.security.dao.IGroupDao#findAll()
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCode(java.lang.String)
 	 */
 	@SuppressWarnings ("unchecked")
 	public List<CGroup> findByCode (String code)
@@ -83,17 +71,22 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		query.setParameter("code", code);
 		return (List<CGroup>) query.getResultList();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCodeFetchRoles(java.lang.String)
 	 */
 	@SuppressWarnings ("unchecked")
-	public List<CGroup> findByCodeFetchRoles(String code)
+	public List<CGroup> findByCode (String code, CUnit unit)
 	{
-		String strQuery = "select g from CGroup g left join fetch g.roles r WHERE g.code=:code order by g.code";
+		String strQuery = "select distinct(gr) from CGroup gr " +
+					"left join fetch gr.roles " +
+					"left join fetch gr.units " +
+					"where gr.code=:code and ((:unit is not null and :unit in elements(gr.units)) or (:unit is null and gr.units is empty))" +
+					"order by gr.code";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("code", code);
+		query.setParameter("unit", unit);
 		return (List<CGroup>) query.getResultList();
 	}
 }

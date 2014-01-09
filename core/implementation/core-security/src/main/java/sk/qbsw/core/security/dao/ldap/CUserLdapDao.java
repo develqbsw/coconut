@@ -169,15 +169,22 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 		Attribute login = userEntry.get("uid");
 		Attribute organizationUnit = userEntry.get("ou");
 
-		if (surname == null || login == null || organizationUnit == null)
+		if (surname == null || login == null)
 		{
-			throw new CSystemException("The mandatory LDAP attribute 'sn', 'uid' or 'ou' is missing.");
+			throw new CSystemException("The mandatory LDAP attribute 'sn' or 'uid' is missing.");
 		}
 
-		user.setName(givenName.getString());
-		user.setSurname(surname.getString());
 		user.setLogin(login.getString());
-		user.setDefaultUnit(getUserDefaultUnit(organizationUnit.getString()));
+		user.setSurname(surname.getString());
+
+		if (givenName != null)
+		{
+			user.setName(givenName.getString());
+		}
+		if (organizationUnit != null)
+		{
+			user.setDefaultUnit(getUserDefaultUnit(organizationUnit.getString()));
+		}
 		user.setGroups(getUserGroups(connection, userEntry.getDn()));
 
 		return user;

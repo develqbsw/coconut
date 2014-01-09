@@ -8,6 +8,7 @@ import java.util.List;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
+import sk.qbsw.core.security.model.domain.CUnit;
 
 /**
  * The Interface IGroupDao.
@@ -42,9 +43,12 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	public List<CGroup> findByCode(String code);
 	
 	/**
-	 * Find groups by code and fetch roles
+	 * Find groups by code and unit. The roles and units for group are fetched.
+	 * 
+	 * @param code the code of requested group
+	 * @param unit the unit of group
 	 *
-	 * @return the list
+	 * @return the list of groups
 	 */
-	public List<CGroup> findByCodeFetchRoles(String code);
+	public List<CGroup> findByCode(String code, CUnit unit);
 }
