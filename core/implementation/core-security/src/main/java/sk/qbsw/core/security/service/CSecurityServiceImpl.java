@@ -98,7 +98,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void deleteLicense (CLicense<?> license)
 	{
-		CLicense toModify = licenseDao.findById(license.getPkId());
+		CLicense<?> toModify = licenseDao.findById(license.getPkId());
 		licenseDao.remove(toModify);
 	}
 
