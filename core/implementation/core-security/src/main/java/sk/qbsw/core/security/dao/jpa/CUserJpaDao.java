@@ -51,7 +51,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	public CUser findById (Long id)
 	{
-		String strQuery = "select u from CUser u left join fetch u.organization o join fetch u.groups g where u.pkId=:pkId";
+		String strQuery = "select u from CUser u left join fetch u.organization o left join fetch u.groups g where u.pkId=:pkId";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("pkId", id);
