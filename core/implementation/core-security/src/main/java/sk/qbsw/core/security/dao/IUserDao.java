@@ -79,6 +79,16 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the list
 	 */
 	public List<CUser> findAllUsers ();
+	
+	/**
+	 * Find all users order by organization.
+	 *
+	 * @param organization the organization
+	 * @param enabled the enabled
+	 * @param group the group
+	 * @return the list
+	 */
+	public List<CUser> findAllUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
 
 	/** Get users without user what come as parameter
 	 * @param organization - organization for which are selected users

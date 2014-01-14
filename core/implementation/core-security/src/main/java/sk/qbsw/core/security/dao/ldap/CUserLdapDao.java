@@ -315,4 +315,13 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	{
 		throw new NotImplementedException();
 	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsersOrderByOrganization(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)
+	 */
+	@Override
+	public List<CUser> findAllUsersOrderByOrganization(
+			COrganization organization, Boolean enabled, CGroup group) {
+		throw new NotImplementedException();
+	}
 }

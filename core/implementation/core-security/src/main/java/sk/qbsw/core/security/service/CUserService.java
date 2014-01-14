@@ -162,7 +162,19 @@ public class CUserService implements IUserService
 		return userDao.findAllUsers();
 	}
 
-
+	/**
+	 * Gets the users order by organization.
+	 *
+	 * @param organization the organization
+	 * @param enabled the enabled
+	 * @param group the group
+	 * @return the users order by organization
+	 */
+	@Transactional (readOnly = true)
+	public List<CUser> getUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group)
+	{
+		return userDao.findAllUsersOrderByOrganization(organization, enabled, group);
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#getUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)

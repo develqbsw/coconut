@@ -117,7 +117,17 @@ public interface IUserService extends Serializable
 	 * @return the users
 	 */
 	public List<CUser> getUsers (COrganization organization, CRole role);
-
+	
+	/**
+	 * Gets the users order by organization.
+	 *
+	 * @param organization the organization
+	 * @param enabled the enabled
+	 * @param group the group
+	 * @return the users order by organization
+	 */
+	public List<CUser> getUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
+	
 	/**
 	 * Register new user.
 	 *
