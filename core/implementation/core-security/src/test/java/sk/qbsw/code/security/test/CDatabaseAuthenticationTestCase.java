@@ -67,7 +67,7 @@ public class CDatabaseAuthenticationTestCase
 		CUser user = authenticationService.login("user_with_default_unit", "user_with_default_unit");
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
-		Assert.assertEquals("Authentication with login and password failed: number of user groups is not 3", user.getGroups().size(), 3);
+		Assert.assertEquals("Authentication with login and password failed: number of user groups is not 2", user.getGroups().size(), 2);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	@Test
+	@Test (expected = CSecurityException.class)
 	@Transactional
 	@Rollback (true)
 	public void testLoginWithDefaultUnitAndRoleNegative () throws CSecurityException
@@ -119,11 +119,8 @@ public class CDatabaseAuthenticationTestCase
 		databaseDataGenerator.generateDataForAuthenticationTests();
 
 		CRole inputRole = new CRole("role_2");
-		CRole outputRole = testLoginWithDefaultUnitAndRole(inputRole);
-
-		assertNotNull("Authentication with login, password and role failed: user has not a requested role " + inputRole.getCode(), outputRole);
+		authenticationService.login("user_with_default_unit", "user_with_default_unit", inputRole);
 	}
-
 
 	/**
 	 * Test login with default unit and role. Return role if found else null.
@@ -141,7 +138,7 @@ public class CDatabaseAuthenticationTestCase
 		CUser user = authenticationService.login("user_with_default_unit", "user_with_default_unit", inputRole);
 		assertNotNull("Authentication with login, password and role failed: user is null", user);
 		assertNotNull("Authentication with login, password and role failed: user groups is null", user.getGroups());
-		Assert.assertEquals("Authentication with login, password and role failed: number of user groups is not 2", user.getGroups().size(), 3);
+		Assert.assertEquals("Authentication with login, password and role failed: number of user groups is not 2", user.getGroups().size(), 2);
 
 		//checks if user has input role
 		Iterator<CGroup> groupIterator = user.getGroups().iterator();

@@ -4,7 +4,6 @@ import java.util.List;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
-// TODO: Auto-generated Javadoc
 /**
  * General DAO interface for entities.
  *
@@ -13,13 +12,13 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * 
  * @author Rosenberg
  * @author Rak
+ * @author Tomas Lauro
  * 
  * @since 1.0.0
- * @version 1.3.0
+ * @version 1.6.0
  */
 public interface IEntityDao<PK, T extends IEntity<PK>>
 {
-
 	/**
 	 * Save new or update an existing entity.
 	 *
@@ -62,4 +61,9 @@ public interface IEntityDao<PK, T extends IEntity<PK>>
 	 * Flushes all.
 	 */
 	void flush ();
+
+	/**
+	 * Clear the persistence context, causing all managed entities to become detached. Changes made to entities that have not been flushed to the database will not be persisted.
+	 */
+	void clear ();
 }

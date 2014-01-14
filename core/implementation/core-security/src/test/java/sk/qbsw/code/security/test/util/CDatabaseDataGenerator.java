@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
@@ -50,6 +51,7 @@ public class CDatabaseDataGenerator
 	/**
 	 * Generate data for authentication tests.
 	 */
+	@Transactional (readOnly = false)
 	public void generateDataForAuthenticationTests ()
 	{
 		/** Create data. */
@@ -171,16 +173,16 @@ public class CDatabaseDataGenerator
 
 		Set<CUser> usersForFirstGroupsInUnit = new HashSet<CUser>();
 		usersForFirstGroupsInUnit.add(userWithDefaultUnit);
-		
+
 		Set<CUser> usersForSecondGroupsInUnit = new HashSet<CUser>();
 		usersForSecondGroupsInUnit.add(userWithDefaultUnit);
-		
+
 		Set<CUser> usersForThirdGroupsInUnit = new HashSet<CUser>();
 		usersForThirdGroupsInUnit.add(userWithDefaultUnit);
 
 		Set<CUser> usersForFirstGroupsNotInUnit = new HashSet<CUser>();
 		usersForFirstGroupsNotInUnit.add(userWithoutDefaultUnit);
-		
+
 		Set<CUser> usersForSecondGroupsNotInUnit = new HashSet<CUser>();
 		usersForSecondGroupsNotInUnit.add(userWithoutDefaultUnit);
 
@@ -248,5 +250,17 @@ public class CDatabaseDataGenerator
 		unitDao.save(secondUnit);
 		userDao.save(userWithDefaultUnit);
 		userDao.save(userWithoutDefaultUnit);
+		//flush data to hibernate cache
+		orgDao.flush();
+		roleDao.flush();
+		groupDao.flush();
+		unitDao.flush();
+		userDao.flush();
+		//clear cache
+		orgDao.clear();
+		roleDao.clear();
+		groupDao.clear();
+		unitDao.clear();
+		userDao.clear();
 	}
 }

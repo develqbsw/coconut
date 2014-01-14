@@ -17,12 +17,13 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @see sk.qbsw.airlines.dao.IEntityDao
  * 
  * @author Dalibor Rak
+ * @author Tomas Lauro
+ * 
+ * @version 1.6.0
  * @since 1.0.0
- * @version 1.3.0
  */
 public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>
 {
-
 	/** The em. */
 	@PersistenceContext (name = "persistenceContext")
 	private EntityManager em;
@@ -82,6 +83,14 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	public void flush ()
 	{
 		em.flush();
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#clear()
+	 */
+	public void clear ()
+	{
+		em.clear();
 	}
 
 	/**

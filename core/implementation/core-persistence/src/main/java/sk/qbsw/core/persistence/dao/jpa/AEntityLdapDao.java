@@ -19,11 +19,12 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @see sk.qbsw.core.persistence.dao.IEntityDao
  * 
  * @author Tomas Lauro
- * @since 1.7.0
- * @version 1.7.0
+ * 
+ * @since 1.6.0
+ * @version 1.6.0
  */
 public abstract class AEntityLdapDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>
-{	
+{
 	/**
 	 * Creates the connection to LDAP server.
 	 *
@@ -153,6 +154,15 @@ public abstract class AEntityLdapDao<PK, T extends IEntity<PK>> implements IEnti
 	 */
 	@Override
 	public void flush ()
+	{
+		throw new CSystemException("The not implemented method.");
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#clear()
+	 */
+	@Override
+	public void clear ()
 	{
 		throw new CSystemException("The not implemented method.");
 	}
