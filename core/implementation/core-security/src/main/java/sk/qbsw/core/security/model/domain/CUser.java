@@ -474,18 +474,18 @@ public class CUser implements Serializable, IEntity<Long>
 
 		return false;
 	}
-	
+
 	/**
-	 * Checks if the user has a category.
+	 * Checks if the user has a category and a role at same time.
 	 *
 	 * @param category the needed category
 	 * @return true / false
 	 */
-	public boolean hasCategory (String category)
+	public boolean hasCategory (String category, CRole role)
 	{
 		for (CGroup group : groups)
 		{
-			if (group.getCategory() != null && group.getCategory().equals(category))
+			if (group.getCategory() != null && group.getCategory().equals(category) && group.hasRole(role))
 			{
 				return true;
 			}

@@ -81,7 +81,7 @@ public class CDataGenerator
 
 		CGroup thirdGroupInUnit = new CGroup();
 		thirdGroupInUnit.setCode("group_in_unit_3");
-		thirdGroupInUnit.setCategory(null);
+		thirdGroupInUnit.setCategory("category_2");
 
 		CGroup firstGroupNotInUnit = new CGroup();
 		firstGroupNotInUnit.setCode("group_not_in_unit_1");

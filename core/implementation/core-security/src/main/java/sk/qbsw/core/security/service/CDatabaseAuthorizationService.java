@@ -63,7 +63,7 @@ public class CDatabaseAuthorizationService implements IAuthorizationService
 				}
 			}
 
-			if (category != null && user.hasCategory(category) == false)
+			if (category != null && user.hasCategory(category, role) == false)
 			{
 				throw new CSecurityException("User has not a category with name " + category);
 			}
