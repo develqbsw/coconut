@@ -236,9 +236,17 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao 
 	}
 
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sk.qbsw.core.security.dao.IUserDao#findAllUsersOrderByOrganization(sk
+	 * .qbsw.core.security.model.domain.COrganization, java.lang.Boolean,
+	 * sk.qbsw.core.security.model.domain.CGroup)
+	 */
 	@SuppressWarnings("unchecked")
-	public List<CUser> findAllUsersOrderByOrganization(COrganization organization,
-			Boolean enabled, CGroup group) {
+	public List<CUser> findAllUsersOrderByOrganization(
+			COrganization organization, Boolean enabled, CGroup group) {
 		String strQuery = "select u from CUser u join fetch u.groups g left join fetch u.organization o ";
 
 		boolean addAnd = false;
