@@ -25,8 +25,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.6.0
  * @since 1.6.0
  */
-@Component (value = "databaseDataGenerator")
-public class CDatabaseDataGenerator
+@Component (value = "dataGenerator")
+public class CDataGenerator
 {
 	/** The role dao. */
 	@Autowired
@@ -52,7 +52,7 @@ public class CDatabaseDataGenerator
 	 * Generate data for authentication tests.
 	 */
 	@Transactional (readOnly = false)
-	public void generateDataForAuthenticationTests ()
+	public void generateDataForDatabaseTests ()
 	{
 		/** Create data. */
 		//organization
@@ -168,14 +168,12 @@ public class CDatabaseDataGenerator
 		Set<CRole> rolesForSecondGroupNotInUnit = new HashSet<CRole>();
 		rolesForSecondGroupNotInUnit.add(firstRole);
 
-		Set<CRole> rolesForThirdGroupNotInUnit = new HashSet<CRole>();
-		rolesForThirdGroupNotInUnit.add(secondRole);
-
 		Set<CUser> usersForFirstGroupsInUnit = new HashSet<CUser>();
 		usersForFirstGroupsInUnit.add(userWithDefaultUnit);
 
 		Set<CUser> usersForSecondGroupsInUnit = new HashSet<CUser>();
 		usersForSecondGroupsInUnit.add(userWithDefaultUnit);
+		usersForSecondGroupsInUnit.add(userWithoutDefaultUnit);
 
 		Set<CUser> usersForThirdGroupsInUnit = new HashSet<CUser>();
 		usersForThirdGroupsInUnit.add(userWithDefaultUnit);
@@ -208,7 +206,7 @@ public class CDatabaseDataGenerator
 		Set<CGroup> groupsForFirstRole = new HashSet<CGroup>();
 		groupsForFirstRole.add(firstGroupInUnit);
 		groupsForFirstRole.add(secondGroupInUnit);
-		groupsForFirstRole.add(secondGroupNotInUnit);
+		groupsForFirstRole.add(firstGroupNotInUnit);
 		groupsForFirstRole.add(secondGroupNotInUnit);
 
 		Set<CGroup> groupsForSecondRole = new HashSet<CGroup>();
@@ -226,6 +224,7 @@ public class CDatabaseDataGenerator
 		Set<CGroup> groupsForUserWithoutDefaultUnit = new HashSet<CGroup>();
 		groupsForUserWithoutDefaultUnit.add(firstGroupNotInUnit);
 		groupsForUserWithoutDefaultUnit.add(secondGroupNotInUnit);
+		groupsForUserWithoutDefaultUnit.add(secondGroupInUnit);
 
 		userWithDefaultUnit.setOrganization(organization);
 		userWithoutDefaultUnit.setOrganization(organization);
