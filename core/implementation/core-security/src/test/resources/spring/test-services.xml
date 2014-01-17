@@ -15,4 +15,14 @@
 
 	<bean class="sk.qbsw.code.security.test.util.CLicenseGenerator" />
 	<bean class="sk.qbsw.code.security.test.util.CDataGenerator" />
+	<bean class="sk.qbsw.code.security.test.util.CAuthenticationTestProvider" />
+	<bean class="sk.qbsw.code.security.test.util.CAuthorizationTestProvider" />
+	
+	<!-- Mocks object for testing -->
+	<bean id="ldapUserDaoMock" class="sk.qbsw.code.security.test.util.CMockitoFactoryBean">
+        <constructor-arg name="classToBeMocked" value="sk.qbsw.core.security.dao.ldap.CUserLdapDao" />
+    </bean>
+    <bean id="ldapProviderMock" class="sk.qbsw.code.security.test.util.CMockitoFactoryBean">
+        <constructor-arg name="classToBeMocked" value="sk.qbsw.core.security.service.ldap.CLdapProvider" />
+    </bean>
 </beans>

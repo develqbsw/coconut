@@ -12,9 +12,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.code.security.test.util.CAuthorizationTestProvider;
 import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.exception.CSecurityException;
-import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.service.IAuthorizationService;
 
 /**
@@ -38,6 +38,10 @@ public class CDatabaseAuthorizationTestCase
 	@Qualifier ("databaseAuthorizationService")
 	private IAuthorizationService authorizationService;
 
+	/** The authorization test provider. */
+	@Autowired
+	private CAuthorizationTestProvider authorizationTestProvider;
+
 	/**
 	 * Test initialization.
 	 */
@@ -57,10 +61,9 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithDefaultUnitPositive () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_1");
-		authorizationService.checkAccessRights("user_with_default_unit", role, null, null);
+		authorizationTestProvider.testAuthorizationWithDefaultUnitPositive(authorizationService);
 	}
 
 	/**
@@ -73,10 +76,9 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithDefaultUnitNegative () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_2");
-		authorizationService.checkAccessRights("user_with_default_unit", role, null, null);
+		authorizationTestProvider.testAuthorizationWithDefaultUnitNegative(authorizationService);
 	}
 
 	/**
@@ -89,10 +91,9 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithUnitPositive () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_2");
-		authorizationService.checkAccessRights("user_with_default_unit", role, "unit_1", null);
+		authorizationTestProvider.testAuthorizationWithUnitPositive(authorizationService);
 	}
 
 	/**
@@ -105,10 +106,9 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithUnitNegative () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_2");
-		authorizationService.checkAccessRights("user_with_default_unit", role, "default_unit", null);
+		authorizationTestProvider.testAuthorizationWithUnitNegative(authorizationService);
 	}
 
 	/**
@@ -121,10 +121,9 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithCategoryPositive () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_1");
-		authorizationService.checkAccessRights("user_with_default_unit", role, null, "category_1");
+		authorizationTestProvider.testAuthorizationWithCategoryPositive(authorizationService);
 	}
 
 	/**
@@ -137,10 +136,9 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithCategoryNegative () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_2");
-		authorizationService.checkAccessRights("user_with_default_unit", role, null, "category_1");
+		authorizationTestProvider.testAuthorizationWithCategoryNegative(authorizationService);
 	}
 
 	/**
@@ -153,10 +151,9 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithUnitAndCategoryPositive () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_2");
-		authorizationService.checkAccessRights("user_with_default_unit", role, "unit_2", "category_2");
+		authorizationTestProvider.testAuthorizationWithUnitAndCategoryPositive(authorizationService);
 	}
 
 	/**
@@ -169,9 +166,16 @@ public class CDatabaseAuthorizationTestCase
 	@Rollback (true)
 	public void testAuthorizationWithUnitAndCategoryNegative () throws CSecurityException
 	{
-		dataGenerator.generateDataForDatabaseTests();
+		initTest();
 
-		CRole role = new CRole("role_2");
-		authorizationService.checkAccessRights("user_with_default_unit", role, "unit_2", "category_1");
+		authorizationTestProvider.testAuthorizationWithUnitAndCategoryNegative(authorizationService);
+	}
+
+	/**
+	 * Inits the test.
+	 */
+	private void initTest ()
+	{
+		dataGenerator.generateDatabaseDataForDatabaseTests();
 	}
 }
