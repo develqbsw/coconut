@@ -1,22 +1,14 @@
 package sk.qbsw.core.security.service;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.api.ldap.model.cursor.CursorException;
-import org.apache.directory.api.ldap.model.cursor.EntryCursor;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.ldap.model.message.SearchScope;
-import org.apache.directory.ldap.client.api.LdapConnection;
-import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUnitDao;
@@ -30,6 +22,7 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
+import sk.qbsw.core.security.service.ldap.CLdapProvider;
 
 /**
  * The LDAP authentication service.
@@ -63,6 +56,10 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	/** The unit dao. */
 	@Autowired
 	private IUnitDao unitDao;
+
+	/** The ldap provider. */
+	@Autowired
+	private CLdapProvider ldapProvider;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
@@ -155,7 +152,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		if (user != null)
 		{
 			//authenticate user in ldap
-			if (AuthenticateUser(login, password) == true)
+			if (authenticateUser(login, password) == true)
 			{
 				//reads groups, organization and defaultUnit from database and replaces the data from LDAP server in user object
 				initUserWithDatabaseData(user, unit);
@@ -274,85 +271,30 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	 * @param login the login
 	 * @param password the password
 	 * @return true, if successful
-	 * @throws CSecurityException the security exception
+	 * @throws CBusinessException 
 	 */
-	private boolean AuthenticateUser (String login, String password) throws CSecurityException
+	private boolean authenticateUser (String login, String password)
 	{
-		LdapConnection connection = null;
-		EntryCursor cursor = null;
-
 		try
 		{
-			//creates and bind to connection
-			connection = new LdapNetworkConnection(data.getServerName(), data.getServerPort());
-			connection.bind(data.getUserDn(), data.getUserPassword());
+			//create connection
+			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
+			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
 
-			//search user
-			cursor = connection.search(data.getUserSearchBaseDn(), "(&(uid=" + login + "))", SearchScope.SUBTREE, "*");
+			//authenticate
+			ldapProvider.authenticate(data.getUserSearchBaseDn(), "(&(uid=" + login + "))", password);
 
-			if (cursor.next() == true)
-			{
-				//get user data
-				Entry userEntry = cursor.get();
-
-				//checks if the user is unique
-				if (cursor.next() == true)
-				{
-					throw new CInvalidUserException("The user with login " + login + " is not unique.");
-				}
-
-				try
-				{
-					//bind as user (with his DN) to verify password
-					connection.unBind();
-					connection.bind(userEntry.getDn(), password);
-					return true;
-				}
-				catch (LdapException ex)
-				{
-					return false;
-				}
-			}
-			else
-			{
-				throw new CInvalidUserException("The user with login " + login + " not recognised");
-			}
+			return true;
 		}
-		catch (LdapInvalidAttributeValueException ex)
+		catch (CSecurityException ex)
 		{
-			throw new CSecurityException("An LdapInvalidAttributeValueException exception raised: " + ex.toString());
-		}
-		catch (LdapException ex)
-		{
-			throw new CSecurityException("An LdapException exception raised: " + ex.toString());
-		}
-		catch (CursorException ex)
-		{
-			throw new CSecurityException("An CursorException exception raised: " + ex.toString());
+			return false;
 		}
 		finally
 		{
-			if (cursor != null)
-			{
-				cursor.close();
-			}
-			if (connection != null)
-			{
-				try
-				{
-					connection.unBind();
-				}
-				catch (LdapException ex)
-				{
-				}
-				try
-				{
-					connection.close();
-				}
-				catch (IOException ex)
-				{
-				}
-			}
+			//close connection
+			ldapProvider.unbindFromServer();
+			ldapProvider.closeConnection();
 		}
 	}
 }

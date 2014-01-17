@@ -5,18 +5,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.apache.directory.api.ldap.model.cursor.CursorException;
-import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
-import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.ldap.client.api.LdapConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.jpa.AEntityLdapDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -26,6 +22,7 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
+import sk.qbsw.core.security.service.ldap.CLdapProvider;
 
 /**
  * User LDAP DAO implementation.
@@ -44,94 +41,60 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	@Autowired
 	private ILdapAuthenticationConfigurator ldapConfigurator;
 
+	/** The ldap provider. */
+	@Autowired
+	private CLdapProvider ldapProvider;
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
 	 */
 	@Override
 	public CUser findByLogin (String login)
 	{
-		LdapConnection connection = createConnection(ldapConfigurator.getServerName(), ldapConfigurator.getServerPort());
-		bindOnServer(connection, ldapConfigurator.getUserDn(), ldapConfigurator.getUserPassword());
-
 		try
 		{
-			EntryCursor cursor = connection.search(ldapConfigurator.getUserSearchBaseDn(), "(&(uid=" + login + "))", SearchScope.SUBTREE, "*");
+			ldapProvider.createConnection(ldapConfigurator.getServerName(), ldapConfigurator.getServerPort());
+			ldapProvider.bindOnServer(ldapConfigurator.getUserDn(), ldapConfigurator.getUserPassword());
 
-			if (cursor.next() == true)
-			{
-				Entry userEntry = cursor.get();
+			Entry userEntry = ldapProvider.searchSingleResult(ldapConfigurator.getUserSearchBaseDn(), "(&(uid=" + login + "))", SearchScope.SUBTREE, "*");
+			Set<Entry> userGroupEntries = ldapProvider.searchResults(ldapConfigurator.getGroupSearchBaseDn(), "(&(uniqueMember=" + userEntry.getDn().toString() + "))", SearchScope.SUBTREE, "*");
 
-				if (cursor.next() == true)
-				{
-					throw new CSystemException("The user with login " + login + " is not unique.");
-				}
+			return createLdapUser(userEntry, userGroupEntries);
 
-				return createLdapUser(connection, userEntry);
-			}
-			else
-			{
-				return null;
-			}
+		}
+		catch (CBusinessException ex)
+		{
+			throw new CSystemException("The user with login " + login + " is not in ldap or not unique.");
 		}
 		catch (LdapInvalidAttributeValueException ex)
 		{
-			throw new CSystemException("An LdapInvalidAttributeValueException exception raised: " + ex.toString());
-		}
-		catch (LdapException ex)
-		{
-			throw new CSystemException("An LdapException exception raised: " + ex.toString());
-		}
-		catch (CursorException ex)
-		{
-			throw new CSystemException("An CursorException exception raised: " + ex.toString());
+			throw new CSystemException("The ldap error occured: " + ex.getMessage());
 		}
 		finally
 		{
-			unbindFromServer(connection);
-			closeConnection(connection);
+			ldapProvider.unbindFromServer();
+			ldapProvider.closeConnection();
 		}
 	}
 
+
 	/**
-	 * Gets the user groups from LDAP server.
+	 * Creates the user groups from ldap entries.
 	 *
-	 * @param connection the connection
-	 * @param userDn the user DN
-	 * @return the groups of LDAP user identified by DN
+	 * @param userGroupEntries the user group entries
+	 * @return the sets of groups
+	 * @throws LdapInvalidAttributeValueException the ldap invalid attribute value exception
 	 */
-	private Set<CGroup> getUserGroups (LdapConnection connection, Dn userDn)
+	private Set<CGroup> createUserGroups (Set<Entry> userGroupEntries) throws LdapInvalidAttributeValueException
 	{
-		EntryCursor cursor = null;
 		Set<CGroup> groups = new HashSet<CGroup>();
 
-		try
+		for (Entry groupEntry : userGroupEntries)
 		{
-			cursor = connection.search(ldapConfigurator.getGroupSearchBaseDn(), "(&(uniqueMember=" + userDn.toString() + "))", SearchScope.SUBTREE, "*");
+			CGroup group = new CGroup();
+			group.setCode(groupEntry.get("cn").getString());
 
-			while (cursor.next() == true)
-			{
-				Entry groupEntry = cursor.get();
-
-				CGroup group = new CGroup();
-				group.setCode(groupEntry.get("cn").getString());
-
-				groups.add(group);
-			}
-		}
-		catch (CursorException ex)
-		{
-			throw new CSystemException("An CursorException exception raised: " + ex.toString());
-		}
-		catch (LdapException ex)
-		{
-			throw new CSystemException("An LdapException exception raised: " + ex.toString());
-		}
-		finally
-		{
-			if (cursor != null)
-			{
-				cursor.close();
-			}
+			groups.add(group);
 		}
 
 		return groups;
@@ -155,12 +118,12 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	/**
 	 * Creates the LDAP user - check mandatory attribute and fill it.
 	 *
-	 * @param connection the connection
 	 * @param userEntry the user entry
+	 * @param userGroupEntries the user group entries
 	 * @return the user
 	 * @throws LdapInvalidAttributeValueException the invalid LDAP attribute value exception
 	 */
-	private CUser createLdapUser (LdapConnection connection, Entry userEntry) throws LdapInvalidAttributeValueException
+	private CUser createLdapUser (Entry userEntry, Set<Entry> userGroupEntries) throws LdapInvalidAttributeValueException
 	{
 		CUser user = new CUser();
 
@@ -185,7 +148,9 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 		{
 			user.setDefaultUnit(getUserDefaultUnit(organizationUnit.getString()));
 		}
-		user.setGroups(getUserGroups(connection, userEntry.getDn()));
+
+		//set user groups
+		user.setGroups(createUserGroups(userGroupEntries));
 
 		return user;
 	}
@@ -320,8 +285,8 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsersOrderByOrganization(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)
 	 */
 	@Override
-	public List<CUser> findAllUsersOrderByOrganization(
-			COrganization organization, Boolean enabled, CGroup group) {
+	public List<CUser> findAllUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group)
+	{
 		throw new NotImplementedException();
 	}
 }

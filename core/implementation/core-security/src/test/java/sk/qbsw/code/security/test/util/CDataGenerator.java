@@ -49,7 +49,7 @@ public class CDataGenerator
 	private IGroupDao groupDao;
 
 	/**
-	 * Generate data for authentication tests.
+	 * Generate data for database tests.
 	 */
 	@Transactional (readOnly = false)
 	public void generateDataForDatabaseTests ()
