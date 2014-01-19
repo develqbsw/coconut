@@ -161,7 +161,7 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	@Override
 	public CUser findByLogin (String login, CUnit unit)
 	{
-		return null;
+		throw new NotImplementedException();
 	}
 
 	/* (non-Javadoc)

@@ -17,49 +17,43 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
+import sk.qbsw.code.security.test.util.CAuthorizationTestProvider;
 import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
-import sk.qbsw.core.security.service.IAuthenticationService;
-import sk.qbsw.core.security.service.ldap.CLdapProvider;
+import sk.qbsw.core.security.service.IAuthorizationService;
 
 /**
- * Checks Authentication service for ldap.
- *
- * @autor Tomas Lauro
+ * Checks Authorization service for database.
+ * 
+ * @author Tomas Lauro
  * @version 1.6.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
-public class CLdapAuthenticationTestCase
+@TransactionConfiguration (transactionManager = "transactionManager")
+public class CLdapAuthorizationTestCase
 {
 	/** The database data generator. */
 	@Autowired
 	private CDataGenerator dataGenerator;
 
-	/** The authentication service. */
+	/** The authorization service. */
 	@Autowired
-	@Qualifier ("ldapAuthenticationService")
-	private IAuthenticationService authenticationService;
+	@Qualifier ("ldapAuthorizationService")
+	private IAuthorizationService authorizationService;
 
-	/** The authentication test provider. */
+	/** The authorization test provider. */
 	@Autowired
-	private CAuthenticationTestProvider authenticationTestProvider;
+	private CAuthorizationTestProvider authorizationTestProvider;
 
 	/** The user ldap dao. */
 	@Autowired
 	@Qualifier ("ldapUserDaoMock")
 	private IUserDao userLdapDao;
-
-	/** The ldap provider. */
-	@Autowired
-	@Qualifier ("ldapProviderMock")
-	private CLdapProvider ldapProvider;
 
 	/** The ldap configurator. */
 	@Autowired
@@ -86,120 +80,119 @@ public class CLdapAuthenticationTestCase
 	@Test
 	public void testInitialization ()
 	{
-		assertNotNull("Could not find Authentication service", authenticationService);
+		assertNotNull("Could not find Authorization service", authorizationService);
 	}
 
 	/**
-	 * Test login with default unit.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testLoginWithDefaultUnit () throws Exception
-	{
-		initTestUserWithDefaultUnit();
-
-		authenticationTestProvider.testLoginWithDefaultUnit(authenticationService);
-	}
-
-	/**
-	 * Test login without default unit.
+	 * Test successful authorization of user with default unit.
 	 * @throws Exception 
 	 */
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testLoginWithoutDefaultUnit () throws Exception
-	{
-		initTestUserWithoutDefaultUnit();
-
-		authenticationTestProvider.testLoginWithoutDefaultUnit(authenticationService);
-	}
-
-	/**
-	 * Test login with default unit and role. The role should be found - login success.
-	 * @throws Exception 
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testLoginWithDefaultUnitAndRolePositive () throws Exception
+	public void testAuthorizationWithDefaultUnitPositive () throws Exception
 	{
 		initTestUserWithDefaultUnit();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndRolePositive(authenticationService);
+		authorizationTestProvider.testAuthorizationWithDefaultUnitPositive(authorizationService);
 	}
 
 	/**
-	 * Test login with default unit and role. The role should not be found - login fails.
+	 * Test unsuccessful authorization of user with default unit.
 	 * @throws Exception 
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional
 	@Rollback (true)
-	public void testLoginWithDefaultUnitAndRoleNegative () throws Exception
+	public void testAuthorizationWithDefaultUnitNegative () throws Exception
 	{
 		initTestUserWithDefaultUnit();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndRoleNegative(authenticationService);
+		authorizationTestProvider.testAuthorizationWithDefaultUnitNegative(authorizationService);
 	}
 
 	/**
-	 * Test login without default unit and with role. The role should be found - login success.
+	 * Test successful authorization of user with unit.
 	 * @throws Exception 
 	 */
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testLoginWithoutDefaultUnitAndRolePositive () throws Exception
+	public void testAuthorizationWithUnitPositive () throws Exception
 	{
-		initTestUserWithoutDefaultUnit();
+		initTestUserWithDefaultUnit();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndRolePositive(authenticationService);
+		authorizationTestProvider.testAuthorizationWithUnitPositive(authorizationService);
 	}
 
 	/**
-	 * Test login without default unit and with role. The role should not be found - login fails.
+	 * Test unsuccessful authorization of user with unit.
 	 * @throws Exception 
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional
 	@Rollback (true)
-	public void testLoginWithoutDefaultUnitAndRoleNegative () throws Exception
-	{
-		initTestUserWithoutDefaultUnit();
-
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndRoleNegative(authenticationService);
-	}
-
-	/**
-	 * Test login with default unit and with unit. The user should be found - login success.
-	 * @throws Exception 
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testLoginWithDefaultUnitAndUnit () throws Exception
+	public void testAuthorizationWithUnitNegative () throws Exception
 	{
 		initTestUserWithDefaultUnit();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndUnit(authenticationService);
+		authorizationTestProvider.testAuthorizationWithUnitNegative(authorizationService);
 	}
 
 	/**
-	 * Test login without default unit and with unit. The user should be found - login success.
+	 * Test successful authorization of user with category.
 	 * @throws Exception 
 	 */
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testLoginWithoutDefaultUnitAndUnit () throws Exception
+	public void testAuthorizationWithCategoryPositive () throws Exception
 	{
-		initTestUserWithoutDefaultUnit();
+		initTestUserWithDefaultUnit();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
+		authorizationTestProvider.testAuthorizationWithCategoryPositive(authorizationService);
+	}
+
+	/**
+	 * Test unsuccessful authorization of user with category.
+	 * @throws Exception 
+	 */
+	@Test (expected = CSecurityException.class)
+	@Transactional
+	@Rollback (true)
+	public void testAuthorizationWithCategoryNegative () throws Exception
+	{
+		initTestUserWithDefaultUnit();
+
+		authorizationTestProvider.testAuthorizationWithCategoryNegative(authorizationService);
+	}
+
+	/**
+	 * Test successful authorization of user with unit and category.
+	 * @throws Exception 
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testAuthorizationWithUnitAndCategoryPositive () throws Exception
+	{
+		initTestUserWithDefaultUnit();
+
+		authorizationTestProvider.testAuthorizationWithUnitAndCategoryPositive(authorizationService);
+	}
+
+	/**
+	 * Test unsuccessful authorization of user with unit and category.
+	 * @throws Exception 
+	 */
+	@Test (expected = CSecurityException.class)
+	@Transactional
+	@Rollback (true)
+	public void testAuthorizationWithUnitAndCategoryNegative () throws Exception
+	{
+		initTestUserWithDefaultUnit();
+
+		authorizationTestProvider.testAuthorizationWithUnitAndCategoryNegative(authorizationService);
 	}
 
 	/**
@@ -216,26 +209,7 @@ public class CLdapAuthenticationTestCase
 		Mockito.when(userLdapDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE)).thenReturn(user);
 
 		//replace autowired variables
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "userLdapDao", userLdapDao);
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
-	}
-
-	/**
-	 * Inits the test user without default unit.
-	 *
-	 * @throws Exception the exception
-	 */
-	private void initTestUserWithoutDefaultUnit () throws Exception
-	{
-		dataGenerator.generateDatabaseDataForLdapTests();
-		CUser user = dataGenerator.generateUserWithoutDefaultUnitForLdapTests();
-
-		//init mocks
-		Mockito.when(userLdapDao.findByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE)).thenReturn(user);
-
-		//replace autowired variables
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "userLdapDao", userLdapDao);
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
+		ReflectionTestUtils.setField(unwrapSpringProxyObject(authorizationService), "userLdapDao", userLdapDao);
 	}
 
 	/**
