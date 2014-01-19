@@ -17,7 +17,11 @@
 	</parent>
 	<dependencies>
 
-
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+		</dependency>
 		<!-- log4j and it's dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
