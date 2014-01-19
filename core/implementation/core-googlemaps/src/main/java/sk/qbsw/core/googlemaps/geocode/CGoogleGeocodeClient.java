@@ -137,7 +137,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		}
 		catch (final Exception e)
 		{
-			throw new CBusinessException("geocode");
+			throw new CBusinessException("Problem getting String from stream.");
 		}
 	}
 

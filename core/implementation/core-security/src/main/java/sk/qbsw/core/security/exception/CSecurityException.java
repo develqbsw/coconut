@@ -2,8 +2,9 @@
  * 
  */
 package sk.qbsw.core.security.exception;
+
 import sk.qbsw.core.base.exception.CBusinessException;
- 
+
 /**
  * Security exception
  *
@@ -23,5 +24,16 @@ public class CSecurityException extends CBusinessException
 	public CSecurityException (String message)
 	{
 		super(message);
+	}
+
+	/**
+	 * Instantiates a new c security exception.
+	 *
+	 * @param message the message
+	 * @param errorCode the error code
+	 */
+	public CSecurityException (String message, String errorCode)
+	{
+		super(message, errorCode);
 	}
 }

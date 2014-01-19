@@ -117,7 +117,7 @@ public interface IUserService extends Serializable
 	 * @return the users
 	 */
 	public List<CUser> getUsers (COrganization organization, CRole role);
-	
+
 	/**
 	 * Gets the users order by organization.
 	 *
@@ -127,14 +127,15 @@ public interface IUserService extends Serializable
 	 * @return the users order by organization
 	 */
 	public List<CUser> getUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
-	
+
 	/**
 	 * Register new user.
 	 *
 	 * @param user the user
 	 * @param organization the organization
+	 * @throws CSecurityException if user with such logiun already exists
 	 */
-	public void registerNewUser (CUser user, COrganization organization);
+	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException;
 
 	/**
 	 * Renew password of the user.

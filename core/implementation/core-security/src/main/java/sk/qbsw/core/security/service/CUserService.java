@@ -206,8 +206,14 @@ public class CUserService implements IUserService
 	 * @see sk.qbsw.core.security.service.IUserService#registerNewUser(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization)
 	 */
 	@Transactional (readOnly = false)
-	public void registerNewUser (CUser user, COrganization organization)
+	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException
 	{
+		CUser userByLogin = userDao.findByLogin(user.getLogin());
+		if (userByLogin != null)
+		{
+			throw new CSecurityException("User with login " + user.getLogin() + " already exists", "error.security.loginused");
+		}
+
 		user.setPasswordDigest(digester.generateDigest(user.getPassword()));
 		user.setPassword(null);
 		user.setOrganization(organization);
@@ -230,7 +236,7 @@ public class CUserService implements IUserService
 
 		if (user == null || !email.equals(user.getEmail()))
 		{
-			throw new CSecurityException("error.security.changepassworddenied");
+			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
 		}
 		user.setPassword(password);
 		userDao.save(user);

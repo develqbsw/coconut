@@ -13,6 +13,7 @@ package sk.qbsw.core.base.exception;
 @SuppressWarnings ("serial")
 public class CBusinessException extends Exception
 {
+	private String errorCode;
 
 	/**
 	 * Instantiates a new c business exception.
@@ -22,5 +23,27 @@ public class CBusinessException extends Exception
 	public CBusinessException (String message)
 	{
 		super(message);
+	}
+
+	/**
+	 * Instantiates a new c business exception.
+	 *
+	 * @param message the message
+	 * @param errorCode the error code
+	 */
+	public CBusinessException (String message, String errorCode)
+	{
+		this(message);
+		this.errorCode = errorCode;
+	}
+
+	/**
+	 * Gets the error code.
+	 *
+	 * @return the error code
+	 */
+	public String getErrorCode ()
+	{
+		return errorCode;
 	}
 }
