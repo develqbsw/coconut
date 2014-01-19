@@ -43,6 +43,9 @@
 
 		<antlr.version>2.7.7</antlr.version>
 		<aspectj.version>1.7.1</aspectj.version>
+		
+		<velocity.version>1.7</velocity.version>
+		<mail.version>1.4.3</mail.version>
 
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
@@ -68,6 +71,9 @@
 		<gwtmavenplugin.version>1.2</gwtmavenplugin.version>
 		<smartgwt.version>2.1</smartgwt.version>
 
+		<!-- joda time -->
+		<joda-time.version>2.1</joda-time.version>
+		
 		<!-- Apache directory API - LDAP -->
 		<directory.api.version>1.0.0-M20</directory.api.version>
 <!-- ANDROID DEPENDENCIES -->		
