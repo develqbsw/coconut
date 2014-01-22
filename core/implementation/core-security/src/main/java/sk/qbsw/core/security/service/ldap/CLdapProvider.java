@@ -1,7 +1,6 @@
 package sk.qbsw.core.security.service.ldap;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,11 +26,8 @@ import sk.qbsw.core.security.exception.CSecurityException;
  * @since 1.6.0
  */
 @Component ("ldapProvider")
-public class CLdapProvider implements Serializable
+public class CLdapProvider
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/** The ldap connection. */
 	private LdapConnection connection;
 
