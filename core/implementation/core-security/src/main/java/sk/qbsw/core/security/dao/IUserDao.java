@@ -118,4 +118,15 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the list
 	 */
 	public List<CUser> findAllUsersByRole (COrganization organization, CRole role);
+
+	/**
+	 * Find all users.
+	 *
+	 * @param name the name (optional)
+	 * @param surname the surname (optional)
+	 * @param login the login (optional)
+	 * @param enabled the enabled (optional)
+	 * @return the list
+	 */
+	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled);
 }

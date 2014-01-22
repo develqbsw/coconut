@@ -348,6 +348,69 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
+	 */
+	@SuppressWarnings ("unchecked")
+	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled)
+	{
+		StringBuilder strQueryBuilder = new StringBuilder();
+
+		/** Create query */
+		strQueryBuilder.append("select us from CUser us where 1=1");
+
+		if (name != null)
+		{
+			strQueryBuilder.append(" and us.name=:name");
+		}
+
+		if (surname != null)
+		{
+			strQueryBuilder.append(" and us.surname=:surname");
+		}
+
+		if (login != null)
+		{
+			strQueryBuilder.append(" and us.login=:login");
+		}
+
+		if (enabled != null)
+		{
+			strQueryBuilder.append(" and us.flagEnabled=:enabled");
+		}
+
+		/** Create order by section. */
+		strQueryBuilder.append(" order by us.login");
+
+		//create query
+		Query query = getEntityManager().createQuery(strQueryBuilder.toString());
+
+		/** Set parameters. */
+		if (name != null)
+		{
+			query.setParameter("name", name);
+		}
+
+		if (surname != null)
+		{
+			query.setParameter("surname", surname);
+		}
+
+		if (login != null)
+		{
+			query.setParameter("login", login);
+		}
+
+		if (enabled != null)
+		{
+			query.setParameter("enabled", enabled);
+		}
+
+		List<CUser> users = (List<CUser>) query.getResultList();
+
+		return users;
+	}
+
 	/**
 	 * Find all users.
 	 *

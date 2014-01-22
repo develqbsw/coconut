@@ -128,6 +128,17 @@ public interface IUserService extends Serializable
 	public List<CUser> getUsers (COrganization organization, CRole role);
 
 	/**
+	 * Gets the users.
+	 *
+	 * @param name the name (optional)
+	 * @param surname the surname (optional)
+	 * @param login the login (optional)
+	 * @param enabled the enabled (optional)
+	 * @return the users
+	 */
+	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled);
+
+	/**
 	 * Gets the users order by organization.
 	 *
 	 * @param organization the organization (optional)

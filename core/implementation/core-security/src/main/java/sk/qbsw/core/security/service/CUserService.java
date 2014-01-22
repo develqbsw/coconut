@@ -89,7 +89,6 @@ public class CUserService implements IUserService
 		return userDao.findById(id);
 	}
 
-
 	/**
 	 * Gets the all users.
 	 *
@@ -201,6 +200,13 @@ public class CUserService implements IUserService
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
+	 */
+	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled)
+	{
+		return userDao.findAllUsers(name, surname, login, enabled);
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#registerNewUser(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization)

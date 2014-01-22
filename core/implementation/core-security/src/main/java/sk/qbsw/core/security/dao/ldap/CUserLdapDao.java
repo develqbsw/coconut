@@ -298,4 +298,13 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	{
 		throw new NotImplementedException();
 	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
+	 */
+	@Override
+	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled)
+	{
+		throw new NotImplementedException();
+	}
 }
