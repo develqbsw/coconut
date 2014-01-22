@@ -246,6 +246,15 @@ public class CUserLdapDao extends AEntityLdapDao<Long, CUser> implements IUserDa
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean)
+	 */
+	@Override
+	public List<CUser> findAllUsers (COrganization organization, Boolean enabled)
+	{
+		throw new NotImplementedException();
+	}
+
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)
 	 */
 	@Override

@@ -288,18 +288,26 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean)
+	 */
+	public List<CUser> findAllUsers (COrganization organization, Boolean enabled)
+	{
+		if (enabled == null)
+		{
+			throw new CSystemException("The mandatory parameter enabled is missing");
+		}
+		else
+		{
+			return findAllUsers(organization, enabled, null, null, null, false);
+		}
+	}
+
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)
 	 */
 	public List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group)
 	{
-		if (organization == null)
-		{
-			throw new CSystemException("The mandatory parameter organization is missing");
-		}
-		else
-		{
-			return findAllUsers(organization, enabled, group, null, null, false);
-		}
+		return findAllUsers(organization, enabled, group, null, null, false);
 	}
 
 	/* (non-Javadoc)
@@ -307,14 +315,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	public List<CUser> findAllUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group)
 	{
-		if (organization == null)
-		{
-			throw new CSystemException("The mandatory parameter organization is missing");
-		}
-		else
-		{
-			return findAllUsers(organization, enabled, group, null, null, true);
-		}
+		return findAllUsers(organization, enabled, group, null, null, true);
 	}
 
 	/* (non-Javadoc)
@@ -322,9 +323,9 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	public List<CUser> findAllUsersByRole (COrganization organization, CRole role)
 	{
-		if (organization == null || role == null)
+		if (role == null)
 		{
-			throw new CSystemException("The mandatory parameter is missing");
+			throw new CSystemException("The mandatory parameter role is missing");
 		}
 		else
 		{
@@ -337,9 +338,9 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	public List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user)
 	{
-		if (organization == null)
+		if (user == null)
 		{
-			throw new CSystemException("The mandatory parameter organization is missing");
+			throw new CSystemException("The mandatory parameter user is missing");
 		}
 		else
 		{

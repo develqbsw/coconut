@@ -66,7 +66,7 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	/**
 	 * Find all users for organization.
 	 *
-	 * @param organization the organization
+	 * @param organization the organization (mandatory)
 	 * @return the list
 	 */
 	public List<CUser> findAllUsers (COrganization organization);
@@ -74,7 +74,17 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	/**
 	 * Find all users.
 	 *
-	 * @param organization the organization
+	 * @param organization the organization (optional)
+	 * @param enabled the enabled (optional)
+	 * @return the list
+	 */
+
+	public List<CUser> findAllUsers (COrganization organization, Boolean enabled);
+
+	/**
+	 * Find all users.
+	 *
+	 * @param organization the organization (optional)
 	 * @param enabled the enabled (optional)
 	 * @param group the group (optional)
 	 * @return the list
@@ -85,7 +95,7 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	/**
 	 * Find all users order by organization.
 	 *
-	 * @param organization the organization
+	 * @param organization the organization (optional)
 	 * @param enabled the enabled (optional)
 	 * @param group the group (optional)
 	 * @return the list
@@ -93,9 +103,9 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	public List<CUser> findAllUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
 
 	/** Get users without user what come as parameter
-	 * @param organization - organization for which are selected users
+	 * @param organization - organization for which are selected users (optional)
 	 * @param group - group for which are selected users (optional)
-	 * @param user - user without are users returned (optional)
+	 * @param user - user without are users returned (mandatory)
 	 * @return list of users
 	 */
 	public abstract List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user);
@@ -103,8 +113,8 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	/**
 	 * Find all operator users for organization.
 	 *
-	 * @param organization the organization
-	 * @param role the role
+	 * @param organization the organization (optional)
+	 * @param role the role (mandatory)
 	 * @return the list
 	 */
 	public List<CUser> findAllUsersByRole (COrganization organization, CRole role);

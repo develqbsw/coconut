@@ -20,13 +20,13 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @author Dalibor Rak
  * @author Tomas Leken
  * @author Michal Lacko
- * @version 1.3.0
+ * @author Tomas Lauro
+ * @version 1.6.0
  * @since 1.0.0
  */
 @Service ("cUserService")
 public class CUserService implements IUserService
 {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class CUserService implements IUserService
 	@Autowired
 	private IUserDao userDao;
 
-	/** Password digester **/
+	/** Password digester *. */
 	@Autowired
 	private IPasswordDigester digester;
 
@@ -139,12 +139,8 @@ public class CUserService implements IUserService
 		}
 	}
 
-	/**
-	 * Gets the user for modification including related groups.
-	 *
-	 * @param pkId the pk id
-	 * @return the user for modification
-	 * @see sk.qbsw.core.security.service.ISecurityService#getUserForModification(java.lang.Long)
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUserForModification(java.lang.Long)
 	 */
 	@Transactional (readOnly = true)
 	public CUser getUserForModification (Long pkId)
@@ -162,13 +158,17 @@ public class CUserService implements IUserService
 		return userDao.findAllUsers();
 	}
 
-	/**
-	 * Gets the users order by organization.
-	 *
-	 * @param organization the organization
-	 * @param enabled the enabled
-	 * @param group the group
-	 * @return the users order by organization
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean)
+	 */
+	@Transactional (readOnly = true)
+	public List<CUser> getUsers (COrganization organization, Boolean enabled)
+	{
+		return userDao.findAllUsers(organization, enabled);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUsersOrderByOrganization(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)
 	 */
 	@Transactional (readOnly = true)
 	public List<CUser> getUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group)

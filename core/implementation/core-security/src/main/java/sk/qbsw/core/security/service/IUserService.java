@@ -9,12 +9,12 @@ import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
-
 /**
  * The Interface IUserService.
  * 
  * @author Dalibor Rak
- * @version 1.3.0
+ * @author Tomas Lauro
+ * @version 1.6.0
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -53,7 +53,7 @@ public interface IUserService extends Serializable
 	/**
 	 * Gets the all users.
 	 *
-	 * @param organization the organization
+	 * @param organization the organization (mandatory)
 	 * @return the all users
 	 */
 	public List<CUser> getAllUsers (COrganization organization);
@@ -61,9 +61,9 @@ public interface IUserService extends Serializable
 	/**
 	 * Get users without user with incoming parameters.
 	 *
-	 * @param organization - organization for which are selected users
-	 * @param group - group for which are selected users
-	 * @param user - user without are users returned
+	 * @param organization - organization for which are selected users (optional)
+	 * @param group - group for which are selected users (optional)
+	 * @param user - user without are users returned (mandatory)
 	 * @return list of users
 	 */
 	public abstract List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user);
@@ -100,11 +100,20 @@ public interface IUserService extends Serializable
 	public List<CUser> getUsers ();
 
 	/**
+	 * Gets all users.
+	 *
+	 * @param organization the organization (optional)
+	 * @param enabled the enabled (mandatory)
+	 * @return the users
+	 */
+	public List<CUser> getUsers (COrganization organization, Boolean enabled);
+
+	/**
 	 * Gets the users.
 	 *
-	 * @param organization the organization
-	 * @param enabled the enabled
-	 * @param group the group
+	 * @param organization the organization (optional)
+	 * @param enabled the enabled (optional)
+	 * @param group the group (optional)
 	 * @return the users
 	 */
 	public List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group);
@@ -112,8 +121,8 @@ public interface IUserService extends Serializable
 	/**
 	 * Gets the users.
 	 *
-	 * @param organization the organization
-	 * @param role the role
+	 * @param organization the organization (optional)
+	 * @param role the role (mandatory)
 	 * @return the users
 	 */
 	public List<CUser> getUsers (COrganization organization, CRole role);
@@ -121,9 +130,9 @@ public interface IUserService extends Serializable
 	/**
 	 * Gets the users order by organization.
 	 *
-	 * @param organization the organization
-	 * @param enabled the enabled
-	 * @param group the group
+	 * @param organization the organization (optional)
+	 * @param enabled the enabled (optional)
+	 * @param group the group (optional)
 	 * @return the users order by organization
 	 */
 	public List<CUser> getUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
@@ -153,6 +162,4 @@ public interface IUserService extends Serializable
 	 * @param user the user
 	 */
 	public void updateUser (CUser user);
-
-
 }
