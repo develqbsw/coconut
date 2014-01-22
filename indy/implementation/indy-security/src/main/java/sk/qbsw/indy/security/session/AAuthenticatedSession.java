@@ -3,11 +3,11 @@ package sk.qbsw.indy.security.session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.security.exception.CSecurityException;
-import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
-import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
@@ -16,8 +16,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.7.0
- * @since 1.7.0
+ * @version 1.6.0
+ * @since 1.6.0
  */
 public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 {
@@ -27,12 +27,16 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	/** The organization. */
 	protected COrganization organization;
 
-	/** The user. */
+	/** The logged user. */
 	protected CUser user;
-	
+
 	/** The security exception. */
 	protected CSecurityException securityException;
-	
+
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AAuthenticatedSession.class);
+
+
 	/**
 	 * Instantiates a new a authenticated session.
 	 *
@@ -42,7 +46,7 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	{
 		super(request);
 	}
-	
+
 	/**
 	 * @return Current authenticated session
 	 */
@@ -57,31 +61,24 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	@Override
 	public Roles getRoles ()
 	{
+		Roles roles = new Roles();
+
 		if (isSignedIn())
 		{
-			Roles roles = new Roles();
-
-			for (CGroup group : user.getGroups())
-			{
-				for (CRole role : group.getRoles())
-				{
-					roles.add(role.getCode());
-				}
-
-			}
-
-			return roles;
+			roles.addAll(user.exportRoles());
 		}
-		return null;
+
+		LOGGER.warn(String.format("No roles found. Reason: User is not authenticated"));
+		return roles;
 	}
-	
+
 	/**
 	 * Returns true if logged user has assigned input role.
 	 *
 	 * @param role input role
 	 * @return boolean value
 	 */
-	public boolean hasRole (String role)
+	public final boolean hasRole (String role)
 	{
 		Boolean hasRole = Boolean.FALSE;
 		if (getRoles() == null)
@@ -93,7 +90,7 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 			hasRole = getRoles().hasAnyRole(new Roles(role));
 		}
 		return hasRole;
-	} 
+	}
 
 	/**
 	 * Gets the organization.
@@ -130,7 +127,7 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	 *
 	 * @param user the new user
 	 */
-	public void setUser (CUser user)
+	protected void setUser (CUser user)
 	{
 		this.user = user;
 	}
@@ -150,7 +147,7 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	 *
 	 * @param securityException the new security exception
 	 */
-	public void setSecurityException (CSecurityException securityException)
+	protected void setSecurityException (CSecurityException securityException)
 	{
 		this.securityException = securityException;
 	}
