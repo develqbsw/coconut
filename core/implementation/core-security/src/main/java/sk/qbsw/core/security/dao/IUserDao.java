@@ -14,11 +14,12 @@ import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
- * The Interface IPreparedAnswerDao.
+ * The Interface IUserDao.
  *
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @author Tomas Lauro
+ * @version 1.6.0
+ * @since 1.0.0
  */
 public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 {
@@ -46,7 +47,7 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the user
 	 */
 	public CUser findByLogin (String login, CUnit unit);
-	
+
 	/**
 	 * Find by PIN.
 	 *
@@ -54,6 +55,13 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the c user
 	 */
 	public CUser findByPinNull (String pinCode);
+
+	/**
+	 * Find all users.
+	 *
+	 * @return the list
+	 */
+	public List<CUser> findAllUsers ();
 
 	/**
 	 * Find all users for organization.
@@ -67,33 +75,27 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * Find all users.
 	 *
 	 * @param organization the organization
+	 * @param enabled the enabled (optional)
+	 * @param group the group (optional)
 	 * @return the list
 	 */
 
 	public List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group);
-	
-	/**
-	 * Find all users.
-	 *
-	 * @param organization the organization
-	 * @return the list
-	 */
-	public List<CUser> findAllUsers ();
-	
+
 	/**
 	 * Find all users order by organization.
 	 *
 	 * @param organization the organization
-	 * @param enabled the enabled
-	 * @param group the group
+	 * @param enabled the enabled (optional)
+	 * @param group the group (optional)
 	 * @return the list
 	 */
 	public List<CUser> findAllUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
 
 	/** Get users without user what come as parameter
 	 * @param organization - organization for which are selected users
-	 * @param group - group for which are selected users
-	 * @param user - user without are users returned
+	 * @param group - group for which are selected users (optional)
+	 * @param user - user without are users returned (optional)
 	 * @return list of users
 	 */
 	public abstract List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user);
@@ -102,6 +104,7 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * Find all operator users for organization.
 	 *
 	 * @param organization the organization
+	 * @param role the role
 	 * @return the list
 	 */
 	public List<CUser> findAllUsersByRole (COrganization organization, CRole role);
