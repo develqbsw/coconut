@@ -29,6 +29,9 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	/** The logged user. */
 	private CUser user;
 
+	/** The organization unit. */
+	private String unit;
+
 	/** The security exception. */
 	protected CSecurityException securityException;
 
@@ -47,6 +50,8 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	}
 
 	/**
+	 * Gets the.
+	 *
 	 * @return Current authenticated session
 	 */
 	public static AAuthenticatedSecurityWebSession get ()
@@ -129,6 +134,26 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	protected void setUser (CUser user)
 	{
 		this.user = user;
+	}
+
+	/**
+	 * Gets the unit.
+	 *
+	 * @return the unit
+	 */
+	public String getUnit ()
+	{
+		return unit;
+	}
+
+	/**
+	 * Sets the unit.
+	 *
+	 * @param unit the new unit
+	 */
+	protected void setUnit (String unit)
+	{
+		this.unit = unit;
 	}
 
 	/**

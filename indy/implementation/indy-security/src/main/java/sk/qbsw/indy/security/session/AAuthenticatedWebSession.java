@@ -130,7 +130,7 @@ public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebS
 	 */
 	public final boolean signIn (final String username, final String password, final String unit)
 	{
-		signedIn = authenticate(username, password);
+		signedIn = authenticate(username, password, unit);
 		if (signedIn)
 		{
 			bind();
