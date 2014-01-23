@@ -32,7 +32,6 @@ public class CSecurityAuthenticationProvider implements AuthenticationProvider
 {
 
 	/** The authentication service. */
-	@Qualifier ("cLoginService")
 	@Autowired
 	private IAuthenticationService authenticationService;
 
