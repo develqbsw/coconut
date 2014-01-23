@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.code.security.test.util.CDataGenerator;
-import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
-import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.ldap.CLdapProvider;
@@ -34,7 +31,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider;
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
+@ContextConfiguration (locations = {"classpath:/spring/test-ldap-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
 public class CLdapAuthenticationTestCase
 {
@@ -50,11 +47,6 @@ public class CLdapAuthenticationTestCase
 	/** The authentication test provider. */
 	@Autowired
 	private CAuthenticationTestProvider authenticationTestProvider;
-
-	/** The user ldap dao. */
-	@Autowired
-	@Qualifier ("ldapUserDaoMock")
-	private IUserDao userLdapDao;
 
 	/** The ldap provider. */
 	@Autowired
@@ -209,14 +201,7 @@ public class CLdapAuthenticationTestCase
 	 */
 	private void initTestUserWithDefaultUnit () throws Exception
 	{
-		dataGenerator.generateDatabaseDataForLdapTests();
-		CUser user = dataGenerator.generateUserWithDefaultUnitForLdapTests();
-
-		//init mocks
-		Mockito.when(userLdapDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE)).thenReturn(user);
-
-		//replace autowired variables
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "userLdapDao", userLdapDao);
+		dataGenerator.generateDatabaseDataForDatabaseTests();
 		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
 	}
 
@@ -227,14 +212,7 @@ public class CLdapAuthenticationTestCase
 	 */
 	private void initTestUserWithoutDefaultUnit () throws Exception
 	{
-		dataGenerator.generateDatabaseDataForLdapTests();
-		CUser user = dataGenerator.generateUserWithoutDefaultUnitForLdapTests();
-
-		//init mocks
-		Mockito.when(userLdapDao.findByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE)).thenReturn(user);
-
-		//replace autowired variables
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "userLdapDao", userLdapDao);
+		dataGenerator.generateDatabaseDataForDatabaseTests();
 		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
 	}
 

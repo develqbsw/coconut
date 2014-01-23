@@ -2,9 +2,8 @@ package sk.qbsw.core.security.service;
 
 import java.io.Serializable;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -51,6 +50,30 @@ public interface IAuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return
 	 */
-	@Transactional (readOnly = true)
 	public abstract boolean canLogin (String login, String password, CRole role);
+
+	/**
+	 * Create new authentication params for user.
+	 *
+	 * @param password the password
+	 */
+	public CAuthenticationParams createPasswordDigest (String password);
+	
+	/**
+	 * Change password.
+	 *
+	 * @param login the login
+	 * @param password the password
+	 */
+	public void changePasswordDigest (String login, String password) throws CSecurityException;
+
+	/**
+	 * Renew password of the user.
+	 *
+	 * @param login the login
+	 * @param email the email
+	 * @param password the password
+	 * @throws CSecurityException the c security exception
+	 */
+	public void changePasswordPlain (String login, String email, String password) throws CSecurityException;
 }

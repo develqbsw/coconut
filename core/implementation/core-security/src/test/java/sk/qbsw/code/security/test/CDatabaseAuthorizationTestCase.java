@@ -35,7 +35,7 @@ public class CDatabaseAuthorizationTestCase
 
 	/** The authorization service. */
 	@Autowired
-	@Qualifier ("databaseAuthorizationService")
+	@Qualifier ("authorizationService")
 	private IAuthorizationService authorizationService;
 
 	/** The authorization test provider. */

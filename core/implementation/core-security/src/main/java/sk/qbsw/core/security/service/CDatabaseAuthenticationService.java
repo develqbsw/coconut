@@ -1,19 +1,21 @@
 package sk.qbsw.core.security.service;
 
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.exception.CWrongPasswordException;
+import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.EAuthenticationType;
+import sk.qbsw.core.security.service.signature.IPasswordDigester;
 
 /**
  * Authentication service.
@@ -37,41 +39,43 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	@Autowired
 	private IUnitDao unitDao;
 
+	/** The authentication params dao. */
+	@Autowired
+	private IAuthenticationParamsDao authenticationParamsDao;
+
+	/** Password digester *. */
+	@Autowired
+	private IPasswordDigester digester;
+
 	/**
 	 * Authenticate by digest.
 	 *
-	 * @param user the user
+	 * @param authenticationParams the authentication parameters of user
 	 * @param passwordToCheck the password to check
 	 * @throws CWrongPasswordException the c wrong password exception
 	 */
-	private void authenticateByPassword (CUser user, String passwordToCheck) throws CWrongPasswordException
+	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws CWrongPasswordException
 	{
-		if (!user.getPassword().equals(passwordToCheck))
+		if (authenticationParams.getPassword().equals(passwordToCheck) == false)
 		{
 			throw new CWrongPasswordException("Plain password doesn't match");
 		}
 	}
 
-
 	/**
 	 * Authenticate by password.
 	 *
-	 * @param user the user
+	 * @param authenticationParams the authentication parameters of user
 	 * @param passwordToCheck the password to check
 	 * @throws CWrongPasswordException the c wrong password exception
 	 */
-	private void authenticateByPasswordDigest (CUser user, String passwordToCheck) throws CWrongPasswordException
+	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String passwordToCheck) throws CWrongPasswordException
 	{
-		ConfigurablePasswordEncryptor passwordEncryptor2 = new ConfigurablePasswordEncryptor();
-		passwordEncryptor2.setAlgorithm("SHA-1");
-		passwordEncryptor2.setPlainDigest(true);
-
-		if (!passwordEncryptor2.checkPassword(passwordToCheck, user.getPasswordDigest()))
+		if (digester.checkPassword(passwordToCheck, authenticationParams.getPasswordDigest()) == false)
 		{
 			throw new CWrongPasswordException("Password dogest doesn't match");
 		}
 	}
-
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
@@ -167,10 +171,10 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 			switch (authenticationType)
 			{
 				case BY_PASSWORD_DIGEST:
-					authenticateByPasswordDigest(user, password);
+					authenticateByPasswordDigest(user.getAuthenticationParams(), password);
 					break;
 				case BY_PASSWORD:
-					authenticateByPassword(user, password);
+					authenticateByPassword(user.getAuthenticationParams(), password);
 					break;
 				default:
 					throw new CWrongPasswordException("Authentication method wrong");
@@ -184,5 +188,50 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		}
 
 		return user;
+	}
+
+	@Override
+	@Transactional (readOnly = false)
+	public CAuthenticationParams createPasswordDigest (String password)
+	{
+		CAuthenticationParams authParams = new CAuthenticationParams();
+		authParams.setPassword(null);
+		authParams.setPasswordDigest(digester.generateDigest(password));
+		authParams.setPin(null);
+
+		authenticationParamsDao.save(authParams);
+
+		return authParams;
+	}
+
+	@Override
+	@Transactional (readOnly = false)
+	public void changePasswordDigest (String login, String password) throws CSecurityException
+	{
+		CUser user = userDao.findByLogin(login);
+
+		if (user == null)
+		{
+			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
+		}
+
+		user.getAuthenticationParams().setPassword(null);
+		user.getAuthenticationParams().setPasswordDigest(digester.generateDigest(password));
+		authenticationParamsDao.save(user.getAuthenticationParams());
+	}
+
+	@Override
+	@Transactional (readOnly = false)
+	public void changePasswordPlain (String login, String email, String password) throws CSecurityException
+	{
+		CUser user = userDao.findByLogin(login);
+
+		if (user == null || email.equals(user.getEmail()) == false)
+		{
+			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
+		}
+
+		user.getAuthenticationParams().setPassword(password);
+		authenticationParamsDao.save(user.getAuthenticationParams());
 	}
 }

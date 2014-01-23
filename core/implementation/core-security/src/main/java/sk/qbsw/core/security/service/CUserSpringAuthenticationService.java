@@ -71,7 +71,7 @@ public class CUserSpringAuthenticationService implements UserDetailsService
 	private User buildUserFromEntity (CUser entity)
 	{
 		String username = entity.getLogin();
-		String password = entity.getPassword();
+		String password = entity.getAuthenticationParams().getPassword();
 		boolean enabled = entity.getFlagEnabled();
 		boolean accountNonExpired = true;
 

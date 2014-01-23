@@ -111,7 +111,7 @@ public class CUsersValidationService implements IUsersValidationService
 	{
 		Boolean exists = false;
 
-		CUser user = userDao.findByPinNull(userOld.getPin());
+		CUser user = userDao.findByPinNull(userOld.getAuthenticationParams().getPin());
 		if (user != null)
 		{
 			if (! (userOld.getPkId().equals(user.getPkId())))

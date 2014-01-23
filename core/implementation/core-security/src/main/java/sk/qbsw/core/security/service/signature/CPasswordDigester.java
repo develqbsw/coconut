@@ -7,13 +7,15 @@ import org.springframework.stereotype.Service;
  * SHA-1 password digester implementation
  * 
  * @author Dalibor Rak
- * @version 1.3.0
+ * @author Tomas Lauro
+ * @version 1.6.0
  * @since 1.3.0
  * 
  */
 @Service
 public class CPasswordDigester implements IPasswordDigester
 {
+	private final String DIGEST_ALGORITHM = "SHA-1";
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.signature.IPasswordDigester#generateDigest(java.lang.String)
@@ -22,8 +24,18 @@ public class CPasswordDigester implements IPasswordDigester
 	public String generateDigest (String password)
 	{
 		ConfigurablePasswordEncryptor passwordEncryptor2 = new ConfigurablePasswordEncryptor();
-		passwordEncryptor2.setAlgorithm("SHA-1");
+		passwordEncryptor2.setAlgorithm(DIGEST_ALGORITHM);
 		passwordEncryptor2.setPlainDigest(true);
 		return passwordEncryptor2.encryptPassword(password);
+	}
+
+	@Override
+	public boolean checkPassword (String plainPassword, String encryptedPassword)
+	{
+		ConfigurablePasswordEncryptor passwordEncryptor2 = new ConfigurablePasswordEncryptor();
+		passwordEncryptor2.setAlgorithm(DIGEST_ALGORITHM);
+		passwordEncryptor2.setPlainDigest(true);
+
+		return passwordEncryptor2.checkPassword(plainPassword, encryptedPassword);
 	}
 }

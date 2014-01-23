@@ -21,9 +21,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
 import com.google.gson.annotations.Expose;
@@ -34,7 +36,7 @@ import com.google.gson.annotations.Expose;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @version 1.6.0
- * @since 1.0
+ * @since 1.0.0
  */
 @Entity
 @Table (name = "t_user", schema = "sec")
@@ -63,12 +65,6 @@ public class CUser implements Serializable, IEntity<Long>
 	@Expose
 	private String name;
 
-	/** The password. */
-	private String password;
-
-	/** Password digest. */
-	private String passwordDigest;
-
 	/** The surname. */
 	@Expose
 	private String surname;
@@ -90,15 +86,16 @@ public class CUser implements Serializable, IEntity<Long>
 	@JoinTable (schema = "sec", name = "t_x_group_user", joinColumns = {@JoinColumn (name = "fk_user")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
 	private Set<CGroup> groups;
 
-	/** The PIN code. */
-	@Expose
-	private String pin;
-
 	/** The default user's unit. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_default_unit", nullable = true)
 	@Expose
 	private CUnit defaultUnit;
+
+	/** The authentication params. */
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "fk_auth_params", nullable = false)
+	private CAuthenticationParams authenticationParams;
 
 	/** The user type. */
 	@Column (name = "type", nullable = true)
@@ -186,27 +183,6 @@ public class CUser implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Gets the password digest.
-	 * 
-	 * @return the password digest
-	 */
-	public String getPasswordDigest ()
-	{
-		return passwordDigest;
-	}
-
-	/**
-	 * Sets the password digest.
-	 * 
-	 * @param passwordDigest
-	 *            the new password digest
-	 */
-	public void setPasswordDigest (String passwordDigest)
-	{
-		this.passwordDigest = passwordDigest;
-	}
-
-	/**
 	 * Gets the name.
 	 * 
 	 * @return the name
@@ -225,27 +201,6 @@ public class CUser implements Serializable, IEntity<Long>
 	public void setName (String name)
 	{
 		this.name = name;
-	}
-
-	/**
-	 * Gets the password.
-	 * 
-	 * @return the password
-	 */
-	public String getPassword ()
-	{
-		return this.password;
-	}
-
-	/**
-	 * Sets the password.
-	 * 
-	 * @param password
-	 *            the new password
-	 */
-	public void setPassword (String password)
-	{
-		this.password = password;
 	}
 
 	/**
@@ -366,27 +321,6 @@ public class CUser implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Gets the pin.
-	 * 
-	 * @return the pin
-	 */
-	public String getPin ()
-	{
-		return pin;
-	}
-
-	/**
-	 * Sets the pin.
-	 * 
-	 * @param pin
-	 *            the new pin
-	 */
-	public void setPin (String pin)
-	{
-		this.pin = pin;
-	}
-
-	/**
 	 * Gets the default unit.
 	 *
 	 * @return the default unit
@@ -413,7 +347,14 @@ public class CUser implements Serializable, IEntity<Long>
 	 */
 	public EAuthenticationType authenticationType ()
 	{
-		return passwordDigest != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
+		if (this.getAuthenticationParams() != null)
+		{
+			return this.getAuthenticationParams().getPasswordDigest() != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
+		}
+		else
+		{
+			throw new CSystemException("The user has not a authentication params");
+		}
 	}
 
 	/**
@@ -492,5 +433,15 @@ public class CUser implements Serializable, IEntity<Long>
 		}
 
 		return false;
+	}
+
+	public CAuthenticationParams getAuthenticationParams ()
+	{
+		return authenticationParams;
+	}
+
+	public void setAuthenticationParams (CAuthenticationParams authenticationParams)
+	{
+		this.authenticationParams = authenticationParams;
 	}
 }

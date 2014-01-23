@@ -20,12 +20,11 @@ import sk.qbsw.core.security.model.domain.CUser;
 public interface IUserService extends Serializable
 {
 	/**
-	 * Change password.
+	 * Enable user.
 	 *
 	 * @param user the user
-	 * @param password the password
 	 */
-	public void changePassword (CUser user, String password);
+	public void enableUser (CUser user);
 
 	/**
 	 * Disable user.
@@ -33,14 +32,6 @@ public interface IUserService extends Serializable
 	 * @param user the user
 	 */
 	public void disableUser (CUser user);
-
-
-	/**
-	 * Enable user.
-	 *
-	 * @param user the user
-	 */
-	public void enableUser (CUser user);
 
 	/**
 	 * Gets the.
@@ -156,17 +147,7 @@ public interface IUserService extends Serializable
 	 * @throws CSecurityException if user with such logiun already exists
 	 */
 	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException;
-
-	/**
-	 * Renew password of the user.
-	 *
-	 * @param login the login
-	 * @param email the email
-	 * @param password the password
-	 * @throws CSecurityException the c security exception
-	 */
-	public void renewPassword (String login, String email, String password) throws CSecurityException;
-
+	
 	/**
 	 * Update user.
 	 *

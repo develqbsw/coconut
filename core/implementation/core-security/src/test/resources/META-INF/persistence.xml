@@ -11,6 +11,7 @@
 		<class>sk.qbsw.core.security.model.domain.CGroup</class>
 		<class>sk.qbsw.core.security.model.domain.COrganization</class>
 		<class>sk.qbsw.core.security.model.domain.CUnit</class>
+		<class>sk.qbsw.core.security.model.domain.CAuthenticationParams</class>
 		
 		<properties>
 			<property name="hibernate.dialect" value="sk.qbsw.core.persistence.dialect.CSQLServer2012Dialect" />

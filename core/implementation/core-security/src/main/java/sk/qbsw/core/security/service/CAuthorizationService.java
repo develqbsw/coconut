@@ -19,8 +19,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.6.0
  * @since 1.6.0
  */
-@Service (value = "databaseAuthorizationService")
-public class CDatabaseAuthorizationService implements IAuthorizationService
+@Service (value = "authorizationService")
+public class CAuthorizationService implements IAuthorizationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

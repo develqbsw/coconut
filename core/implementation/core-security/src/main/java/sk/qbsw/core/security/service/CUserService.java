@@ -12,7 +12,6 @@ import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.service.signature.IPasswordDigester;
 
 /**
  * Service for user management.
@@ -34,23 +33,9 @@ public class CUserService implements IUserService
 	@Autowired
 	private IUserDao userDao;
 
-	/** Password digester *. */
+	/** The authentication service. */
 	@Autowired
-	private IPasswordDigester digester;
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IUserService#changePassword(sk.qbsw.core.security.model.domain.CUser, java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changePassword (CUser user, String password)
-	{
-		CUser userToSave = userDao.findById(user.getPkId());
-		userToSave.setPassword(null);
-		userToSave.setPasswordDigest(digester.generateDigest(user.getPassword()));
-
-		userDao.save(userToSave);
-	}
+	private IAuthenticationService authenticationService;
 
 	/**
 	 * Disable user.
@@ -220,31 +205,9 @@ public class CUserService implements IUserService
 			throw new CSecurityException("User with login " + user.getLogin() + " already exists", "error.security.loginused");
 		}
 
-		user.setPasswordDigest(digester.generateDigest(user.getPassword()));
-		user.setPassword(null);
+		user.setAuthenticationParams(user.getAuthenticationParams());
 		user.setOrganization(organization);
-		userDao.save(user);
-	}
 
-	/**
-	 * Renew password.
-	 *
-	 * @param login the login
-	 * @param email the email
-	 * @param password the password
-	 * @throws CSecurityException the c security exception
-	 * @see sk.qbsw.core.security.service.ISecurityService#renewPassword(java.lang.String, java.lang.String)
-	 */
-	@Transactional (readOnly = false)
-	public void renewPassword (String login, String email, String password) throws CSecurityException
-	{
-		CUser user = userDao.findByLogin(login);
-
-		if (user == null || !email.equals(user.getEmail()))
-		{
-			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
-		}
-		user.setPassword(password);
 		userDao.save(user);
 	}
 
