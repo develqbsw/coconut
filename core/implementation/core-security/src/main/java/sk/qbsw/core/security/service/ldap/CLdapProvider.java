@@ -6,7 +6,12 @@ import java.util.Set;
 
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
@@ -178,6 +183,35 @@ public class CLdapProvider
 			{
 				cursor.close();
 			}
+		}
+	}
+
+	/**
+	 * Modify entry v LDAP.
+	 *
+	 * @param dn the dn of entry
+	 * @param attributeId the attribute id
+	 * @param value the value
+	 * @throws CSecurityException the security exception
+	 */
+	public void modifyEntry (String dn, String attributeId, String value) throws CSecurityException
+	{
+		try
+		{
+			//create attribute
+			Attribute attribute = new DefaultAttribute(attributeId, value);
+
+			//create modification
+			Modification modification = new DefaultModification();
+			modification.setAttribute(attribute);
+			modification.setOperation(ModificationOperation.REPLACE_ATTRIBUTE);
+
+			//modify
+			connection.modify(dn, modification);
+		}
+		catch (LdapException ex)
+		{
+			throw new CSecurityException("The attribute " + attributeId + " of dn " + dn + " in ldap cannot be changed: " + ex.toString());
 		}
 	}
 

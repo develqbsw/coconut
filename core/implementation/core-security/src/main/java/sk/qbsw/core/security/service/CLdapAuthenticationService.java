@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidUserException;
@@ -159,7 +158,6 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	 * @param login the login
 	 * @param password the password
 	 * @return true, if successful
-	 * @throws CBusinessException 
 	 */
 	private boolean authenticateUser (String login, String password)
 	{
@@ -186,20 +184,48 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#createEncryptedPassword(java.lang.String, java.lang.String)
+	 */
 	@Override
-	public CAuthenticationParams createPasswordDigest (String password)
+	public CAuthenticationParams createEncryptedPassword (String login, String password) throws CSecurityException
 	{
-		throw new NotImplementedException();
+		//change password in ldap
+		changeEncryptedPassword(login, password);
+
+		//and returns empty authentications params
+		return new CAuthenticationParams();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
+	 */
 	@Override
-	public void changePasswordDigest (String login, String password) throws CSecurityException
+	public void changeEncryptedPassword (String login, String password) throws CSecurityException
 	{
-		throw new NotImplementedException();
+		try
+		{
+			//create connection
+			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
+			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
+
+			//change password
+			StringBuilder dnBuilder = new StringBuilder();
+			ldapProvider.modifyEntry(dnBuilder.append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString(), "userPassword", password);
+		}
+		finally
+		{
+			//close connection
+			ldapProvider.unbindFromServer();
+			ldapProvider.closeConnection();
+		}
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
-	public void changePasswordPlain (String login, String email, String password) throws CSecurityException
+	public void changePlainPassword (String login, String email, String password) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}

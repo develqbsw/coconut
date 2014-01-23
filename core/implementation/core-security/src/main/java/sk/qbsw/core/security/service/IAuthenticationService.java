@@ -55,9 +55,10 @@ public interface IAuthenticationService extends Serializable
 	/**
 	 * Create new authentication params for user.
 	 *
+	 * @param login the login
 	 * @param password the password
 	 */
-	public CAuthenticationParams createPasswordDigest (String password);
+	public CAuthenticationParams createEncryptedPassword (String login, String password) throws CSecurityException;
 	
 	/**
 	 * Change password.
@@ -65,7 +66,7 @@ public interface IAuthenticationService extends Serializable
 	 * @param login the login
 	 * @param password the password
 	 */
-	public void changePasswordDigest (String login, String password) throws CSecurityException;
+	public void changeEncryptedPassword (String login, String password) throws CSecurityException;
 
 	/**
 	 * Renew password of the user.
@@ -75,5 +76,5 @@ public interface IAuthenticationService extends Serializable
 	 * @param password the password
 	 * @throws CSecurityException the c security exception
 	 */
-	public void changePasswordPlain (String login, String email, String password) throws CSecurityException;
+	public void changePlainPassword (String login, String email, String password) throws CSecurityException;
 }

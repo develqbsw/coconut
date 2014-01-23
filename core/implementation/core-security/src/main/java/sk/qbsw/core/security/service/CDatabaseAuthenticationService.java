@@ -190,9 +190,12 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		return user;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#createEncryptedPassword(java.lang.String, java.lang.String)
+	 */
 	@Override
 	@Transactional (readOnly = false)
-	public CAuthenticationParams createPasswordDigest (String password)
+	public CAuthenticationParams createEncryptedPassword (String login, String password)
 	{
 		CAuthenticationParams authParams = new CAuthenticationParams();
 		authParams.setPassword(null);
@@ -204,9 +207,12 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		return authParams;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
+	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void changePasswordDigest (String login, String password) throws CSecurityException
+	public void changeEncryptedPassword (String login, String password) throws CSecurityException
 	{
 		CUser user = userDao.findByLogin(login);
 
@@ -220,9 +226,12 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		authenticationParamsDao.save(user.getAuthenticationParams());
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void changePasswordPlain (String login, String email, String password) throws CSecurityException
+	public void changePlainPassword (String login, String email, String password) throws CSecurityException
 	{
 		CUser user = userDao.findByLogin(login);
 
