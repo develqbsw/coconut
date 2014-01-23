@@ -16,13 +16,13 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * @version 1.7.0
  * @since 1.7.0
  */
-public class CLdapAuthenticatedSession extends AAuthenticatedSession
+public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapAuthenticatedSession.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapAuthenticatedWebSession.class);
 
 	/** The login service. */
 	@SpringBean (name = "ldapAuthenticationService")
@@ -36,9 +36,9 @@ public class CLdapAuthenticatedSession extends AAuthenticatedSession
 	 *
 	 * @return active session
 	 */
-	public static CLdapAuthenticatedSession get ()
+	public static CLdapAuthenticatedWebSession get ()
 	{
-		return (CLdapAuthenticatedSession) AAuthenticatedSession.get();
+		return (CLdapAuthenticatedWebSession) AAuthenticatedSecurityWebSession.get();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class CLdapAuthenticatedSession extends AAuthenticatedSession
 	 *
 	 * @param request the request
 	 */
-	public CLdapAuthenticatedSession (Request request)
+	public CLdapAuthenticatedWebSession (Request request)
 	{
 		super(request);
 		injectDependencies();
@@ -77,6 +77,29 @@ public class CLdapAuthenticatedSession extends AAuthenticatedSession
 		try
 		{
 			user = loginService.login(login, password);
+
+			setOrganization(user.getOrganization());
+			//setOrganizationUnit(user.getOrganizationUnit());
+
+			return true;
+		}
+		catch (CSecurityException e)
+		{
+			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s %s", login, e.getErrorCode(), e.getMessage()));
+			setSecurityException(e);
+			return false;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.indy.security.session.AAuthenticatedSession#authenticate(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean authenticate (String login, String password, String unit)
+	{
+		try
+		{
+			user = loginService.login(login, password, unit);
 
 			setOrganization(user.getOrganization());
 			//setOrganizationUnit(user.getOrganizationUnit());

@@ -17,13 +17,13 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * @version 1.6.0
  * @since 1.0.0
  */
-public class CAuthenticatedSession extends AAuthenticatedSession
+public class CDBAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapAuthenticatedSession.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapAuthenticatedWebSession.class);
 
 	/** The login service. */
 	@SpringBean (name = "cLoginService")
@@ -34,9 +34,9 @@ public class CAuthenticatedSession extends AAuthenticatedSession
 	 *
 	 * @return active session
 	 */
-	public static CAuthenticatedSession get ()
+	public static CDBAuthenticatedWebSession get ()
 	{
-		return (CAuthenticatedSession) AAuthenticatedSession.get();
+		return (CDBAuthenticatedWebSession) AAuthenticatedSecurityWebSession.get();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class CAuthenticatedSession extends AAuthenticatedSession
 	 *
 	 * @param request the request
 	 */
-	public CAuthenticatedSession (Request request)
+	public CDBAuthenticatedWebSession (Request request)
 	{
 		super(request);
 		injectDependencies();
@@ -75,6 +75,27 @@ public class CAuthenticatedSession extends AAuthenticatedSession
 		try
 		{
 			user = loginService.login(login, password);
+			setOrganization(user.getOrganization());
+
+			return true;
+		}
+		catch (CSecurityException e)
+		{
+			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s %s", login, e.getErrorCode(), e.getMessage()));
+			setSecurityException(e);
+			return false;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.indy.security.session.AAuthenticatedSession#authenticate(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean authenticate (String login, String password, String unit)
+	{
+		try
+		{
+			user = loginService.login(login, password, unit);
 			setOrganization(user.getOrganization());
 
 			return true;

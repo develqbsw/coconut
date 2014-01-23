@@ -1,6 +1,5 @@
 package sk.qbsw.indy.security.session;
 
-import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
 import org.slf4j.Logger;
@@ -19,7 +18,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.6.0
  * @since 1.6.0
  */
-public abstract class AAuthenticatedSession extends AuthenticatedWebSession
+public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWebSession
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -34,7 +33,7 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	protected CSecurityException securityException;
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AAuthenticatedSession.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AAuthenticatedSecurityWebSession.class);
 
 
 	/**
@@ -42,7 +41,7 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	 *
 	 * @param request the request
 	 */
-	public AAuthenticatedSession (Request request)
+	public AAuthenticatedSecurityWebSession (Request request)
 	{
 		super(request);
 	}
@@ -50,9 +49,9 @@ public abstract class AAuthenticatedSession extends AuthenticatedWebSession
 	/**
 	 * @return Current authenticated session
 	 */
-	public static AAuthenticatedSession get ()
+	public static AAuthenticatedSecurityWebSession get ()
 	{
-		return (AAuthenticatedSession) AuthenticatedWebSession.get();
+		return (AAuthenticatedSecurityWebSession) AAuthenticatedWebSession.get();
 	}
 
 	/* (non-Javadoc)

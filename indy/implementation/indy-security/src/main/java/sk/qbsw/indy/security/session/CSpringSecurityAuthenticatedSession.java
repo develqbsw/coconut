@@ -14,22 +14,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * Authentication for Wicket using Spring security
- * 
+ * Authentication for Wicket using Spring security.
+ *
  * @author Dalibor Rak
  * @version 1.6.0
  * @since 1.6.0
  */
-public class CSpringSecurityAuthenticatedSession extends AAuthenticatedSession
+public class CSpringSecurityAuthenticatedSession extends AAuthenticatedSecurityWebSession
 {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CSpringSecurityAuthenticatedSession.class);
+
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
 
 	/** The authentication manager. */
 	@SpringBean (name = "authenticationManager")
@@ -47,15 +45,16 @@ public class CSpringSecurityAuthenticatedSession extends AAuthenticatedSession
 	}
 
 	/**
-	 * Inject dependencies.
+	 * Adds the roles from authentication.
+	 *
+	 * @param roles the roles
+	 * @param authentication the authentication
 	 */
-	private void injectDependencies ()
+	private void addRolesFromAuthentication (Roles roles, Authentication authentication)
 	{
-		Injector.get().inject(this);
-
-		if (authenticationManager == null)
+		for (GrantedAuthority authority : authentication.getAuthorities())
 		{
-			throw new IllegalStateException("An authenticationManager is required.");
+			roles.add(authority.getAuthority());
 		}
 	}
 
@@ -81,6 +80,15 @@ public class CSpringSecurityAuthenticatedSession extends AAuthenticatedSession
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.indy.security.session.AAuthenticatedSession#authenticate(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean authenticate (String username, String password, String unit)
+	{
+		return authenticate(username, password);
+	}
+
+	/* (non-Javadoc)
 	 * @see org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession#getRoles()
 	 */
 	@Override
@@ -97,16 +105,15 @@ public class CSpringSecurityAuthenticatedSession extends AAuthenticatedSession
 	}
 
 	/**
-	 * Adds the roles from authentication.
-	 *
-	 * @param roles the roles
-	 * @param authentication the authentication
+	 * Inject dependencies.
 	 */
-	private void addRolesFromAuthentication (Roles roles, Authentication authentication)
+	private void injectDependencies ()
 	{
-		for (GrantedAuthority authority : authentication.getAuthorities())
+		Injector.get().inject(this);
+
+		if (authenticationManager == null)
 		{
-			roles.add(authority.getAuthority());
+			throw new IllegalStateException("An authenticationManager is required.");
 		}
 	}
 }
