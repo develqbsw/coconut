@@ -24,10 +24,10 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	private static final long serialVersionUID = 1L;
 
 	/** The organization. */
-	protected COrganization organization;
+	private COrganization organization;
 
 	/** The logged user. */
-	protected CUser user;
+	private CUser user;
 
 	/** The security exception. */
 	protected CSecurityException securityException;

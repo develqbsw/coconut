@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IAuthenticationService;
 
 /**
@@ -76,9 +77,10 @@ public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSessi
 	{
 		try
 		{
-			user = loginService.login(login, password);
+			CUser user = loginService.login(login, password);
 
 			setOrganization(user.getOrganization());
+			setUser(user);
 			//setOrganizationUnit(user.getOrganizationUnit());
 
 			return true;
@@ -99,9 +101,10 @@ public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSessi
 	{
 		try
 		{
-			user = loginService.login(login, password, unit);
+			CUser user = loginService.login(login, password, unit);
 
 			setOrganization(user.getOrganization());
+			setUser(user);
 			//setOrganizationUnit(user.getOrganizationUnit());
 
 			return true;
