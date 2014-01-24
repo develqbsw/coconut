@@ -21,7 +21,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -196,6 +196,15 @@ public class CUserService implements IUserService
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
+	 */
+	@Transactional (readOnly = true)
+	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
+	{
+		return userDao.findAllUsers(name, surname, login, enabled, groupPrefix);
+	}
+
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#registerNewUser(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization)
 	 */
 	@Transactional (readOnly = false)
@@ -229,15 +238,5 @@ public class CUserService implements IUserService
 	public void updateUser (CUser user)
 	{
 		userDao.save(user);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
-	 */
-	@Transactional (readOnly = true)
-	@Override
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
-	{
-		return userDao.findAllUsers(name, surname, login, enabled, groupPrefix);
 	}
 }

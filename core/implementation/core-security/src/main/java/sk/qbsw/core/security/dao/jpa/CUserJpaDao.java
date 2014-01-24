@@ -25,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.0
  */
 @Repository (value = "userDao")
@@ -316,13 +316,21 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
 	 */
-	@SuppressWarnings ("unchecked")
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled)
+	{
+		return findAllUsers(name, surname, login, enabled, null);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
+	 */
+	@SuppressWarnings ("unchecked")
+	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix)
 	{
 		StringBuilder strQueryBuilder = new StringBuilder();
 
 		/** Create query */
-		strQueryBuilder.append("select us from CUser us where 1=1");
+		strQueryBuilder.append("select distinct(us) from CUser us left join us.groups gr where 1=1");
 
 		if (name != null)
 		{
@@ -337,6 +345,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		if (login != null)
 		{
 			strQueryBuilder.append(" and us.login=:login");
+		}
+
+		if (groupCodePrefix != null)
+		{
+			strQueryBuilder.append(" and gr.code like :groupCodePrefix");
 		}
 
 		if (enabled != null)
@@ -364,6 +377,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		if (login != null)
 		{
 			query.setParameter("login", login);
+		}
+
+		if (groupCodePrefix != null)
+		{
+			query.setParameter("groupCodePrefix", "%" + groupCodePrefix + "%");
 		}
 
 		if (enabled != null)
@@ -474,73 +492,6 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		if (excludedUser != null)
 		{
 			query.setParameter("excludedUser", excludedUser);
-		}
-
-		List<CUser> users = (List<CUser>) query.getResultList();
-
-		return users;
-	}
-
-	@Override
-	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
-	{
-		StringBuilder strQueryBuilder = new StringBuilder();
-
-		/** Create query */
-		strQueryBuilder.append("select us from CUser us where 1=1");
-
-		if (name != null)
-		{
-			strQueryBuilder.append(" and us.name=:name");
-		}
-
-		if (surname != null)
-		{
-			strQueryBuilder.append(" and us.surname=:surname");
-		}
-
-		if (login != null)
-		{
-			strQueryBuilder.append(" and us.login=:login");
-		}
-
-		if (groupPrefix != null)
-		{
-			strQueryBuilder.append(" and grp.code like ':prefix%'");
-			
-		}
-
-
-		if (enabled != null)
-		{
-			strQueryBuilder.append(" and us.flagEnabled=:enabled");
-		}
-
-		/** Create order by section. */
-		strQueryBuilder.append(" order by us.login");
-
-		//create query
-		Query query = getEntityManager().createQuery(strQueryBuilder.toString());
-
-		/** Set parameters. */
-		if (name != null)
-		{
-			query.setParameter("name", name);
-		}
-
-		if (surname != null)
-		{
-			query.setParameter("surname", surname);
-		}
-
-		if (login != null)
-		{
-			query.setParameter("login", login);
-		}
-
-		if (enabled != null)
-		{
-			query.setParameter("enabled", enabled);
 		}
 
 		List<CUser> users = (List<CUser>) query.getResultList();

@@ -51,7 +51,7 @@ public class CUserTestCase
 	}
 
 	/**
-	 * Test login with default unit.
+	 * Test get all users.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -67,6 +67,28 @@ public class CUserTestCase
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", users);
 		Assert.assertTrue("Get all users failed: list of users is empty", users.size() > 0);
+	}
+
+	/**
+	 * Test get all users.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllByGroupCodePrefix () throws CSecurityException
+	{
+		initTest();
+
+		List<CUser> twoUsers = userService.getUsers(null, null, null, null, CDataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
+		List<CUser> oneUser = userService.getUsers(null, null, null, null, CDataGenerator.THIRD_GROUP_IN_UNIT_CODE);
+
+		//asserts
+		assertNotNull("Get all users failed: list of users is null", twoUsers);
+		assertNotNull("Get all users failed: list of users is null", oneUser);
+		Assert.assertEquals("Get all users failed: the expected count of user is 2 ", twoUsers.size(), 2);
+		Assert.assertEquals("Get all users failed: the expected count of user is 1 ", oneUser.size(), 1);
 	}
 
 	/**

@@ -14,7 +14,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -136,10 +136,10 @@ public interface IUserService extends Serializable
 	 * @param surname the surname (optional)
 	 * @param login the login (optional)
 	 * @param enabled the enabled (optional)
-	 * @param groupPrefix the group prefix
+	 * @param groupCodePrefix the group code prefix (optional)
 	 * @return the users
 	 */
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix);
+	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix);
 
 	/**
 	 * Gets the users order by organization.
@@ -159,7 +159,7 @@ public interface IUserService extends Serializable
 	 * @throws CSecurityException if user with such logiun already exists
 	 */
 	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException;
-	
+
 	/**
 	 * Update user.
 	 *
