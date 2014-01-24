@@ -129,4 +129,16 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the list
 	 */
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled);
+
+	/**
+	 * Find all users.
+	 *
+	 * @param name the name (optional)
+	 * @param surname the surname (optional)
+	 * @param login the login (optional)
+	 * @param enabled the enabled (optional)
+	 * @param groupPrefix the group prefix
+	 * @return the list
+	 */
+	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupPrefix);
 }

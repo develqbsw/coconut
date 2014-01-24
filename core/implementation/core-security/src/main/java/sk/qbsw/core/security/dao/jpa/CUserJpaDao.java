@@ -54,10 +54,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	@SuppressWarnings ("unchecked")
 	public CUser findById (Long id)
 	{
-		String strQuery = "select distinct(us) from CUser us "
-				+ "left join fetch us.organization "
-				+ "left join fetch us.defaultUnit "
-				+ "where us.pkId=:pkId";
+		String strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "where us.pkId=:pkId";
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("pkId", id);
 
@@ -70,25 +67,13 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			// 1. The user default unit is not null
 			if (userWithoutGroups.getDefaultUnit() != null)
 			{
-				strQuery = "select distinct(us) from CUser us "
-						+ "left join fetch us.organization "
-						+ "left join fetch us.defaultUnit deun "
-						+ "left join fetch us.groups gr "
-						+ "left join fetch gr.units "
-						+ "left join fetch gr.roles "
-						+ "where us.pkId=:pkId and deun in elements(gr.units)";
-				
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.groups gr " + "left join fetch gr.units " + "left join fetch gr.roles " + "where us.pkId=:pkId and deun in elements(gr.units)";
+
 			}
 			// 2. The user default unit is null
 			else
 			{
-				strQuery = "select distinct(us) from CUser us "
-						+ "left join fetch us.organization "
-						+ "left join fetch us.defaultUnit "
-						+ "left join fetch us.groups gr "
-						+ "left join fetch gr.units un "
-						+ "left join fetch gr.roles "
-						+ "where us.pkId=:pkId and un is null";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "left join fetch us.groups gr " + "left join fetch gr.units un " + "left join fetch gr.roles " + "where us.pkId=:pkId and un is null";
 			}
 
 			query = getEntityManager().createQuery(strQuery);
@@ -153,15 +138,12 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @param unit the unit
 	 * @return the c user
 	 */
-	@SuppressWarnings("unchecked")
-	private CUser findByLoginAndUnit(String login, CUnit unit)
+	@SuppressWarnings ("unchecked")
+	private CUser findByLoginAndUnit (String login, CUnit unit)
 	{
 		CUser userToReturn = null;
 
-		String strQuery = "select distinct(us) from CUser us "
-				+ "left join fetch us.organization "
-				+ "left join fetch us.defaultUnit "
-				+ "where us.login=:login";
+		String strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "where us.login=:login";
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("login", login);
 
@@ -173,13 +155,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			// 1. The unit has been set
 			if (unit != null)
 			{
-				strQuery = "select distinct(us) from CUser us "
-						+ "left join fetch us.organization "
-						+ "left join fetch us.defaultUnit deun "
-						+ "left join fetch us.groups gr "
-						+ "left join fetch gr.units "
-						+ "left join fetch gr.roles "
-						+ "where us.login=:login and :unit in elements(gr.units)";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.groups gr " + "left join fetch gr.units " + "left join fetch gr.roles " + "where us.login=:login and :unit in elements(gr.units)";
 				query = getEntityManager().createQuery(strQuery);
 				query.setParameter("login", login);
 				query.setParameter("unit", unit);
@@ -187,26 +163,14 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			// 2. The user default unit is not null
 			else if (usersWithoutGroups.get(0).getDefaultUnit() != null)
 			{
-				strQuery = "select distinct(us) from CUser us "
-						+ "left join fetch us.organization "
-						+ "left join fetch us.defaultUnit deun "
-						+ "left join fetch us.groups gr "
-						+ "left join fetch gr.units "
-						+ "left join fetch gr.roles "
-						+ "where us.login=:login and deun in elements(gr.units)";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.groups gr " + "left join fetch gr.units " + "left join fetch gr.roles " + "where us.login=:login and deun in elements(gr.units)";
 				query = getEntityManager().createQuery(strQuery);
 				query.setParameter("login", login);
 			}
 			// 3. The user default unit is null
 			else
 			{
-				strQuery = "select distinct(us) from CUser us "
-						+ "left join fetch us.organization "
-						+ "left join fetch us.defaultUnit "
-						+ "left join fetch us.groups gr "
-						+ "left join fetch gr.units un "
-						+ "left join fetch gr.roles "
-						+ "where us.login=:login and un is null";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "left join fetch us.groups gr " + "left join fetch gr.units un " + "left join fetch gr.roles " + "where us.login=:login and un is null";
 				query = getEntityManager().createQuery(strQuery);
 				query.setParameter("login", login);
 			}
@@ -231,14 +195,14 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 
 		return userToReturn;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByPinNull(java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
-	public CUser findByPinNull(String pinCode)
+	@SuppressWarnings ("unchecked")
+	public CUser findByPinNull (String pinCode)
 	{
 		if (pinCode == null)
 		{
@@ -256,14 +220,15 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		if (users.size() < 1)
 		{
 			userToReturn = null;
-		} else
+		}
+		else
 		{
 			userToReturn = users.get(0);
 		}
 
 		return userToReturn;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers()
 	 */
@@ -423,7 +388,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @return the list of users
 	 */
 	@SuppressWarnings ("unchecked")
-	private List<CUser> findAllUsers(COrganization organization, Boolean enabled, CGroup group, CRole role, CUser excludedUser, boolean orderByOrganization)
+	private List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group, CRole role, CUser excludedUser, boolean orderByOrganization)
 	{
 		StringBuilder strQueryBuilder = new StringBuilder();
 
@@ -431,19 +396,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		//if the group is not null, select groups according the default unit of the user
 		if (group != null || role != null)
 		{
-			strQueryBuilder.append("select us from CUser us "
-				+ "left join us.organization o "
-				+ "left join us.defaultUnit deun "
-				+ "left join us.groups gr "
-				+ "left join gr.units "
-				+ "left join gr.roles ro "
-				+ "where ((deun is not null and deun in elements(gr.units)) or (deun is null and gr.units is empty))");
+			strQueryBuilder.append("select us from CUser us " + "left join us.organization o " + "left join us.defaultUnit deun " + "left join us.groups gr " + "left join gr.units " + "left join gr.roles ro " + "where ((deun is not null and deun in elements(gr.units)) or (deun is null and gr.units is empty))");
 		}
 		else
 		{
-			strQueryBuilder.append("select us from CUser us "
-				+ "left join us.organization o "
-				+ "where 1=1");
+			strQueryBuilder.append("select us from CUser us " + "left join us.organization o " + "where 1=1");
 		}
 
 		if (group != null)
@@ -517,6 +474,73 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		if (excludedUser != null)
 		{
 			query.setParameter("excludedUser", excludedUser);
+		}
+
+		List<CUser> users = (List<CUser>) query.getResultList();
+
+		return users;
+	}
+
+	@Override
+	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
+	{
+		StringBuilder strQueryBuilder = new StringBuilder();
+
+		/** Create query */
+		strQueryBuilder.append("select us from CUser us where 1=1");
+
+		if (name != null)
+		{
+			strQueryBuilder.append(" and us.name=:name");
+		}
+
+		if (surname != null)
+		{
+			strQueryBuilder.append(" and us.surname=:surname");
+		}
+
+		if (login != null)
+		{
+			strQueryBuilder.append(" and us.login=:login");
+		}
+
+		if (groupPrefix != null)
+		{
+			strQueryBuilder.append(" and grp.code like ':prefix%'");
+			
+		}
+
+
+		if (enabled != null)
+		{
+			strQueryBuilder.append(" and us.flagEnabled=:enabled");
+		}
+
+		/** Create order by section. */
+		strQueryBuilder.append(" order by us.login");
+
+		//create query
+		Query query = getEntityManager().createQuery(strQueryBuilder.toString());
+
+		/** Set parameters. */
+		if (name != null)
+		{
+			query.setParameter("name", name);
+		}
+
+		if (surname != null)
+		{
+			query.setParameter("surname", surname);
+		}
+
+		if (login != null)
+		{
+			query.setParameter("login", login);
+		}
+
+		if (enabled != null)
+		{
+			query.setParameter("enabled", enabled);
 		}
 
 		List<CUser> users = (List<CUser>) query.getResultList();

@@ -189,6 +189,7 @@ public class CUserService implements IUserService
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
 	 */
+	@Transactional (readOnly = true)
 	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled)
 	{
 		return userDao.findAllUsers(name, surname, login, enabled);
@@ -210,10 +211,10 @@ public class CUserService implements IUserService
 		{
 			throw new CSecurityException("Not enough parameter to create user. The login and plain text password are required", "error.security.loginused");
 		}
-		
+
 		//create password
 		CAuthenticationParams authParams = authenticationService.createEncryptedPassword(user.getLogin(), user.getAuthenticationParams().getPassword());
-		
+
 		//set auth params
 		user.setAuthenticationParams(authParams);
 		user.setOrganization(organization);
@@ -228,5 +229,15 @@ public class CUserService implements IUserService
 	public void updateUser (CUser user)
 	{
 		userDao.save(user);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
+	 */
+	@Transactional (readOnly = true)
+	@Override
+	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
+	{
+		return userDao.findAllUsers(name, surname, login, enabled, groupPrefix);
 	}
 }
