@@ -8,9 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
+import sk.qbsw.core.security.model.domain.CUnit;
 
 /**
- * Service for projects management.
+ * Service for group management.
  *
  * @author Michal Lacko
  * @version 1.0.0
@@ -42,5 +43,14 @@ public class CGroupService implements IGroupService
 	public List<CGroup> getByCode (String code)
 	{
 		return groupDao.findByCode(code);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IGroupService#getByUnit(sk.qbsw.core.security.model.domain.CUnit)
+	 */
+	@Override
+	public List<CGroup> getByUnit (CUnit unit)
+	{
+		return groupDao.findByUnit(unit);
 	}
 }

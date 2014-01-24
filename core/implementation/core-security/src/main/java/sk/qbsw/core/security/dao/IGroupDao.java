@@ -15,8 +15,9 @@ import sk.qbsw.core.security.model.domain.CUnit;
  *
  * @author rosenberg
  * @author lacko
- * @version 1.0
- * @since 1.0
+ * @author Tomas Lauro
+ * @version 1.6.0
+ * @since 1.0.0
  */
 public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 {
@@ -34,14 +35,14 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	 * @return the list
 	 */
 	public List<CGroup> findAllByFlagSystem (boolean flagSystem);
-	
+
 	/**
 	 * Find groups by code
 	 *
 	 * @return the list
 	 */
-	public List<CGroup> findByCode(String code);
-	
+	public List<CGroup> findByCode (String code);
+
 	/**
 	 * Find groups by code and unit. The roles and units for group are fetched.
 	 * 
@@ -50,5 +51,14 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	 *
 	 * @return the list of groups
 	 */
-	public List<CGroup> findByCode(String code, CUnit unit);
+	public List<CGroup> findByCode (String code, CUnit unit);
+
+	/**
+	 * Find groups by unit.
+	 * 
+	 * @param unit the unit of group
+	 *
+	 * @return the list of groups
+	 */
+	public List<CGroup> findByUnit (CUnit unit);
 }

@@ -12,7 +12,7 @@ import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
 
 /**
- * The Class CSectionJpaDao.
+ * The Class CGroupJpaDao.
  *
  * @author Ladislav Rosenberg
  * @author Dalibor Rak
@@ -86,6 +86,22 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("code", code);
+		query.setParameter("unit", unit);
+		return (List<CGroup>) query.getResultList();
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findByUnit(sk.qbsw.core.security.model.domain.CUnit)
+	 */
+	@SuppressWarnings ("unchecked")
+	public List<CGroup> findByUnit (CUnit unit)
+	{
+		String strQuery = "select distinct(gr) from CGroup gr " +
+					"left join gr.units " +
+					"where :unit in elements(gr.units)" +
+					"order by gr.code";
+
+		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("unit", unit);
 		return (List<CGroup>) query.getResultList();
 	}

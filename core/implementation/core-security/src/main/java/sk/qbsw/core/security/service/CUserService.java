@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -205,7 +206,16 @@ public class CUserService implements IUserService
 			throw new CSecurityException("User with login " + user.getLogin() + " already exists", "error.security.loginused");
 		}
 
-		user.setAuthenticationParams(user.getAuthenticationParams());
+		if (user.getLogin() == null || user.getAuthenticationParams() == null || user.getAuthenticationParams().getPassword() == null)
+		{
+			throw new CSecurityException("Not enough parameter to create user. The login and plain text password are required", "error.security.loginused");
+		}
+		
+		//create password
+		CAuthenticationParams authParams = authenticationService.createEncryptedPassword(user.getLogin(), user.getAuthenticationParams().getPassword());
+		
+		//set auth params
+		user.setAuthenticationParams(authParams);
 		user.setOrganization(organization);
 
 		userDao.save(user);
