@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,6 @@ import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.core.security.service.IAuthenticationService;
 
-// TODO: Auto-generated Javadoc
 /**
  * Provider for spring security.
  * 
