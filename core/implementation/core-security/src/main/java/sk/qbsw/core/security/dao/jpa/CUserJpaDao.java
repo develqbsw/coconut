@@ -473,7 +473,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 
 		/** Create group by section.  */
 		//workaround - use distinct with order by
-		strQueryBuilder.append(" group by us.pkId, us.login, us.name, us.surname, us.email, us.password, us.passwordDigest, us.flagEnabled, us.pin, us.userType, us.organization, us.defaultUnit");
+		strQueryBuilder.append(" group by us.pkId, us.login, us.name, us.surname, us.email, us.flagEnabled, us.userType, us.authenticationParams, us.organization, us.defaultUnit");
 
 		if (orderByOrganization == true)
 		{
