@@ -28,7 +28,8 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  *
  * @param <T> the generic type
  * @author Dalibor Rak
- * @version 1.2.1
+ * @author Tomas Lauro
+ * @version 1.6.1
  * @since 1.0
  */
 @Entity
