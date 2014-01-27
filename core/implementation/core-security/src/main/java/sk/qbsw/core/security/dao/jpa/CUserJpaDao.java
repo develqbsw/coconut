@@ -414,11 +414,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		//if the group is not null, select groups according the default unit of the user
 		if (group != null || role != null)
 		{
-			strQueryBuilder.append("select us from CUser us " + "left join us.organization o " + "left join us.defaultUnit deun " + "left join us.groups gr " + "left join gr.units " + "left join gr.roles ro " + "where ((deun is not null and deun in elements(gr.units)) or (deun is null and gr.units is empty))");
+			strQueryBuilder.append("select us from CUser us " + "left join fetch us.organization o " + "left join us.defaultUnit deun " + "left join fetch us.groups gr " + "left join gr.units " + "left join gr.roles ro " + "where ((deun is not null and deun in elements(gr.units)) or (deun is null and gr.units is empty))");
 		}
 		else
 		{
-			strQueryBuilder.append("select us from CUser us " + "left join us.organization o " + "where 1=1");
+			strQueryBuilder.append("select us from CUser us " + "left join fetch us.organization o " + "where 1=1");
 		}
 
 		if (group != null)
@@ -448,12 +448,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 
 		/** Create group by section.  */
 		//workaround - use distinct with order by
-		strQueryBuilder.append(" group by us.pkId, us.login, us.name, us.surname, us.email, us.flagEnabled, us.userType, us.authenticationParams, us.organization, us.defaultUnit");
-
-		if (orderByOrganization == true)
-		{
-			strQueryBuilder.append(", o.name");
-		}
+		strQueryBuilder.append(" group by us.pkId, us.login, us.name, us.surname, us.email, us.flagEnabled, us.userType, us.authenticationParams, us.organization, us.defaultUnit, o.pkId, o.email, o.phone, o.flagEnabled, o.name, o.code");
 
 		/** Create order by section. */
 		if (orderByOrganization == true)

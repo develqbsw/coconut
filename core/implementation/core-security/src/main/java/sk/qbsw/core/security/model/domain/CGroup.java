@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,17 +52,17 @@ public class CGroup implements Serializable, IEntity<Long>
 
 	//bi-directional many-to-many association to CRole
 	/** The roles. */
-	@ManyToMany (mappedBy = "groups")
+	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<CRole> roles;
 
 	//bi-directional many-to-many association to CUser
 	/** The users. */
-	@ManyToMany (mappedBy = "groups")
+	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<CUser> users;
 
 	//bi-directional many-to-many association to CUnit
 	/** The units. */
-	@ManyToMany (mappedBy = "groups")
+	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<CUnit> units;
 
 	/**
@@ -70,7 +71,7 @@ public class CGroup implements Serializable, IEntity<Long>
 	public CGroup ()
 	{
 	}
-	
+
 	/**
 	 * Checks for role.
 	 *
@@ -84,7 +85,7 @@ public class CGroup implements Serializable, IEntity<Long>
 		{
 			return true;
 		}
-		
+
 		if (roles == null)
 		{
 			return false;
@@ -100,7 +101,7 @@ public class CGroup implements Serializable, IEntity<Long>
 
 		return false;
 	}
-	
+
 	/**
 	 * Checks for unit.
 	 *
@@ -113,7 +114,7 @@ public class CGroup implements Serializable, IEntity<Long>
 		{
 			return true;
 		}
-		
+
 		if (units == null)
 		{
 			return false;
