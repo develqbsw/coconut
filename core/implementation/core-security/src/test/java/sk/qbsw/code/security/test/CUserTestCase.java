@@ -16,7 +16,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.code.security.test.util.CDataGenerator;
+import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IUserService;
 
@@ -40,6 +42,10 @@ public class CUserTestCase
 	@Autowired
 	@Qualifier ("cUserService")
 	private IUserService userService;
+	
+	/** The group dao. */
+	@Autowired
+	private IGroupDao groupDao;
 
 	/**
 	 * Test initialization.
@@ -68,6 +74,25 @@ public class CUserTestCase
 		assertNotNull("Get all users failed: list of users is null", users);
 		Assert.assertTrue("Get all users failed: list of users is empty", users.size() > 0);
 	}
+	
+	/**
+	 * Test get all users.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllOrderByOrganization () throws CSecurityException
+	{
+		initTest();
+		
+		List<CUser> users = userService.getUsersOrderByOrganization(null, null, null);
+
+		//asserts
+		assertNotNull("Get all users order by organization failed: list of users is null", users);
+		Assert.assertTrue("Get all users order by organization failed: list of users is empty", users.size() > 0);
+	}
 
 	/**
 	 * Test get all users.
@@ -89,6 +114,48 @@ public class CUserTestCase
 		assertNotNull("Get all users failed: list of users is null", oneUser);
 		Assert.assertEquals("Get all users failed: the expected count of user is 2 ", twoUsers.size(), 2);
 		Assert.assertEquals("Get all users failed: the expected count of user is 1 ", oneUser.size(), 1);
+	}
+	
+	/**
+	 * Test get all users.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllByGroup () throws CSecurityException
+	{
+		initTest();
+
+		List<CGroup> groups = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		
+		List<CUser> users = userService.getUsers(null, null, groups.get(0));
+
+		//asserts
+		assertNotNull("Get all users by group failed: list of users is null", users);
+		Assert.assertEquals("Get all by group users failed: the expected count of user is 1 ", users.size(), 1);
+	}
+	
+	/**
+	 * Test get all users.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllByGroupOrderByOrganization () throws CSecurityException
+	{
+		initTest();
+
+		List<CGroup> groups = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		
+		List<CUser> users = userService.getUsersOrderByOrganization(null, null, groups.get(0));
+
+		//asserts
+		assertNotNull("Get all users by group failed: list of users is null", users);
+		Assert.assertEquals("Get all by group users failed: the expected count of user is 1 ", users.size(), 1);
 	}
 
 	/**

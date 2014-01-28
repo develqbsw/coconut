@@ -414,11 +414,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		//if the group is not null, select groups according the default unit of the user
 		if (group != null || role != null)
 		{
-			strQueryBuilder.append("select us from CUser us " + "left fetch us.organization o " + "left join us.defaultUnit deun " + "left join us.groups gr " + "left join gr.units " + "left join gr.roles ro " + "where ((deun is not null and deun in elements(gr.units)) or (deun is null and gr.units is empty))");
+			strQueryBuilder.append("select distinct(us), o, gr from CUser us " + "left join fetch us.organization o " + "left join us.defaultUnit deun " + "left join fetch us.groups gr " + "left join gr.units " + "left join gr.roles ro " + "where ((deun is not null and deun in elements(gr.units)) or (deun is null and gr.units is empty))");
 		}
 		else
 		{
-			strQueryBuilder.append("select us from CUser us " + "left join fetch us.organization o " + "left join fetch us.groups gr " + "where 1=1");
+			strQueryBuilder.append("select distinct(us), o, gr from CUser us " + "left join fetch us.organization o " + "left join fetch us.groups gr " + "where 1=1");
 		}
 
 		if (group != null)
@@ -444,18 +444,6 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		if (excludedUser != null)
 		{
 			strQueryBuilder.append(" and us!=:excludedUser");
-		}
-
-		/** Create group by section.  */
-		//workaround - use distinct with order by
-		if (group != null || role != null)
-		{
-			strQueryBuilder.append(" group by us.pkId, us.login, us.name, us.surname, us.email, us.flagEnabled, us.userType, us.authenticationParams, us.organization, us.defaultUnit");
-		}
-		
-		if (orderByOrganization == true && (group != null || role != null))
-		{
-			strQueryBuilder.append(", o.name");
 		}
 
 		/** Create order by section. */
@@ -496,9 +484,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		{
 			query.setParameter("excludedUser", excludedUser);
 		}
-
-		List<CUser> users = (List<CUser>) query.getResultList();
-
-		return users;
+		
+		return (List<CUser>) query.getResultList(); 
 	}
 }
