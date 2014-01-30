@@ -59,6 +59,7 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/** The login. */
 	@Expose
+	@Column (name = "login", unique = true)
 	private String login;
 
 	/** The name. */

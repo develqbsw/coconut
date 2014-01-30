@@ -44,6 +44,7 @@ public class CRole implements Serializable, IEntity<Long>
 	private Long pkId;
 
 	/** The code. */
+	@Column (name = "code", unique = true)
 	private String code;
 
 	//bi-directional many-to-many association to CGroup

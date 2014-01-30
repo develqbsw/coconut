@@ -50,6 +50,7 @@ public abstract class CLicense<T> implements IEntity<Long>
 	private String taxId;
 
 	/** The key. */
+	@Column (name = "c_key")
 	private String key;
 
 	//bi-directional many-to-one association to COrganization

@@ -40,6 +40,7 @@ public class CGroup implements Serializable, IEntity<Long>
 	private Long pkId;
 
 	/** The code. */
+	@Column (name = "code", unique = true)
 	private String code;
 
 	/** The flag system. */

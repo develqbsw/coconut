@@ -63,6 +63,7 @@ public class COrganization implements Serializable, IEntity<Long>
 
 	/** The name. */
 	@Expose
+	@Column (name = "name", unique = true)
 	private String name;
 
 	/**
@@ -304,7 +305,7 @@ public class COrganization implements Serializable, IEntity<Long>
 		}
 		return actualLicense;
 	}
-	
+
 	@Override
 	public Long getId ()
 	{

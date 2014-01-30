@@ -45,7 +45,7 @@ public class CUnit implements Serializable, IEntity<Long>
 	private Long pkId;
 
 	/** The name. */
-	@Column (name = "name", nullable = false)
+	@Column (name = "name", unique = true, nullable = false)
 	private String name;
 
 	/** The organization. */
