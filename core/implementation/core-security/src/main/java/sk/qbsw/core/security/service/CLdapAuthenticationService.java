@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidUserException;
@@ -44,6 +45,10 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
+	
+	/** The authentication params dao. */
+	@Autowired
+	private IAuthenticationParamsDao authenticationParamsDao;
 
 	/** The ldap provider. */
 	@Autowired
@@ -230,7 +235,10 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		}
 
 		//and returns empty authentications params
-		return new CAuthenticationParams();
+		CAuthenticationParams authParams = new CAuthenticationParams(); 
+		authenticationParamsDao.save(authParams);
+
+		return authParams;
 	}
 
 	/* (non-Javadoc)
