@@ -63,12 +63,12 @@ public class CLdapAuthenticationTestCase
 	@Before
 	public void initTestCase ()
 	{
-		ldapConfigurator.setServerName("lauro8");
+		ldapConfigurator.setServerName("talos.qbsw.local");
 		ldapConfigurator.setServerPort(10389);
-		ldapConfigurator.setUserDn("uid=admin,ou=system");
-		ldapConfigurator.setUserPassword("secret");
-		ldapConfigurator.setGroupSearchBaseDn("ou=groups,dc=mfsr,dc=sk");
+		ldapConfigurator.setUserDn("cn=ekolkyRW,ou=users,ou=system");
+		ldapConfigurator.setUserPassword("ZiAvGJDxcqUOkyQ");
 		ldapConfigurator.setUserSearchBaseDn("ou=users,dc=mfsr,dc=sk");
+		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
 	}
 

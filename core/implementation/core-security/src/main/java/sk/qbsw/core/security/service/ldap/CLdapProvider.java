@@ -2,12 +2,14 @@ package sk.qbsw.core.security.service.ldap;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
@@ -212,6 +214,54 @@ public class CLdapProvider
 		catch (LdapException ex)
 		{
 			throw new CSecurityException("The attribute " + attributeId + " of dn " + dn + " in ldap cannot be changed: " + ex.toString());
+		}
+	}
+
+	/**
+	 * Add entry v LDAP.
+	 *
+	 * @param dn the dn of entry
+	 * @param attributeId the attribute id
+	 * @param value the value
+	 * @throws CSecurityException the security exception
+	 */
+	public void addEntry (String dn, Map<String, String[]> attributes) throws CSecurityException
+	{
+		try
+		{
+			//create entry
+			Entry entry = new DefaultEntry(dn);
+
+			//add values to entry
+			for (Map.Entry<String, String[]> attribute : attributes.entrySet())
+			{
+				entry.add(attribute.getKey(), attribute.getValue());
+			}
+
+			//add
+			connection.add(entry);
+		}
+		catch (LdapException ex)
+		{
+			throw new CSecurityException("The entry with dn " + dn + " in ldap cannot be created: " + ex.toString());
+		}
+	}
+
+	/**
+	 * Checks if entry exists in LDAP.
+	 *
+	 * @param dn the dn of entry
+	 * @throws CSecurityException the security exception
+	 */
+	public boolean entryExists (String dn) throws CSecurityException
+	{
+		try
+		{
+			return connection.exists(dn);
+		}
+		catch (LdapException ex)
+		{
+			throw new CSecurityException("Cannot validate the entry with dn: " + dn);
 		}
 	}
 

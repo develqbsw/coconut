@@ -3,30 +3,45 @@ package sk.qbsw.core.security.model.jmx;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
+/**
+ * The Class CLdapAuthenticationConfigurator.
+ * 
+ * @author Dalibor Rak
+ * @author Tomas Lauro
+ * @version 1.6.1
+ * @since 1.6.0
+ */
 @Service ("ldapAuthenticationConfigurator")
 @ManagedResource (objectName = "sk.qbsw.core.security:name=ldapAuthenticationConfigurator", description = "LDAP authentication details")
 public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfigurator
 {
 	/** The ldap server name. */
-	//	@Value ("${ldap.server_name}")
 	private String serverName;
+
 	/** The ldap server port. */
-	//	@Value ("${ldap.server_port}")
 	private int serverPort;
+
 	/** The ldap dn of an user to authenticate with ldap server. */
-	//	@Value ("${ldap.user_dn}")
 	private String userDn;
+
 	/** The ldap user password. */
-	//	@Value ("${ldap.user_password}")
 	private String userPassword;
+
 	/** The ldap user organization. */
-	//	@Value ("${ldap.user_organization_id}")
 	private Long userOrganizationId;
+
 	/** The ldap user search base dn. */
-	//	@Value ("${ldap.user_search_base_dn}")
 	private String userSearchBaseDn;
 
-	private String groupSearchBaseDn;
+	/** The ldap user object class. */
+	private String userObjectClass;
+
+	/**
+	 * Instantiates a new c ldap authentication configurator.
+	 */
+	public CLdapAuthenticationConfigurator ()
+	{
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getServerName()
@@ -37,8 +52,8 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 		return serverName;
 	}
 
-	/**
-	 * @param serverName the serverName to set
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setServerName(java.lang.String)
 	 */
 	@Override
 	public void setServerName (String serverName)
@@ -55,18 +70,14 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 		return serverPort;
 	}
 
-
-
-	/**
-	 * @param serverPort the serverPort to set
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setServerPort(int)
 	 */
 	@Override
 	public void setServerPort (int serverPort)
 	{
 		this.serverPort = serverPort;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getUserDn()
@@ -77,18 +88,14 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 		return userDn;
 	}
 
-
-
-	/**
-	 * @param userDn the userDn to set
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserDn(java.lang.String)
 	 */
 	@Override
 	public void setUserDn (String userDn)
 	{
 		this.userDn = userDn;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getUserPassword()
@@ -99,8 +106,8 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 		return userPassword;
 	}
 
-	/**
-	 * @param userPassword the userPassword to set
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserPassword(java.lang.String)
 	 */
 	@Override
 	public void setUserPassword (String userPassword)
@@ -117,8 +124,8 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 		return userOrganizationId;
 	}
 
-	/**
-	 * @param userOrganizationId the userOrganizationId to set
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserOrganizationId(java.lang.Long)
 	 */
 	@Override
 	public void setUserOrganizationId (Long userOrganizationId)
@@ -135,10 +142,8 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 		return userSearchBaseDn;
 	}
 
-
-
-	/**
-	 * @param userSearchBaseDn the userSearchBaseDn to set
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserSearchBaseDn(java.lang.String)
 	 */
 	@Override
 	public void setUserSearchBaseDn (String userSearchBaseDn)
@@ -146,27 +151,21 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 		this.userSearchBaseDn = userSearchBaseDn;
 	}
 
-	public CLdapAuthenticationConfigurator ()
-	{
-	}
-
-	/**
-	 * @return the groupSearchBaseDn
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getUserObjectClass()
 	 */
 	@Override
-	public String getGroupSearchBaseDn ()
+	public String getUserObjectClass ()
 	{
-		return groupSearchBaseDn;
+		return userObjectClass;
 	}
 
-	/**
-	 * @param groupSearchBaseDn the groupSearchBaseDn to set
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserObjectClass(java.lang.String)
 	 */
 	@Override
-	public void setGroupSearchBaseDn (String groupSearchBaseDn)
+	public void setUserObjectClass (String userObjectClass)
 	{
-		this.groupSearchBaseDn = groupSearchBaseDn;
+		this.userObjectClass = userObjectClass;
 	}
-	
-	
 }

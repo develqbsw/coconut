@@ -1,5 +1,8 @@
 package sk.qbsw.core.security.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.directory.api.util.exception.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -190,8 +193,41 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	@Override
 	public CAuthenticationParams createEncryptedPassword (String login, String password) throws CSecurityException
 	{
-		//change password in ldap
-		changeEncryptedPassword(login, password);
+		try
+		{
+			//create connection
+			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
+			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
+
+			//create dn
+			StringBuilder dnBuilder = new StringBuilder();
+			dnBuilder.append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString();
+
+			if (ldapProvider.entryExists(dnBuilder.toString()) == false)
+			{
+				//add auth data
+				Map<String, String[]> attributes = new HashMap<String, String[]>();
+				attributes.put("objectClass", new String[] {data.getUserObjectClass()});
+				attributes.put("cn", new String[] {login});
+				attributes.put("sn", new String[] {login});
+				attributes.put("userPassword", new String[] {password});
+
+				//add entry
+				ldapProvider.addEntry(dnBuilder.toString(), attributes);
+			}
+			else
+			{
+				//change password
+				changeEncryptedPassword(login, password);
+			}
+
+		}
+		finally
+		{
+			//close connection
+			ldapProvider.unbindFromServer();
+			ldapProvider.closeConnection();
+		}
 
 		//and returns empty authentications params
 		return new CAuthenticationParams();

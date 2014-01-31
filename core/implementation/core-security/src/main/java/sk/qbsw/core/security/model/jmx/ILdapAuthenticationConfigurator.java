@@ -4,7 +4,8 @@ package sk.qbsw.core.security.model.jmx;
  * The Interface ILdapAuthenticationConfigurator.
  * 
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas Lauro
+ * @version 1.6.1
  * @since 1.6.0
  */
 public interface ILdapAuthenticationConfigurator
@@ -94,16 +95,16 @@ public interface ILdapAuthenticationConfigurator
 	public abstract void setServerName (String serverName);
 
 	/**
-	 * Sets the group search base dn.
+	 * Gets the user object class.
 	 *
-	 * @param groupSearchBaseDn the new group search base dn
+	 * @return the user object class
 	 */
-	public abstract void setGroupSearchBaseDn (String groupSearchBaseDn);
+	public abstract String getUserObjectClass ();
 
 	/**
-	 * Gets the group search base dn.
+	 * Sets the user object class.
 	 *
-	 * @return the group search base dn
+	 * @param userObjectClass the new user object class
 	 */
-	public abstract String getGroupSearchBaseDn ();
+	public abstract void setUserObjectClass (String userObjectClass);
 }
