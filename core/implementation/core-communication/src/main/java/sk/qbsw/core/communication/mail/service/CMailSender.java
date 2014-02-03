@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidParameterException;
 import java.util.Locale;
 import java.util.Map;
@@ -118,12 +119,13 @@ public class CMailSender implements IMailService
 	 * @param template the template
 	 * @param parameters the parameters
 	 * @return the string
+	 * @throws UnsupportedEncodingException wrong encoding
 	 */
-	private String createBody (InputStream template, Map<String, Object> parameters)
+	private String createBody (InputStream template, Map<String, Object> parameters) throws UnsupportedEncodingException
 	{
 		StringWriter writer = new StringWriter();
 		VelocityContext context = new VelocityContext(parameters);
-		Reader templateReader = new BufferedReader(new InputStreamReader(template));
+		Reader templateReader = new BufferedReader(new InputStreamReader(template, "UTF-8" ));
 
 		Velocity.evaluate(context, writer, "log tag name", templateReader);
 
