@@ -14,6 +14,10 @@ import org.hibernate.dialect.SQLServer2008Dialect;
  */
 public class CSQLServer2012Dialect extends SQLServer2008Dialect
 {
+	private static final String DISTINCT = "distinct";
+	private static final String SELECT = "select";
+	private static final String FROM = " from ";
+
 	/* (non-Javadoc)
 	 * @see org.hibernate.dialect.Dialect#getQuerySequencesString()
 	 */
@@ -22,6 +26,58 @@ public class CSQLServer2012Dialect extends SQLServer2008Dialect
 	{
 		return "select name from sys.sequences";
 	}
+
+	@Override
+	public String getLimitString (String querySqlString, boolean hasOffset)
+	{
+		StringBuilder sb = new StringBuilder(querySqlString.trim().toLowerCase());
+
+		int orderByIndex = sb.indexOf("order by");
+		CharSequence orderby = orderByIndex > 0 ? sb.subSequence(orderByIndex, sb.length()) : "ORDER BY CURRENT_TIMESTAMP";
+
+		// Delete the order by clause at the end of the query
+		if (orderByIndex > 0)
+		{
+			sb.delete(orderByIndex, orderByIndex + orderby.length());
+		}
+
+		// HHH-5715 bug fix
+		replaceDistinctWithGroupBy(sb);
+
+		insertRowNumberFunction(sb, orderby);
+
+		// Wrap the query within a with statement:
+		sb.insert(0, "WITH query AS (").append(") SELECT * FROM query ");
+		sb.append("WHERE __hibernate_row_nr__ BETWEEN ? AND ?");
+
+		return sb.toString();
+	}
+
+	/**
+	 * Utility method that checks if the given sql query is a select distinct one and if so replaces the distinct select
+	 * with an equivalent simple select with a group by clause. See
+	 * {@link SQLServer2005DialectTestCase#testReplaceDistinctWithGroupBy()}
+	 * 
+	 * @param sql an sql query
+	 */
+	protected static void replaceDistinctWithGroupBy (StringBuilder sql)
+	{
+		int distinctIndex = sql.indexOf(DISTINCT);
+		if (distinctIndex > 0)
+		{
+			sql.delete(distinctIndex, distinctIndex + DISTINCT.length() + 1);
+			sql.append(" group by").append(getSelectFieldsWithoutAliases(sql));
+		}
+	}
+
+	protected static CharSequence getSelectFieldsWithoutAliases (StringBuilder sql)
+	{
+		String select = sql.substring(sql.indexOf(SELECT) + SELECT.length(), sql.indexOf(FROM));
+
+		// Strip the as clauses
+		return stripAliases(select);
+	}
+
 
 	/* (non-Javadoc)
 	 * @see org.hibernate.dialect.Dialect#getSequenceNextValString(java.lang.String)
