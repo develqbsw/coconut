@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
@@ -67,6 +68,7 @@ public class CGroup implements Serializable, IEntity<Long>
 	private Set<CUnit> units;
 
 	/** Categories separator. */
+	@Transient
 	private final String CATEGORIES_SEPARATOR = ";";
 
 	/**
