@@ -66,6 +66,9 @@ public class CGroup implements Serializable, IEntity<Long>
 	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<CUnit> units;
 
+	/** Categories separator. */
+	private final String CATEGORIES_SEPARATOR = ";";
+
 	/**
 	 * Instantiates a new c group.
 	 */
@@ -126,6 +129,30 @@ public class CGroup implements Serializable, IEntity<Long>
 			if (unit.getName().equals(unitToCheck.getName()))
 			{
 				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Checks if the group has a category and a role at same time.
+	 *
+	 * @param category the needed category
+	 * @param role the role
+	 * @return true / false
+	 */
+	public boolean hasCategory (String category, CRole role)
+	{
+		if (this.category != null && hasRole(role) == true)
+		{
+			String[] categories = this.category.split(CATEGORIES_SEPARATOR);
+			for (String cat : categories)
+			{
+				if (cat.equals(category) == true)
+				{
+					return true;
+				}
 			}
 		}
 
