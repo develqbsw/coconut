@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,9 +19,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -81,11 +81,10 @@ public class CUser implements Serializable, IEntity<Long>
 	@Expose
 	private COrganization organization;
 
-	// bi-directional many-to-many association to CGroup
-	/** The groups. */
-	@ManyToMany (fetch = FetchType.LAZY)
-	@JoinTable (schema = "sec", name = "t_x_group_user", joinColumns = {@JoinColumn (name = "fk_user")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
-	private Set<CGroup> groups;
+	// bi-directional many-to-many association to cross entity to group and unit
+	/** set of cross entities. */
+	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	private Set<CXUserUnitGroup> xUserUnitGroups;
 
 	/** The default user's unit. */
 	@ManyToOne (fetch = FetchType.LAZY)
@@ -108,10 +107,12 @@ public class CUser implements Serializable, IEntity<Long>
 	 */
 	public CUser ()
 	{
-		groups = new HashSet<CGroup>();
+		xUserUnitGroups = new HashSet<CXUserUnitGroup>();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
 	 */
 	@Override
@@ -252,19 +253,15 @@ public class CUser implements Serializable, IEntity<Long>
 	 * @return the groups
 	 */
 	public Set<CGroup> getGroups ()
-	{
-		return this.groups;
-	}
+	{	
+		Set<CGroup> groups = new HashSet<CGroup>();
+	
+		for (CXUserUnitGroup xuug : xUserUnitGroups)
+		{
+			groups.add(xuug.getGroup());
+		}
 
-	/**
-	 * Sets the groups.
-	 * 
-	 * @param groups
-	 *            the new groups
-	 */
-	public void setGroups (Set<CGroup> groups)
-	{
-		this.groups = groups;
+		return groups;
 	}
 
 	/**
@@ -275,7 +272,37 @@ public class CUser implements Serializable, IEntity<Long>
 	 */
 	public void addGroup (CGroup grp)
 	{
-		groups.add(grp);
+		CXUserUnitGroup xuug = new CXUserUnitGroup();
+		xuug.setGroup(grp);
+		xuug.setUser(this);
+		xUserUnitGroups.add(xuug);
+	}
+
+	/**
+	 * Adds the group.
+	 * 
+	 * @param grp the grp
+	 * @param unt unit
+	 */
+	public void addGroupUnit (CGroup grp, CUnit unt)
+	{
+		CXUserUnitGroup xuug = new CXUserUnitGroup();
+		xuug.setGroup(grp);
+		xuug.setUnit(unt);
+		xuug.setUser(this);
+		xUserUnitGroups.add(xuug);
+	}
+	
+	/**
+	 * bind groups with this user
+	 * @param groups
+	 */
+	public void setGroups(Set<CGroup> groups)
+	{
+		for (CGroup group : groups)
+		{
+			addGroup(group);
+		}
 	}
 
 	/**
@@ -286,8 +313,8 @@ public class CUser implements Serializable, IEntity<Long>
 	 */
 	public void setMainGroup (CGroup group)
 	{
-		this.groups.clear();
-		this.groups.add(group);
+		xUserUnitGroups.clear();
+		addGroup(group);
 	}
 
 	/**
@@ -297,7 +324,7 @@ public class CUser implements Serializable, IEntity<Long>
 	 */
 	public CGroup getMainGroup ()
 	{
-		return groups.iterator().next();
+		return xUserUnitGroups.iterator().next().getGroup();
 	}
 
 	/**
@@ -323,7 +350,7 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Gets the default unit.
-	 *
+	 * 
 	 * @return the default unit
 	 */
 	public CUnit getDefaultUnit ()
@@ -333,8 +360,9 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Sets the default unit.
-	 *
-	 * @param defaultUnit the new default unit
+	 * 
+	 * @param defaultUnit
+	 *            the new default unit
 	 */
 	public void setDefaultUnit (CUnit defaultUnit)
 	{
@@ -343,7 +371,7 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Authentication by digest.
-	 *
+	 * 
 	 * @return autentication type
 	 */
 	public EAuthenticationType authenticationType ()
@@ -360,13 +388,14 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Checks if the user has role.
-	 *
-	 * @param role needed role
+	 * 
+	 * @param role
+	 *            needed role
 	 * @return true / false
 	 */
 	public boolean hasRole (CRole role)
 	{
-		for (CGroup group : groups)
+		for (CGroup group : getGroups())
 		{
 			if (group.hasRole(role))
 			{
@@ -379,14 +408,14 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Export roles.
-	 *
+	 * 
 	 * @return the list
 	 */
 	public List<String> exportRoles ()
 	{
 		List<String> retVal = new ArrayList<String>();
 
-		for (CGroup group : groups)
+		for (CGroup group : getGroups())
 		{
 			Set<CRole> roles = group.getRoles();
 			for (CRole cRole : roles)
@@ -400,13 +429,14 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Checks if the user is in defined unit.
-	 *
-	 * @param unit the unit
+	 * 
+	 * @param unit
+	 *            the unit
 	 * @return true / false
 	 */
 	public boolean isInUnit (CUnit unit)
 	{
-		for (CGroup group : groups)
+		for (CGroup group : getGroups())
 		{
 			if (group.hasUnit(unit))
 			{
@@ -419,13 +449,14 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Checks if the user has a category and a role at same time.
-	 *
-	 * @param category the needed category
+	 * 
+	 * @param category
+	 *            the needed category
 	 * @return true / false
 	 */
 	public boolean hasCategory (String category, CRole role)
 	{
-		for (CGroup group : groups)
+		for (CGroup group : getGroups())
 		{
 			return group.hasCategory(category, role);
 		}

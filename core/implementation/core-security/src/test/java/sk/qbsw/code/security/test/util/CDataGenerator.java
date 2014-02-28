@@ -211,12 +211,12 @@ public class CDataGenerator
 		firstGroupNotInUnit.setRoles(rolesForFirstGroupNotInUnit);
 		secondGroupNotInUnit.setRoles(rolesForSecondGroupNotInUnit);
 
-		firstGroupInUnit.setUsers(usersForFirstGroupsInUnit);
-		secondGroupInUnit.setUsers(usersForSecondGroupsInUnit);
-		thirdGroupInUnit.setUsers(usersForThirdGroupsInUnit);
+		//		firstGroupInUnit.setUsers(usersForFirstGroupsInUnit);
+		//		secondGroupInUnit.setUsers(usersForSecondGroupsInUnit);
+		//		thirdGroupInUnit.setUsers(usersForThirdGroupsInUnit);
 
-		firstGroupNotInUnit.setUsers(usersForFirstGroupsNotInUnit);
-		secondGroupNotInUnit.setUsers(usersForSecondGroupsNotInUnit);
+		//		firstGroupNotInUnit.setUsers(usersForFirstGroupsNotInUnit);
+		//		secondGroupNotInUnit.setUsers(usersForSecondGroupsNotInUnit);
 
 		//for roles
 		Set<CGroup> groupsForFirstRole = new HashSet<CGroup>();
@@ -248,8 +248,15 @@ public class CDataGenerator
 		userWithDefaultUnit.setDefaultUnit(defaultUnit);
 		userWithoutDefaultUnit.setDefaultUnit(null);
 
-		userWithDefaultUnit.setGroups(groupsForUserWithDefaultUnit);
-		userWithoutDefaultUnit.setGroups(groupsForUserWithoutDefaultUnit);
+		userWithDefaultUnit.addGroupUnit(firstGroupInUnit, defaultUnit);
+		userWithDefaultUnit.addGroupUnit(secondGroupInUnit, firstUnit);
+		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, secondUnit);
+		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, defaultUnit);
+		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, firstUnit);
+
+		userWithoutDefaultUnit.addGroup(firstGroupNotInUnit);
+		userWithoutDefaultUnit.addGroup(secondGroupNotInUnit);
+		userWithoutDefaultUnit.addGroup(secondGroupInUnit);
 
 		userWithDefaultUnit.setAuthenticationParams(authenticationParamWithDefaulUnit);
 		userWithoutDefaultUnit.setAuthenticationParams(authenticationParamWithoutDefaulUnit);

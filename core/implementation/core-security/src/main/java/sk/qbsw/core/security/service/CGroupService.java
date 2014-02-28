@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * Service for group management.
@@ -52,5 +53,11 @@ public class CGroupService implements IGroupService
 	public List<CGroup> getByUnit (CUnit unit)
 	{
 		return groupDao.findByUnit(unit);
+	}
+	
+	@Override
+	public List<CGroup> getByUnitUser (CUnit unit, CUser user)
+	{
+		return groupDao.findByUnitUser(unit, user);
 	}
 }

@@ -67,13 +67,13 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			// 1. The user default unit is not null
 			if (userWithoutGroups.getDefaultUnit() != null)
 			{
-				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.groups gr " + "left join fetch gr.units " + "left join fetch gr.roles " + "where us.pkId=:pkId and deun in elements(gr.units)";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.xUserUnitGroups xuug left join fetch xuug.group gr " + "left join fetch xuug.unit un " + "left join fetch gr.roles " + "where us.pkId=:pkId and deun = un";
 
 			}
 			// 2. The user default unit is null
 			else
 			{
-				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "left join fetch us.groups gr " + "left join fetch gr.units un " + "left join fetch gr.roles " + "where us.pkId=:pkId and un is null";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.xUserUnitGroups xuug left join fetch xuug.group gr " + "left join fetch xuug.unit un " + "left join fetch gr.roles " + "where us.pkId=:pkId and un is null";
 			}
 
 			query = getEntityManager().createQuery(strQuery);
@@ -155,7 +155,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			// 1. The unit has been set
 			if (unit != null)
 			{
-				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.groups gr " + "left join fetch gr.units " + "left join fetch gr.roles " + "where us.login=:login and :unit in elements(gr.units)";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit un " + "left join fetch gr.roles r " + "where us.login=:login and un = :unit " ;
 				query = getEntityManager().createQuery(strQuery);
 				query.setParameter("login", login);
 				query.setParameter("unit", unit);
@@ -163,14 +163,14 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			// 2. The user default unit is not null
 			else if (usersWithoutGroups.get(0).getDefaultUnit() != null)
 			{
-				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.groups gr " + "left join fetch gr.units " + "left join fetch gr.roles " + "where us.login=:login and deun in elements(gr.units)";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit un " + "left join fetch gr.roles r " + "where us.login=:login and deun = un";
 				query = getEntityManager().createQuery(strQuery);
 				query.setParameter("login", login);
 			}
 			// 3. The user default unit is null
 			else
 			{
-				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "left join fetch us.groups gr " + "left join fetch gr.units un " + "left join fetch gr.roles " + "where us.login=:login and un is null";
+				strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit deun" + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit un " + "left join fetch gr.roles r " + "where us.login=:login and un is null";
 				query = getEntityManager().createQuery(strQuery);
 				query.setParameter("login", login);
 			}
@@ -330,8 +330,8 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		StringBuilder strQueryBuilder = new StringBuilder();
 
 		/** Create query */
-		strQueryBuilder.append("select distinct(us) from CUser us left join us.groups gr where 1=1");
-
+		strQueryBuilder.append("select distinct(us) from CUser us left join fetch us.xUserUnitGroups xuug left join fetch xuug.group gr where 1=1");
+		
 		if (name != null)
 		{
 			strQueryBuilder.append(" and us.name=:name");
@@ -414,11 +414,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		//if the group is not null, select groups according the default unit of the user
 		if (group != null || role != null)
 		{
-			strQueryBuilder.append("select distinct(us), o, gr from CUser us " + "left join fetch us.organization o " + "left join us.defaultUnit deun " + "left join fetch us.groups gr " + "left join gr.units " + "left join gr.roles ro " + "where ((deun is not null and deun in elements(gr.units)) or (deun is null and gr.units is empty))");
+			strQueryBuilder.append("select distinct(us) from CUser us " + "left join fetch us.organization o " + "left join us.defaultUnit deun " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit un " + "left join gr.roles ro " + "where ((deun is not null and deun = un) or (deun is null and un is null))");
 		}
 		else
 		{
-			strQueryBuilder.append("select distinct(us), o, gr from CUser us " + "left join fetch us.organization o " + "left join fetch us.groups gr " + "where 1=1");
+			strQueryBuilder.append("select distinct(us) from CUser us " + "left join fetch us.organization o " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "where 1=1");
 		}
 
 		if (group != null)
@@ -484,7 +484,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		{
 			query.setParameter("excludedUser", excludedUser);
 		}
-		
-		return (List<CUser>) query.getResultList(); 
+
+		return (List<CUser>) query.getResultList();
 	}
 }

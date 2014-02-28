@@ -9,6 +9,7 @@ import java.util.List;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * The Interface IGroupDao.
@@ -61,4 +62,13 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	 * @return the list of groups
 	 */
 	public List<CGroup> findByUnit (CUnit unit);
+
+	/**
+	 * find groups by unit and user (if not null)
+	 * 
+	 * @param unit
+	 * @param user
+	 * @return
+	 */
+	public List<CGroup> findByUnitUser (CUnit unit, CUser user);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * Service for groups management.
@@ -38,4 +39,13 @@ public interface IGroupService extends Serializable
 	 * @return the by unit
 	 */
 	public abstract List<CGroup> getByUnit (CUnit unit);
+
+	/**
+	 * get users by unit and user
+	 * 
+	 * @param unit
+	 * @param user
+	 * @return
+	 */
+	List<CGroup> getByUnitUser (CUnit unit, CUser user);
 }

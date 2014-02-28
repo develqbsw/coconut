@@ -4,8 +4,10 @@
 package sk.qbsw.core.security.model.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -58,9 +61,9 @@ public class CGroup implements Serializable, IEntity<Long>
 	private Set<CRole> roles;
 
 	//bi-directional many-to-many association to CUser
-	/** The users. */
-	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
-	private Set<CUser> users;
+	/** Cross entity to user and unit. */
+	@OneToMany (mappedBy = "group", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private Set<CXUserUnitGroup> xUserUnitGroups;
 
 	//bi-directional many-to-many association to CUnit
 	/** The units. */
@@ -76,6 +79,7 @@ public class CGroup implements Serializable, IEntity<Long>
 	 */
 	public CGroup ()
 	{
+		xUserUnitGroups = new HashSet<CXUserUnitGroup>();
 	}
 
 	/**
@@ -227,7 +231,38 @@ public class CGroup implements Serializable, IEntity<Long>
 	 */
 	public Set<CUser> getUsers ()
 	{
-		return this.users;
+		HashSet<CUser> users = new HashSet<CUser>();
+		
+		for (CXUserUnitGroup xuug : xUserUnitGroups)
+		{	
+			users.add(xuug.getUser());
+		}
+		return users;
+	}
+	
+	/**
+	 * bind users with this group
+	 * @param users
+	 */
+	public void setUsers(Set<CUser> users)
+	{
+		for (CUser user : users)
+		{
+			addUser(user);
+		}
+	}
+	
+	/**
+	 * Adds the user.
+	 * 
+	 * @param user
+	 */
+	public void addUser (CUser user)
+	{
+		CXUserUnitGroup xuug = new CXUserUnitGroup();
+		xuug.setGroup(this);
+		xuug.setUser(user);
+		xUserUnitGroups.add(xuug);
 	}
 
 	/**
@@ -278,16 +313,6 @@ public class CGroup implements Serializable, IEntity<Long>
 	public void setRoles (Set<CRole> roles)
 	{
 		this.roles = roles;
-	}
-
-	/**
-	 * Sets the users.
-	 *
-	 * @param users the new users
-	 */
-	public void setUsers (Set<CUser> users)
-	{
-		this.users = users;
 	}
 
 	/**

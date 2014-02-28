@@ -17,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.dao.IUnitDao;
+import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IGroupService;
 
 /**
@@ -47,6 +49,9 @@ public class CGroupTestCase
 	@Autowired
 	private IUnitDao unitDao;
 
+	@Autowired
+	private IUserDao userDao;
+	
 	/**
 	 * Test initialization.
 	 */
@@ -74,6 +79,25 @@ public class CGroupTestCase
 		//asserts
 		assertNotNull("Get all groups failed: list of groups is null", groups);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
+	}
+	
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetByUnitUser () throws CSecurityException
+	{
+		initTest();
+
+		CUnit unit = unitDao.findByName(CDataGenerator.FIRST_UNIT_CODE);
+		CUser user = userDao.findByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		List<CGroup> groups = groupService.getByUnitUser(unit, user);
+			
+		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
+		
+		CUser user2 = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		List<CGroup> groups2 = groupService.getByUnitUser(unit, user2);
+		
+		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups2.size(), 2);
 	}
 
 	/**

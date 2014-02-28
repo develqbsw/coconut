@@ -10,6 +10,7 @@ import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * The Class CGroupJpaDao.
@@ -96,13 +97,54 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 	@SuppressWarnings ("unchecked")
 	public List<CGroup> findByUnit (CUnit unit)
 	{
-		String strQuery = "select distinct(gr) from CGroup gr " +
-					"left join gr.units " +
-					"where :unit in elements(gr.units)" +
-					"order by gr.code";
+		String strQuery = "select distinct(gr) from CGroup gr left join fetch gr.units";
+		if(unit != null)
+		{
+			strQuery += " where :unit in elements(gr.units)";
+		}
+		
+		strQuery += " order by gr.code";
 
 		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("unit", unit);
+		
+		if(unit != null)
+		{
+			query.setParameter("unit", unit);
+		}
+		
+		return (List<CGroup>) query.getResultList();
+	}
+	
+	@Override
+	@SuppressWarnings ("unchecked")
+	public List<CGroup> findByUnitUser(CUnit unit, CUser user)
+	{
+		String q = "select distinct(gr) from CGroup gr left join fetch gr.xUserUnitGroups xuug left join fetch xuug.unit un left join fetch xuug.user us where 1=1";
+		
+		if(unit != null)
+		{
+			q += " and un = :unit ";
+		}
+		
+		if(user != null)
+		{
+			q += " and us = :user";
+		}
+		
+		q += " order by gr.code";
+		
+		Query query = getEntityManager().createQuery(q);
+		
+		if(unit != null)
+		{
+			query.setParameter("unit", unit);
+		}
+		
+		if(user != null)
+		{
+			query.setParameter("user", user);
+		}
+		
 		return (List<CGroup>) query.getResultList();
 	}
 }

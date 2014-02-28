@@ -20,6 +20,7 @@ import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.service.IUserService;
 
 /**
@@ -42,10 +43,13 @@ public class CUserTestCase
 	@Autowired
 	@Qualifier ("cUserService")
 	private IUserService userService;
-	
+
 	/** The group dao. */
 	@Autowired
 	private IGroupDao groupDao;
+
+	@Autowired
+	private IOrganizationService orgService;
 
 	/**
 	 * Test initialization.
@@ -74,19 +78,20 @@ public class CUserTestCase
 		assertNotNull("Get all users failed: list of users is null", users);
 		Assert.assertTrue("Get all users failed: list of users is empty", users.size() > 0);
 	}
-	
+
 	/**
 	 * Test get all users.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
+
 	@Test
 	@Transactional
 	@Rollback (true)
 	public void testGetAllOrderByOrganization () throws CSecurityException
 	{
 		initTest();
-		
+
 		List<CUser> users = userService.getUsersOrderByOrganization(null, null, null);
 
 		//asserts
@@ -115,7 +120,7 @@ public class CUserTestCase
 		Assert.assertEquals("Get all users failed: the expected count of user is 2 ", twoUsers.size(), 2);
 		Assert.assertEquals("Get all users failed: the expected count of user is 1 ", oneUser.size(), 1);
 	}
-	
+
 	/**
 	 * Test get all users.
 	 *
@@ -129,14 +134,14 @@ public class CUserTestCase
 		initTest();
 
 		List<CGroup> groups = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
-		
+
 		List<CUser> users = userService.getUsers(null, null, groups.get(0));
 
 		//asserts
 		assertNotNull("Get all users by group failed: list of users is null", users);
 		Assert.assertEquals("Get all by group users failed: the expected count of user is 1 ", users.size(), 1);
 	}
-	
+
 	/**
 	 * Test get all users.
 	 *
@@ -150,7 +155,7 @@ public class CUserTestCase
 		initTest();
 
 		List<CGroup> groups = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
-		
+
 		List<CUser> users = userService.getUsersOrderByOrganization(null, null, groups.get(0));
 
 		//asserts

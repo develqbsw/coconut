@@ -48,7 +48,8 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 	@SuppressWarnings ("unchecked")
 	public List<CRole> findAllByUser (CUser user)
 	{
-		String strQuery = "select distinct(r) from CRole r join r.groups g join g.users u where u = :user";
+		String strQuery = "select distinct(r) from CRole r join r.groups g join g.xUserUnitGroups xuug join xuug.user u where u = :user";
+		
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("user", user);
@@ -75,7 +76,7 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 	@SuppressWarnings ("unchecked")
 	public CRole findByUnitAndCode (CUnit unit, String code)
 	{
-		String strQuery = "select distinct(r) from CRole r join r.groups g join g.units u where u = :unit and r.code = :code";
+		String strQuery = "select distinct(r) from CRole r join r.groups g join g.xUserUnitGroups xuug join xuug.unit u where u = :unit and r.code = :code";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("unit", unit);

@@ -12,12 +12,15 @@
 		<class>sk.qbsw.core.security.model.domain.COrganization</class>
 		<class>sk.qbsw.core.security.model.domain.CUnit</class>
 		<class>sk.qbsw.core.security.model.domain.CAuthenticationParams</class>
+		<class>sk.qbsw.core.security.model.domain.CXUserUnitGroup</class>
 		<!-- test -->
 		<class>sk.qbsw.code.security.test.util.domain.CLicenseFree</class>
 		
 		<properties>
+			<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" /> -->
 			<property name="hibernate.dialect" value="sk.qbsw.core.persistence.dialect.CSQLServer2012Dialect" />
 			<property name="hibernate.bytecode.provider" value="javassist" />
+			<!-- <property name="hibernate.hbm2ddl.auto" value="create" /> -->
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
