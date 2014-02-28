@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sk.qbsw</groupId>
 	<artifactId>winnetou-top</artifactId>
-	<version>1.6.3</version>
+	<version>1.7.0</version>
 	<packaging>pom</packaging>
 	<name>[Winnetou project]</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>coconut</artifactId>
-		<version>1.6.3</version>
+		<version>1.7.0</version>
 	</parent>
 	
 	<modules>
