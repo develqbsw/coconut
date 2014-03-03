@@ -470,7 +470,10 @@ public class CUser implements Serializable, IEntity<Long>
 	{
 		for (CGroup group : getGroups())
 		{
-			return group.hasCategory(category, role);
+			if (group.hasCategory(category, role) == true)
+			{
+				return true;
+			}
 		}
 
 		return false;
