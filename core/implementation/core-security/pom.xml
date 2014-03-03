@@ -47,19 +47,19 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- jdbc drivers -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
 			<scope>test</scope>
-		</dependency>
-		<!-- 
+		</dependency>		
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.0-801.jdbc4</version>
 		</dependency> 
- 		-->
+ 		
 
 		<!-- TECH -->
 		<dependency>

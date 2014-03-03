@@ -304,6 +304,18 @@ public class CUser implements Serializable, IEntity<Long>
 			addGroup(group);
 		}
 	}
+	
+	/**
+	 * bind groups with this user and unit
+	 * @param groups
+	 */
+	public void setGroupsUnit(Set<CGroup> groups, CUnit unit)
+	{
+		for (CGroup group : groups)
+		{
+			addGroupUnit(group, unit);
+		}
+	}
 
 	/**
 	 * Sets the main group.

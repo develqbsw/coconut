@@ -17,8 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.dao.IGroupDao;
+import sk.qbsw.core.security.dao.IUnitDao;
+import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.service.IUserService;
@@ -43,6 +46,9 @@ public class CUserTestCase
 	@Autowired
 	@Qualifier ("cUserService")
 	private IUserService userService;
+	
+	@Autowired
+	private IUserDao userDao;
 
 	/** The group dao. */
 	@Autowired
@@ -50,6 +56,9 @@ public class CUserTestCase
 
 	@Autowired
 	private IOrganizationService orgService;
+	
+	@Autowired
+	private IUnitDao unitDao;
 
 	/**
 	 * Test initialization.
@@ -161,6 +170,30 @@ public class CUserTestCase
 		//asserts
 		assertNotNull("Get all users by group failed: list of users is null", users);
 		Assert.assertEquals("Get all by group users failed: the expected count of user is 1 ", users.size(), 1);
+	}
+	
+	/**
+	 * 
+	 * @throws CSecurityException
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllByGroupAndUnit () throws CSecurityException
+	{
+		initTest();
+
+		List<CGroup> groups1 = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		Assert.assertTrue("No groups found", groups1.size() > 0);
+		
+		CUnit unit = unitDao.findByName(CDataGenerator.FIRST_UNIT_CODE);
+		
+		List<CUser> users = userDao.findByUnitGroup(unit, groups1.get(0));
+		Assert.assertTrue("User is null", users.size() == 0);
+		
+		List<CGroup> groups3 = groupDao.findByCode(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE);
+		users = userDao.findByUnitGroup(unit, groups3.get(0));
+		Assert.assertTrue("User is null", users.size() == 1);
 	}
 
 	/**

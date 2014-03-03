@@ -487,4 +487,37 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 
 		return (List<CUser>) query.getResultList();
 	}
+	
+	@Override
+	@SuppressWarnings ("unchecked")
+	public List<CUser> findByUnitGroup(CUnit unit, CGroup group)
+	{
+		String q = "select distinct(us) from CUser us left join fetch us.xUserUnitGroups xuug left join fetch xuug.unit un left join fetch xuug.group gr where 1=1";
+		
+		if(unit != null)
+		{
+			q += " and un = :unit ";
+		}
+		
+		if(group != null)
+		{
+			q += " and gr = :group";
+		}
+		
+		q += " order by us.login";
+		
+		Query query = getEntityManager().createQuery(q);
+		
+		if(unit != null)
+		{
+			query.setParameter("unit", unit);
+		}
+		
+		if(group != null)
+		{
+			query.setParameter("group", group);
+		}
+		
+		return (List<CUser>) query.getResultList();
+	}
 }
