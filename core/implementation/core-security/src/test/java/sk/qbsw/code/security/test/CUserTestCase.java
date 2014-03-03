@@ -30,7 +30,7 @@ import sk.qbsw.core.security.service.IUserService;
  * Checks user service.
  *
  * @autor Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -46,7 +46,7 @@ public class CUserTestCase
 	@Autowired
 	@Qualifier ("cUserService")
 	private IUserService userService;
-	
+
 	@Autowired
 	private IUserDao userDao;
 
@@ -56,7 +56,7 @@ public class CUserTestCase
 
 	@Autowired
 	private IOrganizationService orgService;
-	
+
 	@Autowired
 	private IUnitDao unitDao;
 
@@ -86,6 +86,11 @@ public class CUserTestCase
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", users);
 		Assert.assertTrue("Get all users failed: list of users is empty", users.size() > 0);
+
+		for (CUser user : users)
+		{
+			checksUserHasCorrectGroups(user);
+		}
 	}
 
 	/**
@@ -106,6 +111,11 @@ public class CUserTestCase
 		//asserts
 		assertNotNull("Get all users order by organization failed: list of users is null", users);
 		Assert.assertTrue("Get all users order by organization failed: list of users is empty", users.size() > 0);
+
+		for (CUser user : users)
+		{
+			checksUserHasCorrectGroups(user);
+		}
 	}
 
 	/**
@@ -121,7 +131,7 @@ public class CUserTestCase
 		initTest();
 
 		List<CUser> twoUsers = userService.getUsers(null, null, null, null, CDataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
-		List<CUser> oneUser = userService.getUsers(null, null, null, null, CDataGenerator.THIRD_GROUP_IN_UNIT_CODE);
+		List<CUser> oneUser = userService.getUsers(null, null, null, null, CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE.substring(0, 20));
 
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", twoUsers);
@@ -171,7 +181,27 @@ public class CUserTestCase
 		assertNotNull("Get all users by group failed: list of users is null", users);
 		Assert.assertEquals("Get all by group users failed: the expected count of user is 1 ", users.size(), 1);
 	}
-	
+
+	/**
+	 * Test get user by id.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGet () throws CSecurityException
+	{
+		initTest();
+
+		CUser userByLogin = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser userById = userService.get(userByLogin.getPkId());
+
+		//asserts
+		assertNotNull("Get user by id failed: cannot find user with login " + userByLogin.getLogin(), userByLogin);
+		assertNotNull("Get user by id failed: the id of user with login " + userByLogin.getLogin() + " is incorrect", userById);
+	}
+
 	/**
 	 * 
 	 * @throws CSecurityException
@@ -185,15 +215,40 @@ public class CUserTestCase
 
 		List<CGroup> groups1 = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 		Assert.assertTrue("No groups found", groups1.size() > 0);
-		
+
 		CUnit unit = unitDao.findByName(CDataGenerator.FIRST_UNIT_CODE);
-		
-		List<CUser> users = userDao.findByUnitGroup(unit, groups1.get(0));
+
+		List<CUser> users = userDao.findAllUsers(unit, groups1.get(0));
 		Assert.assertTrue("User is null", users.size() == 0);
-		
+
 		List<CGroup> groups3 = groupDao.findByCode(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE);
-		users = userDao.findByUnitGroup(unit, groups3.get(0));
+		users = userDao.findAllUsers(unit, groups3.get(0));
 		Assert.assertTrue("User is null", users.size() == 1);
+	}
+
+	/**
+	 * Checks user has correct groups.
+	 *
+	 * @param user the user
+	 */
+	private void checksUserHasCorrectGroups (CUser user)
+	{
+		if (user.getLogin().equals(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE))
+		{
+			Assert.assertEquals("Get all users failed: the expected count of users group is 2 ", user.getGroups().size(), 2);
+			for (CGroup group : user.getGroups())
+			{
+				Assert.assertTrue("Get all users failed: the user with login " + user.getLogin() + " has unexpected group with code " + group.getCode(), group.getCode().equals(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE) || group.getCode().equals(CDataGenerator.SECOND_GROUP_IN_UNIT_CODE));
+			}
+		}
+		else if (user.getLogin().equals(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE))
+		{
+			Assert.assertEquals("Get all users failed: the expected count of users group is 2 ", user.getGroups().size(), 2);
+			for (CGroup group : user.getGroups())
+			{
+				Assert.assertTrue("Get all users failed: the user with login " + user.getLogin() + " has unexpected group with code " + group.getCode(), group.getCode().equals(CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE) || group.getCode().equals(CDataGenerator.SECOND_GROUP_NOT_IN_UNIT_CODE));
+			}
+		}
 	}
 
 	/**

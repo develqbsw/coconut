@@ -26,7 +26,7 @@ import sk.qbsw.core.security.service.IAuthorizationService;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager")
+@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
 public class CDatabaseAuthorizationTestCase
 {
 	/** The database data generator. */

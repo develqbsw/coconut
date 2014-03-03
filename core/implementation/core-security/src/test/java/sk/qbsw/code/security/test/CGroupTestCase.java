@@ -28,7 +28,7 @@ import sk.qbsw.core.security.service.IGroupService;
  * Checks group service.
  *
  * @autor Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -51,7 +51,7 @@ public class CGroupTestCase
 
 	@Autowired
 	private IUserDao userDao;
-	
+
 	/**
 	 * Test initialization.
 	 */
@@ -80,7 +80,12 @@ public class CGroupTestCase
 		assertNotNull("Get all groups failed: list of groups is null", groups);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 	}
-	
+
+	/**
+	 * Test get by unit user.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
 	@Test
 	@Transactional
 	@Rollback (true)
@@ -88,16 +93,16 @@ public class CGroupTestCase
 	{
 		initTest();
 
-		CUnit unit1 = unitDao.findByName(CDataGenerator.FIRST_UNIT_CODE);
+		CUnit unit1 = unitDao.findByName(CDataGenerator.SECOND_UNIT_CODE);
 		CUser user2 = userDao.findByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
-		
+
 		List<CGroup> groups = groupService.getByUnitUser(unit1, user2);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
-		
+
 		CUser user1 = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		groups = groupService.getByUnitUser(unit1, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
-		
+
 		CUnit unit2 = unitDao.findByName(CDataGenerator.SECOND_UNIT_CODE);
 		groups = groupService.getByUnitUser(unit2, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);

@@ -54,7 +54,6 @@ public class CXUserUnitGroup implements Serializable, IEntity<Long>
 	@JoinColumn (name = "fk_group", nullable = false)
 	private CGroup group;
 
-
 	/**
 	 * Instantiates a new c group.
 	 */

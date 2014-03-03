@@ -18,7 +18,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  *
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.6.1
+ * @version 1.7.0
  * @since 1.0.0
  */
 public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
@@ -149,5 +149,5 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @param group
 	 * @return
 	 */
-	List<CUser> findByUnitGroup (CUnit unit, CGroup group);
+	List<CUser> findAllUsers (CUnit unit, CGroup group);
 }

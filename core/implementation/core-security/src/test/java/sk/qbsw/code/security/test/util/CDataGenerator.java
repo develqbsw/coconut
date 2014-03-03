@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -135,7 +135,12 @@ public class CDataGenerator
 		CUser userWithoutDefaultUnit = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		/** Create connections. */
-		//for units
+		//unit -> organization
+		defaultUnit.setOrganization(organization);
+		firstUnit.setOrganization(organization);
+		secondUnit.setOrganization(organization);
+
+		//group <-> unit
 		Set<CGroup> groupsForDefaultUnit = new HashSet<CGroup>();
 		groupsForDefaultUnit.add(firstGroupInUnit);
 		groupsForDefaultUnit.add(secondGroupInUnit);
@@ -148,77 +153,11 @@ public class CDataGenerator
 		groupsForSecondUnit.add(firstGroupInUnit);
 		groupsForSecondUnit.add(thirdGroupInUnit);
 
-		defaultUnit.setOrganization(organization);
-		firstUnit.setOrganization(organization);
-		secondUnit.setOrganization(organization);
-
 		defaultUnit.setGroups(groupsForDefaultUnit);
 		firstUnit.setGroups(groupsForFirstUnit);
 		secondUnit.setGroups(groupsForSecondUnit);
 
-		//for groups
-		Set<CUnit> unitsForFirstGroupInUnit = new HashSet<CUnit>();
-		unitsForFirstGroupInUnit.add(defaultUnit);
-		unitsForFirstGroupInUnit.add(secondUnit);
-
-		Set<CUnit> unitsForSecondGroupInUnit = new HashSet<CUnit>();
-		unitsForSecondGroupInUnit.add(defaultUnit);
-		unitsForSecondGroupInUnit.add(firstUnit);
-
-		Set<CUnit> unitsForThirdGroupInUnit = new HashSet<CUnit>();
-		unitsForThirdGroupInUnit.add(firstUnit);
-		unitsForThirdGroupInUnit.add(secondUnit);
-
-		Set<CRole> rolesForFirstGroupInUnit = new HashSet<CRole>();
-		rolesForFirstGroupInUnit.add(firstRole);
-
-		Set<CRole> rolesForSecondGroupInUnit = new HashSet<CRole>();
-		rolesForSecondGroupInUnit.add(firstRole);
-
-		Set<CRole> rolesForThirdGroupInUnit = new HashSet<CRole>();
-		rolesForThirdGroupInUnit.add(secondRole);
-
-		Set<CRole> rolesForFirstGroupNotInUnit = new HashSet<CRole>();
-		rolesForFirstGroupNotInUnit.add(firstRole);
-
-		Set<CRole> rolesForSecondGroupNotInUnit = new HashSet<CRole>();
-		rolesForSecondGroupNotInUnit.add(firstRole);
-
-		Set<CUser> usersForFirstGroupsInUnit = new HashSet<CUser>();
-		usersForFirstGroupsInUnit.add(userWithDefaultUnit);
-
-		Set<CUser> usersForSecondGroupsInUnit = new HashSet<CUser>();
-		usersForSecondGroupsInUnit.add(userWithDefaultUnit);
-		usersForSecondGroupsInUnit.add(userWithoutDefaultUnit);
-
-		Set<CUser> usersForThirdGroupsInUnit = new HashSet<CUser>();
-		usersForThirdGroupsInUnit.add(userWithDefaultUnit);
-
-		Set<CUser> usersForFirstGroupsNotInUnit = new HashSet<CUser>();
-		usersForFirstGroupsNotInUnit.add(userWithoutDefaultUnit);
-
-		Set<CUser> usersForSecondGroupsNotInUnit = new HashSet<CUser>();
-		usersForSecondGroupsNotInUnit.add(userWithoutDefaultUnit);
-
-		firstGroupInUnit.setUnits(unitsForFirstGroupInUnit);
-		secondGroupInUnit.setUnits(unitsForSecondGroupInUnit);
-		thirdGroupInUnit.setUnits(unitsForThirdGroupInUnit);
-
-		firstGroupInUnit.setRoles(rolesForFirstGroupInUnit);
-		secondGroupInUnit.setRoles(rolesForSecondGroupInUnit);
-		thirdGroupInUnit.setRoles(rolesForThirdGroupInUnit);
-
-		firstGroupNotInUnit.setRoles(rolesForFirstGroupNotInUnit);
-		secondGroupNotInUnit.setRoles(rolesForSecondGroupNotInUnit);
-
-		//		firstGroupInUnit.setUsers(usersForFirstGroupsInUnit);
-		//		secondGroupInUnit.setUsers(usersForSecondGroupsInUnit);
-		//		thirdGroupInUnit.setUsers(usersForThirdGroupsInUnit);
-
-		//		firstGroupNotInUnit.setUsers(usersForFirstGroupsNotInUnit);
-		//		secondGroupNotInUnit.setUsers(usersForSecondGroupsNotInUnit);
-
-		//for roles
+		//group <-> role
 		Set<CGroup> groupsForFirstRole = new HashSet<CGroup>();
 		groupsForFirstRole.add(firstGroupInUnit);
 		groupsForFirstRole.add(secondGroupInUnit);
@@ -231,33 +170,30 @@ public class CDataGenerator
 		firstRole.setGroups(groupsForFirstRole);
 		secondRole.setGroups(groupsForSecondRole);
 
-		//for user
-		Set<CGroup> groupsForUserWithDefaultUnit = new HashSet<CGroup>();
-		groupsForUserWithDefaultUnit.add(firstGroupInUnit);
-		groupsForUserWithDefaultUnit.add(secondGroupInUnit);
-		groupsForUserWithDefaultUnit.add(thirdGroupInUnit);
-
-		Set<CGroup> groupsForUserWithoutDefaultUnit = new HashSet<CGroup>();
-		groupsForUserWithoutDefaultUnit.add(firstGroupNotInUnit);
-		groupsForUserWithoutDefaultUnit.add(secondGroupNotInUnit);
-		groupsForUserWithoutDefaultUnit.add(secondGroupInUnit);
-
-		userWithDefaultUnit.setOrganization(organization);
-		userWithoutDefaultUnit.setOrganization(organization);
-
-		userWithDefaultUnit.setDefaultUnit(defaultUnit);
-		userWithoutDefaultUnit.setDefaultUnit(null);
-
+		//group <-> user
+		//       |
+		//	unit
 		userWithDefaultUnit.addGroupUnit(firstGroupInUnit, defaultUnit);
+		userWithDefaultUnit.addGroupUnit(firstGroupInUnit, secondUnit);
+		userWithDefaultUnit.addGroupUnit(secondGroupInUnit, defaultUnit);
 		userWithDefaultUnit.addGroupUnit(secondGroupInUnit, firstUnit);
-		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, secondUnit);
-		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, defaultUnit);
 		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, firstUnit);
+		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, secondUnit);
 
 		userWithoutDefaultUnit.addGroup(firstGroupNotInUnit);
 		userWithoutDefaultUnit.addGroup(secondGroupNotInUnit);
-		userWithoutDefaultUnit.addGroup(secondGroupInUnit);
+		userWithoutDefaultUnit.addGroupUnit(secondGroupInUnit, defaultUnit);
+		userWithoutDefaultUnit.addGroupUnit(secondGroupInUnit, firstUnit);
 
+		//user -> organization
+		userWithDefaultUnit.setOrganization(organization);
+		userWithoutDefaultUnit.setOrganization(organization);
+
+		//user -> defaultUnit
+		userWithDefaultUnit.setDefaultUnit(defaultUnit);
+		userWithoutDefaultUnit.setDefaultUnit(null);
+
+		//user -> authenticationParams
 		userWithDefaultUnit.setAuthenticationParams(authenticationParamWithDefaulUnit);
 		userWithoutDefaultUnit.setAuthenticationParams(authenticationParamWithoutDefaulUnit);
 
