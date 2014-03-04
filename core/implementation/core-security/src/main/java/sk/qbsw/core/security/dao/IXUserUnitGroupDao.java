@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
+import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
@@ -16,14 +17,15 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  */
 public interface IXUserUnitGroupDao extends Serializable, IEntityDao<Long, CXUserUnitGroup>
 {
-
+	
 	/**
-	 * Find all cross entities by user, not in unit
+	 * Find all
 	 * 
 	 * @param user - optional
 	 * @param unit - optional
+	 * @param group - optional
 	 * @return
 	 */
-	List<CXUserUnitGroup> findByUserNotInUnit (CUser user, CUnit unit);
+	List<CXUserUnitGroup> findAll (CUser user, CUnit unit, CGroup group);
 
 }

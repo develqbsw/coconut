@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
+import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
@@ -28,10 +29,10 @@ public class CXUserUnitGroupDao  extends AEntityJpaDao<Long, CXUserUnitGroup> im
 	{
 		super(CXUserUnitGroup.class);
 	}
-
+	
 	@SuppressWarnings ("unchecked")
 	@Override
-	public List<CXUserUnitGroup> findByUserNotInUnit (CUser user, CUnit unit)
+	public List<CXUserUnitGroup> findAll (CUser user, CUnit unit, CGroup group)
 	{
 		String q = "select xuug from CXUserUnitGroup xuug left join fetch xuug.user us left join fetch xuug.unit un left join fetch xuug.group gr where 1=1";
 		
@@ -41,7 +42,11 @@ public class CXUserUnitGroupDao  extends AEntityJpaDao<Long, CXUserUnitGroup> im
 		}
 		if(unit != null)
 		{
-			q += " and un != :unit";
+			q += " and un = :unit";
+		}
+		if(group != null)
+		{
+			q += " and gr = :group";
 		}
 		
 		Query query = getEntityManager().createQuery(q);
@@ -53,6 +58,10 @@ public class CXUserUnitGroupDao  extends AEntityJpaDao<Long, CXUserUnitGroup> im
 		if(unit != null)
 		{
 			query.setParameter("unit", unit);
+		}
+		if(group != null)
+		{
+			query.setParameter("group", group);
 		}
 		
 		return query.getResultList();

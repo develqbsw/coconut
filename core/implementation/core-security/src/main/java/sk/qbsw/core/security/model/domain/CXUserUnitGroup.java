@@ -129,4 +129,35 @@ public class CXUserUnitGroup implements Serializable, IEntity<Long>
 	{
 		this.group = group;
 	}
+	
+	/**
+	 * Determine if this object equals input CXUserUnitGroup object
+	 * 
+	 * @param xuug
+	 * @return true if equals, false otherwise
+	 */
+	public boolean equals (CXUserUnitGroup xuug)
+	{
+		if(xuug == null)
+		{
+			return false;
+		}
+		
+		if(!user.getId().equals(xuug.getUser().getId()))
+		{
+			return false;
+		}
+		
+		if(!group.getId().equals(xuug.getGroup().getId()))
+		{
+			return false;
+		}
+		
+		if(unit != null && xuug.unit != null && !unit.getId().equals(xuug.getUnit().getId()))
+		{
+			return false;
+		}
+		
+		return true;
+	}
 }
