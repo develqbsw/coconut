@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.model.domain.CUnit;
-import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * Service for unit management.
@@ -35,12 +34,5 @@ public class CUnitService implements IUnitService
 	public List<CUnit> getAll ()
 	{
 		return unitDao.findAll();
-	}
-	
-	@Override
-	@Transactional (readOnly = true)
-	public List<CUnit> getAllByUser (CUser user)
-	{
-		return unitDao.findAllByUser(user);
 	}
 }

@@ -60,11 +60,6 @@ public class CUnit implements Serializable, IEntity<Long>
 	@JoinTable (schema = "sec", name = "t_x_group_unit", joinColumns = {@JoinColumn (name = "fk_unit")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
 	private Set<CGroup> groups;
 
-	//bi-directional many-to-many association to CUser
-	/** The assigned users. */
-	@ManyToMany (mappedBy = "assignedUnits", fetch = FetchType.LAZY)
-	private Set<CUser> assignedUsers;
-
 	/**
 	 * Instantiates a new unit.
 	 */
