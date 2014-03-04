@@ -69,6 +69,16 @@ public class CXUserUnitGroup implements Serializable, IEntity<Long>
 	{
 		return pkId;
 	}
+	
+	/**
+	 * Sets pkId
+	 * 
+	 * @param id
+	 */
+	public void setId (Long id)
+	{
+		this.pkId = id;
+	}
 
 	/**
 	 * Gets the user.
@@ -153,7 +163,7 @@ public class CXUserUnitGroup implements Serializable, IEntity<Long>
 			return false;
 		}
 		
-		if(unit != null && xuug.unit != null && !unit.getId().equals(xuug.getUnit().getId()))
+		if(unit != null && xuug.getUnit() != null && !unit.getId().equals(xuug.getUnit().getId()))
 		{
 			return false;
 		}

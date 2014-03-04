@@ -27,7 +27,7 @@ public interface IXUserUnitGroupService extends Serializable
 	void save (CXUserUnitGroup xuug);
 
 	/**
-	 * Get all by filter
+	 * Gets all by filter
 	 * 
 	 * @param user - optional
 	 * @param unit - optional
@@ -37,7 +37,7 @@ public interface IXUserUnitGroupService extends Serializable
 	List<CXUserUnitGroup> getAll (CUser user, CUnit unit, CGroup group);
 
 	/**
-	 * Get all by user
+	 * Gets all by user
 	 * 
 	 * @param user
 	 * @return
@@ -50,4 +50,11 @@ public interface IXUserUnitGroupService extends Serializable
 	 * @param xuugList
 	 */
 	void saveAll (List<CXUserUnitGroup> xuugList);
+
+	/**
+	 * Removes entity
+	 * 
+	 * @param xuug
+	 */
+	void remove (CXUserUnitGroup xuug);
 }

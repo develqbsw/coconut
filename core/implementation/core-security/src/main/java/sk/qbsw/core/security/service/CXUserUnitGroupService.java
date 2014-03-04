@@ -35,12 +35,12 @@ public class CXUserUnitGroupService implements IXUserUnitGroupService
 	{
 		return xuugDao.findAll(user, unit, group);
 	}
-	
+
 	@Override
 	@Transactional (readOnly = true)
 	public List<CXUserUnitGroup> getAllByUser (CUser user)
 	{
-		return getAll (user, null, null);
+		return getAll(user, null, null);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class CXUserUnitGroupService implements IXUserUnitGroupService
 	{
 		xuugDao.save(xuug);
 	}
-	
+
 	@Override
 	@Transactional
 	public void saveAll (List<CXUserUnitGroup> xuugList)
@@ -58,5 +58,19 @@ public class CXUserUnitGroupService implements IXUserUnitGroupService
 		{
 			xuugDao.save(xuug);
 		}
+	}
+
+	@Override
+	@Transactional
+	public void remove (CXUserUnitGroup xuug)
+	{
+		if(xuug == null || xuug.getId() == null)
+		{
+			throw new IllegalArgumentException("input object to remove cannot be null and must have id");
+		}
+		
+		xuug = xuugDao.findById(xuug.getId());
+		
+		xuugDao.remove(xuug);
 	}
 }
