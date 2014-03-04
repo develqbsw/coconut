@@ -101,6 +101,7 @@ public class CUser implements Serializable, IEntity<Long>
 	@Column (name = "type", nullable = true)
 	@Enumerated (EnumType.STRING)
 	private EUserType userType;
+	
 
 	/**
 	 * Instantiates a new c user.
@@ -259,6 +260,27 @@ public class CUser implements Serializable, IEntity<Long>
 		for (CXUserUnitGroup xuug : xUserUnitGroups)
 		{
 			groups.add(xuug.getGroup());
+		}
+
+		return groups;
+	}
+	
+	/**
+	 * Gets the groups in unit.
+	 * 
+	 * @param unit
+	 * @return the groups
+	 */
+	public Set<CGroup> getGroupsInUnit (CUnit unit)
+	{	
+		Set<CGroup> groups = new HashSet<CGroup>();
+	
+		for (CXUserUnitGroup xuug : xUserUnitGroups)
+		{
+			if(xuug.getUnit().getName().equals(unit.getName()))
+			{
+				groups.add(xuug.getGroup());
+			}
 		}
 
 		return groups;
@@ -487,5 +509,21 @@ public class CUser implements Serializable, IEntity<Long>
 	public void setAuthenticationParams (CAuthenticationParams authenticationParams)
 	{
 		this.authenticationParams = authenticationParams;
+	}
+
+	/**
+	 * @return the xUserUnitGroups
+	 */
+	public Set<CXUserUnitGroup> getxUserUnitGroups ()
+	{
+		return xUserUnitGroups;
+	}
+
+	/**
+	 * @param xUserUnitGroups the xUserUnitGroups to set
+	 */
+	public void setxUserUnitGroups (Set<CXUserUnitGroup> xUserUnitGroups)
+	{
+		this.xUserUnitGroups = xUserUnitGroups;
 	}
 }
