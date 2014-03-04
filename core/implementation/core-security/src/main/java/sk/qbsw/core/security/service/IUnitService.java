@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * The Interface IUnitService.
@@ -20,4 +21,12 @@ public interface IUnitService extends Serializable
 	 * @return the all units
 	 */
 	public abstract List<CUnit> getAll ();
+
+	/**
+	 * Gets all units by user
+	 * 
+	 * @param user
+	 * @return
+	 */
+	List<CUnit> getAllByUser (CUser user);
 }

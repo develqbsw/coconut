@@ -412,6 +412,22 @@ public class CUser implements Serializable, IEntity<Long>
 	}
 
 	/**
+	 * @return the assignedUnits
+	 */
+	public Set<CUnit> getAssignedUnits ()
+	{
+		return assignedUnits;
+	}
+
+	/**
+	 * @param assignedUnits the assignedUnits to set
+	 */
+	public void setAssignedUnits (Set<CUnit> assignedUnits)
+	{
+		this.assignedUnits = assignedUnits;
+	}
+
+	/**
 	 * Authentication by digest.
 	 * 
 	 * @return autentication type
