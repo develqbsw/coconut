@@ -49,4 +49,14 @@ public class CXUserUnitGroupService implements IXUserUnitGroupService
 	{
 		xuugDao.save(xuug);
 	}
+	
+	@Override
+	@Transactional
+	public void saveAll (List<CXUserUnitGroup> xuugList)
+	{
+		for (CXUserUnitGroup xuug : xuugList)
+		{
+			xuugDao.save(xuug);
+		}
+	}
 }

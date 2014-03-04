@@ -44,4 +44,10 @@ public interface IXUserUnitGroupService extends Serializable
 	 */
 	List<CXUserUnitGroup> getAllByUser (CUser user);
 
+	/**
+	 * Saves all entities in list
+	 * 
+	 * @param xuugList
+	 */
+	void saveAll (List<CXUserUnitGroup> xuugList);
 }
