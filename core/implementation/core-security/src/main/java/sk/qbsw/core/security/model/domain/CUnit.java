@@ -19,15 +19,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.google.gson.annotations.Expose;
-
 import sk.qbsw.core.persistence.model.domain.IEntity;
+
+import com.google.gson.annotations.Expose;
 
 /**
  * The Class CUnit.
  *
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.6.0
  */
 @Entity
@@ -59,6 +59,11 @@ public class CUnit implements Serializable, IEntity<Long>
 	@ManyToMany (fetch = FetchType.LAZY)
 	@JoinTable (schema = "sec", name = "t_x_group_unit", joinColumns = {@JoinColumn (name = "fk_unit")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
 	private Set<CGroup> groups;
+
+	//bi-directional many-to-many association to CUser
+	/** The assigned users. */
+	@ManyToMany (mappedBy = "assignedUnits", fetch = FetchType.LAZY)
+	private Set<CUser> assignedUsers;
 
 	/**
 	 * Instantiates a new unit.

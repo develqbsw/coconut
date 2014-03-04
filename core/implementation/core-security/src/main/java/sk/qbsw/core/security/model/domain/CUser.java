@@ -19,6 +19,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -35,7 +37,7 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.0.0
  */
 @Entity
@@ -86,6 +88,12 @@ public class CUser implements Serializable, IEntity<Long>
 	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	private Set<CXUserUnitGroup> xUserUnitGroups;
 
+	//bi-directional many-to-many association to CUnit - represent assignment user to unit
+	/** The unit assignment. */
+	@ManyToMany (fetch = FetchType.LAZY)
+	@JoinTable (schema = "sec", name = "t_x_user_unit", joinColumns = {@JoinColumn (name = "fk_user")}, inverseJoinColumns = {@JoinColumn (name = "fk_unit")})
+	private Set<CUnit> assignedUnits;
+
 	/** The default user's unit. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_default_unit", nullable = true)
@@ -101,7 +109,7 @@ public class CUser implements Serializable, IEntity<Long>
 	@Column (name = "type", nullable = true)
 	@Enumerated (EnumType.STRING)
 	private EUserType userType;
-	
+
 
 	/**
 	 * Instantiates a new c user.
@@ -254,9 +262,9 @@ public class CUser implements Serializable, IEntity<Long>
 	 * @return the groups
 	 */
 	public Set<CGroup> getGroups ()
-	{	
+	{
 		Set<CGroup> groups = new HashSet<CGroup>();
-	
+
 		for (CXUserUnitGroup xuug : xUserUnitGroups)
 		{
 			groups.add(xuug.getGroup());
@@ -264,7 +272,7 @@ public class CUser implements Serializable, IEntity<Long>
 
 		return groups;
 	}
-	
+
 	/**
 	 * Gets the groups in unit.
 	 * 
@@ -272,12 +280,12 @@ public class CUser implements Serializable, IEntity<Long>
 	 * @return the groups
 	 */
 	public Set<CGroup> getGroupsInUnit (CUnit unit)
-	{	
+	{
 		Set<CGroup> groups = new HashSet<CGroup>();
-	
+
 		for (CXUserUnitGroup xuug : xUserUnitGroups)
 		{
-			if(xuug.getUnit().getName().equals(unit.getName()))
+			if (xuug.getUnit().getName().equals(unit.getName()))
 			{
 				groups.add(xuug.getGroup());
 			}
@@ -314,24 +322,24 @@ public class CUser implements Serializable, IEntity<Long>
 		xuug.setUser(this);
 		xUserUnitGroups.add(xuug);
 	}
-	
+
 	/**
 	 * bind groups with this user
 	 * @param groups
 	 */
-	public void setGroups(Set<CGroup> groups)
+	public void setGroups (Set<CGroup> groups)
 	{
 		for (CGroup group : groups)
 		{
 			addGroup(group);
 		}
 	}
-	
+
 	/**
 	 * bind groups with this user and unit
 	 * @param groups
 	 */
-	public void setGroupsUnit(Set<CGroup> groups, CUnit unit)
+	public void setGroupsUnit (Set<CGroup> groups, CUnit unit)
 	{
 		for (CGroup group : groups)
 		{
