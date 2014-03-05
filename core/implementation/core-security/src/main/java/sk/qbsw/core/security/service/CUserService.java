@@ -2,6 +2,8 @@ package sk.qbsw.core.security.service;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -210,7 +212,17 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = false)
 	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException
 	{
-		CUser userByLogin = userDao.findByLogin(user.getLogin());
+		CUser userByLogin = null;
+		
+		try
+		{
+			userByLogin = userDao.findByLogin(user.getLogin());
+		}
+		catch (NoResultException nre)
+		{
+			userByLogin = null;
+		}
+		
 		if (userByLogin != null)
 		{
 			throw new CSecurityException("User with login " + user.getLogin() + " already exists", "error.security.loginused");
