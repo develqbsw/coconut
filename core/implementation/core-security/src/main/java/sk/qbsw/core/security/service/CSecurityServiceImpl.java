@@ -6,6 +6,8 @@ package sk.qbsw.core.security.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -246,7 +248,16 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = true)
 	public boolean isLoginFree (String login, Long pkId)
 	{
-		CUser user = userDao.findByLogin(login);
+		CUser user;
+		
+		try
+		{
+			user = userDao.findByLogin(login);
+		}
+		catch (NoResultException nre)
+		{
+			user = null;
+		}
 
 		if (user != null)
 		{

@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.service;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +43,15 @@ public class CAuthorizationService implements IAuthorizationService
 	public void checkAccessRights (String login, CRole role, String unit, String category) throws CSecurityException
 	{
 		CUnit localUnit = getUnitByName(unit);
-		CUser user = getUserByLoginAndUnit(login, localUnit);
+		CUser user;
+		try
+		{
+			user = getUserByLoginAndUnit(login, localUnit);
+		}
+		catch (NoResultException nre)
+		{
+			user = null;
+		}
 
 		if (user == null)
 		{

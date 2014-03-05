@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.service.spring;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.NoResultException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,16 @@ public class CUserDetailsService implements UserDetailsService
 	@Override
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
 	{
-
-		CUser user = userService.getUserByLogin(username);
+		CUser user;
+		
+		try
+		{
+			user = userService.getUserByLogin(username);
+		}
+		catch (NoResultException nre)
+		{
+			user = null;
+		}
 
 		if (user == null)
 		{

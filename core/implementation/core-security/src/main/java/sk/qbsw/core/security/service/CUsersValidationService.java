@@ -2,6 +2,8 @@ package sk.qbsw.core.security.service;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +50,18 @@ public class CUsersValidationService implements IUsersValidationService
 	@Override
 	public Boolean isUserExists (CUser user)
 	{
-
 		Boolean exists = false;
-
-		CUser userOld = userDao.findByLogin(user.getLogin());
+		CUser userOld;
+		
+		try
+		{
+			userOld = userDao.findByLogin(user.getLogin());
+		}
+		catch (NoResultException nre)
+		{
+			userOld = null;
+		}
+		
 		if (userOld != null && ! (userOld.getPkId().equals(user.getPkId())))
 		{
 			exists = true;
@@ -97,7 +107,17 @@ public class CUsersValidationService implements IUsersValidationService
 
 		Boolean exists = false;
 
-		CUser userOld = userDao.findByLogin(login);
+		CUser userOld;
+		
+		try
+		{
+			userOld = userDao.findByLogin(login);
+		}
+		catch (NoResultException nre)
+		{
+			userOld = null;
+		}
+		
 		if (userOld != null)
 		{
 			exists = true;

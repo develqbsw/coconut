@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.service;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,7 +161,17 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	@Transactional (readOnly = true)
 	private CUser loginWithUnit (String login, String password, CUnit unit) throws CSecurityException
 	{
-		CUser user = userDao.findByLogin(login, unit);
+		CUser user;
+		
+		try
+		{
+			user = userDao.findByLogin(login, unit);
+		}
+		catch (NoResultException nre)
+		{
+			user = null;
+		}
+		
 		if (user == null)
 		{
 			throw new CWrongPasswordException("User not recognised");
@@ -214,7 +226,16 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	@Transactional (readOnly = false)
 	public void changeEncryptedPassword (String login, String password) throws CSecurityException
 	{
-		CUser user = userDao.findByLogin(login);
+		CUser user;
+		
+		try
+		{
+			user = userDao.findByLogin(login);
+		}
+		catch (NoResultException nre)
+		{
+			user = null;
+		}
 
 		if (user == null)
 		{
@@ -233,7 +254,16 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	@Transactional (readOnly = false)
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException
 	{
-		CUser user = userDao.findByLogin(login);
+		CUser user;
+		
+		try
+		{
+			user = userDao.findByLogin(login);
+		}
+		catch (NoResultException nre)
+		{
+			user = null;
+		}
 
 		if (user == null || email.equals(user.getEmail()) == false)
 		{

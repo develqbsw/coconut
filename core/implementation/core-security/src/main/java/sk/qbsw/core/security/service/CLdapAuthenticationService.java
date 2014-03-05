@@ -3,6 +3,8 @@ package sk.qbsw.core.security.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
+
 import org.apache.directory.api.util.exception.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,7 +142,16 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	private CUser loginUser (String login, String password, CUnit unit) throws CSecurityException
 	{
 		//gets user from ldap - all information in this object are now from ldap
-		CUser user = userDao.findByLogin(login, unit);
+		CUser user;
+		
+		try
+		{
+			user = userDao.findByLogin(login, unit);
+		}
+		catch (NoResultException nre)
+		{
+			user = null;
+		}
 
 		if (user != null)
 		{
