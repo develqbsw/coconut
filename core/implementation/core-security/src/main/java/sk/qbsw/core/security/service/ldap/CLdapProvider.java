@@ -29,7 +29,7 @@ import sk.qbsw.core.security.exception.CSecurityException;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -48,6 +48,14 @@ public class CLdapProvider
 	public void createConnection (String ldapServerName, int ldapServerPort)
 	{
 		connection = new LdapNetworkConnection(ldapServerName, ldapServerPort);
+		try
+		{
+			connection.connect();
+		}
+		catch (LdapException ex)
+		{
+			throw new CSystemException("Cannot open connection to ldap server", ex);
+		}
 	}
 
 	/**
@@ -56,7 +64,7 @@ public class CLdapProvider
 	 */
 	public void closeConnection ()
 	{
-		if (connection != null)
+		if (connection != null && connection.isConnected())
 		{
 			try
 			{

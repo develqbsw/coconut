@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.service;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
@@ -162,7 +163,7 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	private CUser loginWithUnit (String login, String password, CUnit unit) throws CSecurityException
 	{
 		CUser user;
-		
+
 		try
 		{
 			user = userDao.findByLogin(login, unit);
@@ -171,7 +172,7 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		{
 			user = null;
 		}
-		
+
 		if (user == null)
 		{
 			throw new CWrongPasswordException("User not recognised");
@@ -227,7 +228,7 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	public void changeEncryptedPassword (String login, String password) throws CSecurityException
 	{
 		CUser user;
-		
+
 		try
 		{
 			user = userDao.findByLogin(login);
@@ -255,7 +256,7 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException
 	{
 		CUser user;
-		
+
 		try
 		{
 			user = userDao.findByLogin(login);
@@ -272,5 +273,23 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 
 		user.getAuthenticationParams().setPassword(password);
 		authenticationParamsDao.save(user.getAuthenticationParams());
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
+	 */
+	@Override
+	@Transactional (readOnly = true)
+	public boolean isOnline ()
+	{
+		try
+		{
+			userDao.countAllUsers();
+			return true;
+		}
+		catch (PersistenceException ex)
+		{
+			return false;
+		}
 	}
 }

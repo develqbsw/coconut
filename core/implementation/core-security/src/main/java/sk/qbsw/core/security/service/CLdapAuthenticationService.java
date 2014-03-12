@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -27,7 +28,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider;
  * The LDAP authentication service.
  * 
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -47,7 +48,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
-	
+
 	/** The authentication params dao. */
 	@Autowired
 	private IAuthenticationParamsDao authenticationParamsDao;
@@ -143,7 +144,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	{
 		//gets user from ldap - all information in this object are now from ldap
 		CUser user;
-		
+
 		try
 		{
 			user = userDao.findByLogin(login, unit);
@@ -246,7 +247,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		}
 
 		//and returns empty authentications params
-		CAuthenticationParams authParams = new CAuthenticationParams(); 
+		CAuthenticationParams authParams = new CAuthenticationParams();
 		authenticationParamsDao.save(authParams);
 
 		return authParams;
@@ -283,5 +284,26 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException
 	{
 		throw new NotImplementedException();
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
+	 */
+	@Override
+	public boolean isOnline ()
+	{
+		try
+		{
+			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
+			return true;
+		}
+		catch (CSystemException ex)
+		{
+			return false;
+		}
+		finally
+		{
+			ldapProvider.closeConnection();
+		}
 	}
 }

@@ -21,7 +21,7 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -169,6 +169,21 @@ public class CDatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
+	}
+
+	/**
+	 * Test if the database is online.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testIsOnline ()
+	{
+		initTest();
+
+		authenticationTestProvider.testIsOnline(authenticationService);
 	}
 
 	/**

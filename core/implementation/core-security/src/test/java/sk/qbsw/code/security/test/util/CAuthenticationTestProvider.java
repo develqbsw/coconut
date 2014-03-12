@@ -20,7 +20,7 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * Provides test for authentication.
  *
  * @autor Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @Component
@@ -133,6 +133,15 @@ public class CAuthenticationTestProvider
 		String unit = CDataGenerator.FIRST_UNIT_CODE;
 
 		testLoginWithUnit(authenticationService, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit, expectedGroups);
+	}
+
+	/**
+	 * Test if the source is online.
+	 * 
+	 */
+	public void testIsOnline (IAuthenticationService authenticationService)
+	{
+		Assert.assertTrue("Checks is online failed - the source is offline", authenticationService.isOnline());
 	}
 
 	/**

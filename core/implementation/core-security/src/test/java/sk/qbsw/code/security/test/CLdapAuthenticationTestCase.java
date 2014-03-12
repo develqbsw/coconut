@@ -27,7 +27,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider;
  * Checks Authentication service for ldap.
  *
  * @autor Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -192,6 +192,19 @@ public class CLdapAuthenticationTestCase
 		initTestUserWithoutDefaultUnit();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
+	}
+
+	/**
+	 * Test if the ldap is online.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testIsOnline ()
+	{
+		authenticationTestProvider.testIsOnline(authenticationService);
 	}
 
 	/**

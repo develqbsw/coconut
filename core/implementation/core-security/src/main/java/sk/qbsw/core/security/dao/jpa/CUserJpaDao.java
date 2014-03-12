@@ -196,6 +196,17 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#countAllUsers()
+	 */
+	public int countAllUsers ()
+	{
+		String strQuery = "select count(u) from CUser u";
+
+		Query query = getEntityManager().createQuery(strQuery);
+		return ((Number) query.getSingleResult()).intValue();
+	}
+
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers()
 	 */
 	public List<CUser> findAllUsers ()

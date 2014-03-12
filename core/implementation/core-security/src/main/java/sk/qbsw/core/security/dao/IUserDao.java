@@ -57,6 +57,13 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	public CUser findByPinNull (String pinCode);
 
 	/**
+	 * Count all users.
+	 *
+	 * @return the count of all users
+	 */
+	public int countAllUsers ();
+
+	/**
 	 * Find all users.
 	 *
 	 * @return the list

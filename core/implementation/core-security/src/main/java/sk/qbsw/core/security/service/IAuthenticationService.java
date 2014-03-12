@@ -22,7 +22,7 @@ public interface IAuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return
 	 */
-	public abstract CUser login (String login, String password) throws CSecurityException;
+	public CUser login (String login, String password) throws CSecurityException;
 
 	/**
 	 * Authenticates the user.
@@ -33,7 +33,7 @@ public interface IAuthenticationService extends Serializable
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	public abstract CUser login (String login, String password, String unit) throws CSecurityException;
+	public CUser login (String login, String password, String unit) throws CSecurityException;
 
 	/** Find by login and role user must have login and role
 	 * @param login - login of the user
@@ -41,7 +41,7 @@ public interface IAuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return user if user have login and role null otherwise
 	 */
-	public abstract CUser login (String login, String password, CRole role) throws CSecurityException;
+	public CUser login (String login, String password, CRole role) throws CSecurityException;
 
 	/**
 	 * Authenticates the user with his role
@@ -50,7 +50,7 @@ public interface IAuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return
 	 */
-	public abstract boolean canLogin (String login, String password, CRole role);
+	public boolean canLogin (String login, String password, CRole role);
 
 	/**
 	 * Create new authentication params for user.
@@ -77,4 +77,11 @@ public interface IAuthenticationService extends Serializable
 	 * @throws CSecurityException the c security exception
 	 */
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException;
+	
+	/**
+	 * Checks if the authentication service is online.
+	 *
+	 * @return true, if is online
+	 */
+	public boolean isOnline();
 }
