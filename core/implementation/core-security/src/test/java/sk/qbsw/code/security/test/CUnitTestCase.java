@@ -18,13 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IUnitService;
+import sk.qbsw.core.security.service.IUserService;
 
 /**
  * Checks unit service.
  *
  * @autor Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -41,6 +43,10 @@ public class CUnitTestCase
 	@Qualifier ("unitService")
 	private IUnitService unitService;
 
+	/** The user service. */
+	@Autowired
+	private IUserService userService;
+
 	/**
 	 * Test initialization.
 	 */
@@ -51,7 +57,7 @@ public class CUnitTestCase
 	}
 
 	/**
-	 * Test login with default unit.
+	 * Test get all units.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -65,8 +71,38 @@ public class CUnitTestCase
 		List<CUnit> units = unitService.getAll();
 
 		//asserts
-		assertNotNull("Get all units failed: list of units is null", units);
-		Assert.assertTrue("Get all units failed: list of units is empty", units.size() > 0);
+		assertNotNull("List of units is null", units);
+		Assert.assertTrue("List of units is empty", units.size() > 0);
+	}
+
+	/**
+	 * Test get all units by user.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllByUser () throws CSecurityException
+	{
+		initTest();
+
+		CUser userWithDefaultUnit = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser userWithoutDefaultUnit = userService.getUserByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+
+		//first user
+		List<CUnit> units = unitService.getAll(userWithDefaultUnit);
+
+		//asserts
+		assertNotNull("List of units is null", units);
+		Assert.assertEquals("The expected count of units in list is 3 ", units.size(), 3);
+
+		//second user
+		units = unitService.getAll(userWithoutDefaultUnit);
+
+		//asserts
+		assertNotNull("List of units is null", units);
+		Assert.assertEquals("The expected count of units in list is  2", units.size(), 2);
 	}
 
 	/**

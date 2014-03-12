@@ -17,7 +17,7 @@ import sk.qbsw.core.security.model.domain.CUnit;
  * The Class CUnitJpaDao.
  *
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @Repository (value = "unitDao")
@@ -37,6 +37,7 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUnitDao#findByNameNull(java.lang.String)
 	 */
+	@Override
 	@SuppressWarnings ("unchecked")
 	public CUnit findByName (String name)
 	{
@@ -55,5 +56,24 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 		{
 			return units.get(0);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUnitDao#findAll(java.lang.Long)
+	 */
+	@Override
+	@SuppressWarnings ("unchecked")
+	public List<CUnit> findAll (Long userId)
+	{
+		String strQuery = "select distinct(un) from CUnit un " +
+					"join un.xUserUnitGroups xuug " +
+					"join xuug.user us " +
+					"where us.pkId=:userId " +
+					"order by un.name asc";
+
+		Query query = getEntityManager().createQuery(strQuery);
+		query.setParameter("userId", userId);
+
+		return query.getResultList();
 	}
 }
