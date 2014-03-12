@@ -25,6 +25,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
@@ -35,11 +38,12 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.7.0
+ * @version 1.7.1
  * @since 1.0.0
  */
 @Entity
 @Table (name = "t_user", schema = "sec")
+@FilterDef (name = "userDefaultUnitFilter")
 public class CUser implements Serializable, IEntity<Long>
 {
 	/** The Constant serialVersionUID. */
@@ -84,6 +88,7 @@ public class CUser implements Serializable, IEntity<Long>
 	// bi-directional many-to-many association to cross entity to group and unit
 	/** set of cross entities. */
 	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@Filter (name = "userDefaultUnitFilter", condition = "( (fk_unit = (select us.fk_default_unit from sec.t_user us where us.pk_id = fk_user)) or ( (select us.fk_default_unit from sec.t_user us where us.pk_id = fk_user) is null and fk_unit is null) )")
 	private Set<CXUserUnitGroup> xUserUnitGroups;
 
 	/** The default user's unit. */
@@ -101,7 +106,6 @@ public class CUser implements Serializable, IEntity<Long>
 	@Column (name = "type", nullable = true)
 	@Enumerated (EnumType.STRING)
 	private EUserType userType;
-
 
 	/**
 	 * Instantiates a new c user.

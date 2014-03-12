@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.7.0
+ * @version 1.7.1
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -99,6 +99,12 @@ public class CDataGenerator
 	/** The Constant USER_WITHOUT_DEFAULT_UNIT_CODE. */
 	public static final String USER_WITHOUT_DEFAULT_UNIT_CODE = "unit_test_user_without_default_unit";
 
+	/** The Constant USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP. */
+	public static final String USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP = "unit_test_user_with_default_unit_no_group";
+
+	/** The Constant USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP. */
+	public static final String USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP = "unit_test_user_without_default_unit_no_group";
+
 	/**
 	 * Generate data for database tests.
 	 */
@@ -129,10 +135,14 @@ public class CDataGenerator
 		//authentication params
 		CAuthenticationParams authenticationParamWithDefaulUnit = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE);
 		CAuthenticationParams authenticationParamWithoutDefaulUnit = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CAuthenticationParams authenticationParamWithDefaulUnitNoGroup = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
+		CAuthenticationParams authenticationParamWithoutDefaulUnitNoGroup = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
 
 		//users
 		CUser userWithDefaultUnit = createUser(USER_WITH_DEFAULT_UNIT_CODE);
 		CUser userWithoutDefaultUnit = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CUser userWithDefaultUnitNoGroup = createUser(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
+		CUser userWithoutDefaultUnitNoGroup = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
 
 		/** Create connections. */
 		//unit -> organization
@@ -185,17 +195,28 @@ public class CDataGenerator
 		userWithoutDefaultUnit.addGroupUnit(secondGroupInUnit, defaultUnit);
 		userWithoutDefaultUnit.addGroupUnit(secondGroupInUnit, firstUnit);
 
+		userWithDefaultUnitNoGroup.addGroupUnit(thirdGroupInUnit, firstUnit);
+		userWithDefaultUnitNoGroup.addGroupUnit(thirdGroupInUnit, secondUnit);
+
+		userWithoutDefaultUnitNoGroup.addGroupUnit(secondGroupInUnit, defaultUnit);
+		userWithoutDefaultUnitNoGroup.addGroupUnit(secondGroupInUnit, firstUnit);
 		//user -> organization
 		userWithDefaultUnit.setOrganization(organization);
 		userWithoutDefaultUnit.setOrganization(organization);
+		userWithDefaultUnitNoGroup.setOrganization(organization);
+		userWithoutDefaultUnitNoGroup.setOrganization(organization);
 
 		//user -> defaultUnit
 		userWithDefaultUnit.setDefaultUnit(defaultUnit);
 		userWithoutDefaultUnit.setDefaultUnit(null);
+		userWithDefaultUnitNoGroup.setDefaultUnit(defaultUnit);
+		userWithoutDefaultUnitNoGroup.setDefaultUnit(null);
 
 		//user -> authenticationParams
 		userWithDefaultUnit.setAuthenticationParams(authenticationParamWithDefaulUnit);
 		userWithoutDefaultUnit.setAuthenticationParams(authenticationParamWithoutDefaulUnit);
+		userWithDefaultUnitNoGroup.setAuthenticationParams(authenticationParamWithDefaulUnitNoGroup);
+		userWithoutDefaultUnitNoGroup.setAuthenticationParams(authenticationParamWithoutDefaulUnitNoGroup);
 
 		//save data to DB
 		orgDao.save(organization);
@@ -211,8 +232,12 @@ public class CDataGenerator
 		unitDao.save(secondUnit);
 		authenticationParamsDao.save(authenticationParamWithDefaulUnit);
 		authenticationParamsDao.save(authenticationParamWithoutDefaulUnit);
+		authenticationParamsDao.save(authenticationParamWithDefaulUnitNoGroup);
+		authenticationParamsDao.save(authenticationParamWithoutDefaulUnitNoGroup);
 		userDao.save(userWithDefaultUnit);
 		userDao.save(userWithoutDefaultUnit);
+		userDao.save(userWithDefaultUnitNoGroup);
+		userDao.save(userWithoutDefaultUnitNoGroup);
 		//flush data to hibernate cache
 		orgDao.flush();
 		roleDao.flush();

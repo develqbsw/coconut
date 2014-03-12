@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.base.exception.CSystemException;
@@ -23,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.7.0
+ * @version 1.7.1
  * @since 1.0.0
  */
 @Repository (value = "userDao")
@@ -50,20 +51,34 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	public CUser findById (Long id)
 	{
-		String strQuery = "select distinct(us) from CUser us " +
-					"left join fetch us.organization " +
-					"left join fetch us.defaultUnit deun " +
-					"left join fetch us.xUserUnitGroups xuug " +
-					"left join fetch xuug.group gr " +
-					"left join fetch xuug.unit " +
-					"left join fetch gr.roles " +
-					"where us.pkId=:pkId and ((deun is null and xuug.unit is empty) or (deun is not null and deun in xuug.unit))";
+		//get hibernate session from entity manager to set filter
+		Session session = getEntityManager().unwrap(Session.class);
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("pkId", id);
+		try
+		{
+			//set filter to get just groups with proper default units
+			session.enableFilter("userDefaultUnitFilter");
 
-		//throws exception if there is no result or multiple results
-		return (CUser) query.getSingleResult();
+			String strQuery = "select distinct(us) from CUser us " +
+						"left join fetch us.organization " +
+						"left join fetch us.defaultUnit " +
+						"left join fetch us.xUserUnitGroups xuug " +
+						"left join fetch xuug.group gr " +
+						"left join fetch xuug.unit " +
+						"left join fetch gr.roles " +
+						"where us.pkId=:pkId";
+
+			Query query = getEntityManager().createQuery(strQuery);
+			query.setParameter("pkId", id);
+
+			//throws exception if there is no result or multiple results
+			return (CUser) query.getSingleResult();
+		}
+		finally
+		{
+			//disable filter
+			session.disableFilter("userDefaultUnitFilter");
+		}
 	}
 
 	/* (non-Javadoc)
@@ -104,40 +119,47 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	private CUser findByLoginAndUnit (String login, CUnit unit)
 	{
-		String strQuery = null;
+		//get hibernate session from entity manager to set filter
+		Session session = getEntityManager().unwrap(Session.class);
+		StringBuilder strQueryBuilder = new StringBuilder();
 		Query query = null;
 
-		// 1. The unit has been set
-		if (unit != null)
+		try
 		{
-			strQuery = "select distinct(us) from CUser us " +
-					"left join fetch us.organization " +
-					"left join fetch us.defaultUnit " +
-					"left join fetch us.xUserUnitGroups xuug " +
-					"left join fetch xuug.group gr " +
-					"left join fetch xuug.unit " +
-					"left join fetch gr.roles " +
-					"where us.login=:login and :unit in xuug.unit";
-			query = getEntityManager().createQuery(strQuery);
-			query.setParameter("login", login);
-			query.setParameter("unit", unit);
-		}
-		// 2. The unit has not been set
-		else
-		{
-			strQuery = "select distinct(us) from CUser us " +
-					"left join fetch us.organization " +
-					"left join fetch us.defaultUnit deun " +
-					"left join fetch us.xUserUnitGroups xuug " +
-					"left join fetch xuug.group gr " +
-					"left join fetch xuug.unit " +
-					"left join fetch gr.roles " +
-					"where us.login=:login and ((deun is null and xuug.unit is empty) or (deun is not null and deun in xuug.unit))";
-			query = getEntityManager().createQuery(strQuery);
-			query.setParameter("login", login);
-		}
+			strQueryBuilder.append("select distinct(us) from CUser us " +
+							"left join fetch us.organization " +
+							"left join fetch us.defaultUnit " +
+							"left join fetch us.xUserUnitGroups xuug " +
+							"left join fetch xuug.group gr " +
+							"left join fetch xuug.unit " +
+							"left join fetch gr.roles " +
+							"where us.login=:login");
+			// 1. The unit has been set
+			if (unit != null)
+			{
+				strQueryBuilder.append(" and :unit in xuug.unit");
 
-		return (CUser) query.getSingleResult();
+				query = getEntityManager().createQuery(strQueryBuilder.toString());
+				query.setParameter("login", login);
+				query.setParameter("unit", unit);
+			}
+			// 2. The unit has not been set
+			else
+			{
+				//set filter to get just groups with proper default units
+				session.enableFilter("userDefaultUnitFilter");
+
+				query = getEntityManager().createQuery(strQueryBuilder.toString());
+				query.setParameter("login", login);
+			}
+
+			return (CUser) query.getSingleResult();
+		}
+		finally
+		{
+			//disable filter
+			session.disableFilter("userDefaultUnitFilter");
+		}
 	}
 
 	/*
@@ -271,76 +293,87 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	@SuppressWarnings ("unchecked")
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix)
 	{
+		//get hibernate session from entity manager to set filter
+		Session session = getEntityManager().unwrap(Session.class);
 		StringBuilder strQueryBuilder = new StringBuilder();
 
-		/** Create query */
-		strQueryBuilder.append("select distinct(us) from CUser us " +
-						"left join fetch us.defaultUnit deun " +
-						"left join fetch us.xUserUnitGroups xuug " +
-						"left join fetch xuug.group gr " +
-						"left join fetch xuug.unit " +
-						"where ((deun is null and xuug.unit is empty) or (deun is not null and deun in xuug.unit))");
-
-		if (name != null)
+		try
 		{
-			strQueryBuilder.append(" and us.name=:name");
-		}
+			//set filter to get just groups with proper default units
+			session.enableFilter("userDefaultUnitFilter");
 
-		if (surname != null)
+			/** Create query */
+			strQueryBuilder.append("select distinct(us) from CUser us " +
+							"left join fetch us.defaultUnit " +
+							"left join fetch us.xUserUnitGroups xuug " +
+							"left join fetch xuug.group gr " +
+							"left join fetch xuug.unit " +
+							"where 1=1");
+
+			if (name != null)
+			{
+				strQueryBuilder.append(" and us.name=:name");
+			}
+
+			if (surname != null)
+			{
+				strQueryBuilder.append(" and us.surname=:surname");
+			}
+
+			if (login != null)
+			{
+				strQueryBuilder.append(" and us.login=:login");
+			}
+
+			if (groupCodePrefix != null)
+			{
+				strQueryBuilder.append(" and gr.code like :groupCodePrefix");
+			}
+
+			if (enabled != null)
+			{
+				strQueryBuilder.append(" and us.flagEnabled=:enabled");
+			}
+
+			/** Create order by section. */
+			strQueryBuilder.append(" order by us.login");
+
+			//create query
+			Query query = getEntityManager().createQuery(strQueryBuilder.toString());
+
+			/** Set parameters. */
+			if (name != null)
+			{
+				query.setParameter("name", name);
+			}
+
+			if (surname != null)
+			{
+				query.setParameter("surname", surname);
+			}
+
+			if (login != null)
+			{
+				query.setParameter("login", login);
+			}
+
+			if (groupCodePrefix != null)
+			{
+				query.setParameter("groupCodePrefix", "%" + groupCodePrefix + "%");
+			}
+
+			if (enabled != null)
+			{
+				query.setParameter("enabled", enabled);
+			}
+
+			return (List<CUser>) query.getResultList();
+		}
+		finally
 		{
-			strQueryBuilder.append(" and us.surname=:surname");
+			//disable filter
+			session.disableFilter("userDefaultUnitFilter");
 		}
-
-		if (login != null)
-		{
-			strQueryBuilder.append(" and us.login=:login");
-		}
-
-		if (groupCodePrefix != null)
-		{
-			strQueryBuilder.append(" and gr.code like :groupCodePrefix");
-		}
-
-		if (enabled != null)
-		{
-			strQueryBuilder.append(" and us.flagEnabled=:enabled");
-		}
-
-		/** Create order by section. */
-		strQueryBuilder.append(" order by us.login");
-
-		//create query
-		Query query = getEntityManager().createQuery(strQueryBuilder.toString());
-
-		/** Set parameters. */
-		if (name != null)
-		{
-			query.setParameter("name", name);
-		}
-
-		if (surname != null)
-		{
-			query.setParameter("surname", surname);
-		}
-
-		if (login != null)
-		{
-			query.setParameter("login", login);
-		}
-
-		if (groupCodePrefix != null)
-		{
-			query.setParameter("groupCodePrefix", "%" + groupCodePrefix + "%");
-		}
-
-		if (enabled != null)
-		{
-			query.setParameter("enabled", enabled);
-		}
-
-		List<CUser> users = (List<CUser>) query.getResultList();
-
-		return users;
 	}
 
 	/**
@@ -357,86 +390,99 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	@SuppressWarnings ("unchecked")
 	private List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group, CRole role, CUser excludedUser, boolean orderByOrganization)
 	{
+		//get hibernate session from entity manager to set filter
+		Session session = getEntityManager().unwrap(Session.class);
 		StringBuilder strQueryBuilder = new StringBuilder();
 
-		/** Create query */
-		//gets all users, fetchs until group - do not fetch user roles !!! (time expensive operation)
-		strQueryBuilder.append("select distinct(us) from CUser us " +
-						"left join fetch us.organization o " +
-						"left join fetch us.defaultUnit deun " +
-						"left join fetch us.xUserUnitGroups xuug " +
-						"left join fetch xuug.group gr " +
-						"left join fetch xuug.unit " +
-						"left join gr.roles ro " +
-						"where ((deun is null and xuug.unit is empty) or (deun is not null and deun in xuug.unit))");
-
-		if (group != null)
+		try
 		{
-			strQueryBuilder.append(" and gr=:group");
-		}
+			//set filter to get just groups with proper default units
+			session.enableFilter("userDefaultUnitFilter");
 
-		if (role != null)
+			/** Create query */
+			//gets all users, fetchs until group - do not fetch user roles !!! (time expensive operation)
+			strQueryBuilder.append("select distinct(us) from CUser us " +
+							"left join fetch us.organization o " +
+							"left join fetch us.defaultUnit " +
+							"left join fetch us.xUserUnitGroups xuug " +
+							"left join fetch xuug.group gr " +
+							"left join fetch xuug.unit " +
+							"left join gr.roles ro " +
+							"where 1=1");
+
+			if (group != null)
+			{
+				strQueryBuilder.append(" and gr=:group");
+			}
+
+			if (role != null)
+			{
+				strQueryBuilder.append(" and ro=:role");
+			}
+
+			if (organization != null)
+			{
+				strQueryBuilder.append(" and o=:organization");
+			}
+
+			if (enabled != null)
+			{
+				strQueryBuilder.append(" and us.flagEnabled=:enabled");
+			}
+
+			if (excludedUser != null)
+			{
+				strQueryBuilder.append(" and us!=:excludedUser");
+			}
+
+			/** Create order by section. */
+			if (orderByOrganization == true)
+			{
+				strQueryBuilder.append(" order by o.name, us.login");
+			}
+			else
+			{
+				strQueryBuilder.append(" order by us.login");
+			}
+
+			//create query
+			Query query = getEntityManager().createQuery(strQueryBuilder.toString());
+
+			/** Set parameters. */
+			if (group != null)
+			{
+				query.setParameter("group", group);
+			}
+
+			if (role != null)
+			{
+				query.setParameter("role", role);
+			}
+
+			if (organization != null)
+			{
+				query.setParameter("organization", organization);
+			}
+
+			if (enabled != null)
+			{
+				query.setParameter("enabled", enabled);
+			}
+
+			if (excludedUser != null)
+			{
+				query.setParameter("excludedUser", excludedUser);
+			}
+
+			return (List<CUser>) query.getResultList();
+		}
+		finally
 		{
-			strQueryBuilder.append(" and ro=:role");
+			//disable filter
+			session.disableFilter("userDefaultUnitFilter");
 		}
-
-		if (organization != null)
-		{
-			strQueryBuilder.append(" and o=:organization");
-		}
-
-		if (enabled != null)
-		{
-			strQueryBuilder.append(" and us.flagEnabled=:enabled");
-		}
-
-		if (excludedUser != null)
-		{
-			strQueryBuilder.append(" and us!=:excludedUser");
-		}
-
-		/** Create order by section. */
-		if (orderByOrganization == true)
-		{
-			strQueryBuilder.append(" order by o.name, us.login");
-		}
-		else
-		{
-			strQueryBuilder.append(" order by us.login");
-		}
-
-		//create query
-		Query query = getEntityManager().createQuery(strQueryBuilder.toString());
-
-		/** Set parameters. */
-		if (group != null)
-		{
-			query.setParameter("group", group);
-		}
-
-		if (role != null)
-		{
-			query.setParameter("role", role);
-		}
-
-		if (organization != null)
-		{
-			query.setParameter("organization", organization);
-		}
-
-		if (enabled != null)
-		{
-			query.setParameter("enabled", enabled);
-		}
-
-		if (excludedUser != null)
-		{
-			query.setParameter("excludedUser", excludedUser);
-		}
-
-		return (List<CUser>) query.getResultList();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CGroup)
 	 */
