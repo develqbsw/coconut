@@ -85,12 +85,9 @@ public class CUserTestCase
 
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", users);
-		Assert.assertEquals("Get all users failed: the expected count of users is 4 ", users.size(), 4);
 
-		for (CUser user : users)
-		{
-			checksUserHasCorrectGroups(user);
-		}
+		//checks if there are all test users in the list and if they have correctly set groups.
+		checksGetAllUsersList(users);
 	}
 
 	/**
@@ -110,12 +107,9 @@ public class CUserTestCase
 
 		//asserts
 		assertNotNull("Get all users order by organization failed: list of users is null", users);
-		Assert.assertEquals("Get all users order by organization failed: the expected count of users is 4 ", users.size(), 4);
 
-		for (CUser user : users)
-		{
-			checksUserHasCorrectGroups(user);
-		}
+		//checks if there are all test users in the list and if they have correctly set groups.
+		checksGetAllUsersList(users);
 	}
 
 	/**
@@ -228,6 +222,49 @@ public class CUserTestCase
 
 		users = userDao.findAllUsers(firstUnit, thirdGroupInUnit.get(0));
 		Assert.assertEquals("The expected count of users with thirdGroupInUnit is 2 ", users.size(), 2);
+	}
+
+	/**
+	 * Checks list of users has correct count of test users.
+	 *
+	 * @param user the user
+	 */
+	private void checksGetAllUsersList (List<CUser> users)
+	{
+		boolean userWithDefaulUnitCodePresent = false;
+		boolean userWithoutDefaulUnitCodePresent = false;
+		boolean userWithDefaulUnitCodeNoGroupPresent = false;
+		boolean userWithoutDefaulUnitCodeNoGroupPresent = false;
+
+		for (CUser user : users)
+		{
+			//checks if all test users are in list
+			if (user.getLogin().equals(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE))
+			{
+				Assert.assertFalse("Get all users failed: there is more than one userWithDefaulUnitCode ", userWithDefaulUnitCodePresent);
+				userWithDefaulUnitCodePresent = true;
+			}
+			else if (user.getLogin().equals(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE))
+			{
+				Assert.assertFalse("Get all users failed: there is more than one userWithoutDefaulUnitCode ", userWithoutDefaulUnitCodePresent);
+				userWithoutDefaulUnitCodePresent = true;
+			}
+			else if (user.getLogin().equals(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP))
+			{
+				Assert.assertFalse("Get all users failed: there is more than one userWithDefaulUnitCodeNoGroup ", userWithDefaulUnitCodeNoGroupPresent);
+				userWithDefaulUnitCodeNoGroupPresent = true;
+			}
+			else if (user.getLogin().equals(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP))
+			{
+				Assert.assertFalse("Get all users failed: there is more than one userWithoutDefaulUnitCodeNoGroup ", userWithoutDefaulUnitCodeNoGroupPresent);
+				userWithoutDefaulUnitCodeNoGroupPresent = true;
+			}
+
+			//test if the users has correct groups
+			checksUserHasCorrectGroups(user);
+		}
+
+		Assert.assertTrue("Get all users failed: there is missing a test user", (userWithDefaulUnitCodePresent == true && userWithoutDefaulUnitCodePresent == true && userWithDefaulUnitCodeNoGroupPresent == true && userWithoutDefaulUnitCodeNoGroupPresent == true));
 	}
 
 	/**
