@@ -3,7 +3,6 @@ package sk.qbsw.core.security.service;
 import java.io.Serializable;
 
 import sk.qbsw.core.security.exception.CSecurityException;
-import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -11,7 +10,9 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Authentication service
  * 
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.7.2
  * @since 1.0.0
  */
 public interface IAuthenticationService extends Serializable
@@ -53,14 +54,6 @@ public interface IAuthenticationService extends Serializable
 	public boolean canLogin (String login, String password, CRole role);
 
 	/**
-	 * Create new authentication params for user.
-	 *
-	 * @param login the login
-	 * @param password the password
-	 */
-	public CAuthenticationParams createEncryptedPassword (String login, String password) throws CSecurityException;
-	
-	/**
 	 * Change password.
 	 *
 	 * @param login the login
@@ -77,11 +70,20 @@ public interface IAuthenticationService extends Serializable
 	 * @throws CSecurityException the c security exception
 	 */
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException;
+
+	/**
+	 * Change login.
+	 *
+	 * @param userId the user
+	 * @param login the login
+	 * @throws CSecurityException the exception raised
+	 */
+	public void changeLogin (Long userId, String login) throws CSecurityException;
 	
 	/**
 	 * Checks if the authentication service is online.
 	 *
 	 * @return true, if is online
 	 */
-	public boolean isOnline();
+	public boolean isOnline ();
 }

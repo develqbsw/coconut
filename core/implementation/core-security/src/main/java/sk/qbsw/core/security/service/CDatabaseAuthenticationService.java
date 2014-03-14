@@ -25,7 +25,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
@@ -180,14 +180,15 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		else
 		{
 			EAuthenticationType authenticationType = user.authenticationType();
+			CAuthenticationParams userAuthParams = authenticationParamsDao.findByUserId(user.getId());
 
 			switch (authenticationType)
 			{
 				case BY_PASSWORD_DIGEST:
-					authenticateByPasswordDigest(user.getAuthenticationParams(), password);
+					authenticateByPasswordDigest(userAuthParams, password);
 					break;
 				case BY_PASSWORD:
-					authenticateByPassword(user.getAuthenticationParams(), password);
+					authenticateByPassword(userAuthParams, password);
 					break;
 				default:
 					throw new CWrongPasswordException("Authentication method wrong");
@@ -204,48 +205,13 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#createEncryptedPassword(java.lang.String, java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public CAuthenticationParams createEncryptedPassword (String login, String password)
-	{
-		CAuthenticationParams authParams = new CAuthenticationParams();
-		authParams.setPassword(null);
-		authParams.setPasswordDigest(digester.generateDigest(password));
-		authParams.setPin(null);
-
-		authenticationParamsDao.save(authParams);
-
-		return authParams;
-	}
-
-	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = false)
 	public void changeEncryptedPassword (String login, String password) throws CSecurityException
 	{
-		CUser user;
-
-		try
-		{
-			user = userDao.findByLogin(login);
-		}
-		catch (NoResultException nre)
-		{
-			user = null;
-		}
-
-		if (user == null)
-		{
-			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
-		}
-
-		user.getAuthenticationParams().setPassword(null);
-		user.getAuthenticationParams().setPasswordDigest(digester.generateDigest(password));
-		authenticationParamsDao.save(user.getAuthenticationParams());
+		changePassword(login, password, null, true);
 	}
 
 	/* (non-Javadoc)
@@ -255,24 +221,20 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	@Transactional (readOnly = false)
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException
 	{
-		CUser user;
+		changePassword(login, password, email, true);
+	}
 
-		try
-		{
-			user = userDao.findByLogin(login);
-		}
-		catch (NoResultException nre)
-		{
-			user = null;
-		}
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeLogin(sk.qbsw.core.security.model.domain.CUser)
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public void changeLogin (Long userId, String login)
+	{
+		CUser user = userDao.findById(userId);
+		user.setLogin(login);
 
-		if (user == null || email.equals(user.getEmail()) == false)
-		{
-			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
-		}
-
-		user.getAuthenticationParams().setPassword(password);
-		authenticationParamsDao.save(user.getAuthenticationParams());
+		userDao.save(user);
 	}
 
 	/* (non-Javadoc)
@@ -291,5 +253,57 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Change password.
+	 *
+	 * @param login the login
+	 * @param password the password
+	 * @throws CSecurityException the c security exception
+	 */
+	private void changePassword (String login, String password, String email, boolean encrypt) throws CSecurityException
+	{
+		CUser user = null;
+
+		try
+		{
+			user = userDao.findByLogin(login);
+		}
+		catch (NoResultException ex)
+		{
+			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
+		}
+
+		//checks email if enctypt flag is false
+		if (encrypt == false && email != null && user.getEmail() != null && email.equals(user.getEmail()) == false)
+		{
+			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
+		}
+
+		//set auth params
+		CAuthenticationParams authParams = null;
+		try
+		{
+			authParams = authenticationParamsDao.findByUserId(user.getId());
+		}
+		catch (NoResultException ex)
+		{
+			//create new because user has no auth params
+			authParams = new CAuthenticationParams();
+			authParams.setUser(user);
+		}
+
+		if (encrypt == true)
+		{
+			authParams.setPasswordDigest(digester.generateDigest(password));
+			authParams.setPassword(null);
+		}
+		else
+		{
+			authParams.setPassword(password);
+			authParams.setPasswordDigest(null);
+		}
+		authenticationParamsDao.save(authParams);
 	}
 }

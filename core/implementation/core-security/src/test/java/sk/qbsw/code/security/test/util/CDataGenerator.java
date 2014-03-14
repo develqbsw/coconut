@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -104,6 +104,9 @@ public class CDataGenerator
 
 	/** The Constant USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP. */
 	public static final String USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP = "unit_test_user_without_default_unit_no_group";
+
+	/** The Constant USER_WITHOUT_PASSWORD. */
+	public static final String USER_WITHOUT_PASSWORD = "unit_test_user_without_password";
 
 	/**
 	 * Generate data for database tests.
@@ -213,10 +216,10 @@ public class CDataGenerator
 		userWithoutDefaultUnitNoGroup.setDefaultUnit(null);
 
 		//user -> authenticationParams
-		userWithDefaultUnit.setAuthenticationParams(authenticationParamWithDefaulUnit);
-		userWithoutDefaultUnit.setAuthenticationParams(authenticationParamWithoutDefaulUnit);
-		userWithDefaultUnitNoGroup.setAuthenticationParams(authenticationParamWithDefaulUnitNoGroup);
-		userWithoutDefaultUnitNoGroup.setAuthenticationParams(authenticationParamWithoutDefaulUnitNoGroup);
+		authenticationParamWithDefaulUnit.setUser(userWithDefaultUnit);
+		authenticationParamWithoutDefaulUnit.setUser(userWithoutDefaultUnit);
+		authenticationParamWithDefaulUnitNoGroup.setUser(userWithDefaultUnitNoGroup);
+		authenticationParamWithoutDefaulUnitNoGroup.setUser(userWithoutDefaultUnitNoGroup);
 
 		//save data to DB
 		orgDao.save(organization);
@@ -230,14 +233,14 @@ public class CDataGenerator
 		unitDao.save(defaultUnit);
 		unitDao.save(firstUnit);
 		unitDao.save(secondUnit);
-		authenticationParamsDao.save(authenticationParamWithDefaulUnit);
-		authenticationParamsDao.save(authenticationParamWithoutDefaulUnit);
-		authenticationParamsDao.save(authenticationParamWithDefaulUnitNoGroup);
-		authenticationParamsDao.save(authenticationParamWithoutDefaulUnitNoGroup);
 		userDao.save(userWithDefaultUnit);
 		userDao.save(userWithoutDefaultUnit);
 		userDao.save(userWithDefaultUnitNoGroup);
 		userDao.save(userWithoutDefaultUnitNoGroup);
+		authenticationParamsDao.save(authenticationParamWithDefaulUnit);
+		authenticationParamsDao.save(authenticationParamWithoutDefaulUnit);
+		authenticationParamsDao.save(authenticationParamWithDefaulUnitNoGroup);
+		authenticationParamsDao.save(authenticationParamWithoutDefaulUnitNoGroup);
 		//flush data to hibernate cache
 		orgDao.flush();
 		roleDao.flush();
@@ -260,7 +263,7 @@ public class CDataGenerator
 	 * @param code the code
 	 * @return the c organization
 	 */
-	private COrganization createOrganization (String code)
+	public COrganization createOrganization (String code)
 	{
 		COrganization organization = new COrganization();
 		organization.setCode(code);
@@ -278,7 +281,7 @@ public class CDataGenerator
 	 * @param code the code
 	 * @return the c role
 	 */
-	private CRole createRole (String code)
+	public CRole createRole (String code)
 	{
 		CRole role = new CRole();
 		role.setCode(code);
@@ -293,7 +296,7 @@ public class CDataGenerator
 	 * @param category the category
 	 * @return the c group
 	 */
-	private CGroup createGroup (String code, String category)
+	public CGroup createGroup (String code, String category)
 	{
 		CGroup group = new CGroup();
 		group.setCode(code);
@@ -308,7 +311,7 @@ public class CDataGenerator
 	 * @param code the code
 	 * @return the c unit
 	 */
-	private CUnit createUnit (String code)
+	public CUnit createUnit (String code)
 	{
 		CUnit unit = new CUnit();
 		unit.setName(code);
@@ -322,7 +325,7 @@ public class CDataGenerator
 	 * @param code the code
 	 * @return the c user
 	 */
-	private CUser createUser (String code)
+	public CUser createUser (String code)
 	{
 		CUser user = new CUser();
 		user.setLogin(code);
@@ -340,7 +343,7 @@ public class CDataGenerator
 	 * @param code the code
 	 * @return the c authentication params
 	 */
-	private CAuthenticationParams createAuthenticationParams (String code)
+	public CAuthenticationParams createAuthenticationParams (String code)
 	{
 		CAuthenticationParams userAuthParams = new CAuthenticationParams();
 		userAuthParams.setPassword(code);

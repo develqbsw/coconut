@@ -7,9 +7,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -21,7 +24,7 @@ import com.google.gson.annotations.Expose;
  * The authentication parameters for user.
  * 
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.7.2
  * @since 1.6.0
  */
 @Entity
@@ -47,6 +50,11 @@ public class CAuthenticationParams implements Serializable, IEntity<Long>
 
 	/** The PIN code. */
 	private String pin;
+
+	/** The user. */
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "fk_user", nullable = false)
+	private CUser user;
 
 	/**
 	 * Instantiates a authentication params.
@@ -146,5 +154,25 @@ public class CAuthenticationParams implements Serializable, IEntity<Long>
 	public void setPin (String pin)
 	{
 		this.pin = pin;
+	}
+
+	/**
+	 * Gets the user.
+	 *
+	 * @return the user
+	 */
+	public CUser getUser ()
+	{
+		return user;
+	}
+
+	/**
+	 * Sets the user.
+	 *
+	 * @param user the new user
+	 */
+	public void setUser (CUser user)
+	{
+		this.user = user;
 	}
 }

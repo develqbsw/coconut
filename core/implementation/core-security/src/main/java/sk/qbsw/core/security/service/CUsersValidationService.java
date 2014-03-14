@@ -7,32 +7,46 @@ import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
- * Service for validation users
- * 
+ * Service for validation users.
+ *
  * @author Tomas Leken
+ * @author Tomas Lauro
  * 
+ * @version 1.7.2
+ * @since 1.0.0
  */
 @Service ("cUsersValidationService")
 public class CUsersValidationService implements IUsersValidationService
-{	
-
+{
+	/** The organization dao. */
 	@Autowired
 	private IOrganizationDao organizationDao;
 
+	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
 
+	/** The group dao. */
 	@Autowired
 	private IGroupDao groupDao;
 
+	/** The auth params dao. */
+	@Autowired
+	private IAuthenticationParamsDao authParamsDao;
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUsersValidationService#isOrganizationExists(sk.qbsw.core.security.model.domain.COrganization)
+	 */
 	@Override
 	public Boolean isOrganizationExists (COrganization organization)
 	{
@@ -47,12 +61,15 @@ public class CUsersValidationService implements IUsersValidationService
 		return exists;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExists(sk.qbsw.core.security.model.domain.CUser)
+	 */
 	@Override
 	public Boolean isUserExists (CUser user)
 	{
 		Boolean exists = false;
 		CUser userOld;
-		
+
 		try
 		{
 			userOld = userDao.findByLogin(user.getLogin());
@@ -61,7 +78,7 @@ public class CUsersValidationService implements IUsersValidationService
 		{
 			userOld = null;
 		}
-		
+
 		if (userOld != null && ! (userOld.getPkId().equals(user.getPkId())))
 		{
 			exists = true;
@@ -70,6 +87,9 @@ public class CUsersValidationService implements IUsersValidationService
 		return exists;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUsersValidationService#leastOneAdmin(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization, java.lang.String)
+	 */
 	public Boolean leastOneAdmin (CUser user, COrganization organization, String group)
 	{
 
@@ -87,6 +107,9 @@ public class CUsersValidationService implements IUsersValidationService
 		return leastOneAdmin;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUsersValidationService#isOrganizationExists(java.lang.String)
+	 */
 	@Override
 	public Boolean isOrganizationExists (String name)
 	{
@@ -101,6 +124,9 @@ public class CUsersValidationService implements IUsersValidationService
 		return exists;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExists(java.lang.String)
+	 */
 	@Override
 	public Boolean isUserExists (String login)
 	{
@@ -108,7 +134,7 @@ public class CUsersValidationService implements IUsersValidationService
 		Boolean exists = false;
 
 		CUser userOld;
-		
+
 		try
 		{
 			userOld = userDao.findByLogin(login);
@@ -117,7 +143,7 @@ public class CUsersValidationService implements IUsersValidationService
 		{
 			userOld = null;
 		}
-		
+
 		if (userOld != null)
 		{
 			exists = true;
@@ -126,12 +152,16 @@ public class CUsersValidationService implements IUsersValidationService
 		return exists;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExistsPin(sk.qbsw.core.security.model.domain.CUser)
+	 */
 	@Override
 	public Boolean isUserExistsPin (CUser userOld)
 	{
 		Boolean exists = false;
+		CAuthenticationParams oldUserAuthParams = authParamsDao.findByUserId(userOld.getId());
 
-		CUser user = userDao.findByPinNull(userOld.getAuthenticationParams().getPin());
+		CUser user = userDao.findByPinNull(oldUserAuthParams.getPin());
 		if (user != null)
 		{
 			if (! (userOld.getPkId().equals(user.getPkId())))
@@ -143,6 +173,9 @@ public class CUsersValidationService implements IUsersValidationService
 		return exists;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExistsPin(java.lang.String)
+	 */
 	@Override
 	public Boolean isUserExistsPin (String pin)
 	{

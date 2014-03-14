@@ -9,18 +9,21 @@ import java.util.Set;
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
+import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IAuthenticationService;
+import sk.qbsw.core.security.service.IUserService;
 
 /**
  * Provides test for authentication.
  *
  * @autor Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.6.0
  */
 @Component
@@ -133,6 +136,79 @@ public class CAuthenticationTestProvider
 		String unit = CDataGenerator.FIRST_UNIT_CODE;
 
 		testLoginWithUnit(authenticationService, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit, expectedGroups);
+	}
+
+	/**
+	 * Test change plain text password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testChangePasswordExistingUser (IAuthenticationService authenticationService) throws CSecurityException
+	{
+		String newPassword = "changePasswordExistingUser";
+		authenticationService.changePlainPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
+
+		//test authentication
+		CUser user = authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+
+		assertNotNull("The plain text password change failed", user);
+	}
+
+	/**
+	 * Test change encrypted password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testChangeEncryptedPasswordExistingUser (IAuthenticationService authenticationService) throws CSecurityException
+	{
+		final String newPassword = "changeEncryptedPasswordExistingUser";
+		authenticationService.changeEncryptedPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+
+		//test authentication
+		CUser user = authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+
+		assertNotNull("The plain text password change failed", user);
+	}
+
+	/**
+	 * Test change encrypted password with new user.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, CDataGenerator dataGenerator) throws CSecurityException
+	{
+		//create new user and needed objects
+		CUser newUser = dataGenerator.createUser(CDataGenerator.USER_WITHOUT_PASSWORD);
+		COrganization newOrganization = dataGenerator.createOrganization(CDataGenerator.ORGANIZATION_CODE);
+		String newPassword = "changePasswordNewUser";
+
+		//register user
+		userService.registerNewUser(newUser, newPassword, newOrganization);
+
+		//flush and clear persistent context - the user's auth params are saved using dao 
+		userDao.flush();
+		userDao.clear();
+
+		//test authentication
+		assertNotNull("The encrypted password change failed", authenticationService.login(CDataGenerator.USER_WITHOUT_PASSWORD, newPassword));
+	}
+
+	/**
+	 * Test change login name of user.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testChangeLogin (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	{
+		String newLogin = "newLogin";
+		CUser user = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+
+		//change login
+		authenticationService.changeLogin(user.getId(), newLogin);
+
+		//test new and old login
+		CUser userWithNewLogin = userService.getUserByLogin(newLogin);
+		Assert.assertEquals("There login change failed", user.getId(), userWithNewLogin.getId());
 	}
 
 	/**

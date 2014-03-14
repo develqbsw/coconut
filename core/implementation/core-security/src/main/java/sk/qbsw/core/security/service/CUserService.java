@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
+import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
-import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -23,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.6.1
+ * @version 1.7.2
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -35,6 +36,14 @@ public class CUserService implements IUserService
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
+
+	/** The organization dao. */
+	@Autowired
+	private IOrganizationDao organizationDao;
+
+	/** The authentication params dao. */
+	@Autowired
+	private IAuthenticationParamsDao authenticationParamsDao;
 
 	/** The authentication service. */
 	@Autowired
@@ -210,37 +219,38 @@ public class CUserService implements IUserService
 	 * @see sk.qbsw.core.security.service.IUserService#registerNewUser(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization)
 	 */
 	@Transactional (readOnly = false)
-	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException
+	public void registerNewUser (CUser user, String password, COrganization organization) throws CSecurityException
 	{
-		CUser userByLogin = null;
-		
 		try
 		{
-			userByLogin = userDao.findByLogin(user.getLogin());
+			//checks if user already exists
+			userDao.findByLogin(user.getLogin());
+			throw new CSecurityException("User with login " + user.getLogin() + " already exists", "error.security.loginused");
 		}
 		catch (NoResultException nre)
 		{
-			userByLogin = null;
-		}
-		
-		if (userByLogin != null)
-		{
-			throw new CSecurityException("User with login " + user.getLogin() + " already exists", "error.security.loginused");
+			//do nothing
 		}
 
-		if (user.getLogin() == null || user.getAuthenticationParams() == null || user.getAuthenticationParams().getPassword() == null)
+		if (user.getLogin() == null || password == null || organization == null || organization.getName() == null)
 		{
 			throw new CSecurityException("Not enough parameter to create user. The login and plain text password are required", "error.security.loginused");
 		}
 
-		//create password
-		CAuthenticationParams authParams = authenticationService.createEncryptedPassword(user.getLogin(), user.getAuthenticationParams().getPassword());
+		try
+		{
+			organization = organizationDao.findByName(organization.getName());
+		}
+		catch (NoResultException nre)
+		{
+			throw new CSecurityException("Security exception", "error.security.invalidOrganization");
+		}
 
-		//set auth params
-		user.setAuthenticationParams(authParams);
 		user.setOrganization(organization);
-
 		userDao.save(user);
+
+		//set password and save
+		authenticationService.changeEncryptedPassword(user.getLogin(), password);
 	}
 
 	/* (non-Javadoc)

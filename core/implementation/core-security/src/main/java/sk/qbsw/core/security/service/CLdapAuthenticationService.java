@@ -23,12 +23,13 @@ import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.ldap.CLdapProvider;
+import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
 
 /**
  * The LDAP authentication service.
  * 
  * @author Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -205,11 +206,14 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#createEncryptedPassword(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public CAuthenticationParams createEncryptedPassword (String login, String password) throws CSecurityException
+	@Transactional (readOnly = false)
+	public void changeEncryptedPassword (String login, String password) throws CSecurityException
 	{
+		CUser user = userDao.findByLogin(login);
+
 		try
 		{
 			//create connection
@@ -217,57 +221,42 @@ public class CLdapAuthenticationService implements IAuthenticationService
 			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
 
 			//create dn
-			StringBuilder dnBuilder = new StringBuilder();
-			dnBuilder.append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString();
+			String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString();
 
-			if (ldapProvider.entryExists(dnBuilder.toString()) == false)
+			if (ldapProvider.entryExists(userDn) == true)
+			{
+				//change password
+				ldapProvider.modifyEntry(userDn, "userPassword", password, EModificationOperation.REPLACE_ATTRIBUTE);
+			}
+			else
 			{
 				//add auth data
 				Map<String, String[]> attributes = new HashMap<String, String[]>();
 				attributes.put("objectClass", new String[] {data.getUserObjectClass()});
 				attributes.put("cn", new String[] {login});
-				attributes.put("sn", new String[] {login});
+				attributes.put("sn", new String[] {user.getSurname()});
 				attributes.put("userPassword", new String[] {password});
 
 				//add entry
-				ldapProvider.addEntry(dnBuilder.toString(), attributes);
+				ldapProvider.addEntry(userDn, attributes);
 			}
-			else
+
+			//set auth params
+			CAuthenticationParams authParams = null;
+			try
 			{
-				//change password
-				changeEncryptedPassword(login, password);
+				authParams = authenticationParamsDao.findByUserId(user.getId());
 			}
-
-		}
-		finally
-		{
-			//close connection
-			ldapProvider.unbindFromServer();
-			ldapProvider.closeConnection();
-		}
-
-		//and returns empty authentications params
-		CAuthenticationParams authParams = new CAuthenticationParams();
-		authenticationParamsDao.save(authParams);
-
-		return authParams;
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void changeEncryptedPassword (String login, String password) throws CSecurityException
-	{
-		try
-		{
-			//create connection
-			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
-			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
-
-			//change password
-			StringBuilder dnBuilder = new StringBuilder();
-			ldapProvider.modifyEntry(dnBuilder.append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString(), "userPassword", password);
+			catch (NoResultException ex)
+			{
+				//create new because user has no auth params
+				authParams = new CAuthenticationParams();
+				authParams.setUser(user);
+				authParams.setPassword(null);
+				authParams.setPasswordDigest(null);
+				authParams.setPin(null);
+				authenticationParamsDao.save(authParams);
+			}
 		}
 		finally
 		{
@@ -284,6 +273,44 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException
 	{
 		throw new NotImplementedException();
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeLogin(java.lang.Long, java.lang.String)
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public void changeLogin (Long userId, String login) throws CSecurityException
+	{
+		CUser user = userDao.findById(userId);
+
+		try
+		{
+			//create connection
+			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
+			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
+
+			//create dn
+			String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDn()).toString();
+			String newRdn = new StringBuilder().append("cn=").append(login).toString();
+
+			//the record in LDAP is updated only if it had existed
+			if (ldapProvider.entryExists(userDn) == true)
+			{
+				//change login
+				ldapProvider.renameEntry(userDn, newRdn, true);
+			}
+
+			//save user login in DB
+			user.setLogin(login);
+			userDao.save(user);
+		}
+		finally
+		{
+			//close connection
+			ldapProvider.unbindFromServer();
+			ldapProvider.closeConnection();
+		}
 	}
 
 	/* (non-Javadoc)

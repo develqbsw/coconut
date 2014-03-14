@@ -37,7 +37,6 @@ import sk.qbsw.core.security.model.session.CLoggedUser;
 @Service (value = "userAuthenticationService")
 public class CUserSpringAuthenticationService implements UserDetailsService
 {
-
 	/** The role dao. */
 	@Autowired
 	private IRoleDao roleDao;
@@ -71,7 +70,7 @@ public class CUserSpringAuthenticationService implements UserDetailsService
 	private User buildUserFromEntity (CUser entity)
 	{
 		String username = entity.getLogin();
-		String password = entity.getAuthenticationParams().getPassword();
+		String password = entity.getPassword();
 		boolean enabled = entity.getFlagEnabled();
 		boolean accountNonExpired = true;
 

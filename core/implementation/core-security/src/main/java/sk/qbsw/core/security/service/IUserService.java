@@ -155,10 +155,11 @@ public interface IUserService extends Serializable
 	 * Register new user.
 	 *
 	 * @param user the user
+	 * @param password the password
 	 * @param organization the organization
 	 * @throws CSecurityException if user with such logiun already exists
 	 */
-	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException;
+	public void registerNewUser (CUser user, String password, COrganization organization) throws CSecurityException;
 
 	/**
 	 * Update user.

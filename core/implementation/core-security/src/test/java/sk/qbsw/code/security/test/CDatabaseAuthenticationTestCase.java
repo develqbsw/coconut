@@ -14,14 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.code.security.test.util.CDataGenerator;
+import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.service.IAuthenticationService;
+import sk.qbsw.core.security.service.IUserService;
 
 /**
  * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -41,6 +43,14 @@ public class CDatabaseAuthenticationTestCase
 	/** The authentication test provider. */
 	@Autowired
 	private CAuthenticationTestProvider authenticationTestProvider;
+
+	/** The user service. */
+	@Autowired
+	private IUserService userService;
+
+	/** The user dao. */
+	@Autowired
+	private IUserDao userDao;
 
 	/**
 	 * Test initialization.
@@ -169,6 +179,66 @@ public class CDatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
+	}
+
+	/**
+	 * Test change plain text password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangePasswordExistingUser () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangePasswordExistingUser(authenticationService);
+	}
+
+	/**
+	 * Test change encrypted password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangeEncryptedPasswordExistingUser () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
+	}
+
+	/**
+	 * Test change plain text password with new user.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangeEncryptedPasswordNewUser () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
+	}
+
+	/**
+	 * Test change login name of user.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangeLogin () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeLogin(authenticationService, userService);
 	}
 
 	/**

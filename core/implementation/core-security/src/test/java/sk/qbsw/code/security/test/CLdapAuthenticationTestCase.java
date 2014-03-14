@@ -18,16 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.code.security.test.util.CDataGenerator;
+import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
+import sk.qbsw.core.security.service.IUserService;
 import sk.qbsw.core.security.service.ldap.CLdapProvider;
 
 /**
  * Checks Authentication service for ldap.
  *
  * @autor Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -56,6 +58,14 @@ public class CLdapAuthenticationTestCase
 	/** The ldap configurator. */
 	@Autowired
 	private ILdapAuthenticationConfigurator ldapConfigurator;
+
+	/** The user service. */
+	@Autowired
+	private IUserService userService;
+
+	/** The user dao. */
+	@Autowired
+	private IUserDao userDao;
 
 	/**
 	 * Inits the test case.
@@ -91,7 +101,7 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithDefaultUnit () throws Exception
 	{
-		initTestUserWithDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithDefaultUnit(authenticationService);
 	}
@@ -105,7 +115,7 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithoutDefaultUnit () throws Exception
 	{
-		initTestUserWithoutDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnit(authenticationService);
 	}
@@ -119,7 +129,7 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithDefaultUnitAndRolePositive () throws Exception
 	{
-		initTestUserWithDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithDefaultUnitAndRolePositive(authenticationService);
 	}
@@ -133,7 +143,7 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithDefaultUnitAndRoleNegative () throws Exception
 	{
-		initTestUserWithDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithDefaultUnitAndRoleNegative(authenticationService);
 	}
@@ -147,7 +157,7 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithoutDefaultUnitAndRolePositive () throws Exception
 	{
-		initTestUserWithoutDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndRolePositive(authenticationService);
 	}
@@ -161,7 +171,7 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithoutDefaultUnitAndRoleNegative () throws Exception
 	{
-		initTestUserWithoutDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndRoleNegative(authenticationService);
 	}
@@ -175,7 +185,7 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithDefaultUnitAndUnit () throws Exception
 	{
-		initTestUserWithDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithDefaultUnitAndUnit(authenticationService);
 	}
@@ -189,21 +199,69 @@ public class CLdapAuthenticationTestCase
 	@Rollback (true)
 	public void testLoginWithoutDefaultUnitAndUnit () throws Exception
 	{
-		initTestUserWithoutDefaultUnit();
+		initTest();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
 	}
 
 	/**
+	 * Test change encrypted password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangeEncryptedPasswordExistingUser () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
+	}
+
+	/**
+	 * Test change plain text password with new user.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangeEncryptedPasswordNewUser () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
+	}
+
+	/**
+	 * Test change login name of user.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangeLogin () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeLogin(authenticationService, userService);
+	}
+
+	/**
 	 * Test if the ldap is online.
+	 * @throws Exception 
 	 *
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional (readOnly = true)
 	@Rollback (true)
-	public void testIsOnline ()
+	public void testIsOnline () throws Exception
 	{
+		initTest();
+
 		authenticationTestProvider.testIsOnline(authenticationService);
 	}
 
@@ -212,18 +270,7 @@ public class CLdapAuthenticationTestCase
 	 *
 	 * @throws Exception the exception
 	 */
-	private void initTestUserWithDefaultUnit () throws Exception
-	{
-		dataGenerator.generateDatabaseDataForDatabaseTests();
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
-	}
-
-	/**
-	 * Inits the test user without default unit.
-	 *
-	 * @throws Exception the exception
-	 */
-	private void initTestUserWithoutDefaultUnit () throws Exception
+	private void initTest () throws Exception
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();
 		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);

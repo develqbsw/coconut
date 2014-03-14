@@ -29,7 +29,7 @@ import sk.qbsw.core.security.exception.CSecurityException;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -204,7 +204,7 @@ public class CLdapProvider
 	 * @param value the value
 	 * @throws CSecurityException the security exception
 	 */
-	public void modifyEntry (String dn, String attributeId, String value) throws CSecurityException
+	public void modifyEntry (String dn, String attributeId, String value, EModificationOperation modificationOperation) throws CSecurityException
 	{
 		try
 		{
@@ -214,7 +214,7 @@ public class CLdapProvider
 			//create modification
 			Modification modification = new DefaultModification();
 			modification.setAttribute(attribute);
-			modification.setOperation(ModificationOperation.REPLACE_ATTRIBUTE);
+			modification.setOperation(modificationOperation.getOperation());
 
 			//modify
 			connection.modify(dn, modification);
@@ -229,8 +229,7 @@ public class CLdapProvider
 	 * Add entry v LDAP.
 	 *
 	 * @param dn the dn of entry
-	 * @param attributeId the attribute id
-	 * @param value the value
+	 * @param attributes the attributes
 	 * @throws CSecurityException the security exception
 	 */
 	public void addEntry (String dn, Map<String, String[]> attributes) throws CSecurityException
@@ -256,9 +255,31 @@ public class CLdapProvider
 	}
 
 	/**
+	 * Rename entry.
+	 *
+	 * @param dn the dn
+	 * @param newRdn the new rdn
+	 * @param deleteOldRdn the delete old rdn
+	 * @throws CSecurityException the security exception
+	 */
+	public void renameEntry (String dn, String newRdn, boolean deleteOldRdn) throws CSecurityException
+	{
+		try
+		{
+			//rename
+			connection.rename(dn, newRdn, deleteOldRdn);
+		}
+		catch (LdapException ex)
+		{
+			throw new CSecurityException("Cannot change rnd with dn: " + dn);
+		}
+	}
+
+	/**
 	 * Checks if entry exists in LDAP.
 	 *
 	 * @param dn the dn of entry
+	 * @return true, if successful
 	 * @throws CSecurityException the security exception
 	 */
 	public boolean entryExists (String dn) throws CSecurityException
@@ -279,7 +300,7 @@ public class CLdapProvider
 	 * @param baseDn the base dn
 	 * @param loginFilter the login filter
 	 * @param password the password
-	 * @throws CBusinessException the business exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void authenticate (String baseDn, String loginFilter, String password) throws CSecurityException
 	{
@@ -311,6 +332,44 @@ public class CLdapProvider
 			{
 				cursor.close();
 			}
+		}
+	}
+
+	/**
+	 * The Enum EModificationOperation.
+	 */
+	public enum EModificationOperation
+	{
+		/** The replace attribute. */
+		REPLACE_ATTRIBUTE (ModificationOperation.REPLACE_ATTRIBUTE),
+
+		/** The add attribute. */
+		ADD_ATTRIBUTE (ModificationOperation.ADD_ATTRIBUTE),
+
+		/** The remove attribute. */
+		REMOVE_ATTRIBUTE (ModificationOperation.REMOVE_ATTRIBUTE);
+
+		/** The operation. */
+		private ModificationOperation operation;
+
+		/**
+		 * Instantiates a new e modification operation.
+		 *
+		 * @param operation the operation
+		 */
+		private EModificationOperation (ModificationOperation operation)
+		{
+			this.operation = operation;
+		}
+
+		/**
+		 * Gets the operation.
+		 *
+		 * @return the operation
+		 */
+		public ModificationOperation getOperation ()
+		{
+			return operation;
 		}
 	}
 }

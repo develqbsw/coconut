@@ -38,7 +38,7 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.7.1
+ * @version 1.7.2
  * @since 1.0.0
  */
 @Entity
@@ -98,8 +98,7 @@ public class CUser implements Serializable, IEntity<Long>
 	private CUnit defaultUnit;
 
 	/** The authentication params. */
-	@OneToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "fk_auth_params", nullable = false)
+	@OneToOne (mappedBy = "user", fetch = FetchType.LAZY)
 	private CAuthenticationParams authenticationParams;
 
 	/** The user type. */
@@ -187,6 +186,23 @@ public class CUser implements Serializable, IEntity<Long>
 	public void setLogin (String login)
 	{
 		this.login = login;
+	}
+
+	/**
+	 * Gets the plain text password. If there is no plain text password, returns null.
+	 *
+	 * @return the plain text password
+	 */
+	public String getPassword ()
+	{
+		if (getAuthenticationParams() != null)
+		{
+			return getAuthenticationParams().getPassword();
+		}
+		else
+		{
+			throw new CSystemException("The user has not a authentication params");
+		}
 	}
 
 	/**
@@ -408,15 +424,25 @@ public class CUser implements Serializable, IEntity<Long>
 	}
 
 	/**
+	 * Gets the authentication params.
+	 *
+	 * @return the authentication params
+	 */
+	private CAuthenticationParams getAuthenticationParams ()
+	{
+		return authenticationParams;
+	}
+
+	/**
 	 * Authentication by digest.
 	 * 
 	 * @return autentication type
 	 */
 	public EAuthenticationType authenticationType ()
 	{
-		if (this.getAuthenticationParams() != null)
+		if (getAuthenticationParams() != null)
 		{
-			return this.getAuthenticationParams().getPasswordDigest() != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
+			return getAuthenticationParams().getPasswordDigest() != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
 		}
 		else
 		{
@@ -503,16 +529,6 @@ public class CUser implements Serializable, IEntity<Long>
 		}
 
 		return false;
-	}
-
-	public CAuthenticationParams getAuthenticationParams ()
-	{
-		return authenticationParams;
-	}
-
-	public void setAuthenticationParams (CAuthenticationParams authenticationParams)
-	{
-		this.authenticationParams = authenticationParams;
 	}
 
 	/**
