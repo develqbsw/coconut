@@ -204,50 +204,50 @@ public class CLdapAuthenticationTestCase
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
 	}
 
-	/**
-	 * Test change encrypted password.
-	 *
-	 * @throws CSecurityException the security exception
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testChangeEncryptedPasswordExistingUser () throws Exception
-	{
-		initTest();
-
-		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
-	}
-
-	/**
-	 * Test change plain text password with new user.
-	 *
-	 * @throws CSecurityException the security exception
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testChangeEncryptedPasswordNewUser () throws Exception
-	{
-		initTest();
-
-		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
-	}
-
-	/**
-	 * Test change login name of user.
-	 *
-	 * @throws CSecurityException the security exception
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testChangeLogin () throws Exception
-	{
-		initTest();
-
-		authenticationTestProvider.testChangeLogin(authenticationService, userService);
-	}
+//	/**
+//	 * Test change encrypted password.
+//	 *
+//	 * @throws CSecurityException the security exception
+//	 */
+//	@Test
+//	@Transactional
+//	@Rollback (true)
+//	public void testChangeEncryptedPasswordExistingUser () throws Exception
+//	{
+//		initTest();
+//
+//		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
+//	}
+//
+//	/**
+//	 * Test change plain text password with new user.
+//	 *
+//	 * @throws CSecurityException the security exception
+//	 */
+//	@Test
+//	@Transactional
+//	@Rollback (true)
+//	public void testChangeEncryptedPasswordNewUser () throws Exception
+//	{
+//		initTest();
+//
+//		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
+//	}
+//
+//	/**
+//	 * Test change login name of user.
+//	 *
+//	 * @throws CSecurityException the security exception
+//	 */
+//	@Test
+//	@Transactional
+//	@Rollback (true)
+//	public void testChangeLogin () throws Exception
+//	{
+//		initTest();
+//
+//		authenticationTestProvider.testChangeLogin(authenticationService, userService);
+//	}
 
 	/**
 	 * Test if the ldap is online.
