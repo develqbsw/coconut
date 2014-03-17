@@ -2,6 +2,7 @@ package sk.qbsw.code.security.test;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.IUserService;
 
@@ -51,6 +53,19 @@ public class CDatabaseAuthenticationTestCase
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
+
+	/** The authentication configurator. */
+	@Autowired
+	private IAuthenticationConfigurator authenticationConfigurator;
+
+	/**
+	 * Inits the test case.
+	 */
+	@Before
+	public void initTestCase ()
+	{
+		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,40})");
+	}
 
 	/**
 	 * Test initialization.

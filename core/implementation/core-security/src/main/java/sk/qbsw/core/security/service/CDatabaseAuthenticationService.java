@@ -50,6 +50,10 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	@Autowired
 	private IPasswordDigester digester;
 
+	/** The authentication data validation service. */
+	@Autowired
+	private IAuthDataValidationService authDataValidationService;
+
 	/**
 	 * Authenticate by digest.
 	 *
@@ -265,6 +269,9 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 	private void changePassword (String login, String password, String email, boolean encrypt) throws CSecurityException
 	{
 		CUser user = null;
+
+		//validate password, if not valid throw an exception
+		authDataValidationService.validatePassword(password);
 
 		try
 		{

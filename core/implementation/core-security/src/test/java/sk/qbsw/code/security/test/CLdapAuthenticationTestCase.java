@@ -20,6 +20,7 @@ import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.IUserService;
@@ -67,6 +68,10 @@ public class CLdapAuthenticationTestCase
 	@Autowired
 	private IUserDao userDao;
 
+	/** The authentication configurator. */
+	@Autowired
+	private IAuthenticationConfigurator authenticationConfigurator;
+
 	/**
 	 * Inits the test case.
 	 */
@@ -80,6 +85,7 @@ public class CLdapAuthenticationTestCase
 		ldapConfigurator.setUserSearchBaseDn("ou=users,dc=mfsr,dc=sk");
 		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
+		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,40})");
 	}
 
 	/**
@@ -204,50 +210,50 @@ public class CLdapAuthenticationTestCase
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
 	}
 
-//	/**
-//	 * Test change encrypted password.
-//	 *
-//	 * @throws CSecurityException the security exception
-//	 */
-//	@Test
-//	@Transactional
-//	@Rollback (true)
-//	public void testChangeEncryptedPasswordExistingUser () throws Exception
-//	{
-//		initTest();
-//
-//		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
-//	}
-//
-//	/**
-//	 * Test change plain text password with new user.
-//	 *
-//	 * @throws CSecurityException the security exception
-//	 */
-//	@Test
-//	@Transactional
-//	@Rollback (true)
-//	public void testChangeEncryptedPasswordNewUser () throws Exception
-//	{
-//		initTest();
-//
-//		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
-//	}
-//
-//	/**
-//	 * Test change login name of user.
-//	 *
-//	 * @throws CSecurityException the security exception
-//	 */
-//	@Test
-//	@Transactional
-//	@Rollback (true)
-//	public void testChangeLogin () throws Exception
-//	{
-//		initTest();
-//
-//		authenticationTestProvider.testChangeLogin(authenticationService, userService);
-//	}
+	//	/**
+	//	 * Test change encrypted password.
+	//	 *
+	//	 * @throws CSecurityException the security exception
+	//	 */
+	//	@Test
+	//	@Transactional
+	//	@Rollback (true)
+	//	public void testChangeEncryptedPasswordExistingUser () throws Exception
+	//	{
+	//		initTest();
+	//
+	//		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
+	//	}
+	//
+	//	/**
+	//	 * Test change plain text password with new user.
+	//	 *
+	//	 * @throws CSecurityException the security exception
+	//	 */
+	//	@Test
+	//	@Transactional
+	//	@Rollback (true)
+	//	public void testChangeEncryptedPasswordNewUser () throws Exception
+	//	{
+	//		initTest();
+	//
+	//		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
+	//	}
+	//
+	//	/**
+	//	 * Test change login name of user.
+	//	 *
+	//	 * @throws CSecurityException the security exception
+	//	 */
+	//	@Test
+	//	@Transactional
+	//	@Rollback (true)
+	//	public void testChangeLogin () throws Exception
+	//	{
+	//		initTest();
+	//
+	//		authenticationTestProvider.testChangeLogin(authenticationService, userService);
+	//	}
 
 	/**
 	 * Test if the ldap is online.

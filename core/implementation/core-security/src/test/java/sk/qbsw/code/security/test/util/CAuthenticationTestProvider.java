@@ -145,7 +145,7 @@ public class CAuthenticationTestProvider
 	 */
 	public void testChangePasswordExistingUser (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		String newPassword = "changePasswordExistingUser";
+		String newPassword = "change1Password3ExistingUser@";
 		authenticationService.changePlainPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
 
 		//test authentication
@@ -161,7 +161,7 @@ public class CAuthenticationTestProvider
 	 */
 	public void testChangeEncryptedPasswordExistingUser (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		final String newPassword = "changeEncryptedPasswordExistingUser";
+		final String newPassword = "change1EncryptedPasswordExistingUser$";
 		authenticationService.changeEncryptedPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		//test authentication
@@ -180,7 +180,7 @@ public class CAuthenticationTestProvider
 		//create new user and needed objects
 		CUser newUser = dataGenerator.createUser(CDataGenerator.USER_WITHOUT_PASSWORD);
 		COrganization newOrganization = dataGenerator.createOrganization(CDataGenerator.ORGANIZATION_CODE);
-		String newPassword = "changePasswordNewUser";
+		String newPassword = "change56%PasswordNewUser";
 
 		//register user
 		userService.registerNewUser(newUser, newPassword, newOrganization);
@@ -200,7 +200,7 @@ public class CAuthenticationTestProvider
 	 */
 	public void testChangeLogin (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
 	{
-		String newLogin = "newLogin";
+		String newLogin = "new1Login#";
 		CUser user = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
 		//change login

@@ -79,7 +79,7 @@ public interface IAuthenticationService extends Serializable
 	 * @throws CSecurityException the exception raised
 	 */
 	public void changeLogin (Long userId, String login) throws CSecurityException;
-	
+
 	/**
 	 * Checks if the authentication service is online.
 	 *

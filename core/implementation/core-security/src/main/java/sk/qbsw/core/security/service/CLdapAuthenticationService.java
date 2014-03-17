@@ -58,6 +58,10 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	@Autowired
 	private CLdapProvider ldapProvider;
 
+	/** The authentication data validation service. */
+	@Autowired
+	private IAuthDataValidationService authDataValidationService;
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
@@ -213,6 +217,9 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	public void changeEncryptedPassword (String login, String password) throws CSecurityException
 	{
 		CUser user = userDao.findByLogin(login);
+
+		//validate password, if not valid throw an exception
+		authDataValidationService.validatePassword(password);
 
 		try
 		{
