@@ -12,15 +12,14 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 /**
  * Class implements base methods for entity JPA DAO.
  *
- * @param <PK> the generic type for Entity Primary key
- * @param <T> the generic type for Entity itself
- * @see sk.qbsw.airlines.dao.IEntityDao
- * 
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.6.0
+ * @param <PK> the generic type for Entity Primary key
+ * @param <T> the generic type for Entity itself
+ * 
  * @since 1.0.0
+ * @version 1.7.2
  */
 public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>
 {
@@ -41,11 +40,10 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 		this.entityClass = entityClass;
 	}
 
-	/**
-	 * Finds and returns all entities.
-	 *
-	 * @return list of entities
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findAll()
 	 */
+	@Override
 	@SuppressWarnings ("unchecked")
 	public List<T> findAll ()
 	{
@@ -57,6 +55,7 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findById(java.util.List)
 	 */
+	@Override
 	@SuppressWarnings ("unchecked")
 	public List<T> findById (List<PK> ids)
 	{
@@ -66,20 +65,19 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 		return (List<T>) query.getResultList();
 	}
 
-	/**
-	 * Finds and retirns entity by id.
-	 *
-	 * @param id the id
-	 * @return entity
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findById(java.lang.Object)
 	 */
+	@Override
 	public T findById (PK id)
 	{
 		return em.find(entityClass, id);
 	}
 
-	/**
-	 * Flushes call.
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#flush()
 	 */
+	@Override
 	public void flush ()
 	{
 		em.flush();
@@ -88,36 +86,25 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#clear()
 	 */
+	@Override
 	public void clear ()
 	{
 		em.clear();
 	}
 
-	/**
-	 * Gets the entity manager.
-	 *
-	 * @return the entity manager
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#remove(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */
-	public EntityManager getEntityManager ()
-	{
-		return em;
-	}
-
-	/**
-	 * Removes entity from persistent space.
-	 *
-	 * @param object input entity
-	 */
+	@Override
 	public void remove (T object)
 	{
 		em.remove(object);
 	}
 
-	/**
-	 * Save entity to persistent space.
-	 *
-	 * @param object input entity
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#save(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */
+	@Override
 	public void save (T object)
 	{
 		if (object.getId() != null)
@@ -128,6 +115,16 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 		{
 			em.persist(object);
 		}
+	}
+
+	/**
+	 * Gets the entity manager.
+	 *
+	 * @return the entity manager
+	 */
+	public EntityManager getEntityManager ()
+	{
+		return em;
 	}
 
 	/**

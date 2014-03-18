@@ -43,7 +43,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	}
 
 	/**
-	 * Find by id.
+	 * Find by id. If there is no result, throws NoResultException.
 	 * 
 	 * @param id the id
 	 * @return the c user
