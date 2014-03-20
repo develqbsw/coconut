@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -188,10 +187,6 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	{
 		try
 		{
-			//create connection
-			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
-			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
-
 			//authenticate
 			ldapProvider.authenticate(data.getUserSearchBaseDn(), "(&(cn=" + login + "))", password);
 
@@ -200,12 +195,6 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		catch (CSecurityException ex)
 		{
 			return false;
-		}
-		finally
-		{
-			//close connection
-			ldapProvider.unbindFromServer();
-			ldapProvider.closeConnection();
 		}
 	}
 
@@ -221,55 +210,42 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		//validate password, if not valid throw an exception
 		authDataValidationService.validatePassword(password);
 
+		//create dn
+		String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString();
+
+		if (ldapProvider.entryExists(userDn) == true)
+		{
+			//change password
+			ldapProvider.modifyEntry(userDn, "userPassword", password, EModificationOperation.REPLACE_ATTRIBUTE);
+		}
+		else
+		{
+			//add auth data
+			Map<String, String[]> attributes = new HashMap<String, String[]>();
+			attributes.put("objectClass", new String[] {data.getUserObjectClass()});
+			attributes.put("cn", new String[] {login});
+			attributes.put("sn", new String[] {user.getSurname()});
+			attributes.put("userPassword", new String[] {password});
+
+			//add entry
+			ldapProvider.addEntry(userDn, attributes);
+		}
+
+		//set auth params
+		CAuthenticationParams authParams = null;
 		try
 		{
-			//create connection
-			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
-			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
-
-			//create dn
-			String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString();
-
-			if (ldapProvider.entryExists(userDn) == true)
-			{
-				//change password
-				ldapProvider.modifyEntry(userDn, "userPassword", password, EModificationOperation.REPLACE_ATTRIBUTE);
-			}
-			else
-			{
-				//add auth data
-				Map<String, String[]> attributes = new HashMap<String, String[]>();
-				attributes.put("objectClass", new String[] {data.getUserObjectClass()});
-				attributes.put("cn", new String[] {login});
-				attributes.put("sn", new String[] {user.getSurname()});
-				attributes.put("userPassword", new String[] {password});
-
-				//add entry
-				ldapProvider.addEntry(userDn, attributes);
-			}
-
-			//set auth params
-			CAuthenticationParams authParams = null;
-			try
-			{
-				authParams = authenticationParamsDao.findByUserId(user.getId());
-			}
-			catch (NoResultException ex)
-			{
-				//create new because user has no auth params
-				authParams = new CAuthenticationParams();
-				authParams.setUser(user);
-				authParams.setPassword(null);
-				authParams.setPasswordDigest(null);
-				authParams.setPin(null);
-				authenticationParamsDao.save(authParams);
-			}
+			authParams = authenticationParamsDao.findByUserId(user.getId());
 		}
-		finally
+		catch (NoResultException ex)
 		{
-			//close connection
-			ldapProvider.unbindFromServer();
-			ldapProvider.closeConnection();
+			//create new because user has no auth params
+			authParams = new CAuthenticationParams();
+			authParams.setUser(user);
+			authParams.setPassword(null);
+			authParams.setPasswordDigest(null);
+			authParams.setPin(null);
+			authenticationParamsDao.save(authParams);
 		}
 	}
 
@@ -291,33 +267,20 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	{
 		CUser user = userDao.findById(userId);
 
-		try
+		//create dn
+		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDn()).toString();
+		String newRdn = new StringBuilder().append("cn=").append(login).toString();
+
+		//the record in LDAP is updated only if it had existed
+		if (ldapProvider.entryExists(userDn) == true)
 		{
-			//create connection
-			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
-			ldapProvider.bindOnServer(data.getUserDn(), data.getUserPassword());
-
-			//create dn
-			String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDn()).toString();
-			String newRdn = new StringBuilder().append("cn=").append(login).toString();
-
-			//the record in LDAP is updated only if it had existed
-			if (ldapProvider.entryExists(userDn) == true)
-			{
-				//change login
-				ldapProvider.renameEntry(userDn, newRdn, true);
-			}
-
-			//save user login in DB
-			user.setLogin(login);
-			userDao.save(user);
+			//change login
+			ldapProvider.renameEntry(userDn, newRdn, true);
 		}
-		finally
-		{
-			//close connection
-			ldapProvider.unbindFromServer();
-			ldapProvider.closeConnection();
-		}
+
+		//save user login in DB
+		user.setLogin(login);
+		userDao.save(user);
 	}
 
 	/* (non-Javadoc)
@@ -326,18 +289,6 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	@Override
 	public boolean isOnline ()
 	{
-		try
-		{
-			ldapProvider.createConnection(data.getServerName(), data.getServerPort());
-			return true;
-		}
-		catch (CSystemException ex)
-		{
-			return false;
-		}
-		finally
-		{
-			ldapProvider.closeConnection();
-		}
+		return ldapProvider.isConnected();
 	}
 }

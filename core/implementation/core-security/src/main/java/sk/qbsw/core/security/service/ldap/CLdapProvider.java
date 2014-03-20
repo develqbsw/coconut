@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PreDestroy;
+
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -19,11 +21,13 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
 /**
  * The ldap provider implementation.
@@ -35,8 +39,65 @@ import sk.qbsw.core.security.exception.CSecurityException;
 @Component ("ldapProvider")
 public class CLdapProvider
 {
-	/** The ldap connection. */
+	/** The main ldap connection. */
 	private LdapConnection connection;
+
+	/** The temporary ldap connection to use in the authentication process. */
+	private LdapConnection temporaryConnection;
+
+	/** The data. */
+	@Autowired
+	private ILdapAuthenticationConfigurator data;
+
+	/**
+	 * Initialize the connections to LDAP server. Must be called before every connect to server.
+	 */
+	private synchronized void init ()
+	{
+		//initialize the main connection
+		if (connection == null)
+		{
+			connection = createConnection(data.getServerName(), data.getServerPort());
+
+			if (connection.isConnected() == false)
+			{
+				openConnection(connection);
+				bindOnServer(connection, data.getUserDn(), data.getUserPassword());
+			}
+		}
+
+		//initialize the temporary connection
+		if (temporaryConnection == null)
+		{
+			temporaryConnection = createConnection(data.getServerName(), data.getServerPort());
+
+			if (temporaryConnection.isConnected() == false)
+			{
+				openConnection(temporaryConnection);
+			}
+		}
+	}
+
+	/**
+	 * Uninit the connections and set it to null.
+	 */
+	@PreDestroy
+	private synchronized void uninit ()
+	{
+		if (connection != null && connection.isConnected())
+		{
+			unbindFromServer(connection);
+			closeConnection(connection);
+		}
+
+		if (temporaryConnection != null && temporaryConnection.isConnected())
+		{
+			closeConnection(connection);
+		}
+
+		connection = null;
+		temporaryConnection = null;
+	}
 
 	/**
 	 * Creates the connection to LDAP server.
@@ -45,12 +106,21 @@ public class CLdapProvider
 	 * @param ldapServerPort the ldap server port
 	 * @return the ldap connection
 	 */
-	public void createConnection (String ldapServerName, int ldapServerPort)
+	private LdapConnection createConnection (String ldapServerName, int ldapServerPort)
 	{
-		connection = new LdapNetworkConnection(ldapServerName, ldapServerPort);
+		return new LdapNetworkConnection(ldapServerName, ldapServerPort);
+	}
+
+	/**
+	 * Open connection to ldap server.
+	 *
+	 * @param ldapConnection the ldap connection
+	 */
+	private void openConnection (LdapConnection ldapConnection)
+	{
 		try
 		{
-			connection.connect();
+			ldapConnection.connect();
 		}
 		catch (LdapException ex)
 		{
@@ -61,15 +131,15 @@ public class CLdapProvider
 	/**
 	 * Close connection.
 	 *
+	 * @param ldapConnection the ldap connection
 	 */
-	public void closeConnection ()
+	private void closeConnection (LdapConnection ldapConnection)
 	{
-		if (connection != null && connection.isConnected())
+		if (ldapConnection != null && ldapConnection.isConnected())
 		{
 			try
 			{
-				connection.close();
-				connection = null;
+				ldapConnection.close();
 			}
 			catch (IOException ex)
 			{
@@ -81,16 +151,17 @@ public class CLdapProvider
 	/**
 	 * Bind on a ldap server.
 	 *
+	 * @param ldapConnection the ldap connection
 	 * @param ldapUserDn the DN of an user account
 	 * @param ldapUserPassword the user account password
 	 */
-	public void bindOnServer (String ldapUserDn, String ldapUserPassword)
+	private void bindOnServer (LdapConnection ldapConnection, String ldapUserDn, String ldapUserPassword)
 	{
-		if (connection != null)
+		if (ldapConnection != null)
 		{
 			try
 			{
-				connection.bind(ldapUserDn, ldapUserPassword);
+				ldapConnection.bind(ldapUserDn, ldapUserPassword);
 			}
 			catch (LdapException ex)
 			{
@@ -106,14 +177,15 @@ public class CLdapProvider
 	/**
 	 * Unbind from server.
 	 *
+	 * @param ldapConnection the ldap connection
 	 */
-	public void unbindFromServer ()
+	private void unbindFromServer (LdapConnection ldapConnection)
 	{
-		if (connection != null)
+		if (ldapConnection != null)
 		{
 			try
 			{
-				connection.unBind();
+				ldapConnection.unBind();
 			}
 			catch (LdapException e)
 			{
@@ -134,6 +206,9 @@ public class CLdapProvider
 	 */
 	public Entry searchSingleResult (String baseDn, String filter, SearchScope scope, String... attributes) throws CBusinessException
 	{
+		//init the connection
+		init();
+
 		Set<Entry> entries = searchResults(baseDn, filter, scope, attributes);
 
 		if (entries.size() == 0)
@@ -161,6 +236,9 @@ public class CLdapProvider
 	 */
 	public Set<Entry> searchResults (String baseDn, String filter, SearchScope scope, String... attributes)
 	{
+		//init the connection
+		init();
+
 		Set<Entry> entries = new HashSet<Entry>();
 		EntryCursor cursor = null;
 
@@ -206,6 +284,9 @@ public class CLdapProvider
 	 */
 	public void modifyEntry (String dn, String attributeId, String value, EModificationOperation modificationOperation) throws CSecurityException
 	{
+		//init the connection
+		init();
+
 		try
 		{
 			//create attribute
@@ -234,6 +315,9 @@ public class CLdapProvider
 	 */
 	public void addEntry (String dn, Map<String, String[]> attributes) throws CSecurityException
 	{
+		//init the connection
+		init();
+
 		try
 		{
 			//create entry
@@ -264,6 +348,9 @@ public class CLdapProvider
 	 */
 	public void renameEntry (String dn, String newRdn, boolean deleteOldRdn) throws CSecurityException
 	{
+		//init the connection
+		init();
+
 		try
 		{
 			//rename
@@ -284,6 +371,9 @@ public class CLdapProvider
 	 */
 	public boolean entryExists (String dn) throws CSecurityException
 	{
+		//init the connection
+		init();
+
 		try
 		{
 			return connection.exists(dn);
@@ -304,6 +394,9 @@ public class CLdapProvider
 	 */
 	public void authenticate (String baseDn, String loginFilter, String password) throws CSecurityException
 	{
+		//init the connection
+		init();
+
 		EntryCursor cursor = null;
 
 		try
@@ -313,10 +406,9 @@ public class CLdapProvider
 			try
 			{
 				//bind as user (with his DN) to verify password
-				connection.unBind();
-				connection.bind(ldapUserEntry.getDn(), password);
+				bindOnServer(temporaryConnection, ldapUserEntry.getDn().toString(), password);
 			}
-			catch (LdapException ex)
+			catch (CSystemException ex)
 			{
 				throw new CSecurityException("The authentication failed - invalid password or user.");
 			}
@@ -328,10 +420,38 @@ public class CLdapProvider
 		}
 		finally
 		{
+			unbindFromServer(temporaryConnection);
+
 			if (cursor != null)
 			{
 				cursor.close();
 			}
+		}
+	}
+
+	/**
+	 * Checks if is connected.
+	 *
+	 * @return true, if is connected
+	 */
+	public boolean isConnected ()
+	{
+		try
+		{
+			init();
+
+			if (connection != null && connection.isConnected() == true)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch (CSystemException ex)
+		{
+			return false;
 		}
 	}
 

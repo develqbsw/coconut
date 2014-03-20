@@ -254,22 +254,22 @@ public class CLdapAuthenticationTestCase
 	//
 	//		authenticationTestProvider.testChangeLogin(authenticationService, userService);
 	//	}
-
-	/**
-	 * Test if the ldap is online.
-	 * @throws Exception 
-	 *
-	 * @throws CSecurityException the security exception
-	 */
-	@Test
-	@Transactional (readOnly = true)
-	@Rollback (true)
-	public void testIsOnline () throws Exception
-	{
-		initTest();
-
-		authenticationTestProvider.testIsOnline(authenticationService);
-	}
+	//
+	//	/**
+	//	 * Test if the ldap is online.
+	//	 * @throws Exception 
+	//	 *
+	//	 * @throws CSecurityException the security exception
+	//	 */
+	//	@Test
+	//	@Transactional (readOnly = true)
+	//	@Rollback (true)
+	//	public void testIsOnline () throws Exception
+	//	{
+	//		initTest();
+	//
+	//		authenticationTestProvider.testIsOnline(authenticationService);
+	//	}
 
 	/**
 	 * Inits the test user with default unit.
