@@ -17,12 +17,10 @@
 		<class>sk.qbsw.code.security.test.util.domain.CLicenseFree</class>
 		
 		<properties>
-			<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" /> -->
-			<property name="hibernate.dialect" value="sk.qbsw.core.persistence.dialect.CSQLServer2012Dialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.bytecode.provider" value="javassist" />
-			<!-- <property name="hibernate.hbm2ddl.auto" value="create" /> -->
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.jdbc.batch_size" value="200" />
 		</properties>
