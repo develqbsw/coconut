@@ -392,7 +392,7 @@ public class CLdapProvider
 	 * @param password the password
 	 * @throws CSecurityException the c security exception
 	 */
-	public void authenticate (String baseDn, String loginFilter, String password) throws CSecurityException
+	public synchronized void authenticate (String baseDn, String loginFilter, String password) throws CSecurityException
 	{
 		//init the connection
 		init();
