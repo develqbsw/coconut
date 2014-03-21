@@ -313,7 +313,7 @@ public class CLdapProvider
 	 * @param attributes the attributes
 	 * @throws CSecurityException the security exception
 	 */
-	public void addEntry (String dn, Map<String, String[]> attributes) throws CSecurityException
+	public void addEntry (String dn, Map<String, byte[][]> attributes) throws CSecurityException
 	{
 		//init the connection
 		init();
@@ -324,7 +324,7 @@ public class CLdapProvider
 			Entry entry = new DefaultEntry(dn);
 
 			//add values to entry
-			for (Map.Entry<String, String[]> attribute : attributes.entrySet())
+			for (Map.Entry<String, byte[][]> attribute : attributes.entrySet())
 			{
 				entry.add(attribute.getKey(), attribute.getValue());
 			}

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.persistence.NoResultException;
 
+import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
+import org.apache.directory.api.ldap.model.password.PasswordUtil;
 import org.apache.directory.api.util.exception.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -221,11 +223,11 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		else
 		{
 			//add auth data
-			Map<String, String[]> attributes = new HashMap<String, String[]>();
-			attributes.put("objectClass", new String[] {data.getUserObjectClass()});
-			attributes.put("cn", new String[] {login});
-			attributes.put("sn", new String[] {user.getSurname()});
-			attributes.put("userPassword", new String[] {password});
+			Map<String, byte[][]> attributes = new HashMap<String, byte[][]>();
+			attributes.put("objectClass", new byte[][] {data.getUserObjectClass().getBytes()});
+			attributes.put("cn", new byte[][] {login.getBytes()});
+			attributes.put("sn", new byte[][] {user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes()});
+			attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, LdapSecurityConstants.HASH_METHOD_SSHA512)});
 
 			//add entry
 			ldapProvider.addEntry(userDn, attributes);
