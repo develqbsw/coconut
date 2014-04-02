@@ -106,6 +106,11 @@ public class CUser implements Serializable, IEntity<Long>
 	@Enumerated (EnumType.STRING)
 	private EUserType userType;
 
+	/** User address */
+	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinColumn (name = "c_address", nullable = true)
+	private CAddress address;
+
 	/**
 	 * Instantiates a new c user.
 	 */
@@ -189,8 +194,9 @@ public class CUser implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Gets the plain text password. If there is no plain text password, returns null.
-	 *
+	 * Gets the plain text password. If there is no plain text password, returns
+	 * null.
+	 * 
 	 * @return the plain text password
 	 */
 	public String getPassword ()
@@ -323,8 +329,10 @@ public class CUser implements Serializable, IEntity<Long>
 	/**
 	 * Adds the group.
 	 * 
-	 * @param grp the grp
-	 * @param unt unit
+	 * @param grp
+	 *            the grp
+	 * @param unt
+	 *            unit
 	 */
 	public void addGroupUnit (CGroup grp, CUnit unt)
 	{
@@ -337,6 +345,7 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * bind groups with this user
+	 * 
 	 * @param groups
 	 */
 	public void setGroups (Set<CGroup> groups)
@@ -349,6 +358,7 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * bind groups with this user and unit
+	 * 
 	 * @param groups
 	 */
 	public void setGroupsUnit (Set<CGroup> groups, CUnit unit)
@@ -425,7 +435,7 @@ public class CUser implements Serializable, IEntity<Long>
 
 	/**
 	 * Gets the authentication params.
-	 *
+	 * 
 	 * @return the authentication params
 	 */
 	private CAuthenticationParams getAuthenticationParams ()
@@ -540,10 +550,29 @@ public class CUser implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * @param xUserUnitGroups the xUserUnitGroups to set
+	 * @param xUserUnitGroups
+	 *            the xUserUnitGroups to set
 	 */
 	public void setxUserUnitGroups (Set<CXUserUnitGroup> xUserUnitGroups)
 	{
 		this.xUserUnitGroups = xUserUnitGroups;
 	}
+
+	/**
+	 * @return the address
+	 */
+	public CAddress getAddress ()
+	{
+		return address;
+	}
+
+	/**
+	 * @param address
+	 *            the address to set
+	 */
+	public void setAddress (CAddress address)
+	{
+		this.address = address;
+	}
+
 }

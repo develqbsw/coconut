@@ -16,6 +16,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
@@ -84,6 +86,12 @@ public class COrganization implements Serializable, IEntity<Long>
 	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	//@Cascade ({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
 	private List<CUser> users;
+
+	/** Organization address */
+	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinColumn (name = "c_address", nullable = true)
+	private CAddress address;
+
 
 	/**
 	 * Instantiates a new c organization.
@@ -310,6 +318,22 @@ public class COrganization implements Serializable, IEntity<Long>
 	public Long getId ()
 	{
 		return getPkId();
+	}
+
+	/**
+	 * @return the address
+	 */
+	public CAddress getAddress ()
+	{
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress (CAddress address)
+	{
+		this.address = address;
 	}
 
 }

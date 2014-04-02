@@ -6,6 +6,7 @@ package sk.qbsw.core.security.model.domain;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +27,7 @@ import com.google.gson.annotations.Expose;
 
 /**
  * The Class CUnit.
- *
+ * 
  * @author Tomas Lauro
  * @version 1.7.1
  * @since 1.6.0
@@ -66,6 +67,11 @@ public class CUnit implements Serializable, IEntity<Long>
 	@OneToMany (mappedBy = "unit", fetch = FetchType.LAZY)
 	private Set<CXUserUnitGroup> xUserUnitGroups;
 
+	/** User address */
+	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinColumn (name = "c_address", nullable = true)
+	private CAddress address;
+
 	/**
 	 * Instantiates a new unit.
 	 */
@@ -73,7 +79,9 @@ public class CUnit implements Serializable, IEntity<Long>
 	{
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
 	 */
 	@Override
@@ -84,7 +92,7 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Gets the pk id.
-	 *
+	 * 
 	 * @return the pk id
 	 */
 	public Long getPkId ()
@@ -94,8 +102,9 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Sets the pk id.
-	 *
-	 * @param pkId the new pk id
+	 * 
+	 * @param pkId
+	 *            the new pk id
 	 */
 	public void setPkId (Long pkId)
 	{
@@ -104,7 +113,7 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Gets the name.
-	 *
+	 * 
 	 * @return the name
 	 */
 	public String getName ()
@@ -114,8 +123,9 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Sets the name.
-	 *
-	 * @param name the new name
+	 * 
+	 * @param name
+	 *            the new name
 	 */
 	public void setName (String name)
 	{
@@ -124,7 +134,7 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Gets the organization.
-	 *
+	 * 
 	 * @return the organization
 	 */
 	public COrganization getOrganization ()
@@ -134,8 +144,9 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Sets the organization.
-	 *
-	 * @param organization the new organization
+	 * 
+	 * @param organization
+	 *            the new organization
 	 */
 	public void setOrganization (COrganization organization)
 	{
@@ -144,7 +155,7 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Gets the groups.
-	 *
+	 * 
 	 * @return the groups
 	 */
 	public Set<CGroup> getGroups ()
@@ -154,11 +165,30 @@ public class CUnit implements Serializable, IEntity<Long>
 
 	/**
 	 * Sets the groups.
-	 *
-	 * @param groups the new groups
+	 * 
+	 * @param groups
+	 *            the new groups
 	 */
 	public void setGroups (Set<CGroup> groups)
 	{
 		this.groups = groups;
 	}
+
+	/**
+	 * @return the address
+	 */
+	public CAddress getAddress ()
+	{
+		return address;
+	}
+
+	/**
+	 * @param address
+	 *            the address to set
+	 */
+	public void setAddress (CAddress address)
+	{
+		this.address = address;
+	}
+
 }

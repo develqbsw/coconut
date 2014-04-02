@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.security.dao.IAddressDao;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -44,6 +46,10 @@ public class CUserService implements IUserService
 	/** The authentication params dao. */
 	@Autowired
 	private IAuthenticationParamsDao authenticationParamsDao;
+	
+	/** The address dao */
+	@Autowired
+	private IAddressDao addressDao;
 
 	/** The authentication service. */
 	@Autowired
@@ -260,5 +266,17 @@ public class CUserService implements IUserService
 	public void updateUser (CUser user)
 	{
 		userDao.save(user);
+	}
+
+	@Transactional
+	public void setAddress (CUser user, CAddress address)
+	{
+		//set address to user
+		user.setAddress(address);
+		
+		//save entities
+		addressDao.save(address);
+		userDao.save(user);
+		
 	}
 }

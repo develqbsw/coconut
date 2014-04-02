@@ -3,6 +3,7 @@ package sk.qbsw.core.security.service;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -29,4 +30,13 @@ public interface IUnitService extends Serializable
 	 * @return the all units
 	 */
 	public List<CUnit> getAll (CUser user);
+	
+	
+	/**
+	 * Add or update unit address
+	 * 
+	 * @param unit unit for which is address updated
+	 * @param address address which is added or updated for unit
+	 */
+	public void setAddress(CUnit unit, CAddress address);
 }

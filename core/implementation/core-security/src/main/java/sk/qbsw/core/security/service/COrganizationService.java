@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.security.dao.IAddressDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -32,6 +34,9 @@ public class COrganizationService implements IOrganizationService
 
 	@Autowired
 	private IGroupDao groupDao;
+	
+	@Autowired
+	private IAddressDao addressDao;
 
 	@Override
 	@Transactional
@@ -89,6 +94,18 @@ public class COrganizationService implements IOrganizationService
 	public COrganization getOrganizationById (Long id)
 	{
 		return organizationDao.findById(id);
+	}
+
+	@Override
+	public void setAddress (COrganization organization, CAddress address)
+	{
+		//set address to unit
+		organization.setAddress(address);
+
+		//save entities
+		addressDao.save(address);
+		organizationDao.save(organization);
+
 	}
 
 }

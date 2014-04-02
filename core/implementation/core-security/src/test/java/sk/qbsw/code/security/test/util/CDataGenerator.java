@@ -13,6 +13,7 @@ import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -271,8 +272,25 @@ public class CDataGenerator
 		organization.setEmail(code + "@qbsw.sk");
 		organization.setPhone("000000000");
 		organization.setFlagEnabled(true);
+		organization.setAddress(createAddress());
 
 		return organization;
+	}
+	
+	/**
+	 * Creates the address.
+	 *
+	 * @return the c address
+	 */
+	public CAddress createAddress ()
+	{
+		CAddress address = new CAddress();
+		address.setCity("Bratislava");
+		address.setHouseNumber("123456789");
+		address.setState("Slovakia");
+		address.setStreet("Prievozska");
+		address.setZipCode("97101");
+		return address;
 	}
 
 	/**
@@ -315,6 +333,7 @@ public class CDataGenerator
 	{
 		CUnit unit = new CUnit();
 		unit.setName(code);
+		unit.setAddress(createAddress());
 
 		return unit;
 	}
@@ -333,6 +352,7 @@ public class CDataGenerator
 		user.setSurname(code);
 		user.setEmail(code + "@qbsw.sk");
 		user.setFlagEnabled(true);
+		user.setAddress(createAddress());
 
 		return user;
 	}

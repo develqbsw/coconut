@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -167,4 +168,12 @@ public interface IUserService extends Serializable
 	 * @param user the user
 	 */
 	public void updateUser (CUser user);
+	
+	/**
+	 * Add or update user address
+	 * 
+	 * @param user user for which is address updated
+	 * @param address address which is added or updated for user
+	 */
+	public void setAddress(CUser user, CAddress address);
 }

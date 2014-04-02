@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.security.dao.IAddressDao;
 import sk.qbsw.core.security.dao.IUnitDao;
+import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -26,6 +28,10 @@ public class CUnitService implements IUnitService
 	/** The unit dao. */
 	@Autowired
 	private IUnitDao unitDao;
+	
+	/** The unit dao. */
+	@Autowired
+	private IAddressDao addressDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUnitService#getAll()
@@ -45,5 +51,17 @@ public class CUnitService implements IUnitService
 	public List<CUnit> getAll (CUser user)
 	{
 		return unitDao.findAll(user.getId());
+	}
+
+	@Transactional
+	public void setAddress (CUnit unit, CAddress address)
+	{
+		//set address to unit
+		unit.setAddress(address);
+		
+		//save entities
+		addressDao.save(address);
+		unitDao.save(unit);
+		
 	}
 }

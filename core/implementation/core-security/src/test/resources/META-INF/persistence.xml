@@ -13,6 +13,7 @@
 		<class>sk.qbsw.core.security.model.domain.CUnit</class>
 		<class>sk.qbsw.core.security.model.domain.CAuthenticationParams</class>
 		<class>sk.qbsw.core.security.model.domain.CXUserUnitGroup</class>
+		<class>sk.qbsw.core.security.model.domain.CAddress</class>
 		<!-- test -->
 		<class>sk.qbsw.code.security.test.util.domain.CLicenseFree</class>
 		
