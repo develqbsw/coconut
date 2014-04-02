@@ -67,7 +67,7 @@ public class CUserDetails implements UserDetails
 	@Override
 	public String getUsername ()
 	{
-		return user.getName();
+		return user.getLogin();
 	}
 
 	/*
