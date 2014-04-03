@@ -21,5 +21,5 @@ public interface ITableColumnDefinition
 	 * Gets primary key for the table
 	 * @return
 	 */
-	public String getPkId ();
+	public String getId ();
 }

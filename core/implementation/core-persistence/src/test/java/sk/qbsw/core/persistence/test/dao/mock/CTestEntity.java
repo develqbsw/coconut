@@ -12,7 +12,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 public class CTestEntity implements IEntity<Long>
 {
 
-	private Long pkId;
+	private Long id;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
@@ -20,7 +20,7 @@ public class CTestEntity implements IEntity<Long>
 	@Override
 	public Long getId ()
 	{
-		return pkId;
+		return id;
 	}
 
 	public CTestEntity ()
@@ -28,9 +28,9 @@ public class CTestEntity implements IEntity<Long>
 
 	}
 
-	public CTestEntity (Long pkId)
+	public CTestEntity (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 }

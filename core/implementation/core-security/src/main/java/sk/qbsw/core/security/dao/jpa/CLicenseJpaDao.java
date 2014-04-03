@@ -47,7 +47,7 @@ public class CLicenseJpaDao extends AEntityJpaDao<Long, CLicense<?>> implements 
 	@SuppressWarnings ("unchecked")
 	public List<CLicense<?>> findByOrganizationId (Long orgId)
 	{
-		String strQuery = "from CLicense where organization.pkId = :id";
+		String strQuery = "from CLicense where organization.id = :id";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("id", orgId);

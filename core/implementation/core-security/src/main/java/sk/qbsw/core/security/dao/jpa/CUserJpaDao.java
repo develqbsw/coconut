@@ -66,10 +66,10 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 						"left join fetch xuug.group gr " +
 						"left join fetch xuug.unit " +
 						"left join fetch gr.roles " +
-						"where us.pkId=:pkId";
+						"where us.id=:id";
 
 			Query query = getEntityManager().createQuery(strQuery);
-			query.setParameter("pkId", id);
+			query.setParameter("id", id);
 
 			//throws exception if there is no result or multiple results
 			return (CUser) query.getSingleResult();
@@ -84,9 +84,9 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findForModification(java.lang.Long)
 	 */
-	public CUser findForModification (Long pkId)
+	public CUser findForModification (Long id)
 	{
-		return findById(pkId);
+		return findById(id);
 	}
 
 	/*

@@ -47,7 +47,7 @@ public class CAuthenticationServiceImpl implements IAuthenticationService
 			retVal.setLogin(user.getLogin());
 			retVal.setName(user.getName());
 			retVal.setSurname(user.getSurname());
-			retVal.setUserId(user.getPkId());
+			retVal.setUserId(user.getId());
 
 			retVal.setRoles(user.exportRoles());
 			

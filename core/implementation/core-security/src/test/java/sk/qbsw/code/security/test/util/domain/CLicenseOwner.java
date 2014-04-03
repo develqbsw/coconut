@@ -3,6 +3,8 @@
  */
 package sk.qbsw.code.security.test.util.domain;
 
+import java.math.BigDecimal;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -113,7 +115,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	@Override
 	public void recalculateLicensePrice (Double dayPrice)
 	{
-		setPrice(0d);
+		setPrice(new BigDecimal(0d) );
 	}
 
 	/**

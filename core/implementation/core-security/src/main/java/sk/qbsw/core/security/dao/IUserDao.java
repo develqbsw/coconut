@@ -26,10 +26,10 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	/**
 	 * Find for modification.
 	 *
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return the c user
 	 */
-	public CUser findForModification (Long pkId);
+	public CUser findForModification (Long id);
 
 	/**
 	 * Find by login - there are groups with user default unit in the list.

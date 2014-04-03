@@ -79,10 +79,10 @@ public interface IUserService extends Serializable
 	/**
 	 * Gets the user for modification.
 	 *
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return the user for modification
 	 */
-	public CUser getUserForModification (Long pkId);
+	public CUser getUserForModification (Long id);
 
 	/**
 	 * Gets all users.

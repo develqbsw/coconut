@@ -41,7 +41,7 @@ public class CGroup implements Serializable, IEntity<Long>
 	@SequenceGenerator (name = "t_group_pkid_generator", sequenceName = "sec.t_group_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_group_pkid_generator")
 	@Column (name = "pk_id")
-	private Long pkId;
+	private Long id;
 
 	/** The code. */
 	@Column (name = "code", unique = true)
@@ -195,25 +195,6 @@ public class CGroup implements Serializable, IEntity<Long>
 		return flagSystem;
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
-	 */
-	@Override
-	public Long getId ()
-	{
-		return getPkId();
-	}
-
-	/**
-	 * Gets the pk id.
-	 *
-	 * @return the pk id
-	 */
-	public Long getPkId ()
-	{
-		return this.pkId;
-	}
-
 	/**
 	 * Gets the roles.
 	 *
@@ -298,11 +279,11 @@ public class CGroup implements Serializable, IEntity<Long>
 	/**
 	 * Sets the pk id.
 	 *
-	 * @param pkId the new pk id
+	 * @param id the new pk id
 	 */
-	public void setPkId (Long pkId)
+	public void setId (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 	/**
@@ -334,4 +315,14 @@ public class CGroup implements Serializable, IEntity<Long>
 	{
 		this.units = units;
 	}
+
+	/**
+	 * @return the id
+	 */
+	public Long getId ()
+	{
+		return this.id;
+	}
+	
+	
 }

@@ -3,6 +3,7 @@
  */
 package sk.qbsw.core.security.model.domain;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -64,10 +65,10 @@ public abstract class CLicense<T> implements IEntity<Long>
 	@SequenceGenerator (name = "t_licence_pkid_generator", sequenceName = "sec.t_licence_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_licence_pkid_generator")
 	@Column (name = "pk_id")
-	private Long pkId;
+	private Long id;
 
 	/** The price. */
-	private Double price;
+	private BigDecimal  price;
 
 	/** Type of the licence. */
 	@Column (insertable = false, updatable = false)
@@ -166,15 +167,9 @@ public abstract class CLicense<T> implements IEntity<Long>
 	 *
 	 * @return the pk id
 	 */
-	public Long getPkId ()
-	{
-		return this.pkId;
-	}
-
-	@Override
 	public Long getId ()
 	{
-		return getPkId();
+		return this.id;
 	}
 
 	/**
@@ -182,7 +177,7 @@ public abstract class CLicense<T> implements IEntity<Long>
 	 *
 	 * @return the price
 	 */
-	public Double getPrice ()
+	public BigDecimal getPrice ()
 	{
 		return price;
 	}
@@ -270,11 +265,11 @@ public abstract class CLicense<T> implements IEntity<Long>
 	/**
 	 * Sets the pk id.
 	 *
-	 * @param pkId the new pk id
+	 * @param id the new pk id
 	 */
-	public void setPkId (Long pkId)
+	public void setId (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 	/**
@@ -282,7 +277,7 @@ public abstract class CLicense<T> implements IEntity<Long>
 	 *
 	 * @param price the new price
 	 */
-	public void setPrice (Double price)
+	public void setPrice (BigDecimal price)
 	{
 		this.price = price;
 	}
@@ -326,12 +321,7 @@ public abstract class CLicense<T> implements IEntity<Long>
 	{
 		return true;
 	}
-
-	/**
-	 * Recalculate license price.
-	 *
-	 * @param dayPrice the day price
-	 */
+	
 	public void recalculateLicensePrice (Double dayPrice)
 	{
 		long days = (validTo.getTimeInMillis() - validFrom.getTimeInMillis()) / (1000 * 60 * 60 * 24);
@@ -350,7 +340,7 @@ public abstract class CLicense<T> implements IEntity<Long>
 
 		double result = value * 100;
 		result = (int) (result);
-		this.price = result / 100;
+		this.price = new BigDecimal(result / 100);
 	}
 
 	/**

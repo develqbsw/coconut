@@ -41,7 +41,7 @@ public class CUserChoiceRenderer extends ChoiceRenderer<CUser>
 	@Override
 	public String getIdValue (CUser object, int index)
 	{
-		return object.getPkId().toString();
+		return object.getId().toString();
 	}
 
 }

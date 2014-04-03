@@ -101,28 +101,28 @@ public interface ISecurityService extends Serializable
 	/**
 	 * Gets the role group.
 	 *
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return the role group
 	 */
-	public CGroup getRoleGroup (Long pkId);
+	public CGroup getRoleGroup (Long id);
 
 	/**
 	 * Checks if is login free.
 	 *
 	 * @param login the login
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return true, if is login free
 	 */
-	public boolean isLoginFree (String login, Long pkId);
+	public boolean isLoginFree (String login, Long id);
 
 	/**
 	 * Checks if is org name free.
 	 *
 	 * @param name the name
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return true, if is org name free
 	 */
-	public boolean isOrgNameFree (String name, Long pkId);
+	public boolean isOrgNameFree (String name, Long id);
 
 	/**
 	 * Sets the license payed.

@@ -55,7 +55,7 @@ public class CUser implements Serializable, IEntity<Long>
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_user_pkid_generator")
 	@Column (name = "pk_id")
 	@Expose
-	private Long pkId;
+	private Long id;
 
 	/** The flag enabled. */
 	@Column (name = "flag_enabled")
@@ -119,36 +119,26 @@ public class CUser implements Serializable, IEntity<Long>
 		xUserUnitGroups = new HashSet<CXUserUnitGroup>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
-	 */
-	@Override
-	public Long getId ()
-	{
-		return getPkId();
-	}
-
 	/**
 	 * Gets the pk id.
 	 * 
 	 * @return the pk id
 	 */
-	public Long getPkId ()
+	@Override
+	public Long getId ()
 	{
-		return this.pkId;
+		return this.id;
 	}
 
 	/**
 	 * Sets the pk id.
 	 * 
-	 * @param pkId
+	 * @param id
 	 *            the new pk id
 	 */
-	public void setPkId (Long pkId)
+	public void setId (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 	/**

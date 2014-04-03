@@ -37,7 +37,7 @@ public class CXUserUnitGroup implements Serializable, IEntity<Long>
 	@SequenceGenerator (name = "t_x_group_user_pkid_generator", sequenceName = "sec.t_x_group_user_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_x_group_user_pkid_generator")
 	@Column (name = "pk_id")
-	private Long pkId;
+	private Long id;
 
 	/** The user. */
 	@ManyToOne (fetch = FetchType.LAZY)
@@ -67,17 +67,17 @@ public class CXUserUnitGroup implements Serializable, IEntity<Long>
 	@Override
 	public Long getId ()
 	{
-		return pkId;
+		return this.id;
 	}
 	
 	/**
-	 * Sets pkId
+	 * Sets id
 	 * 
 	 * @param id
 	 */
 	public void setId (Long id)
 	{
-		this.pkId = id;
+		this.id = id;
 	}
 
 	/**

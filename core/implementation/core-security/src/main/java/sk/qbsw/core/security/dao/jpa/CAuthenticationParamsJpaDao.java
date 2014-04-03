@@ -39,7 +39,7 @@ public class CAuthenticationParamsJpaDao extends AEntityJpaDao<Long, CAuthentica
 	@Override
 	public CAuthenticationParams findByUserId (Long userId)
 	{
-		String strQuery = "select distinct(ap) from CAuthenticationParams ap join ap.user us where us.pkId = :userId";
+		String strQuery = "select distinct(ap) from CAuthenticationParams ap join ap.user us where us.id = :userId";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("userId", userId);

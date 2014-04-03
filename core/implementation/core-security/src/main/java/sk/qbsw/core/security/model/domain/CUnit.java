@@ -44,7 +44,7 @@ public class CUnit implements Serializable, IEntity<Long>
 	@SequenceGenerator (name = "t_unit_pkid_generator", sequenceName = "sec.t_unit_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_unit_pkid_generator")
 	@Column (name = "pk_id")
-	private Long pkId;
+	private Long id;
 
 	/** The name. */
 	@Column (name = "name", unique = true, nullable = false)
@@ -79,36 +79,26 @@ public class CUnit implements Serializable, IEntity<Long>
 	{
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
-	 */
-	@Override
-	public Long getId ()
-	{
-		return pkId;
-	}
-
 	/**
 	 * Gets the pk id.
 	 * 
 	 * @return the pk id
 	 */
-	public Long getPkId ()
+	@Override
+	public Long getId ()
 	{
-		return pkId;
+		return this.id;
 	}
 
 	/**
 	 * Sets the pk id.
 	 * 
-	 * @param pkId
+	 * @param id
 	 *            the new pk id
 	 */
-	public void setPkId (Long pkId)
+	public void setId (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 	/**

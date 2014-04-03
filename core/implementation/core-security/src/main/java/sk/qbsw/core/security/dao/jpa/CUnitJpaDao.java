@@ -68,7 +68,7 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 		String strQuery = "select distinct(un) from CUnit un " +
 					"join un.xUserUnitGroups xuug " +
 					"join xuug.user us " +
-					"where us.pkId=:userId " +
+					"where us.id=:userId " +
 					"order by un.name asc";
 
 		Query query = getEntityManager().createQuery(strQuery);

@@ -11,11 +11,16 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -27,9 +32,6 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 
 import com.google.gson.annotations.Expose;
 
-// import org.hibernate.annotations.Cascade;
-// import org.hibernate.annotations.CascadeType;
-
 
 /**
  * The Class COrganization.
@@ -40,6 +42,9 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_organization", schema = "sec")
+@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue ("organization")
+@DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
 public class COrganization implements Serializable, IEntity<Long>
 {
 
@@ -60,7 +65,7 @@ public class COrganization implements Serializable, IEntity<Long>
 	/** The licences. */
 	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	//@Cascade ({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
-	@OrderBy (value = "pkId")
+	@OrderBy (value = "id")
 	private Set<CLicense<?>> licences;
 
 	/** The name. */
@@ -79,7 +84,7 @@ public class COrganization implements Serializable, IEntity<Long>
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_organization_pkid_generator")
 	@Column (name = "pk_id")
 	@Expose
-	private Long pkId;
+	private Long id;
 
 	//bi-directional many-to-one association to CUser
 	/** The users. */
@@ -105,11 +110,11 @@ public class COrganization implements Serializable, IEntity<Long>
 	/**
 	 * Instantiates a new c organization.
 	 *
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 */
-	public COrganization (Long pkId)
+	public COrganization (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 	/**
@@ -190,17 +195,6 @@ public class COrganization implements Serializable, IEntity<Long>
 		this.code = code;
 	}
 
-
-	/**
-	 * Gets the pk id.
-	 *
-	 * @return the pk id
-	 */
-	public Long getPkId ()
-	{
-		return this.pkId;
-	}
-
 	/**
 	 * Gets the users.
 	 *
@@ -254,11 +248,11 @@ public class COrganization implements Serializable, IEntity<Long>
 	/**
 	 * Sets the pk id.
 	 *
-	 * @param pkId the new pk id
+	 * @param id the new pk id
 	 */
-	public void setPkId (Long pkId)
+	public void setId (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 	/**
@@ -317,7 +311,7 @@ public class COrganization implements Serializable, IEntity<Long>
 	@Override
 	public Long getId ()
 	{
-		return getPkId();
+		return this.id;
 	}
 
 	/**

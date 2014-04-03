@@ -189,7 +189,7 @@ public class CUserTestCase
 		initTest();
 
 		CUser userByLogin = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CUser userById = userService.get(userByLogin.getPkId());
+		CUser userById = userService.get(userByLogin.getId());
 
 		//asserts
 		assertNotNull("Get user by id failed: cannot find user with login " + userByLogin.getLogin(), userByLogin);

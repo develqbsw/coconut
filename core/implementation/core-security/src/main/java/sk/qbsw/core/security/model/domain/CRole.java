@@ -41,7 +41,7 @@ public class CRole implements Serializable, IEntity<Long>
 	@SequenceGenerator (name = "t_role_pkid_generator", sequenceName = "sec.t_role_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_role_pkid_generator")
 	@Column (name = "pk_id")
-	private Long pkId;
+	private Long id;
 
 	/** The code. */
 	@Column (name = "code", unique = true)
@@ -68,26 +68,6 @@ public class CRole implements Serializable, IEntity<Long>
 	public CRole (String code)
 	{
 		this.setCode(code);
-	}
-
-	/**
-	 * Gets the pk id.
-	 *
-	 * @return the pk id
-	 */
-	public Long getPkId ()
-	{
-		return this.pkId;
-	}
-
-	/**
-	 * Sets the pk id.
-	 *
-	 * @param pkId the new pk id
-	 */
-	public void setPkId (Long pkId)
-	{
-		this.pkId = pkId;
 	}
 
 	/**
@@ -136,7 +116,7 @@ public class CRole implements Serializable, IEntity<Long>
 	@Override
 	public Long getId ()
 	{
-		return getPkId();
+		return this.id;
 	}
 
 }

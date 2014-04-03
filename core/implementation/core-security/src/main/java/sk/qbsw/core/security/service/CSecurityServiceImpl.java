@@ -100,7 +100,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void deleteLicense (CLicense<?> license)
 	{
-		CLicense<?> toModify = licenseDao.findById(license.getPkId());
+		CLicense<?> toModify = licenseDao.findById(license.getId());
 		licenseDao.remove(toModify);
 	}
 
@@ -114,7 +114,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void disableOrganization (COrganization org)
 	{
-		COrganization toModify = orgDao.findById(org.getPkId());
+		COrganization toModify = orgDao.findById(org.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
 		orgDao.save(toModify);
 	}
@@ -129,7 +129,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void disableUser (CUser user)
 	{
-		CUser toModify = userDao.findById(user.getPkId());
+		CUser toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
 		userDao.save(toModify);
 	}
@@ -144,7 +144,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void enableOrganization (COrganization org)
 	{
-		COrganization toModify = orgDao.findById(org.getPkId());
+		COrganization toModify = orgDao.findById(org.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
 		orgDao.save(toModify);
 	}
@@ -159,7 +159,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void enableUser (CUser user)
 	{
-		CUser toModify = userDao.findById(user.getPkId());
+		CUser toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
 		userDao.save(toModify);
 	}
@@ -218,7 +218,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = true)
 	public List<CLicense<?>> getOrganizationLicenses (COrganization org)
 	{
-		COrganization organization = orgDao.findById(org.getPkId());
+		COrganization organization = orgDao.findById(org.getId());
 		return new ArrayList<CLicense<?>>(organization.getLicences());
 	}
 
@@ -226,14 +226,14 @@ public class CSecurityServiceImpl implements ISecurityService
 	/**
 	 * Gets the role group.
 	 *
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return the role group
 	 * @see sk.qbsw.core.security.service.ISecurityService#getRoleGroup(java.lang.Long)
 	 */
 	@Transactional (readOnly = true)
-	public CGroup getRoleGroup (Long pkId)
+	public CGroup getRoleGroup (Long id)
 	{
-		return groupDao.findById(pkId);
+		return groupDao.findById(id);
 	}
 
 
@@ -241,12 +241,12 @@ public class CSecurityServiceImpl implements ISecurityService
 	 * Checks if is login free.
 	 *
 	 * @param login the login
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return true, if is login free
 	 * @see sk.qbsw.core.security.service.ISecurityService#isLoginFree(java.lang.String, java.lang.Long)
 	 */
 	@Transactional (readOnly = true)
-	public boolean isLoginFree (String login, Long pkId)
+	public boolean isLoginFree (String login, Long id)
 	{
 		CUser user;
 		
@@ -261,7 +261,7 @@ public class CSecurityServiceImpl implements ISecurityService
 
 		if (user != null)
 		{
-			return user.getPkId().equals(pkId);
+			return user.getId().equals(id);
 		}
 		return true;
 	}
@@ -271,18 +271,18 @@ public class CSecurityServiceImpl implements ISecurityService
 	 * Checks if is org name free.
 	 *
 	 * @param name the name
-	 * @param pkId the pk id
+	 * @param id the pk id
 	 * @return true, if is org name free
 	 * @see sk.qbsw.core.security.service.ISecurityService#isOrgNameFree(java.lang.String, java.lang.Long)
 	 */
 	@Transactional (readOnly = true)
-	public boolean isOrgNameFree (String name, Long pkId)
+	public boolean isOrgNameFree (String name, Long id)
 	{
 		COrganization organization = orgDao.findByNameNull(name);
 
 		if (organization != null)
 		{
-			return organization.getPkId().equals(pkId);
+			return organization.getId().equals(id);
 		}
 		return true;
 	}
@@ -298,7 +298,7 @@ public class CSecurityServiceImpl implements ISecurityService
 	@Transactional (readOnly = false)
 	public void matchLicensePayment (CLicense<?> license, Boolean payed)
 	{
-		CLicense<?> toModify = licenseDao.findById(license.getPkId());
+		CLicense<?> toModify = licenseDao.findById(license.getId());
 		toModify.setFlagPayed(payed);
 		licenseDao.save(toModify);
 	}

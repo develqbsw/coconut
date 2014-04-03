@@ -109,9 +109,9 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 			}
 		}
 		
-		if (columnDefinition.getPkId() != null)
+		if (columnDefinition.getId() != null)
 		{
-			getField(columnDefinition.getPkId()).setPrimaryKey(true);
+			getField(columnDefinition.getId()).setPrimaryKey(true);
 		}
 	}
 

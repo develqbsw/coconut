@@ -40,7 +40,7 @@ public class CAuthenticationParams implements Serializable, IEntity<Long>
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_auth_params_pkid_generator")
 	@Column (name = "pk_id")
 	@Expose
-	private Long pkId;
+	private Long id;
 
 	/** The password. */
 	private String password;
@@ -63,34 +63,25 @@ public class CAuthenticationParams implements Serializable, IEntity<Long>
 	{
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
-	 */
-	@Override
-	public Long getId ()
-	{
-		return getPkId();
-	}
-
 	/**
 	 * Gets the pk id.
 	 * 
 	 * @return the pk id
 	 */
-	public Long getPkId ()
+	public Long getId ()
 	{
-		return this.pkId;
+		return this.id;
 	}
 
 	/**
 	 * Sets the pk id.
 	 * 
-	 * @param pkId
+	 * @param id
 	 *            the new pk id
 	 */
-	public void setPkId (Long pkId)
+	public void setId (Long id)
 	{
-		this.pkId = pkId;
+		this.id = id;
 	}
 
 	/**

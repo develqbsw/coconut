@@ -64,7 +64,7 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = false)
 	public void disableUser (CUser user)
 	{
-		CUser toModify = userDao.findById(user.getPkId());
+		CUser toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
 		userDao.save(toModify);
 	}
@@ -78,7 +78,7 @@ public class CUserService implements IUserService
 	@Transactional (readOnly = false)
 	public void enableUser (CUser user)
 	{
-		CUser toModify = userDao.findById(user.getPkId());
+		CUser toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
 		userDao.save(toModify);
 	}
@@ -145,9 +145,9 @@ public class CUserService implements IUserService
 	 * @see sk.qbsw.core.security.service.IUserService#getUserForModification(java.lang.Long)
 	 */
 	@Transactional (readOnly = true)
-	public CUser getUserForModification (Long pkId)
+	public CUser getUserForModification (Long id)
 	{
-		return userDao.findForModification(pkId);
+		return userDao.findForModification(id);
 	}
 
 
