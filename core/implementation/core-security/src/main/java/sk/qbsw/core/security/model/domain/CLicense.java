@@ -46,11 +46,11 @@ public abstract class CLicense<T> implements IEntity<Long>
 	@Column (name = "flag_payed")
 	private Boolean flagPayed;
 
-	/** The tax id. */
+	/** The tax id of a subject which has payed for a license. */
 	@Column (name = "tax_id")
 	private String taxId;
 
-	/** The key. */
+	/** The key to activate a licence. */
 	@Column (name = "c_key")
 	private String key;
 
