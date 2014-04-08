@@ -94,7 +94,7 @@ public class COrganization implements Serializable, IEntity<Long>
 
 	/** Organization address */
 	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinColumn (name = "c_address", nullable = true)
+	@JoinColumn (name = "fk_address", nullable = true)
 	private CAddress address;
 
 
