@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import sk.qbsw.core.logging.dao.IAuditLogDao;
+import sk.qbsw.core.logging.dao.impl.IAuditLogDao;
 import sk.qbsw.core.logging.model.domain.CAuditLog;
 import sk.qbsw.core.logging.model.domain.EOperationResult;
 import sk.qbsw.core.logging.service.IAuditLogSerializationService;
