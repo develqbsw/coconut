@@ -12,6 +12,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.exception.EError;
+import sk.qbsw.core.base.exception.IError;
 import sk.qbsw.core.logging.aspect.annotation.CAuditLogged;
 import sk.qbsw.core.logging.aspect.annotation.CNotAuditLogged;
 import sk.qbsw.core.logging.aspect.param.AParameter;
@@ -122,16 +124,25 @@ public class CAuditLoggingAspect extends ALoggingAspect
 
 			catch (final CBusinessException e)
 			{
+				//get error description
+				IError error = e.getError();
+				String errorMessage = null;
+
+				if (error != null)
+				{
+					errorMessage = error.toString();
+				}
+
 				//log when warning
-				this.doLog(actionName, EOperationResult.WARNING, e.getErrorCode(), loggedArguments);
-				
+				this.doLog(actionName, EOperationResult.WARNING, errorMessage, loggedArguments);
+
 				throw e;
 			}
 			catch (final Exception e)
 			{
 				//log when error
-				this.doLog(actionName, EOperationResult.ERROR, "-1", loggedArguments);
-				
+				this.doLog(actionName, EOperationResult.ERROR, EError.SYSTEM_ERROR.toString(), loggedArguments);
+
 				throw e;
 			}
 			finally
