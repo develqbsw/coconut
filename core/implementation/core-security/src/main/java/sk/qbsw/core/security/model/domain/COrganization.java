@@ -3,7 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,8 +27,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
-
 import com.google.gson.annotations.Expose;
 
 
@@ -45,7 +42,7 @@ import com.google.gson.annotations.Expose;
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("organization")
 @DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
-public class COrganization implements Serializable, IEntity<Long>
+public class COrganization extends ASecurityChangeEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */

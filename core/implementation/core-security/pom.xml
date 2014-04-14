@@ -53,13 +53,13 @@
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.0-801.jdbc4</version>
-		</dependency> 
- 		
+		</dependency>
+
 
 		<!-- TECH -->
 		<dependency>
@@ -140,6 +140,15 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- jadira.usertype for persisting joda time via hibernate 4.x -->
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.jodatime</artifactId>
+			<version>1.9.1</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>

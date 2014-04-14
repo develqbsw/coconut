@@ -3,7 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -18,8 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class CRole.
@@ -30,7 +27,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 @Entity
 @Table (name = "t_role", schema = "sec")
-public class CRole implements Serializable, IEntity<Long>
+public class CRole extends ASecurityChangeEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */

@@ -3,8 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import sk.qbsw.core.persistence.model.domain.IEntity;
 
 import com.google.gson.annotations.Expose;
 
@@ -29,7 +25,7 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_auth_params", schema = "sec")
-public class CAuthenticationParams implements Serializable, IEntity<Long>
+public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

@@ -3,7 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +28,6 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.core.persistence.model.domain.IEntity;
 
 import com.google.gson.annotations.Expose;
 
@@ -44,7 +42,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table (name = "t_user", schema = "sec")
 @FilterDef (name = "userDefaultUnitFilter")
-public class CUser implements Serializable, IEntity<Long>
+public class CUser extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

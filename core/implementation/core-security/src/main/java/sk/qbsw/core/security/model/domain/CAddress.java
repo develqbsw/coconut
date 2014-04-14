@@ -1,7 +1,5 @@
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import sk.qbsw.core.persistence.model.domain.IEntity;
 
 import com.google.gson.annotations.Expose;
 
@@ -23,7 +19,7 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_address", schema = "sec")
-public class CAddress implements Serializable, IEntity<Long>
+public class CAddress extends ASecurityChangeEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */

@@ -22,8 +22,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
-
 /**
  * The Class CLicence.
  *
@@ -37,8 +35,11 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 @Table (name = "t_licence", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class CLicense<T> implements IEntity<Long>
+public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
 {
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 6005150237733706948L;
+
 	/** The UNLIMITED. */
 	public final static Integer UNLIMITED = -1;
 
@@ -68,7 +69,7 @@ public abstract class CLicense<T> implements IEntity<Long>
 	private Long id;
 
 	/** The price. */
-	private BigDecimal  price;
+	private BigDecimal price;
 
 	/** Type of the licence. */
 	@Column (insertable = false, updatable = false)
@@ -321,7 +322,7 @@ public abstract class CLicense<T> implements IEntity<Long>
 	{
 		return true;
 	}
-	
+
 	public void recalculateLicensePrice (Double dayPrice)
 	{
 		long days = (validTo.getTimeInMillis() - validFrom.getTimeInMillis()) / (1000 * 60 * 60 * 24);

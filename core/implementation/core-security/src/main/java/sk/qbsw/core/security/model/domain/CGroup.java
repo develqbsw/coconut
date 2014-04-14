@@ -3,7 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +19,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
-
 /**
  * The Class CGroup.
  *
@@ -31,7 +28,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 @Entity
 @Table (name = "t_group", schema = "sec")
-public class CGroup implements Serializable, IEntity<Long>
+public class CGroup extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

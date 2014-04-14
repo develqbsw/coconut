@@ -3,7 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,8 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
-
 import com.google.gson.annotations.Expose;
 
 /**
@@ -34,7 +31,7 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_unit", schema = "sec")
-public class CUnit implements Serializable, IEntity<Long>
+public class CUnit extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

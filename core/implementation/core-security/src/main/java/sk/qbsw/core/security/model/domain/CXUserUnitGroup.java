@@ -3,8 +3,6 @@
  */
 package sk.qbsw.core.security.model.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
-
 /**
  * Cross entity for user unit and group.
  *
@@ -27,7 +23,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 @Entity
 @Table (name = "t_x_group_user", schema = "sec")
-public class CXUserUnitGroup implements Serializable, IEntity<Long>
+public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
