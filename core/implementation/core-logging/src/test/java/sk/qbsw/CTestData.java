@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 /**
  * Test data to store in the log
  * @author Michal Lacko
+ * @since 1.8.0
+ * @version 1.8.0
  *
  */
 class CTestData

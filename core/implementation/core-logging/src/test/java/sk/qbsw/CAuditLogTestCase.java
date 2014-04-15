@@ -20,11 +20,11 @@ import sk.qbsw.core.logging.model.domain.EOperationResult;
 import sk.qbsw.core.logging.service.IAuditLogService;
 
 /**
- * Checks unit service.
+ * Checks logging service.
  *
- * @autor Tomas Lauro
- * @version 1.7.1
- * @since 1.6.0
+ * @autor Michal Lacko
+ * @version 1.8.0
+ * @since 1.8.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
