@@ -139,12 +139,12 @@
 
 	<distributionManagement>
 		<repository>
-			<id>hades.qbsw.local</id>
+			<id>artifactory.qbsw.local</id>
 			<name>hades.qbsw.local-releases</name>
 			<url>https://artifactory.qbsw.local/artifactory/qbsw-releases-local</url>
 		</repository>
 		<snapshotRepository>
-			<id>hades.qbsw.local</id>
+			<id>artifactory.qbsw.local</id>
 			<name>hades.qbsw.local-snapshots</name>
 			<url>https://artifactory.qbsw.local/artifactory/qbsw-releases-local</url>
 		</snapshotRepository>
