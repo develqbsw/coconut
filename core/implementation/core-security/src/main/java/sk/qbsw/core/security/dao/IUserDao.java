@@ -18,7 +18,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  *
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.7.0
+ * @version 1.8.0
  * @since 1.0.0
  */
 public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
@@ -148,6 +148,14 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the list
 	 */
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix);
+
+	/**
+	 * Find all users.
+	 *
+	 * @param email the email (mandatory)
+	 * @return the list
+	 */
+	public List<CUser> findAllUsers (String email);
 
 	/**
 	 * Find users by unit and group

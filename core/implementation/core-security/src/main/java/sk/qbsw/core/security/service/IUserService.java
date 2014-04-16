@@ -15,7 +15,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.1
+ * @version 1.8.0
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -143,6 +143,14 @@ public interface IUserService extends Serializable
 	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix);
 
 	/**
+	 * Gets the users.
+	 *
+	 * @param email the email (mandatory)
+	 * @return the users
+	 */
+	public List<CUser> getUsers (String email);
+
+	/**
 	 * Gets the users order by organization.
 	 *
 	 * @param organization the organization (optional)
@@ -168,12 +176,12 @@ public interface IUserService extends Serializable
 	 * @param user the user
 	 */
 	public void updateUser (CUser user);
-	
+
 	/**
 	 * Add or update user address
 	 * 
 	 * @param user user for which is address updated
 	 * @param address address which is added or updated for user
 	 */
-	public void setAddress(CUser user, CAddress address);
+	public void setAddress (CUser user, CAddress address);
 }

@@ -30,7 +30,7 @@ import sk.qbsw.core.security.service.IUserService;
  * Checks user service.
  *
  * @autor Tomas Lauro
- * @version 1.7.1
+ * @version 1.8.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -222,6 +222,29 @@ public class CUserTestCase
 
 		users = userDao.findAllUsers(firstUnit, thirdGroupInUnit.get(0));
 		Assert.assertEquals("The expected count of users with thirdGroupInUnit is 2 ", users.size(), 2);
+	}
+
+	/**
+	 * Test get user by email.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllByEmail () throws CSecurityException
+	{
+		initTest();
+
+		String email = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk";
+		List<CUser> users = userService.getUsers(email);
+
+		//asserts
+		assertNotNull("Get user by email failed: cannot find user with email " + email, users);
+		Assert.assertEquals("Get user by email failed: the number of users with email " + email + " is not 1", users.size(), 1);
+
+		//checks if the user has a correct set of groups.
+		checksUserHasCorrectGroups(users.get(0));
 	}
 
 	/**

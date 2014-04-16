@@ -26,7 +26,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.7.2
+ * @version 1.8.0
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -46,7 +46,7 @@ public class CUserService implements IUserService
 	/** The authentication params dao. */
 	@Autowired
 	private IAuthenticationParamsDao authenticationParamsDao;
-	
+
 	/** The address dao */
 	@Autowired
 	private IAddressDao addressDao;
@@ -222,6 +222,15 @@ public class CUserService implements IUserService
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUsers(java.lang.String)
+	 */
+	@Transactional (readOnly = true)
+	public List<CUser> getUsers (String email)
+	{
+		return userDao.findAllUsers(email);
+	}
+
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#registerNewUser(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization)
 	 */
 	@Transactional (readOnly = false)
@@ -273,10 +282,10 @@ public class CUserService implements IUserService
 	{
 		//set address to user
 		user.setAddress(address);
-		
+
 		//save entities
 		addressDao.save(address);
 		userDao.save(user);
-		
+
 	}
 }

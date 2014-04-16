@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.7.1
+ * @version 1.8.0
  * @since 1.0.0
  */
 @Repository (value = "userDao")
@@ -295,14 +295,45 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled)
 	{
-		return findAllUsers(name, surname, login, enabled, null);
+		return findAllUsers(name, surname, login, null, enabled, null);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
 	 */
-	@SuppressWarnings ("unchecked")
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix)
+	{
+		return findAllUsers(name, surname, login, null, enabled, groupCodePrefix);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String)
+	 */
+	public List<CUser> findAllUsers (String email)
+	{
+		if (email == null)
+		{
+			throw new CSystemException("The mandatory parameter email is missing");
+		}
+		else
+		{
+			return findAllUsers(null, null, null, email, null, null);
+		}
+	}
+
+	/**
+	 * Find all users.
+	 *
+	 * @param name the name
+	 * @param surname the surname
+	 * @param login the login
+	 * @param email the email
+	 * @param enabled the enabled
+	 * @param groupCodePrefix the group code prefix
+	 * @return the list
+	 */
+	@SuppressWarnings ("unchecked")
+	private List<CUser> findAllUsers (String name, String surname, String login, String email, Boolean enabled, String groupCodePrefix)
 	{
 		//get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
@@ -336,6 +367,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 				strQueryBuilder.append(" and us.login=:login");
 			}
 
+			if (email != null)
+			{
+				strQueryBuilder.append(" and us.email=:email");
+			}
+
 			if (groupCodePrefix != null)
 			{
 				strQueryBuilder.append(" and gr.code like :groupCodePrefix");
@@ -366,6 +402,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			if (login != null)
 			{
 				query.setParameter("login", login);
+			}
+
+			if (email != null)
+			{
+				query.setParameter("email", email);
 			}
 
 			if (groupCodePrefix != null)
@@ -411,7 +452,6 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			session.enableFilter("userDefaultUnitFilter");
 
 			/** Create query */
-			//gets all users, fetchs until group - do not fetch user roles !!! (time expensive operation)
 			strQueryBuilder.append("select distinct(us) from CUser us " +
 							"left join fetch us.organization o " +
 							"left join fetch us.defaultUnit " +
