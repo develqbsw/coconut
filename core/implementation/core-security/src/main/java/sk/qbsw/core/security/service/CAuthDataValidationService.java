@@ -13,7 +13,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * Authentication data validation service.
  *
  * @author Tomas Lauro
- * @version 1.7.2
+ * @version 1.8.0
  * @since 1.7.2
  */
 @Service (value = "authDataValidationService")
@@ -31,11 +31,14 @@ class CAuthDataValidationService implements IAuthDataValidationService
 	 */
 	public void validatePassword (String password) throws CPasswordFormatException
 	{
-		Matcher matcher = Pattern.compile(authenticationConfigurator.getPasswordPattern()).matcher(password);
-
-		if (matcher.matches() == false)
+		if (authenticationConfigurator.getPasswordPattern() != null)
 		{
-			throw new CPasswordFormatException("Incorrect password format");
+			Matcher matcher = Pattern.compile(authenticationConfigurator.getPasswordPattern()).matcher(password);
+
+			if (matcher.matches() == false)
+			{
+				throw new CPasswordFormatException("Incorrect password format");
+			}
 		}
 	}
 }

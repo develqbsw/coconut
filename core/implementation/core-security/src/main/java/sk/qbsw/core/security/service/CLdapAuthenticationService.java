@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.persistence.NoResultException;
 
-import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
 import org.apache.directory.api.util.exception.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.ldap.CLdapProvider;
 import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
@@ -30,7 +30,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
  * The LDAP authentication service.
  * 
  * @author Tomas Lauro
- * @version 1.7.2
+ * @version 1.8.0
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -42,6 +42,10 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	/** The data. */
 	@Autowired
 	private ILdapAuthenticationConfigurator data;
+
+	/** The authentication configuration. */
+	@Autowired
+	private IAuthenticationConfigurator authenticationConfiguration;
 
 	/** The unit dao. */
 	@Autowired
@@ -227,7 +231,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 			attributes.put("objectClass", new byte[][] {data.getUserObjectClass().getBytes()});
 			attributes.put("cn", new byte[][] {login.getBytes()});
 			attributes.put("sn", new byte[][] {user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes()});
-			attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, LdapSecurityConstants.HASH_METHOD_SSHA512)});
+			attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm())});
 
 			//add entry
 			ldapProvider.addEntry(userDn, attributes);
