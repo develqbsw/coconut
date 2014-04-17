@@ -13,6 +13,5 @@ public interface IAuditLogService
 	 * serialize method parameters to xml
 	 * @param pojoObject
 	 */
-	@Transactional
 	public void doLog(String operationCode, List<Object> requestData, EOperationResult result, String resultDescription);
 }

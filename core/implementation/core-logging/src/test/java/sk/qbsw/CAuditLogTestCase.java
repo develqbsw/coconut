@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import sk.qbsw.core.logging.service.IAuditLogService;
  * @version 1.8.0
  * @since 1.8.0
  */
+@Ignore
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager")
@@ -53,7 +55,7 @@ public class CAuditLogTestCase
 	 */
 	@Test
 	@Transactional
-	@Rollback (true)
+	@Rollback(true)
 	public void storeLog ()
 	{
 		List<Object> testDataList = new ArrayList<Object>();

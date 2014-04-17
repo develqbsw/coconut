@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.2.2</version>
+			<version>${xstream.version}</version>
 		</dependency>
 
 		<!-- JPA Persistence and hibernate -->
@@ -66,8 +66,9 @@
 		<!-- jadira.usertype for persisting joda time via hibernate 4.x -->
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.core</artifactId>
+			<artifactId>usertype.jodatime</artifactId>
 			<version>${jadira.usertype.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- joda time -->

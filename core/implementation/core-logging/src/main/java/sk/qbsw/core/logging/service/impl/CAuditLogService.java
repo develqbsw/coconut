@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.logging.dao.impl.IAuditLogDao;
 import sk.qbsw.core.logging.model.domain.CAuditLog;
@@ -32,6 +34,7 @@ public class CAuditLogService implements IAuditLogService
 	@Autowired
 	private IAuditLogDao auditLogDao;
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void doLog (String operationCode, List<Object> requestData, EOperationResult result, String resultDescription)
 	{
 		String principal = null;
