@@ -56,7 +56,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 * The date value of parameter.
 	 */
 	@Column (name = "c_date_value")
-	@Type (type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime dateValue;
 
 	/**
@@ -75,14 +75,14 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 * Valid until.
 	 */
 	@Column (name = "c_valid_to_date")
-	@Type (type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime validToDate;
 
 	/**
 	 * Valid from.
 	 */
 	@Column (name = "c_valid_from_date")
-	@Type (type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime validFromDate;
 
 	/**

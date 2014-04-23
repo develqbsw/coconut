@@ -77,7 +77,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>${spring.security.version}</version>
-		</dependency>	
+		</dependency>
 		<!-- HTTP -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -89,7 +89,20 @@
 			<artifactId>httpcore</artifactId>
 			<version>${httpclient.version}</version>
 		</dependency>
-		
+
+		<!-- log4j and it's dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -102,7 +115,7 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 			<scope>test</scope>
-		</dependency>			
+		</dependency>
 
 	</dependencies>
 	<build>

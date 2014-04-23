@@ -12,12 +12,13 @@ import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,6 +38,7 @@ import sk.qbsw.core.base.exception.CSystemException;
 @Service ("cMailService")
 public class CMailSender implements IMailService
 {
+	final Logger logger = LoggerFactory.getLogger(CMailSender.class);
 
 	/** The mail sender. */
 	@Autowired
@@ -108,7 +110,7 @@ public class CMailSender implements IMailService
 		}
 		catch (Throwable e)
 		{
-			Logger.getLogger(getClass()).error("Mail sending problem", e);
+			logger.error("Mail sending problem", e);
 			throw new CSystemException("Mail sending problem", e);
 		}
 	}
