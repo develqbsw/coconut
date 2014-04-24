@@ -6,7 +6,14 @@ import org.joda.time.DateTime;
 
 import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 
-
+/**
+ * Service ISystemParameterService
+ *
+ * @author Michal Lacko
+ * 
+ * @version 1.8.0
+ * @since 1.8.0
+ */
 public interface ISystemParameterService
 {
 	/**
@@ -43,4 +50,10 @@ public interface ISystemParameterService
 	 * @return system parameter or null if parameter doesn't exists
 	 */
 	List<CSystemParameter> findByModule (String module, DateTime validDateTime);
+	
+	/**
+	 * save system parameters to database
+	 * @param systemParameters parameters which will be saved to database
+	 */
+	void save(CSystemParameter... systemParameters);
 }

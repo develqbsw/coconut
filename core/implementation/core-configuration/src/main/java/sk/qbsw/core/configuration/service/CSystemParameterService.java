@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.configuration.dao.ISystemParameterDao;
 import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 
 /**
- * Service xml serialziation
+ * Service CSystemParameterService
  *
  * @author Michal Lacko
  * 
@@ -17,32 +18,49 @@ import sk.qbsw.core.configuration.model.domain.CSystemParameter;
  * @since 1.8.0
  */
 @Service
-public class CAuditLogService implements ISystemParameterService
+public class CSystemParameterService implements ISystemParameterService
 {
 	private ISystemParameterDao systemParameterDao; 
 
 	@Override
+	@Transactional(readOnly = true)
 	public CSystemParameter findByName (String name)
 	{
 		return systemParameterDao.findByName(name);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<CSystemParameter> findByModule (String module)
 	{
 		return systemParameterDao.findByModule(module);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public CSystemParameter findByName (String name, DateTime validDateTime)
 	{
 		return systemParameterDao.findByName(name, validDateTime);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<CSystemParameter> findByModule (String module, DateTime validDateTime)
 	{
 		return systemParameterDao.findByModule(module, validDateTime);
 	}
+
+	@Override
+	@Transactional
+	public void save (CSystemParameter... systemParameters)
+	{
+		for (CSystemParameter systemParameter : systemParameters)
+		{
+			systemParameterDao.save(systemParameter);
+		}
+		
+	}
+	
+	
 
 }
