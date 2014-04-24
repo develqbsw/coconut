@@ -129,7 +129,7 @@
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.jodatime</artifactId>
-			<version>1.9.1</version>
+			<version>${jadira.usertype.version}</version>
 			<scope>test</scope>
 		</dependency>
 

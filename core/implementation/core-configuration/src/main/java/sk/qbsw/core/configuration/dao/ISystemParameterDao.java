@@ -52,7 +52,7 @@ public interface ISystemParameterDao extends Serializable, IEntityDao<Long, CSys
 	 * 
 	 * @param module module for which is parameter searched
 	 * @param validDateTime is time which must be between validFromDate and validToDate 
-	 * @return system parameter or null if parameter doesn't exists
+	 * @return system parameter or empty collection if parameter doesn't exists
 	 */
 	List<CSystemParameter> findByModule (String module, DateTime validDateTime);
 }

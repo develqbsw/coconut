@@ -25,7 +25,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.8.0
  */
 @Entity
-@Table (name = "t_system_parameter", schema = "config")
+@Table (name = "t_system_parameter", schema = "cfg")
 public class CSystemParameter implements Serializable, IEntity<Long>
 {
 	/** The Constant serialVersionUID. */

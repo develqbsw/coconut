@@ -34,8 +34,8 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 	{
 		super(CSystemParameter.class);
 	}
-	
-	
+
+
 	@Override
 	public CSystemParameter findByName (String name)
 	{
@@ -45,11 +45,21 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 	@Override
 	public CSystemParameter findByName (String name, DateTime validDateTime)
 	{
-		String strQuery = "select ap from CSystemParameter ap where ap.name = :name and ap.validFromDate < :currentDate and (ap.validToDate > :currentDate or ap.validToDate IS NULL)";
+		StringBuilder strQuery = new StringBuilder("select ap from CSystemParameter ap where ap.name = :name");
 
-		Query query = getEntityManager().createQuery(strQuery);
+		if (validDateTime != null)
+		{
+			strQuery.append(" and (ap.validFromDate < :currentDate or ap.validFromDate IS NULL) and (ap.validToDate > :currentDate or ap.validToDate IS NULL)");
+		}
+
+
+		Query query = getEntityManager().createQuery(strQuery.toString());
 		query.setParameter("name", name);
-		query.setParameter("currentDate", validDateTime);
+
+		if (validDateTime != null)
+		{
+			query.setParameter("currentDate", validDateTime);
+		}
 
 		return (CSystemParameter) query.getSingleResult();
 	}
@@ -59,15 +69,24 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 	{
 		return findByModule(module, new DateTime());
 	}
-	
+
 	@Override
 	public List<CSystemParameter> findByModule (String module, DateTime validDateTime)
 	{
-		String strQuery = "select ap from CSystemParameter ap where ap.module = :module and ap.validFromDate < :currentDate and (ap.validToDate > :currentDate or ap.validToDate IS NULL)";
+		StringBuilder strQuery = new StringBuilder("select ap from CSystemParameter ap where ap.module = :module ");
 
-		Query query = getEntityManager().createQuery(strQuery);
+		if (validDateTime != null)
+		{
+			strQuery.append(" and (ap.validFromDate < :currentDate or ap.validFromDate IS NULL) and (ap.validToDate > :currentDate or ap.validToDate IS NULL)");
+		}
+
+		Query query = getEntityManager().createQuery(strQuery.toString());
 		query.setParameter("module", module);
-		query.setParameter("currentDate", validDateTime);
+
+		if (validDateTime != null)
+		{
+			query.setParameter("currentDate", validDateTime);
+		}
 
 		return (List<CSystemParameter>) query.getResultList();
 	}
