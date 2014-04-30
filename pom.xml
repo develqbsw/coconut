@@ -103,6 +103,8 @@
 		<acra.version> 4.3.0 </acra.version>
 		<!-- google play services -->
 		<google-play-services.version>4.0.0</google-play-services.version>
+		<!-- quartz -->
+		<quartz.version>1.8.6</quartz.version>
 	</properties>
 
 	<modules>
