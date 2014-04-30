@@ -2,17 +2,16 @@ package sk.qbsw.core.communication.mail.service;
 
 import java.io.InputStream;
 
-// TODO: Auto-generated Javadoc
 /**
  * Loader for template file.
  *
  * @author Dalibor Rak
+ * 
  * @version 1.6.0
  * @since 1.6.0
  */
 public interface ITemplateLoader
 {
-
 	/**
 	 * Sets the base path.
 	 *
@@ -29,7 +28,6 @@ public interface ITemplateLoader
 	 * @return the template
 	 */
 	public InputStream getTemplate (Class<?> clas, String templateName, String locale);
-
 
 	/**
 	 * Gets the template.

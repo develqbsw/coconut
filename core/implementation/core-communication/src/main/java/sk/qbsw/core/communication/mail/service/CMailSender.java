@@ -1,86 +1,65 @@
 package sk.qbsw.core.communication.mail.service;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidParameterException;
-import java.util.Locale;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import javax.mail.internet.MimeMessage;
-
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.communication.mail.dao.IMailDao;
+import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
+import sk.qbsw.core.communication.mail.model.domain.CAttachment;
+import sk.qbsw.core.communication.mail.model.domain.CMail;
+import sk.qbsw.core.communication.mail.model.domain.CRecipient;
 
 /**
  * Mail sender.
  *
  * @author Jan Sivulka
  * @author Dalibor Rak
+ * @author Tomas Lauro
+ * @version 1.9.0
  * @since 1.6.0
- * @version 1.6.0
  */
 
 @Service ("cMailService")
 public class CMailSender implements IMailService
 {
+	/** The logger. */
 	final Logger logger = LoggerFactory.getLogger(CMailSender.class);
 
 	/** The mail sender. */
 	@Autowired
 	private JavaMailSender mailSender;
 
+	/** The sender mail dao. */
+	@Autowired
+	@Qualifier ("senderMailDao")
+	private IMailDao senderMailDao;
+
+	/** The template builder. */
+	@Autowired
+	private ITemplateBuilder templateBuilder;
+
 	/** Sender's email address. */
 	private String senderAdddress;
-
-	/** Constructed email message. */
-	private MimeMessage message;
-
-	/** The helper. */
-	private MimeMessageHelper helper;
-
-	/** The df. */
-	private DateTimeFormatter df = DateTimeFormat.shortDateTime().withLocale(Locale.GERMAN); // .forPattern("yyyy.MM.dd HH:mm:ss")
-
-	/**
-	 * Sets the mail sender.
-	 * 
-	 * @param mailSender
-	 *            the new mail sender
-	 */
-	public void setMailSender (JavaMailSender mailSender)
-	{
-		this.mailSender = mailSender;
-	}
-
-	/**
-	 * Gets the mail sender.
-	 * 
-	 * @return the mail sender
-	 */
-	public JavaMailSender getMailSender ()
-	{
-		return mailSender;
-	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendEmail(java.lang.String, java.lang.String, java.io.InputStream, java.util.Map)
 	 */
 	@Override
+	@Deprecated
 	public void sendEmail (String to, String subject, InputStream template, Map<String, Object> params)
 	{
 		if (to == null || to.length() == 0)
@@ -90,23 +69,15 @@ public class CMailSender implements IMailService
 
 		try
 		{
-			message = mailSender.createMimeMessage();
-			helper = new MimeMessageHelper(message, true, "UTF-8");
-			helper.setFrom(senderAdddress);
+			//create mail
+			CMail mail = new CMail();
+			mail.setFrom(senderAdddress);
+			mail.setTo(new CRecipient(Arrays.asList(to)));
+			mail.setSubject(subject);
+			mail.setBody(templateBuilder.buildMailBody(template, params));
 
-			params.put("date", df.print(new DateTime()));
-
-			// checks if to is filled
-			helper.setTo(to);
-
-			helper.setSubject(subject);
-
-			// create body of email
-			String body = createBody(template, params);
-
-			helper.setText(body, true);
-
-			mailSender.send(message);
+			//send mail
+			senderMailDao.save(mail);
 		}
 		catch (Throwable e)
 		{
@@ -115,24 +86,36 @@ public class CMailSender implements IMailService
 		}
 	}
 
-	/**
-	 * Creates the body.
-	 *
-	 * @param template the template
-	 * @param parameters the parameters
-	 * @return the string
-	 * @throws UnsupportedEncodingException wrong encoding
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendMail(java.util.List, java.lang.String, java.lang.String)
 	 */
-	private String createBody (InputStream template, Map<String, Object> parameters) throws UnsupportedEncodingException
+	@Override
+	public void sendMail (List<String> to, String subject, String body)
 	{
-		StringWriter writer = new StringWriter();
-		VelocityContext context = new VelocityContext(parameters);
-		Reader templateReader = new BufferedReader(new InputStreamReader(template, "UTF-8" ));
+		if (to != null && to.size() > 0)
+		{
+			sendMail(to, null, null, subject, body, new CAttachmentDefinition[] {});
+		}
+		else
+		{
+			throw new InvalidParameterException("Recipient address not set");
+		}
+	}
 
-		Velocity.evaluate(context, writer, "log tag name", templateReader);
-
-		return writer.toString();
-
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendMail(java.util.List, java.lang.String, java.lang.String, sk.qbsw.core.communication.mail.model.CAttachmentDefinition[])
+	 */
+	@Override
+	public void sendMail (List<String> to, String subject, String body, CAttachmentDefinition... attachments)
+	{
+		if (to != null && to.size() > 0)
+		{
+			sendMail(to, null, null, subject, body, attachments);
+		}
+		else
+		{
+			throw new InvalidParameterException("Recipient address not set");
+		}
 	}
 
 	/* (non-Javadoc)
@@ -153,5 +136,70 @@ public class CMailSender implements IMailService
 	public void setSenderAddress (String senderAddress)
 	{
 		this.senderAdddress = senderAddress;
+	}
+
+	/**
+	 * Send mail.
+	 *
+	 * @param to the to
+	 * @param cc the cc
+	 * @param bcc the bcc
+	 * @param subject the subject
+	 * @param body the body
+	 * @param attachmentDefinitions the attachment definitions
+	 */
+	private void sendMail (List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions)
+	{
+		try
+		{
+			//create mail
+			CMail mail = new CMail();
+			mail.setFrom(senderAdddress);
+			if (to != null && to.size() > 0)
+			{
+				mail.setTo(new CRecipient(to));
+			}
+			if (cc != null && cc.size() > 0)
+			{
+				mail.setCc(new CRecipient(cc));
+			}
+			if (bcc != null && bcc.size() > 0)
+			{
+				mail.setBcc(new CRecipient(bcc));
+			}
+			mail.setSubject(subject);
+			mail.setBody(body);
+
+			//attachments
+			if (attachmentDefinitions != null && attachmentDefinitions.length > 0)
+			{
+				Set<CAttachment> attachments = new HashSet<CAttachment>();
+
+				//set attachments
+				for (CAttachmentDefinition attachmentDefinition : attachmentDefinitions)
+				{
+					//create attachment from definition
+					CAttachment attachment = new CAttachment();
+					attachment.setMail(mail);
+					attachment.setFileName(attachmentDefinition.getFileName());
+					attachment.setData(IOUtils.toByteArray(attachmentDefinition.getDataStream()));
+					attachment.setContentType(attachmentDefinition.getContentType());
+
+					//add attachment to set
+					attachments.add(attachment);
+				}
+
+				//set attachment set to mail
+				mail.setAttachments(attachments);
+			}
+
+			//send mail
+			senderMailDao.save(mail);
+		}
+		catch (Throwable e)
+		{
+			logger.error("Mail sending problem", e);
+			throw new CSystemException("Mail sending problem", e);
+		}
 	}
 }

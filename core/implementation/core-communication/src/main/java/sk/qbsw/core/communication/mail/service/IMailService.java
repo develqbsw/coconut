@@ -1,20 +1,23 @@
 package sk.qbsw.core.communication.mail.service;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
+
+import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
 
 /**
  * Interface for mail service.
  *
  * @author Jan Sivulka
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.9.0
  * @since 1.6.0
  */
-
 public interface IMailService
 {
-
 	/**
 	 * Send email.
 	 *
@@ -23,7 +26,27 @@ public interface IMailService
 	 * @param template stream of the template
 	 * @param params the parameters of the message
 	 */
-	public abstract void sendEmail (String to, String subject, InputStream template, Map<String, Object> params);
+	@Deprecated
+	public void sendEmail (String to, String subject, InputStream template, Map<String, Object> params);
+
+	/**
+	 * Send mail.
+	 *
+	 * @param to the recipient
+	 * @param subject the subject
+	 * @param body the body
+	 */
+	public void sendMail (List<String> to, String subject, String body);
+
+	/**
+	 * Send mail.
+	 *
+	 * @param to the recipient
+	 * @param subject the subject
+	 * @param body the body
+	 * @param attachments the attachments
+	 */
+	public void sendMail (List<String> to, String subject, String body, CAttachmentDefinition... attachments);
 
 	/**
 	 * Sets the smtp server.

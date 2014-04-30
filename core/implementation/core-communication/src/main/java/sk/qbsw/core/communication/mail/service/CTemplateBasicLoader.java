@@ -5,14 +5,17 @@ import java.io.InputStream;
 
 import org.springframework.stereotype.Component;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class CTemplateBasicLoader.
+ * Loader for template file.
+ *
+ * @author Dalibor Rak
+ * 
+ * @version 1.6.0
+ * @since 1.6.0
  */
 @Component ("TemplateBasicLoader")
 public class CTemplateBasicLoader implements ITemplateLoader
 {
-
 	/** The base path. */
 	private String basePath;
 
@@ -52,5 +55,4 @@ public class CTemplateBasicLoader implements ITemplateLoader
 
 		return retVal;
 	}
-
 }
