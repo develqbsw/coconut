@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MailDateFormat;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,7 +21,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.communication.mail.dao.IMailDao;
 import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
+import sk.qbsw.core.communication.mail.model.domain.CMail;
+import sk.qbsw.core.communication.mail.model.domain.EMailState;
 import sk.qbsw.core.communication.mail.service.IMailService;
 import sk.qbsw.core.communication.mail.service.ITemplateBuilder;
 
@@ -42,6 +47,10 @@ public class CTestEmailBackgroundSend
 	/** The template builder. */
 	@Autowired
 	private ITemplateBuilder templateBuilder;
+	
+	@Autowired
+	@Qualifier ("jpaMailDao")
+	private IMailDao mailDao;
 
 	/**
 	 * Inits the mail service.
@@ -56,9 +65,17 @@ public class CTestEmailBackgroundSend
 	@Test
 	@Transactional
 	@Rollback (false)
-	@Ignore
 	public void test () throws InterruptedException
 	{
+		try
+		{
+		List<CMail> mails = mailDao.findAll(EMailState.UNSENT);
+		int i = 0;
+		}
+		catch (Throwable e)
+		{
+			int k = 0;
+		}
 		//		List<String> to = new ArrayList<String>();
 		//		to.add("lauro@qbsw.sk");
 		//		

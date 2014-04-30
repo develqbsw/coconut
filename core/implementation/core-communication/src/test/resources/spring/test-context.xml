@@ -20,5 +20,5 @@
 
 	<import resource="test-db.xml" />
 	<import resource="test-services.xml" />
-	<!-- <import resource="test-quartz.xml" /> -->
+	<import resource="test-quartz.xml" />
 </beans>

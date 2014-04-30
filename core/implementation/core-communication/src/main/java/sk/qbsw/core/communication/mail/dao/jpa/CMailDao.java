@@ -1,9 +1,14 @@
 package sk.qbsw.core.communication.mail.dao.jpa;
 
+import java.util.List;
+
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.communication.mail.dao.IMailDao;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
+import sk.qbsw.core.communication.mail.model.domain.EMailState;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 
 /**
@@ -25,5 +30,20 @@ public class CMailDao extends AEntityJpaDao<Long, CMail> implements IMailDao
 	public CMailDao ()
 	{
 		super(CMail.class);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.communication.mail.dao.IMailDao#findAll(sk.qbsw.core.communication.mail.model.domain.EMailState, int)
+	 */
+	@SuppressWarnings ("unchecked")
+	@Override
+	public List<CMail> findAll (EMailState state)
+	{
+		String strQuery = "select ma from CMail ma left join fetch ma.attachments where ma.state=:state";
+
+		Query query = getEntityManager().createQuery(strQuery);
+		query.setParameter("state", state);
+
+		return (List<CMail>) query.getResultList();
 	}
 }

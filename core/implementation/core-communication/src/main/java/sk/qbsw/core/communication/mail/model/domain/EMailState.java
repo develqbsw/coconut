@@ -17,10 +17,7 @@ public enum EMailState
 	SENT ("SENT", "mailState.SENT"),
 
 	/** The error occurred during sending. The job will try to sent it again. */
-	ERROR ("ERROR", "mailState.ERROR"),
-
-	/** The fatal error occurred during sending. The job will not try to sent it again. */
-	FATAL_ERROR ("FATAL_ERROR", "mailState.FATAL_ERROR");
+	ERROR ("ERROR", "mailState.ERROR");
 
 	/** The key. */
 	private String key;

@@ -15,6 +15,7 @@ import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.communication.mail.dao.IMailDao;
 import sk.qbsw.core.communication.mail.model.domain.CAttachment;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
+import sk.qbsw.core.communication.mail.model.domain.EMailState;
 
 /**
  * The dao is sending the mail.
@@ -159,6 +160,17 @@ public class CMailDao implements IMailDao
 	 */
 	@Override
 	public void clear ()
+	{
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * Not implemented.
+	 * 
+	 * @throws NotImplementedException
+	 */
+	@Override
+	public List<CMail> findAll (EMailState state)
 	{
 		throw new NotImplementedException();
 	}
