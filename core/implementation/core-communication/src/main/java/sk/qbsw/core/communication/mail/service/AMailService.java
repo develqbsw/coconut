@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +148,9 @@ public abstract class AMailService
 		{
 			//create mail
 			CMail mail = createMail(to, cc, bcc, subject, body, attachmentDefinitions);
+
+			//set date of creation
+			mail.setCreated(DateTime.now());
 
 			//send mail
 			mailDao.save(mail);

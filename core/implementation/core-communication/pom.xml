@@ -151,6 +151,13 @@
 			<artifactId>quartz</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
+
+		<!-- joda time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-hibernate</artifactId>
+			<version>${joda-time-hibernate.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

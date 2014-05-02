@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
@@ -83,6 +84,16 @@ public class CMail implements Serializable, IEntity<Long>
 	/** The attempt counter for sending. */
 	@Column (name = "c_attempt_counter", nullable = false)
 	private int attemptCounter = 0;
+
+	/** The date and time when the mail was created. */
+	@Column (name = "c_created")
+	@Type (type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime created;
+
+	/** The date and time when the mail was sent. */
+	@Column (name = "c_sent")
+	@Type (type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime sent;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
@@ -281,5 +292,45 @@ public class CMail implements Serializable, IEntity<Long>
 	public void setAttemptCounter (int attemptCounter)
 	{
 		this.attemptCounter = attemptCounter;
+	}
+
+	/**
+	 * Gets the created.
+	 *
+	 * @return the created
+	 */
+	public DateTime getCreated ()
+	{
+		return created;
+	}
+
+	/**
+	 * Sets the created.
+	 *
+	 * @param created the new created
+	 */
+	public void setCreated (DateTime created)
+	{
+		this.created = created;
+	}
+
+	/**
+	 * Gets the sent.
+	 *
+	 * @return the sent
+	 */
+	public DateTime getSent ()
+	{
+		return sent;
+	}
+
+	/**
+	 * Sets the sent.
+	 *
+	 * @param sent the new sent
+	 */
+	public void setSent (DateTime sent)
+	{
+		this.sent = sent;
 	}
 }

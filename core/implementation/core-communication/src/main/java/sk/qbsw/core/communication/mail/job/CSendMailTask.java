@@ -2,6 +2,7 @@ package sk.qbsw.core.communication.mail.job;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,7 @@ public class CSendMailTask
 			{
 				senderMailDao.save(unsentMail);
 				unsentMail.setState(EMailState.SENT);
+				unsentMail.setSent(DateTime.now());
 			}
 			//exception in sending process - try again
 			catch (CCommunicationException e)
