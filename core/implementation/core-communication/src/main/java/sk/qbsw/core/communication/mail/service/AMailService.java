@@ -6,9 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.communication.mail.dao.IMailDao;
+import sk.qbsw.core.communication.mail.exception.CCommunicationException;
 import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
 import sk.qbsw.core.communication.mail.model.domain.CAttachment;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
@@ -22,14 +27,27 @@ import sk.qbsw.core.communication.mail.model.domain.CRecipient;
  * @version 1.9.0
  * @since 1.9.0
  */
-public class AMailService
+public abstract class AMailService
 {
+	/** The logger. */
+	final Logger logger = LoggerFactory.getLogger(AMailService.class);
+
 	/** The mail sender. */
 	@Autowired
 	protected JavaMailSender mailSender;
 
 	/** Sender's email address. */
 	protected String senderAdddress;
+
+	/** The sender mail dao. */
+	protected IMailDao mailDao;
+
+	/**
+	 * Autowires the mail dao in children.
+	 *
+	 * @param mailDao the new mail dao
+	 */
+	protected abstract void setMailDao (IMailDao mailDao);
 
 	/**
 	 * Sets the smtp server.
@@ -111,5 +129,42 @@ public class AMailService
 		}
 
 		return mail;
+	}
+
+	/**
+	 * Save mail.
+	 *
+	 * @param to the recipient
+	 * @param cc the cc recipient
+	 * @param bcc the bcc recipient
+	 * @param subject the subject
+	 * @param body the body
+	 * @param attachmentDefinitions the attachment definitions
+	 */
+	protected void saveMail (List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions)
+	{
+		try
+		{
+			//create mail
+			CMail mail = createMail(to, cc, bcc, subject, body, attachmentDefinitions);
+
+			//send mail
+			mailDao.save(mail);
+		}
+		catch (CCommunicationException e)
+		{
+			logger.error("Mail sending problem", e);
+			throw e;
+		}
+		catch (CSystemException e)
+		{
+			logger.error("Mail creating problem", e);
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			logger.error("Mail creating problem", e);
+			throw new CSystemException("Mail creating problem", e);
+		}
 	}
 }

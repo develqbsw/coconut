@@ -1,4 +1,4 @@
-package sk.qbsw.core.communication.mail;
+package sk.qbsw.core.communication.test.mail;
 
 
 import static org.junit.Assert.assertEquals;

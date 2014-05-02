@@ -17,7 +17,10 @@ public enum EMailState
 	SENT ("SENT", "mailState.SENT"),
 
 	/** The error occurred during sending. The job will try to sent it again. */
-	ERROR ("ERROR", "mailState.ERROR");
+	COMMUNICATION_ERROR ("COMMUNICATION_ERROR", "mailState.COMMUNICATION_ERROR"),
+
+	/** The error occurred if the message cannot be created. The job will not try to sent it again. */
+	DATA_ERROR ("DATA_ERROR", "mailState.DATA_ERROR");
 
 	/** The key. */
 	private String key;

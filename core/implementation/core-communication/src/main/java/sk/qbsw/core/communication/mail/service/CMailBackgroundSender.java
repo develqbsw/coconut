@@ -6,17 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.communication.mail.dao.IMailDao;
 import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
-import sk.qbsw.core.communication.mail.model.domain.CMail;
 
 /**
  * Send mail with job running on the background.
@@ -29,13 +25,16 @@ import sk.qbsw.core.communication.mail.model.domain.CMail;
 @Service ("mailBackgroundService")
 public class CMailBackgroundSender extends AMailService implements IMailService
 {
-	/** The logger. */
-	final Logger logger = LoggerFactory.getLogger(CMailBackgroundSender.class);
-
-	/** The sender mail dao. */
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.communication.mail.service.AMailService#setMailDao(sk.qbsw.core.communication.mail.dao.IMailDao)
+	 */
 	@Autowired
 	@Qualifier ("jpaMailDao")
-	private IMailDao mailDao;
+	@Override
+	protected void setMailDao (IMailDao mailDao)
+	{
+		this.mailDao = mailDao;
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendEmail(java.lang.String, java.lang.String, java.io.InputStream, java.util.Map)
@@ -97,32 +96,5 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 	public void setSenderAddress (String senderAddress)
 	{
 		super.setSenderAddress(senderAddress);
-	}
-
-	/**
-	 * Save mail to database.
-	 *
-	 * @param to the recipient
-	 * @param cc the cc recipient
-	 * @param bcc the bcc recipient
-	 * @param subject the subject
-	 * @param body the body
-	 * @param attachmentDefinitions the attachment definitions
-	 */
-	private void saveMail (List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions)
-	{
-		try
-		{
-			//create mail
-			CMail mail = createMail(to, cc, bcc, subject, body, attachmentDefinitions);
-
-			//send mail
-			mailDao.save(mail);
-		}
-		catch (Throwable e)
-		{
-			logger.error("Mail sending problem", e);
-			throw new CSystemException("Mail sending problem", e);
-		}
 	}
 }

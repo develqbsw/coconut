@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.communication.mail.dao.IMailDao;
+import sk.qbsw.core.communication.mail.exception.CCommunicationException;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
 import sk.qbsw.core.communication.mail.model.domain.EMailState;
 
@@ -50,13 +51,19 @@ public class CSendMailTask
 				senderMailDao.save(unsentMail);
 				unsentMail.setState(EMailState.SENT);
 			}
-			catch (CSystemException e)
+			//exception in sending process - try again
+			catch (CCommunicationException e)
 			{
 				unsentMail.setAttemptCounter(unsentMail.getAttemptCounter() + 1);
 				if (unsentMail.getAttemptCounter() > SENDING_ATTEMPT_COUNTS_LIMIT)
 				{
-					unsentMail.setState(EMailState.ERROR);
+					unsentMail.setState(EMailState.COMMUNICATION_ERROR);
 				}
+			}
+			//exception in mail creating process - leave it
+			catch (CSystemException e)
+			{
+				unsentMail.setState(EMailState.DATA_ERROR);
 			}
 
 			jpaMailDao.save(unsentMail);

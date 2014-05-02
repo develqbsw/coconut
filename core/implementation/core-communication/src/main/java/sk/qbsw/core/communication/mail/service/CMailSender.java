@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -31,17 +29,20 @@ import sk.qbsw.core.communication.mail.model.domain.CRecipient;
 @Service ("cMailService")
 public class CMailSender extends AMailService implements IMailService
 {
-	/** The logger. */
-	final Logger logger = LoggerFactory.getLogger(CMailSender.class);
-
-	/** The sender mail dao. */
-	@Autowired
-	@Qualifier ("senderMailDao")
-	private IMailDao mailDao;
-
 	/** The template builder. */
 	@Autowired
 	private ITemplateBuilder templateBuilder;
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.communication.mail.service.AMailService#setMailDao(sk.qbsw.core.communication.mail.dao.IMailDao)
+	 */
+	@Autowired
+	@Qualifier ("senderMailDao")
+	@Override
+	protected void setMailDao (IMailDao mailDao)
+	{
+		this.mailDao = mailDao;
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendEmail(java.lang.String, java.lang.String, java.io.InputStream, java.util.Map)
@@ -82,7 +83,7 @@ public class CMailSender extends AMailService implements IMailService
 	{
 		if (to != null && to.size() > 0)
 		{
-			sendMail(to, null, null, subject, body, new CAttachmentDefinition[] {});
+			saveMail(to, null, null, subject, body, new CAttachmentDefinition[] {});
 		}
 		else
 		{
@@ -98,7 +99,7 @@ public class CMailSender extends AMailService implements IMailService
 	{
 		if (to != null && to.size() > 0)
 		{
-			sendMail(to, null, null, subject, body, attachments);
+			saveMail(to, null, null, subject, body, attachments);
 		}
 		else
 		{
@@ -122,32 +123,5 @@ public class CMailSender extends AMailService implements IMailService
 	public void setSenderAddress (String senderAddress)
 	{
 		super.setSenderAddress(senderAddress);
-	}
-
-	/**
-	 * Send mail.
-	 *
-	 * @param to the to
-	 * @param cc the cc
-	 * @param bcc the bcc
-	 * @param subject the subject
-	 * @param body the body
-	 * @param attachmentDefinitions the attachment definitions
-	 */
-	private void sendMail (List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions)
-	{
-		try
-		{
-			//create mail
-			CMail mail = createMail(to, cc, bcc, subject, body, attachmentDefinitions);
-
-			//send mail
-			mailDao.save(mail);
-		}
-		catch (Throwable e)
-		{
-			logger.error("Mail sending problem", e);
-			throw new CSystemException("Mail sending problem", e);
-		}
 	}
 }

@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.communication.mail.exception.CCommunicationException;
 import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
 
 /**
@@ -35,6 +37,8 @@ public interface IMailService
 	 * @param to the recipient
 	 * @param subject the subject
 	 * @param body the body
+	 * @exception CSystemException mail creating failed - possible data problem
+	 * @exception CCommunicationException mail sending failed
 	 */
 	public void sendMail (List<String> to, String subject, String body);
 
@@ -45,6 +49,8 @@ public interface IMailService
 	 * @param subject the subject
 	 * @param body the body
 	 * @param attachments the attachments
+	 * @exception CSystemException mail creating failed - possible data problem
+	 * @exception CCommunicationException mail sending failed
 	 */
 	public void sendMail (List<String> to, String subject, String body, CAttachmentDefinition... attachments);
 

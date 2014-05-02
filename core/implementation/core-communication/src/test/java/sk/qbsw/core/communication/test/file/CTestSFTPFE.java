@@ -1,4 +1,4 @@
-package sk.qbsw.core.communication.file;
+package sk.qbsw.core.communication.test.file;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import sk.qbsw.core.communication.file.EFileType;
 import sk.qbsw.core.communication.file.sftp.CFileExchangerSFTP;
 
 public class CTestSFTPFE

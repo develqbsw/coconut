@@ -23,4 +23,12 @@ public interface IMailDao extends Serializable, IEntityDao<Long, CMail>
 	 * @return list of entities
 	 */
 	List<CMail> findAll (EMailState state);
+
+	/**
+	 * Find by subject.
+	 *
+	 * @param subject the subject
+	 * @return the list of entities
+	 */
+	List<CMail> findBySubject (String subject);
 }

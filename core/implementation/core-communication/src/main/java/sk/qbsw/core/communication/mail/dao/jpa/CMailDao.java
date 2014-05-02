@@ -46,4 +46,19 @@ public class CMailDao extends AEntityJpaDao<Long, CMail> implements IMailDao
 
 		return (List<CMail>) query.getResultList();
 	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.communication.mail.dao.IMailDao#findBySubject(java.lang.String)
+	 */
+	@SuppressWarnings ("unchecked")
+	@Override
+	public List<CMail> findBySubject (String subject)
+	{
+		String strQuery = "select ma from CMail ma left join fetch ma.attachments where ma.subject=:subject";
+
+		Query query = getEntityManager().createQuery(strQuery);
+		query.setParameter("subject", subject);
+
+		return (List<CMail>) query.getResultList();
+	}
 }

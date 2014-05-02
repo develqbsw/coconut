@@ -7,12 +7,16 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.communication.mail.dao.IMailDao;
+import sk.qbsw.core.communication.mail.exception.CCommunicationException;
 import sk.qbsw.core.communication.mail.model.domain.CAttachment;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
 import sk.qbsw.core.communication.mail.model.domain.EMailState;
@@ -92,9 +96,21 @@ public class CMailDao implements IMailDao
 			//send message
 			mailSender.send(message);
 		}
+		catch (MailAuthenticationException e)
+		{
+			throw new CCommunicationException("Mail sending failed", e);
+		}
+		catch (MailSendException e)
+		{
+			throw new CCommunicationException("Mail sending failed", e);
+		}
+		catch (MailException e)
+		{
+			throw new CCommunicationException("Mail sending failed", e);
+		}
 		catch (Throwable e)
 		{
-			throw new CSystemException("Mail sending failed", e);
+			throw new CSystemException("Mail creating failed", e);
 		}
 	}
 
@@ -171,6 +187,17 @@ public class CMailDao implements IMailDao
 	 */
 	@Override
 	public List<CMail> findAll (EMailState state)
+	{
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * Not implemented.
+	 * 
+	 * @throws NotImplementedException
+	 */
+	@Override
+	public List<CMail> findBySubject (String subject)
 	{
 		throw new NotImplementedException();
 	}

@@ -1,4 +1,4 @@
-package sk.qbsw.core.communication.mail;
+package sk.qbsw.core.communication.test.mail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import sk.qbsw.core.communication.mail.job.CSendMailTask;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = false)
+@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
 public class CTestSendMailTask
 {
 	/** The mail sender. */
@@ -46,7 +46,7 @@ public class CTestSendMailTask
 
 	@Test
 	@Transactional
-	@Rollback (false)
+	@Rollback (true)
 	public void testRun () throws InterruptedException
 	{
 		sendMailTask.run();
