@@ -4,6 +4,7 @@ package sk.qbsw.core.communication.test.mail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.InputStream;
 
 import org.junit.Before;
@@ -17,15 +18,17 @@ import sk.qbsw.core.communication.mail.service.ITemplateLoader;
 
 /**
  * The Class CTestTemplateBasicLoader.
+ * 
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.9.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 public class CTestTemplateBasicLoader
-{
-
+{	
 	/** The loader. */
 	@Autowired
 	private ITemplateLoader loader;
@@ -46,7 +49,7 @@ public class CTestTemplateBasicLoader
 	public void testPathConstruction ()
 	{
 		String toCheck = loader.getFullFileName("test", "en");
-		assertEquals("Generated path not compatible", "/email/test_en.vm", toCheck);
+		assertEquals("Generated path not compatible", "/email" + File.separator + "test_en.vm", toCheck);
 	}
 
 	/**

@@ -55,7 +55,7 @@ public class CSendMailTask
 			catch (CCommunicationException e)
 			{
 				unsentMail.setAttemptCounter(unsentMail.getAttemptCounter() + 1);
-				if (unsentMail.getAttemptCounter() > SENDING_ATTEMPT_COUNTS_LIMIT)
+				if (unsentMail.getAttemptCounter() >= SENDING_ATTEMPT_COUNTS_LIMIT)
 				{
 					unsentMail.setState(EMailState.COMMUNICATION_ERROR);
 				}

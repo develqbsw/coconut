@@ -23,4 +23,9 @@
 	</bean>
 
 	<context:component-scan base-package="sk.qbsw.core.communication" />
+	
+	<!-- Mocks object for testing -->
+    <bean id="mockSenderMailDao" class="sk.qbsw.core.communication.test.mock.CMockitoFactoryBean">
+        <constructor-arg name="classToBeMocked" value="sk.qbsw.core.communication.mail.dao.sender.CMailDao" />
+    </bean>
 </beans>

@@ -77,6 +77,12 @@ public class CTestMailBuilder
 		return new CAttachmentDefinition[] {attachmentDefinition};
 	}
 
+	/**
+	 * Builds the body.
+	 *
+	 * @return the string
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public String buildBody () throws IOException
 	{
 		InputStream templateStream = getInputStream("/email/test_en.vm");
