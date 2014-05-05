@@ -1,4 +1,4 @@
-package sk.qbsw;
+package sk.qbsw.core.logging.test;
 
 import java.util.ArrayList;
 import java.util.List;

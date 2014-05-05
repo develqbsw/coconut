@@ -1,7 +1,7 @@
 /*
  * Developed by QBSW a.s.
  */
-package sk.qbsw.core.logging.dao.impl;
+package sk.qbsw.core.logging.dao;
 
 import java.io.Serializable;
 
