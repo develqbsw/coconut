@@ -42,6 +42,12 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw</groupId>
+			<artifactId>core-testing</artifactId>
+			<version>${core.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw</groupId>
 			<artifactId>core-persistence</artifactId>
 			<version>${core.version}</version>
 		</dependency>

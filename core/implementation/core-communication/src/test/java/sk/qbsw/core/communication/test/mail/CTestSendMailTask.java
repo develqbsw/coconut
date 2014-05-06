@@ -27,7 +27,7 @@ import sk.qbsw.core.communication.mail.model.domain.CMail;
 import sk.qbsw.core.communication.mail.model.domain.EMailState;
 import sk.qbsw.core.communication.mail.service.IMailService;
 import sk.qbsw.core.communication.test.mail.util.CTestMailBuilder;
-import sk.qbsw.core.communication.test.mock.CMockHelper;
+import sk.qbsw.core.testing.mock.CMockHelper;
 
 /**
  * The test for sending mail task.

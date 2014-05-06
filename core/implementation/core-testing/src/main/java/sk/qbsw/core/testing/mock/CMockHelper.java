@@ -1,4 +1,4 @@
-package sk.qbsw.core.communication.test.mock;
+package sk.qbsw.core.testing.mock;
 
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;

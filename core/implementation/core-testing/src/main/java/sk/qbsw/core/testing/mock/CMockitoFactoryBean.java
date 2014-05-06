@@ -1,4 +1,4 @@
-package sk.qbsw.core.communication.test.mock;
+package sk.qbsw.core.testing.mock;
 
 import org.mockito.Mockito;
 import org.springframework.beans.factory.FactoryBean;
