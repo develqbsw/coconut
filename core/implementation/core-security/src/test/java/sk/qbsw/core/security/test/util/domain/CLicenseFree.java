@@ -1,7 +1,7 @@
 /*
  * Developed by QBSW a.s.
  */
-package sk.qbsw.code.security.test.util.domain;
+package sk.qbsw.core.security.test.util.domain;
 
 import java.math.BigDecimal;
 

@@ -1,12 +1,10 @@
-package sk.qbsw.code.security.test;
+package sk.qbsw.core.security.test;
 
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.aop.framework.Advised;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
@@ -16,8 +14,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
-import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
@@ -25,12 +21,15 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.IUserService;
 import sk.qbsw.core.security.service.ldap.CLdapProvider;
+import sk.qbsw.core.security.test.util.CAuthenticationTestProvider;
+import sk.qbsw.core.security.test.util.CDataGenerator;
+import sk.qbsw.core.testing.mock.IMockHelper;
 
 /**
  * Checks Authentication service for ldap.
  *
  * @autor Tomas Lauro
- * @version 1.7.2
+ * @version 1.9.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -71,6 +70,10 @@ public class CLdapAuthenticationTestCase
 	/** The authentication configurator. */
 	@Autowired
 	private IAuthenticationConfigurator authenticationConfigurator;
+
+	/** The mock helper. */
+	@Autowired
+	private IMockHelper mockHelper;
 
 	/**
 	 * Inits the test case.
@@ -279,27 +282,6 @@ public class CLdapAuthenticationTestCase
 	private void initTest () throws Exception
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();
-		ReflectionTestUtils.setField(unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
-	}
-
-	/**
-	 * Unwrap spring proxy object.
-	 *
-	 * @param <T> the generic type
-	 * @param object the object
-	 * @return the unwrapped object
-	 * @throws Exception the exception
-	 */
-	@SuppressWarnings ("unchecked")
-	private <T>T unwrapSpringProxyObject (T object) throws Exception
-	{
-		if (AopUtils.isAopProxy(object) && object instanceof Advised)
-		{
-			return (T) ((Advised) object).getTargetSource().getTarget();
-		}
-		else
-		{
-			throw new Exception("The object is not a aop advise proxy object");
-		}
+		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
 	}
 }

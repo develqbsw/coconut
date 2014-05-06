@@ -1,13 +1,15 @@
-package sk.qbsw.code.security.test.util;
+package sk.qbsw.core.security.test.util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import sk.qbsw.code.security.test.util.domain.CLicenseFree;
-import sk.qbsw.code.security.test.util.domain.CLicenseOwner;
+import org.springframework.stereotype.Component;
+
 import sk.qbsw.core.security.model.domain.CLicense;
 import sk.qbsw.core.security.model.jmx.CLicensingRules;
 import sk.qbsw.core.security.service.ILicenseGenerator;
+import sk.qbsw.core.security.test.util.domain.CLicenseFree;
+import sk.qbsw.core.security.test.util.domain.CLicenseOwner;
 
 /**
  * License Generator.
@@ -16,7 +18,7 @@ import sk.qbsw.core.security.service.ILicenseGenerator;
  * @version 1.0.0
  * @since 1.0.0
  */
-//@Service
+@Component
 public class CLicenseGenerator implements ILicenseGenerator
 {
 

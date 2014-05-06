@@ -1,4 +1,4 @@
-package sk.qbsw.code.security.test.performance.task;
+package sk.qbsw.core.security.test.performance.task;
 
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.exception.CSecurityException;

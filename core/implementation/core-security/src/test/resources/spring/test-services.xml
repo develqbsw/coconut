@@ -13,14 +13,10 @@
 
 	<context:component-scan base-package="sk.qbsw.core.security" />
 
-	<bean class="sk.qbsw.code.security.test.util.CLicenseGenerator" />
-	<bean class="sk.qbsw.code.security.test.util.CDataGenerator" />
-	<bean class="sk.qbsw.code.security.test.util.CAuthenticationTestProvider" />
-	<bean class="sk.qbsw.code.security.test.util.CAuthorizationTestProvider" />
 	<bean id="authenticationService" class="sk.qbsw.core.security.service.CDatabaseAuthenticationService" />
 	
-	<bean id="databaseLoginTask" scope="prototype" class="sk.qbsw.code.security.test.performance.task.CDatabaseLoginTask" />
-	<bean id="ldapLoginTask" scope="prototype" class="sk.qbsw.code.security.test.performance.task.CLdapLoginTask" />
+	<bean id="databaseLoginTask" scope="prototype" class="sk.qbsw.core.security.test.performance.task.CDatabaseLoginTask" />
+	<bean id="ldapLoginTask" scope="prototype" class="sk.qbsw.core.security.test.performance.task.CLdapLoginTask" />
 	<bean id="loginTaskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="20" />

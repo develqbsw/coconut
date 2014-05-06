@@ -25,6 +25,12 @@
 			<artifactId>core-base</artifactId>
 			<version>${core.version}</version>
 		</dependency>
+			<dependency>
+			<groupId>sk.qbsw</groupId>
+			<artifactId>core-testing</artifactId>
+			<version>${core.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- testing -->
 		<dependency>

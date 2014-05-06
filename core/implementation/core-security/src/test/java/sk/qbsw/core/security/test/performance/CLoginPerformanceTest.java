@@ -1,4 +1,4 @@
-package sk.qbsw.code.security.test.performance;
+package sk.qbsw.core.security.test.performance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import sk.qbsw.code.security.test.performance.task.CLoginTask;
+import sk.qbsw.core.security.test.performance.task.CLoginTask;
 
 /**
  * The login performance test. Measures the time of login for specified login iterations and threads count.

@@ -1,4 +1,4 @@
-package sk.qbsw.code.security.test.util;
+package sk.qbsw.core.security.test.util;
 
 import org.springframework.stereotype.Component;
 

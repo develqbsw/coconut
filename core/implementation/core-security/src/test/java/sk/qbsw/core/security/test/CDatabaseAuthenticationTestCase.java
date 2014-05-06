@@ -1,4 +1,4 @@
-package sk.qbsw.code.security.test;
+package sk.qbsw.core.security.test;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -13,13 +13,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.code.security.test.util.CAuthenticationTestProvider;
-import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.IUserService;
+import sk.qbsw.core.security.test.util.CAuthenticationTestProvider;
+import sk.qbsw.core.security.test.util.CDataGenerator;
 
 /**
  * Checks Authentication service for database.

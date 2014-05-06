@@ -12,15 +12,12 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 	<context:component-scan base-package="sk.qbsw.core.security" />
-
-	<bean class="sk.qbsw.code.security.test.util.CLicenseGenerator" />
-	<bean class="sk.qbsw.code.security.test.util.CDataGenerator" />
-	<bean class="sk.qbsw.code.security.test.util.CAuthenticationTestProvider" />
-	<bean class="sk.qbsw.code.security.test.util.CAuthorizationTestProvider" />
+	<context:component-scan base-package="sk.qbsw.core.testing.mock" />
+	
 	<bean id="authenticationService" class="sk.qbsw.core.security.service.CLdapAuthenticationService" />
 	
 	<!-- Mocks object for testing -->
-    <bean id="ldapProviderMock" class="sk.qbsw.code.security.test.util.CMockitoFactoryBean">
+    <bean id="ldapProviderMock" class="sk.qbsw.core.testing.mock.CMockitoFactoryBean">
         <constructor-arg name="classToBeMocked" value="sk.qbsw.core.security.service.ldap.CLdapProvider" />
     </bean>
 </beans>

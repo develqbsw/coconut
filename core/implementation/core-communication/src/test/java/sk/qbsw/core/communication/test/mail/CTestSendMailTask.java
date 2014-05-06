@@ -27,7 +27,7 @@ import sk.qbsw.core.communication.mail.model.domain.CMail;
 import sk.qbsw.core.communication.mail.model.domain.EMailState;
 import sk.qbsw.core.communication.mail.service.IMailService;
 import sk.qbsw.core.communication.test.mail.util.CTestMailBuilder;
-import sk.qbsw.core.testing.mock.CMockHelper;
+import sk.qbsw.core.testing.mock.IMockHelper;
 
 /**
  * The test for sending mail task.
@@ -70,7 +70,7 @@ public class CTestSendMailTask
 
 	/** The mock helper. */
 	@Autowired
-	private CMockHelper mockHelper;
+	private IMockHelper mockHelper;
 
 	/**
 	 * Inits the mail service.

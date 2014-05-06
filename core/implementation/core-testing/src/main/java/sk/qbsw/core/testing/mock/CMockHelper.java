@@ -13,15 +13,10 @@ import org.springframework.stereotype.Component;
  * @since 1.9.0
  */
 @Component ("mockHelper")
-public class CMockHelper
+public class CMockHelper implements IMockHelper
 {
-	/**
-	 * Unwrap spring proxy object.
-	 *
-	 * @param <T> the generic type
-	 * @param object the object
-	 * @return the unwrapped object
-	 * @throws Exception the exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.testing.mock.IMockHelper#unwrapSpringProxyObject(java.lang.Object)
 	 */
 	@SuppressWarnings ("unchecked")
 	public <T>T unwrapSpringProxyObject (T object) throws Exception

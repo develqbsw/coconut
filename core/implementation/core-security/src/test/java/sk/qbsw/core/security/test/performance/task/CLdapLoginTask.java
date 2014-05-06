@@ -1,13 +1,13 @@
-package sk.qbsw.code.security.test.performance.task;
+package sk.qbsw.core.security.test.performance.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import sk.qbsw.code.security.test.util.CDataGenerator;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
+import sk.qbsw.core.security.test.util.CDataGenerator;
 
 /**
  * The database login task for test.
