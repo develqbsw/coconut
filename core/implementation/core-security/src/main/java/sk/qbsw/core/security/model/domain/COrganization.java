@@ -81,6 +81,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_organization_pkid_generator")
 	@Column (name = "pk_id")
 	@Expose
+	@Access (AccessType.PROPERTY)
 	private Long id;
 
 	//bi-directional many-to-one association to CUser
