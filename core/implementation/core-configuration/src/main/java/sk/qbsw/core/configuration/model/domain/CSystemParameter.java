@@ -1,6 +1,7 @@
 package sk.qbsw.core.configuration.model.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +36,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 * The entity id.
 	 */
 	@Id
-	@SequenceGenerator (name = "t_system_parameter_pkid_generator", sequenceName = "config.t_system_parameter_pk_id_seq")
+	@SequenceGenerator (name = "t_system_parameter_pkid_generator", sequenceName = "cfg.t_system_parameter_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_system_parameter_pkid_generator")
 	@Column (name = "pk_id", nullable = true)
 	private Long id;
@@ -70,6 +71,12 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 */
 	@Column (name = "c_string_value")
 	private String stringValue;
+
+	/**
+	 * The float value of parameter.
+	 */
+	@Column (name = "c_float_value")
+	private BigDecimal floatValue;
 
 	/**
 	 * Valid until.
@@ -268,6 +275,22 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	public void setModule (String module)
 	{
 		this.module = module;
+	}
+
+	/**
+	 * @return the floatValue
+	 */
+	public BigDecimal getFloatValue ()
+	{
+		return floatValue;
+	}
+
+	/**
+	 * @param floatValue the floatValue to set
+	 */
+	public void setFloatValue (BigDecimal floatValue)
+	{
+		this.floatValue = floatValue;
 	}
 
 	/**

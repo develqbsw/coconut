@@ -46,7 +46,8 @@ public class CAuditLog implements Serializable, IEntity<Long>
 	private String operationCode;
 
 	/** The user identifier. */
-	@Column (name = "c_user_identifier", nullable = false)
+	//nullable true if user isn't logged
+	@Column (name = "c_user_identifier", nullable = true)
 	private String userIdentifier;
 
 	/** The request date time. */

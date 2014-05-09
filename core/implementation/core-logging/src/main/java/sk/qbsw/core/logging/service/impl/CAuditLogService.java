@@ -42,7 +42,7 @@ public class CAuditLogService implements IAuditLogService
 		Authentication authentication = securityContext.getAuthentication();
 		if (authentication != null)
 		{
-			principal = (String) authentication.getPrincipal();
+			principal = (String) authentication.getName();
 		}
 
 		CAuditLog auditLog = new CAuditLog();

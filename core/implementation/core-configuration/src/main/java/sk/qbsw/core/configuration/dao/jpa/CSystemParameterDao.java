@@ -5,6 +5,7 @@ package sk.qbsw.core.configuration.dao.jpa;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.joda.time.DateTime;
@@ -45,6 +46,8 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 	@Override
 	public CSystemParameter findByName (String name, DateTime validDateTime)
 	{
+		CSystemParameter parameter;
+
 		StringBuilder strQuery = new StringBuilder("select ap from CSystemParameter ap where ap.name = :name");
 
 		if (validDateTime != null)
@@ -61,7 +64,15 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 			query.setParameter("currentDate", validDateTime);
 		}
 
-		return (CSystemParameter) query.getSingleResult();
+		try
+		{
+			parameter = (CSystemParameter) query.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			parameter = null;
+		}
+		return parameter;
 	}
 
 	@Override

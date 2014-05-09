@@ -3,6 +3,7 @@ package sk.qbsw.core.configuration.service;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 @Service
 public class CSystemParameterService implements ISystemParameterService
 {
+	@Autowired
 	private ISystemParameterDao systemParameterDao; 
 
 	@Override
