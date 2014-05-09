@@ -17,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CRole.
  *
