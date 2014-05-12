@@ -5,8 +5,13 @@ import java.util.Map;
 
 import javax.persistence.NoResultException;
 
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
 import org.apache.directory.api.util.exception.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +20,7 @@ import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidUserException;
+import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CWrongPasswordException;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
@@ -30,7 +36,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
  * The LDAP authentication service.
  * 
  * @author Tomas Lauro
- * @version 1.8.0
+ * @version 1.9.0
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -38,6 +44,9 @@ public class CLdapAuthenticationService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** The logger. */
+	final Logger logger = LoggerFactory.getLogger(CLdapAuthenticationService.class);
 
 	/** The data. */
 	@Autowired
@@ -198,8 +207,9 @@ public class CLdapAuthenticationService implements IAuthenticationService
 
 			return true;
 		}
-		catch (CSecurityException ex)
+		catch (Throwable ex)
 		{
+			logger.info("The user authentication failed", ex);
 			return false;
 		}
 	}
@@ -219,39 +229,59 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		//create dn
 		String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString();
 
-		if (ldapProvider.entryExists(userDn) == true)
-		{
-			//change password
-			ldapProvider.modifyEntry(userDn, "userPassword", password, EModificationOperation.REPLACE_ATTRIBUTE);
-		}
-		else
-		{
-			//add auth data
-			Map<String, byte[][]> attributes = new HashMap<String, byte[][]>();
-			attributes.put("objectClass", new byte[][] {data.getUserObjectClass().getBytes()});
-			attributes.put("cn", new byte[][] {login.getBytes()});
-			attributes.put("sn", new byte[][] {user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes()});
-			attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm())});
-
-			//add entry
-			ldapProvider.addEntry(userDn, attributes);
-		}
-
-		//set auth params
-		CAuthenticationParams authParams = null;
 		try
 		{
-			authParams = authenticationParamsDao.findByUserId(user.getId());
+			if (ldapProvider.entryExists(userDn) == true)
+			{
+				//change password
+				ldapProvider.modifyEntry(userDn, "userPassword", password, EModificationOperation.REPLACE_ATTRIBUTE);
+			}
+			else
+			{
+				//add auth data
+				Map<String, byte[][]> attributes = new HashMap<String, byte[][]>();
+				attributes.put("objectClass", new byte[][] {data.getUserObjectClass().getBytes()});
+				attributes.put("cn", new byte[][] {login.getBytes()});
+				attributes.put("sn", new byte[][] {user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes()});
+				attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm())});
+
+				//add entry
+				ldapProvider.addEntry(userDn, attributes);
+			}
+
+			//set auth params
+			CAuthenticationParams authParams = null;
+			try
+			{
+				authParams = authenticationParamsDao.findByUserId(user.getId());
+			}
+			catch (NoResultException ex)
+			{
+				//create new because user has no auth params
+				authParams = new CAuthenticationParams();
+				authParams.setUser(user);
+				authParams.setPassword(null);
+				authParams.setPasswordDigest(null);
+				authParams.setPin(null);
+				authenticationParamsDao.save(authParams);
+			}
 		}
-		catch (NoResultException ex)
+		catch (LdapInvalidAttributeValueException ex)
 		{
-			//create new because user has no auth params
-			authParams = new CAuthenticationParams();
-			authParams.setUser(user);
-			authParams.setPassword(null);
-			authParams.setPasswordDigest(null);
-			authParams.setPin(null);
-			authenticationParamsDao.save(authParams);
+			logger.error("The user password change failed", ex);
+			if (ex.getResultCode().equals(ResultCodeEnum.CONSTRAINT_VIOLATION))
+			{
+				throw new CPasswordFormatException("The password format is invalid");
+			}
+			else
+			{
+				throw new CSecurityException("There is a invalid input value");
+			}
+		}
+		catch (Throwable ex)
+		{
+			logger.error("The user password change failed", ex);
+			throw new CSecurityException("Password change failed");
 		}
 	}
 
@@ -277,11 +307,19 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDn()).toString();
 		String newRdn = new StringBuilder().append("cn=").append(login).toString();
 
-		//the record in LDAP is updated only if it had existed
-		if (ldapProvider.entryExists(userDn) == true)
+		try
 		{
-			//change login
-			ldapProvider.renameEntry(userDn, newRdn, true);
+			//the record in LDAP is updated only if it had existed
+			if (ldapProvider.entryExists(userDn) == true)
+			{
+				//change login
+				ldapProvider.renameEntry(userDn, newRdn, true);
+			}
+		}
+		catch (LdapException ex)
+		{
+			logger.error("The user password change failed", ex);
+			throw new CSecurityException("The login cannot be changed");
 		}
 
 		//save user login in DB

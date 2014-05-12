@@ -17,7 +17,6 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
@@ -25,15 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
 /**
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.7.2
+ * @version 1.9.0
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -51,8 +48,10 @@ public class CLdapProvider
 
 	/**
 	 * Initialize the connections to LDAP server. Must be called before every connect to server.
+	 *
+	 * @throws LdapException the ldap exception
 	 */
-	private synchronized void init ()
+	private synchronized void init () throws LdapException
 	{
 		//initialize the main connection
 		if (connection == null)
@@ -115,17 +114,11 @@ public class CLdapProvider
 	 * Open connection to ldap server.
 	 *
 	 * @param ldapConnection the ldap connection
+	 * @throws LdapException the ldap exception
 	 */
-	private void openConnection (LdapConnection ldapConnection)
+	private void openConnection (LdapConnection ldapConnection) throws LdapException
 	{
-		try
-		{
-			ldapConnection.connect();
-		}
-		catch (LdapException ex)
-		{
-			throw new CSystemException("Cannot open connection to ldap server", ex);
-		}
+		ldapConnection.connect();
 	}
 
 	/**
@@ -154,23 +147,17 @@ public class CLdapProvider
 	 * @param ldapConnection the ldap connection
 	 * @param ldapUserDn the DN of an user account
 	 * @param ldapUserPassword the user account password
+	 * @throws LdapException cannot bind to server or the connection no created
 	 */
-	private void bindOnServer (LdapConnection ldapConnection, String ldapUserDn, String ldapUserPassword)
+	private void bindOnServer (LdapConnection ldapConnection, String ldapUserDn, String ldapUserPassword) throws LdapException
 	{
 		if (ldapConnection != null)
 		{
-			try
-			{
-				ldapConnection.bind(ldapUserDn, ldapUserPassword);
-			}
-			catch (LdapException ex)
-			{
-				throw new CSystemException("Cannot bind on a ldap server with user: " + ldapUserDn, ex);
-			}
+			ldapConnection.bind(ldapUserDn, ldapUserPassword);
 		}
 		else
 		{
-			throw new CSystemException("Cannot bind on a ldap server. Connection doesn't exist");
+			throw new LdapException("The ldap connection was not initialized");
 		}
 	}
 
@@ -202,24 +189,32 @@ public class CLdapProvider
 	 * @param scope the scope
 	 * @param attributes the attributes
 	 * @return the entry
-	 * @throws CBusinessException the c business exception
+	 * @throws CBusinessException The exception occurs if there is unexpected count of results
+	 * @throws LdapException The exception occurs if the connection to server can't be established
 	 */
-	public Entry searchSingleResult (String baseDn, String filter, SearchScope scope, String... attributes) throws CBusinessException
+	public Entry searchSingleResult (String baseDn, String filter, SearchScope scope, String... attributes) throws CBusinessException, LdapException
 	{
 		//init the connection
 		init();
 
-		Set<Entry> entries = searchResults(baseDn, filter, scope, attributes);
+		try
+		{
+			Set<Entry> entries = searchResults(baseDn, filter, scope, attributes);
 
-		if (entries.size() == 0)
-		{
-			throw new CBusinessException("There is not a single result.");
+			if (entries.size() == 0)
+			{
+				throw new CBusinessException("There is not a single result.");
+			}
+			else if (entries.size() == 1)
+			{
+				return entries.iterator().next();
+			}
+			else
+			{
+				throw new CBusinessException("The result is not unique.");
+			}
 		}
-		else if (entries.size() == 1)
-		{
-			return entries.iterator().next();
-		}
-		else
+		catch (CursorException ex)
 		{
 			throw new CBusinessException("The result is not unique.");
 		}
@@ -233,8 +228,10 @@ public class CLdapProvider
 	 * @param scope the scope
 	 * @param attributes the attributes
 	 * @return the sets of the entries
+	 * @throws LdapException The exception occurs if the connection to server can't be established
+	 * @throws CursorException The exception occurs if the results set is corrupted
 	 */
-	public Set<Entry> searchResults (String baseDn, String filter, SearchScope scope, String... attributes)
+	public Set<Entry> searchResults (String baseDn, String filter, SearchScope scope, String... attributes) throws LdapException, CursorException
 	{
 		//init the connection
 		init();
@@ -253,18 +250,6 @@ public class CLdapProvider
 
 			return entries;
 		}
-		catch (LdapInvalidAttributeValueException ex)
-		{
-			throw new CSystemException("An LdapInvalidAttributeValueException exception raised: " + ex.toString());
-		}
-		catch (LdapException ex)
-		{
-			throw new CSystemException("An LdapException exception raised: " + ex.toString());
-		}
-		catch (CursorException ex)
-		{
-			throw new CSystemException("An CursorException exception raised: " + ex.toString());
-		}
 		finally
 		{
 			if (cursor != null)
@@ -280,30 +265,23 @@ public class CLdapProvider
 	 * @param dn the dn of entry
 	 * @param attributeId the attribute id
 	 * @param value the value
-	 * @throws CSecurityException the security exception
+	 * @throws LdapException The exception occurs if the connection to server can't be established or the modification operation failed
 	 */
-	public void modifyEntry (String dn, String attributeId, String value, EModificationOperation modificationOperation) throws CSecurityException
+	public void modifyEntry (String dn, String attributeId, String value, EModificationOperation modificationOperation) throws LdapException
 	{
 		//init the connection
 		init();
 
-		try
-		{
-			//create attribute
-			Attribute attribute = new DefaultAttribute(attributeId, value);
+		//create attribute
+		Attribute attribute = new DefaultAttribute(attributeId, value);
 
-			//create modification
-			Modification modification = new DefaultModification();
-			modification.setAttribute(attribute);
-			modification.setOperation(modificationOperation.getOperation());
+		//create modification
+		Modification modification = new DefaultModification();
+		modification.setAttribute(attribute);
+		modification.setOperation(modificationOperation.getOperation());
 
-			//modify
-			connection.modify(dn, modification);
-		}
-		catch (LdapException ex)
-		{
-			throw new CSecurityException("The attribute " + attributeId + " of dn " + dn + " in ldap cannot be changed: " + ex.toString());
-		}
+		//modify
+		connection.modify(dn, modification);
 	}
 
 	/**
@@ -311,31 +289,24 @@ public class CLdapProvider
 	 *
 	 * @param dn the dn of entry
 	 * @param attributes the attributes
-	 * @throws CSecurityException the security exception
+	 * @throws LdapException The exception occurs if the connection to server can't be established or the add operation failed
 	 */
-	public void addEntry (String dn, Map<String, byte[][]> attributes) throws CSecurityException
+	public void addEntry (String dn, Map<String, byte[][]> attributes) throws LdapException
 	{
 		//init the connection
 		init();
 
-		try
-		{
-			//create entry
-			Entry entry = new DefaultEntry(dn);
+		//create entry
+		Entry entry = new DefaultEntry(dn);
 
-			//add values to entry
-			for (Map.Entry<String, byte[][]> attribute : attributes.entrySet())
-			{
-				entry.add(attribute.getKey(), attribute.getValue());
-			}
-
-			//add
-			connection.add(entry);
-		}
-		catch (LdapException ex)
+		//add values to entry
+		for (Map.Entry<String, byte[][]> attribute : attributes.entrySet())
 		{
-			throw new CSecurityException("The entry with dn " + dn + " in ldap cannot be created: " + ex.toString());
+			entry.add(attribute.getKey(), attribute.getValue());
 		}
+
+		//add
+		connection.add(entry);
 	}
 
 	/**
@@ -344,22 +315,15 @@ public class CLdapProvider
 	 * @param dn the dn
 	 * @param newRdn the new rdn
 	 * @param deleteOldRdn the delete old rdn
-	 * @throws CSecurityException the security exception
+	 * @throws LdapException The exception occurs if the connection to server can't be established or the rename operation failed
 	 */
-	public void renameEntry (String dn, String newRdn, boolean deleteOldRdn) throws CSecurityException
+	public void renameEntry (String dn, String newRdn, boolean deleteOldRdn) throws LdapException
 	{
 		//init the connection
 		init();
 
-		try
-		{
-			//rename
-			connection.rename(dn, newRdn, deleteOldRdn);
-		}
-		catch (LdapException ex)
-		{
-			throw new CSecurityException("Cannot change rnd with dn: " + dn);
-		}
+		//rename
+		connection.rename(dn, newRdn, deleteOldRdn);
 	}
 
 	/**
@@ -367,21 +331,14 @@ public class CLdapProvider
 	 *
 	 * @param dn the dn of entry
 	 * @return true, if successful
-	 * @throws CSecurityException the security exception
+	 * @throws LdapException The exception occurs if the connection to server can't be established or the exists operation failed
 	 */
-	public boolean entryExists (String dn) throws CSecurityException
+	public boolean entryExists (String dn) throws LdapException
 	{
 		//init the connection
 		init();
 
-		try
-		{
-			return connection.exists(dn);
-		}
-		catch (LdapException ex)
-		{
-			throw new CSecurityException("Cannot validate the entry with dn: " + dn);
-		}
+		return connection.exists(dn);
 	}
 
 	/**
@@ -390,9 +347,10 @@ public class CLdapProvider
 	 * @param baseDn the base dn
 	 * @param loginFilter the login filter
 	 * @param password the password
-	 * @throws CSecurityException the c security exception
+	 * @throws CBusinessException The exception occurs if there is not or is more then one user with defined login
+	 * @throws LdapException The exception occurs if the connection to server can't be established or the authenticate operation failed
 	 */
-	public synchronized void authenticate (String baseDn, String loginFilter, String password) throws CSecurityException
+	public synchronized void authenticate (String baseDn, String loginFilter, String password) throws LdapException, CBusinessException
 	{
 		//init the connection
 		init();
@@ -403,20 +361,8 @@ public class CLdapProvider
 		{
 			Entry ldapUserEntry = searchSingleResult(baseDn, loginFilter, SearchScope.SUBTREE, "*");
 
-			try
-			{
-				//bind as user (with his DN) to verify password
-				bindOnServer(temporaryConnection, ldapUserEntry.getDn().toString(), password);
-			}
-			catch (CSystemException ex)
-			{
-				throw new CSecurityException("The authentication failed - invalid password or user.");
-			}
-		}
-		catch (CBusinessException ex)
-		{
-			//there is not a user or not unique
-			throw new CSecurityException(ex.getMessage());
+			//bind as user (with his DN) to verify password
+			bindOnServer(temporaryConnection, ldapUserEntry.getDn().toString(), password);
 		}
 		finally
 		{
@@ -449,7 +395,7 @@ public class CLdapProvider
 				return false;
 			}
 		}
-		catch (CSystemException ex)
+		catch (LdapException ex)
 		{
 			return false;
 		}

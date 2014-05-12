@@ -161,7 +161,7 @@ public class CAuthenticationTestProvider
 	 */
 	public void testChangeEncryptedPasswordExistingUser (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		final String newPassword = "change1EncryptedPasswordExistingUser$";
+		final String newPassword = "change1EncryptedPasswordExistingUser$56";
 		authenticationService.changeEncryptedPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		//test authentication

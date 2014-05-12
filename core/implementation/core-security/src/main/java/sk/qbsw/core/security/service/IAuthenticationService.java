@@ -2,6 +2,7 @@ package sk.qbsw.core.security.service;
 
 import java.io.Serializable;
 
+import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -58,6 +59,8 @@ public interface IAuthenticationService extends Serializable
 	 *
 	 * @param login the login
 	 * @param password the password
+	 * @throws CPasswordFormatException the password format is invalid
+	 * @throws CSecurityException the password change failed
 	 */
 	public void changeEncryptedPassword (String login, String password) throws CSecurityException;
 
