@@ -8,6 +8,7 @@ import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
@@ -15,7 +16,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.8.0
+ * @version 1.9.1
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -184,4 +185,42 @@ public interface IUserService extends Serializable
 	 * @param address address which is added or updated for user
 	 */
 	public void setAddress (CUser user, CAddress address);
+
+	/**
+	 * Unset user from group in specified unit.
+	 *
+	 * @param user the user (mandatory)
+	 * @param group the group (mandatory)
+	 * @param unit the unit (optional)
+	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the unsetting failed
+	 */
+	public void unsetUserFromGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException;
+
+	/**
+	 * Unset user from group.
+	 *
+	 * @param user the user (mandatory)
+	 * @param group the group (mandatory)
+	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the unsetting failed
+	 */
+	public void unsetUserFromGroup (CUser user, CGroup group) throws CSecurityException;
+
+	/**
+	 * Set user to group in specified unit.
+	 *
+	 * @param user the user (mandatory)
+	 * @param group the group (mandatory)
+	 * @param unit the unit (optional)
+	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
+	 */
+	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException;
+
+	/**
+	 * Set user to group.
+	 *
+	 * @param user the user (mandatory)
+	 * @param group the group (mandatory)
+	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
+	 */
+	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException;
 }

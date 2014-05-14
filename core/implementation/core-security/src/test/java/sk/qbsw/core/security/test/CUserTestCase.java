@@ -30,7 +30,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks user service.
  *
  * @autor Tomas Lauro
- * @version 1.8.0
+ * @version 1.9.1
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -245,6 +245,61 @@ public class CUserTestCase
 
 		//checks if the user has a correct set of groups.
 		checksUserHasCorrectGroups(users.get(0));
+	}
+
+	/**
+	 * Test unset group with unit.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testUnsetGroupWithUnit () throws CSecurityException
+	{
+		initTest();
+
+		//test data
+		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CGroup testGroup = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
+		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+
+		//unset group
+		userService.unsetUserFromGroup(testUser, testGroup, testUnit);
+
+		CUser resultTestUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+
+		//asserts
+		assertNotNull("Test unset group failed: cannot find result ", resultTestUser);
+		Assert.assertTrue("Test unset group failed: the number of user groups is not 1", resultTestUser.getxUserUnitGroups().size() == 1);
+		Assert.assertEquals("Test unset group failed: the code of user group is incorrect", resultTestUser.getxUserUnitGroups().iterator().next().getGroup().getCode(), CDataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+	}
+
+	/**
+	 * Test set group with unit.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testSetGroupWithUnit () throws CSecurityException
+	{
+		initTest();
+
+		//test data
+		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CGroup testGroup = groupDao.findByCode(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE).get(0);
+		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+
+		//unset group
+		userService.setUserToGroup(testUser, testGroup, testUnit);
+
+		CUser resultTestUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+
+		//asserts
+		assertNotNull("Test unset group failed: cannot find result ", resultTestUser);
+		Assert.assertTrue("Test unset group failed: the number of user groups is not 3", resultTestUser.getxUserUnitGroups().size() == 3);
 	}
 
 	/**

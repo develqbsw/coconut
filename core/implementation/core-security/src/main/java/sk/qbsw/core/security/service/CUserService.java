@@ -8,16 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.persistence.dao.IEntityDao;
+import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.core.security.dao.IAddressDao;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
+import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
+import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
+import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
 
 /**
  * Service for user management.
@@ -26,7 +33,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.8.0
+ * @version 1.9.1
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -47,13 +54,25 @@ public class CUserService implements IUserService
 	@Autowired
 	private IAuthenticationParamsDao authenticationParamsDao;
 
-	/** The address dao */
+	/**  The address dao. */
 	@Autowired
 	private IAddressDao addressDao;
 
 	/** The authentication service. */
 	@Autowired
 	private IAuthenticationService authenticationService;
+
+	/** The group dao. */
+	@Autowired
+	private IGroupDao groupDao;
+
+	/** The unit dao. */
+	@Autowired
+	private IUnitDao unitDao;
+
+	/** The cross user unit group dao. */
+	@Autowired
+	private IXUserUnitGroupDao crossUserUnitGroupDao;
 
 	/**
 	 * Disable user.
@@ -277,6 +296,9 @@ public class CUserService implements IUserService
 		userDao.save(user);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#setAddress(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.CAddress)
+	 */
 	@Transactional
 	public void setAddress (CUser user, CAddress address)
 	{
@@ -287,5 +309,133 @@ public class CUserService implements IUserService
 		addressDao.save(address);
 		userDao.save(user);
 
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#unsetUserFromGroup(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.CGroup, sk.qbsw.core.security.model.domain.CUnit)
+	 */
+	@Override
+	@Transactional
+	public void unsetUserFromGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException
+	{
+		//validates input objects
+		if ( (user == null || user.getId() == null || group == null || group.getId() == null) || (unit != null && unit.getId() == null))
+		{
+			throw new CSecurityException("The incorrect input object");
+		}
+
+		//defines the persisted objects
+		CUser persistedUser = (CUser) getPersistedEntity(user, userDao);
+		CGroup persistedGroup = (CGroup) getPersistedEntity(group, groupDao);
+		CUnit persistedUnit = null;
+		if (unit != null)
+		{
+			persistedUnit = (CUnit) getPersistedEntity(unit, unitDao);
+		}
+
+		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, persistedGroup);
+
+		//remove records
+		for (CXUserUnitGroup userUnitGroupRecord : userUnitGroupRecords)
+		{
+			persistedUser.getxUserUnitGroups().remove(userUnitGroupRecord);
+		}
+		
+		userDao.save(persistedUser);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#unsetUserFromGroup(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.CGroup)
+	 */
+	@Override
+	@Transactional
+	public void unsetUserFromGroup (CUser user, CGroup group) throws CSecurityException
+	{
+		unsetUserFromGroup(user, group, null);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#setUserToGroup(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.CGroup, sk.qbsw.core.security.model.domain.CUnit)
+	 */
+	@Override
+	@Transactional
+	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException
+	{
+		//validates input objects
+		if ( (user == null || user.getId() == null || group == null || group.getId() == null) || (unit != null && unit.getId() == null))
+		{
+			throw new CSecurityException("The incorrect input object");
+		}
+
+		//defines the persisted objects
+		CUser persistedUser = (CUser) getPersistedEntity(user, userDao);
+		CGroup persistedGroup = (CGroup) getPersistedEntity(group, groupDao);
+		CUnit persistedUnit = null;
+		if (unit != null)
+		{
+			persistedUnit = (CUnit) getPersistedEntity(unit, unitDao);
+		}
+
+		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, persistedGroup);
+
+		//if there is no record, create and save it
+		if (userUnitGroupRecords.size() == 0)
+		{
+			CXUserUnitGroup userUnitGroupRecord = new CXUserUnitGroup();
+			userUnitGroupRecord.setUser(persistedUser);
+			userUnitGroupRecord.setGroup(persistedGroup);
+			userUnitGroupRecord.setUnit(persistedUnit);
+			persistedUser.getxUserUnitGroups().add(userUnitGroupRecord);
+		}
+		
+		userDao.save(persistedUser);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#setUserToGroup(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.CGroup)
+	 */
+	@Override
+	@Transactional
+	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException
+	{
+		setUserToGroup(user, group, null);
+	}
+
+	/**
+	 * Gets the persisted entity from transaction manager for input entity.
+	 *
+	 * @param <T> the generic type for entity
+	 * @param entity the entity
+	 * @param dao the dao for operations with entity
+	 * @return the persisted entity
+	 * @throws CSecurityException the security exception occures if the input parameters are incorrect or if there is no entity in database
+	 */
+	private <T extends IEntity<Long>>T getPersistedEntity (T entity, IEntityDao<Long, T> dao) throws CSecurityException
+	{
+		if (entity != null && entity.getId() != null)
+		{
+			try
+			{
+				T persistedEntity = dao.findById(entity.getId());
+				if (persistedEntity == null)
+				{
+					throw new NoResultException();
+				}
+				else
+				{
+					return persistedEntity;
+				}
+			}
+			catch (NoResultException ex)
+			{
+				throw new CSecurityException("The invalid input entity");
+			}
+		}
+		else
+		{
+			throw new CSecurityException("The invalid input entity");
+		}
 	}
 }

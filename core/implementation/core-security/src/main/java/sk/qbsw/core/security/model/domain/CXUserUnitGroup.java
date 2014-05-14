@@ -18,7 +18,8 @@ import javax.persistence.Table;
  * Cross entity for user unit and group.
  *
  * @author farkas.roman
- * @version 1.6.4
+ * @author Tomas Lauro
+ * @version 1.9.1
  * @since 1.6.4
  */
 @Entity
@@ -136,34 +137,52 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 		this.group = group;
 	}
 	
-	/**
-	 * Determine if this object equals input CXUserUnitGroup object
-	 * 
-	 * @param xuug
-	 * @return true if equals, false otherwise
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals (CXUserUnitGroup xuug)
+	@Override
+	public boolean equals (Object obj)
 	{
-		if(xuug == null)
+		if (obj == this)
+		{
+			return true;
+		}
+
+		if ( (obj instanceof CXUserUnitGroup) == false)
 		{
 			return false;
 		}
-		
-		if(!user.getId().equals(xuug.getUser().getId()))
+
+		CXUserUnitGroup userGroupUnitRecord = (CXUserUnitGroup) obj;
+		return ((getId() != null && getId().equals(userGroupUnitRecord.getId())) || (getId() == null && userGroupUnitRecord.getId() == null))
+			&& ((getUser() != null && getUser().equals(userGroupUnitRecord.getUser())) || (getUser() == null && userGroupUnitRecord.getUser() == null))
+			&& ((getUnit() != null && getUnit().equals(userGroupUnitRecord.getUnit())) || (getUnit() == null && userGroupUnitRecord.getUnit() == null))
+			&& ((getGroup() != null && getGroup().equals(userGroupUnitRecord.getGroup())) || (getGroup() == null && userGroupUnitRecord.getGroup() == null));
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode ()
+	{
+		int result = 17;
+		if (getId() != null)
 		{
-			return false;
+			result = 31 * result + getId().hashCode();
 		}
-		
-		if(!group.getId().equals(xuug.getGroup().getId()))
+		if (getUser() != null)
 		{
-			return false;
+			result = 31 * result + getUser().hashCode();
 		}
-		
-		if(unit != null && xuug.getUnit() != null && !unit.getId().equals(xuug.getUnit().getId()))
+		if (getUnit() != null)
 		{
-			return false;
+			result = 31 * result + getUnit().hashCode();
 		}
-		
-		return true;
+		if (getGroup() != null)
+		{
+			result = 31 * result + getGroup().hashCode();
+		}
+		return result;
 	}
 }

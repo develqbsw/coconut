@@ -23,8 +23,9 @@ import javax.persistence.Transient;
  * The Class CGroup.
  *
  * @author Dalibor Rak
- * @version 1.6.0
- * @since 1.0
+ * @author Tomas Lauro
+ * @version 1.9.1
+ * @since 1.0.0
  */
 @Entity
 @Table (name = "t_group", schema = "sec")
@@ -210,26 +211,26 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	public Set<CUser> getUsers ()
 	{
 		HashSet<CUser> users = new HashSet<CUser>();
-		
+
 		for (CXUserUnitGroup xuug : xUserUnitGroups)
-		{	
+		{
 			users.add(xuug.getUser());
 		}
 		return users;
 	}
-	
+
 	/**
 	 * bind users with this group
 	 * @param users
 	 */
-	public void setUsers(Set<CUser> users)
+	public void setUsers (Set<CUser> users)
 	{
 		for (CUser user : users)
 		{
 			addUser(user);
 		}
 	}
-	
+
 	/**
 	 * Adds the user.
 	 * 
@@ -320,6 +321,48 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	{
 		return this.id;
 	}
-	
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals (Object object)
+	{
+		if (object == this)
+		{
+			return true;
+		}
+
+		if ( (object instanceof CGroup) == false)
+		{
+			return false;
+		}
+
+		CGroup group = (CGroup) object;
+		return ((getId() != null && getId().equals(group.getId())) || (getId() == null && group.getId() == null))
+			&& ((getCode() != null && getCode().equals(group.getCode())) || (getCode() == null && group.getCode() == null))
+			&& ((getCategory() != null && getCategory().equals(group.getCategory())) || (getCategory() == null && group.getCategory() == null));
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode ()
+	{
+		int result = 17;
+		if (getId() != null)
+		{
+			result = 31 * result + getId().hashCode();
+		}
+		if (getCode() != null)
+		{
+			result = 31 * result + getCode().hashCode();
+		}
+		if (getCategory() != null)
+		{
+			result = 31 * result + getCategory().hashCode();
+		}
+		return result;
+	}
 }

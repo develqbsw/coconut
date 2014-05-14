@@ -36,7 +36,7 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.7.2
+ * @version 1.9.1
  * @since 1.0.0
  */
 @Entity
@@ -563,4 +563,57 @@ public class CUser extends ASecurityChangeEntity<Long>
 		this.address = address;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals (Object object)
+	{
+		if (object == this)
+		{
+			return true;
+		}
+
+		if ( (object instanceof CUser) == false)
+		{
+			return false;
+		}
+
+		CUser user = (CUser) object;
+		return ((getId() != null && getId().equals(user.getId())) || (getId() == null && user.getId() == null))
+			&& ((getLogin() != null && getLogin().equals(user.getLogin())) || (getLogin() == null && user.getLogin() == null))
+			&& ((getName() != null && getName().equals(user.getName())) || (getName() == null && user.getName() == null))
+			&& ((getSurname() != null && getSurname().equals(user.getSurname())) || (getSurname() == null && user.getSurname() == null))
+			&& ((getEmail() != null && getEmail().equals(user.getEmail())) || (getEmail() == null && user.getEmail() == null));
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode ()
+	{
+		int result = 17;
+		if (getId() != null)
+		{
+			result = 31 * result + getId().hashCode();
+		}
+		if (getLogin() != null)
+		{
+			result = 31 * result + getLogin().hashCode();
+		}
+		if (getName() != null)
+		{
+			result = 31 * result + getName().hashCode();
+		}
+		if (getSurname() != null)
+		{
+			result = 31 * result + getSurname().hashCode();
+		}
+		if (getEmail() != null)
+		{
+			result = 31 * result + getEmail().hashCode();
+		}
+		return result;
+	}
 }

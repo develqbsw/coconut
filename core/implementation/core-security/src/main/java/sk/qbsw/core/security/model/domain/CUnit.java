@@ -26,7 +26,7 @@ import com.google.gson.annotations.Expose;
  * The Class CUnit.
  * 
  * @author Tomas Lauro
- * @version 1.7.1
+ * @version 1.9.1
  * @since 1.6.0
  */
 @Entity
@@ -178,4 +178,42 @@ public class CUnit extends ASecurityChangeEntity<Long>
 		this.address = address;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals (Object object)
+	{
+		if (object == this)
+		{
+			return true;
+		}
+
+		if ( (object instanceof CUnit) == false)
+		{
+			return false;
+		}
+
+		CUnit unit = (CUnit) object;
+		return ((getId() != null && getId().equals(unit.getId())) || (getId() == null && unit.getId() == null))
+			&& ((getName() != null && getName().equals(unit.getName())) || (getName() == null && unit.getName() == null));
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode ()
+	{
+		int result = 17;
+		if (getId() != null)
+		{
+			result = 31 * result + getId().hashCode();
+		}
+		if (getName() != null)
+		{
+			result = 31 * result + getName().hashCode();
+		}
+		return result;
+	}
 }
