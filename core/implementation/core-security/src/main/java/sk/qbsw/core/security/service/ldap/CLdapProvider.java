@@ -30,7 +30,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.9.0
+ * @version 1.9.1
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -395,7 +395,7 @@ public class CLdapProvider
 				return false;
 			}
 		}
-		catch (LdapException ex)
+		catch (Throwable ex)
 		{
 			return false;
 		}
