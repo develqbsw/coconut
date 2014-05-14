@@ -28,6 +28,8 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.security.service.CGroupService;
+import sk.qbsw.core.security.service.CUserService;
 
 import com.google.gson.annotations.Expose;
 
@@ -36,6 +38,7 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
+ * 
  * @version 1.9.1
  * @since 1.0.0
  */
@@ -263,7 +266,10 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
-	 * Gets the groups.
+	 * Gets the groups assigned to user.
+	 * 
+	 * If user has default unit, this method return groups for this unit.
+	 * If user has not default unit, this method return groups with no unit assigned. 
 	 * 
 	 * @return the groups
 	 */
@@ -280,11 +286,11 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
-	 * Gets the groups in unit.
+	 * Do not use, returned set may by incomplete.
 	 * 
-	 * @param unit
-	 * @return the groups
+	 * @deprecated misunderstanding of concept. use {@link CGroupService#getByUnitUser(CUnit, CUser)}}.
 	 */
+	@Deprecated
 	public Set<CGroup> getGroupsInUnit (CUnit unit)
 	{
 		Set<CGroup> groups = new HashSet<CGroup>();
@@ -302,10 +308,11 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * Adds the group.
+	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
 	 * 
-	 * @param grp
-	 *            the grp
+	 * @param grp the grp
 	 */
+	@Deprecated
 	public void addGroup (CGroup grp)
 	{
 		CXUserUnitGroup xuug = new CXUserUnitGroup();
@@ -316,12 +323,12 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * Adds the group.
+	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup, CUnit)}
 	 * 
-	 * @param grp
-	 *            the grp
-	 * @param unt
-	 *            unit
+	 * @param grp the grp
+	 * @param unt unit
 	 */
+	@Deprecated
 	public void addGroupUnit (CGroup grp, CUnit unt)
 	{
 		CXUserUnitGroup xuug = new CXUserUnitGroup();
@@ -333,9 +340,11 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * bind groups with this user
+	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
 	 * 
 	 * @param groups
 	 */
+	@Deprecated
 	public void setGroups (Set<CGroup> groups)
 	{
 		for (CGroup group : groups)
@@ -346,9 +355,11 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * bind groups with this user and unit
+	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
 	 * 
 	 * @param groups
 	 */
+	@Deprecated
 	public void setGroupsUnit (Set<CGroup> groups, CUnit unit)
 	{
 		for (CGroup group : groups)
@@ -360,8 +371,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	/**
 	 * Sets the main group.
 	 * 
-	 * @param group
-	 *            the new main group
+	 * @param group the new main group
 	 */
 	public void setMainGroup (CGroup group)
 	{

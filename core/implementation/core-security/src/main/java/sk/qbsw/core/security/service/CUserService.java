@@ -339,10 +339,12 @@ public class CUserService implements IUserService
 		//remove records
 		for (CXUserUnitGroup userUnitGroupRecord : userUnitGroupRecords)
 		{
-			persistedUser.getxUserUnitGroups().remove(userUnitGroupRecord);
+			if (persistedUser.getxUserUnitGroups().contains(userUnitGroupRecord))
+			{
+				persistedUser.getxUserUnitGroups().remove(userUnitGroupRecord);
+			}
+			crossUserUnitGroupDao.remove(userUnitGroupRecord);
 		}
-		
-		userDao.save(persistedUser);
 	}
 
 	/* (non-Javadoc)
@@ -387,10 +389,8 @@ public class CUserService implements IUserService
 			userUnitGroupRecord.setUser(persistedUser);
 			userUnitGroupRecord.setGroup(persistedGroup);
 			userUnitGroupRecord.setUnit(persistedUnit);
-			persistedUser.getxUserUnitGroups().add(userUnitGroupRecord);
+			crossUserUnitGroupDao.save(userUnitGroupRecord);
 		}
-		
-		userDao.save(persistedUser);
 	}
 
 	/* (non-Javadoc)

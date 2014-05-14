@@ -18,10 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
 import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.service.IUserService;
 import sk.qbsw.core.security.test.util.CDataGenerator;
@@ -59,6 +61,11 @@ public class CUserTestCase
 
 	@Autowired
 	private IUnitDao unitDao;
+
+	/** The cross user unit group dao. */
+	@Autowired
+	private IXUserUnitGroupDao crossUserUnitGroupDao;
+
 
 	/**
 	 * Test initialization.
@@ -267,12 +274,11 @@ public class CUserTestCase
 		//unset group
 		userService.unsetUserFromGroup(testUser, testGroup, testUnit);
 
-		CUser resultTestUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findAll(testUser, testUnit, testGroup);
 
 		//asserts
-		assertNotNull("Test unset group failed: cannot find result ", resultTestUser);
-		Assert.assertTrue("Test unset group failed: the number of user groups is not 1", resultTestUser.getxUserUnitGroups().size() == 1);
-		Assert.assertEquals("Test unset group failed: the code of user group is incorrect", resultTestUser.getxUserUnitGroups().iterator().next().getGroup().getCode(), CDataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		assertNotNull("Test unset group failed: cannot find result ", result);
+		Assert.assertTrue("Test unset group failed: the number of user groups is not 0", result.size() == 0);
 	}
 
 	/**
@@ -295,11 +301,11 @@ public class CUserTestCase
 		//unset group
 		userService.setUserToGroup(testUser, testGroup, testUnit);
 
-		CUser resultTestUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findAll(testUser, testUnit, testGroup);
 
 		//asserts
-		assertNotNull("Test unset group failed: cannot find result ", resultTestUser);
-		Assert.assertTrue("Test unset group failed: the number of user groups is not 3", resultTestUser.getxUserUnitGroups().size() == 3);
+		assertNotNull("Test unset group failed: cannot find result ", result);
+		Assert.assertTrue("Test unset group failed: the number of user groups is not 1", result.size() == 1);
 	}
 
 	/**
