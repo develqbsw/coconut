@@ -1,5 +1,6 @@
 package sk.qbsw.core.logging.aspect;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.logging.aspect.annotation.CLogged;
+import sk.qbsw.core.logging.aspect.annotation.CNotLogged;
 import sk.qbsw.core.logging.aspect.param.AParameter;
 import sk.qbsw.core.logging.aspect.param.AParameterFactory;
 import sk.qbsw.core.logging.aspect.param.CNotLoggedParameter;
@@ -197,6 +199,21 @@ public class CMethodLoggingAspect extends ALoggingAspect
 		}
 
 		return result;
+	}
+
+	@Override
+	protected boolean checkParameterLogging (final Annotation[] parameterAnnotations)
+	{
+		boolean logParameter = true;
+		//if is parameter annotated with CNotLogged annotation the is their content not logged
+		for (final Annotation parameterAnnotation : parameterAnnotations)
+		{
+			if (parameterAnnotation instanceof CNotLogged)
+			{
+				logParameter = false;
+			}
+		}
+		return logParameter;
 	}
 
 }

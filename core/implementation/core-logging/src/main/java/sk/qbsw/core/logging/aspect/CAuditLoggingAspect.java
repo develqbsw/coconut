@@ -1,5 +1,6 @@
 package sk.qbsw.core.logging.aspect;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -168,6 +169,21 @@ public class CAuditLoggingAspect extends ALoggingAspect
 
 		auditLogService.doLog(operationCode, Arrays.asList(params), operationResult, resultDescription);
 
+	}
+
+	@Override
+	protected boolean checkParameterLogging (final Annotation[] parameterAnnotations)
+	{
+		boolean logParameter = true;
+		//if is parameter annotated with CNotLogged annotation the is their content not logged
+		for (final Annotation parameterAnnotation : parameterAnnotations)
+		{
+			if (parameterAnnotation instanceof CNotAuditLogged)
+			{
+				logParameter = false;
+			}
+		}
+		return logParameter;
 	}
 
 }

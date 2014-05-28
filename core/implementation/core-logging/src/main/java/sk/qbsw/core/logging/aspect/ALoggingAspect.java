@@ -167,18 +167,6 @@ public abstract class ALoggingAspect
 	 * @param parameterAnnotations annotations annotations which have parameter
 	 * @return true if parameter is logged false otherwise
 	 */
-	private boolean checkParameterLogging (final Annotation[] parameterAnnotations)
-	{
-		boolean logParameter = true;
-		//if is parameter annotated with CNotLogged annotation the is their content not logged
-		for (final Annotation parameterAnnotation : parameterAnnotations)
-		{
-			if (parameterAnnotation instanceof CNotAuditLogged)
-			{
-				logParameter = false;
-			}
-		}
-		return logParameter;
-	}
+	protected abstract boolean checkParameterLogging (final Annotation[] parameterAnnotations);
 
 }
