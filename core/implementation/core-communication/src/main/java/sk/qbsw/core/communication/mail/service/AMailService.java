@@ -6,15 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.communication.mail.dao.IMailDao;
-import sk.qbsw.core.communication.mail.exception.CCommunicationException;
 import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
 import sk.qbsw.core.communication.mail.model.domain.CAttachment;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
@@ -25,14 +20,11 @@ import sk.qbsw.core.communication.mail.model.domain.CRecipient;
  *
  * @author Tomas Lauro
  * 
- * @version 1.9.0
+ * @version 1.9.1
  * @since 1.9.0
  */
 public abstract class AMailService
 {
-	/** The logger. */
-	final Logger logger = LoggerFactory.getLogger(AMailService.class);
-
 	/** The mail sender. */
 	@Autowired
 	protected JavaMailSender mailSender;
@@ -43,12 +35,22 @@ public abstract class AMailService
 	/** The sender mail dao. */
 	protected IMailDao mailDao;
 
+	/** The flag archive - if true the mails which are sent stays in DB, if false they are removed. */
+	protected boolean archive = true;
+
 	/**
 	 * Autowires the mail dao in children.
 	 *
 	 * @param mailDao the new mail dao
 	 */
 	protected abstract void setMailDao (IMailDao mailDao);
+
+	/**
+	 * Gets the mail instance of valid type.
+	 *
+	 * @return the mail instance
+	 */
+	protected abstract CMail getMailInstance ();
 
 	/**
 	 * Sets the smtp server.
@@ -88,7 +90,7 @@ public abstract class AMailService
 	protected CMail createMail (List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions) throws IOException
 	{
 		//create mail
-		CMail mail = new CMail();
+		CMail mail = getMailInstance();
 
 		mail.setFrom(senderAdddress);
 		if (to != null && to.size() > 0)
@@ -133,42 +135,22 @@ public abstract class AMailService
 	}
 
 	/**
-	 * Save mail.
+	 * Checks if is archive - if true the mails which are sent stays in DB, if false they are removed.
 	 *
-	 * @param to the recipient
-	 * @param cc the cc recipient
-	 * @param bcc the bcc recipient
-	 * @param subject the subject
-	 * @param body the body
-	 * @param attachmentDefinitions the attachment definitions
+	 * @return true, if is archive
 	 */
-	protected void saveMail (List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions)
+	public boolean isArchive ()
 	{
-		try
-		{
-			//create mail
-			CMail mail = createMail(to, cc, bcc, subject, body, attachmentDefinitions);
+		return archive;
+	}
 
-			//set date of creation
-			mail.setCreated(DateTime.now());
-
-			//send mail
-			mailDao.save(mail);
-		}
-		catch (CCommunicationException e)
-		{
-			logger.error("Mail sending problem", e);
-			throw e;
-		}
-		catch (CSystemException e)
-		{
-			logger.error("Mail creating problem", e);
-			throw e;
-		}
-		catch (Throwable e)
-		{
-			logger.error("Mail creating problem", e);
-			throw new CSystemException("Mail creating problem", e);
-		}
+	/**
+	 * The flag archive - if true the mails which are sent stays in DB, if false they are removed.
+	 *
+	 * @param archive the new archive
+	 */
+	public void setArchive (boolean archive)
+	{
+		this.archive = archive;
 	}
 }

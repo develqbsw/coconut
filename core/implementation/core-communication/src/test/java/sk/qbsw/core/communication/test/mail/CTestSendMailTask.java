@@ -103,7 +103,7 @@ public class CTestSendMailTask
 		sendMailTask.run();
 
 		//check results
-		List<CMail> mails = jpaMailDao.findAll(EMailState.SENT);
+		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.SENT);
 
 		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
 		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);
@@ -131,7 +131,7 @@ public class CTestSendMailTask
 		sendMailTask.run();
 
 		//check results
-		List<CMail> mails = jpaMailDao.findAll(EMailState.UNSENT);
+		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.UNSENT);
 
 		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
 		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);
@@ -169,7 +169,7 @@ public class CTestSendMailTask
 		}
 
 		//check results
-		List<CMail> mails = jpaMailDao.findAll(EMailState.COMMUNICATION_ERROR);
+		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.COMMUNICATION_ERROR);
 
 		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
 		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);
@@ -197,7 +197,7 @@ public class CTestSendMailTask
 		sendMailTask.run();
 
 		//check results
-		List<CMail> mails = jpaMailDao.findAll(EMailState.DATA_ERROR);
+		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.DATA_ERROR);
 
 		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
 		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);

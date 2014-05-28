@@ -11,18 +11,19 @@ import sk.qbsw.core.persistence.dao.IEntityDao;
  * The interface for mail dao.
  *
  * @author Tomas Lauro
- * @version 1.9.0
+ * 
+ * @version 1.9.1
  * @since 1.9.0
  */
 public interface IMailDao extends Serializable, IEntityDao<Long, CMail>
 {
 	/**
-	 * Finds and returns all entities with defined state under defined attempt counts limit.
+	 * Finds and returns all entities with defined state.
 	 *
 	 * @param state the state
 	 * @return list of entities
 	 */
-	List<CMail> findAll (EMailState state);
+	List<CMail> findAllQueued (EMailState state);
 
 	/**
 	 * Find by subject.

@@ -15,7 +15,8 @@ import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
  * The jpa dao for mail.
  *
  * @author Tomas Lauro
- * @version 1.9.0
+ * 
+ * @version 1.9.1
  * @since 1.9.0
  */
 @Repository (value = "jpaMailDao")
@@ -33,13 +34,13 @@ public class CMailDao extends AEntityJpaDao<Long, CMail> implements IMailDao
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.communication.mail.dao.IMailDao#findAll(sk.qbsw.core.communication.mail.model.domain.EMailState, int)
+	 * @see sk.qbsw.core.communication.mail.dao.IMailDao#findAllQueued(sk.qbsw.core.communication.mail.model.domain.EMailState)
 	 */
 	@SuppressWarnings ("unchecked")
 	@Override
-	public List<CMail> findAll (EMailState state)
+	public List<CMail> findAllQueued (EMailState state)
 	{
-		String strQuery = "select ma from CMail ma left join fetch ma.attachments where ma.state=:state";
+		String strQuery = "select ma from CQueuedMail ma left join fetch ma.attachments where ma.state=:state";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("state", state);

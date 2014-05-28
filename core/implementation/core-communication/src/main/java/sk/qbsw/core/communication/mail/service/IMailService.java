@@ -15,7 +15,7 @@ import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.9.0
+ * @version 1.9.1
  * @since 1.6.0
  */
 public interface IMailService
@@ -68,4 +68,18 @@ public interface IMailService
 	 * @param senderAddress the new sender address
 	 */
 	public void setSenderAddress (String senderAddress);
+
+	/**
+	 * Checks if is archive - if true the mails which are sent stays in DB, if false they are removed.
+	 *
+	 * @return true, if is archive
+	 */
+	public boolean isArchive ();
+
+	/**
+	 * The flag archive - if true the mails which are sent stays in DB, if false they are removed.
+	 *
+	 * @param archive the new archive
+	 */
+	public void setArchive (boolean archive);
 }

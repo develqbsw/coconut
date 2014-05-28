@@ -186,7 +186,7 @@ public class CMailDao implements IMailDao
 	 * @throws NotImplementedException
 	 */
 	@Override
-	public List<CMail> findAll (EMailState state)
+	public List<CMail> findAllQueued (EMailState state)
 	{
 		throw new NotImplementedException();
 	}

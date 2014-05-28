@@ -6,6 +6,7 @@
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>sk.qbsw.core.communication.mail.model.domain.CMail</class>
+		<class>sk.qbsw.core.communication.mail.model.domain.CQueuedMail</class>
 		<class>sk.qbsw.core.communication.mail.model.domain.CAttachment</class>
 		
 		<properties>

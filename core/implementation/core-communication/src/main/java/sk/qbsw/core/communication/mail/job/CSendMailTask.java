@@ -19,7 +19,7 @@ import sk.qbsw.core.communication.mail.model.domain.EMailState;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.9.0
+ * @version 1.9.1
  * @since 1.9.0
  */
 public class CSendMailTask
@@ -43,7 +43,7 @@ public class CSendMailTask
 	@Transactional
 	public void run ()
 	{
-		List<CMail> unsentMails = jpaMailDao.findAll(EMailState.UNSENT);
+		List<CMail> unsentMails = jpaMailDao.findAllQueued(EMailState.UNSENT);
 
 		for (CMail unsentMail : unsentMails)
 		{

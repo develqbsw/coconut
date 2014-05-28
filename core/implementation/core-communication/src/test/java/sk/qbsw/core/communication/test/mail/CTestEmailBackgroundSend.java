@@ -42,7 +42,7 @@ public class CTestEmailBackgroundSend
 	@Autowired
 	private CTestMailBuilder mailBuilder;
 
-	/** The sender mail dao. */
+	/** The jpa mail dao. */
 	@Autowired
 	@Qualifier ("jpaMailDao")
 	private IMailDao mailDao;
