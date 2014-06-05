@@ -36,7 +36,10 @@ import com.google.gson.annotations.Expose;
  * The Class COrganization.
  *
  * @author Dalibor Rak
- * @version 1.2.1
+ * @author Michal Lacko
+ * @author Tomas Lauro
+ * 
+ * @version 1.9.2
  * @since 1.0
  */
 @Entity
@@ -46,15 +49,26 @@ import com.google.gson.annotations.Expose;
 @DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
 public class COrganization extends ASecurityChangeEntity<Long>
 {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** The pk id. */
+	@Id
+	@SequenceGenerator (name = "t_organization_pkid_generator", sequenceName = "sec.t_organization_pk_id_seq")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_organization_pkid_generator")
+	@Column (name = "pk_id")
+	@Expose
+	@Access (AccessType.PROPERTY)
+	private Long id;
 
 	/** The email. */
 	private String email;
 
 	/** Phone. */
 	private String phone;
+
+	/** The fax. */
+	private String fax;
 
 	/** The flag enabled. */
 	@Column (name = "flag_enabled")
@@ -77,15 +91,6 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 */
 	private String code;
 
-	/** The pk id. */
-	@Id
-	@SequenceGenerator (name = "t_organization_pkid_generator", sequenceName = "sec.t_organization_pk_id_seq")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_organization_pkid_generator")
-	@Column (name = "pk_id")
-	@Expose
-	@Access (AccessType.PROPERTY)
-	private Long id;
-
 	//bi-directional many-to-one association to CUser
 	/** The users. */
 	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -96,7 +101,6 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumn (name = "fk_address", nullable = true)
 	private CAddress address;
-
 
 	/**
 	 * Instantiates a new c organization.
@@ -283,6 +287,26 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	public void setPhone (String phone)
 	{
 		this.phone = phone;
+	}
+
+	/**
+	 * Gets the fax.
+	 *
+	 * @return the fax
+	 */
+	public String getFax ()
+	{
+		return fax;
+	}
+
+	/**
+	 * Sets the fax.
+	 *
+	 * @param fax the new fax
+	 */
+	public void setFax (String fax)
+	{
+		this.fax = fax;
 	}
 
 	/**

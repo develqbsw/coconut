@@ -38,8 +38,9 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
+ * @author Michal Lacko
  * 
- * @version 1.9.1
+ * @version 1.9.2
  * @since 1.0.0
  */
 @Entity
@@ -79,6 +80,15 @@ public class CUser extends ASecurityChangeEntity<Long>
 	@Expose
 	private String email;
 
+	/** The degree. */
+	@Expose
+	private String degree;
+
+	/** The working position. */
+	@Expose
+	@Column (name = "working_position")
+	private String workingPosition;
+
 	// bi-directional many-to-one association to COrganization
 	/** The organization. */
 	@ManyToOne (fetch = FetchType.LAZY)
@@ -107,7 +117,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	@Enumerated (EnumType.STRING)
 	private EUserType userType;
 
-	/** User address */
+	/**  User address. */
 	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumn (name = "fk_address", nullable = true)
 	private CAddress address;
@@ -287,7 +297,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * Do not use, returned set may by incomplete.
-	 * 
+	 *
+	 * @param unit the unit
+	 * @return the groups in unit
 	 * @deprecated misunderstanding of concept. use {@link CGroupService#getByUnitUser(CUnit, CUser)}}.
 	 */
 	@Deprecated
@@ -308,9 +320,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * Adds the group.
-	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
-	 * 
+	 *
 	 * @param grp the grp
+	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
 	 */
 	@Deprecated
 	public void addGroup (CGroup grp)
@@ -323,10 +335,10 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * Adds the group.
-	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup, CUnit)}
-	 * 
+	 *
 	 * @param grp the grp
 	 * @param unt unit
+	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup, CUnit)}
 	 */
 	@Deprecated
 	public void addGroupUnit (CGroup grp, CUnit unt)
@@ -339,10 +351,10 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
-	 * bind groups with this user
+	 * bind groups with this user.
+	 *
+	 * @param groups the new groups
 	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
-	 * 
-	 * @param groups
 	 */
 	@Deprecated
 	public void setGroups (Set<CGroup> groups)
@@ -354,10 +366,11 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
-	 * bind groups with this user and unit
+	 * bind groups with this user and unit.
+	 *
+	 * @param groups the groups
+	 * @param unit the unit
 	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
-	 * 
-	 * @param groups
 	 */
 	@Deprecated
 	public void setGroupsUnit (Set<CGroup> groups, CUnit unit)
@@ -408,6 +421,46 @@ public class CUser extends ASecurityChangeEntity<Long>
 	public void setEmail (String email)
 	{
 		this.email = email;
+	}
+
+	/**
+	 * Gets the degree.
+	 *
+	 * @return the degree
+	 */
+	public String getDegree ()
+	{
+		return degree;
+	}
+
+	/**
+	 * Sets the degree.
+	 *
+	 * @param degree the new degree
+	 */
+	public void setDegree (String degree)
+	{
+		this.degree = degree;
+	}
+
+	/**
+	 * Gets the working position.
+	 *
+	 * @return the working position
+	 */
+	public String getWorkingPosition ()
+	{
+		return workingPosition;
+	}
+
+	/**
+	 * Sets the working position.
+	 *
+	 * @param workingPosition the new working position
+	 */
+	public void setWorkingPosition (String workingPosition)
+	{
+		this.workingPosition = workingPosition;
 	}
 
 	/**
@@ -521,9 +574,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	/**
 	 * Checks if the user has a category and a role at same time.
-	 * 
-	 * @param category
-	 *            the needed category
+	 *
+	 * @param category            the needed category
+	 * @param role the role
 	 * @return true / false
 	 */
 	public boolean hasCategory (String category, CRole role)
@@ -540,6 +593,8 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
+	 * Gets the x user unit groups.
+	 *
 	 * @return the xUserUnitGroups
 	 */
 	public Set<CXUserUnitGroup> getxUserUnitGroups ()
@@ -548,8 +603,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
-	 * @param xUserUnitGroups
-	 *            the xUserUnitGroups to set
+	 * Sets the x user unit groups.
+	 *
+	 * @param xUserUnitGroups            the xUserUnitGroups to set
 	 */
 	public void setxUserUnitGroups (Set<CXUserUnitGroup> xUserUnitGroups)
 	{
@@ -557,6 +613,8 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
+	 * Gets the address.
+	 *
 	 * @return the address
 	 */
 	public CAddress getAddress ()
@@ -565,8 +623,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 	}
 
 	/**
-	 * @param address
-	 *            the address to set
+	 * Sets the address.
+	 *
+	 * @param address            the address to set
 	 */
 	public void setAddress (CAddress address)
 	{
@@ -590,11 +649,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 		}
 
 		CUser user = (CUser) object;
-		return ((getId() != null && getId().equals(user.getId())) || (getId() == null && user.getId() == null))
-			&& ((getLogin() != null && getLogin().equals(user.getLogin())) || (getLogin() == null && user.getLogin() == null))
-			&& ((getName() != null && getName().equals(user.getName())) || (getName() == null && user.getName() == null))
-			&& ((getSurname() != null && getSurname().equals(user.getSurname())) || (getSurname() == null && user.getSurname() == null))
-			&& ((getEmail() != null && getEmail().equals(user.getEmail())) || (getEmail() == null && user.getEmail() == null));
+		return ( (getId() != null && getId().equals(user.getId())) || (getId() == null && user.getId() == null)) && ( (getLogin() != null && getLogin().equals(user.getLogin())) || (getLogin() == null && user.getLogin() == null)) && ( (getName() != null && getName().equals(user.getName())) || (getName() == null && user.getName() == null)) && ( (getSurname() != null && getSurname().equals(user.getSurname())) || (getSurname() == null && user.getSurname() == null)) && ( (getEmail() != null && getEmail().equals(user.getEmail())) || (getEmail() == null && user.getEmail() == null));
 	}
 
 	/* (non-Javadoc)
