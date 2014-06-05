@@ -8,13 +8,14 @@ package sk.qbsw.core.base.exception;
  *
  * @author Dalibor Rak
  * @author Michal Lacko
- * @version 1.8.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.9.2
  * @since 1.0.0
  */
 @SuppressWarnings ("serial")
 public class CBusinessException extends Exception
 {
-
 	/** The error. */
 	private IError error;
 
@@ -23,10 +24,21 @@ public class CBusinessException extends Exception
 	 *
 	 * @param message the message
 	 */
-	
+
 	public CBusinessException (String message)
 	{
 		super(message);
+	}
+
+	/**
+	 * Instantiates a new c business exception.
+	 *
+	 * @param message the message
+	 * @param cause the cause
+	 */
+	public CBusinessException (String message, Throwable cause)
+	{
+		super(message, cause);
 	}
 
 	/**
@@ -52,6 +64,19 @@ public class CBusinessException extends Exception
 	public CBusinessException (String message, IError error)
 	{
 		super(message);
+		this.error = error;
+	}
+
+	/**
+	 * Instantiates a new c business exception.
+	 *
+	 * @param message the message
+	 * @param error the error
+	 * @param cause the cause
+	 */
+	public CBusinessException (String message, IError error, Throwable cause)
+	{
+		super(message, cause);
 		this.error = error;
 	}
 
@@ -122,7 +147,7 @@ public class CBusinessException extends Exception
 			return this.message;
 		}
 	}
-	
-	
+
+
 
 }
