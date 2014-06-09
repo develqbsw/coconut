@@ -10,7 +10,6 @@ import java.util.Arrays;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.SessionImplementor;
 import org.hibernate.usertype.UserType;
 import org.springframework.beans.BeanUtils;
 
@@ -79,6 +78,7 @@ public class CRecipientType implements UserType
 	/* (non-Javadoc)
 	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
+	@Override
 	public Object nullSafeGet (ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException
 	{
 		// assume that we only map to one column, so there's only one column name
@@ -98,15 +98,10 @@ public class CRecipientType implements UserType
 		}
 	}
 
-	//TODO: workaround to work in hibernate 4
-	public Object nullSafeGet (ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException
-	{
-		return nullSafeGet(rs, names, owner);
-	}
-
 	/* (non-Javadoc)
 	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
 	 */
+	@Override
 	public void nullSafeSet (PreparedStatement stmt, Object value, int index) throws HibernateException, SQLException
 	{
 		if (value == null)
@@ -130,12 +125,6 @@ public class CRecipientType implements UserType
 		{
 			throw new HibernateException(e);
 		}
-	}
-
-	//TODO: workaround to work in hibernate 4
-	public void nullSafeSet (PreparedStatement stmt, Object value, int index, SessionImplementor session) throws HibernateException, SQLException
-	{
-		nullSafeSet(stmt, value, index);
 	}
 
 	/* (non-Javadoc)
