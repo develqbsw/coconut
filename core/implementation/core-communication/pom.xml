@@ -164,6 +164,14 @@
 			<artifactId>joda-time-hibernate</artifactId>
 			<version>${joda-time-hibernate.version}</version>
 		</dependency>
+		
+		<!-- jadira.usertype for persisting joda time via hibernate 4.x -->
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.jodatime</artifactId>
+			<version>1.9.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

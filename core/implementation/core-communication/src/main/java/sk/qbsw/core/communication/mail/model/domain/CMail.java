@@ -92,12 +92,12 @@ public class CMail implements Serializable, IEntity<Long>
 
 	/** The date and time when the mail was created. */
 	@Column (name = "c_created")
-	@Type (type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime created;
 
 	/** The date and time when the mail was sent. */
 	@Column (name = "c_sent")
-	@Type (type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime sent;
 
 	/* (non-Javadoc)
