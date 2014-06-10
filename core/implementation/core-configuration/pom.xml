@@ -13,6 +13,7 @@
 		<artifactId>core</artifactId>
 		<version>1.9.2</version>
 	</parent>
+
 	<dependencies>
 		<!-- QBSW -->
 		<dependency>
@@ -33,19 +34,18 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito.version}</version>
 		</dependency>
 
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -55,18 +55,11 @@
 
 		<!-- jdbc drivers -->
 		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>sqljdbc4</artifactId>
-			<version>4.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.0-801.jdbc4</version>
+			<version>${postgresql-driver.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 
 		<!-- TECH -->
 		<dependency>

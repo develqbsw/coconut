@@ -15,7 +15,9 @@
 		<artifactId>core</artifactId>
 		<version>1.9.2</version>
 	</parent>
+
 	<dependencies>
+		<!-- QBSW -->
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-persistence</artifactId>
@@ -50,19 +52,12 @@
 			<version>${xstream.version}</version>
 		</dependency>
 
-		<!-- JPA Persistence and hibernate -->
+		<!-- joda time -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate-entitymanager.version}</version>
-		</dependency>
-
 		<!-- jadira.usertype for persisting joda time via hibernate 4.x -->
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
@@ -71,27 +66,17 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- joda time -->
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${joda-time.version}</version>
-		</dependency>
-
-
 		<!-- log4j and it's dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -104,11 +89,11 @@
 		</dependency>
 
 		<!-- postgre for testing -->
-
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.0-801.jdbc4</version>
+			<version>${postgresql-driver.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- testing -->
@@ -118,7 +103,6 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>

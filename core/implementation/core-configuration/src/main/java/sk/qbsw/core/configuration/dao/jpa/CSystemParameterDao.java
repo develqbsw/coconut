@@ -82,6 +82,7 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 	}
 
 	@Override
+	@SuppressWarnings ("unchecked")
 	public List<CSystemParameter> findByModule (String module, DateTime validDateTime)
 	{
 		StringBuilder strQuery = new StringBuilder("select ap from CSystemParameter ap where ap.module = :module ");

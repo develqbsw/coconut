@@ -13,7 +13,6 @@ package sk.qbsw.core.base.exception;
 @SuppressWarnings ("serial")
 public class CSystemException extends RuntimeException
 {
-
 	/**
 	 * Instantiates a new c system exception.
 	 *

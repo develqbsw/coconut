@@ -25,7 +25,7 @@
 			<artifactId>core-base</artifactId>
 			<version>${core.version}</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-testing</artifactId>
 			<version>${core.version}</version>
@@ -57,15 +57,15 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
-			<version>4.0</version>
+			<version>${mssql-driver.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.0-801.jdbc4</version>
+			<version>${postgresql-driver.version}</version>
+			<scope>test</scope>
 		</dependency>
-
 
 		<!-- TECH -->
 		<dependency>
@@ -124,6 +124,7 @@
 			<artifactId>gson</artifactId>
 			<version>${gson.version}</version>
 		</dependency>
+		
 		<!-- JPA Persistence Dependencies -->
 		<dependency>
 			<groupId>org.hibernate.java-persistence</groupId>
@@ -151,7 +152,7 @@
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.jodatime</artifactId>
-			<version>1.9.1</version>
+			<version>${jadira.usertype.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -178,7 +179,6 @@
 			<artifactId>api-all</artifactId>
 			<version>${directory.api.version}</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<resources>

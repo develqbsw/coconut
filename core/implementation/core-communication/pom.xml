@@ -13,8 +13,8 @@
 		<artifactId>core</artifactId>
 		<version>1.9.2</version>
 	</parent>
+	
 	<dependencies>
-
 		<!-- MAIL -->
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -99,6 +99,7 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+		
 		<!-- HTTP -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -117,7 +118,6 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -147,7 +147,7 @@
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.0-801.jdbc4</version>
+			<version>${postgresql-driver.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -157,20 +157,12 @@
 			<artifactId>quartz</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
-
-		<!-- joda time -->
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time-hibernate</artifactId>
-			<version>${joda-time-hibernate.version}</version>
-		</dependency>
 		
 		<!-- jadira.usertype for persisting joda time via hibernate 4.x -->
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.jodatime</artifactId>
-			<version>1.9.1</version>
-			<scope>test</scope>
+			<version>${jadira.usertype.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

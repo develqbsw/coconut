@@ -13,6 +13,7 @@
 		<artifactId>core</artifactId>
 		<version>1.9.2</version>
 	</parent>
+
 	<dependencies>
 		<!-- QBSW -->
 		<dependency>
@@ -27,7 +28,7 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -46,7 +47,7 @@
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito.version}</version>
 		</dependency>
-		
+
 		<!-- log4j and it's dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

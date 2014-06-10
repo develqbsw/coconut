@@ -22,7 +22,6 @@
 			<version>${core.version}</version>
 		</dependency>
 
-
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>

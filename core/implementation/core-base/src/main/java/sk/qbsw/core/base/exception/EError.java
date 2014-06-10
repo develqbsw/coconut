@@ -11,7 +11,6 @@ package sk.qbsw.core.base.exception;
  */
 public enum EError implements IError
 {
-	
 	/** The system error. */
 	SYSTEM_ERROR ("ERR-001", "SYSTEM_ERROR");
 
