@@ -6,6 +6,7 @@ package sk.qbsw.core.api.client.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -22,7 +23,8 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * HttpAPIReqpest repeater support.
  * 
  * @author Dalibor Rak
- * @version 1.4.0
+ * @author Michal Lacko
+ * @version 1.10.0
  * @since 1.3.0
  */
 public abstract class AHttpApiRequest implements IHttpApiRequest
@@ -68,7 +70,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.http.IHttpApiRequest#makeCall(java.lang.String, org.apache.http.entity.ContentType, java.lang.String)
 	 */
-	public final String makeCall (String url, ContentType contentType, String entityInJSon) throws ClientProtocolException, IOException
+	public final String makeCall (String url, ContentType contentType, String entityInJSon, Map<String, String> headers) throws ClientProtocolException, IOException
 	{
 		CApiHttpException lastEx = null;
 
@@ -77,7 +79,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 			try
 			{
 				// try call
-				return makeOneCall(url, contentType, entityInJSon);
+				return makeOneCall(url, contentType, entityInJSon, headers);
 			}
 			catch (CApiHttpException ex)
 			{
@@ -143,7 +145,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	 * @return the string
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	protected abstract String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException;
+	protected abstract String makeOneCall (String url, ContentType contentType, String entityInJSon, Map<String, String> headers) throws IOException;
 
 	/**
 	 * Gets the entity content.

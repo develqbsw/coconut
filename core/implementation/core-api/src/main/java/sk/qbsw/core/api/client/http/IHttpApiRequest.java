@@ -1,6 +1,7 @@
 package sk.qbsw.core.api.client.http;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
@@ -9,7 +10,8 @@ import org.apache.http.entity.ContentType;
  * HTTP Client for API calls
  * 
  * @author Dalibor Rak
- * @version 1.3.0
+ * @author Michal Lacko
+ * @version 1.10.0
  * @since 1.2.0
  * 
  */
@@ -47,7 +49,8 @@ public interface IHttpApiRequest
 	 *            content Type for call
 	 * @param entity
 	 *            Entity used as parameter
+	 * @param headers - headers which can be added to to request
 	 * @return Response as String(may be used for further parsing)
 	 */
-	public String makeCall (String url, ContentType contentType, String entity) throws IOException;
+	public String makeCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws IOException;
 }

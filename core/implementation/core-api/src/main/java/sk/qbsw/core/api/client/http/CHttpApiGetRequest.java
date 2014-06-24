@@ -3,6 +3,8 @@ package sk.qbsw.core.api.client.http;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,7 +17,8 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * Base HTTP client for get requests.
  * 
  * @author Dalibor Rak
- * @version 1.4.0
+ * @author Michal Lacko
+ * @version 1.10.0
  * @since 1.2.0
  */
 public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiRequest
@@ -38,7 +41,7 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 	 * @return response from the HTTP call
 	 * @throws CApiHttpException unsuccessful API call
 	 */
-	protected String makeOneCall (String url, ContentType contentType, String entity) throws IOException
+	protected String makeOneCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws IOException
 	{
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		applyProxy(httpClient);
@@ -59,6 +62,15 @@ public class CHttpApiGetRequest extends AHttpApiRequest implements IHttpApiReque
 
 		HttpGet getRequest = new HttpGet(fullURL);
 		getRequest.addHeader("accept", contentType.getMimeType());
+		
+		if (headers != null)
+		{
+			for (Entry<String, String> headerItem : headers.entrySet())
+			{
+				getRequest.addHeader(headerItem.getKey(), headerItem.getValue());
+			}
+		}
+		
 		HttpResponse response = httpClient.execute(getRequest);
 
 		String content = super.getEntityContent(response);

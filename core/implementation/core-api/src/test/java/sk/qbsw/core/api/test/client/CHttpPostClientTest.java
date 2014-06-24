@@ -6,6 +6,7 @@ import org.apache.http.HttpHost;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sk.qbsw.core.api.client.AApiClient;
 import sk.qbsw.core.api.client.CApiClient;
 import sk.qbsw.core.api.client.http.CHttpApiPostRequest;
 
@@ -22,11 +23,12 @@ public class CHttpPostClientTest
 {
 	/**
 	 * Tests connection without proxy settings
+	 * @throws Exception 
 	 */
 	@Test
-	public void testNoProxy () throws IOException
+	public void testNoProxy () throws Exception
 	{
-		CApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
+		AApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
 		CHttpApiPostRequest post = new CHttpApiPostRequest();
 		post.setRepeatCount(2);
 		post.setTimeout(10000);
@@ -36,12 +38,13 @@ public class CHttpPostClientTest
 
 	/**
 	 * Tests connection with proxy settings
+	 * @throws Exception 
 	 */
 	@Ignore
 	@Test
-	public void testWithProxy () throws IOException
+	public void testWithProxy () throws Exception
 	{
-		CApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
+		AApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
 		CHttpApiPostRequest post = new CHttpApiPostRequest();
 		post.setRepeatCount(2);
 		post.setTimeout(10000);

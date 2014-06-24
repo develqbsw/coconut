@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.http.entity.ContentType;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.api.client.gson.serializer.CDateJSonSerializer;
 import sk.qbsw.core.api.client.http.IHttpApiRequest;
@@ -22,18 +24,19 @@ import com.google.gson.GsonBuilder;
  * @param <O>
  *            output class
  * @author Dalibor Rak
- * @version 1.3.0
+ * @author Michal Lacko
+ * @version 1.10.0
  * @since 1.2.0
  */
-public class CApiClient<I, O>
+public class CApiClient<I, O> extends AApiClient<I, O>
 {
-	protected static final Logger LOGGER = Logger.getLogger(CApiClient.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(CApiClient.class);
 
 	/** Gson builder to create gson. */
-	private GsonBuilder builder;
+	GsonBuilder builder;
 
 	/** The encode api value. */
-	private boolean encodeApiValue;
+	boolean encodeApiValue;
 
 	/**
 	 * Instantiates a new api client.
@@ -54,82 +57,42 @@ public class CApiClient<I, O>
 	 */
 	public CApiClient (boolean encodeApiValue)
 	{
+		this();
 		this.encodeApiValue = encodeApiValue;
-
-		// create builder
-		this.builder = new GsonBuilder();
-		// initialize builder and register default adapters
-		this.builder = prepareGsonBuilder(builder);
 	}
 
-	/**
-	 * Make call to API.
-	 * 
-	 * @param request
-	 *            the request
-	 * @param url
-	 *            the url
-	 * @param input
-	 *            the input
-	 * @return the string
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, I, java.lang.reflect.Type, org.apache.http.entity.ContentType)
 	 */
-	public String makeCall (IHttpApiRequest request, String url, I input) throws IOException
+	@Override
+	@SuppressWarnings ("unchecked")
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType, Map<String, String> headers) throws IOException
 	{
-		return this.makeCall(request, url, input, ContentType.APPLICATION_JSON);
+		// create gson from builder
+		Gson gson = this.builder.create();
+
+		// process request
+		String response = makeCall(request, url, input, contentType, headers);
+
+		// process response
+		O responseObject = (O) gson.fromJson(response, returnType);
+		return responseObject;
 	}
 
-	/**
-	 * Makes call to API.
-	 * 
-	 * @param request
-	 *            request to use
-	 * @param url
-	 *            URL to API
-	 * @param input
-	 *            input parameter
-	 * @param returnClass
-	 *            Class to return
-	 * @return Returned object (instance of returnClass)
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, I, java.lang.reflect.Type)
 	 */
-	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass) throws IOException
+	@Override
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType) throws IOException
 	{
-		return makeCall(request, url, input, (Type) returnClass);
+		return this.makeCall(request, url, input, returnType, ContentType.APPLICATION_JSON, null);
 	}
 
-	/**
-	 * Make call with specific content.
-	 * 
-	 * @param request
-	 *            the request
-	 * @param url
-	 *            the url
-	 * @param input
-	 *            the input
-	 * @param returnClass
-	 *            the return class
-	 * @param type
-	 *            the type
-	 * @return the o
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, I, org.apache.http.entity.ContentType)
 	 */
-	public O makeCall (IHttpApiRequest request, String url, I input, Class<O> returnClass, ContentType type) throws IOException
-	{
-		return makeCall(request, url, input, (Type) returnClass, type);
-	}
-
-	/**
-	 * Makes call with specific content.
-	 * 
-	 * @param request
-	 *            request to use
-	 * @param url
-	 *            URL to API
-	 * @param input
-	 *            input parameter
-	 * @param contentType
-	 *            the content type
-	 * @return Returned object (instance of returnClass)
-	 */
-	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType) throws IOException
+	@Override
+	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType, Map<String, String> headers) throws IOException
 	{
 		// create gson from builder
 		Gson gson = this.builder.create();
@@ -142,57 +105,9 @@ public class CApiClient<I, O>
 			requestJson = URLEncoder.encode(requestJson, "UTF8");
 		}
 
-		// process request
-		String response = request.makeCall(url, contentType, requestJson);
-
-		return response;
-	}
-
-	/**
-	 * Make call to API.
-	 * 
-	 * @param request
-	 *            the request
-	 * @param url
-	 *            the url
-	 * @param input
-	 *            the input
-	 * @param returnType
-	 *            the return type
-	 * @return the o
-	 */
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType) throws IOException
-	{
-		return this.makeCall(request, url, input, returnType, ContentType.APPLICATION_JSON);
-	}
-
-	/**
-	 * Makes call with specific content.
-	 * 
-	 * @param request
-	 *            request to use
-	 * @param url
-	 *            URL to API
-	 * @param input
-	 *            input parameter
-	 * @param returnType
-	 *            Type to return
-	 * @param contentType
-	 *            the content type
-	 * @return Returned object (instance of returnClass)
-	 */
-	@SuppressWarnings ("unchecked")
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType) throws IOException
-	{
-		// create gson from builder
-		Gson gson = this.builder.create();
 
 		// process request
-		String response = makeCall(request, url, input, contentType);
-
-		// process response
-		O responseObject = (O) gson.fromJson(response, returnType);
-		return responseObject;
+		return makeCall(request, url, contentType, requestJson, headers);
 	}
 
 	/**

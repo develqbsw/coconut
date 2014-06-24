@@ -22,6 +22,11 @@ public class CApiHttpException extends CSystemException
 	private String response;
 
 	/**
+	 * deserialized response from object
+	 */
+	private Object objectResponse;
+
+	/**
 	 * Instantiates a new api http exception.
 	 * 
 	 * @param message
@@ -70,4 +75,22 @@ public class CApiHttpException extends CSystemException
 	{
 		return response;
 	}
+
+	/**
+	 * @return the objectResponse
+	 */
+	public Object getObjectResponse ()
+	{
+		return objectResponse;
+	}
+
+	/**
+	 * @param objectResponse the objectResponse to set
+	 */
+	public void setObjectResponse (Object objectResponse)
+	{
+		this.objectResponse = objectResponse;
+	}
+
+
 }

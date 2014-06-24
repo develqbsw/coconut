@@ -87,7 +87,7 @@ public class CBusinessException extends Exception
 	 */
 	public String getErrorCode ()
 	{
-		return error.getErrorCode();
+		return error == null ? null : error.getErrorCode();
 	}
 
 	/**

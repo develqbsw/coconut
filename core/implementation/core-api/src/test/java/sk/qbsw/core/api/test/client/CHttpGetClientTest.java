@@ -6,6 +6,7 @@ import org.apache.http.HttpHost;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sk.qbsw.core.api.client.AApiClient;
 import sk.qbsw.core.api.client.CApiClient;
 import sk.qbsw.core.api.client.http.CHttpApiGetRequest;
 
@@ -24,7 +25,7 @@ public class CHttpGetClientTest
 	 * Tests connection without proxy
 	 */
 	@Test
-	public void testNoProxy () throws IOException
+	public void testNoProxy () throws Exception
 	{
 		CApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
 		CHttpApiGetRequest get = new CHttpApiGetRequest();
@@ -39,7 +40,7 @@ public class CHttpGetClientTest
 	 */
 	@Ignore
 	@Test
-	public void testWithProxy () throws IOException
+	public void testWithProxy () throws Exception
 	{
 		CApiClient<CCallRequestModel, CCallResponseModel> client = new CApiClient<CCallRequestModel, CCallResponseModel>();
 		CHttpApiGetRequest get = new CHttpApiGetRequest();

@@ -1,6 +1,8 @@
 package sk.qbsw.core.api.client.http;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
@@ -14,7 +16,8 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * PUT client for API call.
  * 
  * @author Dalibor Rak
- * @version 1.4.0
+ * @author Michal Lacko
+ * @version 1.10.0
  * @since 1.3.0
  */
 public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiRequest
@@ -29,7 +32,7 @@ public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiReque
 	 * @param characterEncoding encoding of the content
 	 * @return response content
 	 */
-	public String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException
+	public String makeOneCall (String url, ContentType contentType, String entityInJSon, Map<String, String> headers) throws IOException
 	{
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		applyTimeouts(httpClient);
@@ -37,6 +40,15 @@ public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiReque
 
 		HttpPut putRequest = new HttpPut(url);
 		putRequest.addHeader("accept", contentType.getMimeType());
+		
+		if (headers != null)
+		{
+			for (Entry<String, String> headerItem : headers.entrySet())
+			{
+				putRequest.addHeader(headerItem.getKey(), headerItem.getValue());
+			}
+		}
+		
 		if (entityInJSon != null)
 		{
 			StringEntity input = new StringEntity(entityInJSon, contentType.getCharset().name());
