@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -48,7 +49,7 @@ public class CHttpApiGetFileRequest extends AHttpApiRequest implements IHttpApiR
 	 * @return response from the HTTP call
 	 * @throws CApiHttpException unsuccessful API call
 	 */
-	protected String makeOneCall (String url, ContentType contentType, String entity) throws IOException
+	protected String makeOneCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws IOException
 	{
 		//Stream used for reading the data from the internet
 		InputStream inputStream = null;

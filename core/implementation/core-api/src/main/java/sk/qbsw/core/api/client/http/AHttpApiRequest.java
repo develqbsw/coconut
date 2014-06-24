@@ -66,11 +66,18 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	{
 		this.timeout = timeout;
 	}
+	
+	@Override
+	public String makeCall (String url, ContentType contentType, String entity) throws IOException
+	{
+		// TODO Auto-generated method stub
+		return makeCall(url, contentType, entity, null);
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.http.IHttpApiRequest#makeCall(java.lang.String, org.apache.http.entity.ContentType, java.lang.String)
 	 */
-	public final String makeCall (String url, ContentType contentType, String entityInJSon, Map<String, String> headers) throws ClientProtocolException, IOException
+	public final String makeCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws ClientProtocolException, IOException
 	{
 		CApiHttpException lastEx = null;
 
@@ -79,7 +86,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 			try
 			{
 				// try call
-				return makeOneCall(url, contentType, entityInJSon, headers);
+				return makeOneCall(url, contentType, entity, headers);
 			}
 			catch (CApiHttpException ex)
 			{
