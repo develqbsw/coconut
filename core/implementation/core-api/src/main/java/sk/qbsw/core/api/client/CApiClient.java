@@ -66,13 +66,13 @@ public class CApiClient<I, O> extends AApiClient<I, O>
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType, Map<String, String> headers) throws IOException
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType) throws IOException
 	{
 		// create gson from builder
 		Gson gson = this.builder.create();
 
 		// process request
-		String response = makeCall(request, url, input, contentType, headers);
+		String response = makeCall(request, url, input, contentType);
 
 		// process response
 		O responseObject = (O) gson.fromJson(response, returnType);
@@ -85,14 +85,14 @@ public class CApiClient<I, O> extends AApiClient<I, O>
 	@Override
 	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType) throws IOException
 	{
-		return this.makeCall(request, url, input, returnType, ContentType.APPLICATION_JSON, null);
+		return this.makeCall(request, url, input, returnType, ContentType.APPLICATION_JSON);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, I, org.apache.http.entity.ContentType)
 	 */
 	@Override
-	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType, Map<String, String> headers) throws IOException
+	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType) throws IOException
 	{
 		// create gson from builder
 		Gson gson = this.builder.create();
@@ -107,7 +107,7 @@ public class CApiClient<I, O> extends AApiClient<I, O>
 
 
 		// process request
-		return makeCall(request, url, contentType, requestJson, headers);
+		return makeCall(request, url, contentType, requestJson);
 	}
 
 	/**

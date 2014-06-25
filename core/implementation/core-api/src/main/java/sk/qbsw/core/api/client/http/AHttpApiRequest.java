@@ -38,6 +38,11 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	/** The proxy. */
 	private HttpHost proxy;
 
+	/**
+	 * strings which are append to http header
+	 */
+	private Map<String, String> headers;
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.http.IHttpApiRequest#setRepeatCount(int)
 	 */
@@ -66,18 +71,11 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	{
 		this.timeout = timeout;
 	}
-	
-	@Override
-	public String makeCall (String url, ContentType contentType, String entity) throws IOException
-	{
-		// TODO Auto-generated method stub
-		return makeCall(url, contentType, entity, null);
-	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.http.IHttpApiRequest#makeCall(java.lang.String, org.apache.http.entity.ContentType, java.lang.String)
 	 */
-	public final String makeCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws ClientProtocolException, IOException
+	public final String makeCall (String url, ContentType contentType, String entity) throws ClientProtocolException, IOException
 	{
 		CApiHttpException lastEx = null;
 
@@ -86,7 +84,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 			try
 			{
 				// try call
-				return makeOneCall(url, contentType, entity, headers);
+				return makeOneCall(url, contentType, entity);
 			}
 			catch (CApiHttpException ex)
 			{
@@ -152,7 +150,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	 * @return the string
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	protected abstract String makeOneCall (String url, ContentType contentType, String entityInJSon, Map<String, String> headers) throws IOException;
+	protected abstract String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException;
 
 	/**
 	 * Gets the entity content.
@@ -204,4 +202,22 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 		}
 		return output.toString();
 	}
+
+	/**
+	 * @return the headers
+	 */
+	public Map<String, String> getHeaders ()
+	{
+		return headers;
+	}
+
+	/**
+	 * @param headers the headers to set
+	 */
+	public void setHeaders (Map<String, String> headers)
+	{
+		this.headers = headers;
+	}
+
+
 }

@@ -52,19 +52,5 @@ public interface IHttpApiRequest
 	 * @param headers - headers which can be added to to request
 	 * @return Response as String(may be used for further parsing)
 	 */
-	public String makeCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws IOException;
-	
-	/**
-	 * Makes the HTTP call. Response will be returned
-	 * 
-	 * @param url
-	 *            URL to call
-	 * @param contentType
-	 *            content Type for call
-	 * @param entity
-	 *            Entity used as parameter
-	 * @param headers - headers which can be added to to request
-	 * @return Response as String(may be used for further parsing)
-	 */
 	public String makeCall (String url, ContentType contentType, String entity) throws IOException;
 }

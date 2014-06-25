@@ -41,7 +41,7 @@ public class CHttpApiDeleteRequest extends AHttpApiRequest implements IHttpApiRe
 	 * @return response from the HTTP call
 	 * @throws CApiHttpException unsuccessful API call
 	 */
-	protected String makeOneCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws IOException
+	protected String makeOneCall (String url, ContentType contentType, String entity) throws IOException
 	{
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		applyProxy(httpClient);
@@ -63,9 +63,9 @@ public class CHttpApiDeleteRequest extends AHttpApiRequest implements IHttpApiRe
 		HttpDelete deleteRequest = new HttpDelete(fullURL);
 		deleteRequest.addHeader("accept", contentType.getMimeType());
 
-		if (headers != null)
+		if (getHeaders() != null)
 		{
-			for (Entry<String, String> headerItem : headers.entrySet())
+			for (Entry<String, String> headerItem : getHeaders().entrySet())
 			{
 				deleteRequest.addHeader(headerItem.getKey(), headerItem.getValue());
 			}

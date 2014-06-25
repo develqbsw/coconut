@@ -61,34 +61,16 @@ public abstract class AApiClient<I, O> implements IApiClient<I, O>
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, java.lang.Object, org.apache.http.entity.ContentType)
-	 */
-	@Override
-	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType) throws IOException
-	{
-		return makeCall(request, url, input, contentType, null);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, java.lang.Object, java.lang.reflect.Type, org.apache.http.entity.ContentType)
-	 */
-	@Override
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType) throws IOException
-	{
-		return makeCall(request, url, input, returnType, contentType, null);
-	}
-
-	/* (non-Javadoc)
 	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, java.lang.Object, java.lang.reflect.Type, org.apache.http.entity.ContentType)
 	 */
 
-	public String makeCall (IHttpApiRequest request, String url, ContentType contentType, String inputData, Map<String, String> headers) throws IOException
+	public String makeCall (IHttpApiRequest request, String url, ContentType contentType, String inputData) throws IOException
 	{
 		try
 		{
 
 			// process request
-			return request.makeCall(url, contentType, inputData, headers);
+			return request.makeCall(url, contentType, inputData);
 
 
 		}

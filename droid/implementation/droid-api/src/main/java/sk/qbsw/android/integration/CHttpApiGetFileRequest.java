@@ -49,7 +49,7 @@ public class CHttpApiGetFileRequest extends AHttpApiRequest implements IHttpApiR
 	 * @return response from the HTTP call
 	 * @throws CApiHttpException unsuccessful API call
 	 */
-	protected String makeOneCall (String url, ContentType contentType, String entity, Map<String, String> headers) throws IOException
+	protected String makeOneCall (String url, ContentType contentType, String entity) throws IOException
 	{
 		//Stream used for reading the data from the internet
 		InputStream inputStream = null;

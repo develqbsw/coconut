@@ -39,25 +39,6 @@ public interface IApiClient<I, O>
 	 * @return Returned object (instance of returnClass)
 	 */
 	public abstract O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType) throws IOException;
-	
-	/**
-	 * Makes call with specific content.
-	 * 
-	 * @param request
-	 *            request to use
-	 * @param url
-	 *            URL to API
-	 * @param input
-	 *            input parameter
-	 * @param returnType
-	 *            Type to return
-	 * @param contentType
-	 *            the content type
-	 * @param headers
-	 * 		the headers
-	 * @return Returned object (instance of returnClass)
-	 */
-	public abstract O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType, Map<String, String> heades) throws IOException;
 
 	/**
 	 * Make call to API.
@@ -89,23 +70,8 @@ public interface IApiClient<I, O>
 	 * 		the headers
 	 * @return Returned object (instance of returnClass)
 	 */
-	public abstract String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType, Map<String, String> headers) throws IOException;
-	
-	
-	/**
-	 * Makes call with specific content.
-	 * 
-	 * @param request
-	 *            request to use
-	 * @param url
-	 *            URL to API
-	 * @param input
-	 *            input parameter
-	 * @param contentType
-	 *            the content type
-	 * @return Returned object (instance of returnClass)
-	 */
 	public abstract String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType) throws IOException;
+	
 	
 	/**
 	 * Make call to API.

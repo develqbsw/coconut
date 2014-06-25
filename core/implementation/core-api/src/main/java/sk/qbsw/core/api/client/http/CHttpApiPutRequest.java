@@ -32,7 +32,7 @@ public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiReque
 	 * @param characterEncoding encoding of the content
 	 * @return response content
 	 */
-	public String makeOneCall (String url, ContentType contentType, String entityInJSon, Map<String, String> headers) throws IOException
+	public String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException
 	{
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		applyTimeouts(httpClient);
@@ -41,9 +41,9 @@ public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiReque
 		HttpPut putRequest = new HttpPut(url);
 		putRequest.addHeader("accept", contentType.getMimeType());
 		
-		if (headers != null)
+		if (getHeaders() != null)
 		{
-			for (Entry<String, String> headerItem : headers.entrySet())
+			for (Entry<String, String> headerItem : getHeaders().entrySet())
 			{
 				putRequest.addHeader(headerItem.getKey(), headerItem.getValue());
 			}

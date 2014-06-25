@@ -68,7 +68,7 @@ public class CApiJaxbClient<I, O> extends AApiClient<I, O>
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType, Map<String, String> headers) throws IOException
+	public O makeCall (IHttpApiRequest request, String url, I input, Type returnType, ContentType contentType) throws IOException
 	{
 
 		try
@@ -77,7 +77,7 @@ public class CApiJaxbClient<I, O> extends AApiClient<I, O>
 			Unmarshaller m = context.createUnmarshaller();
 
 			// process request
-			String response = makeCall(request, url, input, contentType, headers);
+			String response = makeCall(request, url, input, contentType);
 
 			// process response
 
@@ -105,7 +105,7 @@ public class CApiJaxbClient<I, O> extends AApiClient<I, O>
 	 * @see sk.qbsw.core.api.client.IApiClient#makeCall(sk.qbsw.core.api.client.http.IHttpApiRequest, java.lang.String, I, org.apache.http.entity.ContentType)
 	 */
 	@Override
-	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType, Map<String, String> headers) throws IOException
+	public String makeCall (IHttpApiRequest request, String url, I input, ContentType contentType) throws IOException
 	{
 		try
 		{
@@ -124,7 +124,7 @@ public class CApiJaxbClient<I, O> extends AApiClient<I, O>
 				requestXml = URLEncoder.encode(requestXml, "UTF8");
 			}
 
-			return makeCall(request, url, contentType, requestXml, headers);
+			return makeCall(request, url, contentType, requestXml);
 
 		}
 		catch (JAXBException e)
