@@ -39,6 +39,28 @@ public class CAmountTransformTest
 	private IAmountTransformer amountTransformer;
 
 	/**
+	 * Test fractional part of number.
+	 */
+	@Test
+	public void testFractionalPart () throws CNotSupportedAmountException
+	{
+		CTransformedAmount<String, Long> amount = amountTransformer.transformToStringLongFormat(new BigDecimal("125.65"));
+		Assert.assertEquals(Long.valueOf(65), amount.getFractionalPart());
+
+		amount = amountTransformer.transformToStringLongFormat(new BigDecimal("125.6"));
+		Assert.assertEquals(Long.valueOf(60), amount.getFractionalPart());
+
+		amount = amountTransformer.transformToStringLongFormat(new BigDecimal("125.06"));
+		Assert.assertEquals(Long.valueOf(6), amount.getFractionalPart());
+
+		amount = amountTransformer.transformToStringLongFormat(new BigDecimal("125.5569"));
+		Assert.assertEquals(Long.valueOf(56), amount.getFractionalPart());
+
+		amount = amountTransformer.transformToStringLongFormat(new BigDecimal("125.4223"));
+		Assert.assertEquals(Long.valueOf(42), amount.getFractionalPart());
+	}
+
+	/**
 	 * Test billions.
 	 */
 	@Test

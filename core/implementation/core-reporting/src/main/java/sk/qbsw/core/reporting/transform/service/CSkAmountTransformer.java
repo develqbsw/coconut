@@ -30,7 +30,7 @@ public class CSkAmountTransformer implements IAmountTransformer
 	{
 		CTransformedAmount<String, Long> transformedAmount = new CTransformedAmount<String, Long>();
 		transformedAmount.setIntegerPart(transformIntegerPart(amount.longValue()));
-		transformedAmount.setFractionalPart(amount.remainder(BigDecimal.ONE).multiply(BigDecimal.valueOf(100)).round(new MathContext(2, RoundingMode.CEILING)).longValue());
+		transformedAmount.setFractionalPart(amount.remainder(BigDecimal.ONE).multiply(BigDecimal.valueOf(100)).round(new MathContext(2, RoundingMode.HALF_UP)).longValue());
 
 		return transformedAmount;
 	}
