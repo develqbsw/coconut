@@ -23,7 +23,7 @@ import sk.qbsw.core.security.service.IUserService;
  * Provides test for authentication.
  *
  * @autor Tomas Lauro
- * @version 1.7.2
+ * @version 1.10.2
  * @since 1.6.0
  */
 @Component
@@ -41,6 +41,16 @@ public class CAuthenticationTestProvider
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
 		Assert.assertEquals("Authentication with login and password failed: number of user groups is not 2", user.getGroups().size(), 2);
+	}
+
+	/**
+	 * Test login with default unit - incorrect password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testLoginWithDefaultUnitIncorrectPassword (IAuthenticationService authenticationService) throws CSecurityException
+	{
+		authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "incorrectPassword");
 	}
 
 	/**

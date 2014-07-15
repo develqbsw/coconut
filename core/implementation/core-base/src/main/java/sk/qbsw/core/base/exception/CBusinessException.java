@@ -10,7 +10,7 @@ package sk.qbsw.core.base.exception;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.9.2
+ * @version 1.10.2
  * @since 1.0.0
  */
 @SuppressWarnings ("serial")
@@ -100,6 +100,23 @@ public class CBusinessException extends Exception
 		return this.error;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Throwable#toString()
+	 */
+	@Override
+	public String toString ()
+	{
+		String parentToString = super.toString();
+
+		if (error == null)
+		{
+			return parentToString;
+		}
+		else
+		{
+			return parentToString + ", code: " + error.getErrorCode();
+		}
+	}
 
 	/**
 	 * class only for keep backwards compatibility.

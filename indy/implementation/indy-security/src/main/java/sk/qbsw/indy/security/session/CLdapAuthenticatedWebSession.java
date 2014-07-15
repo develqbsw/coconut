@@ -87,7 +87,7 @@ public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSessi
 		}
 		catch (CSecurityException e)
 		{
-			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s %s", login, e.getErrorCode(), e.getMessage()));
+			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", login, e.toString()));
 			setSecurityException(e);
 			return false;
 		}
@@ -111,7 +111,7 @@ public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSessi
 		}
 		catch (CSecurityException e)
 		{
-			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s %s", login, e.getErrorCode(), e.getMessage()));
+			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", login, e.toString()));
 			setSecurityException(e);
 			return false;
 		}

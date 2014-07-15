@@ -25,7 +25,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
- * @version 1.7.2
+ * @version 1.10.2
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -89,6 +89,21 @@ public class CDatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testLoginWithDefaultUnit(authenticationService);
+	}
+
+	/**
+	 * Test login with default unit - incorrect password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test (expected = CSecurityException.class)
+	@Transactional
+	@Rollback (true)
+	public void testLoginWithDefaultUnitIncorrectPassword () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginWithDefaultUnitIncorrectPassword(authenticationService);
 	}
 
 	/**
