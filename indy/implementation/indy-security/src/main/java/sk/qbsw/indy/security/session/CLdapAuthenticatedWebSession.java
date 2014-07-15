@@ -14,7 +14,7 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * Session of the logged LDAP user.
  *
  * @author Tomas Lauro
- * @version 1.7.0
+ * @version 1.10.2
  * @since 1.7.0
  */
 public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSession

@@ -83,7 +83,7 @@ public class CBusinessException extends Exception
 	/**
 	 * Gets the error code.
 	 *
-	 * @return the error code
+	 * @return the error code or null if there is no error code
 	 */
 	public String getErrorCode ()
 	{

@@ -15,7 +15,7 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.10.2
  * @since 1.0.0
  */
 public class CDBAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
