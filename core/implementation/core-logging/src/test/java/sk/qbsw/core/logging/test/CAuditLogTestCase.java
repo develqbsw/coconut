@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -27,7 +26,6 @@ import sk.qbsw.core.logging.service.IAuditLogService;
  * @version 1.8.0
  * @since 1.8.0
  */
-@Ignore
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager")
@@ -55,7 +53,7 @@ public class CAuditLogTestCase
 	 */
 	@Test
 	@Transactional
-	@Rollback(true)
+	//@Rollback(true)
 	public void storeLog ()
 	{
 		List<Object> testDataList = new ArrayList<Object>();

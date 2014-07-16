@@ -57,7 +57,6 @@ public class CAuditLog implements Serializable, IEntity<Long>
 
 	/** The request data. */
 	@Lob
-	@Type(type = "org.hibernate.type.TextType") 
 	@Column (name = "c_request_data", nullable = false)
 	private String requestData;
 
@@ -147,26 +146,6 @@ public class CAuditLog implements Serializable, IEntity<Long>
 	}
 
 	/**
-	 * Gets the request data.
-	 *
-	 * @return the requestData
-	 */
-	public String getRequestData ()
-	{
-		return requestData;
-	}
-
-	/**
-	 * Sets the request data.
-	 *
-	 * @param requestData the requestData to set
-	 */
-	public void setRequestData (String requestData)
-	{
-		this.requestData = requestData;
-	}
-
-	/**
 	 * Gets the result description.
 	 *
 	 * @return the resultDescription
@@ -205,6 +184,26 @@ public class CAuditLog implements Serializable, IEntity<Long>
 	{
 		this.operationResult = operationResult;
 	}
+
+	/**
+	 * @return the requestData
+	 */
+	public String getRequestData ()
+	{
+		return requestData;
+	}
+
+	/**
+	 * @param requestData the requestData to set
+	 */
+	public void setRequestData (String requestData)
+	{
+		this.requestData = requestData;
+	}
+
+	
+	
+
 
 
 }
