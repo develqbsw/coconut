@@ -35,22 +35,27 @@ public class CAddress extends ASecurityChangeEntity<Long>
 
 	/** The city. */
 	@Column (name = "c_city", nullable = false)
+	@Expose
 	private String city;
 
 	/** The house number. */
 	@Column (name = "c_house_number", nullable = false)
+	@Expose
 	private String houseNumber;
 
 	/** The state. */
 	@Column (name = "c_state", nullable = false)
+	@Expose
 	private String state;
 
 	/** The street. */
 	@Column (name = "c_street", nullable = false)
+	@Expose
 	private String street;
 
 	/** The zip code. */
 	@Column (name = "c_zip_code", nullable = false)
+	@Expose
 	private String zipCode;
 
 	/* (non-Javadoc)
