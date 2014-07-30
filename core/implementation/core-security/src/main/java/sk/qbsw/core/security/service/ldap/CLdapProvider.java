@@ -30,7 +30,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.9.1
+ * @version 1.10.3
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -56,7 +56,7 @@ public class CLdapProvider
 		//initialize the main connection
 		if (connection == null)
 		{
-			connection = createConnection(data.getServerName(), data.getServerPort());
+			connection = createConnection(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
 
 			if (connection.isConnected() == false)
 			{
@@ -68,7 +68,7 @@ public class CLdapProvider
 		//initialize the temporary connection
 		if (temporaryConnection == null)
 		{
-			temporaryConnection = createConnection(data.getServerName(), data.getServerPort());
+			temporaryConnection = createConnection(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
 
 			if (temporaryConnection.isConnected() == false)
 			{
@@ -105,9 +105,9 @@ public class CLdapProvider
 	 * @param ldapServerPort the ldap server port
 	 * @return the ldap connection
 	 */
-	private LdapConnection createConnection (String ldapServerName, int ldapServerPort)
+	private LdapConnection createConnection (String ldapServerName, int ldapServerPort, boolean useSsl)
 	{
-		return new LdapNetworkConnection(ldapServerName, ldapServerPort);
+		return new LdapNetworkConnection(ldapServerName, ldapServerPort, useSsl);
 	}
 
 	/**

@@ -5,7 +5,7 @@ package sk.qbsw.core.security.model.jmx;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.1
+ * @version 1.10.3
  * @since 1.6.0
  */
 public interface ILdapAuthenticationConfigurator
@@ -23,6 +23,12 @@ public interface ILdapAuthenticationConfigurator
 	 * @return the serverPort
 	 */
 	public abstract int getServerPort ();
+
+	/**
+	 * Gets the flag useSsl.
+	 * 
+	 */
+	public abstract boolean getUseSslFlag ();
 
 	/**
 	 * Gets the user dn.
@@ -86,6 +92,13 @@ public interface ILdapAuthenticationConfigurator
 	 * @param serverPort the new server port
 	 */
 	public abstract void setServerPort (int serverPort);
+
+	/**
+	 * Sets the flag useSsl.
+	 *
+	 * @param useSsl the flag indicates usage of the ssl
+	 */
+	public abstract void setUseSslFlag (boolean useSsl);
 
 	/**
 	 * Sets the server name.

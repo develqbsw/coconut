@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.1
+ * @version 1.10.3
  * @since 1.6.0
  */
 @Service ("ldapAuthenticationConfigurator")
@@ -20,6 +20,9 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 
 	/** The ldap server port. */
 	private int serverPort;
+
+	/** The flag indicates usage of ssl. */
+	private boolean useSsl;
 
 	/** The ldap dn of an user to authenticate with ldap server. */
 	private String userDn;
@@ -71,12 +74,30 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getUseSslFlag()
+	 */
+	@Override
+	public boolean getUseSslFlag ()
+	{
+		return useSsl;
+	}
+
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setServerPort(int)
 	 */
 	@Override
 	public void setServerPort (int serverPort)
 	{
 		this.serverPort = serverPort;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUseSslFlag(boolean)
+	 */
+	@Override
+	public void setUseSslFlag (boolean useSsl)
+	{
+		this.useSsl = useSsl;
 	}
 
 	/* (non-Javadoc)
