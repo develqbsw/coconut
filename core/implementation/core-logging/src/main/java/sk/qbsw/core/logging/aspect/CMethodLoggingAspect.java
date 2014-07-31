@@ -52,7 +52,7 @@ public class CMethodLoggingAspect extends ALoggingAspect
 	/**
 	 * logging every method where class have annotation CAuditLogged and method don't have annotation CNotAuditLogged
 	 */
-	@Around ("anyMethod() && loggedClass() && !@annotation(sk.qbsw.core.logging.aspect.annotation.CNotLogged)")
+	@Around ("anyMethod() && loggedClass() && !@annotation(sk.qbsw.core.logging.aspect.annotation.CLogged) && !@annotation(sk.qbsw.core.logging.aspect.annotation.CNotLogged)")
 	public Object loggedClassPointcut (ProceedingJoinPoint pjp) throws Throwable
 	{
 		return this.doBasicLogging(pjp, pjp.getTarget().getClass().getAnnotation(CLogged.class));
