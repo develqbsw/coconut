@@ -72,7 +72,11 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 			roles.addAll(user.exportRoles());
 		}
 
-		LOGGER.warn(String.format("No roles found. Reason: User is not authenticated"));
+		if (roles.isEmpty())
+		{
+			LOGGER.warn(String.format("No roles found."));
+		}
+
 		return roles;
 	}
 
