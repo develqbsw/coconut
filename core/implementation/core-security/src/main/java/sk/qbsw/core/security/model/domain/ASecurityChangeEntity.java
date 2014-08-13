@@ -14,16 +14,17 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
  * Abstract entity which add changeDateTime value which is date and time of last change
- * changeDateTime is automatically set when is entity updated 
+ * changeDateTime is automatically set when is entity updated
+ * 
  * @author Michal Lacko
- * @version 1.8.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.10.3
  * @since 1.8.0
  */
-
 @MappedSuperclass
 public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<T>
 {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -51,14 +52,21 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 		this.changeDateTime = new DateTime();
 	}
 
-	public DateTime getChangeDateTime ()
-	{
-		return this.changeDateTime;
-	}
-
 	protected void setChangeDateTime (DateTime changeDateTime)
 	{
 		this.changeDateTime = changeDateTime;
 	}
 
+	public DateTime getChangeDateTime ()
+	{
+		return this.changeDateTime;
+	}
+
+	/**
+	 * Update changeDateTime to current time.
+	 */
+	public void updateChangeDateTime ()
+	{
+		this.changeDateTime = new DateTime();
+	}
 }
