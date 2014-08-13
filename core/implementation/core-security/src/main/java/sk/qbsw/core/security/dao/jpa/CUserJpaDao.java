@@ -24,7 +24,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.8.0
+ * 
+ * @version 1.10.3
  * @since 1.0.0
  */
 @Repository (value = "userDao")
@@ -49,6 +50,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @return the c user
 	 * @see sk.qbsw.core.security.dao.IUserDao#findById(java.lang.Long)
 	 */
+	@Override
 	public CUser findById (Long id)
 	{
 		//get hibernate session from entity manager to set filter
@@ -84,6 +86,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findForModification(java.lang.Long)
 	 */
+	@Override
 	public CUser findForModification (Long id)
 	{
 		return findById(id);
@@ -94,6 +97,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * 
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
 	 */
+	@Override
 	public CUser findByLogin (String login)
 	{
 		return findByLoginAndUnit(login, null);
@@ -105,6 +109,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String,
 	 * sk.qbsw.core.security.model.domain.CUnit)
 	 */
+	@Override
 	public CUser findByLogin (String login, CUnit unit)
 	{
 		return findByLoginAndUnit(login, unit);
@@ -167,6 +172,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * 
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByPinNull(java.lang.String)
 	 */
+	@Override
 	@SuppressWarnings ("unchecked")
 	public CUser findByPinNull (String pinCode)
 	{
@@ -198,6 +204,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#countAllUsers()
 	 */
+	@Override
 	public int countAllUsers ()
 	{
 		String strQuery = "select count(u) from CUser u";
@@ -209,6 +216,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers()
 	 */
+	@Override
 	public List<CUser> findAllUsers ()
 	{
 		return findAllUsers(null, null, null, null, null, false);
@@ -217,6 +225,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization)
 	 */
+	@Override
 	public List<CUser> findAllUsers (COrganization organization)
 	{
 		if (organization == null)
@@ -232,6 +241,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean)
 	 */
+	@Override
 	public List<CUser> findAllUsers (COrganization organization, Boolean enabled)
 	{
 		if (enabled == null)
@@ -247,6 +257,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)
 	 */
+	@Override
 	public List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group)
 	{
 		return findAllUsers(organization, enabled, group, null, null, false);
@@ -255,6 +266,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsersOrderByOrganization(sk.qbsw.core.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.core.security.model.domain.CGroup)
 	 */
+	@Override
 	public List<CUser> findAllUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group)
 	{
 		return findAllUsers(organization, enabled, group, null, null, true);
@@ -263,6 +275,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsersByRole(sk.qbsw.core.security.model.domain.COrganization, sk.qbsw.core.security.model.domain.CRole)
 	 */
+	@Override
 	public List<CUser> findAllUsersByRole (COrganization organization, CRole role)
 	{
 		if (role == null)
@@ -278,6 +291,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#getOtherActiveUsers(sk.qbsw.core.security.model.domain.COrganization, sk.qbsw.core.security.model.domain.CGroup, sk.qbsw.core.security.model.domain.CUser)
 	 */
+	@Override
 	public List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user)
 	{
 		if (user == null)
@@ -293,22 +307,34 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
 	 */
+	@Override
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled)
 	{
-		return findAllUsers(name, surname, login, null, enabled, null);
+		return findAllUsers(name, surname, login, null, enabled, null, null);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, sk.qbsw.core.security.model.domain.COrganization)
+	 */
+	@Override
+	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, COrganization organization)
+	{
+		return findAllUsers(name, surname, login, null, enabled, null, organization);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
 	 */
+	@Override
 	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix)
 	{
-		return findAllUsers(name, surname, login, null, enabled, groupCodePrefix);
+		return findAllUsers(name, surname, login, null, enabled, groupCodePrefix, null);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findAllUsers(java.lang.String)
 	 */
+	@Override
 	public List<CUser> findAllUsers (String email)
 	{
 		if (email == null)
@@ -317,7 +343,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		}
 		else
 		{
-			return findAllUsers(null, null, null, email, null, null);
+			return findAllUsers(null, null, null, email, null, null, null);
 		}
 	}
 
@@ -330,10 +356,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @param email the email
 	 * @param enabled the enabled
 	 * @param groupCodePrefix the group code prefix
+	 * @param organization the user organization
 	 * @return the list
 	 */
 	@SuppressWarnings ("unchecked")
-	private List<CUser> findAllUsers (String name, String surname, String login, String email, Boolean enabled, String groupCodePrefix)
+	private List<CUser> findAllUsers (String name, String surname, String login, String email, Boolean enabled, String groupCodePrefix, COrganization organization)
 	{
 		//get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
@@ -346,6 +373,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 
 			/** Create query */
 			strQueryBuilder.append("select distinct(us) from CUser us " +
+							"left join us.organization " +
 							"left join fetch us.defaultUnit " +
 							"left join fetch us.xUserUnitGroups xuug " +
 							"left join fetch xuug.group gr " +
@@ -380,6 +408,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			if (enabled != null)
 			{
 				strQueryBuilder.append(" and us.flagEnabled=:enabled");
+			}
+
+			if (organization != null)
+			{
+				strQueryBuilder.append(" and us.organization=:organization");
 			}
 
 			/** Create order by section. */
@@ -417,6 +450,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			if (enabled != null)
 			{
 				query.setParameter("enabled", enabled);
+			}
+
+			if (organization != null)
+			{
+				query.setParameter("organization", organization);
 			}
 
 			return (List<CUser>) query.getResultList();

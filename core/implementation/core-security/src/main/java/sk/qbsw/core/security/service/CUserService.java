@@ -33,7 +33,8 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @author Tomas Leken
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.9.1
+ * 
+ * @version 1.10.3
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -229,6 +230,15 @@ public class CUserService implements IUserService
 	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled)
 	{
 		return userDao.findAllUsers(name, surname, login, enabled);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, sk.qbsw.core.security.model.domain.COrganization)
+	 */
+	@Transactional (readOnly = true)
+	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, COrganization organization)
+	{
+		return userDao.findAllUsers(name, surname, login, enabled, organization);
 	}
 
 	/* (non-Javadoc)

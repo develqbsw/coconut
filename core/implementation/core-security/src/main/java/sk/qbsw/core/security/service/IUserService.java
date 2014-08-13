@@ -16,7 +16,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.9.1
+ * 
+ * @version 1.10.3
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -130,6 +131,18 @@ public interface IUserService extends Serializable
 	 * @return the users
 	 */
 	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled);
+
+	/**
+	 * Gets the users.
+	 *
+	 * @param name the name (optional)
+	 * @param surname the surname (optional)
+	 * @param login the login (optional)
+	 * @param enabled the enabled (optional)
+	 * @param organization the organization
+	 * @return the users
+	 */
+	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, COrganization organization);
 
 	/**
 	 * Gets the users.

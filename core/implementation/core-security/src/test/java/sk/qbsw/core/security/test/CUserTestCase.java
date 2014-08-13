@@ -21,6 +21,7 @@ import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CGroup;
+import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
@@ -32,7 +33,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks user service.
  *
  * @autor Tomas Lauro
- * @version 1.9.1
+ * @version 1.10.3
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -252,6 +253,33 @@ public class CUserTestCase
 
 		//checks if the user has a correct set of groups.
 		checksUserHasCorrectGroups(users.get(0));
+	}
+	
+	/**
+	 * Test get user by name and organization
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetAllByNameAndOrganization () throws CSecurityException
+	{
+		initTest();
+
+		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+		COrganization organization2 = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_2_CODE);
+		List<CUser> users = userService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization);
+
+		//asserts
+		assertNotNull("Get user by name and organization failed: cannot find users", users);
+		Assert.assertEquals("Get user by name and organization failed: the number of users is not 1", users.size(), 1);
+
+		users = userService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization2);
+
+		//asserts
+		assertNotNull("Get user by name and organization failed: cannot find users", users);
+		Assert.assertEquals("Get user by name and organization failed: the number of users is not 0", users.size(), 0);
 	}
 
 	/**
