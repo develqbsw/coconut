@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.IUserService;
@@ -25,7 +26,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
- * @version 1.10.2
+ * @version 1.10.3
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -284,6 +285,51 @@ public class CDatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testIsOnline(authenticationService);
+	}
+
+	/**
+	 * Test login enabled user in disabled organization.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testLoginEnabledUserDisabledOrganization () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService, userService);
+	}
+
+	/**
+	 * Test login disabled user in disabled organization.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testLoginDisabledUserDisabledOrganization () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService, userService);
+	}
+
+	/**
+	 * Test login disabled user in enabled organization.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testLoginDisabledUserEnabledOrganization () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService, userService);
 	}
 
 	/**

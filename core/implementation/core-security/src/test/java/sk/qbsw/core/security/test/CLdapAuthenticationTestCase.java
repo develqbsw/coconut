@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
@@ -29,7 +30,8 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  * Checks Authentication service for ldap.
  *
  * @autor Tomas Lauro
- * @version 1.9.0
+ * 
+ * @version 1.10.3
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -211,6 +213,48 @@ public class CLdapAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
+	}
+
+	/**
+	 * Test login enabled user in disabled organization.
+	 * @throws Exception 
+	 */
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testLoginEnabledUserDisabledOrganization () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService, userService);
+	}
+
+	/**
+	 * Test login disabled user in disabled organization.
+	 * @throws Exception 
+	 */
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testLoginDisabledUserDisabledOrganization () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService, userService);
+	}
+
+	/**
+	 * Test login disabled user in enabled organization.
+	 * @throws Exception 
+	 */
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testLoginDisabledUserEnabledOrganization () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService, userService);
 	}
 
 	//	/**

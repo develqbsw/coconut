@@ -132,14 +132,14 @@ public class CUserTestCase
 	{
 		initTest();
 
-		List<CUser> twoUsers = userService.getUsers(null, null, null, null, CDataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
-		List<CUser> oneUser = userService.getUsers(null, null, null, null, CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE.substring(0, 20));
+		List<CUser> usersInGroupInUnit = userService.getUsers(null, null, null, null, CDataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
+		List<CUser> usersInGroupNotInUnit = userService.getUsers(null, null, null, null, CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE.substring(0, 20));
 
 		//asserts
-		assertNotNull("Get all users failed: list of users is null", twoUsers);
-		assertNotNull("Get all users failed: list of users is null", oneUser);
-		Assert.assertEquals("Get all users failed: the expected count of user is 2 ", twoUsers.size(), 2);
-		Assert.assertEquals("Get all users failed: the expected count of user is 1 ", oneUser.size(), 1);
+		assertNotNull("Get all users failed: list of users is null", usersInGroupInUnit);
+		assertNotNull("Get all users failed: list of users is null", usersInGroupNotInUnit);
+		Assert.assertEquals("Get all users failed: the expected count of user is 5 ", 5, usersInGroupInUnit.size());
+		Assert.assertEquals("Get all users failed: the expected count of user is 4 ", 4, usersInGroupNotInUnit.size());
 	}
 
 	/**

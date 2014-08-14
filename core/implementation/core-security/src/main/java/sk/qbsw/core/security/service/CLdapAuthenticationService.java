@@ -22,6 +22,7 @@ import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidUserException;
 import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.exception.CWrongPasswordException;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -36,7 +37,8 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
  * The LDAP authentication service.
  * 
  * @author Tomas Lauro
- * @version 1.9.0
+ * 
+ * @version 1.10.3
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -175,6 +177,12 @@ public class CLdapAuthenticationService implements IAuthenticationService
 
 		if (user != null)
 		{
+			// check if user is disabled
+			if (user.getOrganization().getFlagEnabled().equals(false) || user.getFlagEnabled().equals(false))
+			{
+				throw new CUserDisabledException("");
+			}
+
 			//authenticate user in ldap
 			if (authenticateUser(login, password) == true)
 			{

@@ -25,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.10.2
+ * @version 1.10.3
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -57,9 +57,12 @@ public class CDataGenerator
 
 	/** The Constant ORGANIZATION_CODE. */
 	public static final String ORGANIZATION_CODE = "unit_test_organization";
-	
+
 	/** The Constant ORGANIZATION_2_CODE. */
 	public static final String ORGANIZATION_2_CODE = "unit_test_organization_2";
+
+	/** The Constant ORGANIZATION_DISABLED_CODE. */
+	public static final String ORGANIZATION_DISABLED_CODE = "unit_test_organization_disabled";
 
 	/** The Constant FIRST_ROLE_CODE. */
 	public static final String FIRST_ROLE_CODE = "unit_test_role_1";
@@ -112,6 +115,15 @@ public class CDataGenerator
 	/** The Constant USER_WITHOUT_PASSWORD. */
 	public static final String USER_WITHOUT_PASSWORD = "unit_test_user_without_password";
 
+	/** The Constant USER_ENABLED_IN_DISABLED_ORGANIZATION. */
+	public static final String USER_ENABLED_IN_DISABLED_ORGANIZATION = "unit_test_user_enabled_in_disabled_organization";
+
+	/** The Constant USER_DISABLED_IN_DISABLED_ORGANIZATION. */
+	public static final String USER_DISABLED_IN_DISABLED_ORGANIZATION = "unit_test_user_disabled_in_disabled_organization";
+
+	/** The Constant USER_DISABLED_IN_ENABLED_ORGANIZATION. */
+	public static final String USER_DISABLED_IN_ENABLED_ORGANIZATION = "unit_test_user_disabled_in_enabled_organization";
+
 	/**
 	 * Generate data for database tests.
 	 */
@@ -122,6 +134,7 @@ public class CDataGenerator
 		//organization
 		COrganization organization = createOrganization(ORGANIZATION_CODE);
 		COrganization organization2 = createOrganization(ORGANIZATION_2_CODE);
+		COrganization organizationDisabled = createOrganization(ORGANIZATION_DISABLED_CODE, false);
 
 		//roles
 		CRole firstRole = createRole(FIRST_ROLE_CODE);
@@ -145,12 +158,18 @@ public class CDataGenerator
 		CAuthenticationParams authenticationParamWithoutDefaulUnit = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE);
 		CAuthenticationParams authenticationParamWithDefaulUnitNoGroup = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
 		CAuthenticationParams authenticationParamWithoutDefaulUnitNoGroup = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
+		CAuthenticationParams authenticationParamEnabledInDisabledOrganization = createAuthenticationParams(USER_ENABLED_IN_DISABLED_ORGANIZATION);
+		CAuthenticationParams authenticationParamDisabledInDisabledOrganization = createAuthenticationParams(USER_DISABLED_IN_DISABLED_ORGANIZATION);
+		CAuthenticationParams authenticationParamDisabledInEnabledOrganization = createAuthenticationParams(USER_DISABLED_IN_ENABLED_ORGANIZATION);
 
 		//users
 		CUser userWithDefaultUnit = createUser(USER_WITH_DEFAULT_UNIT_CODE);
 		CUser userWithoutDefaultUnit = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE);
 		CUser userWithDefaultUnitNoGroup = createUser(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
 		CUser userWithoutDefaultUnitNoGroup = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
+		CUser userEnabledInDisabledOrganization = createUser(USER_ENABLED_IN_DISABLED_ORGANIZATION);
+		CUser userDisabledInDisabledOrganization = createUser(USER_DISABLED_IN_DISABLED_ORGANIZATION, false);
+		CUser userDisabledInEnabledOrganization = createUser(USER_DISABLED_IN_ENABLED_ORGANIZATION, false);
 
 		/** Create connections. */
 		//unit -> organization
@@ -208,27 +227,43 @@ public class CDataGenerator
 
 		userWithoutDefaultUnitNoGroup.addGroupUnit(secondGroupInUnit, defaultUnit);
 		userWithoutDefaultUnitNoGroup.addGroupUnit(secondGroupInUnit, firstUnit);
+
+		userEnabledInDisabledOrganization.addGroup(firstGroupNotInUnit);
+
+		userDisabledInDisabledOrganization.addGroup(secondGroupNotInUnit);
+
+		userDisabledInEnabledOrganization.addGroup(secondGroupNotInUnit);
 		//user -> organization
 		userWithDefaultUnit.setOrganization(organization);
 		userWithoutDefaultUnit.setOrganization(organization);
 		userWithDefaultUnitNoGroup.setOrganization(organization);
 		userWithoutDefaultUnitNoGroup.setOrganization(organization);
+		userEnabledInDisabledOrganization.setOrganization(organizationDisabled);
+		userDisabledInDisabledOrganization.setOrganization(organizationDisabled);
+		userDisabledInEnabledOrganization.setOrganization(organization);
 
 		//user -> defaultUnit
 		userWithDefaultUnit.setDefaultUnit(defaultUnit);
 		userWithoutDefaultUnit.setDefaultUnit(null);
 		userWithDefaultUnitNoGroup.setDefaultUnit(defaultUnit);
 		userWithoutDefaultUnitNoGroup.setDefaultUnit(null);
+		userEnabledInDisabledOrganization.setDefaultUnit(null);
+		userDisabledInDisabledOrganization.setDefaultUnit(null);
+		userDisabledInEnabledOrganization.setDefaultUnit(null);
 
 		//user -> authenticationParams
 		authenticationParamWithDefaulUnit.setUser(userWithDefaultUnit);
 		authenticationParamWithoutDefaulUnit.setUser(userWithoutDefaultUnit);
 		authenticationParamWithDefaulUnitNoGroup.setUser(userWithDefaultUnitNoGroup);
 		authenticationParamWithoutDefaulUnitNoGroup.setUser(userWithoutDefaultUnitNoGroup);
+		authenticationParamEnabledInDisabledOrganization.setUser(userEnabledInDisabledOrganization);
+		authenticationParamDisabledInDisabledOrganization.setUser(userDisabledInDisabledOrganization);
+		authenticationParamDisabledInEnabledOrganization.setUser(userDisabledInEnabledOrganization);
 
 		//save data to DB
 		orgDao.save(organization);
 		orgDao.save(organization2);
+		orgDao.save(organizationDisabled);
 		roleDao.save(firstRole);
 		roleDao.save(secondRole);
 		groupDao.save(firstGroupInUnit);
@@ -243,10 +278,16 @@ public class CDataGenerator
 		userDao.save(userWithoutDefaultUnit);
 		userDao.save(userWithDefaultUnitNoGroup);
 		userDao.save(userWithoutDefaultUnitNoGroup);
+		userDao.save(userEnabledInDisabledOrganization);
+		userDao.save(userDisabledInDisabledOrganization);
+		userDao.save(userDisabledInEnabledOrganization);
 		authenticationParamsDao.save(authenticationParamWithDefaulUnit);
 		authenticationParamsDao.save(authenticationParamWithoutDefaulUnit);
 		authenticationParamsDao.save(authenticationParamWithDefaulUnitNoGroup);
 		authenticationParamsDao.save(authenticationParamWithoutDefaulUnitNoGroup);
+		authenticationParamsDao.save(authenticationParamEnabledInDisabledOrganization);
+		authenticationParamsDao.save(authenticationParamDisabledInDisabledOrganization);
+		authenticationParamsDao.save(authenticationParamDisabledInEnabledOrganization);
 		//flush data to hibernate cache
 		orgDao.flush();
 		roleDao.flush();
@@ -271,17 +312,29 @@ public class CDataGenerator
 	 */
 	public COrganization createOrganization (String code)
 	{
+		return createOrganization(code, true);
+	}
+
+	/**
+	 * Creates the organization.
+	 *
+	 * @param code the code
+	 * @param enabled the enabled
+	 * @return the c organization
+	 */
+	public COrganization createOrganization (String code, boolean enabled)
+	{
 		COrganization organization = new COrganization();
 		organization.setCode(code);
 		organization.setName(code);
 		organization.setEmail(code + "@qbsw.sk");
 		organization.setPhone("000000000");
-		organization.setFlagEnabled(true);
+		organization.setFlagEnabled(enabled);
 		organization.setAddress(createAddress());
 
 		return organization;
 	}
-	
+
 	/**
 	 * Creates the address.
 	 *
@@ -351,12 +404,24 @@ public class CDataGenerator
 	 */
 	public CUser createUser (String code)
 	{
+		return createUser(code, true);
+	}
+
+	/**
+	 * Creates the user.
+	 *
+	 * @param code the code
+	 * @param enabled the enabled
+	 * @return the c user
+	 */
+	public CUser createUser (String code, boolean enabled)
+	{
 		CUser user = new CUser();
 		user.setLogin(code);
 		user.setName(code);
 		user.setSurname(code);
 		user.setEmail(code + "@qbsw.sk");
-		user.setFlagEnabled(true);
+		user.setFlagEnabled(enabled);
 		user.setAddress(createAddress());
 
 		return user;

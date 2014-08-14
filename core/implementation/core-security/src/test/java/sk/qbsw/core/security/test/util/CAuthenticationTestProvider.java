@@ -23,7 +23,7 @@ import sk.qbsw.core.security.service.IUserService;
  * Provides test for authentication.
  *
  * @autor Tomas Lauro
- * @version 1.10.2
+ * @version 1.10.3
  * @since 1.6.0
  */
 @Component
@@ -228,6 +228,36 @@ public class CAuthenticationTestProvider
 	public void testIsOnline (IAuthenticationService authenticationService)
 	{
 		Assert.assertTrue("Checks is online failed - the source is offline", authenticationService.isOnline());
+	}
+	
+	/**
+	 * Test login enabled user in disabled organization.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testLoginEnabledUserDisabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	{
+		authenticationService.login(CDataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION, CDataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION);
+	}
+
+	/**
+	 * Test login disabled user in disabled organization.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testLoginDisabledUserDisabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	{
+		authenticationService.login(CDataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION, CDataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION);
+	}
+
+	/**
+	 * Test login disabled user in enabled organization.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	public void testLoginDisabledUserEnabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	{
+		authenticationService.login(CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION, CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION);
 	}
 
 	/**
