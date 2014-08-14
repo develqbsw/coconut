@@ -203,7 +203,7 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		try
 		{
 			//authenticate
-			ldapProvider.authenticate(data.getUserSearchBaseDn(), "(&(cn=" + login + "))", password);
+			ldapProvider.authenticate(data.getUserSearchBaseDn(), String.format(data.getUserSearchFilter(), login), password);
 
 			return true;
 		}

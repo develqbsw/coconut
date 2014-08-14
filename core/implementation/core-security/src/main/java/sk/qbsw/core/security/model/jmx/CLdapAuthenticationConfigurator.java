@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
+ * 
  * @version 1.10.3
  * @since 1.6.0
  */
@@ -35,6 +36,9 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 
 	/** The ldap user search base dn. */
 	private String userSearchBaseDn;
+
+	/** The user search filter. */
+	private String userSearchFilter = "(&(cn=%s))";
 
 	/** The ldap user object class. */
 	private String userObjectClass;
@@ -74,21 +78,21 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getUseSslFlag()
-	 */
-	@Override
-	public boolean getUseSslFlag ()
-	{
-		return useSsl;
-	}
-
-	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setServerPort(int)
 	 */
 	@Override
 	public void setServerPort (int serverPort)
 	{
 		this.serverPort = serverPort;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getUseSslFlag()
+	 */
+	@Override
+	public boolean getUseSslFlag ()
+	{
+		return useSsl;
 	}
 
 	/* (non-Javadoc)
@@ -170,6 +174,24 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 	public void setUserSearchBaseDn (String userSearchBaseDn)
 	{
 		this.userSearchBaseDn = userSearchBaseDn;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getUserSearchFilter()
+	 */
+	@Override
+	public String getUserSearchFilter ()
+	{
+		return userSearchFilter;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserSearchFilter(java.lang.String)
+	 */
+	@Override
+	public void setUserSearchFilter (String userSearchFilter)
+	{
+		this.userSearchFilter = userSearchFilter;
 	}
 
 	/* (non-Javadoc)
