@@ -26,7 +26,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.10.3
+ * @version 1.10.4
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
@@ -200,7 +200,7 @@ public class CDatabaseAuthenticationService implements IAuthenticationService
 			}
 
 			// check if user is disabled
-			if (user.getOrganization().getFlagEnabled().equals(false) || user.getFlagEnabled().equals(false))
+			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
 			{
 				throw new CUserDisabledException("");
 			}
