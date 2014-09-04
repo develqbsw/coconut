@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.NoResultException;
 
@@ -384,16 +385,40 @@ public class CUserService implements IUserService
 		CUser persistedUser = (CUser) getPersistedEntity(user, userDao);
 		CGroup persistedGroup = (CGroup) getPersistedEntity(group, groupDao);
 		CUnit persistedUnit = null;
+		
 		if (unit != null)
 		{
 			persistedUnit = (CUnit) getPersistedEntity(unit, unitDao);
 		}
+		
+		// if group which will be added to user is excluded another group then cannot be added
+		Boolean isAddedGroupExcluded = Boolean.FALSE;
+		//if already exist combination of user group unit 
+		Boolean isGroupAlreadyAdded = Boolean.FALSE;
 
-		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, persistedGroup);
-
-		//if there is no record, create and save it
-		if (userUnitGroupRecords.size() == 0)
+		//find all groups assigned to user
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, null);
+		
+		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
+		{
+			if(persistedGroup.equals(userUnitGroup)){
+				//if is group already added
+				isGroupAlreadyAdded = Boolean.TRUE;
+				break;
+			}
+			
+			//if added group is excluded by group which user already have then group cannot be added
+			Set<CGroup> excludedGroups = userUnitGroup.getGroup().getExcludedGroups();
+			if(excludedGroups.contains(persistedGroup)){
+				isAddedGroupExcluded = Boolean.TRUE;
+				break;
+			}
+			
+		}
+		
+		//if is not combination user group unit already added
+		//or if existing group assigned to user not exclude added group
+		if (!isGroupAlreadyAdded && !isAddedGroupExcluded)
 		{
 			CXUserUnitGroup userUnitGroupRecord = new CXUserUnitGroup();
 			userUnitGroupRecord.setUser(persistedUser);

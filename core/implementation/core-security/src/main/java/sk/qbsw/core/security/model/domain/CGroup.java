@@ -13,6 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -68,6 +70,13 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<CUnit> units;
 
+	//bi-directional many-to-many association to CGroup
+	//this association excludes group in other words if user have one group then can't have groups which are associated with this group through this association
+	/** Excluded groups. */
+	@ManyToMany (fetch = FetchType.LAZY)
+	@JoinTable (schema = "sec", name = "t_x_group_group", joinColumns = {@JoinColumn (name = "fk_group")}, inverseJoinColumns = {@JoinColumn (name = "fk_excluded_group")})
+	private Set<CGroup> excludedGroups;
+	
 	/** Categories separator. */
 	@Transient
 	private final String CATEGORIES_SEPARATOR = ";";
@@ -312,6 +321,22 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	public void setUnits (Set<CUnit> units)
 	{
 		this.units = units;
+	}
+
+	/**
+	 * @return the excludedGroups
+	 */
+	public Set<CGroup> getExcludedGroups ()
+	{
+		return excludedGroups;
+	}
+
+	/**
+	 * @param excludedGroups the excludedGroups to set
+	 */
+	public void setExcludedGroups (Set<CGroup> excludedGroups)
+	{
+		this.excludedGroups = excludedGroups;
 	}
 
 	/**

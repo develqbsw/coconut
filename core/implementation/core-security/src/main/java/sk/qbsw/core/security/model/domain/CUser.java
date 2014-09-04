@@ -88,7 +88,13 @@ public class CUser extends ASecurityChangeEntity<Long>
 	@Expose
 	@Column (name = "working_position")
 	private String workingPosition;
+	/** The organization type. */
+	@Column (name = "organization_type")
+	private String organizationType;
 
+	/** Rank. */
+	@Column (name = "rank")
+	private String rank;
 	// bi-directional many-to-one association to COrganization
 	/** The organization. */
 	@ManyToOne (fetch = FetchType.LAZY)
@@ -630,6 +636,38 @@ public class CUser extends ASecurityChangeEntity<Long>
 	public void setAddress (CAddress address)
 	{
 		this.address = address;
+	}
+
+	/**
+	 * @return the organizationType
+	 */
+	public String getOrganizationType ()
+	{
+		return organizationType;
+	}
+
+	/**
+	 * @param organizationType the organizationType to set
+	 */
+	public void setOrganizationType (String organizationType)
+	{
+		this.organizationType = organizationType;
+	}
+
+	/**
+	 * @return the rank
+	 */
+	public String getRank ()
+	{
+		return rank;
+	}
+
+	/**
+	 * @param rank the rank to set
+	 */
+	public void setRank (String rank)
+	{
+		this.rank = rank;
 	}
 
 	/* (non-Javadoc)
