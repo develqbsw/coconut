@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>core</artifactId>
-		<version>1.10.4</version>
+		<version>1.10.4-SNAPSHOT</version>
 	</parent>
 	<name>Core paypal</name>
 	<url>http://maven.apache.org</url>
