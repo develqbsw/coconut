@@ -4,7 +4,7 @@
 	<groupId>sk.qbsw</groupId>
 	<artifactId>indy-base</artifactId>
 	<packaging>jar</packaging>
-	<version>1.10.4-SNAPSHOT</version>
+	<version>1.10.5-SNAPSHOT</version>
 	<organization>
 		<name>QBSW a.s.</name>
 		<url>http://www.qbsw.sk</url>
@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>indy</artifactId>
-		<version>1.10.4-SNAPSHOT</version>
+		<version>1.10.5-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 		<!-- QBSW -->
