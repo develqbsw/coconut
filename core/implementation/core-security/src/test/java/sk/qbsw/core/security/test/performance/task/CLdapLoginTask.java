@@ -14,7 +14,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  *
  * @author Tomas Lauro
  * 
- * @version 1.7.2
+ * @version 1.10.5
  * @since 1.7.2
  */
 public class CLdapLoginTask extends CLoginTask implements Runnable
@@ -53,7 +53,7 @@ public class CLdapLoginTask extends CLoginTask implements Runnable
 		ldapAuthenticationConfigurator.setServerPort(10389);
 		ldapAuthenticationConfigurator.setUserDn("cn=ekolkyRW,ou=users,ou=system");
 		ldapAuthenticationConfigurator.setUserPassword("ZiAvGJDxcqUOkyQ");
-		ldapAuthenticationConfigurator.setUserSearchBaseDn("ou=users,dc=mfsr,dc=sk");
+		ldapAuthenticationConfigurator.setUserSearchBaseDns(new String[] {"ou=users,dc=mfsr,dc=sk"});
 		ldapAuthenticationConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapAuthenticationConfigurator.setUserOrganizationId((long) 1);
 	}

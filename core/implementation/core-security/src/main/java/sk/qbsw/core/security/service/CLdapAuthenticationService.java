@@ -38,7 +38,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.10.4
+ * @version 1.10.5
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -205,20 +205,32 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	 * @param login the login
 	 * @param password the password
 	 * @return true, if successful
+	 * @throws CSecurityException the configuration is corrupted
 	 */
-	private boolean authenticateUser (String login, String password)
+	private boolean authenticateUser (String login, String password) throws CSecurityException
 	{
-		try
+		if (data.getUserSearchBaseDns() != null)
 		{
-			//authenticate
-			ldapProvider.authenticate(data.getUserSearchBaseDn(), String.format(data.getUserSearchFilter(), login), password);
+			for (String userSearchDn : data.getUserSearchBaseDns())
+			{
+				try
+				{
+					//authenticate
+					ldapProvider.authenticate(userSearchDn, String.format(data.getUserSearchFilter(), login), password);
 
-			return true;
-		}
-		catch (Throwable ex)
-		{
-			logger.info("The user authentication failed", ex);
+					return true;
+				}
+				catch (Throwable ex)
+				{
+					continue;
+				}
+			}
+
 			return false;
+		}
+		else
+		{
+			throw new CSecurityException("Ldap configuration corrupted");
 		}
 	}
 
@@ -234,8 +246,9 @@ public class CLdapAuthenticationService implements IAuthenticationService
 		//validate password, if not valid throw an exception
 		authDataValidationService.validatePassword(password);
 
+		//TODO: create user search
 		//create dn
-		String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDn()).toString();
+		String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDns()[0]).toString();
 
 		try
 		{
@@ -311,8 +324,9 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	{
 		CUser user = userDao.findById(userId);
 
+		//TODO: create user search
 		//create dn
-		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDn()).toString();
+		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDns()[0]).toString();
 		String newRdn = new StringBuilder().append("cn=").append(login).toString();
 
 		try

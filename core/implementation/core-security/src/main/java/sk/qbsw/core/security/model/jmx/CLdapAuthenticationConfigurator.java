@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.10.3
+ * @version 1.10.5
  * @since 1.6.0
  */
 @Service ("ldapAuthenticationConfigurator")
@@ -34,8 +34,8 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 	/** The ldap user organization. */
 	private Long userOrganizationId;
 
-	/** The ldap user search base dn. */
-	private String userSearchBaseDn;
+	/** The ldap user search base dns. */
+	private String[] userSearchBaseDns;
 
 	/** The user search filter. */
 	private String userSearchFilter = "(&(cn=%s))";
@@ -159,21 +159,21 @@ public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getUserSearchBaseDn()
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getUserSearchBaseDns()
 	 */
 	@Override
-	public String getUserSearchBaseDn ()
+	public String[] getUserSearchBaseDns ()
 	{
-		return userSearchBaseDn;
+		return userSearchBaseDns;
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserSearchBaseDn(java.lang.String)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserSearchBaseDns(java.lang.String[])
 	 */
 	@Override
-	public void setUserSearchBaseDn (String userSearchBaseDn)
+	public void setUserSearchBaseDns (String[] userSearchBaseDns)
 	{
-		this.userSearchBaseDn = userSearchBaseDn;
+		this.userSearchBaseDns = userSearchBaseDns;
 	}
 
 	/* (non-Javadoc)

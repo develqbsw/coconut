@@ -3,6 +3,7 @@ package sk.qbsw.core.security.test;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,35 +28,34 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
 import sk.qbsw.core.testing.mock.IMockHelper;
 
 /**
- * Checks Authentication service for ldap.
+ * Checks Authentication service for mixed auth.
  *
  * @autor Tomas Lauro
- * 
  * @version 1.10.5
- * @since 1.6.0
+ * @since 1.10.5
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-ldap-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
-public class CLdapAuthenticationTestCase
+public class CMixedAuthenticationTestCase
 {
 	/** The database data generator. */
 	@Autowired
 	private CDataGenerator dataGenerator;
 
+	/** The mixed service. */
+	@Autowired
+	@Qualifier ("mixedAuthenticationService")
+	private IAuthenticationService authenticationService;
+
 	/** The authentication service. */
 	@Autowired
 	@Qualifier ("ldapAuthenticationService")
-	private IAuthenticationService authenticationService;
+	private IAuthenticationService ldapAuthenticationService;
 
 	/** The authentication test provider. */
 	@Autowired
 	private CAuthenticationTestProvider authenticationTestProvider;
-
-	/** The ldap provider. */
-	@Autowired
-	@Qualifier ("ldapProviderMock")
-	private CLdapProvider ldapProvider;
 
 	/** The ldap configurator. */
 	@Autowired
@@ -77,6 +77,11 @@ public class CLdapAuthenticationTestCase
 	@Autowired
 	private IMockHelper mockHelper;
 
+	/** The ldap provider. */
+	@Autowired
+	@Qualifier ("ldapProviderMock")
+	private CLdapProvider ldapProvider;
+
 	/**
 	 * Inits the test case.
 	 */
@@ -87,7 +92,7 @@ public class CLdapAuthenticationTestCase
 		ldapConfigurator.setServerPort(10389);
 		ldapConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
 		ldapConfigurator.setUserPassword("jozko.mrkvicka");
-		ldapConfigurator.setUserSearchBaseDns(new String[] {"ou=users,dc=mfsr,dc=sk"});
+		ldapConfigurator.setUserSearchBaseDns(new String[] {"ou=system,dc=mfsr,dc=sk", "ou=users,dc=mfsr,dc=sk"});
 		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
 		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,40})");
@@ -105,7 +110,7 @@ public class CLdapAuthenticationTestCase
 	/**
 	 * Test login with default unit.
 	 *
-	 * @throws Exception the exception
+	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional
@@ -118,8 +123,26 @@ public class CLdapAuthenticationTestCase
 	}
 
 	/**
+	 * Test login with default unit - incorrect password.
+	 * IGNORED - because the ldap mock is always successful
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test (expected = CSecurityException.class)
+	@Transactional
+	@Rollback (true)
+	@Ignore
+	public void testLoginWithDefaultUnitIncorrectPassword () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginWithDefaultUnitIncorrectPassword(authenticationService);
+	}
+
+	/**
 	 * Test login without default unit.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional
@@ -133,7 +156,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login with default unit and role. The role should be found - login success.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional
@@ -147,7 +171,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login with default unit and role. The role should not be found - login fails.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional
@@ -161,7 +186,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login without default unit and with role. The role should be found - login success.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional
@@ -175,7 +201,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login without default unit and with role. The role should not be found - login fails.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional
@@ -189,7 +216,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login with default unit and with unit. The user should be found - login success.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional
@@ -203,7 +231,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login without default unit and with unit. The user should be found - login success.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional
@@ -217,7 +246,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login enabled user in disabled organization.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CUserDisabledException.class)
 	@Transactional (readOnly = true)
@@ -231,7 +261,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login disabled user in disabled organization.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CUserDisabledException.class)
 	@Transactional (readOnly = true)
@@ -245,7 +276,8 @@ public class CLdapAuthenticationTestCase
 
 	/**
 	 * Test login disabled user in enabled organization.
-	 * @throws Exception 
+	 *
+	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CUserDisabledException.class)
 	@Transactional (readOnly = true)
@@ -257,75 +289,12 @@ public class CLdapAuthenticationTestCase
 		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService, userService);
 	}
 
-	//	/**
-	//	 * Test change encrypted password.
-	//	 *
-	//	 * @throws CSecurityException the security exception
-	//	 */
-	//	@Test
-	//	@Transactional
-	//	@Rollback (true)
-	//	public void testChangeEncryptedPasswordExistingUser () throws Exception
-	//	{
-	//		initTest();
-	//
-	//		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
-	//	}
-	//
-	//	/**
-	//	 * Test change plain text password with new user.
-	//	 *
-	//	 * @throws CSecurityException the security exception
-	//	 */
-	//	@Test
-	//	@Transactional
-	//	@Rollback (true)
-	//	public void testChangeEncryptedPasswordNewUser () throws Exception
-	//	{
-	//		initTest();
-	//
-	//		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
-	//	}
-	//
-	//	/**
-	//	 * Test change login name of user.
-	//	 *
-	//	 * @throws CSecurityException the security exception
-	//	 */
-	//	@Test
-	//	@Transactional
-	//	@Rollback (true)
-	//	public void testChangeLogin () throws Exception
-	//	{
-	//		initTest();
-	//
-	//		authenticationTestProvider.testChangeLogin(authenticationService, userService);
-	//	}
-	//
-	//	/**
-	//	 * Test if the ldap is online.
-	//	 * @throws Exception 
-	//	 *
-	//	 * @throws CSecurityException the security exception
-	//	 */
-	//	@Test
-	//	@Transactional (readOnly = true)
-	//	@Rollback (true)
-	//	public void testIsOnline () throws Exception
-	//	{
-	//		initTest();
-	//
-	//		authenticationTestProvider.testIsOnline(authenticationService);
-	//	}
-
 	/**
-	 * Inits the test user with default unit.
-	 *
-	 * @throws Exception the exception
+	 * Inits the test.
 	 */
 	private void initTest () throws Exception
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();
-		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
+		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(ldapAuthenticationService), "ldapProvider", ldapProvider);
 	}
 }

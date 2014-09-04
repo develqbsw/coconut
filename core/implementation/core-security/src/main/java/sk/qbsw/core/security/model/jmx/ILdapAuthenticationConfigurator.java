@@ -6,7 +6,7 @@ package sk.qbsw.core.security.model.jmx;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.10.3
+ * @version 1.10.5
  * @since 1.6.0
  */
 public interface ILdapAuthenticationConfigurator
@@ -95,18 +95,18 @@ public interface ILdapAuthenticationConfigurator
 	public abstract void setUserOrganizationId (Long userOrganizationId);
 
 	/**
-	 * Gets the user search base dn.
+	 * Gets the user search base dn array.
 	 *
-	 * @return the userSearchBaseDn
+	 * @return the userSearchBaseDns
 	 */
-	public abstract String getUserSearchBaseDn ();
+	public abstract String[] getUserSearchBaseDns ();
 
 	/**
-	 * Sets the user search base dn.
+	 * Sets the user search base dn array.
 	 *
-	 * @param userSearchBaseDn the new user search base dn
+	 * @param userSearchBaseDns the new user search base dn
 	 */
-	public abstract void setUserSearchBaseDn (String userSearchBaseDn);
+	public abstract void setUserSearchBaseDns (String[] userSearchBaseDns);
 
 	/**
 	 * Gets the user object class.
