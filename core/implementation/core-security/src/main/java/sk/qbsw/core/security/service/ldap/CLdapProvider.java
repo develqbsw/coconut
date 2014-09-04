@@ -30,7 +30,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.10.3
+ * @version 1.10.5
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -216,7 +216,7 @@ public class CLdapProvider
 		}
 		catch (CursorException ex)
 		{
-			throw new CBusinessException("The result is not unique.");
+			throw new CBusinessException("The result's set can't be searched.");
 		}
 	}
 
