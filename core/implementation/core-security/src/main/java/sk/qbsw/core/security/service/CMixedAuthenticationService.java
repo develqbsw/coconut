@@ -95,15 +95,23 @@ public class CMixedAuthenticationService implements IAuthenticationService
 	 */
 	private CUser loginUser (String login, String password, String unit, CRole role) throws CSecurityException
 	{
+		CUser user = null;
+
 		try
 		{
-			return callLdapLoginMethod(login, password, unit, role);
+			user = callLdapLoginMethod(login, password, unit, role);
+			logger.info("User " + login + " was authenticated by LDAP");
+
+			return user;
 		}
 		catch (CSecurityException ex)
 		{
 			try
 			{
-				return callDatabaseLoginMethod(login, password, unit, role);
+				user = callDatabaseLoginMethod(login, password, unit, role);
+				logger.info("User " + login + " was authenticated by DB");
+
+				return user;
 			}
 			catch (CSecurityException exa)
 			{

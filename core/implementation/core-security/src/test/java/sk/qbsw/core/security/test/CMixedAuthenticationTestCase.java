@@ -90,11 +90,13 @@ public class CMixedAuthenticationTestCase
 	{
 		ldapConfigurator.setServerName("192.168.123.78");
 		ldapConfigurator.setServerPort(10389);
+		ldapConfigurator.setUseSslFlag(false);
 		ldapConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
 		ldapConfigurator.setUserPassword("jozko.mrkvicka");
 		ldapConfigurator.setUserSearchBaseDns(new String[] {"ou=system,dc=mfsr,dc=sk", "ou=users,dc=mfsr,dc=sk"});
 		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
+		ldapConfigurator.setUserSearchFilter("(&(cn=%s))");
 		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,40})");
 	}
 
