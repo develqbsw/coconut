@@ -93,7 +93,7 @@ public class CMixedAuthenticationTestCase
 		ldapConfigurator.setUseSslFlag(false);
 		ldapConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
 		ldapConfigurator.setUserPassword("jozko.mrkvicka");
-		ldapConfigurator.setUserSearchBaseDns(new String[] {"ou=system,dc=mfsr,dc=sk", "ou=users,dc=mfsr,dc=sk"});
+		ldapConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
 		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
 		ldapConfigurator.setUserSearchFilter("(&(cn=%s))");
