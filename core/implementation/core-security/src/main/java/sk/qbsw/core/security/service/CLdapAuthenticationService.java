@@ -217,7 +217,8 @@ public class CLdapAuthenticationService implements IAuthenticationService
 				{
 					//authenticate
 					ldapProvider.authenticate(userSearchDn, String.format(data.getUserSearchFilter(), login), password);
-
+					logger.debug("User " + login + " was authenticated by LDAP in tree " + userSearchDn);
+					
 					return true;
 				}
 				catch (Throwable ex)

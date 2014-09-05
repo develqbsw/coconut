@@ -100,7 +100,7 @@ public class CMixedAuthenticationService implements IAuthenticationService
 		try
 		{
 			user = callLdapLoginMethod(login, password, unit, role);
-			logger.info("User " + login + " was authenticated by LDAP");
+			logger.debug("User " + login + " was authenticated by LDAP");
 
 			return user;
 		}
@@ -109,7 +109,7 @@ public class CMixedAuthenticationService implements IAuthenticationService
 			try
 			{
 				user = callDatabaseLoginMethod(login, password, unit, role);
-				logger.info("User " + login + " was authenticated by DB");
+				logger.debug("User " + login + " was authenticated by DB");
 
 				return user;
 			}
