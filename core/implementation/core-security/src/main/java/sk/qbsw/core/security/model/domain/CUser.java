@@ -115,7 +115,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	/** The user type. */
 	@Column (name = "type", nullable = true)
 	@Enumerated (EnumType.STRING)
-	private EUserType userType;
+	private EUserType userType = EUserType.PERSON;
 
 	/**  User address. */
 	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -630,6 +630,26 @@ public class CUser extends ASecurityChangeEntity<Long>
 	public void setAddress (CAddress address)
 	{
 		this.address = address;
+	}
+
+	/**
+	 * Gets the user type.
+	 *
+	 * @return the user type
+	 */
+	public EUserType getUserType ()
+	{
+		return userType;
+	}
+
+	/**
+	 * Sets the user type.
+	 *
+	 * @param userType the new user type
+	 */
+	public void setUserType (EUserType userType)
+	{
+		this.userType = userType;
 	}
 
 	/* (non-Javadoc)
