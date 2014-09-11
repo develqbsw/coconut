@@ -31,7 +31,7 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  *
  * @autor Tomas Lauro
  * 
- * @version 1.10.5
+ * @version 1.11.2
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -83,11 +83,11 @@ public class CLdapAuthenticationTestCase
 	@Before
 	public void initTestCase ()
 	{
-		ldapConfigurator.setServerName("192.168.123.78");
+		ldapConfigurator.setServerName("192.168.123.162");
 		ldapConfigurator.setServerPort(10389);
 		ldapConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
 		ldapConfigurator.setUserPassword("jozko.mrkvicka");
-		ldapConfigurator.setUserSearchBaseDns(new String[] {"ou=users,dc=mfsr,dc=sk"});
+		ldapConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
 		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
 		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,40})");

@@ -1,6 +1,8 @@
 package sk.qbsw.core.security.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.NoResultException;
@@ -38,7 +40,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.10.5
+ * @version 1.11.2
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -209,6 +211,9 @@ public class CLdapAuthenticationService implements IAuthenticationService
 	 */
 	private boolean authenticateUser (String login, String password) throws CSecurityException
 	{
+		//the exceptions thrown in ldap authentication process
+		List<Throwable> exceptions = new ArrayList<Throwable>();
+
 		if (data.getUserSearchBaseDns() != null)
 		{
 			for (String userSearchDn : data.getUserSearchBaseDns())
@@ -218,13 +223,19 @@ public class CLdapAuthenticationService implements IAuthenticationService
 					//authenticate
 					ldapProvider.authenticate(userSearchDn, String.format(data.getUserSearchFilter(), login), password);
 					logger.debug("User " + login + " was authenticated by LDAP in tree " + userSearchDn);
-					
+
 					return true;
 				}
 				catch (Throwable ex)
 				{
+					exceptions.add(ex);
 					continue;
 				}
+			}
+
+			for (int i = 0; i < exceptions.size(); i++)
+			{
+				logger.error("LDAP authentication error in " + (i + 1) + ". baseDn: " + exceptions.get(i).toString());
 			}
 
 			return false;
