@@ -13,10 +13,10 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  *
  * @author Tomas Lauro
  * 
- * @version 1.7.2
+ * @version 1.11.4
  * @since 1.7.2
  */
-public class CDatabaseLoginTask extends CLoginTask implements Runnable
+class CDatabaseLoginTask extends CLoginTask implements Runnable
 {
 	/** The login. */
 	private final String LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;

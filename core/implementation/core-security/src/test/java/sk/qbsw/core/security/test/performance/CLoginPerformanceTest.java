@@ -14,16 +14,16 @@ import sk.qbsw.core.security.test.performance.task.CLoginTask;
  *
  * @author Tomas Lauro
  * 
- * @version 1.7.2
+ * @version 1.11.4
  * @since 1.7.2
  */
 public class CLoginPerformanceTest
 {
 	/** The Constant LOGIN_COUNT. */
-	private static final int LOGIN_COUNT = 50;
+	private static final int LOGIN_COUNT = 10000;
 
 	/** The Constant THREADS_COUNT. */
-	private static final int THREADS_COUNT = 20;
+	private static final int THREADS_COUNT = 300;
 
 	/**
 	 * The main method.
@@ -38,7 +38,7 @@ public class CLoginPerformanceTest
 		System.out.println("-------------------------------------------------");
 		System.out.println("| Database login performance test begins \t|");
 		System.out.println("-------------------------------------------------");
-		float databasePerformanceTestTime = testLogin(context, taskExecutor, "databaseLoginTask");
+		//float databasePerformanceTestTime = testLogin(context, taskExecutor, "databaseLoginTask");
 
 		System.out.println("-------------------------------------------------");
 		System.out.println("| LDAP login performance test begins \t\t|");
@@ -49,7 +49,7 @@ public class CLoginPerformanceTest
 		System.out.println("| Login iterations: " + LOGIN_COUNT + "\t\t\t\t|");
 		System.out.println("| Threads count   : " + THREADS_COUNT + "\t\t\t\t|");
 		System.out.println("|-----------------------------------------------|");
-		System.out.println("| The database test takes " + databasePerformanceTestTime + " seconds \t|");
+		//System.out.println("| The database test takes " + databasePerformanceTestTime + " seconds \t|");
 		System.out.println("| The LDAP test takes " + ldapPerformanceTestTime + " seconds \t\t|");
 		System.out.println("-------------------------------------------------");
 

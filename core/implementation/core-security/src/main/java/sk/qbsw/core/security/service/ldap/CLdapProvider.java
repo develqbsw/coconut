@@ -29,7 +29,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.11.3
+ * @version 1.11.4
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -58,30 +58,20 @@ public class CLdapProvider
 	private synchronized void init () throws LdapException
 	{
 		//initialize the main connection
-		if (connection == null || connection.isInitialized() == false)
+		if (connection.isInitialized() == false)
 		{
 			connection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
-			connection.openConnection();
-			connection.bindOnServer(data.getUserDn(), data.getUserPassword());
 		}
-		else if (connection.isConnected() == false)
+		if (connection.isConnected() == false)
 		{
 			logger.debug("The main LDAP connection is not connected");
-			connection.openConnection();
 			connection.bindOnServer(data.getUserDn(), data.getUserPassword());
 		}
 
-
 		//initialize the temporary connection
-		if (temporaryConnection == null || temporaryConnection.isInitialized() == false)
+		if (temporaryConnection.isInitialized() == false)
 		{
 			temporaryConnection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
-			temporaryConnection.openConnection();
-		}
-		else if (temporaryConnection.isConnected() == false)
-		{
-			logger.debug("The temporary LDAP connection is not connected");
-			temporaryConnection.openConnection();
 		}
 	}
 
@@ -91,6 +81,7 @@ public class CLdapProvider
 	@PreDestroy
 	private synchronized void uninit ()
 	{
+		logger.debug("The LDAP provider uninit called");
 		if (connection != null && connection.isInitialized() && connection.isConnected())
 		{
 			connection.unbindFromServer();
@@ -288,8 +279,6 @@ public class CLdapProvider
 		}
 		finally
 		{
-			temporaryConnection.unbindFromServer();
-
 			if (cursor != null)
 			{
 				cursor.close();

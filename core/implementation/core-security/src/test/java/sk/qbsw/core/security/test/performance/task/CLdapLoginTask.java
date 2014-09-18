@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.test.performance.task;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -14,16 +16,25 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  *
  * @author Tomas Lauro
  * 
- * @version 1.11.3
+ * @version 1.11.4
  * @since 1.7.2
  */
-public class CLdapLoginTask extends CLoginTask implements Runnable
+class CLdapLoginTask extends CLoginTask implements Runnable
 {
-	/** The login. */
-	private final String LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	/** The logger. */
+	private final Logger logger = LoggerFactory.getLogger(CLdapLoginTask.class);
 
-	/** The password. */
-	private final String PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	/** The login 1. */
+	private final String FIRST_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+
+	/** The login 2. */
+	private final String SECOND_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
+
+	/** The password 1. */
+	private final String FIRST_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+
+	/** The password 2. */
+	private final String SECOND_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
 
 	/** The authentication service. */
 	@Autowired
@@ -40,7 +51,16 @@ public class CLdapLoginTask extends CLoginTask implements Runnable
 	@Override
 	protected CUser authenticate () throws CSecurityException
 	{
-		return authenticationService.login(LOGIN, PASSWORD);
+		if (Math.random() > 0.5)
+		{
+			logger.debug("Authentication service using first login");
+			return authenticationService.login(FIRST_LOGIN, FIRST_PASSWORD);
+		}
+		else
+		{
+			logger.debug("Authentication service using second login");
+			return authenticationService.login(SECOND_LOGIN, SECOND_PASSWORD);
+		}
 	}
 
 	/* (non-Javadoc)

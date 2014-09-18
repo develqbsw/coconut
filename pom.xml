@@ -58,6 +58,7 @@
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-fileupload>1.2.2</commons-fileupload>
+		<commons-dbcp.version>1.4</commons-dbcp.version>
 
 		<junit.version>4.10</junit.version>
 
@@ -82,7 +83,7 @@
 		<jadira.usertype.version>2.0.1</jadira.usertype.version>
 
 		<!-- Apache directory API - LDAP -->
-		<directory.api.version>1.0.0-M20</directory.api.version>
+		<directory.api.version>1.0.0-M24</directory.api.version>
 		<!-- ANDROID DEPENDENCIES -->
 		<android-platform.version>2.2.1</android-platform.version>
 		<android.platform>8</android.platform>

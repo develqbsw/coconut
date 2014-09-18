@@ -9,6 +9,8 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Component;
  * The ldap connection.
  *
  * @author Tomas Lauro
- * @version 1.11.3
+ * @version 1.11.4
  * @since 1.10.6
  */
 @Component ("ldapConnection")
@@ -25,6 +27,12 @@ class CLdapConnection
 {
 	/** The ldap connection. */
 	private LdapConnection connection;
+
+	/** The logger. */
+	private final Logger logger = LoggerFactory.getLogger(CLdapConnection.class);
+
+	/** The count. */
+	private static int COUNT = 0;
 
 	/**
 	 * Initialize LDAP connection - must be called before using connection.
@@ -36,16 +44,8 @@ class CLdapConnection
 	public void init (String ldapServerName, int ldapServerPort, boolean useSsl)
 	{
 		connection = new LdapNetworkConnection(ldapServerName, ldapServerPort, useSsl);
-	}
-
-	/**
-	 * Open connection to ldap server.
-	 *
-	 * @throws LdapException the ldap exception
-	 */
-	public void openConnection () throws LdapException
-	{
-		connection.connect();
+		connection.setTimeOut(0);
+		logger.debug("Initialized new LDAP connection " + ++COUNT);
 	}
 
 	/**
@@ -55,6 +55,7 @@ class CLdapConnection
 	 */
 	public void closeConnection ()
 	{
+		logger.debug("Released LDAP connection " + --COUNT);
 		if (connection != null && connection.isConnected())
 		{
 			try
