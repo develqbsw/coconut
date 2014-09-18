@@ -29,7 +29,7 @@ class CLdapConnection
 	private LdapConnection connection;
 
 	/** The logger. */
-	private final Logger logger = LoggerFactory.getLogger(CLdapConnection.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapConnection.class);
 
 	/** The count. */
 	private static int COUNT = 0;
@@ -45,7 +45,7 @@ class CLdapConnection
 	{
 		connection = new LdapNetworkConnection(ldapServerName, ldapServerPort, useSsl);
 		connection.setTimeOut(0);
-		logger.debug("Initialized new LDAP connection " + ++COUNT);
+		LOGGER.debug("Initialized new LDAP connection " + ++COUNT);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class CLdapConnection
 	 */
 	public void closeConnection ()
 	{
-		logger.debug("Released LDAP connection " + --COUNT);
+		LOGGER.debug("Released LDAP connection " + --COUNT);
 		if (connection != null && connection.isConnected())
 		{
 			try

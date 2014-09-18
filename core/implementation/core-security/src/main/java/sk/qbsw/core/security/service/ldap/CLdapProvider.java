@@ -36,7 +36,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 public class CLdapProvider
 {
 	/** The logger. */
-	final Logger logger = LoggerFactory.getLogger(CLdapProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapProvider.class);
 
 	/** The main ldap connection. */
 	@Autowired
@@ -64,7 +64,7 @@ public class CLdapProvider
 		}
 		if (connection.isConnected() == false)
 		{
-			logger.debug("The main LDAP connection is not connected");
+			LOGGER.debug("The main LDAP connection is not connected");
 			connection.bindOnServer(data.getUserDn(), data.getUserPassword());
 		}
 
@@ -81,7 +81,7 @@ public class CLdapProvider
 	@PreDestroy
 	private synchronized void uninit ()
 	{
-		logger.debug("The LDAP provider uninit called");
+		LOGGER.debug("The LDAP provider uninit called");
 		if (connection != null && connection.isInitialized() && connection.isConnected())
 		{
 			connection.unbindFromServer();

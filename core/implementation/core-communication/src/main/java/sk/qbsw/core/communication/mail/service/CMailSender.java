@@ -36,7 +36,7 @@ import sk.qbsw.core.communication.mail.model.domain.EMailState;
 public class CMailSender extends AMailService implements IMailService
 {
 	/** The logger. */
-	private final Logger logger = LoggerFactory.getLogger(CMailSender.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CMailSender.class);
 
 	/** The template builder. */
 	@Autowired
@@ -93,7 +93,7 @@ public class CMailSender extends AMailService implements IMailService
 		}
 		catch (Throwable e)
 		{
-			logger.error("Mail sending problem", e);
+			LOGGER.error("Mail sending problem", e);
 			throw new CSystemException("Mail sending problem", e);
 		}
 	}
@@ -158,19 +158,19 @@ public class CMailSender extends AMailService implements IMailService
 		}
 		catch (CCommunicationException e)
 		{
-			logger.error("Mail sending problem", e);
+			LOGGER.error("Mail sending problem", e);
 			mail.setState(EMailState.COMMUNICATION_ERROR);
 			throw e;
 		}
 		catch (CSystemException e)
 		{
-			logger.error("Mail creating problem", e);
+			LOGGER.error("Mail creating problem", e);
 			mail.setState(EMailState.DATA_ERROR); //the mail is probably null
 			throw e;
 		}
 		catch (Throwable e)
 		{
-			logger.error("Mail creating problem", e);
+			LOGGER.error("Mail creating problem", e);
 			mail.setState(EMailState.DATA_ERROR); //the mail is probably null
 			throw new CSystemException("Mail creating problem", e);
 		}

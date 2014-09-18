@@ -22,19 +22,19 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
 class CLdapLoginTask extends CLoginTask implements Runnable
 {
 	/** The logger. */
-	private final Logger logger = LoggerFactory.getLogger(CLdapLoginTask.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapLoginTask.class);
 
 	/** The login 1. */
-	private final String FIRST_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	private static final String FIRST_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The login 2. */
-	private final String SECOND_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
+	private static final String SECOND_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
 
 	/** The password 1. */
-	private final String FIRST_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	private static final String FIRST_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The password 2. */
-	private final String SECOND_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
+	private static final String SECOND_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
 
 	/** The authentication service. */
 	@Autowired
@@ -53,12 +53,12 @@ class CLdapLoginTask extends CLoginTask implements Runnable
 	{
 		if (Math.random() > 0.5)
 		{
-			logger.debug("Authentication service using first login");
+			LOGGER.debug("Authentication service using first login");
 			return authenticationService.login(FIRST_LOGIN, FIRST_PASSWORD);
 		}
 		else
 		{
-			logger.debug("Authentication service using second login");
+			LOGGER.debug("Authentication service using second login");
 			return authenticationService.login(SECOND_LOGIN, SECOND_PASSWORD);
 		}
 	}

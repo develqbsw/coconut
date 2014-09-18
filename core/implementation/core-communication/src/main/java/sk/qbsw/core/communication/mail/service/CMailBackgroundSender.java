@@ -33,7 +33,7 @@ import sk.qbsw.core.communication.mail.model.domain.CQueuedMail;
 public class CMailBackgroundSender extends AMailService implements IMailService
 {
 	/** The logger. */
-	private final Logger logger = LoggerFactory.getLogger(CMailBackgroundSender.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CMailBackgroundSender.class);
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.mail.service.AMailService#setMailDao(sk.qbsw.core.communication.mail.dao.IMailDao)
@@ -124,17 +124,17 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 		}
 		catch (CCommunicationException e)
 		{
-			logger.error("Mail sending problem", e);
+			LOGGER.error("Mail sending problem", e);
 			throw e;
 		}
 		catch (CSystemException e)
 		{
-			logger.error("Mail creating problem", e);
+			LOGGER.error("Mail creating problem", e);
 			throw e;
 		}
 		catch (Throwable e)
 		{
-			logger.error("Mail creating problem", e);
+			LOGGER.error("Mail creating problem", e);
 			throw new CSystemException("Mail creating problem", e);
 		}
 	}

@@ -16,7 +16,7 @@
 		<class>sk.qbsw.core.security.model.domain.CAddress</class>
 		<!-- test -->
 		<class>sk.qbsw.core.security.test.util.domain.CLicenseFree</class>
-		
+
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.bytecode.provider" value="javassist" />
