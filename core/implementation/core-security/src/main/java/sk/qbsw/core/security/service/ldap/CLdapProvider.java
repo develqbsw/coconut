@@ -1,6 +1,5 @@
 package sk.qbsw.core.security.service.ldap;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -18,8 +17,8 @@ import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
-import org.apache.directory.ldap.client.api.LdapConnection;
-import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,17 +29,22 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.10.5
+ * @version 1.11.3
  * @since 1.6.0
  */
 @Component ("ldapProvider")
 public class CLdapProvider
 {
+	/** The logger. */
+	final Logger logger = LoggerFactory.getLogger(CLdapProvider.class);
+
 	/** The main ldap connection. */
-	private LdapConnection connection;
+	@Autowired
+	private CLdapConnection connection;
 
 	/** The temporary ldap connection to use in the authentication process. */
-	private LdapConnection temporaryConnection;
+	@Autowired
+	private CLdapConnection temporaryConnection;
 
 	/** The data. */
 	@Autowired
@@ -54,26 +58,30 @@ public class CLdapProvider
 	private synchronized void init () throws LdapException
 	{
 		//initialize the main connection
-		if (connection == null)
+		if (connection == null || connection.isInitialized() == false)
 		{
-			connection = createConnection(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
-
-			if (connection.isConnected() == false)
-			{
-				openConnection(connection);
-				bindOnServer(connection, data.getUserDn(), data.getUserPassword());
-			}
+			connection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
+			connection.openConnection();
+			connection.bindOnServer(data.getUserDn(), data.getUserPassword());
+		}
+		else if (connection.isConnected() == false)
+		{
+			logger.debug("The main LDAP connection is not connected");
+			connection.openConnection();
+			connection.bindOnServer(data.getUserDn(), data.getUserPassword());
 		}
 
-		//initialize the temporary connection
-		if (temporaryConnection == null)
-		{
-			temporaryConnection = createConnection(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
 
-			if (temporaryConnection.isConnected() == false)
-			{
-				openConnection(temporaryConnection);
-			}
+		//initialize the temporary connection
+		if (temporaryConnection == null || temporaryConnection.isInitialized() == false)
+		{
+			temporaryConnection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
+			temporaryConnection.openConnection();
+		}
+		else if (temporaryConnection.isConnected() == false)
+		{
+			logger.debug("The temporary LDAP connection is not connected");
+			temporaryConnection.openConnection();
 		}
 	}
 
@@ -83,101 +91,15 @@ public class CLdapProvider
 	@PreDestroy
 	private synchronized void uninit ()
 	{
-		if (connection != null && connection.isConnected())
+		if (connection != null && connection.isInitialized() && connection.isConnected())
 		{
-			unbindFromServer(connection);
-			closeConnection(connection);
+			connection.unbindFromServer();
+			connection.closeConnection();
 		}
 
-		if (temporaryConnection != null && temporaryConnection.isConnected())
+		if (temporaryConnection != null && temporaryConnection.isInitialized() && temporaryConnection.isConnected())
 		{
-			closeConnection(connection);
-		}
-
-		connection = null;
-		temporaryConnection = null;
-	}
-
-	/**
-	 * Creates the connection to LDAP server.
-	 *
-	 * @param ldapServerName the ldap server name
-	 * @param ldapServerPort the ldap server port
-	 * @return the ldap connection
-	 */
-	private LdapConnection createConnection (String ldapServerName, int ldapServerPort, boolean useSsl)
-	{
-		return new LdapNetworkConnection(ldapServerName, ldapServerPort, useSsl);
-	}
-
-	/**
-	 * Open connection to ldap server.
-	 *
-	 * @param ldapConnection the ldap connection
-	 * @throws LdapException the ldap exception
-	 */
-	private void openConnection (LdapConnection ldapConnection) throws LdapException
-	{
-		ldapConnection.connect();
-	}
-
-	/**
-	 * Close connection.
-	 *
-	 * @param ldapConnection the ldap connection
-	 */
-	private void closeConnection (LdapConnection ldapConnection)
-	{
-		if (ldapConnection != null && ldapConnection.isConnected())
-		{
-			try
-			{
-				ldapConnection.close();
-			}
-			catch (IOException ex)
-			{
-				//nothing. We can't close connection.
-			}
-		}
-	}
-
-	/**
-	 * Bind on a ldap server.
-	 *
-	 * @param ldapConnection the ldap connection
-	 * @param ldapUserDn the DN of an user account
-	 * @param ldapUserPassword the user account password
-	 * @throws LdapException cannot bind to server or the connection no created
-	 */
-	private void bindOnServer (LdapConnection ldapConnection, String ldapUserDn, String ldapUserPassword) throws LdapException
-	{
-		if (ldapConnection != null)
-		{
-			ldapConnection.bind(ldapUserDn, ldapUserPassword);
-		}
-		else
-		{
-			throw new LdapException("The ldap connection was not initialized");
-		}
-	}
-
-	/**
-	 * Unbind from server.
-	 *
-	 * @param ldapConnection the ldap connection
-	 */
-	private void unbindFromServer (LdapConnection ldapConnection)
-	{
-		if (ldapConnection != null)
-		{
-			try
-			{
-				ldapConnection.unBind();
-			}
-			catch (LdapException e)
-			{
-				//not interesting
-			}
+			temporaryConnection.closeConnection();
 		}
 	}
 
@@ -362,11 +284,11 @@ public class CLdapProvider
 			Entry ldapUserEntry = searchSingleResult(baseDn, loginFilter, SearchScope.SUBTREE, "*");
 
 			//bind as user (with his DN) to verify password
-			bindOnServer(temporaryConnection, ldapUserEntry.getDn().toString(), password);
+			temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
 		}
 		finally
 		{
-			unbindFromServer(temporaryConnection);
+			temporaryConnection.unbindFromServer();
 
 			if (cursor != null)
 			{
@@ -386,7 +308,7 @@ public class CLdapProvider
 		{
 			init();
 
-			if (connection != null && connection.isConnected() == true)
+			if (connection != null && connection.isInitialized() == true && connection.isConnected() == true)
 			{
 				return true;
 			}

@@ -14,7 +14,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  *
  * @author Tomas Lauro
  * 
- * @version 1.10.5
+ * @version 1.11.3
  * @since 1.7.2
  */
 public class CLdapLoginTask extends CLoginTask implements Runnable
@@ -23,7 +23,7 @@ public class CLdapLoginTask extends CLoginTask implements Runnable
 	private final String LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The password. */
-	private final String PASSWORD = "password123";
+	private final String PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The authentication service. */
 	@Autowired
@@ -49,11 +49,11 @@ public class CLdapLoginTask extends CLoginTask implements Runnable
 	@Override
 	protected void initResources ()
 	{
-		ldapAuthenticationConfigurator.setServerName("talos.qbsw.local");
+		ldapAuthenticationConfigurator.setServerName("192.168.123.162");
 		ldapAuthenticationConfigurator.setServerPort(10389);
-		ldapAuthenticationConfigurator.setUserDn("cn=ekolkyRW,ou=users,ou=system");
-		ldapAuthenticationConfigurator.setUserPassword("ZiAvGJDxcqUOkyQ");
-		ldapAuthenticationConfigurator.setUserSearchBaseDns(new String[] {"ou=users,dc=mfsr,dc=sk"});
+		ldapAuthenticationConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
+		ldapAuthenticationConfigurator.setUserPassword("jozko.mrkvicka");
+		ldapAuthenticationConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
 		ldapAuthenticationConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapAuthenticationConfigurator.setUserOrganizationId((long) 1);
 	}
