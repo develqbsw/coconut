@@ -109,7 +109,7 @@ class CLdapConnection
 	}
 
 	/**
-	 * Checks if the connection is initialized.
+	 * Checks if the connection is initialized - the initialized does not mean that the connection is connected!!!
 	 *
 	 * @return true, if is initialized
 	 */

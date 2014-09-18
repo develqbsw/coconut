@@ -90,6 +90,7 @@ public class CLdapProvider
 
 		if (temporaryConnection != null && temporaryConnection.isInitialized() && temporaryConnection.isConnected())
 		{
+			temporaryConnection.unbindFromServer();
 			temporaryConnection.closeConnection();
 		}
 	}
