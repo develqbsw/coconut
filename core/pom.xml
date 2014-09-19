@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sk.qbsw</groupId>
 	<artifactId>core-top</artifactId>
-	<version>1.11.4</version>
+	<version>1.11.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>[Core project]</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>coconut</artifactId>
-		<version>1.11.4</version>
+		<version>1.11.5-SNAPSHOT</version>
 	</parent>
 	
 	<modules>
