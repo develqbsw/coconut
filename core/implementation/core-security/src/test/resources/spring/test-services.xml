@@ -20,8 +20,8 @@
 		class="sk.qbsw.core.security.test.performance.task.CLdapLoginTask" />
 	<bean id="loginTaskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="20" />
-		<property name="maxPoolSize" value="30" />
+		<property name="corePoolSize" value="60" />
+		<property name="maxPoolSize" value="60" />
 		<property name="WaitForTasksToCompleteOnShutdown" value="true" />
 	</bean>
 </beans>

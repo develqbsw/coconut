@@ -74,6 +74,8 @@ class CLdapLoginTask extends CLoginTask implements Runnable
 		ldapAuthenticationConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
 		ldapAuthenticationConfigurator.setUserPassword("jozko.mrkvicka");
 		ldapAuthenticationConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
+		ldapAuthenticationConfigurator.setUserSearchFilter("(&(cn=%s))");
+		ldapAuthenticationConfigurator.setUseSslFlag(false);
 		ldapAuthenticationConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapAuthenticationConfigurator.setUserOrganizationId((long) 1);
 	}

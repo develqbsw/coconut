@@ -23,7 +23,7 @@ public class CLoginPerformanceTest
 	private static final int LOGIN_COUNT = 10000;
 
 	/** The Constant THREADS_COUNT. */
-	private static final int THREADS_COUNT = 300;
+	private static final int THREADS_COUNT = 100;
 
 	/**
 	 * The main method.
