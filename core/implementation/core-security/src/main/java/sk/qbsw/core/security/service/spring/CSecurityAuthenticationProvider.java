@@ -21,7 +21,9 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * Provider for spring security.
  * 
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas lauro
+ * 
+ * @version 1.11.5
  * @since 1.6.0
  * 
  */
@@ -61,7 +63,7 @@ public class CSecurityAuthenticationProvider implements AuthenticationProvider
 	@Override
 	public boolean supports (Class<? extends Object> authentication)
 	{
-		return true;
+		return authentication.equals(CUsernamePasswordUnitAuthenticationToken.class);
 	}
 
 	/**
