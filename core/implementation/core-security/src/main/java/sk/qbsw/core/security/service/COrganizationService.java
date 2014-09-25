@@ -15,29 +15,36 @@ import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
- * Service for organization management
- * 
+ * Service for organization management.
+ *
  * @author Tomas Leken
- * @version 1.0.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.5
  * @since 1.0.0
- * O
  */
 @Service ("cOrganizationService")
 public class COrganizationService implements IOrganizationService
 {
-
+	/** The organization dao. */
 	@Autowired
 	private IOrganizationDao organizationDao;
 
+	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
 
+	/** The group dao. */
 	@Autowired
 	private IGroupDao groupDao;
-	
+
+	/** The address dao. */
 	@Autowired
 	private IAddressDao addressDao;
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#registerNewOrganization(sk.qbsw.core.security.model.domain.COrganization, sk.qbsw.core.security.model.domain.CUser, java.lang.String)
+	 */
 	@Override
 	@Transactional
 	public void registerNewOrganization (COrganization organization, CUser user, String group)
@@ -50,10 +57,13 @@ public class COrganizationService implements IOrganizationService
 		userDao.save(user);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#registerNewOrganization(sk.qbsw.core.security.model.domain.COrganization, sk.qbsw.core.security.model.domain.CUser)
+	 */
+	@Override
 	@Transactional
 	public void registerNewOrganization (COrganization organization, CUser user)
 	{
-
 		organization.setFlagEnabled(true);
 		organizationDao.save(organization);
 
@@ -63,6 +73,10 @@ public class COrganizationService implements IOrganizationService
 		userDao.save(user);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationByNameNull(java.lang.String)
+	 */
+	@Override
 	@Transactional (readOnly = true)
 	public COrganization getOrganizationByNameNull (String name)
 	{
@@ -70,12 +84,20 @@ public class COrganizationService implements IOrganizationService
 	}
 
 	//TODO: REWRITE
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationByGPS(java.lang.Float, java.lang.Float)
+	 */
+	@Override
+	@Deprecated
 	@Transactional (readOnly = true)
 	public COrganization getOrganizationByGPS (Float longitude, Float latitude)
 	{
 		return organizationDao.findById(2L);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizations()
+	 */
 	@Override
 	@Transactional (readOnly = true)
 	public List<COrganization> getOrganizations ()
@@ -83,6 +105,19 @@ public class COrganizationService implements IOrganizationService
 		return organizationDao.findAll();
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizations(java.lang.String)
+	 */
+	@Override
+	@Transactional (readOnly = true)
+	public List<COrganization> getOrganizations (String name)
+	{
+		return organizationDao.findAllByName(name);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#updateOrganization(sk.qbsw.core.security.model.domain.COrganization)
+	 */
 	@Override
 	@Transactional
 	public void updateOrganization (COrganization organization)
@@ -90,13 +125,21 @@ public class COrganizationService implements IOrganizationService
 		organizationDao.save(organization);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationById(java.lang.Long)
+	 */
 	@Override
+	@Transactional (readOnly = true)
 	public COrganization getOrganizationById (Long id)
 	{
 		return organizationDao.findById(id);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#setAddress(sk.qbsw.core.security.model.domain.COrganization, sk.qbsw.core.security.model.domain.CAddress)
+	 */
 	@Override
+	@Transactional
 	public void setAddress (COrganization organization, CAddress address)
 	{
 		//set address to unit
@@ -107,5 +150,4 @@ public class COrganizationService implements IOrganizationService
 		organizationDao.save(organization);
 
 	}
-
 }

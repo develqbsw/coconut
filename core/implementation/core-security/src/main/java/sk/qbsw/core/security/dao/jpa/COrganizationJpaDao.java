@@ -17,7 +17,9 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * The Class CSectionJpaDao.
  *
  * @author rosenberg
- * @version 1.2.1
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.5
  * @since 1.0.0
  */
 @Repository (value = "orgDao")
@@ -27,20 +29,17 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new c organization jpa dao.
+	 * Instantiates a new organization jpa dao.
 	 */
 	public COrganizationJpaDao ()
 	{
 		super(COrganization.class);
 	}
 
-	/**
-	 * Find by name.
-	 *
-	 * @param name the name
-	 * @return the c organization
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findByName(java.lang.String)
 	 */
+	@Override
 	public COrganization findByName (String name)
 	{
 		String strQuery = "from COrganization where name = :name";
@@ -50,12 +49,25 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 		return (COrganization) query.getSingleResult();
 	}
 
-	/**
-	 * Find all.
-	 *
-	 * @return the list
-	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findAll()
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findAllByName(java.lang.String)
 	 */
+	@Override
+	@SuppressWarnings ("unchecked")
+	public List<COrganization> findAllByName (String name)
+	{
+		String strQuery = "from COrganization where name = :name";
+
+		Query query = getEntityManager().createQuery(strQuery);
+		query.setParameter("name", name);
+
+		return query.getResultList();
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
+	 */
+	@Override
 	@SuppressWarnings ("unchecked")
 	public List<COrganization> findAll ()
 	{
@@ -68,6 +80,7 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findByNameNull(java.lang.String)
 	 */
+	@Override
 	@SuppressWarnings ("unchecked")
 	public COrganization findByNameNull (String name)
 	{
@@ -90,5 +103,4 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 
 		return organization;
 	}
-
 }

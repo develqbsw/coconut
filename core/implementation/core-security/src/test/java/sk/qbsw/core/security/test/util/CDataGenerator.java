@@ -25,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.10.3
+ * @version 1.11.5
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -60,6 +60,9 @@ public class CDataGenerator
 
 	/** The Constant ORGANIZATION_2_CODE. */
 	public static final String ORGANIZATION_2_CODE = "unit_test_organization_2";
+	
+	/** The Constant ORGANIZATION_2_CLONE_CODE. */
+	public static final String ORGANIZATION_2_CLONE_CODE = "unit_test_organization_2";
 
 	/** The Constant ORGANIZATION_DISABLED_CODE. */
 	public static final String ORGANIZATION_DISABLED_CODE = "unit_test_organization_disabled";
@@ -134,6 +137,7 @@ public class CDataGenerator
 		//organization
 		COrganization organization = createOrganization(ORGANIZATION_CODE);
 		COrganization organization2 = createOrganization(ORGANIZATION_2_CODE);
+		COrganization organization2Clone = createOrganization(ORGANIZATION_2_CLONE_CODE);
 		COrganization organizationDisabled = createOrganization(ORGANIZATION_DISABLED_CODE, false);
 
 		//roles
@@ -263,6 +267,7 @@ public class CDataGenerator
 		//save data to DB
 		orgDao.save(organization);
 		orgDao.save(organization2);
+		orgDao.save(organization2Clone);
 		orgDao.save(organizationDisabled);
 		roleDao.save(firstRole);
 		roleDao.save(secondRole);

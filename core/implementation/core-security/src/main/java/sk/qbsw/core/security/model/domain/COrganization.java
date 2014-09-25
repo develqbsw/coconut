@@ -39,7 +39,7 @@ import com.google.gson.annotations.Expose;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.9.2
+ * @version 1.11.5
  * @since 1.0
  */
 @Entity
@@ -83,7 +83,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 
 	/** The name. */
 	@Expose
-	@Column (name = "name", unique = true)
+	@Column (name = "name")
 	private String name;
 
 	/**
