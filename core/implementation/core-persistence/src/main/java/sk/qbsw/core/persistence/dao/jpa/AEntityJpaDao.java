@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
@@ -21,6 +22,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.0.0
  * @version 1.7.2
  */
+@CLogged
 public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>
 {
 	/** The em. */

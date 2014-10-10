@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.EError;
 import sk.qbsw.core.base.exception.IError;
-import sk.qbsw.core.logging.aspect.annotation.CAuditLogged;
-import sk.qbsw.core.logging.aspect.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.logging.aspect.param.AParameter;
 import sk.qbsw.core.logging.aspect.param.AParameterFactory;
 import sk.qbsw.core.logging.model.domain.EOperationResult;
@@ -55,7 +55,7 @@ public class CAuditLoggingAspect extends ALoggingAspect
 	{
 	}
 
-	@Pointcut ("@within(sk.qbsw.core.logging.aspect.annotation.CAuditLogged)")
+	@Pointcut ("@within(sk.qbsw.core.base.logging.annotation.CAuditLogged)")
 	public void loggedClass ()
 	{
 	}
@@ -63,7 +63,7 @@ public class CAuditLoggingAspect extends ALoggingAspect
 	/**
 	 * logging every method which have annotation auditLogged and don't have annotation CNotAuditLogged
 	 */
-	@Around ("anyMethod() && @annotation(auditLogged) && !@annotation(sk.qbsw.core.logging.aspect.annotation.CNotAuditLogged)")
+	@Around ("anyMethod() && @annotation(auditLogged) && !@annotation(sk.qbsw.core.base.logging.annotation.CNotAuditLogged)")
 	public Object loggedMethodPointcut (ProceedingJoinPoint pjp, CAuditLogged auditLogged) throws Throwable
 	{
 		return this.doBasicLogging(pjp, auditLogged);
@@ -72,7 +72,7 @@ public class CAuditLoggingAspect extends ALoggingAspect
 	/**
 	 * logging every method where class have annotation CAuditLogged and method don't have annotation CNotAuditLogged
 	 */
-	@Around ("anyMethod() && loggedClass() && !@annotation(sk.qbsw.core.logging.aspect.annotation.CNotAuditLogged)")
+	@Around ("anyMethod() && loggedClass() && !@annotation(sk.qbsw.core.base.logging.annotation.CNotAuditLogged)")
 	public Object loggedClassPointcut (ProceedingJoinPoint pjp) throws Throwable
 	{
 		return this.doBasicLogging(pjp, pjp.getTarget().getClass().getAnnotation(CAuditLogged.class));

@@ -7,6 +7,7 @@ import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
@@ -26,7 +27,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0.0
  */
 @Service ("cUsersValidationService")
-public class CUsersValidationService implements IUsersValidationService
+public class CUsersValidationService extends CService implements IUsersValidationService
 {
 	/** The organization dao. */
 	@Autowired

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -30,7 +31,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
-public class CDatabaseAuthenticationService implements IAuthenticationService
+public class CDatabaseAuthenticationService extends CService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

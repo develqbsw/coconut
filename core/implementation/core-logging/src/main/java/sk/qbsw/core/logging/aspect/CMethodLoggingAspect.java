@@ -12,8 +12,9 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.qbsw.core.logging.aspect.annotation.CLogged;
-import sk.qbsw.core.logging.aspect.annotation.CNotLogged;
+import sk.qbsw.core.base.logging.ELoggingLevel;
+import sk.qbsw.core.base.logging.annotation.CLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.logging.aspect.param.AParameter;
 import sk.qbsw.core.logging.aspect.param.AParameterFactory;
 import sk.qbsw.core.logging.aspect.param.CNotLoggedParameter;
@@ -35,7 +36,7 @@ public class CMethodLoggingAspect extends ALoggingAspect
 	{
 	}
 
-	@Pointcut ("@within(sk.qbsw.core.logging.aspect.annotation.CLogged)")
+	@Pointcut ("@within(sk.qbsw.core.base.logging.annotation.CLogged)")
 	public void loggedClass ()
 	{
 	}
@@ -43,7 +44,7 @@ public class CMethodLoggingAspect extends ALoggingAspect
 	/**
 	 * logging every method which have annotation auditLogged and don't have annotation CNotAuditLogged
 	 */
-	@Around ("anyMethod() && @annotation(logged) && !@annotation(sk.qbsw.core.logging.aspect.annotation.CNotLogged)")
+	@Around ("anyMethod() && @annotation(logged) && !@annotation(sk.qbsw.core.base.logging.annotation.CNotLogged)")
 	public Object loggedMethodPointcut (ProceedingJoinPoint pjp, CLogged logged) throws Throwable
 	{
 		return this.doBasicLogging(pjp, logged);
@@ -52,7 +53,7 @@ public class CMethodLoggingAspect extends ALoggingAspect
 	/**
 	 * logging every method where class have annotation CAuditLogged and method don't have annotation CNotAuditLogged
 	 */
-	@Around ("anyMethod() && loggedClass() && !@annotation(sk.qbsw.core.logging.aspect.annotation.CLogged) && !@annotation(sk.qbsw.core.logging.aspect.annotation.CNotLogged)")
+	@Around ("anyMethod() && loggedClass() && !@annotation(sk.qbsw.core.base.logging.annotation.CNotLogged)")
 	public Object loggedClassPointcut (ProceedingJoinPoint pjp) throws Throwable
 	{
 		return this.doBasicLogging(pjp, pjp.getTarget().getClass().getAnnotation(CLogged.class));

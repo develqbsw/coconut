@@ -3,6 +3,7 @@ package sk.qbsw.core.security.model.jmx;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.model.domain.EHashMethod;
 
 /**
@@ -14,7 +15,7 @@ import sk.qbsw.core.security.model.domain.EHashMethod;
  */
 @Service ("authenticationConfigurator")
 @ManagedResource (objectName = "sk.qbsw.core.security:name=authenticationConfigurator", description = "authentication configuration")
-public class CAuthenticationConfigurator implements IAuthenticationConfigurator
+public class CAuthenticationConfigurator extends CService implements IAuthenticationConfigurator
 {
 	/** The password pattern. */
 	private String passwordPattern;

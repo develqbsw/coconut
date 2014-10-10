@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.security.core.parameters.DefaultSecurityParameterNameDiscoverer;
 
-import sk.qbsw.core.logging.aspect.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.logging.aspect.param.AParameterFactory;
 import sk.qbsw.core.logging.aspect.param.CLoggedParameterFactory;
 import sk.qbsw.core.logging.aspect.param.CNotLoggedParameterFactory;

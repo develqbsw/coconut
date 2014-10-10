@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -19,7 +20,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0.0
  */
 @Service ("cGroupService")
-public class CGroupService implements IGroupService
+public class CGroupService extends CService implements IGroupService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.spring.CUserDetails;
 import sk.qbsw.core.security.service.IUserService;
@@ -21,7 +22,7 @@ import sk.qbsw.core.security.service.IUserService;
  * @version 1.6.0
  * @since 1.6.0
  */
-public class CUserDetailsService implements UserDetailsService
+public class CUserDetailsService extends CService implements UserDetailsService
 {
 	private static final Logger LOGGER = Logger.getLogger(CUserDetailsService.class);
 

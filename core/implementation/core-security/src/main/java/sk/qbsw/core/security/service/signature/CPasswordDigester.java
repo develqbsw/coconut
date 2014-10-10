@@ -4,6 +4,7 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 
 /**
@@ -16,7 +17,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * 
  */
 @Service
-public class CPasswordDigester implements IPasswordDigester
+public class CPasswordDigester extends CService implements IPasswordDigester
 {
 	/** The authentication configuration. */
 	@Autowired

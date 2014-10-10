@@ -2,6 +2,7 @@ package sk.qbsw.core.persistence.dao;
 
 import java.util.List;
 
+import sk.qbsw.core.base.dao.IDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
@@ -17,7 +18,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.0.0
  * @version 1.6.0
  */
-public interface IEntityDao<PK, T extends IEntity<PK>>
+public interface IEntityDao<PK, T extends IEntity<PK>> extends IDao
 {
 	/**
 	 * Save new or update an existing entity.

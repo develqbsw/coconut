@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -44,7 +45,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
-public class CLdapAuthenticationService implements IAuthenticationService
+public class CLdapAuthenticationService extends CService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

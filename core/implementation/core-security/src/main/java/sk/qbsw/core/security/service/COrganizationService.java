@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IAddressDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
@@ -24,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.0.0
  */
 @Service ("cOrganizationService")
-public class COrganizationService implements IOrganizationService
+public class COrganizationService extends CService implements IOrganizationService
 {
 	/** The organization dao. */
 	@Autowired

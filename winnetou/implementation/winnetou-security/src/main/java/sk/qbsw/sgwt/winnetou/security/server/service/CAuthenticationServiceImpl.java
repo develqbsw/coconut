@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -23,7 +24,7 @@ import sk.qbsw.sgwt.winnetou.server.exception.CServletSessionUtils;
  * 
  */
 @Service (value = "authenticateServiceImpl")
-public class CAuthenticationServiceImpl implements IAuthenticationService
+public class CAuthenticationServiceImpl extends CService implements IAuthenticationService
 {
 	@Autowired
 	private sk.qbsw.core.security.service.IAuthenticationService authenticator;

@@ -8,6 +8,8 @@ import java.io.Serializable;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.service.CService;
+
 /**
  * The Class CRelease.
  *
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service("licensingRules")
 @SuppressWarnings ("serial")
 @ManagedResource (objectName = "sk.qbsw.airlines:name=Licensing", description = "Licensing details")
-public class CLicensingRules implements Serializable
+public class CLicensingRules extends CService implements Serializable
 {
 
 	/** The day pricing. */

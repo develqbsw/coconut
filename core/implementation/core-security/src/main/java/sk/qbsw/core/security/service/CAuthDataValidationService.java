@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 
@@ -17,7 +18,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * @since 1.7.2
  */
 @Service (value = "authDataValidationService")
-class CAuthDataValidationService implements IAuthDataValidationService
+class CAuthDataValidationService extends CService implements IAuthDataValidationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

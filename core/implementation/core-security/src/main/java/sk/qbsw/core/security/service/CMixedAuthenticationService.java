@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -21,7 +22,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.10.5
  */
 @Service (value = "mixedAuthenticationService")
-public class CMixedAuthenticationService implements IAuthenticationService
+public class CMixedAuthenticationService extends CService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

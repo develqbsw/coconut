@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IAddressDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.model.domain.CAddress;
@@ -20,7 +21,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.6.0
  */
 @Service ("unitService")
-public class CUnitService implements IUnitService
+public class CUnitService extends CService implements IUnitService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

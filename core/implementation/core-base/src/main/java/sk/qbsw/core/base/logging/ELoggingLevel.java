@@ -1,6 +1,5 @@
-package sk.qbsw.core.logging.aspect;
+package sk.qbsw.core.base.logging;
 
-import sk.qbsw.core.logging.aspect.annotation.CLogged;
 
 /**
  * Logging level which is set to {@link CLogged} annotation.

@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
 /**
@@ -33,7 +34,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * @since 1.6.0
  */
 @Component ("ldapProvider")
-public class CLdapProvider
+public class CLdapProvider extends CService
 {
 	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapProvider.class);

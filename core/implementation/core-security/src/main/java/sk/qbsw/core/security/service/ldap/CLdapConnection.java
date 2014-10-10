@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.core.base.service.CService;
+
 /**
  * The ldap connection.
  *
@@ -23,7 +25,7 @@ import org.springframework.stereotype.Component;
  */
 @Component ("ldapConnection")
 @Scope (value = "prototype")
-class CLdapConnection
+class CLdapConnection extends CService
 {
 	/** The ldap connection. */
 	private LdapConnection connection;

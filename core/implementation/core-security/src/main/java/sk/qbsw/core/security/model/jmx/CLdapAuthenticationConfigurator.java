@@ -3,6 +3,8 @@ package sk.qbsw.core.security.model.jmx;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.service.CService;
+
 /**
  * The Class CLdapAuthenticationConfigurator.
  * 
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service ("ldapAuthenticationConfigurator")
 @ManagedResource (objectName = "sk.qbsw.core.security:name=ldapAuthenticationConfigurator", description = "LDAP authentication details")
-public class CLdapAuthenticationConfigurator implements ILdapAuthenticationConfigurator
+public class CLdapAuthenticationConfigurator extends CService implements ILdapAuthenticationConfigurator
 {
 	/** The ldap server name. */
 	private String serverName;

@@ -1,4 +1,4 @@
-package sk.qbsw.core.logging.aspect.annotation;
+package sk.qbsw.core.base.logging.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
