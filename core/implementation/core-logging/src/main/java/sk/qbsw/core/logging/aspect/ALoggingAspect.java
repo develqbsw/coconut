@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.security.core.parameters.DefaultSecurityParameterNameDiscoverer;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.logging.aspect.param.AParameter;
 import sk.qbsw.core.logging.aspect.param.AParameterFactory;
 import sk.qbsw.core.logging.aspect.param.CLoggedParameterFactory;
 import sk.qbsw.core.logging.aspect.param.CNotLoggedParameterFactory;
@@ -159,6 +161,22 @@ public abstract class ALoggingAspect
 			argumentFactory = new CNotLoggedParameterFactory(parameterName);
 		}
 		return argumentFactory;
+	}
+	
+	protected List<AParameter> getArguments(ProceedingJoinPoint pjp, final CMethodRepresentation methodRepresentation) {
+		final List<AParameterFactory> parameterFactories = methodRepresentation.getParameterFactories();
+		final List<AParameter> loggedArguments = new ArrayList<AParameter>(parameterFactories.size());
+		final Object[] arguments = pjp.getArgs();
+
+		int parameterIndex = 0;
+
+		//prepare arguments to log
+		for (final AParameterFactory pf : parameterFactories)
+		{
+			loggedArguments.add(pf.getInstance(arguments[parameterIndex]));
+			parameterIndex++;
+		}
+		return loggedArguments;
 	}
 
 	/**

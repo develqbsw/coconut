@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -53,7 +53,7 @@ public class CAuditLogTestCase
 	 */
 	@Test
 	@Transactional
-	//@Rollback(true)
+	@Rollback(true)
 	public void storeLog ()
 	{
 		List<Object> testDataList = new ArrayList<Object>();
