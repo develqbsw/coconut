@@ -46,7 +46,6 @@ class CLdapConnection extends CService
 	public void init (String ldapServerName, int ldapServerPort, boolean useSsl)
 	{
 		connection = new LdapNetworkConnection(ldapServerName, ldapServerPort, useSsl);
-		connection.setTimeOut(0);
 		LOGGER.debug("Initialized new LDAP connection " + ++COUNT);
 	}
 
