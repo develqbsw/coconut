@@ -25,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.11.5
+ * @version 1.11.7
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -60,7 +60,7 @@ public class CDataGenerator
 
 	/** The Constant ORGANIZATION_2_CODE. */
 	public static final String ORGANIZATION_2_CODE = "unit_test_organization_2";
-	
+
 	/** The Constant ORGANIZATION_2_CLONE_CODE. */
 	public static final String ORGANIZATION_2_CLONE_CODE = "unit_test_organization_2";
 
@@ -102,6 +102,9 @@ public class CDataGenerator
 
 	/** The Constant SECOND_UNIT_CODE. */
 	public static final String SECOND_UNIT_CODE = "unit_test_unit_2";
+
+	/** The Constant USER_CREATED. */
+	public static final String USER_CREATED = "unit_test_user_created";
 
 	/** The Constant USER_WITH_DEFAULT_UNIT_CODE. */
 	public static final String USER_WITH_DEFAULT_UNIT_CODE = "unit_test_user_with_default_unit";

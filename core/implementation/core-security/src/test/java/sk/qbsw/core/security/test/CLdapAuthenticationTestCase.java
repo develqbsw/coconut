@@ -90,7 +90,7 @@ public class CLdapAuthenticationTestCase
 		ldapConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
 		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
-		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,40})");
+		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
 	}
 
 	/**

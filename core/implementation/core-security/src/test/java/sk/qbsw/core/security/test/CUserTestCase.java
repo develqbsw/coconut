@@ -25,6 +25,7 @@ import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
+import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.service.IUserService;
 import sk.qbsw.core.security.test.util.CDataGenerator;
@@ -33,7 +34,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks user service.
  *
  * @autor Tomas Lauro
- * @version 1.10.3
+ * @version 1.11.7
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -67,6 +68,9 @@ public class CUserTestCase
 	@Autowired
 	private IXUserUnitGroupDao crossUserUnitGroupDao;
 
+	/** The authentication configurator. */
+	@Autowired
+	private IAuthenticationConfigurator authenticationConfigurator;
 
 	/**
 	 * Test initialization.
@@ -75,6 +79,59 @@ public class CUserTestCase
 	public void testInitialization ()
 	{
 		assertNotNull("Could not find user service", userService);
+		authenticationConfigurator.setPasswordPattern("((?=.*[a-z])(?=.*[@#$%_]).{6,40})");
+	}
+
+	/**
+	 * Test create user with password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testCreateUserWithPassword () throws CSecurityException
+	{
+		initTest();
+
+		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+
+		CUser user = new CUser();
+		user.setLogin(CDataGenerator.USER_CREATED);
+		user.setName(CDataGenerator.USER_CREATED);
+
+		userService.registerNewUser(user, CDataGenerator.USER_CREATED, organization);
+
+		CUser queryUser = userService.getUserByLogin(CDataGenerator.USER_CREATED);
+
+		//asserts
+		assertNotNull("User has not been created", queryUser);
+	}
+
+	/**
+	 * Test create user without password.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testCreateUserWithoutPassword () throws CSecurityException
+	{
+		initTest();
+
+		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+
+		CUser user = new CUser();
+		user.setLogin(CDataGenerator.USER_CREATED);
+		user.setName(CDataGenerator.USER_CREATED);
+
+		userService.registerNewUser(user, organization);
+
+		CUser queryUser = userService.getUserByLogin(CDataGenerator.USER_CREATED);
+
+		//asserts
+		assertNotNull("User has not been created", queryUser);
 	}
 
 	/**
@@ -254,7 +311,7 @@ public class CUserTestCase
 		//checks if the user has a correct set of groups.
 		checksUserHasCorrectGroups(users.get(0));
 	}
-	
+
 	/**
 	 * Test get user by name and organization
 	 *

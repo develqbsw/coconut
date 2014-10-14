@@ -21,6 +21,7 @@ import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CAddress;
+import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -36,7 +37,7 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.10.3
+ * @version 1.11.7
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -267,6 +268,24 @@ public class CUserService extends CService implements IUserService
 	@Transactional (readOnly = false)
 	public void registerNewUser (CUser user, String password, COrganization organization) throws CSecurityException
 	{
+		//register new user with empty password
+		registerNewUser(user, organization);
+
+		if (password == null)
+		{
+			throw new CSecurityException("The password is required", "error.security.invalidPassword");
+		}
+
+		//set password and save
+		authenticationService.changeEncryptedPassword(user.getLogin(), password);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#registerNewUser(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization)
+	 */
+	@Transactional (readOnly = false)
+	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException
+	{
 		try
 		{
 			//checks if user already exists
@@ -278,9 +297,9 @@ public class CUserService extends CService implements IUserService
 			//do nothing
 		}
 
-		if (user.getLogin() == null || password == null || organization == null || organization.getName() == null)
+		if (user.getLogin() == null || organization == null || organization.getName() == null)
 		{
-			throw new CSecurityException("Not enough parameter to create user. The login and plain text password are required", "error.security.loginused");
+			throw new CSecurityException("Not enough parameter to create user", "error.security.loginused");
 		}
 
 		try
@@ -295,8 +314,13 @@ public class CUserService extends CService implements IUserService
 		user.setOrganization(organization);
 		userDao.save(user);
 
-		//set password and save
-		authenticationService.changeEncryptedPassword(user.getLogin(), password);
+		//create and save empty authentication params
+		CAuthenticationParams authParams = new CAuthenticationParams();
+		authParams.setUser(user);
+		authParams.setPassword(null);
+		authParams.setPasswordDigest(null);
+		authParams.setPin(null);
+		authenticationParamsDao.save(authParams);
 	}
 
 	/* (non-Javadoc)
@@ -386,12 +410,12 @@ public class CUserService extends CService implements IUserService
 		CUser persistedUser = (CUser) getPersistedEntity(user, userDao);
 		CGroup persistedGroup = (CGroup) getPersistedEntity(group, groupDao);
 		CUnit persistedUnit = null;
-		
+
 		if (unit != null)
 		{
 			persistedUnit = (CUnit) getPersistedEntity(unit, unitDao);
 		}
-		
+
 		// if group which will be added to user is excluded another group then cannot be added
 		Boolean isAddedGroupExcluded = Boolean.FALSE;
 		//if already exist combination of user group unit 
@@ -399,24 +423,26 @@ public class CUserService extends CService implements IUserService
 
 		//find all groups assigned to user
 		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, null);
-		
+
 		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
 		{
-			if(persistedGroup.equals(userUnitGroup)){
+			if (persistedGroup.equals(userUnitGroup))
+			{
 				//if is group already added
 				isGroupAlreadyAdded = Boolean.TRUE;
 				break;
 			}
-			
+
 			//if added group is excluded by group which user already have then group cannot be added
 			Set<CGroup> excludedGroups = userUnitGroup.getGroup().getExcludedGroups();
-			if(excludedGroups.contains(persistedGroup)){
+			if (excludedGroups.contains(persistedGroup))
+			{
 				isAddedGroupExcluded = Boolean.TRUE;
 				break;
 			}
-			
+
 		}
-		
+
 		//if is not combination user group unit already added
 		//or if existing group assigned to user not exclude added group
 		if (!isGroupAlreadyAdded && !isAddedGroupExcluded)

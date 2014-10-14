@@ -17,7 +17,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.10.3
+ * @version 1.11.7
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -180,9 +180,18 @@ public interface IUserService extends Serializable
 	 * @param user the user
 	 * @param password the password
 	 * @param organization the organization
-	 * @throws CSecurityException if user with such logiun already exists
+	 * @throws CSecurityException if user with such login already exists
 	 */
 	public void registerNewUser (CUser user, String password, COrganization organization) throws CSecurityException;
+
+	/**
+	 * Register new user without password - usually used with LDAP authentication because the user can't change the password in domain.
+	 *
+	 * @param user the user
+	 * @param organization the organization
+	 * @throws CSecurityException if user with such login already exists
+	 */
+	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException;
 
 	/**
 	 * Update user.

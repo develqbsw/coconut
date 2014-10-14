@@ -65,7 +65,7 @@ public class CDatabaseAuthenticationTestCase
 	@Before
 	public void initTestCase ()
 	{
-		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,40})");
+		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
 	}
 
 	/**

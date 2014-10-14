@@ -27,7 +27,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.10.4
+ * @version 1.11.7
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
@@ -65,7 +65,7 @@ public class CDatabaseAuthenticationService extends CService implements IAuthent
 	 */
 	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws CWrongPasswordException
 	{
-		if (authenticationParams.getPassword().equals(passwordToCheck) == false)
+		if (authenticationParams.getPassword() == null || authenticationParams.getPassword().equals(passwordToCheck) == false)
 		{
 			throw new CWrongPasswordException("Plain password doesn't match");
 		}
@@ -80,7 +80,7 @@ public class CDatabaseAuthenticationService extends CService implements IAuthent
 	 */
 	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String passwordToCheck) throws CWrongPasswordException
 	{
-		if (digester.checkPassword(passwordToCheck, authenticationParams.getPasswordDigest()) == false)
+		if (authenticationParams.getPasswordDigest() == null || digester.checkPassword(passwordToCheck, authenticationParams.getPasswordDigest()) == false)
 		{
 			throw new CWrongPasswordException("Password dogest doesn't match");
 		}
