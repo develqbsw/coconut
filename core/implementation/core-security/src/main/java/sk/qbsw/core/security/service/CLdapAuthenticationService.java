@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
@@ -41,7 +43,7 @@ import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.11.2
+ * @version 1.11.8
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -86,7 +88,7 @@ public class CLdapAuthenticationService extends CService implements IAuthenticat
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public boolean canLogin (String login, String password, CRole role)
+	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
 	{
 		try
 		{
@@ -103,7 +105,7 @@ public class CLdapAuthenticationService extends CService implements IAuthenticat
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, String password) throws CSecurityException
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginUser(login, password, null);
 	}
@@ -113,7 +115,7 @@ public class CLdapAuthenticationService extends CService implements IAuthenticat
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, String password, CRole role) throws CSecurityException
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
 	{
 		CUser user = loginUser(login, password, null);
 
@@ -131,7 +133,7 @@ public class CLdapAuthenticationService extends CService implements IAuthenticat
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, String password, String unit) throws CSecurityException
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		CUnit databaseUnit = unitDao.findByName(unit);
 		CUser user = null;
@@ -252,7 +254,7 @@ public class CLdapAuthenticationService extends CService implements IAuthenticat
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void changeEncryptedPassword (String login, String password) throws CSecurityException
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		CUser user = userDao.findByLogin(login);
 
@@ -323,7 +325,7 @@ public class CLdapAuthenticationService extends CService implements IAuthenticat
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void changePlainPassword (String login, String email, String password) throws CSecurityException
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}

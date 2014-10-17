@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;
@@ -37,7 +39,7 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.11.7
+ * @version 1.11.8
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -266,7 +268,7 @@ public class CUserService extends CService implements IUserService
 	 * @see sk.qbsw.core.security.service.IUserService#registerNewUser(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization)
 	 */
 	@Transactional (readOnly = false)
-	public void registerNewUser (CUser user, String password, COrganization organization) throws CSecurityException
+	public void registerNewUser (CUser user, @CNotLogged @CNotAuditLogged String password, COrganization organization) throws CSecurityException
 	{
 		//register new user with empty password
 		registerNewUser(user, organization);

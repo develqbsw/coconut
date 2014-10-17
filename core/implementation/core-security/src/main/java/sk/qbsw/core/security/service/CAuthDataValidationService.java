@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
@@ -14,7 +16,8 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * Authentication data validation service.
  *
  * @author Tomas Lauro
- * @version 1.8.0
+ * 
+ * @version 1.11.8
  * @since 1.7.2
  */
 @Service (value = "authDataValidationService")
@@ -30,7 +33,7 @@ class CAuthDataValidationService extends CService implements IAuthDataValidation
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthDataValidationService#validatePassword(java.lang.String)
 	 */
-	public void validatePassword (String password) throws CPasswordFormatException
+	public void validatePassword (@CNotLogged @CNotAuditLogged String password) throws CPasswordFormatException
 	{
 		if (authenticationConfigurator.getPasswordPattern() != null)
 		{

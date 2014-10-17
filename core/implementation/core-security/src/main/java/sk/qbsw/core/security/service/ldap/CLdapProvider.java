@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
@@ -30,7 +32,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.11.4
+ * @version 1.11.8
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -265,7 +267,7 @@ public class CLdapProvider extends CService
 	 * @throws CBusinessException The exception occurs if there is not or is more then one user with defined login
 	 * @throws LdapException The exception occurs if the connection to server can't be established or the authenticate operation failed
 	 */
-	public synchronized void authenticate (String baseDn, String loginFilter, String password) throws LdapException, CBusinessException
+	public synchronized void authenticate (String baseDn, String loginFilter, @CNotLogged @CNotAuditLogged String password) throws LdapException, CBusinessException
 	{
 		//init the connection
 		init();

@@ -14,13 +14,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 
 /**
  * The ldap connection.
  *
  * @author Tomas Lauro
- * @version 1.11.4
+ * @version 1.11.8
  * @since 1.10.6
  */
 @Component ("ldapConnection")
@@ -78,7 +80,7 @@ class CLdapConnection extends CService
 	 * @param ldapUserPassword the user account password
 	 * @throws LdapException cannot bind to server or the connection no created
 	 */
-	public void bindOnServer (String ldapUserDn, String ldapUserPassword) throws LdapException
+	public void bindOnServer (String ldapUserDn, @CNotLogged @CNotAuditLogged String ldapUserPassword) throws LdapException
 	{
 		if (connection != null)
 		{

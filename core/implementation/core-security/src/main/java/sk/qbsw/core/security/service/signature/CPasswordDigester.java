@@ -4,6 +4,10 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.logging.annotation.CAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CLogged;
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 
@@ -12,7 +16,8 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.8.0
+ * 
+ * @version 1.11.8
  * @since 1.3.0
  * 
  */
@@ -26,8 +31,10 @@ public class CPasswordDigester extends CService implements IPasswordDigester
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.signature.IPasswordDigester#generateDigest(java.lang.String)
 	 */
+	@CLogged (logResult = false)
+	@CAuditLogged (actionName = "coconutPasswordDigesterGenerateAction", logResult = false)
 	@Override
-	public String generateDigest (String password)
+	public String generateDigest (@CNotLogged @CNotAuditLogged String password)
 	{
 		ConfigurablePasswordEncryptor passwordEncryptor2 = new ConfigurablePasswordEncryptor();
 		passwordEncryptor2.setAlgorithm(authenticationConfiguration.getDatabasePasswordHashMethod().getDatabaseAlgorithm());
@@ -37,7 +44,7 @@ public class CPasswordDigester extends CService implements IPasswordDigester
 	}
 
 	@Override
-	public boolean checkPassword (String plainPassword, String encryptedPassword)
+	public boolean checkPassword (@CNotLogged @CNotAuditLogged String plainPassword, @CNotLogged @CNotAuditLogged String encryptedPassword)
 	{
 		ConfigurablePasswordEncryptor passwordEncryptor2 = new ConfigurablePasswordEncryptor();
 		passwordEncryptor2.setAlgorithm(authenticationConfiguration.getDatabasePasswordHashMethod().getDatabaseAlgorithm());

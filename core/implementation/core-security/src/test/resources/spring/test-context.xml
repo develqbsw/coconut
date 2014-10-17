@@ -17,6 +17,10 @@
 		http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
+	<!-- AOP logging - uncomment to test logging -->
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true" />
+	<bean id="methodLoggingAspect" class="sk.qbsw.core.logging.aspect.CMethodLoggingAspect" /> -->
+
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -18,7 +20,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.10.5
+ * @version 1.11.8
  * @since 1.10.5
  */
 @Service (value = "mixedAuthenticationService")
@@ -43,7 +45,7 @@ public class CMixedAuthenticationService extends CService implements IAuthentica
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public boolean canLogin (String login, String password, CRole role)
+	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
 	{
 		if (ldapAuthenticationService.canLogin(login, password, role) == true || databaseAuthenticationService.canLogin(login, password, role) == true)
 		{
@@ -60,7 +62,7 @@ public class CMixedAuthenticationService extends CService implements IAuthentica
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, String password) throws CSecurityException
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginUser(login, password, null, null);
 	}
@@ -70,7 +72,7 @@ public class CMixedAuthenticationService extends CService implements IAuthentica
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, String password, CRole role) throws CSecurityException
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
 	{
 		return loginUser(login, password, null, role);
 	}
@@ -80,7 +82,7 @@ public class CMixedAuthenticationService extends CService implements IAuthentica
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, String password, String unit) throws CSecurityException
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		return loginUser(login, password, unit, null);
 	}
@@ -180,7 +182,7 @@ public class CMixedAuthenticationService extends CService implements IAuthentica
 	 * @param password the password
 	 */
 	@Override
-	public void changeEncryptedPassword (String login, String password)
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password)
 	{
 		throw new NotImplementedException();
 	}
@@ -193,7 +195,7 @@ public class CMixedAuthenticationService extends CService implements IAuthentica
 	 * @param password the password
 	 */
 	@Override
-	public void changePlainPassword (String login, String email, String password) throws CSecurityException
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}

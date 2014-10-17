@@ -3,6 +3,10 @@ package sk.qbsw.core.security.model.jmx;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.logging.annotation.CAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CLogged;
+import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 
 /**
@@ -11,7 +15,7 @@ import sk.qbsw.core.base.service.CService;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.10.5
+ * @version 1.11.8
  * @since 1.6.0
  */
 @Service ("ldapAuthenticationConfigurator")
@@ -128,6 +132,8 @@ public class CLdapAuthenticationConfigurator extends CService implements ILdapAu
 	 * @see sk.qbsw.core.security.service.ILdapAuthenticationConfigurator#getUserPassword()
 	 */
 	@Override
+	@CLogged (logResult = false)
+	@CAuditLogged (actionName = "coconutAuthenticationConfiguratorGetPasswordAction", logResult = false)
 	public String getUserPassword ()
 	{
 		return userPassword;
@@ -137,7 +143,7 @@ public class CLdapAuthenticationConfigurator extends CService implements ILdapAu
 	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setUserPassword(java.lang.String)
 	 */
 	@Override
-	public void setUserPassword (String userPassword)
+	public void setUserPassword (@CNotLogged @CNotAuditLogged String userPassword)
 	{
 		this.userPassword = userPassword;
 	}
