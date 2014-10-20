@@ -220,6 +220,12 @@
 				<artifactId>indy-base</artifactId>
 				<version>${indy.version}</version>
 			</dependency>
+			<!-- QBSW winnetou -->
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>winnetou-base</artifactId>
+				<version>${winnetou.version}</version>
+			</dependency>
 
 			<!-- security -->
 			<dependency>
@@ -380,6 +386,28 @@
 				<groupId>org.wicketstuff</groupId>
 				<artifactId>minis</artifactId>
 				<version>${wicketstuff.minis}</version>
+			</dependency>
+
+			<!-- GWT -->
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${gwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${gwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.smartgwt</groupId>
+				<artifactId>smartgwt</artifactId>
+				<version>${smartgwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.gwtrpcspring</groupId>
+				<artifactId>gwtrpcspring</artifactId>
+				<version>${gwtrpcspring.version}</version>
 			</dependency>
 
 			<!-- JAVAX -->

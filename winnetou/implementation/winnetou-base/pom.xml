@@ -21,23 +21,20 @@
 	</repositories>
 
 	<dependencies>
-		<!--  GWT dependencies (from central repo) -->
+		<!-- GWT dependencies (from central repo) -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt</artifactId>
-			<version>${smartgwt.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -45,60 +42,51 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- logging -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
-			<version>${jta.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
-			<version>${persistence-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.gwtrpcspring</groupId>
 			<artifactId>gwtrpcspring</artifactId>
-			<version>${gwtrpcspring.version}</version>
 			<type>jar</type>
- 			<scope>compile</scope>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
@@ -134,16 +122,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-				If you want to use the target/web.xml file mergewebxml produces,
-				tell the war plugin to use it. Also, exclude what you want from the
-				final artifact here. <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId> <configuration>
-				<webXml>target/web.xml</webXml>
-				<warSourceExcludes>.gwt-tmp/**</warSourceExcludes> </configuration>
-				</plugin>
-			-->
+			<!-- If you want to use the target/web.xml file mergewebxml produces, 
+				tell the war plugin to use it. Also, exclude what you want from the final 
+				artifact here. <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
+				<configuration> <webXml>target/web.xml</webXml> <warSourceExcludes>.gwt-tmp/**</warSourceExcludes> 
+				</configuration> </plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -166,7 +149,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

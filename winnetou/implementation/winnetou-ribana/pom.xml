@@ -16,18 +16,15 @@
 	</properties>
 
 	<dependencies>
-
-		<!--  GWT dependencies (from central repo) -->
+		<!-- GWT dependencies (from central repo) -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -35,7 +32,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -43,9 +39,7 @@
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>winnetou-base</artifactId>
-			<version>${winnetou.version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -84,16 +78,11 @@
 					<runTarget>panels.html</runTarget>
 				</configuration>
 			</plugin>
-			<!--
-				If you want to use the target/web.xml file mergewebxml produces,
-				tell the war plugin to use it. Also, exclude what you want from the
-				final artifact here. <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId> <configuration>
-				<webXml>target/web.xml</webXml>
-				<warSourceExcludes>.gwt-tmp/**</warSourceExcludes> </configuration>
-				</plugin>
-			-->
+			<!-- If you want to use the target/web.xml file mergewebxml produces, 
+				tell the war plugin to use it. Also, exclude what you want from the final 
+				artifact here. <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
+				<configuration> <webXml>target/web.xml</webXml> <warSourceExcludes>.gwt-tmp/**</warSourceExcludes> 
+				</configuration> </plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -116,7 +105,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
