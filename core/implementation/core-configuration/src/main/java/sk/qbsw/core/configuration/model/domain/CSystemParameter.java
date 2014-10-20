@@ -310,6 +310,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	@Override
 	public String toString ()
 	{
-		return "CSystemParameter [id=" + id + ", datumPlatnostiDo=" + validToDate + ", datumPlatnostiOd=" + validFromDate + ", hodnotaDate=" + dateValue + ", hodnotaInt=" + integerValue + ", hodnotaString=" + stringValue + ", modul=" + module + ", nazov=" + name + ", popis=" + description + "]";
+		//in system parameters are saved passwords for system users and passwords for external API. For this case we do not want to log values in system parameters. For this, are logged only description data and id of system parameter.
+		return "CSystemParameter [id=" + id + ", datumPlatnostiDo=" + validToDate + ", datumPlatnostiOd=" + validFromDate + ", hodnotaDate=<hidden>, hodnotaInt=<hidden>, hodnotaString=<hidden>, modul=" + module + ", nazov=" + name + ", popis=" + description + "]";
 	}
 }
