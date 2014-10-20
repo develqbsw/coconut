@@ -18,34 +18,23 @@
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-base</artifactId>
-			<version>${core.version}</version>
 		</dependency>
 
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- LDAP -->
-		<dependency>
-			<groupId>org.apache.directory.api</groupId>
-			<artifactId>api-all</artifactId>
-			<version>${directory.api.version}</version>
 		</dependency>
 
 		<!-- JPA Persistence Dependencies -->
 		<dependency>
 			<groupId>org.hibernate.java-persistence</groupId>
 			<artifactId>jpa-api</artifactId>
-			<version>${jpa.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate-entitymanager.version}</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
@@ -61,13 +50,11 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

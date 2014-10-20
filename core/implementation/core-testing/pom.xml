@@ -19,46 +19,39 @@
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-base</artifactId>
-			<version>${core.version}</version>
 		</dependency>
 
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
 		</dependency>
 
 		<!-- log4j and it's dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

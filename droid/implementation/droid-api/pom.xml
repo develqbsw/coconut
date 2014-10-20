@@ -19,7 +19,6 @@
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-			<version>${android-platform.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -27,46 +26,36 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>${gson.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- Http client to comunicate to server api -->
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-api</artifactId>
-			<version>${core.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- END Http client to comunicate to server api -->
 
 		<!-- HTTP -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>${httpcomponents.version}</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>${httpcomponents.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<!-- dependencies for QBSW modules -->
-
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-logging</artifactId>
-			<version>${droid.version}</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-utils</artifactId>
-			<version>${droid.version}</version>
 		</dependency>
 	</dependencies>
 

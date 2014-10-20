@@ -59,6 +59,8 @@
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-fileupload>1.2.2</commons-fileupload>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<servlet-api.version>2.5</servlet-api.version>
+		<jsp-api.version>2.1</jsp-api.version>
 
 		<junit.version>4.10</junit.version>
 
@@ -176,40 +178,66 @@
 				<artifactId>core-persistence</artifactId>
 				<version>${core.version}</version>
 			</dependency>
-
-
-			<!-- testing -->
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>core-security</artifactId>
+				<version>${core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>core-logging</artifactId>
+				<version>${core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>core-api</artifactId>
+				<version>${core.version}</version>
+			</dependency>
+			<!-- QBSW Android -->
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>droid-core-logging</artifactId>
+				<version>${droid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>droid-core-utils</artifactId>
+				<version>${droid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>droid-core-persistence</artifactId>
+				<version>${droid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>droid-core-service</artifactId>
+				<version>${droid.version}</version>
+			</dependency>
+			<!-- QBSW indy -->
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>indy-base</artifactId>
+				<version>${indy.version}</version>
 			</dependency>
 
-			<!-- GSON -->
+			<!-- security -->
+			<dependency>
+				<groupId>org.jasypt</groupId>
+				<artifactId>jasypt</artifactId>
+				<version>${jasypt.version}</version>
+			</dependency>
+
+			<!-- JSON -->
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<version>${gson.version}</version>
 			</dependency>
-
-			<!-- JACKSON -->
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-mapper-asl</artifactId>
 				<version>${jackson.version}</version>
-			</dependency>
-
-			<!-- HTTP -->
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpclient.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>${httpclient.version}</version>
 			</dependency>
 
 			<!-- MAIL -->
@@ -230,7 +258,32 @@
 				<artifactId>commons-io</artifactId>
 				<version>${commons-io.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>${commons-dbcp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>${commons-collections.version}</version>
+			</dependency>
+			<!-- Apache HTTP -->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>${httpclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>${httpcomponents.version}</version>
+			</dependency>
 
 			<!-- SFTP -->
 			<dependency>
@@ -239,21 +292,22 @@
 				<version>0.1.50</version>
 			</dependency>
 
-			<!-- GSON -->
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>${gson.version}</version>
-			</dependency>
-
-			<!-- JACKSON -->
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-asl</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-
 			<!-- SPRING -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context-support</artifactId>
@@ -275,24 +329,92 @@
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
-
-			<!-- HTTP -->
 			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpclient.version}</version>
+				<groupId>org.springframework.ws</groupId>
+				<artifactId>spring-ws-security</artifactId>
+				<version>${spring.ws.version}</version>
+			</dependency>
+
+			<!-- wicket -->
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-core</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>${httpclient.version}</version>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-spring</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-extensions</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-datetime</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-auth-roles</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.wicketstuff</groupId>
+				<artifactId>minis</artifactId>
+				<version>${wicketstuff.minis}</version>
+			</dependency>
+
+			<!-- JAVAX -->
+			<dependency>
+				<groupId>javax.transaction</groupId>
+				<artifactId>jta</artifactId>
+				<version>${jta.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>${persistence-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>${jsp-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-web-api</artifactId>
+				<version>${javaee.version}</version>
 			</dependency>
 
 			<!-- log4j and it's dependencies -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
@@ -312,10 +434,9 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-				<scope>test</scope>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
@@ -328,7 +449,28 @@
 				<groupId>postgresql</groupId>
 				<artifactId>postgresql</artifactId>
 				<version>${postgresql-driver.version}</version>
-				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>sqljdbc4</artifactId>
+				<version>${mssql-driver.version}</version>
+			</dependency>
+
+			<!-- Hibernate, JPA -->
+			<dependency>
+				<groupId>org.hibernate.java-persistence</groupId>
+				<artifactId>jpa-api</artifactId>
+				<version>${jpa.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate-entitymanager.version}</version>
 			</dependency>
 
 			<!-- quartz -->
@@ -343,6 +485,85 @@
 				<groupId>org.jadira.usertype</groupId>
 				<artifactId>usertype.jodatime</artifactId>
 				<version>${jadira.usertype.version}</version>
+			</dependency>
+
+			<!-- joda time -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+			</dependency>
+
+			<!-- AspectJ -->
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>${aspectj.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>${aspectj.version}</version>
+			</dependency>
+
+			<!-- Parsers - XML, ... -->
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>${dom4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>antlr</groupId>
+				<artifactId>antlr</artifactId>
+				<version>${antlr.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>${xstream.version}</version>
+			</dependency>
+
+			<!-- LDAP API -->
+			<dependency>
+				<groupId>org.apache.directory.api</groupId>
+				<artifactId>api-all</artifactId>
+				<version>${directory.api.version}</version>
+			</dependency>
+
+			<!-- Android platform -->
+			<dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>android</artifactId>
+				<version>${android-platform.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>support-v4</artifactId>
+				<version>${android-support.version}</version>
+			</dependency>
+
+			<!-- Android utils -->
+			<dependency>
+				<groupId>com.simpligility.android.sdk-deployer</groupId>
+				<artifactId>google-play-services</artifactId>
+				<version>${google-play-services.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.api.client</groupId>
+				<artifactId>google-api-client-util</artifactId>
+				<version>${google-api-client.version}</version>
+			</dependency>
+
+			<!-- ORMLite -->
+			<dependency>
+				<groupId>com.j256.ormlite</groupId>
+				<artifactId>ormlite-core</artifactId>
+				<version>${ormlite-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.j256.ormlite</groupId>
+				<artifactId>ormlite-android</artifactId>
+				<version>${ormlite-android.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

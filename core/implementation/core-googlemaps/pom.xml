@@ -18,77 +18,64 @@
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-security</artifactId>
-			<version>${core.version}</version>
 		</dependency>
 
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
-			<version>${jta.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
-			<version>${persistence-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
-		
-		<!-- Apache commons-->
+
+		<!-- Apache commons -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>${commons-io.version}</version>
 		</dependency>
-		
+
 		<!-- GSON -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>${gson.version}</version>
 		</dependency>
 		<!-- JPA Persistence Dependencies -->
 		<dependency>
 			<groupId>org.hibernate.java-persistence</groupId>
 			<artifactId>jpa-api</artifactId>
-			<version>${jpa.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate-entitymanager.version}</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
@@ -104,7 +91,6 @@
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<version>${dom4j.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>xml-apis</groupId>
@@ -115,9 +101,7 @@
 		<dependency>
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
-			<version>${antlr.version}</version>
-		</dependency>		
-		
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

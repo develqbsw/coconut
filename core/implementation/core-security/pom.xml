@@ -18,23 +18,19 @@
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-persistence</artifactId>
-			<version>${core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-base</artifactId>
-			<version>${core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-testing</artifactId>
-			<version>${core.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-logging</artifactId>
-			<version>${core.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -42,18 +38,15 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -61,19 +54,16 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -81,13 +71,11 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
-			<version>${mssql-driver.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>${postgresql-driver.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -95,77 +83,64 @@
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-			<version>${commons-dbcp.version}</version>
 		</dependency>
 
 		<!-- TECH -->
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
-			<version>${jta.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
-			<version>${persistence-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-security</artifactId>
-			<version>${spring.ws.version}</version>
 		</dependency>
 
 		<!-- SECURITY -->
 		<dependency>
 			<groupId>org.jasypt</groupId>
 			<artifactId>jasypt</artifactId>
-			<version>${jasypt.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- GSON -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>${gson.version}</version>
 		</dependency>
 
 		<!-- JPA Persistence Dependencies -->
 		<dependency>
 			<groupId>org.hibernate.java-persistence</groupId>
 			<artifactId>jpa-api</artifactId>
-			<version>${jpa.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate-entitymanager.version}</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
@@ -183,14 +158,12 @@
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.jodatime</artifactId>
-			<version>${jadira.usertype.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<version>${dom4j.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>xml-apis</groupId>
@@ -201,14 +174,12 @@
 		<dependency>
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
-			<version>${antlr.version}</version>
 		</dependency>
 
 		<!-- LDAP -->
 		<dependency>
 			<groupId>org.apache.directory.api</groupId>
 			<artifactId>api-all</artifactId>
-			<version>${directory.api.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

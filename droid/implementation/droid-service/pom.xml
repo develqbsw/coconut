@@ -14,25 +14,19 @@
 		<version>1.11.9-SNAPSHOT</version>
 	</parent>
 	<dependencies>
-
 		<!-- dependency to android -->
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-			<version>${android-platform.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-persistence</artifactId>
-			<version>${droid.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-utils</artifactId>
-			<version>${droid.version}</version>
 		</dependency>
 	</dependencies>
 

@@ -19,7 +19,6 @@
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-			<version>${android-platform.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -27,28 +26,23 @@
 		<dependency>
 			<groupId>com.google.api.client</groupId>
 			<artifactId>google-api-client-util</artifactId>
-			<version>${google-api-client.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>support-v4</artifactId>
-			<version>${android-support.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.simpligility.android.sdk-deployer</groupId>
 			<artifactId>google-play-services</artifactId>
-			<version>${google-play-services.version}</version>
 		</dependency>
 
 		<!-- dependencies for QBSW modules -->
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-logging</artifactId>
-			<version>${droid.version}</version>
 		</dependency>
 	</dependencies>
 

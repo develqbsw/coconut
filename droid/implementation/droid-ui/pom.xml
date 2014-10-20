@@ -14,32 +14,25 @@
 		<version>1.11.9-SNAPSHOT</version>
 	</parent>
 	<dependencies>
-
 		<!-- dependency to android -->
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-			<version>${android-platform.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>support-v4</artifactId>
-			<version>${android-support.version}</version>
 		</dependency>
-		
+
 		<!-- dependencies for QBSW modules -->
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-logging</artifactId>
-			<version>${droid.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-service</artifactId>
-			<version>${droid.version}</version>
 		</dependency>
 	</dependencies>
 
