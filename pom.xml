@@ -91,7 +91,7 @@
 		<android.platform>8</android.platform>
 		<android-support.version>r7</android-support.version>
 		<android-maps.version>14.0.0</android-maps.version>
-		<java.version>1.6</java.version>
+		<java.version>1.7</java.version>
 		<core-api.version>1.6.0</core-api.version>
 		<!-- maven plugins -->
 		<android-maven-plugin.version>3.1.1</android-maven-plugin.version>
@@ -111,6 +111,9 @@
 		<google-play-services.version>4.0.0</google-play-services.version>
 		<!-- quartz -->
 		<quartz.version>1.8.6</quartz.version>
+
+		<!-- Bouncy castle -->
+		<bouncy-castle.version>1.51</bouncy-castle.version>
 	</properties>
 
 	<modules>
@@ -593,6 +596,14 @@
 				<artifactId>ormlite-android</artifactId>
 				<version>${ormlite-android.version}</version>
 			</dependency>
+
+			<!-- Bouncy Castle -->
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcpkix-jdk15on</artifactId>
+				<version>${bouncy-castle.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 </project>
