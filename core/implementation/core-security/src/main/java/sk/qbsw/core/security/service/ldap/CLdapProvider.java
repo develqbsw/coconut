@@ -16,6 +16,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 1.11.8
+ * @version 1.11.9
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -68,7 +69,19 @@ public class CLdapProvider extends CService
 		if (connection.isConnected() == false)
 		{
 			LOGGER.debug("The main LDAP connection is not connected");
-			connection.bindOnServer(data.getUserDn(), data.getUserPassword());
+			try
+			{
+				connection.bindOnServer(data.getUserDn(), data.getUserPassword());
+			}
+			catch (LdapProtocolErrorException ex)
+			{
+				LOGGER.debug("The main LDAP connection throws a LDAP protocol exception - trying to create new connection");
+				//close connection and create new one
+				//the new connection object has to be created because there is a bug with a SSL connection if only bind is called
+				connection.closeConnection();
+				connection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
+				connection.bindOnServer(data.getUserDn(), data.getUserPassword());
+			}
 		}
 
 		//initialize the temporary connection
@@ -278,8 +291,20 @@ public class CLdapProvider extends CService
 		{
 			Entry ldapUserEntry = searchSingleResult(baseDn, loginFilter, SearchScope.SUBTREE, "*");
 
-			//bind as user (with his DN) to verify password
-			temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
+			try
+			{
+				//bind as user (with his DN) to verify password
+				temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
+			}
+			catch (LdapProtocolErrorException ex)
+			{
+				LOGGER.debug("The temporary LDAP connection throws a LDAP protocol exception - trying to create new connection");
+				//close connection and create new one
+				//the new connection object has to be created because there is a bug with a SSL connection if only bind is called
+				temporaryConnection.closeConnection();
+				temporaryConnection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
+				temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
+			}
 		}
 		finally
 		{
