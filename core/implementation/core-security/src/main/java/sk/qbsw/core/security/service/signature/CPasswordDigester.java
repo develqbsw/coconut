@@ -44,7 +44,7 @@ public class CPasswordDigester extends CService implements IPasswordDigester
 	}
 
 	@Override
-	public boolean checkPassword (@CNotLogged @CNotAuditLogged String plainPassword, @CNotLogged @CNotAuditLogged String encryptedPassword)
+	public boolean checkPassword(@CNotLogged @CNotAuditLogged String plainPassword, @CNotLogged @CNotAuditLogged String encryptedPassword)
 	{
 		ConfigurablePasswordEncryptor passwordEncryptor2 = new ConfigurablePasswordEncryptor();
 		passwordEncryptor2.setAlgorithm(authenticationConfiguration.getDatabasePasswordHashMethod().getDatabaseAlgorithm());

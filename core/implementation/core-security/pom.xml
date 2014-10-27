@@ -181,6 +181,13 @@
 			<groupId>org.apache.directory.api</groupId>
 			<artifactId>api-all</artifactId>
 		</dependency>
+
+		<!-- Bouncy castle -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<resources>
