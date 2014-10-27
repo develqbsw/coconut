@@ -293,8 +293,15 @@ public class CLdapProvider extends CService
 
 			try
 			{
-				//bind as user (with his DN) to verify password
-				temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
+				if (password != null)
+				{
+					//bind as user (with his DN) to verify password
+					temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
+				}
+				else
+				{
+					throw new CBusinessException("The null password is not allowed");
+				}
 			}
 			catch (LdapProtocolErrorException ex)
 			{
