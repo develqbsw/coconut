@@ -78,7 +78,7 @@ public class COCSPTest {
 
 				//Read the Response
 				InputStream in = (InputStream) con.getContent();
-
+			
 				COCSPValidationResult validationResult = validator.processResponse(in);
 				System.out.println("Call result : " + validationResult.getOcspStatus() + ":" + validationResult.getCertificateStatus());
 

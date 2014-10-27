@@ -93,6 +93,10 @@ public class COCSPCertValidatorBCImpl implements IOCSPCertValidator {
 	 */
 	@Override
 	public byte[] generateOCSPRequest(X509Certificate issuerCert, X509Certificate checkCertificate) {
+		if (checkCertificate == null) {
+			throw new IllegalArgumentException("Certificate to check cannot be empty");
+		}
+
 		return this.generateOCSPRequest(issuerCert, checkCertificate.getSerialNumber());
 	}
 
