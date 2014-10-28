@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ public class CUserTestCase
 	/**
 	 * Test initialization.
 	 */
-	@Test
+	@Before
 	public void testInitialization ()
 	{
 		assertNotNull("Could not find user service", userService);
