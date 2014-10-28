@@ -1,7 +1,6 @@
 package sk.qbsw.core.api.client.http;
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;

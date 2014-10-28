@@ -2,7 +2,6 @@ package sk.qbsw.core.api.client;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Map;
 
 import org.apache.http.entity.ContentType;
 

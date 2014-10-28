@@ -3,7 +3,6 @@ package sk.qbsw.core.api.client.http;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;

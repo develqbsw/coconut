@@ -1,7 +1,5 @@
 package sk.qbsw.core.api.test.client;
 
-import java.io.IOException;
-
 import org.apache.http.HttpHost;
 import org.junit.Ignore;
 import org.junit.Test;

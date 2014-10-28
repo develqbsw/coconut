@@ -1,12 +1,9 @@
 package sk.qbsw.core.api.test.client;
 
-import java.io.IOException;
-
 import org.apache.http.HttpHost;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sk.qbsw.core.api.client.AApiClient;
 import sk.qbsw.core.api.client.CApiClient;
 import sk.qbsw.core.api.client.http.CHttpApiGetRequest;
 

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
