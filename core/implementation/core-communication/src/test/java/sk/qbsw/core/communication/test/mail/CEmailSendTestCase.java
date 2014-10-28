@@ -39,7 +39,7 @@ import sk.qbsw.core.communication.test.mail.util.CTestMailBuilder;
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
 @Ignore
-public class CTestEmailSend
+public class CEmailSendTestCase
 {
 	/** The mail service. */
 	@Autowired

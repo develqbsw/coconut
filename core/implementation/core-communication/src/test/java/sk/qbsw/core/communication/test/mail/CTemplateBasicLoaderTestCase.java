@@ -27,7 +27,7 @@ import sk.qbsw.core.communication.mail.service.ITemplateLoader;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-public class CTestTemplateBasicLoader
+public class CTemplateBasicLoaderTestCase
 {	
 	/** The loader. */
 	@Autowired

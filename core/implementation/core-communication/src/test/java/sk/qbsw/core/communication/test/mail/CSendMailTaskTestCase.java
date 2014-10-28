@@ -33,13 +33,14 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  * The test for sending mail task.
  * 
  * @author Tomas Lauro
- * @version 1.9.0
+ * 
+ * @version 1.11.9
  * @since 1.9.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
-public class CTestSendMailTask
+public class CSendMailTaskTestCase
 {
 	/** The mail sender. */
 	@Autowired
@@ -93,6 +94,8 @@ public class CTestSendMailTask
 	@Rollback (true)
 	public void testSuccessRun () throws Exception
 	{
+		//mockito rules
+		Mockito.doNothing().when(mockSenderMailDao).save(Mockito.any(CMail.class));
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 

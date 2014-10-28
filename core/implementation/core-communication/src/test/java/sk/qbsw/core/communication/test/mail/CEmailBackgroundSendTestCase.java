@@ -32,7 +32,7 @@ import sk.qbsw.core.communication.test.mail.util.CTestMailBuilder;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
-public class CTestEmailBackgroundSend
+public class CEmailBackgroundSendTestCase
 {
 	@Autowired
 	@Qualifier ("mailBackgroundService")

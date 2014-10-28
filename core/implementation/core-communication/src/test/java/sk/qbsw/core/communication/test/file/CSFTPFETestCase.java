@@ -15,7 +15,7 @@ import sk.qbsw.core.communication.file.EFileType;
 import sk.qbsw.core.communication.file.sftp.CFileExchangerSFTP;
 
 @Ignore
-public class CTestSFTPFE
+public class CSFTPFETestCase
 {
 
 	private CFileExchangerSFTP fe = new CFileExchangerSFTP("talos.qbsw.local", 22);
