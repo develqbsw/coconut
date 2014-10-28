@@ -2,29 +2,56 @@ package sk.qbsw.core.security.test.ocsp;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.InvalidParameterException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+
+import org.apache.commons.io.FileUtils;
 
 import sk.qbsw.core.security.service.ocsp.COCSPCertValidatorBCImpl;
 import sk.qbsw.core.security.service.ocsp.COCSPHttpURLConnection;
 import sk.qbsw.core.security.service.ocsp.COCSPValidationResult;
 import sk.qbsw.core.security.service.ocsp.IOCSPCertValidator;
 
+/**
+ * Test application for validating requests.
+ * 
+ * How to call this app: java sk.qbsw.core.security.test.ocsp.COCSPTest password V/E
+ * 
+ * @author Dalibor Rak
+ * @version 1.11.9
+ * @since 1.11.9
+ */
 public class COCSPTest {
 
+	/** The Constant baseCertsPath. */
 	private final static String baseCertsPath = "/Users/rak/work/projects/OCSP-check/OCSP-check-1/certs/";
 
+	/** The Constant baseUrlKeystore. */
 	private final static String baseUrlKeystore = "/Users/rak/work/projects/OCSP-check/OCSP-check-1/keystores/";
 
+	/** The Constant serviceAddr. */
 	private final static String serviceAddr = "https://s2.ica.cz/cgi-bin/ocsp.cgi";
 
+	/**
+	 * Gets the certificate.
+	 *
+	 * @param path
+	 *            the path
+	 * @return the certificate
+	 * @throws CertificateException
+	 *             the certificate exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private static X509Certificate getCertificate(String path) throws CertificateException, IOException {
 		CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
 		X509Certificate retVal = null;
@@ -41,8 +68,18 @@ public class COCSPTest {
 		return retVal;
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *            the arguments
+	 * @throws Exception
+	 *             the exception
+	 */
 	public static void main(String[] args) throws Exception {
-		X509Certificate interCert = getCertificate(baseCertsPath + "ligazova.cer");
+		//		X509Certificate interCert = getCertificate(baseCertsPath + "test-unknown.cer");
+		X509Certificate interCert = getCertificate(baseCertsPath + "test-revoked.cer");
+		//		X509Certificate interCert = getCertificate(baseCertsPath + "test-success.cer");
 		//X509Certificate interCert = getCertificate(baseCertsPath + "wrong.cer");
 		X509Certificate issuerCert = getCertificate(baseCertsPath + "ica.issuers.cer");
 
@@ -78,13 +115,54 @@ public class COCSPTest {
 
 				//Read the Response
 				InputStream in = (InputStream) con.getContent();
-			
-				COCSPValidationResult validationResult = validator.processResponse(in);
-				System.out.println("Call result : " + validationResult.getOcspStatus() + ":" + validationResult.getCertificateStatus());
+
+				String mode = args.length > 1 ? args[1] : "wrong";
+				switch (mode) {
+					case "V":
+						validateCertificate(validator, in);
+						break;
+
+					case "E":
+						String exportFileName = args[2];
+						exportResponse(in, exportFileName);
+						break;
+
+					default:
+						throw new InvalidParameterException("Unknown mode selected");
+				}
 
 			} catch (Exception ex) {
 				throw new RuntimeException(ex);
 			}
 		}
+	}
+
+	/**
+	 * Validate certificate.
+	 *
+	 * @param validator
+	 *            the validator
+	 * @param in
+	 *            the in
+	 */
+	private static void validateCertificate(IOCSPCertValidator validator, InputStream in) {
+		COCSPValidationResult validationResult = validator.processResponse(in);
+		System.out.println("Call result : " + validationResult.getOcspStatus() + ":" + validationResult.getCertificateStatus());
+	}
+
+	/**
+	 * Exports response.
+	 *
+	 * @param in
+	 *            the in
+	 * @param exportFileName
+	 *            the export file name
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	private static void exportResponse(InputStream in, String exportFileName) throws IOException {
+		File targetFile = new File(exportFileName);
+		FileUtils.copyInputStreamToFile(in, targetFile);
+		System.out.println("Response exported to file " + exportFileName);
 	}
 }

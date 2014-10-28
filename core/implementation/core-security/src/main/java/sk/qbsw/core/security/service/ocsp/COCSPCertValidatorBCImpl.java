@@ -142,18 +142,21 @@ public class COCSPCertValidatorBCImpl implements IOCSPCertValidator {
 
 		try {
 			OCSPResp ocspResponse = new OCSPResp(ocspResponseStream);
-			retVal.setOcspStatus(getOCSPStatus(ocspResponse));
+			EOCSPResponseStatus ocspResponseStatus = getOCSPStatus(ocspResponse);
+			retVal.setOcspStatus(ocspResponseStatus);
 
-			SingleResp[] responses;
-			BasicOCSPResp basicResponse = (BasicOCSPResp) ocspResponse.getResponseObject();
-			responses = (basicResponse == null) ? null : basicResponse.getResponses();
+			if (EOCSPResponseStatus.SUCCESSFUL.equals(ocspResponseStatus)) {
+				SingleResp[] responses;
+				BasicOCSPResp basicResponse = (BasicOCSPResp) ocspResponse.getResponseObject();
+				responses = (basicResponse == null) ? null : basicResponse.getResponses();
 
-			if (responses != null && responses.length == 1) {
-				SingleResp resp = responses[0];
-				retVal.setCertificateStatus(getCertificateStatus(resp));
-			}
-			else {
-				throw new CSystemException("Too many certificates");
+				if (responses != null && responses.length == 1) {
+					SingleResp resp = responses[0];
+					retVal.setCertificateStatus(getCertificateStatus(resp));
+				}
+				else {
+					throw new CSystemException("Too many certificates");
+				}
 			}
 		} catch (OCSPException | IOException e) {
 			throw new CSystemException("Unable to process OCSP response.", e);

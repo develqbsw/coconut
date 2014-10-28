@@ -62,5 +62,4 @@ public class CUserDetailsService extends CService implements UserDetailsService
 		retVal.setUser(user);
 		return retVal;
 	}
-
 }
