@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -40,7 +41,7 @@ public class CSecurityAuthenticationProvider extends CService implements Authent
 	 * @see org.springframework.security.authentication.AuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
 	 */
 	@Override
-	public Authentication authenticate (Authentication authentication) throws AuthenticationException
+	public Authentication authenticate (@CNotLogged Authentication authentication) throws AuthenticationException
 	{
 		Authentication retVal = null;
 		try
@@ -74,7 +75,7 @@ public class CSecurityAuthenticationProvider extends CService implements Authent
 	 * @return the authentication
 	 * @throws CSecurityException the c security exception
 	 */
-	private Authentication authenticate (CUsernamePasswordUnitAuthenticationToken token) throws CSecurityException
+	private Authentication authenticate (@CNotLogged CUsernamePasswordUnitAuthenticationToken token) throws CSecurityException
 	{
 		String login = token.getName();
 		String password = (String) token.getCredentials();
