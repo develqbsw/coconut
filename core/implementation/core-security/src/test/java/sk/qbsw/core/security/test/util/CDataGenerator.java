@@ -352,9 +352,9 @@ public class CDataGenerator
 	{
 		CAddress address = new CAddress();
 		address.setCity("Bratislava");
-		address.setHouseNumber("123456789");
+//		address.setHouseNumber("123456789");
 		address.setState("Slovakia");
-		address.setStreet("Prievozska");
+//		address.setStreet("Prievozska");
 		address.setZipCode("97101");
 		return address;
 	}

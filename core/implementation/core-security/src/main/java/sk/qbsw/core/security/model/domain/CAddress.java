@@ -39,7 +39,7 @@ public class CAddress extends ASecurityChangeEntity<Long>
 	private String city;
 
 	/** The house number. */
-	@Column (name = "c_house_number", nullable = false)
+	@Column (name = "c_house_number", nullable = true)
 	@Expose
 	private String houseNumber;
 
@@ -49,7 +49,7 @@ public class CAddress extends ASecurityChangeEntity<Long>
 	private String state;
 
 	/** The street. */
-	@Column (name = "c_street", nullable = false)
+	@Column (name = "c_street", nullable = true)
 	@Expose
 	private String street;
 
