@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.security.InvalidParameterException;
 import java.security.cert.CertificateException;
@@ -78,8 +80,8 @@ public class COCSPTest {
 	 */
 	public static void main(String[] args) throws Exception {
 		//		X509Certificate interCert = getCertificate(baseCertsPath + "test-unknown.cer");
-		X509Certificate interCert = getCertificate(baseCertsPath + "test-revoked.cer");
-		//		X509Certificate interCert = getCertificate(baseCertsPath + "test-success.cer");
+		//		X509Certificate interCert = getCertificate(baseCertsPath + "test-revoked.cer");
+		X509Certificate interCert = getCertificate(baseCertsPath + "test-success.cer");
 		//X509Certificate interCert = getCertificate(baseCertsPath + "wrong.cer");
 		X509Certificate issuerCert = getCertificate(baseCertsPath + "ica.issuers.cer");
 
@@ -100,7 +102,9 @@ public class COCSPTest {
 
 				COCSPHttpURLConnection con = null;
 				URL url = new URL((String) serviceAddr);
-				con = new COCSPHttpURLConnection((HttpURLConnection) url.openConnection());
+
+				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.121.31", 3128));
+				con = new COCSPHttpURLConnection((HttpURLConnection) url.openConnection(proxy));
 
 				OutputStream out = con.getOutputStream();
 				DataOutputStream dataOut = new DataOutputStream(new BufferedOutputStream(out));
