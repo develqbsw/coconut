@@ -3,7 +3,8 @@ package sk.qbsw.core.security.service.spring;
 import javax.annotation.PostConstruct;
 import javax.persistence.NoResultException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +25,7 @@ import sk.qbsw.core.security.service.IUserService;
  */
 public class CUserDetailsService extends CService implements UserDetailsService
 {
-	private static final Logger LOGGER = Logger.getLogger(CUserDetailsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CUserDetailsService.class);
 
 	/** The user service. */
 	@Autowired

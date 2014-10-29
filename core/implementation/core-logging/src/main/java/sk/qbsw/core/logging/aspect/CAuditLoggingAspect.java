@@ -4,11 +4,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.logging.annotation.CAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
-import sk.qbsw.core.logging.service.IAuditLogService;
 
 /**
  * Aspect for audit logging on methods, log audit action, method name, parameters name and values which come to method

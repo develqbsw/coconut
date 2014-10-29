@@ -11,7 +11,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sk.qbsw.paypal.profile.Profile;
 import sk.qbsw.paypal.request.Request;
@@ -56,10 +56,10 @@ public final class PayPal implements Serializable
 
 		/** live environment. */
 		LIVE (""),
-		
+
 		/** test environment. */
 		SANDBOX ("sandbox."),
-		
+
 		/** beta test environment. */
 		BETA_SANDBOX ("beta-sandbox.");
 
@@ -168,7 +168,7 @@ public final class PayPal implements Serializable
 		}
 		catch (UnsupportedEncodingException ex)
 		{
-			Logger.getLogger(getClass()).error("", ex);
+			LoggerFactory.getLogger(PayPal.class).error("", ex);
 		}
 
 		/* create end point url */
@@ -192,7 +192,7 @@ public final class PayPal implements Serializable
 		}
 		catch (MalformedURLException ex)
 		{
-			Logger.getLogger(getClass()).error("", ex);
+			LoggerFactory.getLogger(PayPal.class).error("", ex);
 		}
 
 		if (response != null)
@@ -217,7 +217,7 @@ public final class PayPal implements Serializable
 			}
 			catch (UnsupportedEncodingException ex)
 			{
-				Logger.getLogger(getClass()).error("Wrong encoding", ex);
+				LoggerFactory.getLogger(PayPal.class).error("Wrong encoding", ex);
 			}
 
 			/* set response */

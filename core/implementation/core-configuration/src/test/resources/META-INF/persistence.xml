@@ -6,7 +6,7 @@
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<!-- configuration -->
-		<!-- <class>sk.qbsw.core.configuration.model.domain.CSystemParameter</class> -->
+		<class>sk.qbsw.core.configuration.model.domain.CSystemParameter</class>
 		
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />

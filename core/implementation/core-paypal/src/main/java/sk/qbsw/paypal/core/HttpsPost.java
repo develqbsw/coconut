@@ -20,7 +20,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class for sending request using http post method and returning response.
@@ -103,7 +103,7 @@ final class HttpsPost implements Transport
 		}
 		catch (Throwable ex)
 		{
-			Logger.getLogger(getClass()).error("Error during call URL:" + url + " MSG:" + msg, ex);
+			LoggerFactory.getLogger(HttpsPost.class).error("Error during call URL:" + url + " MSG:" + msg, ex);
 		}
 
 		/* return response */

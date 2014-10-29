@@ -5,8 +5,6 @@ package sk.qbsw.core.logging.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
-import sk.qbsw.core.base.logging.annotation.CLogged;
-import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.logging.dao.IAuditLogDao;
 import sk.qbsw.core.logging.model.domain.CAuditLog;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;

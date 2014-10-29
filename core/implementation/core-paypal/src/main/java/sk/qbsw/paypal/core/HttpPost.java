@@ -13,7 +13,7 @@ import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class for sending request using http post method and returning response.
@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
  */
 final class HttpPost implements Transport
 {
-	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -74,7 +73,7 @@ final class HttpPost implements Transport
 		}
 		catch (Throwable ex)
 		{
-			Logger.getLogger(getClass()).error("Error during call URL:" + url + " MSG:" + msg, ex);
+			LoggerFactory.getLogger(HttpPost.class).error("Error during call URL:" + url + " MSG:" + msg, ex);
 		}
 
 		/* return response */
@@ -110,10 +109,10 @@ final class HttpPost implements Transport
 
 	/** The use proxy. */
 	private Boolean useProxy = Boolean.FALSE;
-	
+
 	/** The proxy url. */
 	private String proxyURL;
-	
+
 	/** The proxy port. */
 	private Integer proxyPort;
 }

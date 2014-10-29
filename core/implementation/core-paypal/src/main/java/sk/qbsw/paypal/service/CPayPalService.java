@@ -1,6 +1,7 @@
 package sk.qbsw.paypal.service;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ import sk.qbsw.paypal.request.SetExpressCheckout;
 public class CPayPalService extends CService implements IPayPalService
 {
 
-	private static final Logger LOGGER = Logger.getLogger(CPayPalService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CPayPalService.class);
 
 	private CPaypalSettings settings;
 
@@ -131,11 +132,11 @@ public class CPayPalService extends CService implements IPayPalService
 
 		if (response.occuredError())
 		{
-			Logger.getLogger(getClass()).error("payment confirmation :" + doExpressCheckoutPayment);
+			LOGGER.error("payment confirmation :" + doExpressCheckoutPayment);
 		}
 		else
 		{
-			Logger.getLogger(getClass()).info("payment confirmation :" + doExpressCheckoutPayment);
+			LOGGER.info("payment confirmation :" + doExpressCheckoutPayment);
 		}
 
 

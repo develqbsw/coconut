@@ -8,6 +8,7 @@
 		<url>http://www.qbsw.sk</url>
 	</organization>
 	<name>Core api</name>
+
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>core</artifactId>
@@ -15,45 +16,37 @@
 	</parent>
 
 	<dependencies>
-		<!-- QBSW -->
-		<dependency>
-			<groupId>sk.qbsw</groupId>
-			<artifactId>core-base</artifactId>
-		</dependency>
-
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
-
-		<!-- testing -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- JUnit and Mockito -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 		</dependency>
-
-		<!-- log4j and it's dependencies -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<resources>
 			<resource>
