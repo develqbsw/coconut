@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.exception.CInvalidUserException;
 import sk.qbsw.core.security.exception.CSecurityException;
-import sk.qbsw.core.security.exception.CWrongPasswordException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -55,8 +55,8 @@ public class CAuthorizationService extends CService implements IAuthorizationSer
 		}
 
 		if (user == null)
-		{
-			throw new CWrongPasswordException("User with login " + login + " not recognised");
+		{	
+			throw new CInvalidUserException("User with login " + login + " not recognised");
 		}
 		else
 		{

@@ -15,6 +15,7 @@ import sk.qbsw.core.base.service.CService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.exception.CInvalidUserException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.exception.CWrongPasswordException;
@@ -191,8 +192,8 @@ public class CDatabaseAuthenticationService extends CService implements IAuthent
 		}
 
 		if (user == null)
-		{
-			throw new CWrongPasswordException("User not recognised");
+		{	
+			throw new CInvalidUserException("User not recognised");
 		}
 		else
 		{
