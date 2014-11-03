@@ -12,6 +12,10 @@ import sk.qbsw.indy.base.converter.CPriceConverter;
  * Field for price formatting filed.
  * 
  * @author rosenberg
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.10
+ * @since 1.0.0
  *
  * @param <BigDecimal>
  */
@@ -66,7 +70,7 @@ public class CPriceField<BigDecimal> extends TextField<BigDecimal>
 
 	private void reportConversionError ()
 	{
-		error(new ValidationError().addMessageKey("error.value_conversion_error_in_field").setVariable("fieldName", fieldName));
+		error(new ValidationError().addKey("error.value_conversion_error_in_field").setVariable("fieldName", fieldName));
 	}
 
 

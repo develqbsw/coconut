@@ -23,6 +23,10 @@ import org.apache.wicket.validation.validator.RangeValidator;
 
 /** Filed for setting date including timezone
  * @author lacko
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.10
+ * @since 1.0.0
  *
  */
 public class CTimeExtendedField extends FormComponentPanel<Calendar>
@@ -131,7 +135,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				if (value.compareTo(min) < 0 || value.compareTo(max) > 0)
 				{
 					ValidationError error = new ValidationError();
-					error.addMessageKey("error.range_hours_error_in_field");
+					error.addKey("error.range_hours_error_in_field");
 					error.setVariable("fieldName", fieldName);
 					error.setVariable("minimum", min);
 					error.setVariable("maximum", max);
@@ -184,7 +188,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				if (value.compareTo(min) < 0 || value.compareTo(max) > 0)
 				{
 					ValidationError error = new ValidationError();
-					error.addMessageKey("error.range_minutes_error_in_field");
+					error.addKey("error.range_minutes_error_in_field");
 					error.setVariable("fieldName", fieldName);
 					error.setVariable("minimum", min);
 					error.setVariable("maximum", max);
@@ -212,7 +216,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			if (hoursValue == null || "".equals(hoursValue))
 			{
 				ValidationError error = new ValidationError();
-				error.addMessageKey("error.required_hours_field");
+				error.addKey("error.required_hours_field");
 				error.setVariable("fieldName", fieldName);
 				errors.add(error);
 			}
@@ -226,7 +230,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			catch (NumberFormatException e)
 			{
 				ValidationError error = new ValidationError();
-				error.addMessageKey("error.parse_hours_field");
+				error.addKey("error.parse_hours_field");
 				error.setVariable("fieldName", fieldName);
 				errors.add(error);
 			}
@@ -243,7 +247,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			if (minutesValue == null || "".equals(minutesValue))
 			{
 				ValidationError error = new ValidationError();
-				error.addMessageKey("error.required_minutes_field");
+				error.addKey("error.required_minutes_field");
 				error.setVariable("fieldName", fieldName);
 				errors.add(error);
 			}
@@ -257,7 +261,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			catch (NumberFormatException e)
 			{
 				ValidationError error = new ValidationError();
-				error.addMessageKey("error.parse_minutes_field");
+				error.addKey("error.parse_minutes_field");
 				error.setVariable("fieldName", fieldName);
 				errors.add(error);
 			}

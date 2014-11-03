@@ -8,23 +8,18 @@
 		<url>http://www.qbsw.sk</url>
 	</organization>
 	<name>Indy base project</name>
+
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>indy</artifactId>
 		<version>1.11.10-SNAPSHOT</version>
 	</parent>
+
 	<dependencies>
 		<!-- QBSW -->
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>core-security</artifactId>
-		</dependency>
-
-		<!-- testing -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- WICKET DEPENDENCIES -->
@@ -34,39 +29,20 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-spring</artifactId>
+			<artifactId>wicket-util</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-datetime</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-auth-roles</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.wicketstuff</groupId>
-			<artifactId>minis</artifactId>
+			<artifactId>wicket-request</artifactId>
 		</dependency>
 
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
+		<!-- Slf4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
 
+		<!-- javax -->
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-web-api</artifactId>

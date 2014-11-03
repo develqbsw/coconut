@@ -6,14 +6,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.util.convert.IConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Converter for calendar to string
  * 
  * @author Dalibor Rak
- * @version 1.0.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.10
  * @since 1.0.0
  */
 public class CCalendarConverter implements IConverter<Calendar>
@@ -22,6 +25,9 @@ public class CCalendarConverter implements IConverter<Calendar>
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CCalendarConverter.class);
 
 	/**
 	 * Converts String to Calendar
@@ -39,7 +45,7 @@ public class CCalendarConverter implements IConverter<Calendar>
 		}
 		catch (ParseException ex)
 		{
-			Logger.getLogger(CCalendarConverter.class).error("Error parsing calendar text");
+			LOGGER.error("Error parsing calendar text");
 		}
 		return null;
 	}

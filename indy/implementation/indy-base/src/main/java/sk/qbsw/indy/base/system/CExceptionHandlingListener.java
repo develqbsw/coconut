@@ -1,13 +1,16 @@
 package sk.qbsw.indy.base.system;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CExceptionHandlingListener implements IRequestCycleListener
 {
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CExceptionHandlingListener.class);
 
 	@Override
 	public void onUrlMapped (RequestCycle arg0, IRequestHandler arg1, Url arg2)
@@ -36,13 +39,13 @@ public class CExceptionHandlingListener implements IRequestCycleListener
 	@Override
 	public void onExceptionRequestHandlerResolved (RequestCycle arg0, IRequestHandler arg1, Exception e)
 	{
-		Logger.getLogger(CExceptionHandlingListener.class).error("Handled by CExceptionHandlingListener", e);
+		LOGGER.error("Handled by CExceptionHandlingListener", e);
 	}
 
 	@Override
 	public IRequestHandler onException (RequestCycle arg0, Exception e)
 	{
-		Logger.getLogger(CExceptionHandlingListener.class).error("Handled by CExceptionHandlingListener", e);
+		LOGGER.error("Handled by CExceptionHandlingListener", e);
 		return null;
 	}
 

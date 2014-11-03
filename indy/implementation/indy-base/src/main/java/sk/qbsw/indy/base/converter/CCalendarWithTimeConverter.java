@@ -6,17 +6,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.helpers.AbsoluteTimeDateFormat;
 import org.apache.wicket.Session;
 import org.apache.wicket.util.convert.IConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Converter for calendar to string - with time also
  * 
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.10
+ * @since 1.0.0
  */
 public class CCalendarWithTimeConverter implements IConverter<Calendar>
 {
@@ -24,6 +26,9 @@ public class CCalendarWithTimeConverter implements IConverter<Calendar>
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CCalendarWithTimeConverter.class);
 
 	/**
 	 * Converts String to Calendar
@@ -33,7 +38,7 @@ public class CCalendarWithTimeConverter implements IConverter<Calendar>
 	{
 		try
 		{
-			DateFormat formatter = AbsoluteTimeDateFormat.getDateTimeInstance(AbsoluteTimeDateFormat.SHORT, AbsoluteTimeDateFormat.SHORT, locale);
+			DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale);
 			Date date = formatter.parse(value);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
@@ -41,7 +46,7 @@ public class CCalendarWithTimeConverter implements IConverter<Calendar>
 		}
 		catch (ParseException ex)
 		{
-			Logger.getLogger(CCalendarWithTimeConverter.class).error("Error parsing calendar_with_time text");
+			LOGGER.error("Error parsing calendar_with_time text");
 		}
 		return null;
 	}
@@ -52,7 +57,7 @@ public class CCalendarWithTimeConverter implements IConverter<Calendar>
 	@Override
 	public String convertToString (Calendar value, Locale locale)
 	{
-		DateFormat formatter = AbsoluteTimeDateFormat.getDateTimeInstance(AbsoluteTimeDateFormat.SHORT, AbsoluteTimeDateFormat.SHORT, Session.get().getLocale());
+		DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Session.get().getLocale());
 		return formatter.format( ((Calendar) value).getTime());
 	}
 }
