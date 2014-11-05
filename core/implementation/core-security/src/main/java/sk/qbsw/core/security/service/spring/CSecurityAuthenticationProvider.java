@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthenticationToken;
@@ -31,7 +31,7 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * 
  */
 @Component ("customAuthenticationProvider")
-public class CSecurityAuthenticationProvider extends CService implements AuthenticationProvider
+public class CSecurityAuthenticationProvider extends AService implements AuthenticationProvider
 {
 
 	/** The authentication service. */

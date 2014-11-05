@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.paypal.core.NVPResponse;
 import sk.qbsw.paypal.core.PayPal;
 import sk.qbsw.paypal.fields.Currency;
@@ -28,7 +28,7 @@ import sk.qbsw.paypal.request.SetExpressCheckout;
  * @version 1.0.0
  */
 @Service ("CPayPalService")
-public class CPayPalService extends CService implements IPayPalService
+public class CPayPalService extends AService implements IPayPalService
 {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CPayPalService.class);

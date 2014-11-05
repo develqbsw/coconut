@@ -8,7 +8,7 @@ import sk.qbsw.core.base.logging.annotation.CAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 
 /**
@@ -22,7 +22,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * 
  */
 @Service
-public class CPasswordDigester extends CService implements IPasswordDigester
+public class CPasswordDigester extends AService implements IPasswordDigester
 {
 	/** The authentication configuration. */
 	@Autowired

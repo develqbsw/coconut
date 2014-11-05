@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.reporting.transform.exception.CNotSupportedAmountException;
 import sk.qbsw.core.reporting.transform.model.CTransformedAmount;
 
@@ -21,7 +21,7 @@ import sk.qbsw.core.reporting.transform.model.CTransformedAmount;
 */
 @Qualifier ("transformingStrategy")
 @Component ("sk")
-public class CSkAmountTransformer extends CService implements IAmountTransformer
+public class CSkAmountTransformer extends AService implements IAmountTransformer
 {
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.reporting.transform.service.IAmountTransformer#transformToStringLongFormat(java.math.BigDecimal)

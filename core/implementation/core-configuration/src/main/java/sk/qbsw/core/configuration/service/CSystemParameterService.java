@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.configuration.dao.ISystemParameterDao;
 import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 
@@ -20,7 +20,7 @@ import sk.qbsw.core.configuration.model.domain.CSystemParameter;
  * @since 1.8.0
  */
 @Service
-public class CSystemParameterService extends CService implements ISystemParameterService
+public class CSystemParameterService extends AService implements ISystemParameterService
 {
 	@Autowired
 	private ISystemParameterDao systemParameterDao; 

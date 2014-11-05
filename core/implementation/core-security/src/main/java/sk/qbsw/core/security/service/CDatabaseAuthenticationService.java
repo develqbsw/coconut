@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -36,7 +36,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
-public class CDatabaseAuthenticationService extends CService implements IAuthenticationService
+public class CDatabaseAuthenticationService extends AService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

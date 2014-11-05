@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 
@@ -21,7 +21,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * @since 1.7.2
  */
 @Service (value = "authDataValidationService")
-class CAuthDataValidationService extends CService implements IAuthDataValidationService
+class CAuthDataValidationService extends AService implements IAuthDataValidationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

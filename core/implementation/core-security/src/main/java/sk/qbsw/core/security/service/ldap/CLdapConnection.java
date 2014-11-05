@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 
 /**
  * The ldap connection.
@@ -27,7 +27,7 @@ import sk.qbsw.core.base.service.CService;
  */
 @Component ("ldapConnection")
 @Scope (value = "prototype")
-class CLdapConnection extends CService implements ILdapConnection
+class CLdapConnection extends AService implements ILdapConnection
 {
 	/** The ldap connection. */
 	private LdapConnection connection;

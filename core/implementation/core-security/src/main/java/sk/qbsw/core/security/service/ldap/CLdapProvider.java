@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
 /**
@@ -38,7 +38,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  * @since 1.6.0
  */
 @Component ("ldapProvider")
-public class CLdapProvider extends CService implements ILdapProvider
+public class CLdapProvider extends AService implements ILdapProvider
 {
 	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapProvider.class);

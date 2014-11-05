@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CLicense;
@@ -36,7 +36,7 @@ import sk.qbsw.core.security.model.session.CLoggedUser;
  * @since 1.0
  */
 @Service (value = "userAuthenticationService")
-public class CUserSpringAuthenticationService extends CService implements UserDetailsService
+public class CUserSpringAuthenticationService extends AService implements UserDetailsService
 {
 	/** The role dao. */
 	@Autowired

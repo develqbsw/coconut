@@ -14,8 +14,10 @@ import java.lang.annotation.Target;
  * 
  * @author Michal Lacko
  * @author Marián Oravec
+ * 
+ * @version 1.11.6
  * @since 1.8.0
- * @version 1.8.0
+ * 
  */
 @Target (value = {ElementType.TYPE, ElementType.METHOD})
 @Retention (value = RetentionPolicy.RUNTIME)

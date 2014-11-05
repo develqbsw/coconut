@@ -7,7 +7,7 @@ import sk.qbsw.core.base.logging.annotation.CAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 
 /**
  * The Class CLdapAuthenticationConfigurator.
@@ -20,7 +20,7 @@ import sk.qbsw.core.base.service.CService;
  */
 @Service ("ldapAuthenticationConfigurator")
 @ManagedResource (objectName = "sk.qbsw.core.security:name=ldapAuthenticationConfigurator", description = "LDAP authentication details")
-public class CLdapAuthenticationConfigurator extends CService implements ILdapAuthenticationConfigurator
+public class CLdapAuthenticationConfigurator extends AService implements ILdapAuthenticationConfigurator
 {
 	/** The ldap server name. */
 	private String serverName;

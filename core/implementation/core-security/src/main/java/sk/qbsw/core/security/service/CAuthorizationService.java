@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidUserException;
@@ -23,7 +23,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.6.0
  */
 @Service (value = "authorizationService")
-public class CAuthorizationService extends CService implements IAuthorizationService
+public class CAuthorizationService extends AService implements IAuthorizationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.10.5
  */
 @Service (value = "mixedAuthenticationService")
-public class CMixedAuthenticationService extends CService implements IAuthenticationService
+public class CMixedAuthenticationService extends AService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

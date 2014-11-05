@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.ILicenseDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
@@ -33,7 +33,7 @@ import sk.qbsw.core.security.model.jmx.CLicensingRules;
  * @since 1.0.0
  */
 @Service (value = "securityService")
-public class CSecurityServiceImpl extends CService implements ISecurityService
+public class CSecurityServiceImpl extends AService implements ISecurityService
 {
 	/**
 	 * 

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.core.security.dao.IAddressDao;
@@ -43,7 +43,7 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @since 1.0.0
  */
 @Service ("cUserService")
-public class CUserService extends CService implements IUserService
+public class CUserService extends AService implements IUserService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

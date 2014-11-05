@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import sk.qbsw.core.base.service.CService;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.communication.mail.dao.IMailDao;
 import sk.qbsw.core.communication.mail.model.CAttachmentDefinition;
 import sk.qbsw.core.communication.mail.model.domain.CAttachment;
@@ -24,7 +24,7 @@ import sk.qbsw.core.communication.mail.model.domain.CRecipient;
  * @version 1.9.1
  * @since 1.9.0
  */
-public abstract class AMailService extends CService
+public abstract class AMailService extends AService
 {
 	/** The mail sender. */
 	@Autowired
