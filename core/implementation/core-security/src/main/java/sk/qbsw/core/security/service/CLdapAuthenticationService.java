@@ -35,15 +35,15 @@ import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
-import sk.qbsw.core.security.service.ldap.CLdapProvider;
 import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
+import sk.qbsw.core.security.service.ldap.ILdapProvider;
 
 /**
  * The LDAP authentication service.
  * 
  * @author Tomas Lauro
  * 
- * @version 1.11.8
+ * @version 1.11.10
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
@@ -77,7 +77,7 @@ public class CLdapAuthenticationService extends CService implements IAuthenticat
 
 	/** The ldap provider. */
 	@Autowired
-	private CLdapProvider ldapProvider;
+	private ILdapProvider ldapProvider;
 
 	/** The authentication data validation service. */
 	@Autowired

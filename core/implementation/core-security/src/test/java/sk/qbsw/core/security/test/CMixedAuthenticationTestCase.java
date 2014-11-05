@@ -22,7 +22,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.IUserService;
-import sk.qbsw.core.security.service.ldap.CLdapProvider;
+import sk.qbsw.core.security.service.ldap.ILdapProvider;
 import sk.qbsw.core.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.core.security.test.util.CDataGenerator;
 import sk.qbsw.core.testing.mock.IMockHelper;
@@ -31,7 +31,7 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  * Checks Authentication service for mixed auth.
  *
  * @autor Tomas Lauro
- * @version 1.10.5
+ * @version 1.11.10
  * @since 1.10.5
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -80,7 +80,7 @@ public class CMixedAuthenticationTestCase
 	/** The ldap provider. */
 	@Autowired
 	@Qualifier ("ldapProviderMock")
-	private CLdapProvider ldapProvider;
+	private ILdapProvider ldapProvider;
 
 	/**
 	 * Inits the test case.

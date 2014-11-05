@@ -22,12 +22,12 @@ import sk.qbsw.core.base.service.CService;
  * The ldap connection.
  *
  * @author Tomas Lauro
- * @version 1.11.8
+ * @version 1.11.10
  * @since 1.10.6
  */
 @Component ("ldapConnection")
 @Scope (value = "prototype")
-class CLdapConnection extends CService
+class CLdapConnection extends CService implements ILdapConnection
 {
 	/** The ldap connection. */
 	private LdapConnection connection;
@@ -38,24 +38,20 @@ class CLdapConnection extends CService
 	/** The count. */
 	private static int COUNT = 0;
 
-	/**
-	 * Initialize LDAP connection - must be called before using connection.
-	 *
-	 * @param ldapServerName the ldap server name
-	 * @param ldapServerPort the ldap server port
-	 * @return the ldap connection
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#init(java.lang.String, int, boolean)
 	 */
+	@Override
 	public void init (String ldapServerName, int ldapServerPort, boolean useSsl)
 	{
 		connection = new LdapNetworkConnection(ldapServerName, ldapServerPort, useSsl);
 		LOGGER.debug("Initialized new LDAP connection " + ++COUNT);
 	}
 
-	/**
-	 * Close connection.
-	 *
-	 * @param ldapConnection the ldap connection
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#closeConnection()
 	 */
+	@Override
 	public void closeConnection ()
 	{
 		LOGGER.debug("Released LDAP connection " + --COUNT);
@@ -73,13 +69,10 @@ class CLdapConnection extends CService
 		}
 	}
 
-	/**
-	 * Bind on a ldap server.
-	 *
-	 * @param ldapUserDn the DN of an user account
-	 * @param ldapUserPassword the user account password
-	 * @throws LdapException cannot bind to server or the connection no created
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#bindOnServer(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void bindOnServer (String ldapUserDn, @CNotLogged @CNotAuditLogged String ldapUserPassword) throws LdapException
 	{
 		if (connection != null)
@@ -92,10 +85,10 @@ class CLdapConnection extends CService
 		}
 	}
 
-	/**
-	 * Unbind from server.
-	 *
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#unbindFromServer()
 	 */
+	@Override
 	public void unbindFromServer ()
 	{
 		if (connection != null)
@@ -111,11 +104,10 @@ class CLdapConnection extends CService
 		}
 	}
 
-	/**
-	 * Checks if the connection is initialized - the initialized does not mean that the connection is connected!!!
-	 *
-	 * @return true, if is initialized
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#isInitialized()
 	 */
+	@Override
 	public boolean isInitialized ()
 	{
 		if (connection != null)
@@ -128,11 +120,10 @@ class CLdapConnection extends CService
 		}
 	}
 
-	/**
-	 * Checks if is connected - see {@link org.apache.directory.ldap.client.api.LdapConnection#isConnected()}.
-	 *
-	 * @return true, if is connected
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#isConnected()
 	 */
+	@Override
 	public boolean isConnected ()
 	{
 		if (connection != null && connection.isConnected() == true)
@@ -145,64 +136,46 @@ class CLdapConnection extends CService
 		}
 	}
 
-	/**
-	 * Search in LDAP - see {@link org.apache.directory.ldap.client.api.LdapConnection#search(String, String, SearchScope, String...)}.
-	 *
-	 * @param baseDn the base dn
-	 * @param filter the filter
-	 * @param scope the scope
-	 * @param attributes the attributes
-	 * @return the entry cursor
-	 * @throws LdapException the ldap exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#search(java.lang.String, java.lang.String, org.apache.directory.api.ldap.model.message.SearchScope, java.lang.String)
 	 */
+	@Override
 	public EntryCursor search (String baseDn, String filter, SearchScope scope, String... attributes) throws LdapException
 	{
 		return connection.search(baseDn, filter, scope, attributes);
 	}
 
-	/**
-	 * Modify the ldap record - see {@link org.apache.directory.ldap.client.api.LdapConnection#modify(String, Modification...)}.
-	 *
-	 * @param dn the dn
-	 * @param modifications the modifications
-	 * @throws LdapException the ldap exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#modify(java.lang.String, org.apache.directory.api.ldap.model.entry.Modification)
 	 */
+	@Override
 	public void modify (String dn, Modification... modifications) throws LdapException
 	{
 		connection.modify(dn, modifications);
 	}
 
-	/**
-	 * Adds the record - see {@link org.apache.directory.ldap.client.api.LdapConnection#add(Entry)}.
-	 *
-	 * @param entry the entry
-	 * @throws LdapException the ldap exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#add(org.apache.directory.api.ldap.model.entry.Entry)
 	 */
+	@Override
 	public void add (Entry entry) throws LdapException
 	{
 		connection.add(entry);
 	}
 
-	/**
-	 * Rename the record - see {@link org.apache.directory.ldap.client.api.LdapConnection#rename(String, String, boolean)}.
-	 *
-	 * @param entryDn the entry dn
-	 * @param newRdn the new rdn
-	 * @param deleteOldRdn the delete old rdn
-	 * @throws LdapException the ldap exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#rename(java.lang.String, java.lang.String, boolean)
 	 */
+	@Override
 	public void rename (String entryDn, String newRdn, boolean deleteOldRdn) throws LdapException
 	{
 		connection.rename(entryDn, newRdn, deleteOldRdn);
 	}
 
-	/**
-	 * Checks if the record exists - see {@link org.apache.directory.ldap.client.api.LdapConnection#exists(String)}.
-	 *
-	 * @param dn the dn
-	 * @return true, if successful
-	 * @throws LdapException the ldap exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#exists(java.lang.String)
 	 */
+	@Override
 	public boolean exists (String dn) throws LdapException
 	{
 		return connection.exists(dn);

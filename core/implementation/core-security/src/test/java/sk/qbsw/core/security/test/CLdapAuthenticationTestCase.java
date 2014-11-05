@@ -21,7 +21,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.IUserService;
-import sk.qbsw.core.security.service.ldap.CLdapProvider;
+import sk.qbsw.core.security.service.ldap.ILdapProvider;
 import sk.qbsw.core.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.core.security.test.util.CDataGenerator;
 import sk.qbsw.core.testing.mock.IMockHelper;
@@ -31,7 +31,7 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  *
  * @autor Tomas Lauro
  * 
- * @version 1.11.2
+ * @version 1.11.10
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -55,7 +55,7 @@ public class CLdapAuthenticationTestCase
 	/** The ldap provider. */
 	@Autowired
 	@Qualifier ("ldapProviderMock")
-	private CLdapProvider ldapProvider;
+	private ILdapProvider ldapProvider;
 
 	/** The ldap configurator. */
 	@Autowired
