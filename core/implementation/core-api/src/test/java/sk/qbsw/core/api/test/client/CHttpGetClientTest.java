@@ -1,7 +1,6 @@
 package sk.qbsw.core.api.test.client;
 
 import org.apache.http.HttpHost;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sk.qbsw.core.api.client.CApiClient;
@@ -35,7 +34,6 @@ public class CHttpGetClientTest
 	/**
 	 * Tests connection with proxy settings
 	 */
-	@Ignore
 	@Test
 	public void testWithProxy () throws Exception
 	{

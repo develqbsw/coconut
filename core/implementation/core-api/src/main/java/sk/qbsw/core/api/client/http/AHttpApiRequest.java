@@ -6,8 +6,11 @@ package sk.qbsw.core.api.client.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -24,7 +27,9 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * 
  * @author Dalibor Rak
  * @author Michal Lacko
- * @version 1.10.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.10
  * @since 1.3.0
  */
 public abstract class AHttpApiRequest implements IHttpApiRequest
@@ -162,13 +167,14 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	protected String getEntityContent (HttpResponse response) throws IOException
 	{
 		StringBuffer output = new StringBuffer();
-		InputStreamReader inputReader = null;
+		Reader inputReader = null;
 		try
 		{
-			inputReader = new InputStreamReader(response.getEntity().getContent());
+			//create readers
+			inputReader = createInputStreamReader(response.getEntity());
 			BufferedReader br = new BufferedReader(inputReader);
 
-			// reads output
+			//reads output
 			try
 			{
 				String line;
@@ -201,6 +207,31 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 
 		}
 		return output.toString();
+	}
+
+	/**
+	 * Creates the input stream reader.
+	 *
+	 * @param httpEntity the http entity
+	 * @return the reader
+	 * @throws IllegalStateException the illegal state exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	private Reader createInputStreamReader (HttpEntity httpEntity) throws IllegalStateException, IOException
+	{
+		//get charset from response
+		ContentType contentType = ContentType.get(httpEntity);
+		Charset charset = (contentType != null) ? contentType.getCharset() : null;
+
+		//create input stream with of without charset
+		if (charset != null)
+		{
+			return new InputStreamReader(httpEntity.getContent(), charset);
+		}
+		else
+		{
+			return new InputStreamReader(httpEntity.getContent());
+		}
 	}
 
 	/**
