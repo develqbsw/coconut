@@ -36,7 +36,7 @@ public class CAuditLog implements Serializable, IEntity<Long>
 
 	/** The id. */
 	@Id
-	@SequenceGenerator (name = "t_audit_log_pkid_generator", sequenceName = "sec.t_audit_log_pk_id_seq")
+	@SequenceGenerator (name = "t_audit_log_pkid_generator", sequenceName = "log.t_audit_log_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_audit_log_pkid_generator")
 	@Column (name = "pk_id")
 	private Long id;

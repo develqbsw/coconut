@@ -28,7 +28,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 
 	/** The id. */
 	@Id
-	@SequenceGenerator (name = "t_installation_log_pkid_generator", sequenceName = "sec.t_installation_log_pk_id_seq")
+	@SequenceGenerator (name = "t_installation_log_pkid_generator", sequenceName = "log.t_installation_log_pk_id_seq")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_installation_log_pkid_generator")
 	@Column (name = "pk_id")
 	private Long id;
