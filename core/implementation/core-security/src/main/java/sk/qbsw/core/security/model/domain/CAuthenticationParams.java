@@ -5,6 +5,8 @@ package sk.qbsw.core.security.model.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +22,8 @@ import com.google.gson.annotations.Expose;
  * The authentication parameters for user.
  * 
  * @author Tomas Lauro
- * @version 1.7.2
+ * 
+ * @version 1.12.0
  * @since 1.6.0
  */
 @Entity
@@ -51,6 +54,11 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	@OneToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_user", nullable = false)
 	private CUser user;
+
+	/** The password type. */
+	@Column (name = "c_password_type")
+	@Enumerated (EnumType.STRING)
+	private EPasswordType passwordType = EPasswordType.DURABLE;
 
 	/**
 	 * Instantiates a authentication params.
@@ -161,5 +169,25 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	public void setUser (CUser user)
 	{
 		this.user = user;
+	}
+
+	/**
+	 * Gets the password type.
+	 *
+	 * @return the password type
+	 */
+	public EPasswordType getPasswordType ()
+	{
+		return passwordType;
+	}
+
+	/**
+	 * Sets the password type.
+	 *
+	 * @param passwordType the new password type
+	 */
+	public void setPasswordType (EPasswordType passwordType)
+	{
+		this.passwordType = passwordType;
 	}
 }
