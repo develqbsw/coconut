@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
@@ -39,7 +40,7 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.11.8
+ * @version 1.12.0
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -400,7 +401,7 @@ public class CUserService extends AService implements IUserService
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException
+	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException, CBusinessException
 	{
 		//validates input objects
 		if ( (user == null || user.getId() == null || group == null || group.getId() == null) || (unit != null && unit.getId() == null))
@@ -428,7 +429,7 @@ public class CUserService extends AService implements IUserService
 
 		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
 		{
-			if (persistedGroup.equals(userUnitGroup))
+			if (persistedGroup.equals(userUnitGroup.getGroup()))
 			{
 				//if is group already added
 				isGroupAlreadyAdded = Boolean.TRUE;
@@ -455,6 +456,10 @@ public class CUserService extends AService implements IUserService
 			userUnitGroupRecord.setUnit(persistedUnit);
 			crossUserUnitGroupDao.save(userUnitGroupRecord);
 		}
+		else
+		{
+			throw new CBusinessException("The group " + persistedGroup.getCode() + " cannot be set to user: it's excluded or already has been set to user.");
+		}
 	}
 
 	/* (non-Javadoc)
@@ -462,7 +467,7 @@ public class CUserService extends AService implements IUserService
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException
+	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException, CBusinessException
 	{
 		setUserToGroup(user, group, null);
 	}

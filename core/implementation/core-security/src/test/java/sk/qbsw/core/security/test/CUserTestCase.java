@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -35,7 +36,8 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks user service.
  *
  * @autor Tomas Lauro
- * @version 1.11.7
+ * 
+ * @version 1.12.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -375,7 +377,7 @@ public class CUserTestCase
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testSetGroupWithUnit () throws CSecurityException
+	public void testSetGroupWithUnit () throws CSecurityException, CBusinessException
 	{
 		initTest();
 
@@ -384,7 +386,7 @@ public class CUserTestCase
 		CGroup testGroup = groupDao.findByCode(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE).get(0);
 		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
-		//unset group
+		//set group
 		userService.setUserToGroup(testUser, testGroup, testUnit);
 
 		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findAll(testUser, testUnit, testGroup);
@@ -392,6 +394,27 @@ public class CUserTestCase
 		//asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
 		Assert.assertTrue("Test unset group failed: the number of user groups is not 1", result.size() == 1);
+	}
+
+	/**
+	 * Test set group with unit - group is already set to user.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test (expected = CBusinessException.class)
+	@Transactional
+	@Rollback (true)
+	public void testSetGroupWithUnitAlreadySet () throws CSecurityException, CBusinessException
+	{
+		initTest();
+
+		//test data
+		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CGroup testGroup = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
+		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+
+		//set group
+		userService.setUserToGroup(testUser, testGroup, testUnit);
 	}
 
 	/**
