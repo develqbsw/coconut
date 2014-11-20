@@ -6,10 +6,12 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import sk.qbsw.core.persistence.test.dao.mock.CTestDao;
 import sk.qbsw.core.persistence.test.dao.mock.CTestEntity;
 import sk.qbsw.core.persistence.test.dao.mock.ITestDao;
+import sk.qbsw.core.testing.IFastTestClass;
 
 /**
  * Test for DAO generics
@@ -25,6 +27,7 @@ public class CDaoTestCase
 	 * Test for Long generics red from id.
 	 */
 	@Test
+	@Category({ IFastTestClass.class })
 	public void testLong()
 	{
 		ITestDao dao = new CTestDao();
