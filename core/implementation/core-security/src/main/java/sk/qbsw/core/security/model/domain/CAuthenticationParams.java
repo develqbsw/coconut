@@ -56,7 +56,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	private CUser user;
 
 	/** The password type. */
-	@Column (name = "c_password_type")
+	@Column (name = "c_password_type", nullable = false)
 	@Enumerated (EnumType.STRING)
 	private EPasswordType passwordType = EPasswordType.DURABLE;
 
