@@ -1,7 +1,10 @@
 package sk.qbsw.core.persistence.test.dao;
 
 import javax.persistence.EntityManager;
+
 import static org.mockito.Mockito.*;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import sk.qbsw.core.persistence.test.dao.mock.CTestDao;
@@ -19,10 +22,10 @@ public class CDaoTestCase
 {
 
 	/**
-	 * Test for Long generics.
+	 * Test for Long generics red from id.
 	 */
 	@Test
-	public void testLong ()
+	public void testLong()
 	{
 		ITestDao dao = new CTestDao();
 		EntityManager manager = mock(EntityManager.class);
@@ -30,6 +33,6 @@ public class CDaoTestCase
 		((CTestDao) dao).setEntityManager(manager);
 
 		CTestEntity entity = dao.findById(1l);
-		System.out.println(entity.getId());
+		Assert.assertEquals(entity.getId().longValue(), 1l);
 	}
 }
