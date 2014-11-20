@@ -3,6 +3,7 @@ package sk.qbsw.core.security.service;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -17,7 +18,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.11.7
+ * @version 1.12.0
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -234,8 +235,9 @@ public interface IUserService extends Serializable
 	 * @param group the group (mandatory)
 	 * @param unit the unit (optional)
 	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
+	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
 	 */
-	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException;
+	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException, CBusinessException;
 
 	/**
 	 * Set user to group.
@@ -243,6 +245,7 @@ public interface IUserService extends Serializable
 	 * @param user the user (mandatory)
 	 * @param group the group (mandatory)
 	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
+	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
 	 */
-	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException;
+	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException, CBusinessException;
 }
