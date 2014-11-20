@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>winnetou</artifactId>
-		<version>1.12.0</version>
+		<version>1.12.0-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
