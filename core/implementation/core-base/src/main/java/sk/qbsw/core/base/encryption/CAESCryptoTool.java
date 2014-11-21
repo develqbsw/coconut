@@ -19,7 +19,6 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 
-// TODO: Auto-generated Javadoc
 /**
  * Tool for encryption and decryption using AES algorithm.
  *

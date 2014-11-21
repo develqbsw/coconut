@@ -21,7 +21,7 @@ import sk.qbsw.core.configuration.service.ISystemParameterService;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.11.10
+ * @version 1.12.0
  * @since 1.11.10
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -34,6 +34,9 @@ public class CSystemParameterTestCase
 
 	/** The test system parameter value. */
 	private final String TEST_SYSTEM_PARAMETER_VALUE = "unit_test_parameter_value_1";
+
+	/** The test system parameter encrypted value. */
+	private final String TEST_SYSTEM_PARAMETER_ENCRYPTED_VALUE = "unit_test_parameter_encrypted_value_1";
 
 	/** The test system parameter module. */
 	private final String TEST_SYSTEM_PARAMETER_MODULE = "unit_test_parameter_module_1";
@@ -64,6 +67,24 @@ public class CSystemParameterTestCase
 	}
 
 	/**
+	 * Get encrypted system parameter.
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetEncryptedParameter ()
+	{
+		//create test data
+		createTestParameters();
+
+		CSystemParameter systemParameter = systemParameterService.findByName(TEST_SYSTEM_PARAMETER_NAME);
+
+		//checks asserts
+		Assert.assertNotNull("The system parameter not found", systemParameter);
+		Assert.assertEquals("The system parameter encrypted value does not equals", systemParameter.getEncryptedValue(), TEST_SYSTEM_PARAMETER_ENCRYPTED_VALUE);
+	}
+
+	/**
 	 * Creates the test data.
 	 */
 	private void createTestParameters ()
@@ -72,9 +93,11 @@ public class CSystemParameterTestCase
 		systemParameter.setName(TEST_SYSTEM_PARAMETER_NAME);
 		systemParameter.setModule(TEST_SYSTEM_PARAMETER_MODULE);
 		systemParameter.setStringValue(TEST_SYSTEM_PARAMETER_VALUE);
+		systemParameter.setEncryptedValue(TEST_SYSTEM_PARAMETER_ENCRYPTED_VALUE);
 		systemParameter.setValidFromDate(DateTime.now());
 		systemParameter.setValidToDate(DateTime.now().plusDays(10));
 
 		systemParameterDao.save(systemParameter);
+		systemParameterDao.flush();
 	}
 }

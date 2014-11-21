@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.persistence.converter.CEncryptionConverter;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
@@ -22,7 +24,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.8.0
+ * @version 1.12.0
  * @since 1.8.0
  */
 @Entity
@@ -77,6 +79,13 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 */
 	@Column (name = "c_float_value")
 	private BigDecimal floatValue;
+
+	/**
+	 * The encrypted value of parameter.
+	 */
+	@Column (name = "c_encrypted_value")
+	@Convert (converter = CEncryptionConverter.class)
+	private String encryptedValue;
 
 	/**
 	 * Valid until.
@@ -291,6 +300,26 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	public void setFloatValue (BigDecimal floatValue)
 	{
 		this.floatValue = floatValue;
+	}
+
+	/**
+	 * Gets the encrypted value.
+	 *
+	 * @return the encrypted value
+	 */
+	public String getEncryptedValue ()
+	{
+		return encryptedValue;
+	}
+
+	/**
+	 * Sets the encrypted value.
+	 *
+	 * @param encryptedValue the new encrypted value
+	 */
+	public void setEncryptedValue (String encryptedValue)
+	{
+		this.encryptedValue = encryptedValue;
 	}
 
 	/**
