@@ -41,6 +41,10 @@ public class CEncryptionConverter implements AttributeConverter<String, String> 
 	 */
 	@Override
 	public String convertToDatabaseColumn(String attribute) {
+		if (attribute == null || attribute.length() == 0){
+			return attribute;
+		}
+
 		try {
 			return Base64.encodeBase64String(encryptor.encrypt(attribute.getBytes("UTF-8")));
 		} catch (UnsupportedEncodingException e) {
@@ -53,6 +57,10 @@ public class CEncryptionConverter implements AttributeConverter<String, String> 
 	 */
 	@Override
 	public String convertToEntityAttribute(String dbData) {
+		if (dbData == null || dbData.length() == 0){
+			return dbData;
+		}
+
 		try {
 			byte[] cipher = Base64.decodeBase64(dbData);
 			return new String(decryptor.decrypt(cipher), "UTF-8");

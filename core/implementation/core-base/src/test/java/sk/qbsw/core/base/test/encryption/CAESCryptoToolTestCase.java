@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidParameterException;
 
 import org.junit.Test;
 
@@ -66,6 +67,41 @@ public class CAESCryptoToolTestCase {
 		String decrypted = new String(tool.decrypt(cipher));
 		assertTrue("Plain and decrypted value doesn't match!", decrypted.equals(plain));
 
+	}
+
+	/**
+	 * Tests wrong input for encryption
+	 *
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 */
+	@Test(expected = InvalidParameterException.class)
+	public void testWrongInput() {
+		byte[] key = "0123456789abcdef".getBytes();
+		String plain = "";
+
+		CAESCryptoTool tool = new CAESCryptoTool();
+		tool.init(key.clone());
+		byte[] cipher = tool.encrypt(plain.getBytes());
+
+		CAESCryptoTool tool2 = new CAESCryptoTool();
+		tool2.init(key.clone());
+		String decrypted = new String(tool.decrypt(cipher));
+		assertTrue("Plain and decrypted value doesn't match!", decrypted.equals(plain));
+
+	}
+
+	/**
+	 * Tests null input for encryption
+	 *
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 */
+	@Test(expected = InvalidParameterException.class)
+	public void testNullInput() {
+		byte[] key = "0123456789abcdef".getBytes();
+
+		CAESCryptoTool tool = new CAESCryptoTool();
+		tool.init(key.clone());
+		tool.encrypt(null);
 	}
 
 }

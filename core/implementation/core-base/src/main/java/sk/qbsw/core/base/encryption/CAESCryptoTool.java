@@ -79,6 +79,9 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 * @see sk.qbsw.core.base.encryption.IDecryptor#decrypt(java.lang.Object)
 	 */
 	public byte[] decrypt(byte[] cipherData) {
+		if (cipherData == null || cipherData.length == 0)
+			throw new InvalidParameterException("CipherData cannot be null");
+		
 		try {
 			Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
 			return cipher.doFinal(cipherData);
@@ -91,6 +94,9 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 * @see sk.qbsw.core.base.encryption.IEncryptor#encrypt(java.lang.Object)
 	 */
 	public byte[] encrypt(byte[] plain) {
+		if (plain == null || plain.length == 0)
+			throw new InvalidParameterException("Plain cannot be null");
+
 		try {
 			Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
 			byte[] cipherArray = cipher.doFinal(plain);
