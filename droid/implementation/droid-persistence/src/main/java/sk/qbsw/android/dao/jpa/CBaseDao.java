@@ -78,5 +78,4 @@ public class CBaseDao<T, D> extends BaseDaoImpl<T, D> implements IBaseDao<T, D>
 		Format dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.getDefault());
 		return dateFormatter.format(date);
 	}
-
 }

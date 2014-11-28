@@ -6,15 +6,19 @@ import java.io.IOException;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings.Secure;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 /**
  * Class to get information about device like device id imei code etc.
+ * 
  * @author Michal Lacko
+ * @author Ludovit Farkas
+ * 
  * @since 0.1.0
- * @version 0.2.0
+ * @version 1.12.0
  */
 public class CDevice
 {
@@ -25,10 +29,21 @@ public class CDevice
 	 * 	<b>this can be null sometimes</b> 
 	 * 	see: http://stackoverflow.com/questions/2785485/is-there-a-unique-android-device-id
 	 */
+	@Deprecated
 	public static String getAndroidId (Context context)
 	{
 		String androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 		return androidId;
+	}
+	
+	/**
+	 * Get the id of the device. The newest way.
+	 * 
+	 * @return the device id
+	 */
+	public static String getDeviceId (Context context)
+	{
+		return android.provider.Settings.System.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
 	}
 	
 	/**
@@ -48,6 +63,7 @@ public class CDevice
 	 * these means that process newer ENDS !!!
 	 * @throws IOException when file doesn't exists or error in the logcat execution
 	 */
+	@Deprecated
 	public static Process logToFileNoEnd(File fileToSaveLogs) throws IOException
 	{
 		    String cmd = "logcat -v time -r 4096 -s -f "+fileToSaveLogs.getAbsolutePath()+" mObhliadka ACRA ActivityManager nukona-wrap nukona-ccapi AndroidRuntime SQLiteDatabase";
@@ -114,6 +130,7 @@ public class CDevice
 	 * @param context application context
 	 * @return true if are google play service installed false otherwise
 	 */
+	@Deprecated
 	public static boolean isGoogleMapsInstalled(Context context)
 	{
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
@@ -123,6 +140,24 @@ public class CDevice
 			return Boolean.FALSE;
 		}
 	}
-
 	
+
+	/** 
+	 * Check if the Play Services are available to the app and show an error dialog, if not.
+	 * 
+	 * @param context - parent activity for creating the dialog, also used for identifying language to display dialog in
+	 * @return true if the services are available
+	 */
+	public static boolean isPlayServicesAvailable (Context context)
+	{
+		int playServicesStatus = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+		if (playServicesStatus == ConnectionResult.SUCCESS)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}	
 }

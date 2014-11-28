@@ -9,14 +9,26 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-/** Provider for providing find of position
- * @author Michal Lacko
- * @since 0.1.0
- * @version 0.1.0
- * BEFORE USING THIS 
+/** 
+ * The location provider class which does not need Google Play Services to run. However,
+ * it handles the location accuracy by itself and is not as battery efficient as the Google Play version, but is more low-level.
+ * <p>
+ * If classes want to be notified of location changes, they should implement {@link IOnLocationChangedListener}
+ * or extend {@link ALocationEventListener} and register themselves with the appropriate method 
+ * (addLocalizationEventListener() or addLocationChangedListener()).
+ * <p>
+ * To start the location update process, call the open() method, to stop the update process, call the close() method.
+ * <p> 
+ * BEFORE USING THIS FUNCTIONALITY, THE FOLLOWING PERMISSIONS MUST BE SET IN THE ANDROID MANIFEST:
  * <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
  * <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
- * MUST BE SET IN Android Manifest file - if want to use gps and network set ACCESS_FINE_LOCATION is enough 
+ * 
+ * @author Michal Lacko
+ * @author Ludovit Farkas
+ * 
+ * @since 0.1.0
+ * @version 1.12.0  
+ * 
  */
 public class CLocationProvider
 {
@@ -26,16 +38,22 @@ public class CLocationProvider
 	//distance in meters(every ten meters)
 	private static final float DISTANCE_BETWEEN_CHECK_POSITION = 10;
 	private Context context;
+	
+	@SuppressWarnings ("deprecation")
 	private List<ALocationEventListener> listeners;
+	private List<IOnLocationChangedListener> locationChangedListeners;
+	
 	private Location location;
 	private LocationListener locationListener;
 	private LocationManager locationManager;
 
+	@SuppressWarnings ("deprecation")
 	public CLocationProvider (Context context)
 	{
 		super();
 		this.context = context;
 		this.listeners = new ArrayList<ALocationEventListener>();
+		this.locationChangedListeners = new ArrayList<IOnLocationChangedListener>();
 		init();
 	}
 
@@ -43,12 +61,23 @@ public class CLocationProvider
 	/** This methods allows classes to register for Events
 	 * @param listener to add
 	 */
+	@SuppressWarnings ("deprecation")
 	public void addLocalizationEventListener (ALocationEventListener listener)
 	{
 		listeners.add(listener);
 	}
+	
+	/** 
+	 * This methods allows classes to register for location changes
+	 * @param listener to add
+	 */
+	public void addLocationChangedListener (IOnLocationChangedListener listener)
+	{
+		locationChangedListeners.add(listener);
+	}
 
-	/** get actual Latitude
+	/** 
+	 * Get actual Latitude
 	 * @return return Latitude in double or null if gps data are not loaded
 	 */
 	public Double getLatitude ()
@@ -56,7 +85,8 @@ public class CLocationProvider
 		return (this.location == null) ? null : (double) this.location.getLatitude();
 	}
 
-	/** get actual Longitude
+	/** 
+	 * Get actual Longitude
 	 * @return return Longitude in double or null if gps data are not loaded
 	 */
 	public Double getLongitude ()
@@ -182,7 +212,9 @@ public class CLocationProvider
 		return false;
 	}
 
-	/** Checks whether two providers are the same
+	/** 
+	 * Checks whether two providers are the same
+	 * 
 	 * @param provider1 first provider
 	 * @param provider2 second provider
 	 * @return true if providers are same else otherwise 
@@ -197,16 +229,21 @@ public class CLocationProvider
 	}
 
 
-	/** This method is called when is changed position from gps
+	/** 
+	 * This method is called when the location has changed.
 	 * 
 	 */
+	@SuppressWarnings ("deprecation")
 	private void onEventOccured ()
 	{
 		for (ALocationEventListener listener : this.listeners)
 		{
 			listener.onLocationChanged(this.location);
 		}
-
+		for (IOnLocationChangedListener listener : this.locationChangedListeners)
+		{
+			listener.onLocationChanged(this.location);
+		}
 	}
 
 	/**
@@ -271,11 +308,23 @@ public class CLocationProvider
 		}
 	}
 
-	/** This methods allows classes to unregister for Events
+	/** 
+	 * This methods allows classes to unregister for Events
 	 * @param listener listener to remove
 	 */
+	@SuppressWarnings ("deprecation")
 	public void removeLocalizationEventListener (ALocationEventListener listener)
 	{
 		listeners.remove(listener);
+	}
+	
+	/** 
+	 * This methods allows classes to unregister from location changed events.
+	 * 
+	 * @param listener listener to remove
+	 */
+	public void removeLocationChangedListener (IOnLocationChangedListener listener)
+	{
+		locationChangedListeners.remove(listener);
 	}
 }

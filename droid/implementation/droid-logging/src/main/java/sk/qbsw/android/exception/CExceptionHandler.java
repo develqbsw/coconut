@@ -6,13 +6,16 @@ import android.util.Log;
 
 /** 
  * class for logging exceptions
+ * 
  * @author Dalibor Rak
  * @version 0.1.0
  * @since 0.1.0
  */
 public class CExceptionHandler
 {
-	/** method to throw exception
+	/** 
+	 * method to throw exception
+	 * 
 	 * @param ex exception to throw
 	 * @throws Exception
 	 */
@@ -53,6 +56,7 @@ public class CExceptionHandler
 
 	/** 
 	 * method for standard exception logging to console
+	 * 
 	 * @param tag class for which are exeption logged(only for print message)
 	 * @param th exception to print (only for print message)
 	 */

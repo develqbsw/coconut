@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Class to work with photos
+ * Class to work with date.
  * @author Michal Lacko
  * @since 0.1.0
  * @version 0.4.0

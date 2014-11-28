@@ -1,5 +1,6 @@
 package sk.qbsw.android;
 
+import sk.qbsw.android.CQBSWAndroidLoggerTag;
 import android.app.Application;
 import android.util.Log;
 

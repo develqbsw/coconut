@@ -7,6 +7,7 @@ import android.location.Location;
  * @since 0.1.0
  * @version 0.1.0
  */
+@Deprecated
 public abstract class ALocationEventListener
 {
 	/** called when is location changed
