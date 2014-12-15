@@ -7,11 +7,16 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -31,6 +36,9 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_unit", schema = "sec")
+@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue ("unit")
+@DiscriminatorColumn (name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class CUnit extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
@@ -195,8 +203,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 		}
 
 		CUnit unit = (CUnit) object;
-		return ((getId() != null && getId().equals(unit.getId())) || (getId() == null && unit.getId() == null))
-			&& ((getName() != null && getName().equals(unit.getName())) || (getName() == null && unit.getName() == null));
+		return ( (getId() != null && getId().equals(unit.getId())) || (getId() == null && unit.getId() == null)) && ( (getName() != null && getName().equals(unit.getName())) || (getName() == null && unit.getName() == null));
 	}
 
 	/* (non-Javadoc)

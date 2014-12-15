@@ -121,7 +121,7 @@
 	</properties>
 
 	<modules>
-		<module>droid</module>
+		<!-- <module>droid</module> -->
 		<module>core</module>
 		<module>indy</module>
 		<module>winnetou</module>
