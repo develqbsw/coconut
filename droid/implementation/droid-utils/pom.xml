@@ -17,7 +17,7 @@
 
 		<!-- dependency to android -->
 		<dependency>
-			<groupId>android</groupId>
+			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<scope>provided</scope>
 			<version>${android-platform.version}</version>
@@ -49,6 +49,7 @@
 		<dependency>
 			<groupId>sk.qbsw</groupId>
 			<artifactId>droid-core-logging</artifactId>
+			<type>aar</type>
 			<version>${droid.version}</version>
 		</dependency>
 	</dependencies>
