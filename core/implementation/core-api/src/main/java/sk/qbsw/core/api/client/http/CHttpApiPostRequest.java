@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import sk.qbsw.core.api.exception.CApiHttpException;
 
@@ -16,12 +16,13 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * 
  * @author Dalibor Rak
  * @author Michal Lacko
- * @version 1.10.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.12.1
  * @since 1.2.0
  */
 public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequest
 {
-
 	/**
 	 * Makes HTTP POST call.
 	 * 
@@ -33,13 +34,13 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 	 */
 	public String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException
 	{
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpClient httpClient = createHttpClient();
 		applyTimeouts(httpClient);
 		applyProxy(httpClient);
 
 		HttpPost postRequest = new HttpPost(url);
 		postRequest.addHeader("accept", contentType.getMimeType());
-		
+
 		if (getHeaders() != null)
 		{
 			for (Entry<String, String> headerItem : getHeaders().entrySet())
@@ -47,7 +48,7 @@ public class CHttpApiPostRequest extends AHttpApiRequest implements IHttpApiRequ
 				postRequest.addHeader(headerItem.getKey(), headerItem.getValue());
 			}
 		}
-		
+
 		if (entityInJSon != null)
 		{
 			StringEntity input = new StringEntity(entityInJSon, contentType.getCharset().name());

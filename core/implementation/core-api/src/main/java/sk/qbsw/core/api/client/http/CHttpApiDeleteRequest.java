@@ -6,9 +6,9 @@ import java.security.InvalidParameterException;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.entity.ContentType;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import sk.qbsw.core.api.exception.CApiHttpException;
 
@@ -17,12 +17,13 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * 
  * @author Dalibor Rak
  * @author Michal Lacko
- * @version 1.10.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.12.1
  * @since 1.3.0
  */
 public class CHttpApiDeleteRequest extends AHttpApiRequest implements IHttpApiRequest
 {
-
 	/**
 	 * Parameter name for content. Default value is payload
 	 */
@@ -42,7 +43,7 @@ public class CHttpApiDeleteRequest extends AHttpApiRequest implements IHttpApiRe
 	 */
 	protected String makeOneCall (String url, ContentType contentType, String entity) throws IOException
 	{
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpClient httpClient = createHttpClient();
 		applyProxy(httpClient);
 		applyTimeouts(httpClient);
 

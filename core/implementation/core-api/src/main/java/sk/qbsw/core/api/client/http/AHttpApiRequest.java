@@ -17,6 +17,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
@@ -29,7 +30,7 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.11.10
+ * @version 1.12.1
  * @since 1.3.0
  */
 public abstract class AHttpApiRequest implements IHttpApiRequest
@@ -146,6 +147,17 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 		}
 	}
 
+
+	/**
+	 * Creates the http client - the default implementation created defaultHttpClient.
+	 *
+	 * @return the http client
+	 */
+	protected HttpClient createHttpClient ()
+	{
+		return new DefaultHttpClient();
+	}
+
 	/**
 	 * Make one call of API request.
 	 *
@@ -249,6 +261,4 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	{
 		this.headers = headers;
 	}
-
-
 }

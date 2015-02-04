@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import sk.qbsw.core.api.exception.CApiHttpException;
 
@@ -16,12 +16,13 @@ import sk.qbsw.core.api.exception.CApiHttpException;
  * 
  * @author Dalibor Rak
  * @author Michal Lacko
- * @version 1.10.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.12.1
  * @since 1.3.0
  */
 public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiRequest
 {
-
 	/**
 	 * Makes HTTP PUT call.
 	 * 
@@ -33,13 +34,13 @@ public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiReque
 	 */
 	public String makeOneCall (String url, ContentType contentType, String entityInJSon) throws IOException
 	{
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpClient httpClient = createHttpClient();
 		applyTimeouts(httpClient);
 		applyProxy(httpClient);
 
 		HttpPut putRequest = new HttpPut(url);
 		putRequest.addHeader("accept", contentType.getMimeType());
-		
+
 		if (getHeaders() != null)
 		{
 			for (Entry<String, String> headerItem : getHeaders().entrySet())
@@ -47,7 +48,7 @@ public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiReque
 				putRequest.addHeader(headerItem.getKey(), headerItem.getValue());
 			}
 		}
-		
+
 		if (entityInJSon != null)
 		{
 			StringEntity input = new StringEntity(entityInJSon, contentType.getCharset().name());
@@ -58,7 +59,7 @@ public class CHttpApiPutRequest extends AHttpApiRequest implements IHttpApiReque
 		HttpResponse response = httpClient.execute(putRequest);
 
 		String content = super.getEntityContent(response);
-		
+
 		// 2XX response is correct
 		int responseCode = response.getStatusLine().getStatusCode();
 		if (responseCode < 200 || responseCode > 299)
