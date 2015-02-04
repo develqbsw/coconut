@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -25,7 +26,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.10.3
+ * @version 1.12.1
  * @since 1.0.0
  */
 @Repository (value = "userDao")
@@ -61,14 +62,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			//set filter to get just groups with proper default units
 			session.enableFilter("userDefaultUnitFilter");
 
-			String strQuery = "select distinct(us) from CUser us " +
-						"left join fetch us.organization " +
-						"left join fetch us.defaultUnit " +
-						"left join fetch us.xUserUnitGroups xuug " +
-						"left join fetch xuug.group gr " +
-						"left join fetch xuug.unit " +
-						"left join fetch gr.roles " +
-						"where us.id=:id";
+			String strQuery = "select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit " + "left join fetch gr.roles " + "where us.id=:id";
 
 			Query query = getEntityManager().createQuery(strQuery);
 			query.setParameter("id", id);
@@ -131,14 +125,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 
 		try
 		{
-			strQueryBuilder.append("select distinct(us) from CUser us " +
-							"left join fetch us.organization " +
-							"left join fetch us.defaultUnit " +
-							"left join fetch us.xUserUnitGroups xuug " +
-							"left join fetch xuug.group gr " +
-							"left join fetch xuug.unit " +
-							"left join fetch gr.roles " +
-							"where us.login=:login");
+			strQueryBuilder.append("select distinct(us) from CUser us " + "left join fetch us.organization " + "left join fetch us.defaultUnit " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit " + "left join fetch gr.roles " + "where us.login=:login");
 			// 1. The unit has been set
 			if (unit != null)
 			{
@@ -167,38 +154,24 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.dao.IUserDao#findByPinNull(java.lang.String)
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findByPin(java.lang.String)
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public CUser findByPinNull (String pinCode)
+	public List<CUser> findByPin (String pinCode) throws CBusinessException
 	{
 		if (pinCode == null)
 		{
-			return null;
+			throw new CBusinessException("The pin code cannot be null");
 		}
 
-		CUser userToReturn;
-		String strQuery = "select u from CUser u left join fetch u.organization o where u.pin=:pinCode";
+		String strQuery = "select distinct(u) from CUser u left join fetch u.organization o left join u.authenticationParams auth where auth.pin=:pinCode";
 
 		Query query = getEntityManager().createQuery(strQuery);
 		query.setParameter("pinCode", pinCode);
 
-		List<CUser> users = query.getResultList();
-
-		if (users.size() < 1)
-		{
-			userToReturn = null;
-		}
-		else
-		{
-			userToReturn = users.get(0);
-		}
-
-		return userToReturn;
+		return (List<CUser>) query.getResultList();
 	}
 
 	/* (non-Javadoc)
@@ -372,13 +345,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			session.enableFilter("userDefaultUnitFilter");
 
 			/** Create query */
-			strQueryBuilder.append("select distinct(us) from CUser us " +
-							"left join us.organization " +
-							"left join fetch us.defaultUnit " +
-							"left join fetch us.xUserUnitGroups xuug " +
-							"left join fetch xuug.group gr " +
-							"left join fetch xuug.unit " +
-							"where 1=1");
+			strQueryBuilder.append("select distinct(us) from CUser us " + "left join us.organization " + "left join fetch us.defaultUnit " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit " + "where 1=1");
 
 			if (name != null)
 			{
@@ -490,14 +457,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			session.enableFilter("userDefaultUnitFilter");
 
 			/** Create query */
-			strQueryBuilder.append("select distinct(us) from CUser us " +
-							"left join fetch us.organization o " +
-							"left join fetch us.defaultUnit " +
-							"left join fetch us.xUserUnitGroups xuug " +
-							"left join fetch xuug.group gr " +
-							"left join fetch xuug.unit " +
-							"left join gr.roles ro " +
-							"where 1=1");
+			strQueryBuilder.append("select distinct(us) from CUser us " + "left join fetch us.organization o " + "left join fetch us.defaultUnit " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.group gr " + "left join fetch xuug.unit " + "left join gr.roles ro " + "where 1=1");
 
 			if (group != null)
 			{
@@ -580,11 +540,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	public List<CUser> findAllUsers (CUnit unit, CGroup group)
 	{
 		StringBuilder strQueryBuilder = new StringBuilder();
-		strQueryBuilder.append("select distinct(us) from CUser us " +
-						"left join fetch us.xUserUnitGroups xuug " +
-						"left join fetch xuug.unit un " +
-						"left join fetch xuug.group gr " +
-						"where 1=1");
+		strQueryBuilder.append("select distinct(us) from CUser us " + "left join fetch us.xUserUnitGroups xuug " + "left join fetch xuug.unit un " + "left join fetch xuug.group gr " + "where 1=1");
 
 		if (unit != null)
 		{

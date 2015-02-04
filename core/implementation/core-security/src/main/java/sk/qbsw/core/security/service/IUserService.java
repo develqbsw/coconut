@@ -18,7 +18,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.12.0
+ * @version 1.12.1
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -70,14 +70,6 @@ public interface IUserService extends Serializable
 	 * @return the user by login or null if user doesn't exist
 	 */
 	public CUser getUserByLogin (String login);
-
-	/**
-	 * Gets the user by pin.
-	 *
-	 * @param pin the pin
-	 * @return the user by pin or null if user doesn't exist
-	 */
-	public CUser getUserByPin (String pin);
 
 	/**
 	 * Gets the user for modification.

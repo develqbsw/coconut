@@ -6,6 +6,7 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
@@ -19,7 +20,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.10.3
+ * @version 1.12.1
  * @since 1.0.0
  */
 public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
@@ -53,9 +54,10 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * Find by PIN.
 	 *
 	 * @param pinCode
-	 * @return the c user
+	 * @return the users
+	 * @throws CBusinessException if the input params null
 	 */
-	public CUser findByPinNull (String pinCode);
+	public List<CUser> findByPin (String pinCode) throws CBusinessException;
 
 	/**
 	 * Count all users.

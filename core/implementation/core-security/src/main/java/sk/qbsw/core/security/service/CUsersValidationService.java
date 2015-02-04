@@ -7,6 +7,7 @@ import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IGroupDao;
@@ -23,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Tomas Lauro
  * 
- * @version 1.7.2
+ * @version 1.12.1
  * @since 1.0.0
  */
 @Service ("cUsersValidationService")
@@ -162,13 +163,19 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		Boolean exists = false;
 		CAuthenticationParams oldUserAuthParams = authParamsDao.findByUserId(userOld.getId());
 
-		CUser user = userDao.findByPinNull(oldUserAuthParams.getPin());
-		if (user != null)
+		try
 		{
-			if (! (userOld.getId().equals(user.getId())))
+			List<CUser> users = userDao.findByPin(oldUserAuthParams.getPin());
+
+			//if the users is not empty - any user has assigned given pin
+			if (users != null && users.isEmpty() == false)
 			{
 				exists = true;
 			}
+		}
+		catch (CBusinessException e)
+		{
+			//the user with pin null does not exists
 		}
 
 		return exists;
@@ -182,10 +189,18 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	{
 		Boolean exists = false;
 
-		CUser user = userDao.findByPinNull(pin);
-		if (user != null)
+		try
 		{
-			exists = true;
+			List<CUser> users = userDao.findByPin(pin);
+
+			if (users != null && users.isEmpty() == false)
+			{
+				exists = true;
+			}
+		}
+		catch (CBusinessException e)
+		{
+			//the user with pin null does not exists
 		}
 
 		return exists;

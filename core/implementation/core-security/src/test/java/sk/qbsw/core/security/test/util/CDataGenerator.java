@@ -25,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.11.7
+ * @version 1.12.1
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -161,7 +161,7 @@ public class CDataGenerator
 		CUnit secondUnit = createUnit(SECOND_UNIT_CODE);
 
 		//authentication params
-		CAuthenticationParams authenticationParamWithDefaulUnit = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE);
+		CAuthenticationParams authenticationParamWithDefaulUnit = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE, "1111");
 		CAuthenticationParams authenticationParamWithoutDefaulUnit = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE);
 		CAuthenticationParams authenticationParamWithDefaulUnitNoGroup = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
 		CAuthenticationParams authenticationParamWithoutDefaulUnitNoGroup = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
@@ -352,9 +352,9 @@ public class CDataGenerator
 	{
 		CAddress address = new CAddress();
 		address.setCity("Bratislava");
-//		address.setHouseNumber("123456789");
+		//		address.setHouseNumber("123456789");
 		address.setState("Slovakia");
-//		address.setStreet("Prievozska");
+		//		address.setStreet("Prievozska");
 		address.setZipCode("97101");
 		return address;
 	}
@@ -439,13 +439,26 @@ public class CDataGenerator
 	 * Creates the authentication params.
 	 *
 	 * @param code the code
+	 * @param pin the pin
+	 * @return the c authentication params
+	 */
+	public CAuthenticationParams createAuthenticationParams (String code, String pin)
+	{
+		CAuthenticationParams userAuthParams = new CAuthenticationParams();
+		userAuthParams.setPassword(code);
+		userAuthParams.setPin(pin);
+
+		return userAuthParams;
+	}
+
+	/**
+	 * Creates the authentication params.
+	 *
+	 * @param code the code
 	 * @return the c authentication params
 	 */
 	public CAuthenticationParams createAuthenticationParams (String code)
 	{
-		CAuthenticationParams userAuthParams = new CAuthenticationParams();
-		userAuthParams.setPassword(code);
-
-		return userAuthParams;
+		return createAuthenticationParams(code, null);
 	}
 }

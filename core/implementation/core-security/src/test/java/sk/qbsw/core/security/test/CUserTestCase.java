@@ -37,7 +37,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  *
  * @autor Tomas Lauro
  * 
- * @version 1.12.0
+ * @version 1.12.1
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -415,6 +415,25 @@ public class CUserTestCase
 
 		//set group
 		userService.setUserToGroup(testUser, testGroup, testUnit);
+	}
+
+	/**
+	 * Test get users by pin.
+	 *
+	 * @throws CBusinessException the c business exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testGetUsersByPin () throws CBusinessException
+	{
+		initTest();
+
+		List<CUser> users = userDao.findByPin("1111");
+
+		//asserts
+		assertNotNull(users);
+		Assert.assertSame(1, users.size());
 	}
 
 	/**

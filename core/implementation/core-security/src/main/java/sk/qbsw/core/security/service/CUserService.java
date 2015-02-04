@@ -149,24 +149,6 @@ public class CUserService extends AService implements IUserService
 		return userDao.findByLogin(login);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IUserService#getUserByPin(java.lang.String)
-	 */
-	@Transactional (readOnly = true)
-	public CUser getUserByPin (String pin)
-	{
-		CUser user = userDao.findByPinNull(pin);
-		if (user.getFlagEnabled())
-		{
-			return user;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#getUserForModification(java.lang.Long)
 	 */
