@@ -12,9 +12,13 @@ import sk.qbsw.core.base.exception.CBusinessException;
 
 /**
  * Google client for API services.
+ * if behind proxy you must use in tomcat
+ * -Dhttp.proxyHost="192.168.121.31" -Dhttp.proxyPort="3128" 
+ * -Dhttps.proxyHost="192.168.121.31" -Dhttps.proxyPort="3128"
  *
  * @author Dalibor Rak
- * @version 1.3.0
+ * @author Marek Martinkovic
+ * @version 1.12.1
  * @since 1.2.0
  */
 public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
@@ -24,10 +28,19 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	private static final long serialVersionUID = 1L;
 
 	/** The Constant serviceUrl. */
-	private final static String serviceUrl = "http://maps.googleapis.com/maps/api/geocode/";
+	private final static String serviceUrl = "maps.googleapis.com/maps/api/geocode/";
 
 	/** The Constant OUTPUT_XML. */
 	public static final String OUTPUT_XML = "xml";
+
+	/** The protocol to use. */
+	protected String protocol;
+
+	/** The protocol HTTPS. */
+	public static final String PROTOCOL_HTTPS = "https";
+
+	/** The protocol HTTP. */
+	public static final String PROTOCOL_HTTP = "http";
 
 	/** The Constant OUTPUT_JSON. */
 	public static final String OUTPUT_JSON = "json";
@@ -38,13 +51,36 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	/** The Constant LANGUAGE_EN. */
 	public static final String LANGUAGE_EN = "en";
 
+	
+	/**
+	 * specify witch protocol to use.
+	 * 
+	 * @see PROTOCOL_HTTPS or PROTOCOL_HTTP in this class
+	 * @param protocol
+	 */
+	public CGoogleGeocodeClient(String protocol) 
+	{
+		super();
+		this.protocol = protocol;
+	}
+
+	/**
+	 * using PROTOCOL_HTTP
+	 */
+	public CGoogleGeocodeClient() 
+	{
+		super();
+		this.protocol = PROTOCOL_HTTP;
+	}
+
+	
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForCoordinates(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String getGeocodeResponseForCoordinates (String latitude, String longitude) throws CBusinessException
 	{
-		String url = serviceUrl + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
+		String url =  getGoogleURL() + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -55,7 +91,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForCoordinates (String output, String latitude, String longitude) throws CBusinessException
 	{
-		String url = serviceUrl + output + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
+		String url =  getGoogleURL() + output + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -66,7 +102,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForCoordinates (String output, String language, String latitude, String longitude) throws CBusinessException
 	{
-		String url = serviceUrl + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + language;
+		String url =  getGoogleURL() + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + language;
 
 		return getFromServer(url);
 	}
@@ -77,7 +113,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForAddress (String address) throws CBusinessException, UnsupportedEncodingException
 	{
-		String url = serviceUrl + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
+		String url =  getGoogleURL() + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -88,7 +124,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForAddress (String output, String address) throws CBusinessException, UnsupportedEncodingException
 	{
-		String url = serviceUrl + output + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
+		String url =  getGoogleURL() + output + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -99,7 +135,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForAddress (String output, String language, String address) throws CBusinessException, UnsupportedEncodingException
 	{
-		String url = serviceUrl + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + language;
+		String url =  getGoogleURL() + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + language;
 
 		return getFromServer(url);
 	}
@@ -114,6 +150,18 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	private String encodeAddress (String address) throws UnsupportedEncodingException
 	{
 		return URLEncoder.encode(address, "utf-8");
+	}
+
+	/**
+	 * Encode address.
+	 *
+	 * @param address the address
+	 * @return the string
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 */
+	protected String getGoogleURL()
+	{
+		return protocol + "://" + serviceUrl;
 	}
 
 	/**
