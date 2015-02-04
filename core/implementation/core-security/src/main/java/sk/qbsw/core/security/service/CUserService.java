@@ -300,14 +300,14 @@ public class CUserService extends AService implements IUserService
 			//do nothing
 		}
 
-		if (user.getLogin() == null || organization == null || organization.getName() == null)
+		if (user.getLogin() == null || organization == null || organization.getId() == null)
 		{
 			throw new CSecurityException("Not enough parameter to create user", "error.security.loginused");
 		}
 
 		try
 		{
-			organization = organizationDao.findByName(organization.getName());
+			organization = organizationDao.findById(organization.getId());
 		}
 		catch (NoResultException nre)
 		{
