@@ -17,13 +17,14 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IAuthenticationService;
+import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.service.IUserService;
 
 /**
  * Provides test for authentication.
  *
  * @autor Tomas Lauro
- * @version 1.10.3
+ * @version 1.12.1
  * @since 1.6.0
  */
 @Component
@@ -185,15 +186,15 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, CDataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, IOrganizationService orgService, CDataGenerator dataGenerator) throws CSecurityException
 	{
 		//create new user and needed objects
 		CUser newUser = dataGenerator.createUser(CDataGenerator.USER_WITHOUT_PASSWORD);
-		COrganization newOrganization = dataGenerator.createOrganization(CDataGenerator.ORGANIZATION_CODE);
+		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
 		String newPassword = "change56%PasswordNewUser";
 
 		//register user
-		userService.registerNewUser(newUser, newPassword, newOrganization);
+		userService.registerNewUser(newUser, newPassword, organization);
 
 		//flush and clear persistent context - the user's auth params are saved using dao 
 		userDao.flush();
@@ -229,7 +230,7 @@ public class CAuthenticationTestProvider
 	{
 		Assert.assertTrue("Checks is online failed - the source is offline", authenticationService.isOnline());
 	}
-	
+
 	/**
 	 * Test login enabled user in disabled organization.
 	 *

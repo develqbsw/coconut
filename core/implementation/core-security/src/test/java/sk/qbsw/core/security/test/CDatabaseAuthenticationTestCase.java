@@ -18,6 +18,7 @@ import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationService;
+import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.service.IUserService;
 import sk.qbsw.core.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.core.security.test.util.CDataGenerator;
@@ -26,7 +27,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
- * @version 1.10.3
+ * @version 1.12.1
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -50,6 +51,10 @@ public class CDatabaseAuthenticationTestCase
 	/** The user service. */
 	@Autowired
 	private IUserService userService;
+
+	/** The org service. */
+	@Autowired
+	private IOrganizationService orgService;
 
 	/** The user dao. */
 	@Autowired
@@ -254,7 +259,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, dataGenerator);
+		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, orgService, dataGenerator);
 	}
 
 	/**

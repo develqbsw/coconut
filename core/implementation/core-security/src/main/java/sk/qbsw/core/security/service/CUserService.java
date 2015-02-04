@@ -40,7 +40,7 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.12.0
+ * @version 1.12.1
  * @since 1.0.0
  */
 @Service ("cUserService")
