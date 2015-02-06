@@ -34,7 +34,7 @@ import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
  *
  * @author Tomas Lauro
  * 
- * @version 1.11.10
+ * @version 1.12.1
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -67,7 +67,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		{
 			connection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
 		}
-		if (connection.isConnected() == false)
+		if (connection.isConnected() == false || connection.isAuthenticated() == false)
 		{
 			LOGGER.debug("The main LDAP connection is not connected");
 			try

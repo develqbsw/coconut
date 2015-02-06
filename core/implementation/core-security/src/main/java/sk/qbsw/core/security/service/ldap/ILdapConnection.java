@@ -11,7 +11,7 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
  *
  * @author Tomas Lauro
  * 
- * @version 1.11.10
+ * @version 1.12.1
  * @since 1.11.10
  */
 interface ILdapConnection
@@ -60,6 +60,13 @@ interface ILdapConnection
 	 * @return true, if is connected
 	 */
 	public abstract boolean isConnected ();
+
+	/**
+	 * Checks if is authenticated - see {@link org.apache.directory.ldap.client.api.LdapConnection#isAuthenticated()}.
+	 *
+	 * @return true, if is authenticated
+	 */
+	public abstract boolean isAuthenticated ();
 
 	/**
 	 * Search in LDAP - see {@link org.apache.directory.ldap.client.api.LdapConnection#search(String, String, SearchScope, String...)}.

@@ -22,7 +22,7 @@ import sk.qbsw.core.base.service.AService;
  * The ldap connection.
  *
  * @author Tomas Lauro
- * @version 1.11.10
+ * @version 1.12.1
  * @since 1.10.6
  */
 @Component ("ldapConnection")
@@ -127,6 +127,22 @@ class CLdapConnection extends AService implements ILdapConnection
 	public boolean isConnected ()
 	{
 		if (connection != null && connection.isConnected() == true)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ldap.ILdapConnection#isAuthenticated()
+	 */
+	@Override
+	public boolean isAuthenticated ()
+	{
+		if (connection != null && connection.isAuthenticated() == true)
 		{
 			return true;
 		}
