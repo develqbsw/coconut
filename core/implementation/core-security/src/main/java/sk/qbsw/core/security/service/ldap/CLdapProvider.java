@@ -311,6 +311,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		}
 		catch (Throwable ex)
 		{
+			LOGGER.error("The main LDAP connection throws an exception", ex);
 			return false;
 		}
 	}
