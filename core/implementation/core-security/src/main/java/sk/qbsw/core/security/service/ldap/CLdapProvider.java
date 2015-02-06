@@ -300,7 +300,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		{
 			init();
 
-			if (connection != null && connection.isInitialized() == true && connection.isConnected() == true)
+			if (connection != null && connection.isInitialized() == true && connection.isConnected() == true && connection.isAuthenticated() == true)
 			{
 				return true;
 			}
