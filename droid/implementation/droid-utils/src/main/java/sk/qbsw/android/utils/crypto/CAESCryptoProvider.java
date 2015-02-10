@@ -3,14 +3,11 @@ package sk.qbsw.android.utils.crypto;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
+import java.security.GeneralSecurityException;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import sk.qbsw.android.exception.CExceptionHandler;
@@ -18,6 +15,7 @@ import sk.qbsw.android.exception.CExceptionHandler;
 /**
  * Implementation of encryption interface with AES encryption - 256 bit key
  * @author Tomas Lauro
+ * @author Dalibor Rak
  * @since 0.1.0
  * @version 0.1.0
  */
@@ -38,7 +36,6 @@ public class CAESCryptoProvider implements ICryptoProvider
 		try
 		{	
 			CSecretKey secretKeyWrapper = new CSecretKey();
-			
 			SecretKey secretKey = secretKeyWrapper.load();
 
 			Cipher encryptionCipher = Cipher.getInstance(CIPHER_ALGORITHM, PROVIDER);
@@ -55,22 +52,7 @@ public class CAESCryptoProvider implements ICryptoProvider
 				cipherOutputStream.write(buffer, 0, length);
 			}
 		}
-		catch (InvalidKeyException e)
-		{
-			CExceptionHandler.logException(CAESCryptoProvider.class, e);
-			throw new CCryptoException("Encryption failed");
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			CExceptionHandler.logException(CAESCryptoProvider.class, e);
-			throw new CCryptoException("Encryption failed");
-		}
-		catch (NoSuchPaddingException e)
-		{
-			CExceptionHandler.logException(CAESCryptoProvider.class, e);
-			throw new CCryptoException("Encryption failed");
-		}
-		catch (NoSuchProviderException e)
+		catch (GeneralSecurityException e)
 		{
 			CExceptionHandler.logException(CAESCryptoProvider.class, e);
 			throw new CCryptoException("Encryption failed");
@@ -93,7 +75,6 @@ public class CAESCryptoProvider implements ICryptoProvider
 		try
 		{
 			CSecretKey secretKeyWrapper = new CSecretKey();
-			
 			SecretKey secretKey = secretKeyWrapper.load();
 			
 			Cipher decryptionCipher = Cipher.getInstance(CIPHER_ALGORITHM, PROVIDER);
@@ -108,22 +89,7 @@ public class CAESCryptoProvider implements ICryptoProvider
 				outputStream.write(buffer, 0, lenght);
 			}
 		}
-		catch (InvalidKeyException e)
-		{
-			CExceptionHandler.logException(CAESCryptoProvider.class, e);
-			throw new CCryptoException("Decryption failed");
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			CExceptionHandler.logException(CAESCryptoProvider.class, e);
-			throw new CCryptoException("Decryption failed");
-		}
-		catch (NoSuchPaddingException e)
-		{
-			CExceptionHandler.logException(CAESCryptoProvider.class, e);
-			throw new CCryptoException("Decryption failed");
-		}
-		catch (NoSuchProviderException e)
+		catch (GeneralSecurityException e)
 		{
 			CExceptionHandler.logException(CAESCryptoProvider.class, e);
 			throw new CCryptoException("Decryption failed");

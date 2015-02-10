@@ -26,6 +26,8 @@ import com.google.api.client.util.Base64;
  * @author Tomas Lauro
  * @since 0.1.0
  * @version 0.1.0
+ * 
+ * TODO: refactor
  */
 //algorithm source: http://pocket-for-android.1047292.n5.nabble.com/Encryption-method-and-reading-the-Dropbox-backup-tp4344194p4454327.html
 public class CSecretKey

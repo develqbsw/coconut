@@ -103,5 +103,4 @@ public class CAESCryptoToolTestCase {
 		tool.init(key.clone());
 		tool.encrypt(null);
 	}
-
 }

@@ -1,8 +1,9 @@
 package sk.qbsw.core.persistence.test.converter;
 
-import java.security.InvalidParameterException;
+import java.io.UnsupportedEncodingException;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sk.qbsw.core.persistence.converter.CEncryptionConverter;
@@ -49,5 +50,28 @@ public class CEncryptionConverterTestCase {
 		// check result
 		Assert.assertNull("Plain and decrypted are not equals!", decrypted);
 	}
+	
+	/**
+	 * Use custom key
+	 *
+	 * @throws UnsupportedEncodingException the unsupported encoding exception
+	 */
+	@Test()
+	public void test() {
+		String key = "urmqwRvzD2bNgqnNjK764w==";
+		String plain = "Ahoj";
 
+		System.setProperty("CAESCryptoTool.key", key);
+		
+		CEncryptionConverter converter = new CEncryptionConverter();
+		
+		String encrypted = converter.convertToDatabaseColumn(plain);
+		String decrypted = converter.convertToEntityAttribute(encrypted);
+
+		// check result
+		Assert.assertTrue("Plain and decrypted are not equals!", decrypted.equals(plain));
+
+		// check quality
+		Assert.assertFalse("Encrypted and plain are the same", encrypted.equals(plain));
+	}
 }

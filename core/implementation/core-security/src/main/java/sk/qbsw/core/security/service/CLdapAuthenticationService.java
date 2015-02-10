@@ -341,6 +341,8 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 		//TODO: create user search
 		//create dn
 		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDns()[0]).toString();
+		
+		//TODO: BAD !!! LDAP injection
 		String newRdn = new StringBuilder().append("cn=").append(login).toString();
 
 		try
