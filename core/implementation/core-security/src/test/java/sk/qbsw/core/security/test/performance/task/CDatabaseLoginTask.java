@@ -26,7 +26,6 @@ class CDatabaseLoginTask extends CLoginTask implements Runnable
 
 	/** The authentication service. */
 	@Autowired
-	@Qualifier ("cLoginService")
 	private IAuthenticationService authenticationService;
 
 	/* (non-Javadoc)

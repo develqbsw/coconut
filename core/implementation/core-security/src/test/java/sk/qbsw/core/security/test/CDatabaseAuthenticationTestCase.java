@@ -43,7 +43,6 @@ public class CDatabaseAuthenticationTestCase
 
 	/** The authentication service. */
 	@Autowired
-	@Qualifier ("cLoginService")
 	private IAuthenticationService authenticationService;
 
 	/** The authentication test provider. */

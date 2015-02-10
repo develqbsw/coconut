@@ -12,7 +12,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IUserDao;
@@ -47,11 +46,6 @@ public class CMixedAuthenticationTestCase
 	@Autowired
 	@Qualifier ("mixedAuthenticationService")
 	private IAuthenticationService authenticationService;
-
-	/** The authentication service. */
-	@Autowired
-	@Qualifier ("ldapAuthenticationService")
-	private IAuthenticationService ldapAuthenticationService;
 
 	/** The authentication test provider. */
 	@Autowired
@@ -297,6 +291,5 @@ public class CMixedAuthenticationTestCase
 	private void initTest () throws Exception
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();
-		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(ldapAuthenticationService), "ldapProvider", ldapProvider);
 	}
 }
