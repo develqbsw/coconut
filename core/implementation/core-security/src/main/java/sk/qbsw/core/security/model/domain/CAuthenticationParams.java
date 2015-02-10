@@ -16,6 +16,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
 import com.google.gson.annotations.Expose;
 
 /**
@@ -23,7 +26,7 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.12.0
+ * @version 1.12.2
  * @since 1.6.0
  */
 @Entity
@@ -59,6 +62,18 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	@Column (name = "c_password_type", nullable = false)
 	@Enumerated (EnumType.STRING)
 	private EPasswordType passwordType = EPasswordType.DURABLE;
+
+	/** The valid from. */
+	@Column (name = "c_valid_from")
+	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Expose
+	private DateTime validFrom;
+
+	/** The valid to. */
+	@Column (name = "c_valid_to")
+	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Expose
+	private DateTime validTo;
 
 	/**
 	 * Instantiates a authentication params.
@@ -189,5 +204,45 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	public void setPasswordType (EPasswordType passwordType)
 	{
 		this.passwordType = passwordType;
+	}
+
+	/**
+	 * Gets the valid from.
+	 *
+	 * @return the valid from
+	 */
+	public DateTime getValidFrom ()
+	{
+		return validFrom;
+	}
+
+	/**
+	 * Sets the valid from.
+	 *
+	 * @param validFrom the new valid from
+	 */
+	public void setValidFrom (DateTime validFrom)
+	{
+		this.validFrom = validFrom;
+	}
+
+	/**
+	 * Gets the valid to.
+	 *
+	 * @return the valid to
+	 */
+	public DateTime getValidTo ()
+	{
+		return validTo;
+	}
+
+	/**
+	 * Sets the valid to.
+	 *
+	 * @param validTo the new valid to
+	 */
+	public void setValidTo (DateTime validTo)
+	{
+		this.validTo = validTo;
 	}
 }

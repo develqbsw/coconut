@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.service;
 
 import org.apache.directory.api.util.exception.NotImplementedException;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,9 +177,6 @@ public class CMixedAuthenticationService extends AAuthenticationService implemen
 
 	/**
 	 * Not implemented method.
-	 *
-	 * @param login the login
-	 * @param password the password
 	 */
 	@Override
 	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password)
@@ -187,11 +185,16 @@ public class CMixedAuthenticationService extends AAuthenticationService implemen
 	}
 
 	/**
+	 * Method not implemented.
+	 */
+	@Override
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	{
+		throw new NotImplementedException();
+	}
+
+	/**
 	 * Not implemented method.
-	 *
-	 * @param login the login
-	 * @param email the email
-	 * @param password the password
 	 */
 	@Override
 	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
@@ -200,10 +203,16 @@ public class CMixedAuthenticationService extends AAuthenticationService implemen
 	}
 
 	/**
+	 * Method not implemented.
+	 */
+	@Override
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	{
+		throw new NotImplementedException();
+	}
+
+	/**
 	 * Not implemented method.
-	 *
-	 * @param userId the user ID
-	 * @param login the login
 	 */
 	@Override
 	public void changeLogin (Long userId, String login) throws CSecurityException

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
 
@@ -539,6 +540,62 @@ public class CAuthenticationTestProvider
 		Assert.assertNotNull(recordIpTwo);
 		Assert.assertEquals(4, recordIpTwo.getInvalidLoginCount());
 		Assert.assertFalse(isBlockedIpTwo);
+	}
+	
+	/**
+	 * Test login invalid from auth param.
+	 *
+	 * @param authenticationService the authentication service
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testLoginInvalidFromAuthParam (IAuthenticationService authenticationService) throws CSecurityException
+	{
+		String newPassword = "new1Login#";
+		authenticationService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, DateTime.now().plusHours(2), null);
+		
+		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+	}
+	
+	/**
+	 * Test login invalid to auth param.
+	 *
+	 * @param authenticationService the authentication service
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testLoginInvalidToAuthParam (IAuthenticationService authenticationService) throws CSecurityException
+	{
+		String newPassword = "new1Login#";
+		authenticationService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, DateTime.now().minusHours(1));
+		
+		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+	}
+	
+	/**
+	 * Test login invalid from and to auth param.
+	 *
+	 * @param authenticationService the authentication service
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testLoginInvalidFromAndToAuthParam (IAuthenticationService authenticationService) throws CSecurityException
+	{
+		String newPassword = "new1Login#";
+		authenticationService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, DateTime.now().minusHours(2), DateTime.now().minusHours(1));
+		
+		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+	}
+	
+	/**
+	 * Test change password null from and to auth param.
+	 *
+	 * @param authenticationService the authentication service
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testChangePasswordNullFromAndToAuthParam (IAuthenticationService authenticationService) throws CSecurityException
+	{
+		String newPassword = "new1Login#";
+		authenticationService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, null);
+		
+		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package sk.qbsw.core.security.service;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,11 @@ import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.exception.CInvalidAuthenticationException;
+import sk.qbsw.core.security.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.exception.CInvalidUserException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
-import sk.qbsw.core.security.exception.CWrongPasswordException;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -70,13 +72,13 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 	 *
 	 * @param authenticationParams the authentication parameters of user
 	 * @param passwordToCheck the password to check
-	 * @throws CWrongPasswordException the c wrong password exception
+	 * @throws CInvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws CWrongPasswordException
+	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
 	{
 		if (authenticationParams.getPassword() == null || authenticationParams.getPassword().equals(passwordToCheck) == false)
 		{
-			throw new CWrongPasswordException("Plain password doesn't match");
+			throw new CInvalidPasswordException("Plain password doesn't match");
 		}
 	}
 
@@ -85,13 +87,13 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 	 *
 	 * @param authenticationParams the authentication parameters of user
 	 * @param passwordToCheck the password to check
-	 * @throws CWrongPasswordException the c wrong password exception
+	 * @throws CInvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String passwordToCheck) throws CWrongPasswordException
+	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
 	{
 		if (authenticationParams.getPasswordDigest() == null || digester.checkPassword(passwordToCheck, authenticationParams.getPasswordDigest()) == false)
 		{
-			throw new CWrongPasswordException("Password dogest doesn't match");
+			throw new CInvalidPasswordException("Password dogest doesn't match");
 		}
 	}
 
@@ -172,10 +174,13 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 	 * @param password the password
 	 * @param unit the unit - the unit is optional parameter
 	 * @return the user
-	 * @throws CSecurityException the security exception
+	 * @throws CUserDisabledException the user is disabled
+	 * @throws CInvalidAuthenticationException the user has invalid authentication params
+	 * @throws CInvalidUserException the user with given login not found
+	 * @throws CInvalidPasswordException the invalid password
 	 */
 	@Transactional (readOnly = true)
-	private CUser loginWithUnit (String login, String password, CUnit unit) throws CSecurityException
+	private CUser loginWithUnit (String login, String password, CUnit unit) throws CUserDisabledException, CInvalidAuthenticationException, CInvalidUserException, CInvalidPasswordException
 	{
 		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
 
@@ -197,7 +202,17 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 		else
 		{
 			EAuthenticationType authenticationType = user.authenticationType();
-			CAuthenticationParams userAuthParams = authenticationParamsDao.findByUserId(user.getId());
+			CAuthenticationParams userAuthParams = null;
+
+			try
+			{
+				userAuthParams = authenticationParamsDao.findValidByUserId(user.getId());
+			}
+			catch (NoResultException ex)
+			{
+				LOGGER.debug("The authentication params of user with login {} are invalid", user.getLogin());
+				throw new CInvalidAuthenticationException("Authentication params are invalid");
+			}
 
 			switch (authenticationType)
 			{
@@ -208,7 +223,7 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 					authenticateByPassword(userAuthParams, password);
 					break;
 				default:
-					throw new CWrongPasswordException("Authentication method wrong");
+					throw new CInvalidPasswordException("Authentication method wrong");
 			}
 
 			// check if user is disabled
@@ -230,7 +245,17 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 	@Transactional (readOnly = false)
 	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
-		changePassword(login, password, null, true);
+		changePassword(login, password, null, null, null, true, false);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String, org.joda.time.DateTime, org.joda.time.DateTime)
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	{
+		changePassword(login, password, null, validFrom, validTo, true, true);
 	}
 
 	/* (non-Javadoc)
@@ -240,7 +265,17 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 	@Transactional (readOnly = false)
 	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
-		changePassword(login, password, email, true);
+		changePassword(login, password, email, null, null, true, false);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, org.joda.time.DateTime, org.joda.time.DateTime)
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	{
+		changePassword(login, password, email, validFrom, validTo, true, true);
 	}
 
 	/* (non-Javadoc)
@@ -279,9 +314,14 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 	 *
 	 * @param login the login
 	 * @param password the password
+	 * @param email the email
+	 * @param validFrom the valid from
+	 * @param validTo the valid to
+	 * @param encrypt the encrypt
+	 * @param setValidityDate flag indicates the valid dates are going to be overridden
 	 * @throws CSecurityException the c security exception
 	 */
-	private void changePassword (String login, String password, String email, boolean encrypt) throws CSecurityException
+	private void changePassword (String login, String password, String email, DateTime validFrom, DateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
 	{
 		CUser user = null;
 
@@ -316,6 +356,12 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 			authParams.setUser(user);
 		}
 
+		if (setValidityDate == true)
+		{
+			authParams.setValidFrom(validFrom);
+			authParams.setValidTo(validTo);
+		}
+
 		if (encrypt == true)
 		{
 			authParams.setPasswordDigest(digester.generateDigest(password));
@@ -326,6 +372,7 @@ public class CDatabaseAuthenticationService extends AAuthenticationService imple
 			authParams.setPassword(password);
 			authParams.setPasswordDigest(null);
 		}
+
 		authenticationParamsDao.save(authParams);
 	}
 }

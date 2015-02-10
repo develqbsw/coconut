@@ -15,7 +15,6 @@ import sk.qbsw.core.base.exception.CBusinessException;
 @SuppressWarnings ("serial")
 public class CSecurityException extends CBusinessException
 {
-
 	/**
 	 * Instantiates a new c security exception.
 	 *

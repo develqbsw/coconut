@@ -2,8 +2,9 @@ package sk.qbsw.core.security.service;
 
 import java.io.Serializable;
 
+import org.joda.time.DateTime;
+
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -68,17 +69,27 @@ public interface IAuthenticationService extends Serializable
 	public boolean canLogin (String login, String password, CRole role);
 
 	/**
-	 * Change password.
+	 * Change password - the valid from and valid to parameters are preserved. 
 	 *
 	 * @param login the login
 	 * @param password the password
-	 * @throws CPasswordFormatException the password format is invalid
 	 * @throws CSecurityException the password change failed
 	 */
 	public void changeEncryptedPassword (String login, String password) throws CSecurityException;
 
 	/**
-	 * Renew password of the user.
+	 * Change password - the valid from and valid to are set from parameters (null can be set as well).
+	 *
+	 * @param login the login
+	 * @param password the password
+	 * @param validFrom the date from the auth data are valid
+	 * @param validTo the date to the auth data are valid
+	 * @throws CSecurityException the password change failed
+	 */
+	public void changeEncryptedPassword (String login, String password, DateTime validFrom, DateTime validTo) throws CSecurityException;
+
+	/**
+	 * Renew password of the user - the valid from and valid to parameters are preserved.
 	 *
 	 * @param login the login
 	 * @param email the email
@@ -86,6 +97,18 @@ public interface IAuthenticationService extends Serializable
 	 * @throws CSecurityException the c security exception
 	 */
 	public void changePlainPassword (String login, String email, String password) throws CSecurityException;
+
+	/**
+	 * Renew password of the user - the valid from and valid to are set from parameters (null can be set as well).
+	 *
+	 * @param login the login
+	 * @param email the email
+	 * @param password the password
+	 * @param validFrom the date from the auth data are valid
+	 * @param validTo the date to the auth data are valid
+	 * @throws CSecurityException the c security exception
+	 */
+	public void changePlainPassword (String login, String email, String password, DateTime validFrom, DateTime validTo) throws CSecurityException;
 
 	/**
 	 * Change login.

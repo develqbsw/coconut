@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.exception.CInvalidAuthenticationException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
@@ -436,6 +436,66 @@ public class CDatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testBlockedLoginWithBlockedSetIpNull(authenticationService, blockedLoginJpaDao);
+	}
+
+	/**
+	 * Test login invalid from auth param.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test (expected = CInvalidAuthenticationException.class)
+	@Transactional
+	@Rollback (true)
+	public void testLoginInvalidFromAuthParam () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginInvalidFromAuthParam(authenticationService);
+	}
+
+	/**
+	 * Test login invalid to auth param.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test (expected = CInvalidAuthenticationException.class)
+	@Transactional
+	@Rollback (true)
+	public void testLoginInvalidToAuthParam () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginInvalidToAuthParam(authenticationService);
+	}
+	
+	/**
+	 * Test login invalid from and to auth param.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test (expected = CInvalidAuthenticationException.class)
+	@Transactional
+	@Rollback (true)
+	public void testLoginInvalidFromAndToAuthParam () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginInvalidFromAndToAuthParam(authenticationService);
+	}
+	
+	/**
+	 * Test change password null from and to auth param.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testChangePasswordNullFromAndToAuthParam () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangePasswordNullFromAndToAuthParam(authenticationService);
 	}
 
 	/**

@@ -12,6 +12,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
 import org.apache.directory.api.util.exception.NotImplementedException;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.exception.CInvalidUserException;
 import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
-import sk.qbsw.core.security.exception.CWrongPasswordException;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -194,7 +195,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 			}
 			else
 			{
-				throw new CWrongPasswordException("Password in ldap for user " + login + " doesn't match");
+				throw new CInvalidPasswordException("Password in ldap for user " + login + " doesn't match");
 			}
 		}
 		else
@@ -319,12 +320,30 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 			throw new CSecurityException("Password change failed");
 		}
 	}
+	
+	/**
+	 * Method not implemented.
+	 */
+	@Override
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	{
+		throw new NotImplementedException();
+	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
+	/**
+	 * Method not implemented.
 	 */
 	@Override
 	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	{
+		throw new NotImplementedException();
+	}
+	
+	/**
+	 * Method not implemented.
+	 */
+	@Override
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}

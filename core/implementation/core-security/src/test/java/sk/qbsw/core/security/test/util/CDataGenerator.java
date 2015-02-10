@@ -3,6 +3,7 @@ package sk.qbsw.core.security.test.util;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -167,10 +168,10 @@ public class CDataGenerator
 		CUnit secondUnit = createUnit(SECOND_UNIT_CODE);
 
 		//authentication params
-		CAuthenticationParams authenticationParamWithDefaulUnit = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE, "1111");
-		CAuthenticationParams authenticationParamWithoutDefaulUnit = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE);
-		CAuthenticationParams authenticationParamWithDefaulUnitNoGroup = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
-		CAuthenticationParams authenticationParamWithoutDefaulUnitNoGroup = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
+		CAuthenticationParams authenticationParamWithDefaulUnit = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE, "1111", null, null);
+		CAuthenticationParams authenticationParamWithoutDefaulUnit = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE, DateTime.now().minusHours(2), null);
+		CAuthenticationParams authenticationParamWithDefaulUnitNoGroup = createAuthenticationParams(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP, null, DateTime.now().plusHours(2));
+		CAuthenticationParams authenticationParamWithoutDefaulUnitNoGroup = createAuthenticationParams(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP, DateTime.now().minusHours(2), DateTime.now().plusHours(2));
 		CAuthenticationParams authenticationParamEnabledInDisabledOrganization = createAuthenticationParams(USER_ENABLED_IN_DISABLED_ORGANIZATION);
 		CAuthenticationParams authenticationParamDisabledInDisabledOrganization = createAuthenticationParams(USER_DISABLED_IN_DISABLED_ORGANIZATION);
 		CAuthenticationParams authenticationParamDisabledInEnabledOrganization = createAuthenticationParams(USER_DISABLED_IN_ENABLED_ORGANIZATION);
@@ -450,9 +451,25 @@ public class CDataGenerator
 	 */
 	public CAuthenticationParams createAuthenticationParams (String code, String pin)
 	{
+		return createAuthenticationParams(code, pin, null, null);
+	}
+
+	/**
+	 * Creates the authentication params.
+	 *
+	 * @param code the code
+	 * @param pin the pin
+	 * @param validFrom the valid from
+	 * @param validTo the valid to
+	 * @return the c authentication params
+	 */
+	public CAuthenticationParams createAuthenticationParams (String code, String pin, DateTime validFrom, DateTime validTo)
+	{
 		CAuthenticationParams userAuthParams = new CAuthenticationParams();
 		userAuthParams.setPassword(code);
 		userAuthParams.setPin(pin);
+		userAuthParams.setValidFrom(validFrom);
+		userAuthParams.setValidTo(validTo);
 
 		return userAuthParams;
 	}
@@ -465,6 +482,19 @@ public class CDataGenerator
 	 */
 	public CAuthenticationParams createAuthenticationParams (String code)
 	{
-		return createAuthenticationParams(code, null);
+		return createAuthenticationParams(code, null, null, null);
+	}
+
+	/**
+	 * Creates the authentication params.
+	 *
+	 * @param code the code
+	 * @param validFrom the valid from
+	 * @param validTo the valid to
+	 * @return the c authentication params
+	 */
+	public CAuthenticationParams createAuthenticationParams (String code, DateTime validFrom, DateTime validTo)
+	{
+		return createAuthenticationParams(code, null, validFrom, validTo);
 	}
 }
