@@ -15,6 +15,17 @@
 	<bean id="authenticationService"
 		class="sk.qbsw.core.security.service.CLdapAuthenticationService" />
 
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="authenticationService" />
+		<property name="targetMethod" value="init" />
+		<property name="arguments">
+			<list>
+				<value>5</value>
+			</list>
+		</property>
+	</bean>
+
 	<!-- Mocks object for testing -->
 	<bean id="ldapProviderMock" class="sk.qbsw.core.testing.mock.CMockitoFactoryBean">
 		<constructor-arg name="classToBeMocked"

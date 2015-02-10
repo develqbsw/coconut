@@ -2,6 +2,7 @@ package sk.qbsw.core.security.service;
 
 import java.io.Serializable;
 
+import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -13,11 +14,23 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.7.2
+ * @version 1.12.2
  * @since 1.0.0
  */
 public interface IAuthenticationService extends Serializable
 {
+	/**
+	 * Inits the authentication service - set blockLoginLimit property from arguments.
+	 *
+	 * @param blockLoginLimit the block login limit
+	 */
+	public void init (int blockLoginLimit);
+
+	/**
+	 * Inits the authentication service - read blockLoginLimit property from system properties or use default.
+	 */
+	public void init ();
+
 	/**
 	 * Authenticates the user
 	 * @param login login of the user
@@ -89,4 +102,34 @@ public interface IAuthenticationService extends Serializable
 	 * @return true, if is online
 	 */
 	public boolean isOnline ();
+
+	/**
+	 * Increase invalid login counter.
+	 *
+	 * @param login the login
+	 * @param ip the ip
+	 * @throws CSecurityException throws if the user with given login doesnt exist
+	 * @throws CSystemException throws if there is any other error
+	 */
+	public void increaseInvalidLoginCounter (String login, String ip) throws CSystemException, CSecurityException;
+
+	/**
+	 * Reset invalid login counter.
+	 *
+	 * @param login the login
+	 * @param ip the ip
+	 * @throws CSecurityException throws if the user with given login doesnt exist
+	 * @throws CSystemException throws if there is any other error
+	 */
+	public void resetInvalidLoginCounter (String login, String ip) throws CSystemException, CSecurityException;
+
+	/**
+	 * Checks if is login blocked.
+	 *
+	 * @param login the login
+	 * @param ip the ip
+	 * @return true, if is login blocked
+	 * @throws CSystemException throws if there is any other error
+	 */
+	public boolean isLoginBlocked (String login, String ip) throws CSystemException;
 }

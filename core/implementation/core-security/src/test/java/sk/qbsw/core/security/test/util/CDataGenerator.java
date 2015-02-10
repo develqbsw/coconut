@@ -25,7 +25,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.12.1
+ * @version 1.12.2
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -129,6 +129,12 @@ public class CDataGenerator
 
 	/** The Constant USER_DISABLED_IN_ENABLED_ORGANIZATION. */
 	public static final String USER_DISABLED_IN_ENABLED_ORGANIZATION = "unit_test_user_disabled_in_enabled_organization";
+
+	/** The Constant TEST_IP_ONE. */
+	public static final String TEST_IP_ONE = "192.168.0.1";
+
+	/** The Constant TEST_IP_TWO. */
+	public static final String TEST_IP_TWO = "192.168.0.2";
 
 	/**
 	 * Generate data for database tests.

@@ -18,7 +18,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.12.1
+ * @version 1.12.2
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -240,4 +240,12 @@ public interface IUserService extends Serializable
 	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
 	 */
 	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException, CBusinessException;
+	
+	/**
+	 * Checks if the user with defined login exist.
+	 *
+	 * @param login the login
+	 * @return true, if successful
+	 */
+	public boolean checksUserExist (String login);
 }

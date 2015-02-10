@@ -9,8 +9,11 @@ import java.util.Set;
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.security.model.domain.CBlockedLogin;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -24,7 +27,7 @@ import sk.qbsw.core.security.service.IUserService;
  * Provides test for authentication.
  *
  * @autor Tomas Lauro
- * @version 1.12.1
+ * @version 1.12.2
  * @since 1.6.0
  */
 @Component
@@ -259,6 +262,283 @@ public class CAuthenticationTestProvider
 	public void testLoginDisabledUserEnabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION, CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION);
+	}
+
+	/**
+	 * Test blocked login without blocked.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param blockedLoginJpaDao the blocked login jpa dao
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testBlockedLoginWithoutBlocked (IAuthenticationService authenticationService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	{
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		boolean isBlockedIpOne = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		boolean isBlockedIpTwo = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		Assert.assertNotNull(recordIpOne);
+		Assert.assertEquals(4, recordIpOne.getInvalidLoginCount());
+		Assert.assertFalse(isBlockedIpOne);
+
+		Assert.assertNotNull(recordIpTwo);
+		Assert.assertEquals(3, recordIpTwo.getInvalidLoginCount());
+		Assert.assertFalse(isBlockedIpTwo);
+	}
+
+	/**
+	 * Test blocked login without blocked check ip null.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param blockedLoginJpaDao the blocked login jpa dao
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testBlockedLoginWithoutBlockedCheckIpNull (IAuthenticationService authenticationService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	{
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		boolean isBlocked = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+
+		Assert.assertNotNull(recordIpOne);
+		Assert.assertEquals(4, recordIpOne.getInvalidLoginCount());
+
+		Assert.assertNotNull(recordIpTwo);
+		Assert.assertEquals(3, recordIpTwo.getInvalidLoginCount());
+
+		Assert.assertFalse(isBlocked);
+	}
+
+	/**
+	 * Test blocked login without blocked set ip null.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param blockedLoginJpaDao the blocked login jpa dao
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testBlockedLoginWithoutBlockedSetIpNull (IAuthenticationService authenticationService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	{
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		CBlockedLogin recordIpNull = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		boolean isBlockedIpNull = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		boolean isBlockedIpTwo = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		Assert.assertNotNull(recordIpNull);
+		Assert.assertEquals(4, recordIpNull.getInvalidLoginCount());
+		Assert.assertFalse(isBlockedIpNull);
+
+		Assert.assertNotNull(recordIpTwo);
+		Assert.assertEquals(3, recordIpTwo.getInvalidLoginCount());
+		Assert.assertFalse(isBlockedIpTwo);
+	}
+
+	/**
+	 * Test blocked login with blocked.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param blockedLoginJpaDao the blocked login jpa dao
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testBlockedLoginWithBlocked (IAuthenticationService authenticationService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	{
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		boolean isBlockedIpOne = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		boolean isBlockedIpTwo = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		Assert.assertNotNull(recordIpOne);
+		Assert.assertEquals(5, recordIpOne.getInvalidLoginCount());
+		Assert.assertTrue(isBlockedIpOne);
+
+		Assert.assertNotNull(recordIpTwo);
+		Assert.assertEquals(4, recordIpTwo.getInvalidLoginCount());
+		Assert.assertFalse(isBlockedIpTwo);
+	}
+
+	/**
+	 * Test blocked login with blocked check ip null.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param blockedLoginJpaDao the blocked login jpa dao
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testBlockedLoginWithBlockedCheckIpNull (IAuthenticationService authenticationService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	{
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		boolean isBlocked = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+
+		Assert.assertNotNull(recordIpOne);
+		Assert.assertEquals(5, recordIpOne.getInvalidLoginCount());
+
+		Assert.assertNotNull(recordIpTwo);
+		Assert.assertEquals(4, recordIpTwo.getInvalidLoginCount());
+
+		Assert.assertTrue(isBlocked);
+	}
+
+	/**
+	 * Test blocked login with blocked set ip null.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param blockedLoginJpaDao the blocked login jpa dao
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testBlockedLoginWithBlockedSetIpNull (IAuthenticationService authenticationService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	{
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		authenticationService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		//flush 
+		blockedLoginJpaDao.flush();
+
+		CBlockedLogin recordIpNull = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		boolean isBlockedIpNull = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		boolean isBlockedIpTwo = authenticationService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		Assert.assertNotNull(recordIpNull);
+		Assert.assertEquals(5, recordIpNull.getInvalidLoginCount());
+		Assert.assertTrue(isBlockedIpNull);
+
+		Assert.assertNotNull(recordIpTwo);
+		Assert.assertEquals(4, recordIpTwo.getInvalidLoginCount());
+		Assert.assertFalse(isBlockedIpTwo);
 	}
 
 	/**

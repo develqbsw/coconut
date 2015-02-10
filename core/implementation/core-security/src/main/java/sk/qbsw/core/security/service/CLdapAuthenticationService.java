@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -43,11 +42,11 @@ import sk.qbsw.core.security.service.ldap.ILdapProvider;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.11.10
+ * @version 1.12.2
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
-public class CLdapAuthenticationService extends AService implements IAuthenticationService
+public class CLdapAuthenticationService extends AAuthenticationService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

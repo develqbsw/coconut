@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
@@ -27,7 +29,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
- * @version 1.12.1
+ * @version 1.12.2
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -59,6 +61,10 @@ public class CDatabaseAuthenticationTestCase
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
+
+	/** The blocked login jpa dao. */
+	@Autowired
+	private IBlockedLoginDao blockedLoginJpaDao;
 
 	/** The authentication configurator. */
 	@Autowired
@@ -335,6 +341,102 @@ public class CDatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService, userService);
+	}
+
+	/**
+	 * Test blocked login without blocked.
+	 *
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testBlockedLoginWithoutBlocked () throws CSystemException, CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testBlockedLoginWithoutBlocked(authenticationService, blockedLoginJpaDao);
+	}
+
+	/**
+	 * Test blocked login without blocked check ip null.
+	 *
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testBlockedLoginWithoutBlockedCheckIpNull () throws CSystemException, CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testBlockedLoginWithoutBlockedCheckIpNull(authenticationService, blockedLoginJpaDao);
+	}
+
+	/**
+	 * Test blocked login without blocked set ip null.
+	 *
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testBlockedLoginWithoutBlockedSetIpNull () throws CSystemException, CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testBlockedLoginWithoutBlockedSetIpNull(authenticationService, blockedLoginJpaDao);
+	}
+
+	/**
+	 * Test blocked login with blocked.
+	 *
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testBlockedLoginWithBlocked () throws CSystemException, CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testBlockedLoginWithBlocked(authenticationService, blockedLoginJpaDao);
+	}
+
+	/**
+	 * Test blocked login with blocked check ip null.
+	 *
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testBlockedLoginWithBlockedCheckIpNull () throws CSystemException, CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testBlockedLoginWithBlockedCheckIpNull(authenticationService, blockedLoginJpaDao);
+	}
+
+	/**
+	 * Test blocked login with blocked set ip null.
+	 *
+	 * @throws CSystemException the c system exception
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (readOnly = true)
+	@Rollback (true)
+	public void testBlockedLoginWithBlockedSetIpNull () throws CSystemException, CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testBlockedLoginWithBlockedSetIpNull(authenticationService, blockedLoginJpaDao);
 	}
 
 	/**

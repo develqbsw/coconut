@@ -14,6 +14,7 @@
 		<class>sk.qbsw.core.security.model.domain.CAuthenticationParams</class>
 		<class>sk.qbsw.core.security.model.domain.CXUserUnitGroup</class>
 		<class>sk.qbsw.core.security.model.domain.CAddress</class>
+		<class>sk.qbsw.core.security.model.domain.CBlockedLogin</class>
 		<!-- test -->
 		<class>sk.qbsw.core.security.test.util.domain.CLicenseFree</class>
 

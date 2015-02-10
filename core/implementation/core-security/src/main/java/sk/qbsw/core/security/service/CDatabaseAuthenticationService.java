@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -32,15 +31,15 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.11.8
+ * @version 1.12.2
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
-public class CDatabaseAuthenticationService extends AService implements IAuthenticationService
+public class CDatabaseAuthenticationService extends AAuthenticationService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * LOGGER for authentication messages logging
 	 */
@@ -178,8 +177,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	@Transactional (readOnly = true)
 	private CUser loginWithUnit (String login, String password, CUnit unit) throws CSecurityException
 	{
-		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[]{login, unit});
-		
+		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
+
 		CUser user;
 
 		try
@@ -192,7 +191,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		}
 
 		if (user == null)
-		{	
+		{
 			throw new CInvalidUserException("User not recognised");
 		}
 		else
@@ -218,8 +217,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 				throw new CUserDisabledException("");
 			}
 		}
-		
-		LOGGER.debug("user with login {} and unit{} found. ", new Object[]{login, unit});
+
+		LOGGER.debug("user with login {} and unit{} found. ", new Object[] {login, unit});
 
 		return user;
 	}

@@ -40,7 +40,7 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.12.1
+ * @version 1.12.2
  * @since 1.0.0
  */
 @Service ("cUserService")
@@ -452,6 +452,24 @@ public class CUserService extends AService implements IUserService
 	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException, CBusinessException
 	{
 		setUserToGroup(user, group, null);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUserService#checksUserExist(java.lang.String)
+	 */
+	@Override
+	@Transactional (readOnly = true)
+	public boolean checksUserExist (String login)
+	{
+		try
+		{
+			userDao.findByLogin(login);
+			return true;
+		}
+		catch (NoResultException ex)
+		{
+			return false;
+		}
 	}
 
 	/**
