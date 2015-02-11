@@ -80,7 +80,6 @@ public class CCommonWindow extends CAppWindow
 	/**
 	 * nothing to do.
 	 */
-	@SuppressWarnings ("unchecked")
 	public void addListener (IApplicationEventListener listener)
 	{
 	}
@@ -124,7 +123,6 @@ public class CCommonWindow extends CAppWindow
 	/**
 	 * nothing to do.
 	 */
-	@SuppressWarnings ("unchecked")
 	public void removeListener (IApplicationEventListener listener)
 	{
 	}

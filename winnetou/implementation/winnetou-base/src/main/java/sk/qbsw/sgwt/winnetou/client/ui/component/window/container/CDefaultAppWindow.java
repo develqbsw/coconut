@@ -206,7 +206,6 @@ public class CDefaultAppWindow extends CAppWindow implements IWindow
 		super.initComponents();
 	}
 
-	@SuppressWarnings ("unchecked")
 	public void removeListener (IApplicationEventListener listener)
 	{
 		listeners.remove(listener);

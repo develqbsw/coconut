@@ -1,9 +1,9 @@
 package sk.qbsw.sgwt.winnetou.junit;
 
-import junit.framework.Assert;
+//import junit.framework.Assert;
 import junit.framework.TestCase;
-import sk.qbsw.sgwt.winnetou.client.model.menu.CMenu;
-import sk.qbsw.sgwt.winnetou.server.service.menu.CMenuParserServiceImpl;
+//import sk.qbsw.sgwt.winnetou.client.model.menu.CMenu;
+//import sk.qbsw.sgwt.winnetou.server.service.menu.CMenuParserServiceImpl;
 
 public class CMenuParseTest extends TestCase
 {

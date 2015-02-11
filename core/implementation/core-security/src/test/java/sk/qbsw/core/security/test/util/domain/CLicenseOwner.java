@@ -18,6 +18,7 @@ import sk.qbsw.core.security.model.jmx.CLicensingRules;
  * @version 1.0.0
  * @since 1.0.0
  */
+@SuppressWarnings("serial")
 @Entity
 @DiscriminatorValue ("owner")
 public class CLicenseOwner extends CLicense<CLicensingRules>

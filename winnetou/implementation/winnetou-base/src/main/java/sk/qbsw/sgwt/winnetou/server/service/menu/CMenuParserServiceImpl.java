@@ -39,10 +39,6 @@ public class CMenuParserServiceImpl implements IMenuParserService
 	final static String ROLE_DELIMITER = ",";
 
 	/**
-	 * Serial UID
-	 */
-	private static final long serialVersionUID = 8607057747092831866L;
-	/**
 	 * XML_ATTRIBUTE_HINT = "hint"
 	 */
 	final static String XML_ATTRIBUTE_HINT = "hint";

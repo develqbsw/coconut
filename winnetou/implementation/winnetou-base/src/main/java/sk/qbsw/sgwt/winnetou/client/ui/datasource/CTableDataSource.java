@@ -36,18 +36,19 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
  */
 public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataSource
 {
+
 	private T service;
 	private IBrowserFilter browserFilter;
 
 	/**
 	 * Sets interface to browser filter
 	 */
-	public void setBrowserFilter (IBrowserFilter browserFilter)
+	public void setBrowserFilter(IBrowserFilter browserFilter)
 	{
 		this.browserFilter = browserFilter;
 	}
 
-	public CTableDataSource (T service)
+	public CTableDataSource(T service)
 	{
 		this.service = service;
 	}
@@ -62,7 +63,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 	 * 
 	 * @param tableServiceAsync
 	 */
-	public void prepareFields (ITableColumnDefinition columnDefinition)
+	public void prepareFields(ITableColumnDefinition columnDefinition)
 	{
 		ListGridField[] columns = columnDefinition.getColumns();
 
@@ -108,7 +109,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 				addField(field);
 			}
 		}
-		
+
 		if (columnDefinition.getId() != null)
 		{
 			getField(columnDefinition.getId()).setPrimaryKey(true);
@@ -116,7 +117,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 	}
 
 	@Override
-	protected void executeFetch (final String requestId, final DSRequest request, final DSResponse response)
+	protected void executeFetch(final String requestId, final DSRequest request, final DSResponse response)
 	{
 		GWT.log("Start: " + request.getStartRow() + " End: " + request.getEndRow(), null);
 
@@ -131,14 +132,15 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 
 			this.service.fetch(request.getStartRow(), request.getEndRow(), criteria, new AsyncCallback<CFetchResult<CTableRow>>()
 			{
-				public void onFailure (Throwable caught)
+
+				public void onFailure(Throwable caught)
 				{
 					response.setStatus(RPCResponse.STATUS_FAILURE);
 					processResponse(requestId, response);
 					CClientExceptionPublisher.publish(caught);
 				}
 
-				public void onSuccess (CFetchResult<CTableRow> result)
+				public void onSuccess(CFetchResult<CTableRow> result)
 				{
 
 					ListGridRecord[] list = new ListGridRecord[result.getFetchedList().size()];
@@ -168,7 +170,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 	}
 
 	@Override
-	protected void executeAdd (final String requestId, final DSRequest request, final DSResponse response)
+	protected void executeAdd(final String requestId, final DSRequest request, final DSResponse response)
 	{
 		/*
 		 * // Retrieve record which should be added. JavaScriptObject data =
@@ -188,7 +190,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 	}
 
 	@Override
-	protected void executeUpdate (final String requestId, final DSRequest request, final DSResponse response)
+	protected void executeUpdate(final String requestId, final DSRequest request, final DSResponse response)
 	{
 		/*
 		 * // Retrieve record which should be updated. JavaScriptObject data =
@@ -211,7 +213,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 	}
 
 	@Override
-	protected void executeRemove (final String requestId, final DSRequest request, final DSResponse response)
+	protected void executeRemove(final String requestId, final DSRequest request, final DSResponse response)
 	{
 		/*
 		 * // Retrieve record which should be removed. JavaScriptObject data =
@@ -232,7 +234,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 		 */
 	}
 
-	private static void copyValues (CTableRow from, ListGridRecord to)
+	private static void copyValues(CTableRow from, ListGridRecord to)
 	{
 		for (String columnName : from.keySet())
 		{
@@ -260,14 +262,7 @@ public class CTableDataSource<T extends ITableServiceAsync> extends AGwtRpcDataS
 				}
 				else
 				{
-					if (object != null)
-					{
-						to.setAttribute(columnName, object.toString());
-					}
-					else
-					{
-						to.setAttribute(columnName, (String) null);
-					}
+					to.setAttribute(columnName, object.toString());
 				}
 			}
 			else

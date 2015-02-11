@@ -277,7 +277,6 @@ public abstract class AScreenVertical extends VLayout implements IScreen, IContr
 	 * @param listener
 	 *            listener to be removed
 	 */
-	@SuppressWarnings ("unchecked")
 	public void removeListener (IApplicationEventListener listener)
 	{
 		applicationEventsListeners.remove(listener);

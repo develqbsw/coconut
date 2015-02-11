@@ -173,7 +173,6 @@ public class APanelVertical extends VLayout implements IPanel, IUIComponent
 	 * @param listener
 	 *            listener to be removed
 	 */
-	@SuppressWarnings("unchecked")
 	public void removeListener(IApplicationEventListener listener)
 	{
 		applicationEventsListeners.remove(listener);

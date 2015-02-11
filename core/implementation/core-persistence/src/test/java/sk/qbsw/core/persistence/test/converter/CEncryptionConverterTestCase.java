@@ -3,7 +3,6 @@ package sk.qbsw.core.persistence.test.converter;
 import java.io.UnsupportedEncodingException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sk.qbsw.core.persistence.converter.CEncryptionConverter;

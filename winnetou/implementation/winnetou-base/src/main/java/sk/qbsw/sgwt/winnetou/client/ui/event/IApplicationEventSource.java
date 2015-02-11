@@ -15,7 +15,6 @@ public interface IApplicationEventSource
 	 * @param listener
 	 *            listener to be added
 	 */
-	@SuppressWarnings ("unchecked")
 	void addListener (IApplicationEventListener listener);
 
 	/**
@@ -29,7 +28,6 @@ public interface IApplicationEventSource
 	 * @param listener
 	 *            listener to be removed
 	 */
-	@SuppressWarnings ("unchecked")
 	void removeListener (IApplicationEventListener listener);
 
 	/**

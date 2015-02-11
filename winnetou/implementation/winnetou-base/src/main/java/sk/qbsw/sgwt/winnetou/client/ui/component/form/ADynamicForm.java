@@ -58,7 +58,6 @@ public abstract class ADynamicForm extends DynamicForm implements IUIComponent, 
 	 * @param listener
 	 *            listener to be removed
 	 */
-	@SuppressWarnings("unchecked")
 	public void removeListener(IApplicationEventListener listener)
 	{
 		applicationEventsListeners.remove(listener);
@@ -70,7 +69,6 @@ public abstract class ADynamicForm extends DynamicForm implements IUIComponent, 
 	 * @param listener
 	 *            listener to be added
 	 */
-	@SuppressWarnings("unchecked")
 	public void addListener(IApplicationEventListener listener)
 	{
 		applicationEventsListeners.add(listener);

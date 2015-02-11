@@ -1,12 +1,10 @@
 package sk.qbsw.core.security.test.ocsp.validator;
 
+import static junit.framework.Assert.assertTrue;
+
 import java.io.InputStream;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.logging.Logger;
-
-import sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +14,7 @@ import sk.qbsw.core.security.service.ocsp.COCSPValidationResult;
 import sk.qbsw.core.security.service.ocsp.EOCSPResponseStatus;
 import sk.qbsw.core.security.service.ocsp.IOCSPCertValidator;
 
-import static junit.framework.Assert.*;
+import sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
 
 /**
  * Test for basic behavipur for OCSP implementatin from Bouncy castle

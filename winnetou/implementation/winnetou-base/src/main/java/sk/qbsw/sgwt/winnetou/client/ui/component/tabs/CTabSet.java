@@ -96,7 +96,6 @@ public class CTabSet extends TabSet implements IApplicationEventSource
 		applicationEventsListeners.clear();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void removeListener(IApplicationEventListener listener)
 	{
 		applicationEventsListeners.remove(listener);

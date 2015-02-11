@@ -171,7 +171,6 @@ public class APanelHorizontal extends HLayout implements IPanel, IUIComponent
 	 * @param listener
 	 *            listener to be removed
 	 */
-	@SuppressWarnings("unchecked")
 	public void removeListener(IApplicationEventListener listener)
 	{
 		applicationEventsListeners.remove(listener);

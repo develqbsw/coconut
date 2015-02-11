@@ -94,7 +94,6 @@ public class CTab extends Tab implements IApplicationEventSource
 		applicationEventsListeners.clear();
 	}
 
-	@SuppressWarnings ("unchecked")
 	public void removeListener (IApplicationEventListener listener)
 	{
 		applicationEventsListeners.remove(listener);

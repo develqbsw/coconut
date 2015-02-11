@@ -270,7 +270,6 @@ public abstract class AScreenHorizontal extends HLayout implements IScreen, ICon
 	 * @param listener
 	 *            listener to be removed
 	 */
-	@SuppressWarnings ("unchecked")
 	public void removeListener (IApplicationEventListener listener)
 	{
 		applicationEventsListeners.remove(listener);
