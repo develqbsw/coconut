@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
+import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -46,9 +47,10 @@ import sk.qbsw.core.security.service.ldap.ILdapProvider;
  * @version 1.12.2
  * @since 1.6.0
  */
-@Service (value = "ldapAuthenticationService")
-public class CLdapAuthenticationService extends AAuthenticationService implements IAuthenticationService
+@Service(value = "ldapAuthenticationService")
+public class CLdapAuthenticationService extends AService implements IAuthenticationService
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -87,14 +89,13 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
+	@Transactional(readOnly = true)
+	public boolean canLogin(String login, @CNotLogged @CNotAuditLogged String password, CRole role)
 	{
 		try
 		{
 			return login(login, password, role) != null;
-		}
-		catch (CSecurityException ex)
+		} catch (CSecurityException ex)
 		{
 			return false;
 		}
@@ -104,8 +105,8 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional(readOnly = true)
+	public CUser login(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginUser(login, password, null);
 	}
@@ -114,8 +115,8 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
+	@Transactional(readOnly = true)
+	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
 	{
 		CUser user = loginUser(login, password, null);
 
@@ -132,8 +133,8 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	@Transactional(readOnly = true)
+	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		CUnit databaseUnit = unitDao.findByName(unit);
 		CUser user = null;
@@ -166,7 +167,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	private CUser loginUser (String login, String password, CUnit unit) throws CSecurityException
+	private CUser loginUser(String login, String password, CUnit unit) throws CSecurityException
 	{
 		//gets user from ldap - all information in this object are now from ldap
 		CUser user;
@@ -174,8 +175,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 		try
 		{
 			user = userDao.findByLogin(login, unit);
-		}
-		catch (NoResultException nre)
+		} catch (NoResultException nre)
 		{
 			user = null;
 		}
@@ -183,7 +183,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 		if (user != null)
 		{
 			// check if user is disabled
-			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
+			if ((user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
 			{
 				throw new CUserDisabledException("");
 			}
@@ -212,7 +212,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @return true, if successful
 	 * @throws CSecurityException the configuration is corrupted
 	 */
-	private boolean authenticateUser (String login, String password) throws CSecurityException
+	private boolean authenticateUser(String login, String password) throws CSecurityException
 	{
 		//the exceptions thrown in ldap authentication process
 		List<Throwable> exceptions = new ArrayList<Throwable>();
@@ -228,8 +228,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 					logger.debug("User " + login + " was authenticated by LDAP in tree " + userSearchDn);
 
 					return true;
-				}
-				catch (Throwable ex)
+				} catch (Throwable ex)
 				{
 					exceptions.add(ex);
 					continue;
@@ -253,8 +252,8 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = false)
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional(readOnly = false)
+	public void changeEncryptedPassword(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		CUser user = userDao.findByLogin(login);
 
@@ -276,10 +275,10 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 			{
 				//add auth data
 				Map<String, byte[][]> attributes = new HashMap<String, byte[][]>();
-				attributes.put("objectClass", new byte[][] {data.getUserObjectClass().getBytes()});
-				attributes.put("cn", new byte[][] {login.getBytes()});
-				attributes.put("sn", new byte[][] {user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes()});
-				attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm())});
+				attributes.put("objectClass", new byte[][] { data.getUserObjectClass().getBytes() });
+				attributes.put("cn", new byte[][] { login.getBytes() });
+				attributes.put("sn", new byte[][] { user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes() });
+				attributes.put("userPassword", new byte[][] { PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm()) });
 
 				//add entry
 				ldapProvider.addEntry(userDn, attributes);
@@ -290,8 +289,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 			try
 			{
 				authParams = authenticationParamsDao.findByUserId(user.getId());
-			}
-			catch (NoResultException ex)
+			} catch (NoResultException ex)
 			{
 				//create new because user has no auth params
 				authParams = new CAuthenticationParams();
@@ -301,8 +299,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 				authParams.setPin(null);
 				authenticationParamsDao.save(authParams);
 			}
-		}
-		catch (LdapInvalidAttributeValueException ex)
+		} catch (LdapInvalidAttributeValueException ex)
 		{
 			logger.error("The user password change failed", ex);
 			if (ex.getResultCode().equals(ResultCodeEnum.CONSTRAINT_VIOLATION))
@@ -313,19 +310,18 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 			{
 				throw new CSecurityException("There is a invalid input value");
 			}
-		}
-		catch (Throwable ex)
+		} catch (Throwable ex)
 		{
 			logger.error("The user password change failed", ex);
 			throw new CSecurityException("Password change failed");
 		}
 	}
-	
+
 	/**
 	 * Method not implemented.
 	 */
 	@Override
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	public void changeEncryptedPassword(String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}
@@ -334,16 +330,16 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * Method not implemented.
 	 */
 	@Override
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	public void changePlainPassword(String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Method not implemented.
 	 */
 	@Override
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	public void changePlainPassword(String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}
@@ -352,15 +348,15 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeLogin(java.lang.Long, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = false)
-	public void changeLogin (Long userId, String login) throws CSecurityException
+	@Transactional(readOnly = false)
+	public void changeLogin(Long userId, String login) throws CSecurityException
 	{
 		CUser user = userDao.findById(userId);
 
 		//TODO: create user search
 		//create dn
 		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDns()[0]).toString();
-		
+
 		//TODO: BAD !!! LDAP injection
 		String newRdn = new StringBuilder().append("cn=").append(login).toString();
 
@@ -372,8 +368,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 				//change login
 				ldapProvider.renameEntry(userDn, newRdn, true);
 			}
-		}
-		catch (LdapException ex)
+		} catch (LdapException ex)
 		{
 			logger.error("The user password change failed", ex);
 			throw new CSecurityException("The login cannot be changed");
@@ -388,7 +383,7 @@ public class CLdapAuthenticationService extends AAuthenticationService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
 	 */
 	@Override
-	public boolean isOnline ()
+	public boolean isOnline()
 	{
 		return ldapProvider.isConnected();
 	}

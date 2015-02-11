@@ -15,9 +15,11 @@
 	<bean id="authenticationService"
 		class="sk.qbsw.core.security.service.CLdapAuthenticationService" />
 
-	<bean
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="authenticationService" />
+	<bean id="loginBlockingService"
+		class="sk.qbsw.core.security.service.CLoginBlockingService" />
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="loginBlockingService" />
 		<property name="targetMethod" value="init" />
 		<property name="arguments">
 			<list>

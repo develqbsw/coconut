@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.10.5
  */
 @Service (value = "mixedAuthenticationService")
-public class CMixedAuthenticationService extends AAuthenticationService implements IAuthenticationService
+public class CMixedAuthenticationService extends CLoginBlockingService implements IAuthenticationService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
