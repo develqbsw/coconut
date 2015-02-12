@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.joda.time.DateTime;
 
-import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 

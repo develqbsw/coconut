@@ -6,7 +6,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.service.IAuthenticationService;
 

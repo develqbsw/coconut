@@ -9,6 +9,7 @@ import java.security.InvalidParameterException;
 import org.junit.Test;
 
 import sk.qbsw.core.base.encryption.CAESCryptoTool;
+import sk.qbsw.core.base.exception.CSecurityException;
 
 /**
  * The Class CAESCryptoToolTestCase.
@@ -27,7 +28,7 @@ public class CAESCryptoToolTestCase {
 	 * @throws UnsupportedEncodingException the unsupported encoding exception
 	 */
 	@Test
-	public void testEncryptionDecryption() throws UnsupportedEncodingException {
+	public void testEncryptionDecryption() throws UnsupportedEncodingException, CSecurityException {
 		CAESCryptoTool tool = new CAESCryptoTool();
 		tool.init(CAESCryptoTool.generateKey("this is our key"));
 
@@ -41,7 +42,7 @@ public class CAESCryptoToolTestCase {
 	 * Test key generator for duplicity of generated key.
 	 */
 	@Test
-	public void testKeyGenerator() {
+	public void testKeyGenerator() throws CSecurityException {
 		String key1 = CAESCryptoTool.generateKey("this is our key");
 		String key2 = CAESCryptoTool.generateKey("this is our key");
 
@@ -54,7 +55,7 @@ public class CAESCryptoToolTestCase {
 	 * @throws UnsupportedEncodingException the unsupported encoding exception
 	 */
 	@Test
-	public void testSettingKey() throws UnsupportedEncodingException {
+	public void testSettingKey() throws UnsupportedEncodingException, CSecurityException {
 		byte[] key = "0123456789abcdef".getBytes();
 		String plain = "TestMessage";
 
@@ -75,7 +76,7 @@ public class CAESCryptoToolTestCase {
 	 * @throws UnsupportedEncodingException the unsupported encoding exception
 	 */
 	@Test(expected = InvalidParameterException.class)
-	public void testWrongInput() {
+	public void testWrongInput() throws CSecurityException {
 		byte[] key = "0123456789abcdef".getBytes();
 		String plain = "";
 
@@ -96,7 +97,7 @@ public class CAESCryptoToolTestCase {
 	 * @throws UnsupportedEncodingException the unsupported encoding exception
 	 */
 	@Test(expected = InvalidParameterException.class)
-	public void testNullInput() {
+	public void testNullInput() throws CSecurityException {
 		byte[] key = "0123456789abcdef".getBytes();
 
 		CAESCryptoTool tool = new CAESCryptoTool();

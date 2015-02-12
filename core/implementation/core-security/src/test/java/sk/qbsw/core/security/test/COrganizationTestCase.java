@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.test.util.CDataGenerator;

@@ -1,5 +1,7 @@
 package sk.qbsw.core.base.encryption;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+
 /**
  * The Interface for Encryptor.
  *
@@ -18,5 +20,5 @@ public interface IEncryptor<P, C> {
 	 * @param plain the plain text
 	 * @return the cipher
 	 */
-	public C encrypt(P plain);
+	public C encrypt(P plain) throws CSecurityException;
 }

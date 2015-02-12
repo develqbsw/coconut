@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;

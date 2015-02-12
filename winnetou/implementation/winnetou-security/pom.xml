@@ -37,6 +37,14 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw</groupId>
+			<artifactId>core-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw</groupId>
+			<artifactId>core-persistence</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw</groupId>
 			<artifactId>winnetou-base</artifactId>
 		</dependency>
 	</dependencies>

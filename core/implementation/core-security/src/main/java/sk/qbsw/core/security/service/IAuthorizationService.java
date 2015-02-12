@@ -2,7 +2,7 @@ package sk.qbsw.core.security.service;
 
 import java.io.Serializable;
 
-import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 
 /**

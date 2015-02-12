@@ -5,9 +5,9 @@ package sk.qbsw.core.base.exception;
  * 
  * @author Dalibor Rak
  * @version 1.12.0
- * @since 1.12.0
+ * @since 1.0.0
  */
-public class CSecurityException extends CSystemException {
+public class CSecurityException extends CBusinessException {
 
 	/**
 	 * 
@@ -32,5 +32,16 @@ public class CSecurityException extends CSystemException {
 	public CSecurityException(String message, Throwable th)
 	{
 		super(message, th);
+	}
+
+	/**
+	 * Instantiates a new c security exception.
+	 *
+	 * @param message the message of security exception
+	 * @param errorCode the error code of the message
+	 */
+	public CSecurityException(String message, String errorCode)
+	{
+		super(message, errorCode);
 	}
 }

@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.exception;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+
 /**
  * Wrong password exception.
  * 

@@ -1,8 +1,8 @@
 package sk.qbsw.sgwt.winnetou.security.client;
 
-import sk.qbsw.sgwt.winnetou.security.client.ui.localization.CClientExceptionMessages;
-
 import com.google.gwt.core.client.EntryPoint;
+
+import sk.qbsw.sgwt.winnetou.security.client.ui.localization.CClientExceptionMessages;
 
 
 /**

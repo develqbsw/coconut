@@ -9,6 +9,7 @@ import org.apache.commons.codec.binary.Base64;
 import sk.qbsw.core.base.encryption.CAESCryptoTool;
 import sk.qbsw.core.base.encryption.IDecryptor;
 import sk.qbsw.core.base.encryption.IEncryptor;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 
 /**
@@ -41,7 +42,7 @@ public class CEncryptionConverter implements AttributeConverter<String, String> 
 	 */
 	@Override
 	public String convertToDatabaseColumn(String attribute) {
-		if (attribute == null || attribute.length() == 0){
+		if (attribute == null || attribute.length() == 0) {
 			return attribute;
 		}
 
@@ -49,6 +50,8 @@ public class CEncryptionConverter implements AttributeConverter<String, String> 
 			return Base64.encodeBase64String(encryptor.encrypt(attribute.getBytes("UTF-8")));
 		} catch (UnsupportedEncodingException e) {
 			throw new CSystemException("Cannot convert value for encryption.", e);
+		} catch (CSecurityException e) {
+			throw new CSystemException("Cannot encrypt value", e);
 		}
 	}
 
@@ -57,7 +60,7 @@ public class CEncryptionConverter implements AttributeConverter<String, String> 
 	 */
 	@Override
 	public String convertToEntityAttribute(String dbData) {
-		if (dbData == null || dbData.length() == 0){
+		if (dbData == null || dbData.length() == 0) {
 			return dbData;
 		}
 
@@ -66,6 +69,8 @@ public class CEncryptionConverter implements AttributeConverter<String, String> 
 			return new String(decryptor.decrypt(cipher), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new CSystemException("Cannot convert encrypted value.", e);
+		} catch (CSecurityException e) {
+			throw new CSystemException("Cannot decrypt value", e);
 		}
 	}
 

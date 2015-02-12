@@ -1,7 +1,7 @@
 package sk.qbsw.core.security.test.performance.task;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**

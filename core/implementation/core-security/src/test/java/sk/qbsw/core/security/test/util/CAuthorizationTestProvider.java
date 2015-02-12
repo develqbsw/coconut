@@ -2,7 +2,7 @@ package sk.qbsw.core.security.test.util;
 
 import org.springframework.stereotype.Component;
 
-import sk.qbsw.core.security.exception.CSecurityException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.service.IAuthorizationService;
 

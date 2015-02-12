@@ -10,10 +10,10 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.dao.IUserDao;
-import sk.qbsw.core.security.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;

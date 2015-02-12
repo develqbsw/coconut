@@ -1,5 +1,7 @@
 package sk.qbsw.core.base.encryption;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+
 /**
  * The Interface for decryptor.
  *
@@ -18,5 +20,5 @@ public interface IDecryptor<P, C> {
 	 * @param cipher the cipher
 	 * @return the p
 	 */
-	public P decrypt(C cipher);
+	public P decrypt(C cipher) throws CSecurityException;
 }

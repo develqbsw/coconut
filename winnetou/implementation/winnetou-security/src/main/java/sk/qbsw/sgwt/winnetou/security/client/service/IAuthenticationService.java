@@ -1,11 +1,11 @@
 package sk.qbsw.sgwt.winnetou.security.client.service;
 
-import sk.qbsw.sgwt.winnetou.client.exception.CBusinessException;
-import sk.qbsw.sgwt.winnetou.client.model.security.CLoggedUserRecord;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
+import sk.qbsw.sgwt.winnetou.client.exception.CBusinessException;
+import sk.qbsw.sgwt.winnetou.client.model.security.CLoggedUserRecord;
 
 @RemoteServiceRelativePath ("rpc/authenticate")
 public interface IAuthenticationService extends RemoteService

@@ -1,7 +1,7 @@
 package sk.qbsw.core.security.service;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.core.security.exception.CSecurityException;
 
 /**
  * The Interface ILoginBlockingService.

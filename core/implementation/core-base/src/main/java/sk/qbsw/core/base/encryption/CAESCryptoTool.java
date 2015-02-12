@@ -77,10 +77,11 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.base.encryption.IDecryptor#decrypt(java.lang.Object)
 	 */
-	public byte[] decrypt(byte[] cipherData) {
+	@Override
+	public byte[] decrypt(byte[] cipherData) throws CSecurityException {
 		if (cipherData == null || cipherData.length == 0)
 			throw new InvalidParameterException("CipherData cannot be null");
-		
+
 		try {
 			Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
 			return cipher.doFinal(cipherData);
@@ -92,7 +93,8 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.base.encryption.IEncryptor#encrypt(java.lang.Object)
 	 */
-	public byte[] encrypt(byte[] plain) {
+	@Override
+	public byte[] encrypt(byte[] plain) throws CSecurityException {
 		if (plain == null || plain.length == 0)
 			throw new InvalidParameterException("Plain cannot be null");
 
@@ -131,7 +133,7 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 * @param keyPart keyPart for generating message
 	 * @return the key encoded in Base64
 	 */
-	public static String generateKey(String keyPart) {
+	public static String generateKey(String keyPart) throws CSecurityException {
 		try {
 			if (keyPart == null || keyPart.length() < 5)
 			{

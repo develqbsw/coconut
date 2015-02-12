@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.exception;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+
 /**
  * Incorrect password format exception - the password doesn't match pattern.
  *
