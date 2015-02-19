@@ -18,7 +18,6 @@ import sk.qbsw.core.security.model.domain.CLicense;
  */
 public interface ILicenseDao extends Serializable, IEntityDao<Long, CLicense<?>>
 {
-
 	/**
 	 * Find by organization id.
 	 *

@@ -205,7 +205,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 			try
 			{
-				userAuthParams = authenticationParamsDao.findValidByUserId(user.getId());
+				userAuthParams = authenticationParamsDao.findOneValidByUserId(user.getId());
 			} catch (NoResultException ex)
 			{
 				LOGGER.debug("The authentication params of user with login {} are invalid", user.getLogin());
@@ -343,7 +343,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		CAuthenticationParams authParams = null;
 		try
 		{
-			authParams = authenticationParamsDao.findByUserId(user.getId());
+			authParams = authenticationParamsDao.findOneByUserId(user.getId());
 		} catch (NoResultException ex)
 		{
 			//create new because user has no auth params

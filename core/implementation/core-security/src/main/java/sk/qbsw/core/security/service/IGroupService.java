@@ -48,4 +48,13 @@ public interface IGroupService extends Serializable
 	 * @return
 	 */
 	List<CGroup> getByUnitUser (CUnit unit, CUser user);
+
+	/**
+	 * Gets the by code and unit.
+	 *
+	 * @param code the code
+	 * @param unit the unit
+	 * @return the by code and unit
+	 */
+	List<CGroup> getByCodeAndUnit (String code, CUnit unit);
 }

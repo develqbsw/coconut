@@ -131,7 +131,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	@Transactional
 	public boolean isLoginBlocked(String login, String ip) throws CSystemException
 	{
-		if (blockedLoginJpaDao.countCurrentlyBlocked(login, ip) > 0)
+		if (blockedLoginJpaDao.countCurrentlyBlockedByLoginAndIp(login, ip) > 0)
 		{
 			return true;
 		}

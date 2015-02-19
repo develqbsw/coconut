@@ -113,7 +113,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	@Transactional (readOnly = true)
 	public List<COrganization> getOrganizations (String name)
 	{
-		return organizationDao.findAllByName(name);
+		return organizationDao.findByName(name);
 	}
 
 	/* (non-Javadoc)

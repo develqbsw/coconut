@@ -9,12 +9,16 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.model.domain.COrganization;
+import sk.qbsw.core.security.model.domain.QCGroup;
+import sk.qbsw.core.security.model.domain.QCOrganization;
 
 /**
- * The Class CSectionJpaDao.
+ * The organization jpa dao.
  *
  * @author rosenberg
  * @author Tomas Lauro
@@ -35,46 +39,34 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 	{
 		super(COrganization.class);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findByName(java.lang.String)
 	 */
 	@Override
-	public COrganization findByName (String name)
+	public List<COrganization> findByName (String name)
 	{
-		String strQuery = "from COrganization where name = :name";
-
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("name", name);
-		return (COrganization) query.getSingleResult();
+		QCOrganization qOrganization = QCOrganization.cOrganization; 
+		
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qOrganization).where(qOrganization.name.eq(name)).list(qOrganization);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findAllByName(java.lang.String)
-	 */
-	@Override
-	@SuppressWarnings ("unchecked")
-	public List<COrganization> findAllByName (String name)
-	{
-		String strQuery = "from COrganization where name = :name";
-
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("name", name);
-
-		return query.getResultList();
-	}
-
-	/* (non-Javadoc)
+	/**
+	 * Get all organizations order by name.
+	 *
+	 * @return the list of organizations
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
 	 */
 	@Override
-	@SuppressWarnings ("unchecked")
 	public List<COrganization> findAll ()
 	{
-		String strQuery = "from COrganization order by name";
-
-		Query query = getEntityManager().createQuery(strQuery);
-		return (List<COrganization>) query.getResultList();
+		QCOrganization qOrganization = QCOrganization.cOrganization; 
+		
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qOrganization).orderBy(qOrganization.name.asc()).list(qOrganization);
 	}
 
 	/* (non-Javadoc)

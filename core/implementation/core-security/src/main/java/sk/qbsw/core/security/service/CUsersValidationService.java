@@ -24,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Tomas Lauro
  * 
- * @version 1.12.1
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Service ("cUsersValidationService")
@@ -52,15 +52,24 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	@Override
 	public Boolean isOrganizationExists (COrganization organization)
 	{
-		Boolean exists = false;
-
-		COrganization organizationOld = organizationDao.findByNameNull(organization.getName());
-		if (organizationOld != null && ! (organizationOld.getId().equals(organization.getId())))
+		//checks if there is an organization with id exists
+		if (organization.getId() != null)
 		{
-			exists = true;
+			COrganization persistedOrganization = organizationDao.findById(organization.getId());
+			if (persistedOrganization != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-
-		return exists;
+		else
+		{
+			//checks if there is an organization with given name
+			return isOrganizationExists(organization.getName());
+		}
 	}
 
 	/* (non-Javadoc)
@@ -115,15 +124,22 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	@Override
 	public Boolean isOrganizationExists (String name)
 	{
-		Boolean exists = false;
-
-		COrganization organizationOld = organizationDao.findByNameNull(name);
-		if (organizationOld != null)
+		if (name != null)
 		{
-			exists = true;
+			List<COrganization> persistedOrganizations = organizationDao.findByName(name);
+			if (persistedOrganizations != null && persistedOrganizations.isEmpty() == false)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-
-		return exists;
+		else
+		{
+			return false;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -161,7 +177,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	public Boolean isUserExistsPin (CUser userOld)
 	{
 		Boolean exists = false;
-		CAuthenticationParams oldUserAuthParams = authParamsDao.findByUserId(userOld.getId());
+		CAuthenticationParams oldUserAuthParams = authParamsDao.findOneByUserId(userOld.getId());
 
 		try
 		{

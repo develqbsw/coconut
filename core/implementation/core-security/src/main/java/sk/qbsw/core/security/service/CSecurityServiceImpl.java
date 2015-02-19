@@ -29,7 +29,9 @@ import sk.qbsw.core.security.model.jmx.CLicensingRules;
  * The Class CSecurityServiceImpl.
  *
  * @author Dalibor Rak
- * @version 1.2.1
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Service (value = "securityService")
@@ -205,7 +207,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	@Transactional (readOnly = false)
 	public List<CGroup> getAvailableGroups ()
 	{
-		return groupDao.findAllByFlagSystem(Boolean.FALSE);
+		return groupDao.findByFlagSystem(Boolean.FALSE);
 	}
 
 
@@ -250,7 +252,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	public boolean isLoginFree (String login, Long id)
 	{
 		CUser user;
-		
+
 		try
 		{
 			user = userDao.findByLogin(login);
@@ -275,17 +277,21 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param id the pk id
 	 * @return true, if is org name free
 	 * @see sk.qbsw.core.security.service.ISecurityService#isOrgNameFree(java.lang.String, java.lang.Long)
+	 * @deprecated the organization name is no longer unique
 	 */
 	@Transactional (readOnly = true)
 	public boolean isOrgNameFree (String name, Long id)
 	{
-		COrganization organization = orgDao.findByNameNull(name);
+		List<COrganization> organization = orgDao.findByName(name);
 
-		if (organization != null)
+		if (organization != null && organization.isEmpty() == true)
 		{
-			return organization.getId().equals(id);
+			return true;
 		}
-		return true;
+		else
+		{
+			return false;
+		}
 	}
 
 

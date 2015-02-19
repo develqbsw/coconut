@@ -16,7 +16,9 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Service for group management.
  *
  * @author Michal Lacko
- * @version 1.0.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Service ("cGroupService")
@@ -55,10 +57,22 @@ public class CGroupService extends AService implements IGroupService
 	{
 		return groupDao.findByUnit(unit);
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IGroupService#getByUnitUser(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CUser)
+	 */
 	@Override
 	public List<CGroup> getByUnitUser (CUnit unit, CUser user)
 	{
-		return groupDao.findByUnitUser(unit, user);
+		return groupDao.findByUnitAndUser(unit, user);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IGroupService#getByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
+	 */
+	@Override
+	public List<CGroup> getByCodeAndUnit (String code, CUnit unit)
+	{
+		return groupDao.findByCodeAndUnit(code, unit);
 	}
 }

@@ -107,6 +107,20 @@ public class CGroupTestCase
 		groups = groupService.getByUnitUser(unit2, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 	}
+	
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testGetByCodeAndUnit () throws CSecurityException
+	{
+		initTest();
+
+		CUnit unit = unitDao.findByName(CDataGenerator.SECOND_UNIT_CODE);
+
+		List<CGroup> groups = groupService.getByCodeAndUnit(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
+		Assert.assertNotNull(groups);
+		Assert.assertEquals(1, groups.size());
+	}
 
 	/**
 	 * Inits the test.

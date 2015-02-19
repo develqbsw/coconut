@@ -17,12 +17,12 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author rosenberg
  * @author lacko
  * @author Tomas Lauro
- * @version 1.6.0
+ * 
+ * @version 1.13.0
  * @since 1.0.0
  */
 public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 {
-
 	/** The I d_ or g_ admin. */
 	public static Long ID_ORG_ADMIN = 2l;
 
@@ -30,19 +30,19 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	public static Long ID_SYS_ADMIN = 1l;
 
 	/**
-	 * Find all by flag system.
+	 * Find by flag system.
 	 *
 	 * @param flagSystem the flag system
 	 * @return the list
 	 */
-	public List<CGroup> findAllByFlagSystem (boolean flagSystem);
+	List<CGroup> findByFlagSystem (boolean flagSystem);
 
 	/**
-	 * Find groups by code
+	 * Find groups by code ordered by code asc.
 	 *
 	 * @return the list
 	 */
-	public List<CGroup> findByCode (String code);
+	List<CGroup> findByCode (String code);
 
 	/**
 	 * Find groups by code and unit. The roles and units for group are fetched.
@@ -52,7 +52,7 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	 *
 	 * @return the list of groups
 	 */
-	public List<CGroup> findByCode (String code, CUnit unit);
+	List<CGroup> findByCodeAndUnit (String code, CUnit unit);
 
 	/**
 	 * Find groups by unit.
@@ -61,14 +61,14 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	 *
 	 * @return the list of groups
 	 */
-	public List<CGroup> findByUnit (CUnit unit);
+	List<CGroup> findByUnit (CUnit unit);
 
 	/**
-	 * find groups by unit and user (if not null)
-	 * 
-	 * @param unit
-	 * @param user
-	 * @return
+	 * find groups by unit and user (if not null).
+	 *
+	 * @param unit the unit
+	 * @param user the user
+	 * @return the list
 	 */
-	public List<CGroup> findByUnitUser (CUnit unit, CUser user);
+	List<CGroup> findByUnitAndUser (CUnit unit, CUser user);
 }

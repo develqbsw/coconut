@@ -288,7 +288,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 			CAuthenticationParams authParams = null;
 			try
 			{
-				authParams = authenticationParamsDao.findByUserId(user.getId());
+				authParams = authenticationParamsDao.findOneByUserId(user.getId());
 			} catch (NoResultException ex)
 			{
 				//create new because user has no auth params

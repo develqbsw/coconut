@@ -16,12 +16,13 @@ import sk.qbsw.core.security.model.domain.CUser;
  * The Interface IUserService.
  *
  * @author Dalibor Rak
- * @version 1.3.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
  * @since 1.0.0
  */
 public interface ISecurityService extends Serializable
 {
-
 	/**
 	 * Adds the license.
 	 *
@@ -121,6 +122,8 @@ public interface ISecurityService extends Serializable
 	 * @param name the name
 	 * @param id the pk id
 	 * @return true, if is org name free
+	 * 
+	 * @deprecated the organization name is no longer unique
 	 */
 	public boolean isOrgNameFree (String name, Long id);
 

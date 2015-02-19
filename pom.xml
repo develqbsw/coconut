@@ -42,10 +42,13 @@
 		<jetty.version>6.1.25</jetty.version>
 		<postgresql-driver.version>9.0-801.jdbc4</postgresql-driver.version>
 		<mssql-driver.version>4.0</mssql-driver.version>
+		
+		<!-- Querydsl -->
+		<querydsl.version>3.2.0</querydsl.version>
 
 		<!-- UTILS -->
 		<log4j.version>1.2.16</log4j.version>
-		<slf4j.version>1.5.8</slf4j.version>
+		<slf4j.version>1.7.10</slf4j.version>
 		<mockito.version>1.9.5</mockito.version>
 		<xstream.version>1.2.2</xstream.version>
 
@@ -103,6 +106,7 @@
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
 		<maven-source-plugin.version>2.4</maven-source-plugin.version>
+		<maven-apt-plugin.version>0.3.2</maven-apt-plugin.version>
 		<!-- orm lite -->
 		<ormlite-core.version> 4.41 </ormlite-core.version>
 		<ormlite-android.version> 4.41 </ormlite-android.version>
@@ -547,6 +551,19 @@
 				<version>${hibernate-entitymanager.version}</version>
 			</dependency>
 
+			<!-- Query dsl -->
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<version>${querydsl.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-jpa</artifactId>
+				<version>${querydsl.version}</version>
+			</dependency>
+
 			<!-- quartz -->
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
@@ -614,16 +631,16 @@
 				<groupId>com.android.support</groupId>
 				<artifactId>support-v4</artifactId>
 				<version>${android-support.version}</version>
-        <type>aar</type>
+				<type>aar</type>
 			</dependency>
 
 			<!-- Android utils -->
 			<dependency>
-			  <groupId>com.google.android.gms</groupId>
-			  <artifactId>play-services</artifactId>
-			  <version>${google-play-services.version}</version>
-			  <type>aar</type>
-		  </dependency>
+				<groupId>com.google.android.gms</groupId>
+				<artifactId>play-services</artifactId>
+				<version>${google-play-services.version}</version>
+				<type>aar</type>
+			</dependency>
 			<dependency>
 				<groupId>com.google.api.client</groupId>
 				<artifactId>google-api-client-util</artifactId>
