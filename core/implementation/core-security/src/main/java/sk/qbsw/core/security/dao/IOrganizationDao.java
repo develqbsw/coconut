@@ -23,7 +23,7 @@ public interface IOrganizationDao extends Serializable, IEntityDao<Long, COrgani
 	/**
 	 * Find all organizations by name.
 	 *
-	 * @param name the name
+	 * @param name the name (mandatory)
 	 * @return the list of organizations - if there is no result returns empty list
 	 */
 	List<COrganization> findByName (String name);
@@ -31,7 +31,7 @@ public interface IOrganizationDao extends Serializable, IEntityDao<Long, COrgani
 	/**
 	 * Find by name and return NULL if organization not exist - NOT exception.
 	 *
-	 * @param name the name
+	 * @param name the name (mandatory)
 	 * @return organization or null if organization not exist
 	 * 
 	 * @deprecated the organization name is no longer unique

@@ -22,21 +22,23 @@ public interface IBlockedLoginDao extends Serializable, IEntityDao<Long, CBlocke
 	/**
 	 * Find the blocked login by login and ip.
 	 *
-	 * @param login the login
-	 * @param ip the ip
+	 * @param login the login (mandatory)
+	 * @param ip the ip (optional)
 	 * @return the authentication black list record
+	 * 
 	 * @throws CSystemException throws if the login is null
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
-	CBlockedLogin findByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException;
+	CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException;
 
 	/**
 	 * Count currently blocked by login and ip.
 	 *
-	 * @param login the login
-	 * @param ip the ip
+	 * @param login the login (mandatory)
+	 * @param ip the ip (optional)
 	 * @return the count
+	 * 
 	 * @throws CSystemException throws if the login is null
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result

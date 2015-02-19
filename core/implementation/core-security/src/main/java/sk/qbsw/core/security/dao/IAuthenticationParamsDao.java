@@ -26,6 +26,7 @@ public interface IAuthenticationParamsDao extends Serializable, IEntityDao<Long,
 	 *
 	 * @param userId the user id
 	 * @return the authentication params
+	 * 
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
@@ -36,6 +37,7 @@ public interface IAuthenticationParamsDao extends Serializable, IEntityDao<Long,
 	 *
 	 * @param userId the user id
 	 * @return the authentication params
+	 * 
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */

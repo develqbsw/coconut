@@ -27,7 +27,7 @@ public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 	/**
 	 * Find all by user.
 	 *
-	 * @param user the user
+	 * @param user the user (mandatory)
 	 * @return the list
 	 */
 	List<CRole> findByUser (CUser user);
@@ -35,7 +35,7 @@ public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 	/**
 	 * Find by code.
 	 *
-	 * @param user the user
+	 * @param code the code
 	 * @return the list
 	 * 
 	 * @deprecated the code is unique
@@ -45,8 +45,9 @@ public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 	/**
 	 * Find one by code - if there is no result or no unique result throws an exception.
 	 *
-	 * @param code the code
+	 * @param code the code (mandatory)
 	 * @return the role
+	 * 
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */

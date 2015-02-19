@@ -37,7 +37,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @version 1.12.2
  * @since 1.0.0
  */
-@Service(value = "cLoginService")
+@Service (value = "cLoginService")
 public class CDatabaseAuthenticationService extends AService implements IAuthenticationService
 {
 
@@ -76,7 +76,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @param passwordToCheck the password to check
 	 * @throws CInvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPassword(CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
+	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
 	{
 		if (authenticationParams.getPassword() == null || authenticationParams.getPassword().equals(passwordToCheck) == false)
 		{
@@ -91,7 +91,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @param passwordToCheck the password to check
 	 * @throws CInvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPasswordDigest(CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
+	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
 	{
 		if (authenticationParams.getPasswordDigest() == null || digester.checkPassword(passwordToCheck, authenticationParams.getPasswordDigest()) == false)
 		{
@@ -102,13 +102,14 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
-	@Transactional(readOnly = true)
-	public boolean canLogin(String login, @CNotLogged @CNotAuditLogged String password, CRole role)
+	@Transactional (readOnly = true)
+	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
 	{
 		try
 		{
 			return login(login, password, role) != null;
-		} catch (CSecurityException ex)
+		}
+		catch (CSecurityException ex)
 		{
 			return false;
 		}
@@ -117,8 +118,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	/* (non-Javadoc)
 	 * @see sk.qbsw.winnetou.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String)
 	 */
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginWithUnit(login, password, null);
 	}
@@ -126,8 +127,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
 	{
 		CUser user = loginWithUnit(login, password, null);
 
@@ -143,27 +144,30 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
-		CUnit localUnit = unitDao.findByName(unit);
-
-		if (localUnit == null)
+		//checks if the unit exists
+		CUnit localUnit = null;
+		try
+		{
+			localUnit = unitDao.findOneByName(unit);
+		}
+		catch (NoResultException ex)
 		{
 			throw new CSecurityException("There is not a unit with name " + unit);
 		}
+
+		//find user
+		CUser user = loginWithUnit(login, password, localUnit);
+
+		if (user.isInUnit(localUnit) == true)
+		{
+			return user;
+		}
 		else
 		{
-			CUser user = loginWithUnit(login, password, localUnit);
-
-			if (user.isInUnit(localUnit) == true)
-			{
-				return user;
-			}
-			else
-			{
-				throw new CSecurityException("User is not is unit with name " + localUnit.getName());
-			}
+			throw new CSecurityException("User is not is unit with name " + localUnit.getName());
 		}
 	}
 
@@ -179,17 +183,18 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @throws CInvalidUserException the user with given login not found
 	 * @throws CInvalidPasswordException the invalid password
 	 */
-	@Transactional(readOnly = true)
-	private CUser loginWithUnit(String login, String password, CUnit unit) throws CUserDisabledException, CInvalidAuthenticationException, CInvalidUserException, CInvalidPasswordException
+	@Transactional (readOnly = true)
+	private CUser loginWithUnit (String login, String password, CUnit unit) throws CUserDisabledException, CInvalidAuthenticationException, CInvalidUserException, CInvalidPasswordException
 	{
-		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] { login, unit });
+		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
 
 		CUser user;
 
 		try
 		{
 			user = userDao.findByLogin(login, unit);
-		} catch (NoResultException nre)
+		}
+		catch (NoResultException nre)
 		{
 			user = null;
 		}
@@ -206,7 +211,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			try
 			{
 				userAuthParams = authenticationParamsDao.findOneValidByUserId(user.getId());
-			} catch (NoResultException ex)
+			}
+			catch (NoResultException ex)
 			{
 				LOGGER.debug("The authentication params of user with login {} are invalid", user.getLogin());
 				throw new CInvalidAuthenticationException("Authentication params are invalid");
@@ -225,13 +231,13 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			}
 
 			// check if user is disabled
-			if ((user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
+			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
 			{
 				throw new CUserDisabledException("");
 			}
 		}
 
-		LOGGER.debug("user with login {} and unit{} found. ", new Object[] { login, unit });
+		LOGGER.debug("user with login {} and unit{} found. ", new Object[] {login, unit});
 
 		return user;
 	}
@@ -240,8 +246,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void changeEncryptedPassword(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional (readOnly = false)
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		changePassword(login, password, null, null, null, true, false);
 	}
@@ -250,8 +256,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String, org.joda.time.DateTime, org.joda.time.DateTime)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void changeEncryptedPassword(String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	@Transactional (readOnly = false)
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
 	{
 		changePassword(login, password, null, validFrom, validTo, true, true);
 	}
@@ -260,8 +266,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void changePlainPassword(String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional (readOnly = false)
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		changePassword(login, password, email, null, null, true, false);
 	}
@@ -270,8 +276,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, org.joda.time.DateTime, org.joda.time.DateTime)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void changePlainPassword(String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	@Transactional (readOnly = false)
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
 	{
 		changePassword(login, password, email, validFrom, validTo, true, true);
 	}
@@ -280,8 +286,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeLogin(sk.qbsw.core.security.model.domain.CUser)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void changeLogin(Long userId, String login)
+	@Transactional (readOnly = false)
+	public void changeLogin (Long userId, String login)
 	{
 		CUser user = userDao.findById(userId);
 		user.setLogin(login);
@@ -293,14 +299,15 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public boolean isOnline()
+	@Transactional (readOnly = true)
+	public boolean isOnline ()
 	{
 		try
 		{
 			userDao.countAllUsers();
 			return true;
-		} catch (PersistenceException ex)
+		}
+		catch (PersistenceException ex)
 		{
 			return false;
 		}
@@ -318,7 +325,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @param setValidityDate flag indicates the valid dates are going to be overridden
 	 * @throws CSecurityException the c security exception
 	 */
-	private void changePassword(String login, String password, String email, DateTime validFrom, DateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
+	private void changePassword (String login, String password, String email, DateTime validFrom, DateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
 	{
 		CUser user = null;
 
@@ -328,7 +335,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		try
 		{
 			user = userDao.findByLogin(login);
-		} catch (NoResultException ex)
+		}
+		catch (NoResultException ex)
 		{
 			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
 		}
@@ -344,7 +352,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		try
 		{
 			authParams = authenticationParamsDao.findOneByUserId(user.getId());
-		} catch (NoResultException ex)
+		}
+		catch (NoResultException ex)
 		{
 			//create new because user has no auth params
 			authParams = new CAuthenticationParams();

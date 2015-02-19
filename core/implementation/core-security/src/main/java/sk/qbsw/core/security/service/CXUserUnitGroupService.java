@@ -34,7 +34,7 @@ public class CXUserUnitGroupService extends AService implements IXUserUnitGroupS
 	@Transactional (readOnly = true)
 	public List<CXUserUnitGroup> getAll (CUser user, CUnit unit, CGroup group)
 	{
-		return xuugDao.findAll(user, unit, group);
+		return xuugDao.findByUserAndUnitAndGroup(user, unit, group);
 	}
 
 	@Override

@@ -6,6 +6,8 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CUnit;
 
@@ -13,24 +15,27 @@ import sk.qbsw.core.security.model.domain.CUnit;
  * The Interface IUnitDao.
  *
  * @author Tomas Lauro
- * @version 1.7.1
+ * 
+ * @version 1.13.0
  * @since 1.6.0
  */
 public interface IUnitDao extends Serializable, IEntityDao<Long, CUnit>
 {
 	/**
-	 * Find by name. Returns null if there is no result or more than 1 result.
+	 * Find by name - if there is no result throws an exception.
 	 *
-	 * @param name the unit name
-	 * @return the unit or null if there is no result or more than 1 result
+	 * @param name the unit name (mandatory)
+	 * @return the unit
+	 * 
+	 * @throws NoResultException there is no result
 	 */
-	public CUnit findByName (String name);
+	CUnit findOneByName (String name) throws NoResultException;
 
 	/**
 	 * Find all units by user id.
 	 *
-	 * @param userId the user id
+	 * @param userId the user id (mandatory)
 	 * @return the list
 	 */
-	public List<CUnit> findAll (Long userId);
+	List<CUnit> findByUserId (Long userId);
 }

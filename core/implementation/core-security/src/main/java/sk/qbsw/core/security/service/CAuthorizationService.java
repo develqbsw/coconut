@@ -19,7 +19,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * The database authorization service.
  *
  * @author Tomas Lauro
- * @version 1.6.0
+ * 
+ * @version 1.13.0
  * @since 1.6.0
  */
 @Service (value = "authorizationService")
@@ -55,7 +56,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 		}
 
 		if (user == null)
-		{	
+		{
 			throw new CInvalidUserException("User with login " + login + " not recognised");
 		}
 		else
@@ -111,13 +112,12 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	{
 		if (unitName != null)
 		{
-			CUnit localUnit = unitDao.findByName(unitName);
-
-			if (localUnit != null)
+			try
 			{
-				return localUnit;
+				return unitDao.findOneByName(unitName);
+
 			}
-			else
+			catch (NoResultException ex)
 			{
 				throw new CSecurityException("There is not a unit with name " + unitName);
 			}

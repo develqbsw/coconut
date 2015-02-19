@@ -179,7 +179,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	{
 		try
 		{
-			return blockedLoginJpaDao.findByLoginAndIp(login, ip);
+			return blockedLoginJpaDao.findOneByLoginAndIp(login, ip);
 		} catch (NoResultException ex)
 		{
 			return null;

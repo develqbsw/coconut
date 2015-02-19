@@ -276,7 +276,7 @@ public class CUserTestCase
 		initTest();
 
 		//preparation
-		CUnit firstUnit = unitDao.findByName(CDataGenerator.FIRST_UNIT_CODE);
+		CUnit firstUnit = unitDao.findOneByName(CDataGenerator.FIRST_UNIT_CODE);
 
 		List<CGroup> firstGroupInUnit = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 		Assert.assertTrue("The group firstGroupInUnit not found", firstGroupInUnit.size() > 0);
@@ -357,12 +357,12 @@ public class CUserTestCase
 		//test data
 		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		CGroup testGroup = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//unset group
 		userService.unsetUserFromGroup(testUser, testGroup, testUnit);
 
-		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findAll(testUser, testUnit, testGroup);
+		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
 		//asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
@@ -384,12 +384,12 @@ public class CUserTestCase
 		//test data
 		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		CGroup testGroup = groupDao.findByCode(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
 		userService.setUserToGroup(testUser, testGroup, testUnit);
 
-		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findAll(testUser, testUnit, testGroup);
+		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
 		//asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
@@ -411,7 +411,7 @@ public class CUserTestCase
 		//test data
 		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		CGroup testGroup = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
 		userService.setUserToGroup(testUser, testGroup, testUnit);

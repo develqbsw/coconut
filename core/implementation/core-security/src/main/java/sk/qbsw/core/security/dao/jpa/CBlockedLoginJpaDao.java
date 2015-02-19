@@ -39,10 +39,10 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#findByLoginAndIp(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#findOneByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public CBlockedLogin findByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException
+	public CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException
 	{
 		//checks mandatory params
 		if (login == null)

@@ -136,18 +136,19 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	@Transactional(readOnly = true)
 	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
-		CUnit databaseUnit = unitDao.findByName(unit);
+		CUnit databaseUnit = null;
 		CUser user = null;
-
-		if (databaseUnit != null)
+		
+		try
 		{
+			databaseUnit = unitDao.findOneByName(unit);
 			user = loginUser(login, password, databaseUnit);
 		}
-		else
+		catch (NoResultException ex)
 		{
 			user = loginUser(login, password, null);
 		}
-
+		
 		if (user.isInUnit(databaseUnit) == true)
 		{
 			return user;

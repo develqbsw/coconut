@@ -295,8 +295,8 @@ public class CAuthenticationTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
 		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -339,8 +339,8 @@ public class CAuthenticationTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
 		boolean isBlocked = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 
@@ -382,8 +382,8 @@ public class CAuthenticationTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpNull = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		CBlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
 		boolean isBlockedIpNull = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -431,8 +431,8 @@ public class CAuthenticationTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
 		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -480,8 +480,8 @@ public class CAuthenticationTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
 		boolean isBlocked = blockingLoginService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 
@@ -528,8 +528,8 @@ public class CAuthenticationTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpNull = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+		CBlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
 		boolean isBlockedIpNull = blockingLoginService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		boolean isBlockedIpTwo = blockingLoginService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);

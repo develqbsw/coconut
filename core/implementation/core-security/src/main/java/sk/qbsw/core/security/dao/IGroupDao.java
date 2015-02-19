@@ -32,7 +32,7 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	/**
 	 * Find by flag system.
 	 *
-	 * @param flagSystem the flag system
+	 * @param flagSystem the flag system (mandatory)
 	 * @return the list
 	 */
 	List<CGroup> findByFlagSystem (boolean flagSystem);
@@ -40,6 +40,7 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	/**
 	 * Find groups by code ordered by code asc.
 	 *
+	 * @param code the code (mandatory)
 	 * @return the list
 	 */
 	List<CGroup> findByCode (String code);
@@ -47,9 +48,8 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	/**
 	 * Find groups by code and unit. The roles and units for group are fetched.
 	 * 
-	 * @param code the code of requested group
-	 * @param unit the unit of group
-	 *
+	 * @param code the code of requested group (optional)
+	 * @param unit the unit of group (optional)
 	 * @return the list of groups
 	 */
 	List<CGroup> findByCodeAndUnit (String code, CUnit unit);
@@ -57,8 +57,7 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	/**
 	 * Find groups by unit.
 	 * 
-	 * @param unit the unit of group
-	 *
+	 * @param unit the unit of group (optional)
 	 * @return the list of groups
 	 */
 	List<CGroup> findByUnit (CUnit unit);
@@ -66,8 +65,8 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	/**
 	 * find groups by unit and user (if not null).
 	 *
-	 * @param unit the unit
-	 * @param user the user
+	 * @param unit the unit (optional)
+	 * @param user the user (optional)
 	 * @return the list
 	 */
 	List<CGroup> findByUnitAndUser (CUnit unit, CUser user);

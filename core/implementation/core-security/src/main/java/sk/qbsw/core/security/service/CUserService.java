@@ -355,7 +355,7 @@ public class CUserService extends AService implements IUserService
 		}
 
 		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, persistedGroup);
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(persistedUser, persistedUnit, persistedGroup);
 
 		//remove records
 		for (CXUserUnitGroup userUnitGroupRecord : userUnitGroupRecords)
@@ -407,7 +407,7 @@ public class CUserService extends AService implements IUserService
 		Boolean isGroupAlreadyAdded = Boolean.FALSE;
 
 		//find all groups assigned to user
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, null);
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(persistedUser, persistedUnit, null);
 
 		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
 		{

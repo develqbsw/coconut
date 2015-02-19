@@ -2,8 +2,6 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
@@ -12,58 +10,65 @@ import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
+import sk.qbsw.core.security.model.domain.QCGroup;
+import sk.qbsw.core.security.model.domain.QCUnit;
+import sk.qbsw.core.security.model.domain.QCUser;
+import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
+
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * DAO for cross entities between user, unit and group
  * 
  * @author farkas.roman
- * @Since 1.7.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
+ * @since 1.7.0
  */
-@Repository
-public class CXUserUnitGroupDao  extends AEntityJpaDao<Long, CXUserUnitGroup> implements IXUserUnitGroupDao
+@Repository (value = "xUserUnitGroupDao")
+public class CXUserUnitGroupDao extends AEntityJpaDao<Long, CXUserUnitGroup> implements IXUserUnitGroupDao
 {
-
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Instantiates a new x user unit group dao.
+	 */
 	public CXUserUnitGroupDao ()
 	{
 		super(CXUserUnitGroup.class);
 	}
-	
-	@SuppressWarnings ("unchecked")
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IXUserUnitGroupDao#findByUserAndUnitAndGroup(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CGroup)
+	 */
 	@Override
-	public List<CXUserUnitGroup> findAll (CUser user, CUnit unit, CGroup group)
+	public List<CXUserUnitGroup> findByUserAndUnitAndGroup (CUser user, CUnit unit, CGroup group)
 	{
-		String q = "select xuug from CXUserUnitGroup xuug left join fetch xuug.user us left join fetch xuug.unit un left join fetch xuug.group gr where 1=1";
-		
-		if(user != null)
+		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
+		QCUser qUser = QCUser.cUser;
+		QCUnit qUnit = QCUnit.cUnit;
+		QCGroup qGroup = QCGroup.cGroup;
+
+		//create where condition
+		BooleanBuilder builder = new BooleanBuilder();
+		if (user != null)
 		{
-			q += " and us = :user";
+			builder.and(qUser.eq(user));
 		}
-		if(unit != null)
+		if (unit != null)
 		{
-			q += " and un = :unit";
+			builder.and(qUnit.eq(unit));
 		}
-		if(group != null)
+		if (group != null)
 		{
-			q += " and gr = :group";
+			builder.and(qGroup.eq(group));
 		}
-		
-		Query query = getEntityManager().createQuery(q);
-		
-		if(user != null)
-		{
-			query.setParameter("user", user);
-		}
-		if(unit != null)
-		{
-			query.setParameter("unit", unit);
-		}
-		if(group != null)
-		{
-			query.setParameter("group", group);
-		}
-		
-		return query.getResultList();
+
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.distinct().from(qUserUnitGroup).leftJoin(qUserUnitGroup.user, qUser).fetch().leftJoin(qUserUnitGroup.unit, qUnit).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().where(builder).list(qUserUnitGroup);
 	}
 }
