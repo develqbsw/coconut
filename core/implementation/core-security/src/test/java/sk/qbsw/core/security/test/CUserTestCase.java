@@ -37,7 +37,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  *
  * @autor Tomas Lauro
  * 
- * @version 1.12.1
+ * @version 1.13.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -97,7 +97,7 @@ public class CUserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+		COrganization organization = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_CODE).get(0);
 
 		CUser user = new CUser();
 		user.setLogin(CDataGenerator.USER_CREATED);
@@ -123,7 +123,7 @@ public class CUserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+		COrganization organization = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_CODE).get(0);
 
 		CUser user = new CUser();
 		user.setLogin(CDataGenerator.USER_CREATED);
@@ -327,8 +327,8 @@ public class CUserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
-		COrganization organization2 = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_2_CODE);
+		COrganization organization = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_CODE).get(0);
+		COrganization organization2 = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_2_CODE).get(0);
 		List<CUser> users = userService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization);
 
 		//asserts

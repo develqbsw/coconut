@@ -21,7 +21,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Tomas Lauro
  * 
- * @version 1.11.5
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Service ("cOrganizationService")
@@ -77,11 +77,22 @@ public class COrganizationService extends AService implements IOrganizationServi
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationByNameNull(java.lang.String)
 	 */
+	@Deprecated
 	@Override
 	@Transactional (readOnly = true)
 	public COrganization getOrganizationByNameNull (String name)
 	{
-		return organizationDao.findByNameNull(name);
+		return organizationDao.findOneByName(name);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationByName(java.lang.String)
+	 */
+	@Override
+	@Transactional (readOnly = true)
+	public List<COrganization> getOrganizationByName (String name)
+	{
+		return organizationDao.findByName(name);
 	}
 
 	//TODO: REWRITE

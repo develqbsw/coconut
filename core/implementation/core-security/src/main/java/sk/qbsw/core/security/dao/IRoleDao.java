@@ -6,43 +6,49 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CRole;
-import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * The Interface IRoleDao.
  *
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
+ * @since 1.0.0
  */
 public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 {
-
 	/**
 	 * Find all by user.
 	 *
 	 * @param user the user
 	 * @return the list
 	 */
-	public List<CRole> findAllByUser (CUser user);
+	List<CRole> findByUser (CUser user);
 
 	/**
 	 * Find by code.
 	 *
 	 * @param user the user
 	 * @return the list
+	 * 
+	 * @deprecated the code is unique
 	 */
-	public List<CRole> findByCode (String code);
+	List<CRole> findByCode (String code);
 
 	/**
-	 * Find by unit and code. Returns null if there is no result or more than 1 result.
+	 * Find one by code - if there is no result or no unique result throws an exception.
 	 *
-	 * @param unit the unit
 	 * @param code the code
-	 * @return the unit or null if there is no result or more than 1 result
+	 * @return the role
+	 * @throws NonUniqueResultException there is no unique result
+	 * @throws NoResultException there is no result
 	 */
-	public CRole findByUnitAndCode (CUnit unit, String code);
+	CRole findOneByCode (String code) throws NonUniqueResultException, NoResultException;
 }

@@ -40,8 +40,18 @@ public interface IOrganizationService
 	 *
 	 * @param name the name
 	 * @return organization or null if organization not exist
+	 * 
+	 * @deprecated the organization name is no longer unique
 	 */
 	public abstract COrganization getOrganizationByNameNull (String name);
+	
+	/**
+	 * Gets the organization by name.
+	 *
+	 * @param name the name
+	 * @return the organizations by name
+	 */
+	public abstract List<COrganization> getOrganizationByName (String name);
 
 	/**
 	 * Find by name and return NULL if organization not exist - NOT exeption.

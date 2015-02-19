@@ -96,8 +96,18 @@ public interface ISecurityService extends Serializable
 	 * Finds role by code
 	 * @param login
 	 * @return {@link CRole}
+	 * 
+	 * @deprecated role code is unique
 	 */
 	public List<CRole> getRoleByCode (String code);
+
+	/**
+	 * Finds role by code.
+	 *
+	 * @param code the code
+	 * @return {@link CRole}
+	 */
+	public CRole getOneRoleByCode (String code);
 
 	/**
 	 * Gets the role group.

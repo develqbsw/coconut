@@ -86,6 +86,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param license the license
 	 * @see sk.qbsw.core.security.service.ISecurityService#addLicense(sk.qbsw.core.security.model.domain.CLicense)
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public void addLicense (CLicense<?> license)
 	{
@@ -100,6 +101,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param license the license
 	 * @see sk.qbsw.core.security.service.ISecurityService#deleteLicense(sk.qbsw.core.security.model.domain.CLicense)
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public void deleteLicense (CLicense<?> license)
 	{
@@ -114,6 +116,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param org the org
 	 * @see sk.qbsw.core.security.service.ISecurityService#disableOrganization(sk.qbsw.core.security.model.domain.COrganization)
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public void disableOrganization (COrganization org)
 	{
@@ -122,28 +125,13 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 		orgDao.save(toModify);
 	}
 
-
-	/**
-	 * Disable user.
-	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.service.ISecurityService#disableUser(sk.qbsw.core.security.model.domain.CUser)
-	 */
-	@Transactional (readOnly = false)
-	public void disableUser (CUser user)
-	{
-		CUser toModify = userDao.findById(user.getId());
-		toModify.setFlagEnabled(Boolean.FALSE);
-		userDao.save(toModify);
-	}
-
-
 	/**
 	 * Enable organization.
 	 *
 	 * @param org the org
 	 * @see sk.qbsw.core.security.service.ISecurityService#enableOrganization(sk.qbsw.core.security.model.domain.COrganization)
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public void enableOrganization (COrganization org)
 	{
@@ -152,27 +140,13 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 		orgDao.save(toModify);
 	}
 
-
-	/**
-	 * Enable user.
-	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.service.ISecurityService#enableUser(sk.qbsw.core.security.model.domain.CUser)
-	 */
-	@Transactional (readOnly = false)
-	public void enableUser (CUser user)
-	{
-		CUser toModify = userDao.findById(user.getId());
-		toModify.setFlagEnabled(Boolean.TRUE);
-		userDao.save(toModify);
-	}
-
 	/**
 	 * Gets the all organizations.
 	 *
 	 * @return the all organizations
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAllOrganizations()
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public List<COrganization> getAllOrganizations ()
 	{
@@ -183,6 +157,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	/** 
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAvailabelLicenses()
 	 */
+	@Override
 	@Transactional (readOnly = true)
 	public List<CLicense<?>> getAvailabelLicenses ()
 	{
@@ -192,6 +167,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	/** 
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAvailabelLicensesForCustomer()
 	 */
+	@Override
 	@Transactional (readOnly = true)
 	public List<CLicense<?>> getAvailabelLicensesForCustomer ()
 	{
@@ -204,6 +180,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @return the available groups
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAvailableGroups()
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public List<CGroup> getAvailableGroups ()
 	{
@@ -218,6 +195,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @return the organization licenses
 	 * @see sk.qbsw.core.security.service.ISecurityService#getOrganizationLicenses(sk.qbsw.core.security.model.domain.COrganization)
 	 */
+	@Override
 	@Transactional (readOnly = true)
 	public List<CLicense<?>> getOrganizationLicenses (COrganization org)
 	{
@@ -233,6 +211,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @return the role group
 	 * @see sk.qbsw.core.security.service.ISecurityService#getRoleGroup(java.lang.Long)
 	 */
+	@Override
 	@Transactional (readOnly = true)
 	public CGroup getRoleGroup (Long id)
 	{
@@ -248,6 +227,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @return true, if is login free
 	 * @see sk.qbsw.core.security.service.ISecurityService#isLoginFree(java.lang.String, java.lang.Long)
 	 */
+	@Override
 	@Transactional (readOnly = true)
 	public boolean isLoginFree (String login, Long id)
 	{
@@ -279,6 +259,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#isOrgNameFree(java.lang.String, java.lang.Long)
 	 * @deprecated the organization name is no longer unique
 	 */
+	@Override
 	@Transactional (readOnly = true)
 	public boolean isOrgNameFree (String name, Long id)
 	{
@@ -302,6 +283,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param payed the payed
 	 * @see sk.qbsw.core.security.service.ISecurityService#matchLicensePayment(sk.qbsw.core.security.model.domain.CLicense, java.lang.Boolean)
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public void matchLicensePayment (CLicense<?> license, Boolean payed)
 	{
@@ -317,6 +299,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param manager the manager
 	 * @see sk.qbsw.core.security.service.ISecurityService#registerOrganization(sk.qbsw.core.security.model.domain.COrganization)
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public void registerOrganization (COrganization org, CUser manager)
 	{
@@ -341,24 +324,12 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	}
 
 	/**
-	 * Save user.
-	 *
-	 * @param user the user
-	 * @see sk.qbsw.core.security.service.ISecurityService#saveUser(sk.qbsw.core.security.model.domain.CUser)
-	 */
-	@Transactional (readOnly = false)
-	public void saveUser (CUser user)
-	{
-		userDao.save(user);
-	}
-
-
-	/**
 	 * Update license.
 	 *
 	 * @param license the license
 	 * @see sk.qbsw.core.security.service.ISecurityService#updateLicense(sk.qbsw.core.security.model.domain.CLicense)
 	 */
+	@Override
 	@Transactional (readOnly = false)
 	public void updateLicense (CLicense<?> license)
 	{
@@ -366,10 +337,27 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	}
 
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ISecurityService#getRoleByCode(java.lang.String)
+	 */
+	@Deprecated
+	@Override
+	@Transactional (readOnly = false)
 	public List<CRole> getRoleByCode (String code)
 	{
 
 		return roleDao.findByCode(code);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.ISecurityService#getOneRoleByCode(java.lang.String)
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public CRole getOneRoleByCode (String code)
+	{
+
+		return roleDao.findOneByCode(code);
 	}
 
 }

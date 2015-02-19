@@ -77,7 +77,7 @@ public class CUserSpringAuthenticationService extends AService implements UserDe
 
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-		for (CRole role : roleDao.findAllByUser(entity))
+		for (CRole role : roleDao.findByUser(entity))
 		{
 			authorities.add(new GrantedAuthorityImpl(role.getCode()));
 		}

@@ -5,17 +5,14 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
-
-import com.mysema.query.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.model.domain.COrganization;
-import sk.qbsw.core.security.model.domain.QCGroup;
 import sk.qbsw.core.security.model.domain.QCOrganization;
+
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * The organization jpa dao.
@@ -23,7 +20,7 @@ import sk.qbsw.core.security.model.domain.QCOrganization;
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.11.5
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Repository (value = "orgDao")
@@ -39,15 +36,15 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 	{
 		super(COrganization.class);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findByName(java.lang.String)
 	 */
 	@Override
 	public List<COrganization> findByName (String name)
 	{
-		QCOrganization qOrganization = QCOrganization.cOrganization; 
-		
+		QCOrganization qOrganization = QCOrganization.cOrganization;
+
 		//create query
 		JPAQuery query = new JPAQuery(getEntityManager());
 		return query.from(qOrganization).where(qOrganization.name.eq(name)).list(qOrganization);
@@ -62,37 +59,33 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 	@Override
 	public List<COrganization> findAll ()
 	{
-		QCOrganization qOrganization = QCOrganization.cOrganization; 
-		
+		QCOrganization qOrganization = QCOrganization.cOrganization;
+
 		//create query
 		JPAQuery query = new JPAQuery(getEntityManager());
 		return query.from(qOrganization).orderBy(qOrganization.name.asc()).list(qOrganization);
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findByNameNull(java.lang.String)
+	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findOneByName(java.lang.String)
 	 */
+	@Deprecated
 	@Override
-	@SuppressWarnings ("unchecked")
-	public COrganization findByNameNull (String name)
+	public COrganization findOneByName (String name)
 	{
-		COrganization organization;
-		String strQuery = "select o from COrganization o where o.name = :name";
+		QCOrganization qOrganization = QCOrganization.cOrganization;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("name", name);
-
-		List<COrganization> organizations = query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		List<COrganization> organizations = query.from(qOrganization).where(qOrganization.name.eq(name)).list(qOrganization);
 
 		if (organizations.isEmpty())
 		{
-			organization = null;
+			return null;
 		}
 		else
 		{
-			organization = organizations.get(0);
+			return organizations.get(0);
 		}
-
-		return organization;
 	}
 }

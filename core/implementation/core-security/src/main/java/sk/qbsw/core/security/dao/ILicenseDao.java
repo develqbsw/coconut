@@ -24,6 +24,6 @@ public interface ILicenseDao extends Serializable, IEntityDao<Long, CLicense<?>>
 	 * @param orgId the org id
 	 * @return the list
 	 */
-	public List<CLicense<?>> findByOrganizationId (Long orgId);
+	List<CLicense<?>> findByOrganizationId (Long orgId);
 
 }
