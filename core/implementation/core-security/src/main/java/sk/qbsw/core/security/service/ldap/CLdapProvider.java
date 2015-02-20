@@ -158,6 +158,12 @@ public class CLdapProvider extends AService implements ILdapProvider
 
 		try
 		{
+//			String escapedBaseDn = CLDAPInjectionProtector.escapeDN(baseDn);
+//			String escapedFilter = CLDAPInjectionProtector.escapeDN(filter);
+//
+//			LOGGER.debug("LDAP: escaped Base dn "+escapedBaseDn);
+//			LOGGER.debug("LDAP: escaped Filter "+escapedFilter);
+			
 			cursor = connection.search(baseDn, filter, scope, attributes);
 
 			if (cursor.next() == true)
@@ -348,8 +354,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		 *
 		 * @return the operation
 		 */
-		public ModificationOperation getOperation ()
-		{
+		public ModificationOperation getOperation() {
 			return operation;
 		}
 	}

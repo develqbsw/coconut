@@ -36,6 +36,7 @@ import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
+import sk.qbsw.core.security.service.ldap.CLDAPInjectionProtector;
 import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
 import sk.qbsw.core.security.service.ldap.ILdapProvider;
 
@@ -44,10 +45,10 @@ import sk.qbsw.core.security.service.ldap.ILdapProvider;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.12.2
+ * @version 1.13.0
  * @since 1.6.0
  */
-@Service(value = "ldapAuthenticationService")
+@Service (value = "ldapAuthenticationService")
 public class CLdapAuthenticationService extends AService implements IAuthenticationService
 {
 
@@ -85,42 +86,49 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	@Autowired
 	private IAuthDataValidationService authDataValidationService;
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang .String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public boolean canLogin(String login, @CNotLogged @CNotAuditLogged String password, CRole role)
+	@Transactional (readOnly = true)
+	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
 	{
 		try
 		{
 			return login(login, password, role) != null;
-		} catch (CSecurityException ex)
+		}
+		catch (CSecurityException ex)
 		{
 			return false;
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang. String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginUser(login, password, null);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang. String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
 	{
 		CUser user = loginUser(login, password, null);
 
-		//checks if the user has the role
+		// checks if the user has the role
 		if (!user.hasRole(role))
 		{
 			throw new CSecurityException("User " + login + " has no such role");
@@ -129,16 +137,18 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		return user;
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang. String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		CUnit databaseUnit = null;
 		CUser user = null;
-		
+
 		try
 		{
 			databaseUnit = unitDao.findOneByName(unit);
@@ -148,7 +158,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		{
 			user = loginUser(login, password, null);
 		}
-		
+
 		if (user.isInUnit(databaseUnit) == true)
 		{
 			return user;
@@ -168,15 +178,17 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	private CUser loginUser(String login, String password, CUnit unit) throws CSecurityException
+	private CUser loginUser (String login, String password, CUnit unit) throws CSecurityException
 	{
-		//gets user from ldap - all information in this object are now from ldap
+		// gets user from ldap - all information in this object are now from
+		// ldap
 		CUser user;
 
 		try
 		{
 			user = userDao.findOneByLoginAndUnit(login, unit);
-		} catch (NoResultException nre)
+		}
+		catch (NoResultException nre)
 		{
 			user = null;
 		}
@@ -184,12 +196,12 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		if (user != null)
 		{
 			// check if user is disabled
-			if ((user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
+			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
 			{
 				throw new CUserDisabledException("");
 			}
 
-			//authenticate user in ldap
+			// authenticate user in ldap
 			if (authenticateUser(login, password) == true)
 			{
 				return user;
@@ -213,9 +225,9 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	 * @return true, if successful
 	 * @throws CSecurityException the configuration is corrupted
 	 */
-	private boolean authenticateUser(String login, String password) throws CSecurityException
+	private boolean authenticateUser (String login, String password) throws CSecurityException
 	{
-		//the exceptions thrown in ldap authentication process
+		// the exceptions thrown in ldap authentication process
 		List<Throwable> exceptions = new ArrayList<Throwable>();
 
 		if (data.getUserSearchBaseDns() != null)
@@ -224,12 +236,16 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 			{
 				try
 				{
-					//authenticate
-					ldapProvider.authenticate(userSearchDn, String.format(data.getUserSearchFilter(), login), password);
+					String escapedLogin = CLDAPInjectionProtector.escapeDN(login);
+					logger.debug("LDAP escaped login:" + escapedLogin);
+
+					// authenticate
+					ldapProvider.authenticate(userSearchDn, String.format(data.getUserSearchFilter(), escapedLogin), password);
 					logger.debug("User " + login + " was authenticated by LDAP in tree " + userSearchDn);
 
 					return true;
-				} catch (Throwable ex)
+				}
+				catch (Throwable ex)
 				{
 					exceptions.add(ex);
 					continue;
@@ -249,50 +265,53 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword (java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void changeEncryptedPassword(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional (readOnly = false)
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		CUser user = userDao.findOneByLogin(login);
 
-		//validate password, if not valid throw an exception
+		// validate password, if not valid throw an exception
 		authDataValidationService.validatePassword(password);
 
-		//TODO: create user search
-		//create dn
+		// TODO: create user search
+		// create dn
 		String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDns()[0]).toString();
 
 		try
 		{
 			if (ldapProvider.entryExists(userDn) == true)
 			{
-				//change password
+				// change password
 				ldapProvider.modifyEntry(userDn, "userPassword", password, EModificationOperation.REPLACE_ATTRIBUTE);
 			}
 			else
 			{
-				//add auth data
+				// add auth data
 				Map<String, byte[][]> attributes = new HashMap<String, byte[][]>();
-				attributes.put("objectClass", new byte[][] { data.getUserObjectClass().getBytes() });
-				attributes.put("cn", new byte[][] { login.getBytes() });
-				attributes.put("sn", new byte[][] { user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes() });
-				attributes.put("userPassword", new byte[][] { PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm()) });
+				attributes.put("objectClass", new byte[][] {data.getUserObjectClass().getBytes()});
+				attributes.put("cn", new byte[][] {login.getBytes()});
+				attributes.put("sn", new byte[][] {user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes()});
+				attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm())});
 
-				//add entry
+				// add entry
 				ldapProvider.addEntry(userDn, attributes);
 			}
 
-			//set auth params
+			// set auth params
 			CAuthenticationParams authParams = null;
 			try
 			{
 				authParams = authenticationParamsDao.findOneByUserId(user.getId());
-			} catch (NoResultException ex)
+			}
+			catch (NoResultException ex)
 			{
-				//create new because user has no auth params
+				// create new because user has no auth params
 				authParams = new CAuthenticationParams();
 				authParams.setUser(user);
 				authParams.setPassword(null);
@@ -300,7 +319,8 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 				authParams.setPin(null);
 				authenticationParamsDao.save(authParams);
 			}
-		} catch (LdapInvalidAttributeValueException ex)
+		}
+		catch (LdapInvalidAttributeValueException ex)
 		{
 			logger.error("The user password change failed", ex);
 			if (ex.getResultCode().equals(ResultCodeEnum.CONSTRAINT_VIOLATION))
@@ -311,7 +331,8 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 			{
 				throw new CSecurityException("There is a invalid input value");
 			}
-		} catch (Throwable ex)
+		}
+		catch (Throwable ex)
 		{
 			logger.error("The user password change failed", ex);
 			throw new CSecurityException("Password change failed");
@@ -322,7 +343,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	 * Method not implemented.
 	 */
 	@Override
-	public void changeEncryptedPassword(String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}
@@ -331,7 +352,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	 * Method not implemented.
 	 */
 	@Override
-	public void changePlainPassword(String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}
@@ -340,51 +361,56 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	 * Method not implemented.
 	 */
 	@Override
-	public void changePlainPassword(String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
 	{
 		throw new NotImplementedException();
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeLogin(java.lang.Long, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeLogin(java .lang.Long, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void changeLogin(Long userId, String login) throws CSecurityException
+	@Transactional (readOnly = false)
+	public void changeLogin (Long userId, String login) throws CSecurityException
 	{
 		CUser user = userDao.findById(userId);
 
-		//TODO: create user search
-		//create dn
+		// TODO: create user search
+		// create dn
 		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDns()[0]).toString();
 
-		//TODO: BAD !!! LDAP injection
+		// TODO: BAD !!! LDAP injection
 		String newRdn = new StringBuilder().append("cn=").append(login).toString();
 
 		try
 		{
-			//the record in LDAP is updated only if it had existed
+			// the record in LDAP is updated only if it had existed
 			if (ldapProvider.entryExists(userDn) == true)
 			{
-				//change login
+				// change login
 				ldapProvider.renameEntry(userDn, newRdn, true);
 			}
-		} catch (LdapException ex)
+		}
+		catch (LdapException ex)
 		{
 			logger.error("The user password change failed", ex);
 			throw new CSecurityException("The login cannot be changed");
 		}
 
-		//save user login in DB
+		// save user login in DB
 		user.setLogin(login);
 		userDao.save(user);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
 	 */
 	@Override
-	public boolean isOnline()
+	public boolean isOnline ()
 	{
 		return ldapProvider.isConnected();
 	}
