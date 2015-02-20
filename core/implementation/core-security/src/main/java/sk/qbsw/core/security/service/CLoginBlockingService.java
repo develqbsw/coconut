@@ -154,7 +154,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	{
 		try
 		{
-			return userDao.findByLogin(login);
+			return userDao.findOneByLogin(login);
 		} catch (NoResultException ex)
 		{
 			LOGGER.debug(errorMessage + " - the user with login " + login + " dont exists", ex);

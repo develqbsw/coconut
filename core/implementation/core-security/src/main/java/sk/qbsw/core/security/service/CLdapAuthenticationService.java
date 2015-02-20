@@ -175,7 +175,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 
 		try
 		{
-			user = userDao.findByLogin(login, unit);
+			user = userDao.findOneByLoginAndUnit(login, unit);
 		} catch (NoResultException nre)
 		{
 			user = null;
@@ -256,7 +256,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	@Transactional(readOnly = false)
 	public void changeEncryptedPassword(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
-		CUser user = userDao.findByLogin(login);
+		CUser user = userDao.findOneByLogin(login);
 
 		//validate password, if not valid throw an exception
 		authDataValidationService.validatePassword(password);

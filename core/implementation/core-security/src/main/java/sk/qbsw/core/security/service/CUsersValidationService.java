@@ -17,6 +17,12 @@ import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.filter.CUserAssociationsFilter;
+import sk.qbsw.core.security.model.order.COrderModel;
+import sk.qbsw.core.security.model.order.COrderSpecification;
+import sk.qbsw.core.security.model.order.EOrderSpecifier;
+import sk.qbsw.core.security.model.order.EUserOrderByAttributeSpecifier;
+import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
 
 /**
  * Service for validation users.
@@ -83,7 +89,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 
 		try
 		{
-			userOld = userDao.findByLogin(user.getLogin());
+			userOld = userDao.findOneByLogin(user.getLogin());
 		}
 		catch (NoResultException nre)
 		{
@@ -108,7 +114,16 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 
 		CGroup adminGroup = groupDao.findByCode(group).get(0);
 
-		List<CUser> users = userDao.getOtherActiveUsers(organization, adminGroup, user);
+		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		filter.setOrganization(organization);
+		filter.setGroup(adminGroup);
+		filter.setExcludedUser(user);
+		filter.setEnabled(true);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		List<CUser> users = userDao.findByUserAssociationsFilter(filter, orderModel);
 
 		if (users.isEmpty() && (!user.getGroups().iterator().next().getCode().equals(adminGroup.getCode()) || !user.getFlagEnabled()))
 		{
@@ -155,7 +170,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 
 		try
 		{
-			userOld = userDao.findByLogin(login);
+			userOld = userDao.findOneByLogin(login);
 		}
 		catch (NoResultException nre)
 		{
@@ -181,7 +196,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 
 		try
 		{
-			List<CUser> users = userDao.findByPin(oldUserAuthParams.getPin());
+			List<CUser> users = userDao.findByPinCode(oldUserAuthParams.getPin());
 
 			//if the users is not empty - any user has assigned given pin
 			if (users != null && users.isEmpty() == false)
@@ -207,7 +222,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 
 		try
 		{
-			List<CUser> users = userDao.findByPin(pin);
+			List<CUser> users = userDao.findByPinCode(pin);
 
 			if (users != null && users.isEmpty() == false)
 			{

@@ -66,7 +66,7 @@ public class CRoleTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CUser user = userDao.findOneByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 		List<CRole> roles = roleDao.findByUser(user);
 
 		//asserts

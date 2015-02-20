@@ -355,7 +355,7 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional
 	@Rollback(true)
 	public void testBlockedLoginWithoutBlocked() throws CSystemException, CSecurityException
 	{
@@ -371,7 +371,7 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional
 	@Rollback(true)
 	public void testBlockedLoginWithoutBlockedCheckIpNull() throws CSystemException, CSecurityException
 	{
@@ -387,7 +387,7 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional
 	@Rollback(true)
 	public void testBlockedLoginWithoutBlockedSetIpNull() throws CSystemException, CSecurityException
 	{
@@ -403,7 +403,7 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional
 	@Rollback(true)
 	public void testBlockedLoginWithBlocked() throws CSystemException, CSecurityException
 	{
@@ -419,7 +419,7 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional
 	@Rollback(true)
 	public void testBlockedLoginWithBlockedCheckIpNull() throws CSystemException, CSecurityException
 	{
@@ -435,7 +435,7 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional
 	@Rollback(true)
 	public void testBlockedLoginWithBlockedSetIpNull() throws CSystemException, CSecurityException
 	{

@@ -93,11 +93,11 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	{
 		if (unit == null)
 		{
-			return userDao.findByLogin(login);
+			return userDao.findOneByLogin(login);
 		}
 		else
 		{
-			return userDao.findByLogin(login, unit);
+			return userDao.findOneByLoginAndUnit(login, unit);
 		}
 	}
 

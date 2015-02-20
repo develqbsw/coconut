@@ -437,13 +437,13 @@ public class CAuthenticationTestProvider
 		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
-		Assert.assertNotNull(recordIpOne);
-		Assert.assertEquals(5, recordIpOne.getInvalidLoginCount());
-		Assert.assertTrue(isBlockedIpOne);
+		Assert.assertNotNull("The record from ip one is null", recordIpOne);
+		Assert.assertEquals("The expected count of records from ip one is invalid", 5, recordIpOne.getInvalidLoginCount());
+		Assert.assertTrue("The record from ip one is blocked", isBlockedIpOne);
 
-		Assert.assertNotNull(recordIpTwo);
-		Assert.assertEquals(4, recordIpTwo.getInvalidLoginCount());
-		Assert.assertFalse(isBlockedIpTwo);
+		Assert.assertNotNull("The record from ip two is null", recordIpTwo);
+		Assert.assertEquals("The expected count of records from ip one is invalid", 4, recordIpTwo.getInvalidLoginCount());
+		Assert.assertFalse("The record from ip one is blocked", isBlockedIpTwo);
 	}
 
 	/**

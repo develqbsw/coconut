@@ -192,7 +192,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 		try
 		{
-			user = userDao.findByLogin(login, unit);
+			user = userDao.findOneByLoginAndUnit(login, unit);
 		}
 		catch (NoResultException nre)
 		{
@@ -304,7 +304,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	{
 		try
 		{
-			userDao.countAllUsers();
+			userDao.countAll();
 			return true;
 		}
 		catch (PersistenceException ex)
@@ -334,7 +334,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 		try
 		{
-			user = userDao.findByLogin(login);
+			user = userDao.findOneByLogin(login);
 		}
 		catch (NoResultException ex)
 		{

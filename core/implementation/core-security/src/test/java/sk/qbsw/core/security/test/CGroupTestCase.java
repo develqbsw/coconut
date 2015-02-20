@@ -94,12 +94,12 @@ public class CGroupTestCase
 		initTest();
 
 		CUnit unit1 = unitDao.findOneByName(CDataGenerator.SECOND_UNIT_CODE);
-		CUser user2 = userDao.findByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CUser user2 = userDao.findOneByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		List<CGroup> groups = groupService.getByUnitUser(unit1, user2);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
 
-		CUser user1 = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser user1 = userDao.findOneByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		groups = groupService.getByUnitUser(unit1, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 

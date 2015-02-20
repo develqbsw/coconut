@@ -6,13 +6,17 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
-import sk.qbsw.core.security.model.domain.COrganization;
-import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.filter.CUserAssociationsFilter;
+import sk.qbsw.core.security.model.filter.CUserDetailFilter;
+import sk.qbsw.core.security.model.order.COrderModel;
+import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
 
 /**
  * The Interface IUserDao.
@@ -20,7 +24,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.12.1
+ * @version 1.13.0
  * @since 1.0.0
  */
 public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
@@ -30,154 +34,74 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 *
 	 * @param id the pk id
 	 * @return the c user
+	 * 
+	 * @deprecated use {@link sk.qbsw.core.security.dao.IUserDao#findById(Long)}
 	 */
-	public CUser findForModification (Long id);
+	CUser findForModification (Long id);
 
 	/**
-	 * Find by login - there are groups with user default unit in the list.
+	 * Find by login with fetched organization, groups, units, roles and default groups - if there is no result throws an exception.
 	 *
-	 * @param login the login
+	 * @param login the login (mandatory)
 	 * @return the user
+	 * 
+	 * @throws NoResultException there is no result
 	 */
-	public CUser findByLogin (String login);
+	CUser findOneByLogin (String login) throws NoResultException;
 
 	/**
-	 * Find by login - there are groups with unit from parameter in the list.
+	 * Find by login and unit with fetched organization, groups, units, roles and default groups - if there is no result throws an exception.
 	 *
-	 * @param login the login
-	 * @param unit the unit
+	 * @param login the login (optional)
+	 * @param unit the unit (optional)
 	 * @return the user
+	 * 
+	 * @throws NoResultException there is no result
 	 */
-	public CUser findByLogin (String login, CUnit unit);
+	CUser findOneByLoginAndUnit (String login, CUnit unit) throws NoResultException;
 
 	/**
 	 * Find by PIN.
 	 *
 	 * @param pinCode
 	 * @return the users
-	 * @throws CBusinessException if the input params null
+	 * 
+	 * @throws CBusinessException if the input pinCode is null
 	 */
-	public List<CUser> findByPin (String pinCode) throws CBusinessException;
+	List<CUser> findByPinCode (String pinCode) throws CBusinessException;
 
 	/**
 	 * Count all users.
 	 *
 	 * @return the count of all users
 	 */
-	public int countAllUsers ();
+	long countAll ();
 
 	/**
-	 * Find all users.
+	 * Find users by unit and group with fetched groups and units.
 	 *
+	 * @param unit the unit
+	 * @param group the group
+	 * @param orderModel the order model
 	 * @return the list
 	 */
-	public List<CUser> findAllUsers ();
+	List<CUser> findByUnitAndGroup (CUnit unit, CGroup group, COrderModel<? extends IOrderByAttributeSpecifier> orderModel);
 
 	/**
-	 * Find all users for organization.
+	 * Find by user detail filter with fetched organization, groups, units and default groups.
 	 *
-	 * @param organization the organization (mandatory)
+	 * @param filter the filter with user details
+	 * @param orderModel the order model
 	 * @return the list
 	 */
-	public List<CUser> findAllUsers (COrganization organization);
+	List<CUser> findByUserDetailFilter (CUserDetailFilter filter, COrderModel<? extends IOrderByAttributeSpecifier> orderModel);
 
 	/**
-	 * Find all users.
+	 * Find by user associations filter with fetched organization, groups, units, roles and default groups.
 	 *
-	 * @param organization the organization (optional)
-	 * @param enabled the enabled (optional)
+	 * @param filter the filter
+	 * @param orderModel the order model
 	 * @return the list
 	 */
-
-	public List<CUser> findAllUsers (COrganization organization, Boolean enabled);
-
-	/**
-	 * Find all users.
-	 *
-	 * @param organization the organization (optional)
-	 * @param enabled the enabled (optional)
-	 * @param group the group (optional)
-	 * @return the list
-	 */
-
-	public List<CUser> findAllUsers (COrganization organization, Boolean enabled, CGroup group);
-
-	/**
-	 * Find all users order by organization.
-	 *
-	 * @param organization the organization (optional)
-	 * @param enabled the enabled (optional)
-	 * @param group the group (optional)
-	 * @return the list
-	 */
-	public List<CUser> findAllUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
-
-	/** Get users without user what come as parameter
-	 * @param organization - organization for which are selected users (optional)
-	 * @param group - group for which are selected users (optional)
-	 * @param user - user without are users returned (mandatory)
-	 * @return list of users
-	 */
-	public abstract List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user);
-
-	/**
-	 * Find all operator users for organization.
-	 *
-	 * @param organization the organization (optional)
-	 * @param role the role (mandatory)
-	 * @return the list
-	 */
-	public List<CUser> findAllUsersByRole (COrganization organization, CRole role);
-
-	/**
-	 * Find all users.
-	 *
-	 * @param name the name (optional)
-	 * @param surname the surname (optional)
-	 * @param login the login (optional)
-	 * @param enabled the enabled (optional)
-	 * @return the list
-	 */
-	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled);
-
-	/**
-	 * Find all users.
-	 *
-	 * @param name the name (optional)
-	 * @param surname the surname (optional)
-	 * @param login the login (optional)
-	 * @param enabled the enabled (optional)
-	 * @param organization the user organization
-	 * @return the list
-	 */
-	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, COrganization organization);
-
-	/**
-	 * Find all users.
-	 *
-	 * @param name the name (optional)
-	 * @param surname the surname (optional)
-	 * @param login the login (optional)
-	 * @param enabled the enabled (optional)
-	 * @param groupCodePrefix the group code prefix (optional)
-	 * @return the list
-	 */
-	public List<CUser> findAllUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix);
-
-	/**
-	 * Find all users.
-	 *
-	 * @param email the email (mandatory)
-	 * @return the list
-	 */
-	public List<CUser> findAllUsers (String email);
-
-	/**
-	 * Find users by unit and group
-	 * 
-	 * @param unit
-	 * @param group
-	 * @return
-	 */
-	List<CUser> findAllUsers (CUnit unit, CGroup group);
+	List<CUser> findByUserAssociationsFilter (CUserAssociationsFilter filter, COrderModel<? extends IOrderByAttributeSpecifier> orderModel);
 }

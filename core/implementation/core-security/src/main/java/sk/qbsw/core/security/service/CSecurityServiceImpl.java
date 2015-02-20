@@ -235,7 +235,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 
 		try
 		{
-			user = userDao.findByLogin(login);
+			user = userDao.findOneByLogin(login);
 		}
 		catch (NoResultException nre)
 		{
