@@ -66,7 +66,7 @@ public class CAuditLog implements Serializable, IEntity<Long>
 	private String resultDescription;
 
 	/** The uuid for mapping users. */
-	@Column(name = "c_result_uuid", length = 1024, nullable = true)
+	@Column(name = "c_uuid", length = 1024, nullable = true)
 	private String uuid;
 
 	/** The operation result. */
