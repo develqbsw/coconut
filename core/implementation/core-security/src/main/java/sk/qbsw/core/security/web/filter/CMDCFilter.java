@@ -44,7 +44,7 @@ public class CMDCFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		CMDCFilter.fillMDC(SecurityContextHolder.getContext().getAuthentication());
-
+		
 		try {
 			chain.doFilter(req, resp);
 		} finally {

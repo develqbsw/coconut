@@ -46,7 +46,7 @@ public class CHttpPostClientTest
 		CHttpApiPostRequest post = new CHttpApiPostRequest();
 		post.setRepeatCount(2);
 		post.setTimeout(10000);
-		post.setProxy(new HttpHost("192.168.121.31", 3128, "http"));
+		post.setProxy(new HttpHost("192.168.121.1", 3128, "http"));
 
 		client.makeCall(post, "http://www.sme.sk", new CCallRequestModel());
 	}
