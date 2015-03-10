@@ -19,16 +19,4 @@ public class CTestDao extends AEntityJpaDao<Long, CTestEntity> implements ITestD
 	{
 		super(CTestEntity.class);
 	}
-
-	@Override
-	public CTestEntity read(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CTestEntity update(CTestEntity e) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
