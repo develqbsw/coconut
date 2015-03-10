@@ -50,7 +50,7 @@ public class CInstallationLogTestCase
 		String versionToCheck = "unit_test_1.1.0";
 
 		//create new version
-		installationLogDao.save(createInstallationLog(versionToCheck));
+		installationLogDao.update(createInstallationLog(versionToCheck));
 
 		//checks version
 		boolean result = installationLogService.checkVersion(versionToCheck);
@@ -68,7 +68,7 @@ public class CInstallationLogTestCase
 	public void checksVersionNegative ()
 	{
 		//create new version
-		installationLogDao.save(createInstallationLog("unit_test_1.1.0"));
+		installationLogDao.update(createInstallationLog("unit_test_1.1.0"));
 
 		//checks version
 		boolean result = installationLogService.checkVersion("unit_test_1.1.2");
@@ -90,7 +90,7 @@ public class CInstallationLogTestCase
 		for (String versionToCheck : versionsToCheck)
 		{
 			//create new version
-			installationLogDao.save(createInstallationLog(versionToCheck));
+			installationLogDao.update(createInstallationLog(versionToCheck));
 		}
 
 		//checks version
@@ -113,7 +113,7 @@ public class CInstallationLogTestCase
 		for (String versionToSave : versionsToSave)
 		{
 			//create new version
-			installationLogDao.save(createInstallationLog(versionToSave));
+			installationLogDao.update(createInstallationLog(versionToSave));
 		}
 
 		//checks version
@@ -136,7 +136,7 @@ public class CInstallationLogTestCase
 		for (String versionToSave : versionsToSave)
 		{
 			//create new version
-			installationLogDao.save(createInstallationLog(versionToSave));
+			installationLogDao.update(createInstallationLog(versionToSave));
 		}
 
 		//checks version

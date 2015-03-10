@@ -24,11 +24,12 @@ import sk.qbsw.core.configuration.service.ISystemParameterService;
  * @version 1.12.0
  * @since 1.11.10
  */
-@RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:/spring/test-context.xml" })
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class CSystemParameterTestCase
 {
+
 	/** The test system parameter name. */
 	private final String TEST_SYSTEM_PARAMETER_NAME = "unit_test_parameter_1";
 
@@ -54,8 +55,8 @@ public class CSystemParameterTestCase
 	 */
 	@Test
 	@Transactional
-	@Rollback (true)
-	public void findByName ()
+	@Rollback(true)
+	public void findByName()
 	{
 		//create test data
 		createTestParameters();
@@ -71,8 +72,8 @@ public class CSystemParameterTestCase
 	 */
 	@Test
 	@Transactional
-	@Rollback (true)
-	public void testGetEncryptedParameter ()
+	@Rollback(true)
+	public void testGetEncryptedParameter()
 	{
 		//create test data
 		createTestParameters();
@@ -87,7 +88,7 @@ public class CSystemParameterTestCase
 	/**
 	 * Creates the test data.
 	 */
-	private void createTestParameters ()
+	private void createTestParameters()
 	{
 		CSystemParameter systemParameter = new CSystemParameter();
 		systemParameter.setName(TEST_SYSTEM_PARAMETER_NAME);
@@ -97,7 +98,7 @@ public class CSystemParameterTestCase
 		systemParameter.setValidFromDate(DateTime.now());
 		systemParameter.setValidToDate(DateTime.now().plusDays(10));
 
-		systemParameterDao.save(systemParameter);
+		systemParameterDao.update(systemParameter);
 		systemParameterDao.flush();
 	}
 }

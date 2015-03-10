@@ -95,7 +95,7 @@ public class CSendMailTaskTestCase
 	public void testSuccessRun () throws Exception
 	{
 		//mockito rules
-		Mockito.doNothing().when(mockSenderMailDao).save(Mockito.any(CMail.class));
+		Mockito.doNothing().when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 
@@ -123,7 +123,7 @@ public class CSendMailTaskTestCase
 	public void testOneCommunicationFailure () throws Exception
 	{
 		//mockito rules
-		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).save(Mockito.any(CMail.class));
+		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 
@@ -158,7 +158,7 @@ public class CSendMailTaskTestCase
 	public void testCommunicationFailure () throws Exception
 	{
 		//mockito rules
-		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).save(Mockito.any(CMail.class));
+		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 
@@ -189,7 +189,7 @@ public class CSendMailTaskTestCase
 	public void testDataFailure () throws Exception
 	{
 		//mockito rules
-		Mockito.doThrow(CSystemException.class).when(mockSenderMailDao).save(Mockito.any(CMail.class));
+		Mockito.doThrow(CSystemException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 

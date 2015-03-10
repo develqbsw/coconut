@@ -90,7 +90,7 @@ public class CMailSender extends AMailService implements IMailService
 			mail.setBody(templateBuilder.buildMailBody(template, params));
 
 			//send mail
-			mailDao.save(mail);
+			mailDao.update(mail);
 		} catch (Throwable e)
 		{
 			LOGGER.error("Mail sending problem", e);
@@ -153,7 +153,7 @@ public class CMailSender extends AMailService implements IMailService
 			mail.setCreated(DateTime.now());
 
 			//send mail
-			mailDao.save(mail);
+			mailDao.update(mail);
 			mail.setState(EMailState.SENT);
 		} catch (CCommunicationException e)
 		{
@@ -180,7 +180,7 @@ public class CMailSender extends AMailService implements IMailService
 		{
 			if (archive == true && mail != null)
 			{
-				jpaMailDao.save(mail);
+				jpaMailDao.update(mail);
 			}
 		}
 	}

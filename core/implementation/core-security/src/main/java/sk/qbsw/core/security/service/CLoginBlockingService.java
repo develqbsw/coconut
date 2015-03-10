@@ -100,7 +100,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 			blockedLogin.setBlockedFrom(DateTime.now());
 			blockedLogin.setBlockedTo(DateTime.now().plusMinutes(countBlockLoginMinutes(blockedLogin.getInvalidLoginCount())));
 		}
-		blockedLoginJpaDao.save(blockedLogin);
+		blockedLoginJpaDao.update(blockedLogin);
 	}
 
 	/* (non-Javadoc)

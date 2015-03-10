@@ -51,11 +51,11 @@ public class COrganizationService extends AService implements IOrganizationServi
 	public void registerNewOrganization (COrganization organization, CUser user, String group)
 	{
 		organization.setFlagEnabled(true);
-		organizationDao.save(organization);
+		organizationDao.update(organization);
 
 		user.addGroup(groupDao.findByCode(group).get(0));
 		user.setFlagEnabled(true);
-		userDao.save(user);
+		userDao.update(user);
 	}
 
 	/* (non-Javadoc)
@@ -66,12 +66,12 @@ public class COrganizationService extends AService implements IOrganizationServi
 	public void registerNewOrganization (COrganization organization, CUser user)
 	{
 		organization.setFlagEnabled(true);
-		organizationDao.save(organization);
+		organizationDao.update(organization);
 
 		user.addGroup(groupDao.findByCode("ADMINISTRATOR").get(0));
 		user.setOrganization(organization);
 		user.setFlagEnabled(true);
-		userDao.save(user);
+		userDao.update(user);
 	}
 
 	/* (non-Javadoc)
@@ -123,7 +123,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	@Transactional
 	public void updateOrganization (COrganization organization)
 	{
-		organizationDao.save(organization);
+		organizationDao.update(organization);
 	}
 
 	/* (non-Javadoc)
@@ -147,8 +147,8 @@ public class COrganizationService extends AService implements IOrganizationServi
 		organization.setAddress(address);
 
 		//save entities
-		addressDao.save(address);
-		organizationDao.save(organization);
+		addressDao.update(address);
+		organizationDao.update(organization);
 
 	}
 }

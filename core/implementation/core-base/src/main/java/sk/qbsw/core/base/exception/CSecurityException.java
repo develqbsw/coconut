@@ -37,11 +37,35 @@ public class CSecurityException extends CBusinessException {
 	/**
 	 * Instantiates a new c security exception.
 	 *
-	 * @param message the message of security exception
-	 * @param errorCode the error code of the message
+	 * @param message the message
+	 * @param th the throwable
+	 * @param error the error
 	 */
-	public CSecurityException(String message, String errorCode)
+	public CSecurityException(String message, Throwable th, IErrorResponse error)
 	{
-		super(message, errorCode);
+		super(message, th, error);
+	}
+
+	/**
+	 * Instantiates a new c security exception.
+	 *
+	 * @param message the message
+	 * @param error the error
+	 */
+	public CSecurityException(String message, IErrorResponse error)
+	{
+		super(message, error);
+	}
+
+	/**
+	 * Instantiates a new c security exception.
+	 *
+	 * @param message the message
+	 * @param th the throwable
+	 * @param error the error
+	 */
+	public CSecurityException(IErrorResponse error)
+	{
+		super(error);
 	}
 }

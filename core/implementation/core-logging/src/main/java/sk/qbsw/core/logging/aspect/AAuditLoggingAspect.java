@@ -10,8 +10,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.base.exception.EError;
-import sk.qbsw.core.base.exception.IError;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.core.base.exception.IErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.threadlocal.CThreadLocalStorage;
@@ -91,7 +91,7 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 			catch (final CBusinessException e)
 			{
 				// get error description
-				IError error = e.getError();
+				IErrorResponse error = e.getError();
 				String errorMessage = null;
 
 				if (error != null)
@@ -106,7 +106,7 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 			} catch (final Exception e)
 			{
 				// log when error
-				this.doLog(actionName, EOperationResult.ERROR, EError.SYSTEM_ERROR.toString(), loggedArguments);
+				this.doLog(actionName, EOperationResult.ERROR, ECoreErrorResponse.SYSTEM_ERROR.toString(), loggedArguments);
 
 				throw e;
 			} finally

@@ -273,7 +273,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 				authParams.setPassword(null);
 				authParams.setPasswordDigest(null);
 				authParams.setPin(null);
-				authenticationParamsDao.save(authParams);
+				authenticationParamsDao.update(authParams);
 			}
 		} catch (LdapInvalidAttributeValueException ex) {
 			logger.error("The user password change failed", ex);
@@ -342,7 +342,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 
 		// save user login in DB
 		user.setLogin(login);
-		userDao.save(user);
+		userDao.update(user);
 	}
 
 	/*

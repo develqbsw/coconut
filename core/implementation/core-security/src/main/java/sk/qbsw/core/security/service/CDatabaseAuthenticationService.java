@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
@@ -286,7 +287,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		CUser user = userDao.findById(userId);
 		user.setLogin(login);
 
-		userDao.save(user);
+		userDao.update(user);
 	}
 
 	/* (non-Javadoc)
@@ -330,13 +331,13 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			user = userDao.findByLogin(login);
 		} catch (NoResultException ex)
 		{
-			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
+			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
 		}
 
 		//checks email if enctypt flag is false
 		if (encrypt == false && email != null && user.getEmail() != null && email.equals(user.getEmail()) == false)
 		{
-			throw new CSecurityException("Password change not allowed", "error.security.changepassworddenied");
+			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
 		}
 
 		//set auth params
@@ -368,6 +369,6 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			authParams.setPasswordDigest(null);
 		}
 
-		authenticationParamsDao.save(authParams);
+		authenticationParamsDao.update(authParams);
 	}
 }

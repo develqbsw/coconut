@@ -66,7 +66,7 @@ public class CAuditLogService implements IAuditLogService
 		auditLog.setResultDescription(resultDescription);
 		auditLog.setUuid(uuid);
 
-		auditLogDao.save(auditLog);
+		auditLogDao.update(auditLog);
 	}
 
 }

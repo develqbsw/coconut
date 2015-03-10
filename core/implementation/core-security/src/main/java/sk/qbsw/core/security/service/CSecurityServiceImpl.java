@@ -88,7 +88,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	public void addLicense (CLicense<?> license)
 	{
 		license.recalculateLicensePrice(rules.getDayPricing());
-		licenseDao.save(license);
+		licenseDao.update(license);
 	}
 
 
@@ -117,7 +117,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	{
 		COrganization toModify = orgDao.findById(org.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
-		orgDao.save(toModify);
+		orgDao.update(toModify);
 	}
 
 
@@ -132,7 +132,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	{
 		CUser toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
-		userDao.save(toModify);
+		userDao.update(toModify);
 	}
 
 
@@ -147,7 +147,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	{
 		COrganization toModify = orgDao.findById(org.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
-		orgDao.save(toModify);
+		orgDao.update(toModify);
 	}
 
 
@@ -162,7 +162,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	{
 		CUser toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
-		userDao.save(toModify);
+		userDao.update(toModify);
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	{
 		CLicense<?> toModify = licenseDao.findById(license.getId());
 		toModify.setFlagPayed(payed);
-		licenseDao.save(toModify);
+		licenseDao.update(toModify);
 	}
 
 	/**
@@ -331,7 +331,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 		org.addUser(manager);
 
 		// save game
-		orgDao.save(org);
+		orgDao.update(org);
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	@Transactional (readOnly = false)
 	public void saveUser (CUser user)
 	{
-		userDao.save(user);
+		userDao.update(user);
 	}
 
 
@@ -356,7 +356,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	@Transactional (readOnly = false)
 	public void updateLicense (CLicense<?> license)
 	{
-		licenseDao.save(license);
+		licenseDao.update(license);
 	}
 
 

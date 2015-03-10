@@ -120,7 +120,7 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 			mail.setCreated(DateTime.now());
 
 			//send mail
-			mailDao.save(mail);
+			mailDao.update(mail);
 		}
 		catch (CCommunicationException e)
 		{
