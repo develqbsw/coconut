@@ -29,7 +29,7 @@ import com.mysema.query.types.path.EntityPathBase;
 import sk.qbsw.core.browser.dao.IBRWDao;
 import sk.qbsw.core.browser.dto.CBRWDataDTO;
 import sk.qbsw.core.browser.model.CJoinedExpression;
-import sk.qbsw.core.persistence.dao.querydsl.AEntityQueryDslDao;
+import sk.qbsw.core.persistence.dao.querydsl.AQueryDslDao;
 import sk.qbsw.core.persistence.model.CFilterParameter;
 import sk.qbsw.core.persistence.model.COrderParameter;
 import sk.qbsw.core.persistence.model.domain.IEntity;
@@ -39,10 +39,9 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  *
  * @param <PK> Primary key
  * @param <V> Browser Entity
- * @param <T> Entity
  */
 @SuppressWarnings("serial")
-public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>, T extends IEntity<PK>> extends AEntityQueryDslDao<PK, T> implements IBRWDao<PK, V> {
+public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryDslDao<PK, V> implements IBRWDao<PK, V> {
 
 	/** The entity path brw. */
 	protected final EntityPathBase<V> entityPathBRW;
@@ -237,8 +236,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>, T extends IEnti
 	 * @param entityPathCRUD the entity path crud
 	 * @param joinQueryArr the join query arr
 	 */
-	public ABRWQueryDslDao(EntityPathBase<V> entityPathBRW, EntityPathBase<T> entityPathCRUD, CJoinedExpression<?>[] joinQueryArr) {
-		super(entityPathCRUD);
+	public ABRWQueryDslDao(EntityPathBase<V> entityPathBRW, CJoinedExpression<?>[] joinQueryArr) {
+		super();
 		this.entityPathBRW = entityPathBRW;
 
 		if (joinQueryArr == null) {
@@ -487,5 +486,4 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>, T extends IEnti
 
 		return result;
 	}
-
 }
