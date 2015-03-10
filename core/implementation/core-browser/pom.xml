@@ -9,7 +9,7 @@
 		<name>QBSW a.s.</name>
 		<url>http://www.qbsw.sk</url>
 	</organization>
-	<name>Core base</name>
+	<name>Core browser</name>
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>core</artifactId>
