@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,10 +47,12 @@ public class CDatabaseAuthenticationTestCase
 
 	/** The authentication service. */
 	@Autowired
+	@Qualifier("cLoginService")
 	private IAuthenticationService authenticationService;
 
 	/** The authentication service. */
 	@Autowired
+	@Qualifier("cLoginService")
 	private IAuthenticationModifierService authenticationModifierService;
 
 	/** The login blocking service. */
