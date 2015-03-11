@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.service;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
+import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidUserException;
@@ -22,40 +25,44 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.6.0
  * @since 1.6.0
  */
-@Service (value = "authorizationService")
+@Service(value = "authorizationService")
 public class CAuthorizationService extends AService implements IAuthorizationService
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The user dao. */
+	/** The role dao. */
 	@Autowired
-	private IUserDao userDao;
+	private IRoleDao roleDao;
 
 	/** The unit dao. */
 	@Autowired
 	private IUnitDao unitDao;
 
+	/** The user dao. */
+	@Autowired
+	private IUserDao userDao;
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.core.security.model.domain.CRole, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public void checkAccessRights (String login, CRole role, String unit, String category) throws CSecurityException
+	@Transactional(readOnly = true)
+	public void checkAccessRights(String login, CRole role, String unit, String category) throws CSecurityException
 	{
 		CUnit localUnit = getUnitByName(unit);
 		CUser user;
 		try
 		{
 			user = getUserByLoginAndUnit(login, localUnit);
-		}
-		catch (NoResultException nre)
+		} catch (NoResultException nre)
 		{
 			user = null;
 		}
 
 		if (user == null)
-		{	
+		{
 			throw new CInvalidUserException("User with login " + login + " not recognised");
 		}
 		else
@@ -81,23 +88,15 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 		}
 	}
 
-	/**
-	 * Gets the user by login and unit.
-	 *
-	 * @param login the login
-	 * @param unit the unit
-	 * @return the user by login and unit
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthorizationService#getRoleByCode(java.lang.String)
 	 */
-	private CUser getUserByLoginAndUnit (String login, CUnit unit)
+	@Override
+	@Transactional(readOnly = true)
+	public List<CRole> getRoleByCode(String code)
 	{
-		if (unit == null)
-		{
-			return userDao.findByLogin(login);
-		}
-		else
-		{
-			return userDao.findByLogin(login, unit);
-		}
+
+		return roleDao.findByCode(code);
 	}
 
 	/**
@@ -107,7 +106,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	 * @return the unit by name
 	 * @throws CSecurityException the security exception
 	 */
-	private CUnit getUnitByName (String unitName) throws CSecurityException
+	private CUnit getUnitByName(String unitName) throws CSecurityException
 	{
 		if (unitName != null)
 		{
@@ -125,6 +124,25 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 		else
 		{
 			return null;
+		}
+	}
+
+	/**
+	 * Gets the user by login and unit.
+	 *
+	 * @param login the login
+	 * @param unit the unit
+	 * @return the user by login and unit
+	 */
+	private CUser getUserByLoginAndUnit(String login, CUnit unit)
+	{
+		if (unit == null)
+		{
+			return userDao.findByLogin(login);
+		}
+		else
+		{
+			return userDao.findByLogin(login, unit);
 		}
 	}
 }

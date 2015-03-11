@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -14,6 +15,7 @@ import sk.qbsw.core.security.model.domain.CRole;
  */
 public interface IAuthorizationService extends Serializable
 {
+
 	/**
 	 * Checks if the end user has access rights (if not, it throws exception)
 	 * @param login the user login - mandatory
@@ -21,5 +23,14 @@ public interface IAuthorizationService extends Serializable
 	 * @param unit the user organization unit - optional
 	 * @param category the category of groups - optional
 	 */
-	public void checkAccessRights (String login, CRole role, String unit, String category) throws CSecurityException;
+	public void checkAccessRights(String login, CRole role, String unit, String category) throws CSecurityException;
+
+	/**
+	 * Finds role by code.
+	 *
+	 * @param code the code
+	 * @return {@link CRole}
+	 */
+	public List<CRole> getRoleByCode(String code);
+
 }

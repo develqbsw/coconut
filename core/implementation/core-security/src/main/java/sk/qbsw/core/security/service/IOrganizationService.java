@@ -12,36 +12,25 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Tomas Lauro
  * 
- * @version 1.11.5
+ * @version 1.13.0
  * @since 1.0.0
  */
 public interface IOrganizationService
 {
-	/**
-	 * Register new organization and admin user with selected group.
-	 *
-	 * @param organization the organization
-	 * @param user the user
-	 * @param group the group
-	 */
-	public abstract void registerNewOrganization (COrganization organization, CUser user, String group);
 
 	/**
-	 * Register new organization and admin user with "ADMINISTRATOR" group
-	 * 	
+	 * Disable organization.
 	 *
-	 * @param organization the organization
-	 * @param user the user
+	 * @param org the org
 	 */
-	public abstract void registerNewOrganization (COrganization organization, CUser user);
+	public void disableOrganization(COrganization org);
 
 	/**
-	 * Find by name and return NULL if organization not exist - NOT exeption.
+	 * Enable organization.
 	 *
-	 * @param name the name
-	 * @return organization or null if organization not exist
+	 * @param org the org
 	 */
-	public abstract COrganization getOrganizationByNameNull (String name);
+	public void enableOrganization(COrganization org);
 
 	/**
 	 * Find by name and return NULL if organization not exist - NOT exeption.
@@ -52,28 +41,7 @@ public interface IOrganizationService
 	 * @deprecated the method has never been implemented
 	 */
 	@Deprecated
-	public abstract COrganization getOrganizationByGPS (Float longitude, Float latitude);
-
-	/**
-	 * Find all organizations.
-	 *
-	 * @return list of organizations
-	 */
-	public abstract List<COrganization> getOrganizations ();
-
-	/**
-	 * Find all organizations by name.
-	 *
-	 * @return list of organizations or empty list if there is no such organization
-	 */
-	public abstract List<COrganization> getOrganizations (String name);
-
-	/**
-	 * Update organization.
-	 *
-	 * @param organization the organization
-	 */
-	public abstract void updateOrganization (COrganization organization);
+	public abstract COrganization getOrganizationByGPS(Float longitude, Float latitude);
 
 	/**
 	 * Find organization by id.
@@ -81,7 +49,64 @@ public interface IOrganizationService
 	 * @param id id of organization
 	 * @return organization
 	 */
-	public abstract COrganization getOrganizationById (Long id);
+	public abstract COrganization getOrganizationById(Long id);
+
+	/**
+	 * Find by name and return NULL if organization not exist - NOT exeption.
+	 *
+	 * @param name the name
+	 * @return organization or null if organization not exist
+	 */
+	public abstract COrganization getOrganizationByNameNull(String name);
+
+	/**
+	 * Find all organizations.
+	 *
+	 * @return list of organizations
+	 */
+	public abstract List<COrganization> getOrganizations();
+
+	/**
+	 * Find all organizations by name.
+	 *
+	 * @return list of organizations or empty list if there is no such organization
+	 */
+	public abstract List<COrganization> getOrganizations(String name);
+
+	/**
+	 * Checks if is org name free.
+	 *
+	 * @param name the name
+	 * @param id the pk id
+	 * @return true, if is org name free
+	 */
+	public boolean isOrgNameFree(String name, Long id);
+
+	/**
+	 * Register new organization and admin user with "ADMINISTRATOR" group
+	 * 	
+	 *
+	 * @param organization the organization
+	 * @param user the user
+	 */
+	public abstract void registerNewOrganization(COrganization organization, CUser user);
+
+	/**
+	 * Register new organization and admin user with selected group.
+	 *
+	 * @param organization the organization
+	 * @param user the user
+	 * @param group the group
+	 */
+	public abstract void registerNewOrganization(COrganization organization, CUser user, String group);
+
+	/**
+	 * Register organization.
+	 *
+	 * @param org the org
+	 * @param manager the manager
+	 */
+	public void registerOrganization(COrganization org, CUser manager);
 
 	/**
 	 * Add or update organization address.
@@ -89,5 +114,12 @@ public interface IOrganizationService
 	 * @param organization organization for which is address updated
 	 * @param address address which is added or updated for organization
 	 */
-	public void setAddress (COrganization organization, CAddress address);
+	public void setAddress(COrganization organization, CAddress address);
+
+	/**
+	 * Update organization.
+	 *
+	 * @param organization the organization
+	 */
+	public abstract void updateOrganization(COrganization organization);
 }

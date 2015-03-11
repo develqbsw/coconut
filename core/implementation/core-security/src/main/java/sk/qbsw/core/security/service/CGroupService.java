@@ -19,9 +19,10 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.0.0
  * @since 1.0.0
  */
-@Service ("cGroupService")
+@Service("cGroupService")
 public class CGroupService extends AService implements IGroupService
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -29,11 +30,25 @@ public class CGroupService extends AService implements IGroupService
 	@Autowired
 	private IGroupDao groupDao;
 
+	/**
+	 * Gets the role group.
+	 *
+	 * @param id the pk id
+	 * @return the role group
+	 * @see sk.qbsw.core.security.service.ISecurityService#read(java.lang.Long)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public CGroup read(Long id)
+	{
+		return groupDao.findById(id);
+	}
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IGroupService#getAll()
 	 */
-	@Transactional (readOnly = true)
-	public List<CGroup> getAll ()
+	@Transactional(readOnly = true)
+	public List<CGroup> getAll()
 	{
 		return groupDao.findAll();
 	}
@@ -41,8 +56,8 @@ public class CGroupService extends AService implements IGroupService
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IGroupService#getByCode(java.lang.String)
 	 */
-	@Transactional (readOnly = true)
-	public List<CGroup> getByCode (String code)
+	@Transactional(readOnly = true)
+	public List<CGroup> getByCode(String code)
 	{
 		return groupDao.findByCode(code);
 	}
@@ -51,13 +66,13 @@ public class CGroupService extends AService implements IGroupService
 	 * @see sk.qbsw.core.security.service.IGroupService#getByUnit(sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
-	public List<CGroup> getByUnit (CUnit unit)
+	public List<CGroup> getByUnit(CUnit unit)
 	{
 		return groupDao.findByUnit(unit);
 	}
-	
+
 	@Override
-	public List<CGroup> getByUnitUser (CUnit unit, CUser user)
+	public List<CGroup> getByUnitUser(CUnit unit, CUser user)
 	{
 		return groupDao.findByUnitUser(unit, user);
 	}

@@ -12,6 +12,7 @@ import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CAddress;
+import sk.qbsw.core.security.model.domain.CLicense;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CUser;
 
@@ -24,9 +25,14 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.11.5
  * @since 1.0.0
  */
-@Service ("cOrganizationService")
+@Service("cOrganizationService")
 public class COrganizationService extends AService implements IOrganizationService
 {
+
+	/** The license generator. */
+	@Autowired
+	private ILicenseGenerator licenseGenerator;
+
 	/** The organization dao. */
 	@Autowired
 	private IOrganizationDao organizationDao;
@@ -48,7 +54,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 */
 	@Override
 	@Transactional
-	public void registerNewOrganization (COrganization organization, CUser user, String group)
+	public void registerNewOrganization(COrganization organization, CUser user, String group)
 	{
 		organization.setFlagEnabled(true);
 		organizationDao.update(organization);
@@ -63,7 +69,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 */
 	@Override
 	@Transactional
-	public void registerNewOrganization (COrganization organization, CUser user)
+	public void registerNewOrganization(COrganization organization, CUser user)
 	{
 		organization.setFlagEnabled(true);
 		organizationDao.update(organization);
@@ -78,8 +84,8 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationByNameNull(java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public COrganization getOrganizationByNameNull (String name)
+	@Transactional(readOnly = true)
+	public COrganization getOrganizationByNameNull(String name)
 	{
 		return organizationDao.findByNameNull(name);
 	}
@@ -90,8 +96,8 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 */
 	@Override
 	@Deprecated
-	@Transactional (readOnly = true)
-	public COrganization getOrganizationByGPS (Float longitude, Float latitude)
+	@Transactional(readOnly = true)
+	public COrganization getOrganizationByGPS(Float longitude, Float latitude)
 	{
 		return organizationDao.findById(2L);
 	}
@@ -100,18 +106,48 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizations()
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public List<COrganization> getOrganizations ()
+	@Transactional(readOnly = true)
+	public List<COrganization> getOrganizations()
 	{
 		return organizationDao.findAll();
+	}
+
+	/**
+	 * Disable organization.
+	 *
+	 * @param org the org
+	 * @see sk.qbsw.core.security.service.ISecurityService#disableOrganization(sk.qbsw.core.security.model.domain.COrganization)
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public void disableOrganization(COrganization org)
+	{
+		COrganization toModify = organizationDao.findById(org.getId());
+		toModify.setFlagEnabled(Boolean.FALSE);
+		organizationDao.update(toModify);
+	}
+
+	/**
+	 * Enable organization.
+	 *
+	 * @param org the org
+	 * @see sk.qbsw.core.security.service.ISecurityService#enableOrganization(sk.qbsw.core.security.model.domain.COrganization)
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public void enableOrganization(COrganization org)
+	{
+		COrganization toModify = organizationDao.findById(org.getId());
+		toModify.setFlagEnabled(Boolean.TRUE);
+		organizationDao.update(toModify);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizations(java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public List<COrganization> getOrganizations (String name)
+	@Transactional(readOnly = true)
+	public List<COrganization> getOrganizations(String name)
 	{
 		return organizationDao.findAllByName(name);
 	}
@@ -121,7 +157,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 */
 	@Override
 	@Transactional
-	public void updateOrganization (COrganization organization)
+	public void updateOrganization(COrganization organization)
 	{
 		organizationDao.update(organization);
 	}
@@ -130,8 +166,8 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationById(java.lang.Long)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public COrganization getOrganizationById (Long id)
+	@Transactional(readOnly = true)
+	public COrganization getOrganizationById(Long id)
 	{
 		return organizationDao.findById(id);
 	}
@@ -141,7 +177,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 */
 	@Override
 	@Transactional
-	public void setAddress (COrganization organization, CAddress address)
+	public void setAddress(COrganization organization, CAddress address)
 	{
 		//set address to unit
 		organization.setAddress(address);
@@ -150,5 +186,57 @@ public class COrganizationService extends AService implements IOrganizationServi
 		addressDao.update(address);
 		organizationDao.update(organization);
 
+	}
+
+	/**
+	 * Register organization.
+	 *
+	 * @param org the org
+	 * @param manager the manager
+	 * @see sk.qbsw.core.security.service.ISecurityService#registerOrganization(sk.qbsw.core.security.model.domain.COrganization)
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public void registerOrganization(COrganization org, CUser manager)
+	{
+		// modify organization
+		org.setFlagEnabled(Boolean.TRUE);
+
+		// create license
+		CLicense<?> license = licenseGenerator.generateFreeLicence(1);
+		license.setOrganization(org);
+		org.addLicence(license);
+
+		// create new User
+		manager.setFlagEnabled(Boolean.TRUE);
+		manager.setName(org.getName());
+		manager.setSurname("");
+		manager.setMainGroup(groupDao.findById(IGroupDao.ID_ORG_ADMIN));
+		manager.setOrganization(org);
+		org.addUser(manager);
+
+		// save game
+		organizationDao.update(org);
+	}
+
+	/**
+	 * Checks if is org name free.
+	 *
+	 * @param name the name
+	 * @param id the pk id
+	 * @return true, if is org name free
+	 * @see sk.qbsw.core.security.service.ISecurityService#isOrgNameFree(java.lang.String, java.lang.Long)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public boolean isOrgNameFree(String name, Long id)
+	{
+		COrganization organization = organizationDao.findByNameNull(name);
+
+		if (organization != null)
+		{
+			return organization.getId().equals(id);
+		}
+		return true;
 	}
 }

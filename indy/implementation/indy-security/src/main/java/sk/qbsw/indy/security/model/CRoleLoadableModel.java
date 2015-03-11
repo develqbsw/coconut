@@ -7,21 +7,22 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import sk.qbsw.core.security.model.domain.CRole;
-import sk.qbsw.core.security.service.ISecurityService;
+import sk.qbsw.core.security.service.IAuthorizationService;
 
 public class CRoleLoadableModel extends LoadableDetachableModel<CRole>
 {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private ISecurityService securityService;
+	private IAuthorizationService securityService;
 
 	private String roleCode;
 
-	public CRoleLoadableModel (String roleCode)
+	public CRoleLoadableModel(String roleCode)
 	{
 		super();
 
@@ -31,7 +32,7 @@ public class CRoleLoadableModel extends LoadableDetachableModel<CRole>
 	}
 
 	@Override
-	protected CRole load ()
+	protected CRole load()
 	{
 		List<CRole> roles = securityService.getRoleByCode(roleCode);
 

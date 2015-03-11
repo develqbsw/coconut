@@ -39,7 +39,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @since 1.0.0
  */
 @Service(value = "cLoginService")
-public class CDatabaseAuthenticationService extends AService implements IAuthenticationService
+public class CDatabaseAuthenticationService extends AService implements IAuthenticationService, IAuthenticationModifierService
 {
 
 	/** The Constant serialVersionUID. */

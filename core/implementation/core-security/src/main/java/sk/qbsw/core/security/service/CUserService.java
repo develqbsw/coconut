@@ -69,7 +69,7 @@ public class CUserService extends AService implements IUserService
 
 	/** The authentication service. */
 	@Autowired
-	private IAuthenticationService authenticationService;
+	private IAuthenticationModifierService authenticationService;
 
 	/** The group dao. */
 	@Autowired
@@ -310,7 +310,7 @@ public class CUserService extends AService implements IUserService
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUserService#updateUser(sk.qbsw.core.security.model.domain.CUser)
 	 */
-	@Transactional
+	@Transactional(readOnly = false)
 	public void updateUser(CUser user)
 	{
 		userDao.update(user);

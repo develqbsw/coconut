@@ -28,6 +28,7 @@ import sk.qbsw.core.security.oauth.dao.ISecurityTokenDao;
 import sk.qbsw.core.security.oauth.model.CSecurityToken;
 import sk.qbsw.core.security.oauth.service.IIdGeneratorService;
 import sk.qbsw.core.security.oauth.service.ISecurityTokenService;
+import sk.qbsw.core.security.service.IAuthenticationModifierService;
 import sk.qbsw.core.security.service.IAuthenticationService;
 
 /**
@@ -63,6 +64,11 @@ public class CSecurityTokenService implements ISecurityTokenService {
 	@Qualifier("cLoginService")
 	@Autowired
 	private IAuthenticationService authenticationService;
+
+	/** The authentication service. */
+	@Qualifier("cLoginService")
+	@Autowired
+	private IAuthenticationModifierService authenticationModifierService;
 
 	/** The system parameter service. */
 	@Autowired
@@ -140,7 +146,7 @@ public class CSecurityTokenService implements ISecurityTokenService {
 		}
 
 		// zmena hesla
-		authenticationService.changeEncryptedPassword(login, newPassword);
+		authenticationModifierService.changeEncryptedPassword(login, newPassword);
 	}
 
 	/* (non-Javadoc)

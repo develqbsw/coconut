@@ -15,6 +15,7 @@ import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
+// TODO: Auto-generated Javadoc
 /**
  * The authentication service combines the database and LDAP authentication.
  * 
@@ -23,29 +24,32 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.12.2
  * @since 1.10.5
  */
-@Service (value = "mixedAuthenticationService")
+@Service(value = "mixedAuthenticationService")
 public class CMixedAuthenticationService extends CLoginBlockingService implements IAuthenticationService
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The logger. */
 	final Logger logger = LoggerFactory.getLogger(CMixedAuthenticationService.class);
 
+	/** The database authentication service. */
 	@Autowired
-	@Qualifier ("cLoginService")
+	@Qualifier("cLoginService")
 	private IAuthenticationService databaseAuthenticationService;
 
+	/** The ldap authentication service. */
 	@Autowired
-	@Qualifier ("ldapAuthenticationService")
+	@Qualifier("ldapAuthenticationService")
 	private IAuthenticationService ldapAuthenticationService;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
+	@Transactional(readOnly = true)
+	public boolean canLogin(String login, @CNotLogged @CNotAuditLogged String password, CRole role)
 	{
 		if (ldapAuthenticationService.canLogin(login, password, role) == true || databaseAuthenticationService.canLogin(login, password, role) == true)
 		{
@@ -61,8 +65,8 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional(readOnly = true)
+	public CUser login(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginUser(login, password, null, null);
 	}
@@ -71,8 +75,8 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
+	@Transactional(readOnly = true)
+	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
 	{
 		return loginUser(login, password, null, role);
 	}
@@ -81,8 +85,8 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	@Transactional(readOnly = true)
+	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		return loginUser(login, password, unit, null);
 	}
@@ -93,10 +97,11 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @param login the login
 	 * @param password the password
 	 * @param unit the unit - optional
+	 * @param role the role
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	private CUser loginUser (String login, String password, String unit, CRole role) throws CSecurityException
+	private CUser loginUser(String login, String password, String unit, CRole role) throws CSecurityException
 	{
 		CUser user = null;
 
@@ -106,8 +111,7 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 			logger.debug("User " + login + " was authenticated by LDAP");
 
 			return user;
-		}
-		catch (CSecurityException ex)
+		} catch (CSecurityException ex)
 		{
 			try
 			{
@@ -115,8 +119,7 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 				logger.debug("User " + login + " was authenticated by DB");
 
 				return user;
-			}
-			catch (CSecurityException exa)
+			} catch (CSecurityException exa)
 			{
 				throw exa;
 			}
@@ -133,7 +136,7 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	private CUser callLdapLoginMethod (String login, String password, String unit, CRole role) throws CSecurityException
+	private CUser callLdapLoginMethod(String login, String password, String unit, CRole role) throws CSecurityException
 	{
 		if (unit != null)
 		{
@@ -159,7 +162,7 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	private CUser callDatabaseLoginMethod (String login, String password, String unit, CRole role) throws CSecurityException
+	private CUser callDatabaseLoginMethod(String login, String password, String unit, CRole role) throws CSecurityException
 	{
 		if (unit != null)
 		{
@@ -175,57 +178,12 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 		}
 	}
 
-	/**
-	 * Not implemented method.
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
 	 */
 	@Override
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password)
+	public boolean isOnline()
 	{
-		throw new NotImplementedException();
-	}
-
-	/**
-	 * Method not implemented.
-	 */
-	@Override
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
-	{
-		throw new NotImplementedException();
-	}
-
-	/**
-	 * Not implemented method.
-	 */
-	@Override
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
-	{
-		throw new NotImplementedException();
-	}
-
-	/**
-	 * Method not implemented.
-	 */
-	@Override
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
-	{
-		throw new NotImplementedException();
-	}
-
-	/**
-	 * Not implemented method.
-	 */
-	@Override
-	public void changeLogin (Long userId, String login) throws CSecurityException
-	{
-		throw new NotImplementedException();
-	}
-
-	/**
-	 * Not implemented method.
-	 */
-	@Override
-	public boolean isOnline ()
-	{
-		throw new NotImplementedException();
+		return databaseAuthenticationService.isOnline() || ldapAuthenticationService.isOnline();
 	}
 }
