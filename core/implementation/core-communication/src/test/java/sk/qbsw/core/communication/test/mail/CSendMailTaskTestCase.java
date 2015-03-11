@@ -34,12 +34,12 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.11.9
+ * @version 1.13.0
  * @since 1.9.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/spring/test-context.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@RunWith (SpringJUnit4ClassRunner.class)
+@ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
+@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
 public class CSendMailTaskTestCase
 {
 
@@ -49,7 +49,7 @@ public class CSendMailTaskTestCase
 
 	/** The mail service. */
 	@Autowired
-	@Qualifier("mailBackgroundService")
+	@Qualifier ("mailBackgroundService")
 	private IMailService mailService;
 
 	/** The send mail task. */
@@ -62,12 +62,12 @@ public class CSendMailTaskTestCase
 
 	/** The jpa mail dao. */
 	@Autowired
-	@Qualifier("jpaMailDao")
+	@Qualifier ("jpaMailDao")
 	private IMailDao jpaMailDao;
 
 	/** The mock sender mail dao. */
 	@Autowired
-	@Qualifier("mockSenderMailDao")
+	@Qualifier ("mockSenderMailDao")
 	private IMailDao mockSenderMailDao;
 
 	/** The mock helper. */
@@ -78,40 +78,11 @@ public class CSendMailTaskTestCase
 	 * Inits the mail service.
 	 */
 	@Before
-	public void init()
+	public void init ()
 	{
 		//MockitoAnnotations.initMocks(this);
 		mailService.setSenderAddress("noreply@qbsw.sk");
 		mailService.setSMTPServer("195.168.42.242", 25);
-	}
-
-	/**
-	 * Test success run.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testSuccessRun() throws Exception
-	{
-		//mockito rules
-		Mockito.when(mockSenderMailDao.update(Mockito.any(CMail.class))).thenReturn(new CMail());
-
-		//mock sender dao
-		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
-
-		//create test data
-		createTestData();
-
-		//send mails
-		sendMailTask.run();
-
-		//check results
-		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.SENT);
-
-		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
-		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);
 	}
 
 	/**
@@ -121,9 +92,12 @@ public class CSendMailTaskTestCase
 	 */
 	@Test
 	@Transactional
-	@Rollback(true)
-	public void testOneCommunicationFailure() throws Exception
+	@Rollback (true)
+	public void testOneCommunicationFailure () throws Exception
 	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
 		//mockito rules
 		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
@@ -150,15 +124,50 @@ public class CSendMailTaskTestCase
 	}
 
 	/**
+	 * Test success run.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testSuccessRun () throws Exception
+	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
+		//mockito rules
+		Mockito.when(mockSenderMailDao.update(Mockito.any(CMail.class))).thenReturn(new CMail());
+
+		//mock sender dao
+		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
+
+		//create test data
+		createTestData();
+
+		//send mails
+		sendMailTask.run();
+
+		//check results
+		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.SENT);
+
+		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
+		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);
+	}
+
+	/**
 	 * Test communication failure.
 	 *
 	 * @throws Exception the exception
 	 */
 	@Test
 	@Transactional
-	@Rollback(true)
-	public void testCommunicationFailure() throws Exception
+	@Rollback (true)
+	public void testCommunicationFailure () throws Exception
 	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
 		//mockito rules
 		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 
@@ -188,9 +197,12 @@ public class CSendMailTaskTestCase
 	 */
 	@Test
 	@Transactional
-	@Rollback(true)
-	public void testDataFailure() throws Exception
+	@Rollback (true)
+	public void testDataFailure () throws Exception
 	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
 		//mockito rules
 		Mockito.doThrow(CSystemException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
@@ -214,7 +226,7 @@ public class CSendMailTaskTestCase
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	private void createTestData() throws IOException
+	private void createTestData () throws IOException
 	{
 		//create data
 		List<String> recipients = mailBuilder.buildRecipients();
