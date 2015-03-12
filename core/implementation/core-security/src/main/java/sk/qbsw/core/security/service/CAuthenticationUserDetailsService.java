@@ -40,7 +40,7 @@ public class CAuthenticationUserDetailsService implements AuthenticationUserDeta
 		final String login = (String) token.getPrincipal();
 		CUser user = null;
 		try {
-			user = userDao.findByLogin(login);
+			user = userDao.findOneByLogin(login);
 		} catch (NonUniqueResultException | NoResultException e) {
 			//ignore it
 		}

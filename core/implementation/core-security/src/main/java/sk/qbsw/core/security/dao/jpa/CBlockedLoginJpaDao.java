@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.dao.jpa;
 
-import javax.persistence.Query;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
@@ -9,13 +10,17 @@ import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
+import sk.qbsw.core.security.model.domain.QCBlockedLogin;
+
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * Blocked login DAO implementation.
  * 
  * @author Tomas Lauro
  * 
- * @version 1.12.2
+ * @version 1.13.0
  * @since 1.12.2
  */
 @Repository (value = "blockedLoginJpaDao")
@@ -34,63 +39,60 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#findByLoginAndIp(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#findOneByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public CBlockedLogin findByLoginAndIp (String login, String ip) throws CSystemException
+	public CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException
 	{
+		//checks mandatory params
 		if (login == null)
 		{
 			throw new CSystemException("The mandatory parameter not found");
 		}
 
-		StringBuilder strQuery = new StringBuilder();
-		strQuery.append("select bl from CBlockedLogin bl where bl.login=:login");
+		QCBlockedLogin qBlockedLogin = QCBlockedLogin.cBlockedLogin;
+
+		//create where condition
+		BooleanBuilder builder = new BooleanBuilder();
 		if (ip != null)
 		{
-			strQuery.append(" and bl.ip=:ip");
+			builder.and(qBlockedLogin.ip.eq(ip));
 		}
 		else
 		{
-			strQuery.append(" and bl.ip is null");
+			builder.and(qBlockedLogin.ip.isNull());
 		}
 
-		Query query = getEntityManager().createQuery(strQuery.toString());
-		query.setParameter("login", login);
-		if (ip != null)
-		{
-			query.setParameter("ip", ip);
-		}
-
-		return (CBlockedLogin) query.getSingleResult();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager()).from(qBlockedLogin).where(builder);
+		return CJpaDaoHelper.handleUniqueResultQuery(query, qBlockedLogin);
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#countCurrentlyBlocked(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#countCurrentlyBlockedByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public long countCurrentlyBlocked (String login, String ip) throws CSystemException
+	public long countCurrentlyBlockedByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException
 	{
 		if (login == null)
 		{
 			throw new CSystemException("The mandatory parameter not found");
 		}
 
-		StringBuilder strQuery = new StringBuilder();
-		strQuery.append("select count(bl) from CBlockedLogin bl where bl.login=:login and bl.blockedFrom < :now and :now <= bl.blockedTo");
+		QCBlockedLogin qBlockedLogin = QCBlockedLogin.cBlockedLogin;
+
+		//create where condition
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(qBlockedLogin.login.eq(login));
+		builder.and(qBlockedLogin.blockedFrom.lt(DateTime.now()));
+		builder.and(qBlockedLogin.blockedTo.goe(DateTime.now()));
 		if (ip != null)
 		{
-			strQuery.append(" and bl.ip=:ip");
+			builder.and(qBlockedLogin.ip.eq(ip));
 		}
 
-		Query query = getEntityManager().createQuery(strQuery.toString());
-		query.setParameter("login", login);
-		query.setParameter("now", DateTime.now());
-		if (ip != null)
-		{
-			query.setParameter("ip", ip);
-		}
-
-		return (long) query.getSingleResult();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qBlockedLogin).where(builder).count();
 	}
 }

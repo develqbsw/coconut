@@ -18,13 +18,12 @@ import sk.qbsw.core.security.model.domain.CLicense;
  */
 public interface ILicenseDao extends Serializable, IEntityDao<Long, CLicense<?>>
 {
-
 	/**
 	 * Find by organization id.
 	 *
-	 * @param orgId the org id
+	 * @param orgId the org id (mandatory)
 	 * @return the list
 	 */
-	public List<CLicense<?>> findByOrganizationId (Long orgId);
+	List<CLicense<?>> findByOrganizationId (Long orgId);
 
 }

@@ -15,7 +15,6 @@ import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
 
-// TODO: Auto-generated Javadoc
 /**
  * The authentication service combines the database and LDAP authentication.
  * 

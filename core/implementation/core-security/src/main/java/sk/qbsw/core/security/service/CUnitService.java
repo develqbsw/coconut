@@ -51,7 +51,7 @@ public class CUnitService extends AService implements IUnitService
 	@Transactional (readOnly = true)
 	public List<CUnit> getAll (CUser user)
 	{
-		return unitDao.findAll(user.getId());
+		return unitDao.findByUserId(user.getId());
 	}
 
 	@Transactional

@@ -13,6 +13,7 @@ import sk.qbsw.core.security.model.domain.CAddress;
  * The Class CUnitJpaDao.
  *
  * @author Tomas Lauro
+ * 
  * @version 1.7.1
  * @since 1.6.0
  */

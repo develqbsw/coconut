@@ -131,7 +131,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	@Transactional
 	public boolean isLoginBlocked(String login, String ip) throws CSystemException
 	{
-		if (blockedLoginJpaDao.countCurrentlyBlocked(login, ip) > 0)
+		if (blockedLoginJpaDao.countCurrentlyBlockedByLoginAndIp(login, ip) > 0)
 		{
 			return true;
 		}
@@ -154,7 +154,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	{
 		try
 		{
-			return userDao.findByLogin(login);
+			return userDao.findOneByLogin(login);
 		} catch (NoResultException ex)
 		{
 			LOGGER.debug(errorMessage + " - the user with login " + login + " dont exists", ex);
@@ -179,7 +179,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	{
 		try
 		{
-			return blockedLoginJpaDao.findByLoginAndIp(login, ip);
+			return blockedLoginJpaDao.findOneByLoginAndIp(login, ip);
 		} catch (NoResultException ex)
 		{
 			return null;

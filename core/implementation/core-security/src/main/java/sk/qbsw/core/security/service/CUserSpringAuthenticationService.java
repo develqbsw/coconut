@@ -58,7 +58,7 @@ public class CUserSpringAuthenticationService extends AService implements UserDe
 	@Transactional (readOnly = true)
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
 	{
-		CUser user = userDao.findByLogin(username);
+		CUser user = userDao.findOneByLogin(username);
 		return buildUserFromEntity(user);
 	}
 
@@ -77,7 +77,7 @@ public class CUserSpringAuthenticationService extends AService implements UserDe
 
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-		for (CRole role : roleDao.findAllByUser(entity))
+		for (CRole role : roleDao.findByUser(entity))
 		{
 			authorities.add(new GrantedAuthorityImpl(role.getCode()));
 		}

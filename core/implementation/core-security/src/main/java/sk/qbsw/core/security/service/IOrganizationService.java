@@ -38,10 +38,19 @@ public interface IOrganizationService
 	 * @param longitude - longitude of mobile position
 	 * @param latitude - latitude of mobile position
 	 * @return organization or null if organization not exist
-	 * @deprecated the method has never been implemented
+
+	 * @deprecated the organization name is no longer unique
 	 */
 	@Deprecated
 	public abstract COrganization getOrganizationByGPS(Float longitude, Float latitude);
+	
+	/**
+	 * Gets the organization by name.
+	 *
+	 * @param name the name
+	 * @return the organizations by name
+	 */
+	public abstract List<COrganization> getOrganizationByName (String name);
 
 	/**
 	 * Find organization by id.
@@ -72,15 +81,6 @@ public interface IOrganizationService
 	 * @return list of organizations or empty list if there is no such organization
 	 */
 	public abstract List<COrganization> getOrganizations(String name);
-
-	/**
-	 * Checks if is org name free.
-	 *
-	 * @param name the name
-	 * @param id the pk id
-	 * @return true, if is org name free
-	 */
-	public boolean isOrgNameFree(String name, Long id);
 
 	/**
 	 * Register new organization and admin user with "ADMINISTRATOR" group

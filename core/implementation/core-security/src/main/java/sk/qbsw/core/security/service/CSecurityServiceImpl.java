@@ -34,7 +34,6 @@ import sk.qbsw.core.security.model.jmx.CLicensingRules;
 @Service(value = "securityService")
 public class CSecurityServiceImpl extends AService implements ISecurityService
 {
-
 	/** The license generator. */
 	@Autowired
 	private ILicenseGenerator licenseGenerator;
@@ -136,7 +135,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	@Transactional(readOnly = false)
 	public List<CGroup> getAvailableGroups()
 	{
-		return groupDao.findAllByFlagSystem(Boolean.FALSE);
+		return groupDao.findByFlagSystem(Boolean.FALSE);
 	}
 
 	/**
@@ -170,7 +169,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 
 		try
 		{
-			user = userDao.findByLogin(login);
+			user = userDao.findOneByLogin(login);
 		} catch (NoResultException nre)
 		{
 			user = null;

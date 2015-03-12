@@ -5,22 +5,29 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.Query;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.model.domain.CRole;
-import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.domain.QCGroup;
+import sk.qbsw.core.security.model.domain.QCRole;
+import sk.qbsw.core.security.model.domain.QCUser;
+import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
+
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
- * The Class CRoleJpaDao.
+ * The role jpa dao.
  *
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.6.0
+ * 
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Repository (value = "roleDao")
@@ -30,7 +37,7 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new c role jpa dao.
+	 * Instantiates a new role jpa dao.
 	 *
 	 */
 	public CRoleJpaDao ()
@@ -38,58 +45,46 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 		super(CRole.class);
 	}
 
-	/**
-	 * Find all by user.
-	 *
-	 * @param user the user
-	 * @return the list
-	 * @see sk.qbsw.core.security.dao.IRoleDao#findAllByUser()
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IRoleDao#findByUser(sk.qbsw.core.security.model.domain.CUser)
 	 */
-	@SuppressWarnings ("unchecked")
-	public List<CRole> findAllByUser (CUser user)
+	@Override
+	public List<CRole> findByUser (CUser user)
 	{
-		String strQuery = "select distinct(r) from CRole r join r.groups g join g.xUserUnitGroups xuug join xuug.user u where u = :user";
-		
+		QCRole qRole = QCRole.cRole;
+		QCGroup qGroup = QCGroup.cGroup;
+		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
+		QCUser qUser = QCUser.cUser;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("user", user);
-		return (List<CRole>) query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.distinct().from(qRole).join(qRole.groups, qGroup).join(qGroup.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.eq(user)).list(qRole);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IRoleDao#findByCode(java.lang.String)
 	 */
-	@SuppressWarnings ("unchecked")
+	@Deprecated
+	@Override
 	public List<CRole> findByCode (String code)
 	{
+		QCRole qRole = QCRole.cRole;
 
-		String strQuery = "select r from CRole r where r.code =:code";
-
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("code", code);
-		return (List<CRole>) query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qRole).where(qRole.code.eq(code)).list(qRole);
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IRoleDao#findByUnitAndCode(sk.qbsw.core.security.model.domain.CUnit, java.lang.String)
+	 * @see sk.qbsw.core.security.dao.IRoleDao#findOneByCode(java.lang.String)
 	 */
-	@SuppressWarnings ("unchecked")
-	public CRole findByUnitAndCode (CUnit unit, String code)
+	@Override
+	public CRole findOneByCode (String code) throws NonUniqueResultException, NoResultException
 	{
-		String strQuery = "select distinct(r) from CRole r join r.groups g join g.xUserUnitGroups xuug join xuug.unit u where u = :unit and r.code = :code";
+		QCRole qRole = QCRole.cRole;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("unit", unit);
-		query.setParameter("code", code);
-		List<CRole> roles = (List<CRole>) query.getResultList();
-
-		if (roles.isEmpty() || roles.size() != 1)
-		{
-			return null;
-		}
-		else
-		{
-			return roles.get(0);
-		}
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager()).from(qRole).where(qRole.code.eq(code));
+		return CJpaDaoHelper.handleUniqueResultQuery(query, qRole);
 	}
 }

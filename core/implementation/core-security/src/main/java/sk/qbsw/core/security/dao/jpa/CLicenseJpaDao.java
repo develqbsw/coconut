@@ -5,20 +5,23 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.ILicenseDao;
 import sk.qbsw.core.security.model.domain.CLicense;
+import sk.qbsw.core.security.model.domain.QCLicense;
+
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * The Class CLicenseJpaDao.
  *
  * @author rosenberg
- * @version 1.0
- * @since 1.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
+ * @since 1.0.0
  */
 
 @Repository (value = "licenceDao")
@@ -26,32 +29,26 @@ public class CLicenseJpaDao extends AEntityJpaDao<Long, CLicense<?>> implements 
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
 
 	/**
 	 * Instantiates a new c license jpa dao.
 	 */
+	@SuppressWarnings ({"unchecked", "rawtypes"})
 	public CLicenseJpaDao ()
 	{
-		super((Class)CLicense.class);
+		super((Class) CLicense.class);
 	}
 
-	
-	/**
-	 * Find by organization id.
-	 *
-	 * @param orgId the org id
-	 * @return the list
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.ILicenseDao#findByOrganizationId(java.lang.Long)
 	 */
-	@SuppressWarnings ("unchecked")
 	public List<CLicense<?>> findByOrganizationId (Long orgId)
 	{
-		String strQuery = "from CLicense where organization.id = :id";
+		QCLicense qLicense = QCLicense.cLicense;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("id", orgId);
-		return (List<CLicense<?>>) query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qLicense).where(qLicense.organization.id.eq(orgId)).list(qLicense);
 	}
 
 }

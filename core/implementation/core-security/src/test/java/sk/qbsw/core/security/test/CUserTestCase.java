@@ -28,6 +28,11 @@ import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.core.security.model.order.COrderModel;
+import sk.qbsw.core.security.model.order.COrderSpecification;
+import sk.qbsw.core.security.model.order.EOrderSpecifier;
+import sk.qbsw.core.security.model.order.EUserOrderByAttributeSpecifier;
+import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
 import sk.qbsw.core.security.service.IOrganizationService;
 import sk.qbsw.core.security.service.IUserService;
 import sk.qbsw.core.security.test.util.CDataGenerator;
@@ -37,7 +42,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  *
  * @autor Tomas Lauro
  * 
- * @version 1.12.1
+ * @version 1.13.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -97,7 +102,7 @@ public class CUserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+		COrganization organization = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_CODE).get(0);
 
 		CUser user = new CUser();
 		user.setLogin(CDataGenerator.USER_CREATED);
@@ -123,7 +128,7 @@ public class CUserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+		COrganization organization = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_CODE).get(0);
 
 		CUser user = new CUser();
 		user.setLogin(CDataGenerator.USER_CREATED);
@@ -276,7 +281,7 @@ public class CUserTestCase
 		initTest();
 
 		//preparation
-		CUnit firstUnit = unitDao.findByName(CDataGenerator.FIRST_UNIT_CODE);
+		CUnit firstUnit = unitDao.findOneByName(CDataGenerator.FIRST_UNIT_CODE);
 
 		List<CGroup> firstGroupInUnit = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 		Assert.assertTrue("The group firstGroupInUnit not found", firstGroupInUnit.size() > 0);
@@ -284,11 +289,14 @@ public class CUserTestCase
 		List<CGroup> thirdGroupInUnit = groupDao.findByCode(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE);
 		Assert.assertTrue("The group thirdGroupInUnit not found", firstGroupInUnit.size() > 0);
 
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		
 		//tests
-		List<CUser> users = userDao.findAllUsers(firstUnit, firstGroupInUnit.get(0));
+		List<CUser> users = userDao.findByUnitAndGroup(firstUnit, firstGroupInUnit.get(0), orderModel);
 		Assert.assertEquals("The expected count of users with firstGroupInUnit is 0 ", users.size(), 0);
 
-		users = userDao.findAllUsers(firstUnit, thirdGroupInUnit.get(0));
+		users = userDao.findByUnitAndGroup(firstUnit, thirdGroupInUnit.get(0), orderModel);
 		Assert.assertEquals("The expected count of users with thirdGroupInUnit is 2 ", users.size(), 2);
 	}
 
@@ -327,8 +335,8 @@ public class CUserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
-		COrganization organization2 = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_2_CODE);
+		COrganization organization = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_CODE).get(0);
+		COrganization organization2 = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_2_CODE).get(0);
 		List<CUser> users = userService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization);
 
 		//asserts
@@ -355,14 +363,14 @@ public class CUserTestCase
 		initTest();
 
 		//test data
-		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser testUser = userDao.findOneByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		CGroup testGroup = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//unset group
 		userService.unsetUserFromGroup(testUser, testGroup, testUnit);
 
-		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findAll(testUser, testUnit, testGroup);
+		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
 		//asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
@@ -382,14 +390,14 @@ public class CUserTestCase
 		initTest();
 
 		//test data
-		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser testUser = userDao.findOneByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		CGroup testGroup = groupDao.findByCode(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
 		userService.setUserToGroup(testUser, testGroup, testUnit);
 
-		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findAll(testUser, testUnit, testGroup);
+		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
 		//asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
@@ -409,9 +417,9 @@ public class CUserTestCase
 		initTest();
 
 		//test data
-		CUser testUser = userDao.findByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser testUser = userDao.findOneByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		CGroup testGroup = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findByName(CDataGenerator.DEFAULT_UNIT_CODE);
+		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
 		userService.setUserToGroup(testUser, testGroup, testUnit);
@@ -429,7 +437,7 @@ public class CUserTestCase
 	{
 		initTest();
 
-		List<CUser> users = userDao.findByPin("1111");
+		List<CUser> users = userDao.findByPinCode("1111");
 
 		//asserts
 		assertNotNull(users);

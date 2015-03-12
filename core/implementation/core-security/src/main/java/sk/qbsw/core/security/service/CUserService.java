@@ -32,6 +32,14 @@ import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
+import sk.qbsw.core.security.model.filter.CUserAssociationsFilter;
+import sk.qbsw.core.security.model.filter.CUserDetailFilter;
+import sk.qbsw.core.security.model.order.COrderModel;
+import sk.qbsw.core.security.model.order.COrderSpecification;
+import sk.qbsw.core.security.model.order.EOrderSpecifier;
+import sk.qbsw.core.security.model.order.EOrganizationOrderByAttributeSpecifier;
+import sk.qbsw.core.security.model.order.EUserOrderByAttributeSpecifier;
+import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
 
 /**
  * Service for user management.
@@ -41,7 +49,7 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * @author Michal Lacko
  * @author Tomas Lauro
  * 
- * @version 1.12.2
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Service("cUserService")
@@ -130,7 +138,13 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getAllUsers(COrganization organization)
 	{
-		return userDao.findAllUsers(organization);
+		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		filter.setOrganization(organization);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -139,7 +153,16 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getOtherActiveUsers(COrganization organization, CGroup group, CUser user)
 	{
-		return userDao.getOtherActiveUsers(organization, group, user);
+		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		filter.setOrganization(organization);
+		filter.setGroup(group);
+		filter.setExcludedUser(user);
+		filter.setEnabled(true);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -148,7 +171,7 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public CUser getUserByLogin(String login)
 	{
-		return userDao.findByLogin(login);
+		return userDao.findOneByLogin(login);
 	}
 
 	/* (non-Javadoc)
@@ -166,7 +189,7 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsers()
 	{
-		return userDao.findAllUsers();
+		return userDao.findAll();
 	}
 
 	/* (non-Javadoc)
@@ -175,7 +198,14 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsers(COrganization organization, Boolean enabled)
 	{
-		return userDao.findAllUsers(organization, enabled);
+		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		filter.setOrganization(organization);
+		filter.setEnabled(enabled);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -184,7 +214,16 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsersOrderByOrganization(COrganization organization, Boolean enabled, CGroup group)
 	{
-		return userDao.findAllUsersOrderByOrganization(organization, enabled, group);
+		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		filter.setOrganization(organization);
+		filter.setEnabled(enabled);
+		filter.setGroup(group);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EOrganizationOrderByAttributeSpecifier.NAME, EOrderSpecifier.ASC));
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -193,7 +232,15 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsers(COrganization organization, Boolean enabled, CGroup group)
 	{
-		return userDao.findAllUsers(organization, enabled, group);
+		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		filter.setOrganization(organization);
+		filter.setEnabled(enabled);
+		filter.setGroup(group);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -204,11 +251,24 @@ public class CUserService extends AService implements IUserService
 	{
 		if (role != null)
 		{
-			return userDao.findAllUsersByRole(organization, role);
+			CUserAssociationsFilter filter = new CUserAssociationsFilter();
+			filter.setOrganization(organization);
+			filter.setRole(role);
+
+			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+			orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+			return userDao.findByUserAssociationsFilter(filter, orderModel);
 		}
 		else
 		{
-			return userDao.findAllUsers(organization);
+			CUserAssociationsFilter filter = new CUserAssociationsFilter();
+			filter.setOrganization(organization);
+
+			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+			orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+			return userDao.findByUserAssociationsFilter(filter, orderModel);
 		}
 	}
 
@@ -218,7 +278,16 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsers(String name, String surname, String login, Boolean enabled)
 	{
-		return userDao.findAllUsers(name, surname, login, enabled);
+		CUserDetailFilter filter = new CUserDetailFilter();
+		filter.setName(name);
+		filter.setSurname(surname);
+		filter.setLogin(login);
+		filter.setEnabled(enabled);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -227,7 +296,17 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsers(String name, String surname, String login, Boolean enabled, COrganization organization)
 	{
-		return userDao.findAllUsers(name, surname, login, enabled, organization);
+		CUserDetailFilter filter = new CUserDetailFilter();
+		filter.setName(name);
+		filter.setSurname(surname);
+		filter.setLogin(login);
+		filter.setEnabled(enabled);
+		filter.setOrganization(organization);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -236,7 +315,17 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsers(String name, String surname, String login, Boolean enabled, String groupPrefix)
 	{
-		return userDao.findAllUsers(name, surname, login, enabled, groupPrefix);
+		CUserDetailFilter filter = new CUserDetailFilter();
+		filter.setName(name);
+		filter.setSurname(surname);
+		filter.setLogin(login);
+		filter.setEnabled(enabled);
+		filter.setGroupCodePrefix(groupPrefix);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -245,7 +334,13 @@ public class CUserService extends AService implements IUserService
 	@Transactional(readOnly = true)
 	public List<CUser> getUsers(String email)
 	{
-		return userDao.findAllUsers(email);
+		CUserDetailFilter filter = new CUserDetailFilter();
+		filter.setEmail(email);
+
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+
+		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
 
 	/* (non-Javadoc)
@@ -275,7 +370,7 @@ public class CUserService extends AService implements IUserService
 		try
 		{
 			//checks if user already exists
-			userDao.findByLogin(user.getLogin());
+			userDao.findOneByLogin(user.getLogin());
 			throw new CSecurityException("User with login " + user.getLogin() + " already exists.", ECoreErrorResponse.USER_ALREADY_EXISTS);
 		} catch (NoResultException nre)
 		{
@@ -354,7 +449,7 @@ public class CUserService extends AService implements IUserService
 		}
 
 		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, persistedGroup);
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(persistedUser, persistedUnit, persistedGroup);
 
 		//remove records
 		for (CXUserUnitGroup userUnitGroupRecord : userUnitGroupRecords)
@@ -406,7 +501,7 @@ public class CUserService extends AService implements IUserService
 		Boolean isGroupAlreadyAdded = Boolean.FALSE;
 
 		//find all groups assigned to user
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findAll(persistedUser, persistedUnit, null);
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(persistedUser, persistedUnit, null);
 
 		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
 		{
@@ -462,7 +557,7 @@ public class CUserService extends AService implements IUserService
 	{
 		try
 		{
-			userDao.findByLogin(login);
+			userDao.findOneByLogin(login);
 			return true;
 		} catch (NoResultException ex)
 		{

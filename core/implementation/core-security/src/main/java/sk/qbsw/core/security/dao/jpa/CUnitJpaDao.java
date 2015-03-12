@@ -5,19 +5,25 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.Query;
+import javax.persistence.NoResultException;
 
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.model.domain.CUnit;
+import sk.qbsw.core.security.model.domain.QCUnit;
+import sk.qbsw.core.security.model.domain.QCUser;
+import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
+
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
- * The Class CUnitJpaDao.
+ * The unit jpa dao.
  *
  * @author Tomas Lauro
- * @version 1.7.1
+ * 
+ * @version 1.13.0
  * @since 1.6.0
  */
 @Repository (value = "unitDao")
@@ -35,45 +41,30 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IUnitDao#findByNameNull(java.lang.String)
+	 * @see sk.qbsw.core.security.dao.IUnitDao#findOneByName(java.lang.String)
 	 */
 	@Override
-	@SuppressWarnings ("unchecked")
-	public CUnit findByName (String name)
+	public CUnit findOneByName (String name) throws NoResultException
 	{
-		String strQuery = "select distinct(un) from CUnit un left join fetch un.groups left join fetch un.organization where un.name = :name";
+		QCUnit qUnit = QCUnit.cUnit;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("name", name);
-
-		List<CUnit> units = query.getResultList();
-
-		if (units.isEmpty() || units.size() != 1)
-		{
-			return null;
-		}
-		else
-		{
-			return units.get(0);
-		}
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUnit).leftJoin(qUnit.groups).fetch().leftJoin(qUnit.organization).fetch().where(qUnit.name.eq(name));
+		return CJpaDaoHelper.handleUniqueResultQuery(query, qUnit);
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IUnitDao#findAll(java.lang.Long)
+	 * @see sk.qbsw.core.security.dao.IUnitDao#findByUserId(java.lang.Long)
 	 */
 	@Override
-	@SuppressWarnings ("unchecked")
-	public List<CUnit> findAll (Long userId)
+	public List<CUnit> findByUserId (Long userId)
 	{
-		String strQuery = "select distinct(un) from CUnit un " +
-					"join un.xUserUnitGroups xuug " +
-					"join xuug.user us " +
-					"where us.id=:userId " +
-					"order by un.name asc";
+		QCUnit qUnit = QCUnit.cUnit;
+		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
+		QCUser qUser = QCUser.cUser;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("userId", userId);
-
-		return query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.distinct().from(qUnit).join(qUnit.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.id.eq(userId)).orderBy(qUnit.name.asc()).list(qUnit);
 	}
 }

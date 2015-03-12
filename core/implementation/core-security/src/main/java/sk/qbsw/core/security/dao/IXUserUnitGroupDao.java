@@ -13,19 +13,20 @@ import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
  * DAO for cross entities between user, unit and group
  * 
  * @author farkas.roman
- * @Since 1.7.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
+ * @since 1.7.0
  */
 public interface IXUserUnitGroupDao extends Serializable, IEntityDao<Long, CXUserUnitGroup>
 {
-	
 	/**
-	 * Find all
-	 * 
-	 * @param user - optional
-	 * @param unit - optional
-	 * @param group - optional
-	 * @return
+	 * Find by user and unit and group.
+	 *
+	 * @param user the user (optional)
+	 * @param unit the unit (optional)
+	 * @param group the group (optional)
+	 * @return the list of records
 	 */
-	List<CXUserUnitGroup> findAll (CUser user, CUnit unit, CGroup group);
-
+	List<CXUserUnitGroup> findByUserAndUnitAndGroup (CUser user, CUnit unit, CGroup group);
 }

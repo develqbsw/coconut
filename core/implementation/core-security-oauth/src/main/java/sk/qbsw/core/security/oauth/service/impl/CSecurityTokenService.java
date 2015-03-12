@@ -104,7 +104,7 @@ public class CSecurityTokenService implements ISecurityTokenService {
 	@Transactional(readOnly = true)
 	@Override
 	public CAuthenticationParams findByUser(long userId) {
-		return paramsDao.findByUserId(userId);
+		return paramsDao.findOneByUserId(userId);
 	}
 
 	/* (non-Javadoc)
@@ -135,7 +135,7 @@ public class CSecurityTokenService implements ISecurityTokenService {
 		// overenie loginu a hesla
 		CUser user = authenticationService.login(login, oldPassword);
 		// ak je prvy login, overenie pinu
-		CAuthenticationParams params = paramsDao.findByUserId(user.getId());
+		CAuthenticationParams params = paramsDao.findOneByUserId(user.getId());
 		if (EPasswordType.FIRST_TIME == params.getPasswordType()) {
 			if (!params.getPin().equals(pin)) {
 				throw new CSecurityException("Nezhoduje pin s id: " + params.getId() + " s pinom s requestu: " + pin, ECoreErrorResponse.PIN_WRONG);

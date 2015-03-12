@@ -15,32 +15,26 @@ import sk.qbsw.core.security.model.domain.COrganization;
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.11.5
- * @since 1.0
+ * @version 1.13.0
+ * @since 1.0.0
  */
 public interface IOrganizationDao extends Serializable, IEntityDao<Long, COrganization>
 {
 	/**
-	 * Find by name - if there is no result or no unique result, throws a exception.
+	 * Find all organizations by name.
 	 *
-	 * @param name the organization name
-	 * @return the organization
-	 */
-	public COrganization findByName (String name);
-
-	/**
-	 * Find all by name.
-	 *
-	 * @param name the name
+	 * @param name the name (mandatory)
 	 * @return the list of organizations - if there is no result returns empty list
 	 */
-	public List<COrganization> findAllByName (String name);
+	List<COrganization> findByName (String name);
 
 	/**
-	 * Find by name and return NULL if organization not exist - NOT exeption.
+	 * Find by name and return NULL if organization not exist - NOT exception.
 	 *
-	 * @param name the name
+	 * @param name the name (mandatory)
 	 * @return organization or null if organization not exist
+	 * 
+	 * @deprecated the organization name is no longer unique
 	 */
-	public COrganization findByNameNull (String name);
+	COrganization findOneByName (String name);
 }

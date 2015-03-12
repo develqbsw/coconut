@@ -2,8 +2,6 @@ package sk.qbsw.core.security.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
@@ -11,6 +9,13 @@ import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.domain.QCGroup;
+import sk.qbsw.core.security.model.domain.QCUnit;
+import sk.qbsw.core.security.model.domain.QCUser;
+import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
+
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * The Class CGroupJpaDao.
@@ -18,7 +23,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Ladislav Rosenberg
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.0
+ * 
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Repository (value = "groupDao")
@@ -36,115 +42,114 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IGroupDao#findAllByFlagSystem(boolean)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findByFlagSystem(boolean)
 	 */
-	@SuppressWarnings ("unchecked")
-	public List<CGroup> findAllByFlagSystem (boolean flagSystem)
+	@Override
+	public List<CGroup> findByFlagSystem (boolean flagSystem)
 	{
-		String strQuery = "from CGroup where flagSystem=:flag order by code";
+		QCGroup qGroup = QCGroup.cGroup;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("flag", flagSystem);
-		return (List<CGroup>) query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qGroup).where(qGroup.flagSystem.eq(flagSystem)).orderBy(qGroup.code.asc()).list(qGroup);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
 	 */
-	@SuppressWarnings ("unchecked")
+	@Override
 	public List<CGroup> findAll ()
 	{
-		String strQuery = "from CGroup order by code";
+		QCGroup qGroup = QCGroup.cGroup;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		return (List<CGroup>) query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qGroup).orderBy(qGroup.code.asc()).list(qGroup);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCode(java.lang.String)
 	 */
-	@SuppressWarnings ("unchecked")
+	@Override
 	public List<CGroup> findByCode (String code)
 	{
-		String strQuery = "select g from CGroup g WHERE g.code=:code order by g.code";
+		QCGroup qGroup = QCGroup.cGroup;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("code", code);
-		return (List<CGroup>) query.getResultList();
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.from(qGroup).where(qGroup.code.eq(code)).orderBy(qGroup.code.asc()).list(qGroup);
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCodeFetchRoles(java.lang.String)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
-	@SuppressWarnings ("unchecked")
-	public List<CGroup> findByCode (String code, CUnit unit)
+	@Override
+	public List<CGroup> findByCodeAndUnit (String code, CUnit unit)
 	{
-		String strQuery = "select distinct(gr) from CGroup gr " +
-					"left join fetch gr.roles " +
-					"left join fetch gr.units " +
-					"where gr.code=:code and ((:unit is not null and :unit in elements(gr.units)) or (:unit is null and gr.units is empty))" +
-					"order by gr.code";
+		QCGroup qGroup = QCGroup.cGroup;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		query.setParameter("code", code);
-		query.setParameter("unit", unit);
-		return (List<CGroup>) query.getResultList();
+		//create where condition
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(qGroup.code.eq(code));
+		if (unit != null)
+		{
+			builder.and(qGroup.units.contains(unit));
+		}
+		else
+		{
+			builder.and(qGroup.units.isEmpty());
+		}
+
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.distinct().from(qGroup).leftJoin(qGroup.roles).fetch().leftJoin(qGroup.units).fetch().where(builder).orderBy(qGroup.code.asc()).list(qGroup);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByUnit(sk.qbsw.core.security.model.domain.CUnit)
 	 */
-	@SuppressWarnings ("unchecked")
+	@Override
 	public List<CGroup> findByUnit (CUnit unit)
 	{
-		String strQuery = "select distinct(gr) from CGroup gr left join fetch gr.units";
-		if(unit != null)
-		{
-			strQuery += " where :unit in elements(gr.units)";
-		}
-		
-		strQuery += " order by gr.code";
+		QCGroup qGroup = QCGroup.cGroup;
+		QCUnit qUnit = QCUnit.cUnit;
 
-		Query query = getEntityManager().createQuery(strQuery);
-		
-		if(unit != null)
+		//create where condition
+		BooleanBuilder builder = new BooleanBuilder();
+		if (unit != null)
 		{
-			query.setParameter("unit", unit);
+			builder.and(qGroup.units.contains(unit));
 		}
-		
-		return (List<CGroup>) query.getResultList();
+
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.distinct().from(qGroup).leftJoin(qGroup.units, qUnit).fetch().where(builder).orderBy(qGroup.code.asc()).list(qGroup);
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findByUnitAndUser(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CUser)
+	 */
 	@Override
-	@SuppressWarnings ("unchecked")
-	public List<CGroup> findByUnitUser(CUnit unit, CUser user)
+	public List<CGroup> findByUnitAndUser (CUnit unit, CUser user)
 	{
-		String q = "select distinct(gr) from CGroup gr left join fetch gr.xUserUnitGroups xuug left join fetch xuug.unit un left join fetch xuug.user us where 1=1";
-		
-		if(unit != null)
+		QCGroup qGroup = QCGroup.cGroup;
+		QCXUserUnitGroup qXuserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
+		QCUnit qUnit = QCUnit.cUnit;
+		QCUser qUser = QCUser.cUser;
+
+		//create where condition
+		BooleanBuilder builder = new BooleanBuilder();
+		if (unit != null)
 		{
-			q += " and un = :unit ";
+			builder.and(qUnit.eq(unit));
 		}
-		
-		if(user != null)
+		if (user != null)
 		{
-			q += " and us = :user";
+			builder.and(qUser.eq(user));
 		}
-		
-		q += " order by gr.code";
-		
-		Query query = getEntityManager().createQuery(q);
-		
-		if(unit != null)
-		{
-			query.setParameter("unit", unit);
-		}
-		
-		if(user != null)
-		{
-			query.setParameter("user", user);
-		}
-		
-		return (List<CGroup>) query.getResultList();
+
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager());
+		return query.distinct().from(qGroup).leftJoin(qGroup.xUserUnitGroups, qXuserUnitGroup).fetch().leftJoin(qXuserUnitGroup.unit, qUnit).fetch().leftJoin(qXuserUnitGroup.user, qUser).fetch().where(builder).orderBy(qGroup.code.asc()).list(qGroup);
 	}
 }

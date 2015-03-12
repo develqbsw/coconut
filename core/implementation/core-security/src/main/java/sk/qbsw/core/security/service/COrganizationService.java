@@ -22,7 +22,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Tomas Leken
  * @author Tomas Lauro
  * 
- * @version 1.11.5
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Service("cOrganizationService")
@@ -83,11 +83,22 @@ public class COrganizationService extends AService implements IOrganizationServi
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationByNameNull(java.lang.String)
 	 */
+	@Deprecated
 	@Override
 	@Transactional(readOnly = true)
 	public COrganization getOrganizationByNameNull(String name)
 	{
-		return organizationDao.findByNameNull(name);
+		return organizationDao.findOneByName(name);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IOrganizationService#getOrganizationByName(java.lang.String)
+	 */
+	@Override
+	@Transactional (readOnly = true)
+	public List<COrganization> getOrganizationByName (String name)
+	{
+		return organizationDao.findByName(name);
 	}
 
 	//TODO: REWRITE
@@ -149,7 +160,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	@Transactional(readOnly = true)
 	public List<COrganization> getOrganizations(String name)
 	{
-		return organizationDao.findAllByName(name);
+		return organizationDao.findByName(name);
 	}
 
 	/* (non-Javadoc)
@@ -217,26 +228,5 @@ public class COrganizationService extends AService implements IOrganizationServi
 
 		// save game
 		organizationDao.update(org);
-	}
-
-	/**
-	 * Checks if is org name free.
-	 *
-	 * @param name the name
-	 * @param id the pk id
-	 * @return true, if is org name free
-	 * @see sk.qbsw.core.security.service.ISecurityService#isOrgNameFree(java.lang.String, java.lang.Long)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public boolean isOrgNameFree(String name, Long id)
-	{
-		COrganization organization = organizationDao.findByNameNull(name);
-
-		if (organization != null)
-		{
-			return organization.getId().equals(id);
-		}
-		return true;
 	}
 }
