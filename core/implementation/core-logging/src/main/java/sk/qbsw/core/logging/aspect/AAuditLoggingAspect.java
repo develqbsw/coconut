@@ -10,10 +10,11 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.base.exception.EError;
-import sk.qbsw.core.base.exception.IError;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.core.base.exception.IErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
+import sk.qbsw.core.base.threadlocal.CThreadLocalStorage;
 import sk.qbsw.core.logging.aspect.param.AParameter;
 import sk.qbsw.core.logging.model.domain.EOperationResult;
 import sk.qbsw.core.logging.service.IAuditLogService;
@@ -42,7 +43,7 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 	 */
 	static final ThreadLocal<Boolean> LOCK_HOLDER = new ThreadLocal<Boolean>();
 
-	public AAuditLoggingAspect ()
+	public AAuditLoggingAspect()
 	{
 		super();
 	}
@@ -58,7 +59,7 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 	 * @throws Throwable
 	 *             when method fail, or method not found, etc.
 	 */
-	public Object doBasicLogging (ProceedingJoinPoint pjp, CAuditLogged auditLogged) throws Throwable
+	public Object doBasicLogging(ProceedingJoinPoint pjp, CAuditLogged auditLogged) throws Throwable
 	{
 		final Object result;
 		final Boolean locked = LOCK_HOLDER.get();
@@ -90,7 +91,7 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 			catch (final CBusinessException e)
 			{
 				// get error description
-				IError error = e.getError();
+				IErrorResponse error = e.getError();
 				String errorMessage = null;
 
 				if (error != null)
@@ -102,15 +103,13 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 				this.doLog(actionName, EOperationResult.WARNING, errorMessage, loggedArguments);
 
 				throw e;
-			}
-			catch (final Exception e)
+			} catch (final Exception e)
 			{
 				// log when error
-				this.doLog(actionName, EOperationResult.ERROR, EError.SYSTEM_ERROR.toString(), loggedArguments);
+				this.doLog(actionName, EOperationResult.ERROR, ECoreErrorResponse.SYSTEM_ERROR.toString(), loggedArguments);
 
 				throw e;
-			}
-			finally
+			} finally
 			{
 				LOCK_HOLDER.remove();
 			}
@@ -133,15 +132,13 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 	 * @param params
 	 *            parameters which come to method
 	 */
-	protected void doLog (String operationCode, EOperationResult operationResult, String resultDescription, Object... params)
+	protected void doLog(String operationCode, EOperationResult operationResult, String resultDescription, Object... params)
 	{
-
-		auditLogService.doLog(operationCode, Arrays.asList(params), operationResult, resultDescription);
-
+		auditLogService.doLog(operationCode, Arrays.asList(params), operationResult, resultDescription, CThreadLocalStorage.getUniqueRequestIdValue());
 	}
 
 	@Override
-	protected boolean checkParameterLogging (final Annotation[] parameterAnnotations)
+	protected boolean checkParameterLogging(final Annotation[] parameterAnnotations)
 	{
 		boolean logParameter = true;
 		// if is parameter annotated with CNotLogged annotation the is their
@@ -163,7 +160,7 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 	 * @param method - representation of method, which was called
 	 * @return action name which is logged
 	 */
-	protected String getActionName (CAuditLogged auditLogged, Class<? extends Object> clazz, Method method)
+	protected String getActionName(CAuditLogged auditLogged, Class<? extends Object> clazz, Method method)
 	{
 		return auditLogged.actionName();
 	}

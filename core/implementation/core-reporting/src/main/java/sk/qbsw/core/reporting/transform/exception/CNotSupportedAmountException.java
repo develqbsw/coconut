@@ -1,7 +1,7 @@
 package sk.qbsw.core.reporting.transform.exception;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.base.exception.IError;
+import sk.qbsw.core.base.exception.IErrorResponse;
 
 /**
  * The amount given in the process is out of range - too big.
@@ -11,15 +11,16 @@ import sk.qbsw.core.base.exception.IError;
  * @version 1.10.2
  * @since 1.10.2
  */
-@SuppressWarnings ("serial")
+@SuppressWarnings("serial")
 public class CNotSupportedAmountException extends CBusinessException
 {
+
 	/**
 	 * Instantiates a new not supported amount.
 	 *
 	 * @param message the message
 	 */
-	public CNotSupportedAmountException (String message)
+	public CNotSupportedAmountException(String message)
 	{
 		super(message);
 	}
@@ -30,7 +31,7 @@ public class CNotSupportedAmountException extends CBusinessException
 	 * @param message the message
 	 * @param cause the cause
 	 */
-	public CNotSupportedAmountException (String message, Throwable cause)
+	public CNotSupportedAmountException(String message, Throwable cause)
 	{
 		super(message, cause);
 	}
@@ -41,7 +42,7 @@ public class CNotSupportedAmountException extends CBusinessException
 	 * @param message the message
 	 * @param error the error
 	 */
-	public CNotSupportedAmountException (String message, IError error)
+	public CNotSupportedAmountException(String message, IErrorResponse error)
 	{
 		super(message, error);
 	}
@@ -53,8 +54,8 @@ public class CNotSupportedAmountException extends CBusinessException
 	 * @param error the error
 	 * @param cause the cause
 	 */
-	public CNotSupportedAmountException (String message, IError error, Throwable cause)
+	public CNotSupportedAmountException(String message, Throwable cause, IErrorResponse error)
 	{
-		super(message, error, cause);
+		super(message, cause, error);
 	}
 }

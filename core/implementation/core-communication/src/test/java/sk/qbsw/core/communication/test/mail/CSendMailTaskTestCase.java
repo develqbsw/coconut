@@ -34,7 +34,7 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.11.9
+ * @version 1.13.0
  * @since 1.9.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -42,6 +42,7 @@ import sk.qbsw.core.testing.mock.IMockHelper;
 @TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
 public class CSendMailTaskTestCase
 {
+
 	/** The mail sender. */
 	@Autowired
 	protected JavaMailSender mailSender;
@@ -85,34 +86,6 @@ public class CSendMailTaskTestCase
 	}
 
 	/**
-	 * Test success run.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Transactional
-	@Rollback (true)
-	public void testSuccessRun () throws Exception
-	{
-		//mockito rules
-		Mockito.doNothing().when(mockSenderMailDao).save(Mockito.any(CMail.class));
-		//mock sender dao
-		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
-
-		//create test data
-		createTestData();
-
-		//send mails
-		sendMailTask.run();
-
-		//check results
-		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.SENT);
-
-		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
-		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);
-	}
-
-	/**
 	 * Test one communication failure.
 	 *
 	 * @throws Exception the exception
@@ -122,8 +95,11 @@ public class CSendMailTaskTestCase
 	@Rollback (true)
 	public void testOneCommunicationFailure () throws Exception
 	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
 		//mockito rules
-		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).save(Mockito.any(CMail.class));
+		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 
@@ -148,6 +124,38 @@ public class CSendMailTaskTestCase
 	}
 
 	/**
+	 * Test success run.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	@Transactional
+	@Rollback (true)
+	public void testSuccessRun () throws Exception
+	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
+		//mockito rules
+		Mockito.when(mockSenderMailDao.update(Mockito.any(CMail.class))).thenReturn(new CMail());
+
+		//mock sender dao
+		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
+
+		//create test data
+		createTestData();
+
+		//send mails
+		sendMailTask.run();
+
+		//check results
+		List<CMail> mails = jpaMailDao.findAllQueued(EMailState.SENT);
+
+		Assert.assertNotNull("Background mail to recipient failed, empty mail list returned", mails);
+		Assert.assertTrue("Background mail to recipient failed, there is more or less than 5 mail", mails.size() == 5);
+	}
+
+	/**
 	 * Test communication failure.
 	 *
 	 * @throws Exception the exception
@@ -157,8 +165,12 @@ public class CSendMailTaskTestCase
 	@Rollback (true)
 	public void testCommunicationFailure () throws Exception
 	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
 		//mockito rules
-		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).save(Mockito.any(CMail.class));
+		Mockito.doThrow(CCommunicationException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
+
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 
@@ -188,8 +200,11 @@ public class CSendMailTaskTestCase
 	@Rollback (true)
 	public void testDataFailure () throws Exception
 	{
+		//reset mockito
+		Mockito.reset(mockSenderMailDao);
+
 		//mockito rules
-		Mockito.doThrow(CSystemException.class).when(mockSenderMailDao).save(Mockito.any(CMail.class));
+		Mockito.doThrow(CSystemException.class).when(mockSenderMailDao).update(Mockito.any(CMail.class));
 		//mock sender dao
 		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(sendMailTask), "senderMailDao", mockSenderMailDao);
 

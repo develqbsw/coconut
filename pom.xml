@@ -27,6 +27,8 @@
 		<spring.security.version>3.2.4.RELEASE</spring.security.version>
 		<spring.ws.version>2.1.4.RELEASE</spring.ws.version>
 		<xws-security.version>1.3.1</xws-security.version>
+		<spring-security-oauth2.version>2.0.2.RELEASE</spring-security-oauth2.version>
+
 
 		<!-- Hibernate -->
 		<hibernate.version>4.3.7.Final</hibernate.version>
@@ -42,9 +44,10 @@
 		<jetty.version>6.1.25</jetty.version>
 		<postgresql-driver.version>9.0-801.jdbc4</postgresql-driver.version>
 		<mssql-driver.version>4.0</mssql-driver.version>
-		
-		<!-- Querydsl -->
-		<querydsl.version>3.2.0</querydsl.version>
+
+		<!-- querydsl -->
+		<querydsl.version>3.3.1</querydsl.version>
+		<querydsl-apt-plugin.version>1.0.4</querydsl-apt-plugin.version>
 
 		<!-- UTILS -->
 		<log4j.version>1.2.16</log4j.version>
@@ -91,8 +94,12 @@
 		<joda-time.version>2.1</joda-time.version>
 		<jadira.usertype.version>2.0.1</jadira.usertype.version>
 
+		<!-- uuid generator -->
+		<java-uuid-generator.version>3.1.3</java-uuid-generator.version>
+
 		<!-- Apache directory API - LDAP -->
 		<directory.api.version>1.0.0-M24</directory.api.version>
+
 		<!-- ANDROID DEPENDENCIES -->
 		<android-platform.version>4.4.2_r4</android-platform.version>
 		<android.platform>19</android.platform>
@@ -123,12 +130,16 @@
 
 		<!-- Bouncy castle -->
 		<bouncy-castle.version>1.51</bouncy-castle.version>
+
+		<maven-apt-plugin.version>0.3.2</maven-apt-plugin.version>
+	
+		<build-helper-plugin.version>1.9.1</build-helper-plugin.version>
 	</properties>
 
 	<modules>
 		<module>core</module>
 		<module>indy</module>
-		<module>winnetou</module>
+		<!--<module>winnetou</module> -->
 		<module>droid</module>
 	</modules>
 	<repositories>
@@ -193,6 +204,11 @@
 			<dependency>
 				<groupId>sk.qbsw</groupId>
 				<artifactId>core-security</artifactId>
+				<version>${core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw</groupId>
+				<artifactId>core-configuration</artifactId>
 				<version>${core.version}</version>
 			</dependency>
 			<dependency>
@@ -384,9 +400,19 @@
 				<version>${spring.security.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework.ws</groupId>
 				<artifactId>spring-ws-security</artifactId>
 				<version>${spring.ws.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
 
 			<!-- wicket -->
@@ -671,6 +697,24 @@
 				<version>${bouncy-castle.version}</version>
 			</dependency>
 
+			<!-- uuid generator -->
+			<dependency>
+				<groupId>com.fasterxml.uuid</groupId>
+				<artifactId>java-uuid-generator</artifactId>
+				<version>${java-uuid-generator.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>log4j</artifactId>
+						<groupId>log4j</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper-plugin.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

@@ -13,8 +13,7 @@
 	    <!-- <context:exclude-filter type="regex" expression="sk\.qbsw\.core\.security\.service\.CDatabaseAuthenticationService"/> -->
 	</context:component-scan>
 	
-	<bean id="authenticationService"
-		class="sk.qbsw.core.security.service.CDatabaseAuthenticationService" />
+	<bean id="authenticationService" class="sk.qbsw.core.security.service.CDatabaseAuthenticationService" />
 
 	<bean id="loginBlockingService"
 		class="sk.qbsw.core.security.service.CLoginBlockingService" />

@@ -61,8 +61,8 @@ public class CUnitService extends AService implements IUnitService
 		unit.setAddress(address);
 		
 		//save entities
-		addressDao.save(address);
-		unitDao.save(unit);
+		addressDao.update(address);
+		unitDao.update(unit);
 		
 	}
 }

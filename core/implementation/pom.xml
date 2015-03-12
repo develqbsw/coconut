@@ -15,8 +15,10 @@
 		<module>core-testing</module>
 		<module>core-paypal</module>
 		<module>core-persistence</module>
+		<module>core-browser</module>
 		<module>core-configuration</module>
 		<module>core-security</module>
+		<module>core-security-oauth</module>
 		<module>core-googlemaps</module>
 		<module>core-api</module>
 		<module>core-communication</module>

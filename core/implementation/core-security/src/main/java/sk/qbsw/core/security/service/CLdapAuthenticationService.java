@@ -1,18 +1,10 @@
 package sk.qbsw.core.security.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.NoResultException;
 
-import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.password.PasswordUtil;
-import org.apache.directory.api.util.exception.NotImplementedException;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +20,13 @@ import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.exception.CInvalidUserException;
-import sk.qbsw.core.security.exception.CPasswordFormatException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
-import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.ldap.CLDAPInjectionProtector;
-import sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation;
 import sk.qbsw.core.security.service.ldap.ILdapProvider;
 
 /**
@@ -263,145 +252,6 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		{
 			throw new CSecurityException("Ldap configuration corrupted");
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword (java.lang.String, java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
-	{
-		CUser user = userDao.findOneByLogin(login);
-
-		// validate password, if not valid throw an exception
-		authDataValidationService.validatePassword(password);
-
-		// TODO: create user search
-		// create dn
-		String userDn = new StringBuilder().append("cn=").append(login).append(",").append(data.getUserSearchBaseDns()[0]).toString();
-
-		try
-		{
-			if (ldapProvider.entryExists(userDn) == true)
-			{
-				// change password
-				ldapProvider.modifyEntry(userDn, "userPassword", password, EModificationOperation.REPLACE_ATTRIBUTE);
-			}
-			else
-			{
-				// add auth data
-				Map<String, byte[][]> attributes = new HashMap<String, byte[][]>();
-				attributes.put("objectClass", new byte[][] {data.getUserObjectClass().getBytes()});
-				attributes.put("cn", new byte[][] {login.getBytes()});
-				attributes.put("sn", new byte[][] {user.getSurname() != null ? user.getSurname().getBytes() : login.getBytes()});
-				attributes.put("userPassword", new byte[][] {PasswordUtil.createStoragePassword(password, authenticationConfiguration.getLdapPasswordHashMethod().getLdapAlgorithm())});
-
-				// add entry
-				ldapProvider.addEntry(userDn, attributes);
-			}
-
-			// set auth params
-			CAuthenticationParams authParams = null;
-			try
-			{
-				authParams = authenticationParamsDao.findOneByUserId(user.getId());
-			}
-			catch (NoResultException ex)
-			{
-				// create new because user has no auth params
-				authParams = new CAuthenticationParams();
-				authParams.setUser(user);
-				authParams.setPassword(null);
-				authParams.setPasswordDigest(null);
-				authParams.setPin(null);
-				authenticationParamsDao.save(authParams);
-			}
-		}
-		catch (LdapInvalidAttributeValueException ex)
-		{
-			logger.error("The user password change failed", ex);
-			if (ex.getResultCode().equals(ResultCodeEnum.CONSTRAINT_VIOLATION))
-			{
-				throw new CPasswordFormatException("The password format is invalid");
-			}
-			else
-			{
-				throw new CSecurityException("There is a invalid input value");
-			}
-		}
-		catch (Throwable ex)
-		{
-			logger.error("The user password change failed", ex);
-			throw new CSecurityException("Password change failed");
-		}
-	}
-
-	/**
-	 * Method not implemented.
-	 */
-	@Override
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
-	{
-		throw new NotImplementedException();
-	}
-
-	/**
-	 * Method not implemented.
-	 */
-	@Override
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
-	{
-		throw new NotImplementedException();
-	}
-
-	/**
-	 * Method not implemented.
-	 */
-	@Override
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
-	{
-		throw new NotImplementedException();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeLogin(java .lang.Long, java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changeLogin (Long userId, String login) throws CSecurityException
-	{
-		CUser user = userDao.findById(userId);
-
-		// TODO: create user search
-		// create dn
-		String userDn = new StringBuilder().append("cn=").append(user.getLogin()).append(",").append(data.getUserSearchBaseDns()[0]).toString();
-
-		// TODO: BAD !!! LDAP injection
-		String newRdn = new StringBuilder().append("cn=").append(login).toString();
-
-		try
-		{
-			// the record in LDAP is updated only if it had existed
-			if (ldapProvider.entryExists(userDn) == true)
-			{
-				// change login
-				ldapProvider.renameEntry(userDn, newRdn, true);
-			}
-		}
-		catch (LdapException ex)
-		{
-			logger.error("The user password change failed", ex);
-			throw new CSecurityException("The login cannot be changed");
-		}
-
-		// save user login in DB
-		user.setLogin(login);
-		userDao.save(user);
 	}
 
 	/*

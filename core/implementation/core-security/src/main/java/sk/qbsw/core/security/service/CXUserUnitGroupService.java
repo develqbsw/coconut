@@ -48,7 +48,7 @@ public class CXUserUnitGroupService extends AService implements IXUserUnitGroupS
 	@Transactional
 	public void save (CXUserUnitGroup xuug)
 	{
-		xuugDao.save(xuug);
+		xuugDao.update(xuug);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class CXUserUnitGroupService extends AService implements IXUserUnitGroupS
 	{
 		for (CXUserUnitGroup xuug : xuugList)
 		{
-			xuugDao.save(xuug);
+			xuugDao.update(xuug);
 		}
 	}
 

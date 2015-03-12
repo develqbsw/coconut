@@ -1,8 +1,9 @@
-package sk.qbsw.core.persistence.dao.jpa;
+package sk.qbsw.core.persistence.dao.ldap;
 
 import java.util.List;
 
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.persistence.dao.ICrudDao;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 
@@ -16,15 +17,16 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @author Tomas Lauro
  * 
  * @since 1.6.0
- * @version 1.6.0
+ * @version 1.13.0
  */
-public abstract class AEntityLdapDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>
+@SuppressWarnings("serial")
+public abstract class AEntityLdapDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>, ICrudDao<PK, T>
 {
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#save(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */
 	@Override
-	public void save (T object)
+	public T update (T object)
 	{
 		throw new CSystemException("The not implemented method.");
 	}
@@ -43,15 +45,6 @@ public abstract class AEntityLdapDao<PK, T extends IEntity<PK>> implements IEnti
 	 */
 	@Override
 	public List<T> findAll ()
-	{
-		throw new CSystemException("The not implemented method.");
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findById(java.lang.Object)
-	 */
-	@Override
-	public T findById (PK id)
 	{
 		throw new CSystemException("The not implemented method.");
 	}

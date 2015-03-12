@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,6 +20,7 @@ import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidAuthenticationException;
 import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.core.security.service.IAuthenticationModifierService;
 import sk.qbsw.core.security.service.IAuthenticationService;
 import sk.qbsw.core.security.service.ILoginBlockingService;
 import sk.qbsw.core.security.service.IOrganizationService;
@@ -45,7 +47,13 @@ public class CDatabaseAuthenticationTestCase
 
 	/** The authentication service. */
 	@Autowired
+	@Qualifier("cLoginService")
 	private IAuthenticationService authenticationService;
+
+	/** The authentication service. */
+	@Autowired
+	@Qualifier("cLoginService")
+	private IAuthenticationModifierService authenticationModifierService;
 
 	/** The login blocking service. */
 	@Autowired
@@ -240,7 +248,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangePasswordExistingUser(authenticationService);
+		authenticationTestProvider.testChangePasswordExistingUser(authenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -255,7 +263,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService);
+		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -285,7 +293,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeLogin(authenticationService, userService);
+		authenticationTestProvider.testChangeLogin(authenticationModifierService, userService);
 	}
 
 	/**
@@ -456,7 +464,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginInvalidFromAuthParam(authenticationService);
+		authenticationTestProvider.testLoginInvalidFromAuthParam(authenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -471,7 +479,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginInvalidToAuthParam(authenticationService);
+		authenticationTestProvider.testLoginInvalidToAuthParam(authenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -486,7 +494,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginInvalidFromAndToAuthParam(authenticationService);
+		authenticationTestProvider.testLoginInvalidFromAndToAuthParam(authenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -501,7 +509,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangePasswordNullFromAndToAuthParam(authenticationService);
+		authenticationTestProvider.testChangePasswordNullFromAndToAuthParam(authenticationService, authenticationModifierService);
 	}
 
 	/**

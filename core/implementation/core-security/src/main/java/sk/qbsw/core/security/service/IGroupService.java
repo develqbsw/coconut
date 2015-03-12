@@ -17,12 +17,21 @@ import sk.qbsw.core.security.model.domain.CUser;
  */
 public interface IGroupService extends Serializable
 {
+
+	/**
+	 * Gets the role group.
+	 *
+	 * @param id the pk id
+	 * @return the role group
+	 */
+	public CGroup read(Long id);
+
 	/**
 	 * Gets the all.
 	 *
 	 * @return the all
 	 */
-	public abstract List<CGroup> getAll ();
+	public abstract List<CGroup> getAll();
 
 	/**
 	 * Gets the by code.
@@ -30,7 +39,7 @@ public interface IGroupService extends Serializable
 	 * @param code the code
 	 * @return the by code
 	 */
-	public abstract List<CGroup> getByCode (String code);
+	public abstract List<CGroup> getByCode(String code);
 
 	/**
 	 * Gets the by unit.
@@ -38,7 +47,7 @@ public interface IGroupService extends Serializable
 	 * @param unit the unit
 	 * @return the by unit
 	 */
-	public abstract List<CGroup> getByUnit (CUnit unit);
+	public abstract List<CGroup> getByUnit(CUnit unit);
 
 	/**
 	 * get users by unit and user
@@ -47,7 +56,7 @@ public interface IGroupService extends Serializable
 	 * @param user
 	 * @return
 	 */
-	List<CGroup> getByUnitUser (CUnit unit, CUser user);
+	List<CGroup> getByUnitUser(CUnit unit, CUser user);
 
 	/**
 	 * Gets the by code and unit.

@@ -41,7 +41,7 @@ public class CHttpGetClientTest
 		CHttpApiGetRequest get = new CHttpApiGetRequest();
 		get.setRepeatCount(2);
 		get.setTimeout(10000);
-		get.setProxy(new HttpHost("192.168.121.31", 3128));
+		get.setProxy(new HttpHost("192.168.121.1", 3128));
 
 		client.makeCall(get, "http://www.sme.sk", new CCallRequestModel());
 	}

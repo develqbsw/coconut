@@ -13,7 +13,6 @@ import sk.qbsw.core.communication.mail.exception.CCommunicationException;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
 import sk.qbsw.core.communication.mail.model.domain.EMailState;
 
-
 /**
  * The task to send email using job.
  * 
@@ -24,24 +23,25 @@ import sk.qbsw.core.communication.mail.model.domain.EMailState;
  */
 public class CSendMailTask
 {
+
 	/** The sending attempt counts limit. */
 	private final int SENDING_ATTEMPT_COUNTS_LIMIT = 5;
 
 	/** The jpa mail dao. */
 	@Autowired
-	@Qualifier ("jpaMailDao")
+	@Qualifier("jpaMailDao")
 	private IMailDao jpaMailDao;
 
 	/** The sender mail dao. */
 	@Autowired
-	@Qualifier ("senderMailDao")
+	@Qualifier("senderMailDao")
 	private IMailDao senderMailDao;
 
 	/**
 	 * Checks database and send mail.
 	 */
 	@Transactional
-	public void run ()
+	public void run()
 	{
 		List<CMail> unsentMails = jpaMailDao.findAllQueued(EMailState.UNSENT);
 
@@ -49,7 +49,7 @@ public class CSendMailTask
 		{
 			try
 			{
-				senderMailDao.save(unsentMail);
+				senderMailDao.update(unsentMail);
 				unsentMail.setState(EMailState.SENT);
 				unsentMail.setSent(DateTime.now());
 			}
@@ -68,7 +68,7 @@ public class CSendMailTask
 				unsentMail.setState(EMailState.DATA_ERROR);
 			}
 
-			jpaMailDao.save(unsentMail);
+			jpaMailDao.update(unsentMail);
 		}
 	}
 }

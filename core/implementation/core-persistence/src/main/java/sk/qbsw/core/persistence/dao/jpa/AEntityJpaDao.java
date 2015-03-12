@@ -2,8 +2,6 @@ package sk.qbsw.core.persistence.dao.jpa;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import sk.qbsw.core.base.logging.annotation.CLogged;
@@ -15,19 +13,15 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * 
+ * @version 1.13.0
  * @param <PK> the generic type for Entity Primary key
  * @param <T> the generic type for Entity itself
- * 
  * @since 1.0.0
- * @version 1.7.2
  */
+@SuppressWarnings("serial")
 @CLogged
-public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>
+public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> extends AJpaDao implements IEntityDao<PK, T>
 {
-	/** The em. */
-	@PersistenceContext (name = "persistenceContext")
-	private EntityManager em;
 
 	/** The entity class. */
 	private Class<T> entityClass;
@@ -37,7 +31,7 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	 *
 	 * @param entityClass the entity class
 	 */
-	public AEntityJpaDao (Class<T> entityClass)
+	public AEntityJpaDao(Class<T> entityClass)
 	{
 		this.entityClass = entityClass;
 	}
@@ -46,8 +40,8 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findAll()
 	 */
 	@Override
-	@SuppressWarnings ("unchecked")
-	public List<T> findAll ()
+	@SuppressWarnings("unchecked")
+	public List<T> findAll()
 	{
 		String str = "from " + entityClass.getName();
 		Query query = em.createQuery(str);
@@ -58,8 +52,8 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findById(java.util.List)
 	 */
 	@Override
-	@SuppressWarnings ("unchecked")
-	public List<T> findById (List<PK> ids)
+	@SuppressWarnings("unchecked")
+	public List<T> findById(List<PK> ids)
 	{
 		String str = "select en from " + entityClass.getName() + " en where en.id IN :ids";
 		Query query = em.createQuery(str);
@@ -68,37 +62,19 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findById(java.lang.Object)
+	 * @see sk.qbsw.core.persistence.dao.ICrudDao#read(java.lang.Object)
 	 */
 	@Override
-	public T findById (PK id)
+	public T read(PK id)
 	{
 		return em.find(entityClass, id);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.dao.IEntityDao#flush()
-	 */
-	@Override
-	public void flush ()
-	{
-		em.flush();
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.dao.IEntityDao#clear()
-	 */
-	@Override
-	public void clear ()
-	{
-		em.clear();
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#remove(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */
 	@Override
-	public void remove (T object)
+	public void remove(T object)
 	{
 		em.remove(object);
 	}
@@ -107,35 +83,53 @@ public abstract class AEntityJpaDao<PK, T extends IEntity<PK>> implements IEntit
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#save(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */
 	@Override
-	public void save (T object)
+	public T update(T object)
 	{
 		if (object.getId() != null)
 		{
-			em.merge(object);
+			return em.merge(object);
 		}
 		else
 		{
 			em.persist(object);
+			return object;
 		}
 	}
 
-	/**
-	 * Gets the entity manager.
-	 *
-	 * @return the entity manager
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.ICrudDao#invalidate(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */
-	public EntityManager getEntityManager ()
-	{
-		return em;
+	@Override
+	public void invalidate(T e) {
+		// Not implemented.
+		throw new IllegalStateException("Invalidate operation must be implemented in subclass.");
 	}
 
-	/**
-	 * Sets the entity manager.
-	 *
-	 * @param em the new entity manager
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.ICrudDao#validate(sk.qbsw.core.persistence.model.domain.IEntity)
 	 */
-	public void setEntityManager (EntityManager em)
-	{
-		this.em = em;
+	@Override
+	public void validate(T e) {
+		// Not implemented.
+		throw new IllegalStateException("Validate operation must be implemented in subclass.");
 	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.ICrudDao#create(sk.qbsw.core.persistence.model.domain.IEntity)
+	 */
+	@Override
+	public PK create(T object) {
+		this.em.persist(object);
+		return object.getId();
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.IEntityDao#findById(java.lang.Object)
+	 */
+	@Override
+	public T findById(PK id)
+	{
+		return em.find(entityClass, id);
+	}
+
 }

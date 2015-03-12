@@ -35,7 +35,7 @@ public class CDaoTestCase
 		when(manager.find(CTestEntity.class, 1l)).thenReturn(new CTestEntity(1l));
 		((CTestDao) dao).setEntityManager(manager);
 
-		CTestEntity entity = dao.findById(1l);
+		CTestEntity entity = dao.read(1l);
 		Assert.assertEquals(entity.getId().longValue(), 1l);
 	}
 }

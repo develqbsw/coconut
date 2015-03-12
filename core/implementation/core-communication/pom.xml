@@ -7,7 +7,7 @@
 		<name>QBSW a.s.</name>
 		<url>http://www.qbsw.sk</url>
 	</organization>
-	<name>Core api</name>
+	<name>Core communication</name>
 
 	<parent>
 		<groupId>sk.qbsw</groupId>
