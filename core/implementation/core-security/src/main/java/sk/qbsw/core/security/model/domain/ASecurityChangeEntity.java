@@ -13,7 +13,7 @@ import javax.persistence.PreUpdate;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 
 /**
  * Abstract entity which add changeDateTime value which is date and time of last change
@@ -28,29 +28,30 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.8.0
  */
 @MappedSuperclass
-public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<T>
+public abstract class ASecurityChangeEntity<T> extends AEntity<T> implements Serializable
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** date and time of last entity change. */
-	@Column (name = "c_change_date_time", nullable = false)
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_change_date_time", nullable = false)
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime changeDateTime;
 
 	/** The user who changed the entity last time. */
-	@OneToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "fk_changed_by")
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_changed_by")
 	private CUser changedBy;
 
 	/** The operation id. */
-	@Column (name = "c_operation_id")
+	@Column(name = "c_operation_id")
 	private Long operationId;
 
 	/**
 	 * Instantiates a new a security change entity.
 	 */
-	public ASecurityChangeEntity ()
+	public ASecurityChangeEntity()
 	{
 		super();
 	}
@@ -59,7 +60,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 * On create.
 	 */
 	@PrePersist
-	protected void onCreate ()
+	protected void onCreate()
 	{
 		this.changeDateTime = new DateTime();
 	}
@@ -68,7 +69,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 * On update.
 	 */
 	@PreUpdate
-	protected void onUpdate ()
+	protected void onUpdate()
 	{
 		this.changeDateTime = new DateTime();
 	}
@@ -78,7 +79,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 *
 	 * @param changeDateTime the new change date time
 	 */
-	protected void setChangeDateTime (DateTime changeDateTime)
+	protected void setChangeDateTime(DateTime changeDateTime)
 	{
 		this.changeDateTime = changeDateTime;
 	}
@@ -88,7 +89,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 *
 	 * @return the change date time
 	 */
-	public DateTime getChangeDateTime ()
+	public DateTime getChangeDateTime()
 	{
 		return this.changeDateTime;
 	}
@@ -96,7 +97,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	/**
 	 * Update changeDateTime to current time.
 	 */
-	public void updateChangeDateTime ()
+	public void updateChangeDateTime()
 	{
 		this.changeDateTime = new DateTime();
 	}
@@ -106,7 +107,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 *
 	 * @return the changed by
 	 */
-	public CUser getChangedBy ()
+	public CUser getChangedBy()
 	{
 		return changedBy;
 	}
@@ -116,7 +117,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 *
 	 * @param changedBy the new changed by
 	 */
-	public void setChangedBy (CUser changedBy)
+	public void setChangedBy(CUser changedBy)
 	{
 		this.changedBy = changedBy;
 	}
@@ -126,7 +127,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 *
 	 * @return the operation id
 	 */
-	public Long getOperationId ()
+	public Long getOperationId()
 	{
 		return operationId;
 	}
@@ -136,7 +137,7 @@ public abstract class ASecurityChangeEntity<T> implements Serializable, IEntity<
 	 *
 	 * @param operationId the new operation id
 	 */
-	public void setOperationId (Long operationId)
+	public void setOperationId(Long operationId)
 	{
 		this.operationId = operationId;
 	}

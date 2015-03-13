@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 import sk.qbsw.core.security.model.domain.CUser;
 
 /**
@@ -30,8 +30,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  *
  */
 @Entity
-@Table (name = "t_oauth_token ", schema = "sec")
-public class CSecurityToken implements Serializable, IEntity<Long> {
+@Table(name = "t_oauth_token ", schema = "sec")
+public class CSecurityToken extends AEntity<Long> implements Serializable {
 
 	/**
 	 * 
@@ -39,89 +39,89 @@ public class CSecurityToken implements Serializable, IEntity<Long> {
 	private static final long serialVersionUID = -2280914156927086322L;
 
 	@Id
-	@SequenceGenerator (name = "S_TOKEN_PKID_GENERATOR", sequenceName = "SEC.S_OAUTH_TOKEN")
-	@GeneratedValue (strategy = GenerationType.AUTO, generator = "S_TOKEN_PKID_GENERATOR")
-	@Column (name = "pk_id")
+	@SequenceGenerator(name = "S_TOKEN_PKID_GENERATOR", sequenceName = "SEC.S_OAUTH_TOKEN")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "S_TOKEN_PKID_GENERATOR")
+	@Column(name = "pk_id")
 	private Long id;
 
-	@Column (name = "c_token", unique = true, nullable = false)
+	@Column(name = "c_token", unique = true, nullable = false)
 	private String token;
 
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	@Column (name = "c_create_date", nullable = false)
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_create_date", nullable = false)
 	private DateTime createDate;
 
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	@Column (name = "c_last_access_date", nullable = false)
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_last_access_date", nullable = false)
 	private DateTime lastAccessDate;
 
-	@Column (name = "c_ip", nullable = true)
+	@Column(name = "c_ip", nullable = true)
 	private String ip;
 
-	@OneToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "fk_user", unique = true, nullable = false)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_user", unique = true, nullable = false)
 	private CUser user;
 
 	@PrePersist
-	protected void onCreate () {
+	protected void onCreate() {
 		lastAccessDate = new DateTime();
 	}
 
 	@PreUpdate
-	protected void onUpdate () {
+	protected void onUpdate() {
 		lastAccessDate = new DateTime();
 	}
 
 	@Override
-	public Long getId () {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId (Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getToken () {
+	public String getToken() {
 		return token;
 	}
 
-	public void setToken (String token) {
+	public void setToken(String token) {
 		this.token = token;
 	}
 
-	public DateTime getCreateDate () {
+	public DateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate (DateTime createDate) {
+	public void setCreateDate(DateTime createDate) {
 		this.createDate = createDate;
 	}
 
-	public DateTime getLastAccessDate () {
+	public DateTime getLastAccessDate() {
 		return lastAccessDate;
 	}
 
-	public void setLastAccessDate (DateTime lastAccessDate) {
+	public void setLastAccessDate(DateTime lastAccessDate) {
 		this.lastAccessDate = lastAccessDate;
 	}
 
-	public CUser getUser () {
+	public CUser getUser() {
 		return user;
 	}
 
-	public void setUser (CUser user) {
+	public void setUser(CUser user) {
 		this.user = user;
 	}
 
-	public void updateLastAccess () {
+	public void updateLastAccess() {
 		lastAccessDate = new DateTime();
 	}
 
-	public String getIp () {
+	public String getIp() {
 		return ip;
 	}
 
-	public void setIp (String ip) {
+	public void setIp(String ip) {
 		this.ip = ip;
 	}
 }

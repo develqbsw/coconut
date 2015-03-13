@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 
 /**
  * The mail attachment.
@@ -26,7 +26,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 @Entity
 @Table (name = "t_attachment", schema = "apsys")
-public class CAttachment implements Serializable, IEntity<Long>
+public class CAttachment extends AEntity<Long> implements Serializable
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

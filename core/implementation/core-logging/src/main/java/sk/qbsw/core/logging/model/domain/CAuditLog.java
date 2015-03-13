@@ -17,9 +17,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 
-// TODO: Auto-generated Javadoc
 /**
  * The audit log which store logs to database.
  *
@@ -29,7 +28,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 @Entity
 @Table(name = "t_audit_log", schema = "log")
-public class CAuditLog implements Serializable, IEntity<Long>
+public class CAuditLog extends AEntity<Long> implements Serializable
 {
 
 	/** The Constant serialVersionUID. */

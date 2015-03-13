@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
 
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.converter.CEncryptionConverter;
-import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 
 /**
  * The system parameter.
@@ -28,9 +28,10 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.8.0
  */
 @Entity
-@Table (name = "t_system_parameter", schema = "cfg")
-public class CSystemParameter implements Serializable, IEntity<Long>
+@Table(name = "t_system_parameter", schema = "cfg")
+public class CSystemParameter extends AEntity<Long> implements Serializable
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -38,80 +39,80 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 * The entity id.
 	 */
 	@Id
-	@SequenceGenerator (name = "t_system_parameter_pkid_generator", sequenceName = "cfg.t_system_parameter_pk_id_seq")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_system_parameter_pkid_generator")
-	@Column (name = "pk_id", nullable = true)
+	@SequenceGenerator(name = "t_system_parameter_pkid_generator", sequenceName = "cfg.t_system_parameter_pk_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_system_parameter_pkid_generator")
+	@Column(name = "pk_id", nullable = true)
 	private Long id;
 
 	/**
 	 * The name of system parameter.
 	 */
-	@Column (name = "c_name", unique = true)
+	@Column(name = "c_name", unique = true)
 	private String name;
 
 	/**
 	 * The description of system parameter.
 	 */
-	@Column (name = "c_description")
+	@Column(name = "c_description")
 	private String description;
 
 	/**
 	 * The date value of parameter.
 	 */
-	@Column (name = "c_date_value")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_date_value")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime dateValue;
 
 	/**
 	 * The integer value of parameter.
 	 */
-	@Column (name = "c_integer_value", precision = 16, scale = 0)
+	@Column(name = "c_integer_value", precision = 16, scale = 0)
 	private Integer integerValue;
 
 	/**
 	 * The string value of parameter.
 	 */
-	@Column (name = "c_string_value")
+	@Column(name = "c_string_value")
 	private String stringValue;
 
 	/**
 	 * The float value of parameter.
 	 */
-	@Column (name = "c_float_value")
+	@Column(name = "c_float_value")
 	private BigDecimal floatValue;
 
 	/**
 	 * The encrypted value of parameter.
 	 */
-	@Column (name = "c_encrypted_value")
-	@Convert (converter = CEncryptionConverter.class)
+	@Column(name = "c_encrypted_value")
+	@Convert(converter = CEncryptionConverter.class)
 	private String encryptedValue;
 
 	/**
 	 * Valid until.
 	 */
-	@Column (name = "c_valid_to_date")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_valid_to_date")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime validToDate;
 
 	/**
 	 * Valid from.
 	 */
-	@Column (name = "c_valid_from_date")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_valid_from_date")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime validFromDate;
 
 	/**
 	 * The module.
 	 */
-	@Column (name = "c_module")
+	@Column(name = "c_module")
 	private String module;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
 	 */
 	@Override
-	public Long getId ()
+	public Long getId()
 	{
 		return id;
 	}
@@ -121,7 +122,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param id the id
 	 */
-	public void setId (Long id)
+	public void setId(Long id)
 	{
 		this.id = id;
 	}
@@ -131,7 +132,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the name
 	 */
-	public String getName ()
+	public String getName()
 	{
 		return name;
 	}
@@ -141,7 +142,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param name the name
 	 */
-	public void setName (String name)
+	public void setName(String name)
 	{
 		this.name = name;
 	}
@@ -151,7 +152,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the description
 	 */
-	public String getDescription ()
+	public String getDescription()
 	{
 		return description;
 	}
@@ -161,7 +162,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param description the description
 	 */
-	public void setDescription (String description)
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}
@@ -171,7 +172,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the date value
 	 */
-	public DateTime getDateValue ()
+	public DateTime getDateValue()
 	{
 		return dateValue;
 	}
@@ -181,7 +182,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param dateValue the date value
 	 */
-	public void setDateValue (DateTime dateValue)
+	public void setDateValue(DateTime dateValue)
 	{
 		this.dateValue = dateValue;
 	}
@@ -191,7 +192,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the integer value
 	 */
-	public Integer getIntegerValue ()
+	public Integer getIntegerValue()
 	{
 		return integerValue;
 	}
@@ -201,7 +202,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param integerValue the integer value
 	 */
-	public void setIntegerValue (Integer integerValue)
+	public void setIntegerValue(Integer integerValue)
 	{
 		this.integerValue = integerValue;
 	}
@@ -211,7 +212,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the string value
 	 */
-	public String getStringValue ()
+	public String getStringValue()
 	{
 		return stringValue;
 	}
@@ -221,7 +222,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param stringValue the string value
 	 */
-	public void setStringValue (String stringValue)
+	public void setStringValue(String stringValue)
 	{
 		this.stringValue = stringValue;
 	}
@@ -231,7 +232,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the valid to date
 	 */
-	public DateTime getValidToDate ()
+	public DateTime getValidToDate()
 	{
 		return validToDate;
 	}
@@ -241,7 +242,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param validToDate the valid to date
 	 */
-	public void setValidToDate (DateTime validToDate)
+	public void setValidToDate(DateTime validToDate)
 	{
 		this.validToDate = validToDate;
 	}
@@ -251,7 +252,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the valid from date
 	 */
-	public DateTime getValidFromDate ()
+	public DateTime getValidFromDate()
 	{
 		return validFromDate;
 	}
@@ -261,7 +262,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param validFromDate the valid from date
 	 */
-	public void setValidFromDate (DateTime validFromDate)
+	public void setValidFromDate(DateTime validFromDate)
 	{
 		this.validFromDate = validFromDate;
 	}
@@ -271,7 +272,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the module
 	 */
-	public String getModule ()
+	public String getModule()
 	{
 		return module;
 	}
@@ -281,7 +282,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param module the module
 	 */
-	public void setModule (String module)
+	public void setModule(String module)
 	{
 		this.module = module;
 	}
@@ -289,7 +290,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	/**
 	 * @return the floatValue
 	 */
-	public BigDecimal getFloatValue ()
+	public BigDecimal getFloatValue()
 	{
 		return floatValue;
 	}
@@ -297,7 +298,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	/**
 	 * @param floatValue the floatValue to set
 	 */
-	public void setFloatValue (BigDecimal floatValue)
+	public void setFloatValue(BigDecimal floatValue)
 	{
 		this.floatValue = floatValue;
 	}
@@ -307,7 +308,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @return the encrypted value
 	 */
-	public String getEncryptedValue ()
+	public String getEncryptedValue()
 	{
 		return encryptedValue;
 	}
@@ -317,7 +318,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 *
 	 * @param encryptedValue the new encrypted value
 	 */
-	public void setEncryptedValue (String encryptedValue)
+	public void setEncryptedValue(String encryptedValue)
 	{
 		this.encryptedValue = encryptedValue;
 	}
@@ -325,7 +326,7 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	/**
 	 * Checks if the parameter has at least one value.
 	 */
-	public void checkValue ()
+	public void checkValue()
 	{
 		if (dateValue == null && stringValue == null && integerValue == null)
 		{
@@ -337,9 +338,10 @@ public class CSystemParameter implements Serializable, IEntity<Long>
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString ()
+	public String toString()
 	{
 		//in system parameters are saved passwords for system users and passwords for external API. For this case we do not want to log values in system parameters. For this, are logged only description data and id of system parameter.
-		return "CSystemParameter [id=" + id + ", datumPlatnostiDo=" + validToDate + ", datumPlatnostiOd=" + validFromDate + ", hodnotaDate=<hidden>, hodnotaInt=<hidden>, hodnotaString=<hidden>, modul=" + module + ", nazov=" + name + ", popis=" + description + "]";
+		return "CSystemParameter [id=" + id + ", datumPlatnostiDo=" + validToDate + ", datumPlatnostiOd=" + validFromDate
+				+ ", hodnotaDate=<hidden>, hodnotaInt=<hidden>, hodnotaString=<hidden>, modul=" + module + ", nazov=" + name + ", popis=" + description + "]";
 	}
 }

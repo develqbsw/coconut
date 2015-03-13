@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 
 /**
  * The patch installation log.
@@ -20,29 +20,30 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.9.0
  */
 @Entity
-@Table (name = "t_installation_log", schema = "log")
-public class CInstallationLog implements Serializable, IEntity<Long>
+@Table(name = "t_installation_log", schema = "log")
+public class CInstallationLog extends AEntity<Long> implements Serializable
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 6355326578030715757L;
 
 	/** The id. */
 	@Id
-	@SequenceGenerator (name = "t_installation_log_pkid_generator", sequenceName = "log.t_installation_log_pk_id_seq")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_installation_log_pkid_generator")
-	@Column (name = "pk_id")
+	@SequenceGenerator(name = "t_installation_log_pkid_generator", sequenceName = "log.t_installation_log_pk_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_installation_log_pkid_generator")
+	@Column(name = "pk_id")
 	private Long id;
 
 	/** The version. */
-	@Column (name = "c_version", nullable = false, unique = true)
+	@Column(name = "c_version", nullable = false, unique = true)
 	private String version;
 
 	/** The name. */
-	@Column (name = "c_name")
+	@Column(name = "c_name")
 	private String name;
 
 	/** The description. */
-	@Column (name = "c_description")
+	@Column(name = "c_description")
 	private String description;
 
 	/**
@@ -51,7 +52,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 * @return the id
 	 */
 	@Override
-	public Long getId ()
+	public Long getId()
 	{
 		return id;
 	}
@@ -61,7 +62,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 *
 	 * @param id the id to set
 	 */
-	public void setId (Long id)
+	public void setId(Long id)
 	{
 		this.id = id;
 	}
@@ -71,7 +72,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 *
 	 * @return the version
 	 */
-	public String getVersion ()
+	public String getVersion()
 	{
 		return version;
 	}
@@ -81,7 +82,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 *
 	 * @param version the new version
 	 */
-	public void setVersion (String version)
+	public void setVersion(String version)
 	{
 		this.version = version;
 	}
@@ -91,7 +92,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 *
 	 * @return the name
 	 */
-	public String getName ()
+	public String getName()
 	{
 		return name;
 	}
@@ -101,7 +102,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 *
 	 * @param name the new name
 	 */
-	public void setName (String name)
+	public void setName(String name)
 	{
 		this.name = name;
 	}
@@ -111,7 +112,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 *
 	 * @return the description
 	 */
-	public String getDescription ()
+	public String getDescription()
 	{
 		return description;
 	}
@@ -121,7 +122,7 @@ public class CInstallationLog implements Serializable, IEntity<Long>
 	 *
 	 * @param description the new description
 	 */
-	public void setDescription (String description)
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}

@@ -22,7 +22,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 
 /**
  * The mail saved in the database.
@@ -33,11 +33,12 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.9.0
  */
 @Entity
-@Table (name = "t_mail", schema = "apsys")
-@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorValue ("Mail")
-public class CMail implements Serializable, IEntity<Long>
+@Table(name = "t_mail", schema = "apsys")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("Mail")
+public class CMail extends AEntity<Long> implements Serializable
 {
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -45,66 +46,66 @@ public class CMail implements Serializable, IEntity<Long>
 	 * The entity id.
 	 */
 	@Id
-	@SequenceGenerator (name = "t_mail_pkid_generator", sequenceName = "apsys.t_mail_pk_id_seq")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_mail_pkid_generator")
-	@Column (name = "pk_id", nullable = true)
+	@SequenceGenerator(name = "t_mail_pkid_generator", sequenceName = "apsys.t_mail_pk_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_mail_pkid_generator")
+	@Column(name = "pk_id", nullable = true)
 	private Long id;
 
 	/** The from. */
-	@Column (name = "c_from", nullable = false)
+	@Column(name = "c_from", nullable = false)
 	private String from;
 
 	/** The to. */
-	@Column (name = "c_to")
-	@Type (type = "sk.qbsw.core.communication.mail.model.domain.type.CRecipientType")
+	@Column(name = "c_to")
+	@Type(type = "sk.qbsw.core.communication.mail.model.domain.type.CRecipientType")
 	private CRecipient to;
 
 	/** The cc. */
-	@Column (name = "c_cc")
-	@Type (type = "sk.qbsw.core.communication.mail.model.domain.type.CRecipientType")
+	@Column(name = "c_cc")
+	@Type(type = "sk.qbsw.core.communication.mail.model.domain.type.CRecipientType")
 	private CRecipient cc;
 
 	/** The bcc. */
-	@Column (name = "c_bcc")
-	@Type (type = "sk.qbsw.core.communication.mail.model.domain.type.CRecipientType")
+	@Column(name = "c_bcc")
+	@Type(type = "sk.qbsw.core.communication.mail.model.domain.type.CRecipientType")
 	private CRecipient bcc;
 
 	/** The subject. */
-	@Column (name = "c_subject")
+	@Column(name = "c_subject")
 	private String subject;
 
 	/** The body. */
-	@Column (name = "c_body", length = 1024)
+	@Column(name = "c_body", length = 1024)
 	private String body;
 
 	/** Set of attachment. */
-	@OneToMany (mappedBy = "mail", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToMany(mappedBy = "mail", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	private Set<CAttachment> attachments;
 
 	/** The mail sending state. */
-	@Column (name = "c_state", nullable = false)
-	@Enumerated (EnumType.STRING)
+	@Column(name = "c_state", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private EMailState state = EMailState.UNSENT;
 
 	/** The attempt counter for sending. */
-	@Column (name = "c_attempt_counter", nullable = false)
+	@Column(name = "c_attempt_counter", nullable = false)
 	private int attemptCounter = 0;
 
 	/** The date and time when the mail was created. */
-	@Column (name = "c_created")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_created")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime created;
 
 	/** The date and time when the mail was sent. */
-	@Column (name = "c_sent")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "c_sent")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime sent;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
 	 */
 	@Override
-	public Long getId ()
+	public Long getId()
 	{
 		return id;
 	}
@@ -114,7 +115,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param id the new id
 	 */
-	public void setId (Long id)
+	public void setId(Long id)
 	{
 		this.id = id;
 	}
@@ -124,7 +125,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the from
 	 */
-	public String getFrom ()
+	public String getFrom()
 	{
 		return from;
 	}
@@ -134,7 +135,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param from the new from
 	 */
-	public void setFrom (String from)
+	public void setFrom(String from)
 	{
 		this.from = from;
 	}
@@ -144,7 +145,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the to
 	 */
-	public CRecipient getTo ()
+	public CRecipient getTo()
 	{
 		return to;
 	}
@@ -154,7 +155,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param to the new to
 	 */
-	public void setTo (CRecipient to)
+	public void setTo(CRecipient to)
 	{
 		this.to = to;
 	}
@@ -164,7 +165,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the cc
 	 */
-	public CRecipient getCc ()
+	public CRecipient getCc()
 	{
 		return cc;
 	}
@@ -174,7 +175,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param cc the new cc
 	 */
-	public void setCc (CRecipient cc)
+	public void setCc(CRecipient cc)
 	{
 		this.cc = cc;
 	}
@@ -184,7 +185,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the bcc
 	 */
-	public CRecipient getBcc ()
+	public CRecipient getBcc()
 	{
 		return bcc;
 	}
@@ -194,7 +195,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param bcc the new bcc
 	 */
-	public void setBcc (CRecipient bcc)
+	public void setBcc(CRecipient bcc)
 	{
 		this.bcc = bcc;
 	}
@@ -204,7 +205,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the subject
 	 */
-	public String getSubject ()
+	public String getSubject()
 	{
 		return subject;
 	}
@@ -214,7 +215,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param subject the new subject
 	 */
-	public void setSubject (String subject)
+	public void setSubject(String subject)
 	{
 		this.subject = subject;
 	}
@@ -224,7 +225,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the body
 	 */
-	public String getBody ()
+	public String getBody()
 	{
 		return body;
 	}
@@ -234,7 +235,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param body the new body
 	 */
-	public void setBody (String body)
+	public void setBody(String body)
 	{
 		this.body = body;
 	}
@@ -244,7 +245,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the attachments
 	 */
-	public Set<CAttachment> getAttachments ()
+	public Set<CAttachment> getAttachments()
 	{
 		return attachments;
 	}
@@ -254,7 +255,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param attachments the new attachments
 	 */
-	public void setAttachments (Set<CAttachment> attachments)
+	public void setAttachments(Set<CAttachment> attachments)
 	{
 		this.attachments = attachments;
 	}
@@ -264,7 +265,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the state
 	 */
-	public EMailState getState ()
+	public EMailState getState()
 	{
 		return state;
 	}
@@ -274,7 +275,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param state the new state
 	 */
-	public void setState (EMailState state)
+	public void setState(EMailState state)
 	{
 		this.state = state;
 	}
@@ -284,7 +285,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the attempt counter
 	 */
-	public int getAttemptCounter ()
+	public int getAttemptCounter()
 	{
 		return attemptCounter;
 	}
@@ -294,7 +295,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param attemptCounter the new attempt counter
 	 */
-	public void setAttemptCounter (int attemptCounter)
+	public void setAttemptCounter(int attemptCounter)
 	{
 		this.attemptCounter = attemptCounter;
 	}
@@ -304,7 +305,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the created
 	 */
-	public DateTime getCreated ()
+	public DateTime getCreated()
 	{
 		return created;
 	}
@@ -314,7 +315,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param created the new created
 	 */
-	public void setCreated (DateTime created)
+	public void setCreated(DateTime created)
 	{
 		this.created = created;
 	}
@@ -324,7 +325,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @return the sent
 	 */
-	public DateTime getSent ()
+	public DateTime getSent()
 	{
 		return sent;
 	}
@@ -334,7 +335,7 @@ public class CMail implements Serializable, IEntity<Long>
 	 *
 	 * @param sent the new sent
 	 */
-	public void setSent (DateTime sent)
+	public void setSent(DateTime sent)
 	{
 		this.sent = sent;
 	}
