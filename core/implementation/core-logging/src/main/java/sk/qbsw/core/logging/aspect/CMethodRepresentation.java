@@ -5,7 +5,6 @@ import java.util.List;
 
 import sk.qbsw.core.logging.aspect.param.AParameterFactory;
 
-// TODO: Auto-generated Javadoc
 /**
  * Representation of data to log for one method.
  *
