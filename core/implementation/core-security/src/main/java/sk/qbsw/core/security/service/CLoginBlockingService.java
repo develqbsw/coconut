@@ -21,8 +21,9 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Abstract authentication service
  * 
  * @author Tomas Lauro
+ * @author Peter Bozik
  * 
- * @version 1.12.2
+ * @version 1.12.4
  * @since 1.12.2
  */
 public class CLoginBlockingService extends AService implements ILoginBlockingService
@@ -102,6 +103,32 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 		}
 		blockedLoginJpaDao.update(blockedLogin);
 	}
+	
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#increaseInvalidLoginCounter(sk.qbsw.core.security.model.domain.CUser user, java.lang.String ip)
+	 */
+	@Override
+	@Transactional
+	public void increaseInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException
+	{
+		//define error message
+		String errorMessage = "The invalid login counter cannot be increased";
+
+		CBlockedLogin blockedLogin = getBlockedLogin(user.getLogin(), ip, errorMessage);
+		if (blockedLogin == null)
+		{
+			blockedLogin = createBlockedLogin(user.getLogin(), ip);
+		}
+
+		//update blocked login
+		blockedLogin.setInvalidLoginCount(blockedLogin.getInvalidLoginCount() + 1);
+		if (blockedLogin.getInvalidLoginCount() >= blockLoginLimit)
+		{
+			blockedLogin.setBlockedFrom(DateTime.now());
+			blockedLogin.setBlockedTo(DateTime.now().plusMinutes(countBlockLoginMinutes(blockedLogin.getInvalidLoginCount())));
+		}
+		blockedLoginJpaDao.update(blockedLogin);
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#resetInvalidLoginCounter(java.lang.String, java.lang.String)
@@ -116,6 +143,26 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 		//get data from DB - if the user with login does not exist throw an exception
 		getUserByLogin(login, errorMessage);
 		CBlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
+
+		//remove blocked login
+		if (blockedLogin != null)
+		{
+			blockedLoginJpaDao.remove(blockedLogin);
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IAuthenticationService#resetInvalidLoginCounter(sk.qbsw.core.security.model.domain.CUser user, java.lang.String ip)
+	 */
+	@Override
+	@Transactional
+	public void resetInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException
+	{
+		//define error message
+		String errorMessage = "The login counter cannot be reset";
+
+		//get data from DB - if the user with login does not exist throw an exception
+		CBlockedLogin blockedLogin = getBlockedLogin(user.getLogin(), ip, errorMessage);
 
 		//remove blocked login
 		if (blockedLogin != null)

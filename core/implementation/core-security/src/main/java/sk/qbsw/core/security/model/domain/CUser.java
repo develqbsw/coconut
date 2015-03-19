@@ -510,6 +510,16 @@ public class CUser extends ASecurityChangeEntity<Long>
 			throw new CSystemException("The user has not a authentication params");
 		}
 	}
+	
+	public EPasswordType getPasswordType(){
+		if (getAuthenticationParams() != null)
+		{
+			return getAuthenticationParams().getPasswordType();
+		}else
+		{
+			throw new CSystemException("The user has not a authentication params");
+		}
+	}
 
 	/**
 	 * Checks if the user has role.

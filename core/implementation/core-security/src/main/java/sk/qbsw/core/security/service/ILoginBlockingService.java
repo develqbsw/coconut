@@ -2,11 +2,13 @@ package sk.qbsw.core.security.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * The Interface ILoginBlockingService.
  * @author Dalibor Rak
- * @version 1.12.2
+ * @author Peter Bozik
+ * @version 1.12.4
  * @since 1.12.2
  */
 public interface ILoginBlockingService {
@@ -34,6 +36,16 @@ public interface ILoginBlockingService {
 	public abstract void increaseInvalidLoginCounter(String login, String ip) throws CSystemException, CSecurityException;
 
 	/**
+	 * Increase invalid login counter. The user parameter on input is not checked and should be obtained before calling this method
+	 *
+	 * @param user the user
+	 * @param ip the ip
+	 * @throws CSystemException throws if there is any other error
+	 * @throws CSecurityException throws if the user with given login doesnt exist
+	 */
+	public abstract void increaseInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException;
+	
+	/**
 	 * Reset invalid login counter.
 	 *
 	 * @param login the login
@@ -42,6 +54,16 @@ public interface ILoginBlockingService {
 	 * @throws CSecurityException throws if the user with given login doesnt exist
 	 */
 	public abstract void resetInvalidLoginCounter(String login, String ip) throws CSystemException, CSecurityException;
+	
+	/**
+	 * Reset invalid login counter. The user parameter on input is not checked and should be obtained before calling this method
+	 *
+	 * @param user the user
+	 * @param ip the ip
+	 * @throws CSystemException throws if there is any other error
+	 * @throws CSecurityException throws if the user with given login doesnt exist
+	 */
+	public abstract void resetInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException;
 
 	/**
 	 * Checks if is login blocked.
