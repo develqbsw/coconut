@@ -17,10 +17,10 @@ import com.thoughtworks.xstream.XStream;
  * @since 1.8.0
  */
 @Service
-public class CAuditLogSerializationService implements IAuditLogSerializationService
+public class CXMLAuditLogSerializationService implements IAuditLogSerializationService
 {
 
-	public String toXml (List<Object> pojoObject)
+	public String serializeForAuditLog (List<Object> pojoObject)
 	{
 		CParametersPojoList<Object> pojoListToSerialize = new CParametersPojoList<Object>();
 		pojoListToSerialize.setList(pojoObject);
@@ -31,7 +31,5 @@ public class CAuditLogSerializationService implements IAuditLogSerializationServ
 		xstream.addImplicitCollection(CParametersPojoList.class, "list");
 		
 		return xstream.toXML(pojoListToSerialize);
-
 	}
-
 }
