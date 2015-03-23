@@ -9,7 +9,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -96,7 +96,7 @@ public class CSecurityAuthenticationProvider extends AService implements Authent
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		for (String role : roles)
 		{
-			authorities.add(new GrantedAuthorityImpl(role));
+			authorities.add(new SimpleGrantedAuthority(role));
 		}
 
 		CUsernamePasswordUnitAuthenticationToken retVal = new CUsernamePasswordUnitAuthenticationToken(login, password, authorities, unit);

@@ -26,7 +26,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.13.0
  * @since 1.6.0
  */
-@Service(value = "authorizationService")
+@Service (value = "authorizationService")
 public class CAuthorizationService extends AService implements IAuthorizationService
 {
 
@@ -49,15 +49,16 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	 * @see sk.qbsw.core.security.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.core.security.model.domain.CRole, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public void checkAccessRights(String login, CRole role, String unit, String category) throws CSecurityException
+	@Transactional (readOnly = true)
+	public void checkAccessRights (String login, CRole role, String unit, String category) throws CSecurityException
 	{
 		CUnit localUnit = getUnitByName(unit);
 		CUser user;
 		try
 		{
 			user = getUserByLoginAndUnit(login, localUnit);
-		} catch (NoResultException nre)
+		}
+		catch (NoResultException nre)
 		{
 			user = null;
 		}
@@ -93,11 +94,12 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	 * @see sk.qbsw.core.security.service.IAuthorizationService#getRoleByCode(java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public List<CRole> getRoleByCode(String code)
+	@Transactional (readOnly = true)
+	public List<CRole> getRoleByCode (String code)
 	{
 
-		return roleDao.findByCode(code);	}
+		return roleDao.findByCode(code);
+	}
 
 	/**
 	 * Gets the unit from DB by name.
@@ -106,7 +108,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	 * @return the unit by name
 	 * @throws CSecurityException the security exception
 	 */
-	private CUnit getUnitByName(String unitName) throws CSecurityException
+	private CUnit getUnitByName (String unitName) throws CSecurityException
 	{
 		if (unitName != null)
 		{
@@ -133,7 +135,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	 * @param unit the unit
 	 * @return the user by login and unit
 	 */
-	private CUser getUserByLoginAndUnit(String login, CUnit unit)
+	private CUser getUserByLoginAndUnit (String login, CUnit unit)
 	{
 		if (unit == null)
 		{

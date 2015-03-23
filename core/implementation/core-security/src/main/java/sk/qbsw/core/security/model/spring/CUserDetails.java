@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import sk.qbsw.core.security.model.domain.CUser;
@@ -40,7 +40,7 @@ public class CUserDetails implements UserDetails
 		List<GrantedAuthority> retVal = new ArrayList<GrantedAuthority>();
 		for (String role : roles)
 		{
-			retVal.add(new GrantedAuthorityImpl(role));
+			retVal.add(new SimpleGrantedAuthority(role));
 		}
 
 		return retVal;

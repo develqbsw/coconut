@@ -16,7 +16,6 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +26,13 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 
 /**
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
  * 
- * @version 1.12.1
+ * @version 1.13.0
  * @since 1.6.0
  */
 @Component ("ldapProvider")
@@ -43,73 +41,29 @@ public class CLdapProvider extends AService implements ILdapProvider
 	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapProvider.class);
 
-	/** The main ldap connection. */
+	/** The ldap connection factory. */
 	@Autowired
-	private ILdapConnection connection;
-
-	/** The temporary ldap connection to use in the authentication process. */
-	@Autowired
-	private ILdapConnection temporaryConnection;
-
-	/** The data. */
-	@Autowired
-	private ILdapAuthenticationConfigurator data;
+	private ILdapConnectionFactory ldapConnectionFactory;
 
 	/**
 	 * Initialize the connections to LDAP server. Must be called before every connect to server.
 	 *
 	 * @throws LdapException the ldap exception
 	 */
-	private synchronized void init () throws LdapException
+	private void init () throws LdapException
 	{
-		//initialize the main connection
-		if (connection.isInitialized() == false)
-		{
-			connection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
-		}
-		if (connection.isConnected() == false || connection.isAuthenticated() == false)
-		{
-			LOGGER.debug("The main LDAP connection is not connected");
-			try
-			{
-				connection.bindOnServer(data.getUserDn(), data.getUserPassword());
-			}
-			catch (LdapProtocolErrorException ex)
-			{
-				LOGGER.debug("The main LDAP connection throws a LDAP protocol exception - trying to create new connection");
-				//close connection and create new one
-				//the new connection object has to be created because there is a bug with a SSL connection if only bind is called
-				connection.closeConnection();
-				connection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
-				connection.bindOnServer(data.getUserDn(), data.getUserPassword());
-			}
-		}
-
-		//initialize the temporary connection
-		if (temporaryConnection.isInitialized() == false)
-		{
-			temporaryConnection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
-		}
+		ldapConnectionFactory.init();
 	}
 
 	/**
 	 * Uninit the connections and set it to null.
 	 */
 	@PreDestroy
-	private synchronized void uninit ()
+	private void uninit ()
 	{
 		LOGGER.debug("The LDAP provider uninit called");
-		if (connection != null && connection.isInitialized() && connection.isConnected())
-		{
-			connection.unbindFromServer();
-			connection.closeConnection();
-		}
 
-		if (temporaryConnection != null && temporaryConnection.isInitialized() && temporaryConnection.isConnected())
-		{
-			temporaryConnection.unbindFromServer();
-			temporaryConnection.closeConnection();
-		}
+		ldapConnectionFactory.uninit();
 	}
 
 	/* (non-Javadoc)
@@ -155,16 +109,18 @@ public class CLdapProvider extends AService implements ILdapProvider
 
 		Set<Entry> entries = new HashSet<Entry>();
 		EntryCursor cursor = null;
+		CLdapConnection connection = null;
 
 		try
 		{
-//			String escapedBaseDn = CLDAPInjectionProtector.escapeDN(baseDn);
-//			String escapedFilter = CLDAPInjectionProtector.escapeDN(filter);
-//
-//			LOGGER.debug("LDAP: escaped Base dn "+escapedBaseDn);
-//			LOGGER.debug("LDAP: escaped Filter "+escapedFilter);
-			
-			cursor = connection.search(baseDn, filter, scope, attributes);
+			//String escapedBaseDn = CLDAPInjectionProtector.escapeDN(baseDn);
+			//String escapedFilter = CLDAPInjectionProtector.escapeDN(filter);
+			//
+			//LOGGER.debug("LDAP: escaped Base dn "+escapedBaseDn);
+			//LOGGER.debug("LDAP: escaped Filter "+escapedFilter);
+
+			connection = ldapConnectionFactory.getConnection();
+			cursor = connection.getConnection().search(baseDn, filter, scope, attributes);
 
 			if (cursor.next() == true)
 			{
@@ -179,6 +135,8 @@ public class CLdapProvider extends AService implements ILdapProvider
 			{
 				cursor.close();
 			}
+
+			ldapConnectionFactory.releaseConnection(connection);
 		}
 	}
 
@@ -199,8 +157,17 @@ public class CLdapProvider extends AService implements ILdapProvider
 		modification.setAttribute(attribute);
 		modification.setOperation(modificationOperation.getOperation());
 
-		//modify
-		connection.modify(dn, modification);
+		CLdapConnection connection = null;
+		try
+		{
+			//modify
+			connection = ldapConnectionFactory.getConnection();
+			connection.getConnection().modify(dn, modification);
+		}
+		finally
+		{
+			ldapConnectionFactory.releaseConnection(connection);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -221,8 +188,17 @@ public class CLdapProvider extends AService implements ILdapProvider
 			entry.add(attribute.getKey(), attribute.getValue());
 		}
 
-		//add
-		connection.add(entry);
+		CLdapConnection connection = null;
+		try
+		{
+			//add
+			connection = ldapConnectionFactory.getConnection();
+			connection.getConnection().add(entry);
+		}
+		finally
+		{
+			ldapConnectionFactory.releaseConnection(connection);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -234,8 +210,17 @@ public class CLdapProvider extends AService implements ILdapProvider
 		//init the connection
 		init();
 
-		//rename
-		connection.rename(dn, newRdn, deleteOldRdn);
+		CLdapConnection connection = null;
+		try
+		{
+			//remove
+			connection = ldapConnectionFactory.getConnection();
+			connection.getConnection().rename(dn, newRdn, deleteOldRdn);
+		}
+		finally
+		{
+			ldapConnectionFactory.releaseConnection(connection);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -247,44 +232,44 @@ public class CLdapProvider extends AService implements ILdapProvider
 		//init the connection
 		init();
 
-		return connection.exists(dn);
+		CLdapConnection connection = null;
+		try
+		{
+			//exists
+			connection = ldapConnectionFactory.getConnection();
+			return connection.getConnection().exists(dn);
+		}
+		finally
+		{
+			ldapConnectionFactory.releaseConnection(connection);
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#authenticate(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public synchronized void authenticate (String baseDn, String loginFilter, @CNotLogged @CNotAuditLogged String password) throws LdapException, CBusinessException
+	public void authenticate (String baseDn, String loginFilter, @CNotLogged @CNotAuditLogged String password) throws LdapException, CBusinessException
 	{
 		//init the connection
 		init();
 
 		EntryCursor cursor = null;
+		CLdapConnection connection = null;
 
 		try
 		{
 			Entry ldapUserEntry = searchSingleResult(baseDn, loginFilter, SearchScope.SUBTREE, "*");
 
-			try
+			if (password != null)
 			{
-				if (password != null)
-				{
-					//bind as user (with his DN) to verify password
-					temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
-				}
-				else
-				{
-					throw new CBusinessException("The null password is not allowed");
-				}
+				//bind as user (with his DN) to verify password
+				connection = ldapConnectionFactory.getOneTimeConnection();
+				connection.getConnection().bind(ldapUserEntry.getDn().toString(), password);
 			}
-			catch (LdapProtocolErrorException ex)
+			else
 			{
-				LOGGER.debug("The temporary LDAP connection throws a LDAP protocol exception - trying to create new connection");
-				//close connection and create new one
-				//the new connection object has to be created because there is a bug with a SSL connection if only bind is called
-				temporaryConnection.closeConnection();
-				temporaryConnection.init(data.getServerName(), data.getServerPort(), data.getUseSslFlag());
-				temporaryConnection.bindOnServer(ldapUserEntry.getDn().toString(), password);
+				throw new CBusinessException("The null password is not allowed");
 			}
 		}
 		finally
@@ -292,6 +277,11 @@ public class CLdapProvider extends AService implements ILdapProvider
 			if (cursor != null)
 			{
 				cursor.close();
+			}
+
+			if (connection != null)
+			{
+				ldapConnectionFactory.releaseOneTimeConnection(connection);
 			}
 		}
 	}
@@ -302,11 +292,15 @@ public class CLdapProvider extends AService implements ILdapProvider
 	@Override
 	public boolean isConnected ()
 	{
+		CLdapConnection connection = null;
+
 		try
 		{
 			init();
 
-			if (connection != null && connection.isInitialized() == true && connection.isConnected() == true && connection.isAuthenticated() == true)
+			connection = ldapConnectionFactory.getConnection();
+
+			if (connection != null && connection.getConnection() != null && connection.getConnection().isConnected() && connection.getConnection().isAuthenticated())
 			{
 				return true;
 			}
@@ -319,6 +313,21 @@ public class CLdapProvider extends AService implements ILdapProvider
 		{
 			LOGGER.error("The main LDAP connection throws an exception", ex);
 			return false;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				try
+				{
+					ldapConnectionFactory.releaseConnection(connection);
+				}
+				catch (LdapException ex)
+				{
+					LOGGER.debug("IsConnected method failed", ex);
+					//do nothing
+				}
+			}
 		}
 	}
 
@@ -354,7 +363,8 @@ public class CLdapProvider extends AService implements ILdapProvider
 		 *
 		 * @return the operation
 		 */
-		public ModificationOperation getOperation() {
+		public ModificationOperation getOperation ()
+		{
 			return operation;
 		}
 	}

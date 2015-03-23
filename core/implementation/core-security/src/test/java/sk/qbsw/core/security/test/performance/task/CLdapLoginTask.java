@@ -71,9 +71,11 @@ class CLdapLoginTask extends CLoginTask implements Runnable
 	{
 		ldapAuthenticationConfigurator.setServerName("192.168.123.162");
 		ldapAuthenticationConfigurator.setServerPort(10389);
-		ldapAuthenticationConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
+		ldapAuthenticationConfigurator.setSecondaryServerName("192.168.123.162");
+		ldapAuthenticationConfigurator.setSecondaryServerPort(10390);
+		ldapAuthenticationConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=coconut,dc=sk");
 		ldapAuthenticationConfigurator.setUserPassword("jozko.mrkvicka");
-		ldapAuthenticationConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
+		ldapAuthenticationConfigurator.setUserSearchBaseDns("ou=system,dc=coconut,dc=sk;;ou=users,dc=coconut,dc=sk".split(";;"));
 		ldapAuthenticationConfigurator.setUserSearchFilter("(&(cn=%s))");
 		ldapAuthenticationConfigurator.setUseSslFlag(false);
 		ldapAuthenticationConfigurator.setUserObjectClass("inetOrgPerson");

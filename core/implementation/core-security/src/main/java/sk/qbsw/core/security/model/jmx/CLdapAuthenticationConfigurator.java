@@ -15,7 +15,7 @@ import sk.qbsw.core.base.service.AService;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.11.8
+ * @version 1.13.0
  * @since 1.6.0
  */
 @Service ("ldapAuthenticationConfigurator")
@@ -27,6 +27,12 @@ public class CLdapAuthenticationConfigurator extends AService implements ILdapAu
 
 	/** The ldap server port. */
 	private int serverPort;
+
+	/** The secondary server name. */
+	private String secondaryServerName;
+
+	/** The secondary server port. */
+	private int secondaryServerPort;
 
 	/** The flag indicates usage of ssl. */
 	private boolean useSsl;
@@ -48,6 +54,18 @@ public class CLdapAuthenticationConfigurator extends AService implements ILdapAu
 
 	/** The ldap user object class. */
 	private String userObjectClass;
+
+	/** The pool max idle. */
+	private Integer poolMaxIdle;
+
+	/** The pool min idle. */
+	private Integer poolMinIdle;
+
+	/** The pool max active. */
+	private Integer poolMaxActive;
+
+	/** The max wait. */
+	private Long maxWait;
 
 	/**
 	 * Instantiates a new c ldap authentication configurator.
@@ -90,6 +108,42 @@ public class CLdapAuthenticationConfigurator extends AService implements ILdapAu
 	public void setServerPort (int serverPort)
 	{
 		this.serverPort = serverPort;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getSecondaryServerName()
+	 */
+	@Override
+	public String getSecondaryServerName ()
+	{
+		return secondaryServerName;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setSecondaryServerName(java.lang.String)
+	 */
+	@Override
+	public void setSecondaryServerName (String secondaryServerName)
+	{
+		this.secondaryServerName = secondaryServerName;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getSecondaryServerPort()
+	 */
+	@Override
+	public int getSecondaryServerPort ()
+	{
+		return secondaryServerPort;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setSecondaryServerPort(int)
+	 */
+	@Override
+	public void setSecondaryServerPort (int secondaryServerPort)
+	{
+		this.secondaryServerPort = secondaryServerPort;
 	}
 
 	/* (non-Javadoc)
@@ -218,5 +272,76 @@ public class CLdapAuthenticationConfigurator extends AService implements ILdapAu
 	public void setUserObjectClass (String userObjectClass)
 	{
 		this.userObjectClass = userObjectClass;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getPoolMaxIdle()
+	 */
+	@Override
+	public Integer getPoolMaxIdle ()
+	{
+		return poolMaxIdle;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setPoolMaxIdle(int)
+	 */
+	@Override
+	public void setPoolMaxIdle (Integer poolMaxIdle)
+	{
+		this.poolMaxIdle = poolMaxIdle;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getPoolMinIdle()
+	 */
+	@Override
+	public Integer getPoolMinIdle ()
+	{
+		return poolMinIdle;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setPoolMinIdle(int)
+	 */
+	public void setPoolMinIdle (Integer poolMinIdle)
+	{
+		this.poolMinIdle = poolMinIdle;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getPoolMaxActive()
+	 */
+	@Override
+	public Integer getPoolMaxActive ()
+	{
+		return poolMaxActive;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setPoolMaxActive(int)
+	 */
+	@Override
+	public void setPoolMaxActive (Integer poolMaxActive)
+	{
+		this.poolMaxActive = poolMaxActive;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#getMaxWait()
+	 */
+	@Override
+	public Long getMaxWait ()
+	{
+		return maxWait;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator#setMaxWait(long)
+	 */
+	@Override
+	public void setMaxWait (Long maxWait)
+	{
+		this.maxWait = maxWait;
 	}
 }
