@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -26,7 +26,7 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.12.2
+ * @version 1.13.0
  * @since 1.6.0
  */
 @Entity
@@ -54,7 +54,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	private String pin;
 
 	/** The user. */
-	@OneToOne (fetch = FetchType.LAZY)
+	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_user", nullable = false)
 	private CUser user;
 

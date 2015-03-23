@@ -20,7 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -40,7 +39,7 @@ import com.google.gson.annotations.Expose;
  * @author Tomas Lauro
  * @author Michal Lacko
  * 
- * @version 1.9.2
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Entity
@@ -109,8 +108,8 @@ public class CUser extends ASecurityChangeEntity<Long>
 	private CUnit defaultUnit;
 
 	/** The authentication params. */
-	@OneToOne (mappedBy = "user", fetch = FetchType.LAZY)
-	private CAuthenticationParams authenticationParams;
+	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY)
+	private List<CAuthenticationParams> authenticationParams;
 
 	/** The user type. */
 	@Column (name = "type", nullable = true)
@@ -491,7 +490,14 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 */
 	private CAuthenticationParams getAuthenticationParams ()
 	{
-		return authenticationParams;
+		if (authenticationParams.size() == 1)
+		{
+			return authenticationParams.get(0);
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/**
