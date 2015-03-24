@@ -249,7 +249,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#authenticate(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void authenticate (String baseDn, String loginFilter, @CNotLogged @CNotAuditLogged String password) throws LdapException, CBusinessException
+	public synchronized void authenticate (String baseDn, String loginFilter, @CNotLogged @CNotAuditLogged String password) throws LdapException, CBusinessException
 	{
 		//init the connection
 		init();

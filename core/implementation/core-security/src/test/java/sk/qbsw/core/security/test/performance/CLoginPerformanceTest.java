@@ -20,10 +20,10 @@ import sk.qbsw.core.security.test.performance.task.CLoginTask;
 public class CLoginPerformanceTest
 {
 	/** The Constant LOGIN_COUNT. */
-	private static final int LOGIN_COUNT = 10000;
+	private static final int LOGIN_COUNT = 5000;
 
 	/** The Constant THREADS_COUNT. */
-	private static final int THREADS_COUNT = 100;
+	private static final int THREADS_COUNT = 10;
 
 	/**
 	 * The main method.

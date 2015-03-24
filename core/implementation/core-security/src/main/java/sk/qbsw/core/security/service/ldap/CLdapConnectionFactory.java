@@ -1,7 +1,5 @@
 package sk.qbsw.core.security.service.ldap;
 
-import java.io.IOException;
-
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
@@ -38,6 +36,8 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 
 	/** The secondary server connection pool. */
 	private LdapConnectionPool secondaryServerConnectionPool = null;
+
+	private static volatile int ONE_TIME_CONNECTIONS_COUNT = 0;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#init()
@@ -105,6 +105,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		try
 		{
 			connection = primaryServerConnectionPool.getConnection();
+			LOGGER.debug("Get connection - the number of active connections in primary pool is {}", primaryServerConnectionPool.getNumActive());
 		}
 		catch (Throwable ex)
 		{
@@ -129,6 +130,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 			//release connection from primary pool and borrow from secondary pool
 			primaryServerConnectionPool.releaseConnection(connection);
 			connection = secondaryServerConnectionPool.getConnection();
+			LOGGER.debug("Get connection - the number of active connections in secondary pool is {}", secondaryServerConnectionPool.getNumActive());
 
 			CLdapConnection connectionModel = new CLdapConnection();
 			connectionModel.setConnection(connection);
@@ -189,13 +191,15 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 			{
 				connection = new LdapNetworkConnection(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getUseSslFlag());
 
-				LOGGER.debug("One time connection to primary server created.");
+				ONE_TIME_CONNECTIONS_COUNT++;
+				LOGGER.debug("One time connection to primary server created. Connections count is {}", ONE_TIME_CONNECTIONS_COUNT);
 			}
 			else
 			{
 				connection = new LdapNetworkConnection(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort(), configurationData.getUseSslFlag());
 
-				LOGGER.debug("One time connection to secondary server created.");
+				ONE_TIME_CONNECTIONS_COUNT++;
+				LOGGER.debug("One time connection to secondary server created. Connections count is {}", ONE_TIME_CONNECTIONS_COUNT);
 			}
 		}
 		finally
@@ -221,12 +225,16 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		{
 			if (connection != null && connection.getConnection() != null)
 			{
+				connection.getConnection().unBind();
 				connection.getConnection().close();
+				connection.setConnection(null);
+				connection.setType(null);
 			}
 
-			LOGGER.debug("One time connection closed.");
+			ONE_TIME_CONNECTIONS_COUNT--;
+			LOGGER.debug("One time connection closed. Connections count is {}", ONE_TIME_CONNECTIONS_COUNT);
 		}
-		catch (IOException e)
+		catch (Throwable e)
 		{
 			LOGGER.debug("One time connection closing failed.");
 			//Do nothing

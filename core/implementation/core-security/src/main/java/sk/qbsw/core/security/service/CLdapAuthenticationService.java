@@ -243,7 +243,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 
 			for (int i = 0; i < exceptions.size(); i++)
 			{
-				logger.error("LDAP authentication error in " + (i + 1) + ". baseDn: " + exceptions.get(i).toString());
+				logger.error("LDAP authentication error in " + (i + 1) + ". baseDn: ", exceptions.get(i));
 			}
 
 			return false;

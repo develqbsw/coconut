@@ -80,5 +80,6 @@ class CLdapLoginTask extends CLoginTask implements Runnable
 		ldapAuthenticationConfigurator.setUseSslFlag(false);
 		ldapAuthenticationConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapAuthenticationConfigurator.setUserOrganizationId((long) 1);
+		ldapAuthenticationConfigurator.setPoolMaxActive(10);
 	}
 }
