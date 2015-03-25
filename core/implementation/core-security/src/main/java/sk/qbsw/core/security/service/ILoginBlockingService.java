@@ -36,14 +36,14 @@ public interface ILoginBlockingService {
 	public abstract void increaseInvalidLoginCounter(String login, String ip) throws CSystemException, CSecurityException;
 
 	/**
-	 * Increase invalid login counter. The user parameter on input is not checked and should be obtained before calling this method
+	 * Increase invalid login counter. The user parameter on input is not checked and should be obtained before calling this method. Login is not checked for valid user
 	 *
-	 * @param user the user
+	 * @param login the login of the user
 	 * @param ip the ip
 	 * @throws CSystemException throws if there is any other error
 	 * @throws CSecurityException throws if the user with given login doesnt exist
 	 */
-	public abstract void increaseInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException;
+	public abstract void increaseInvalidLoginCounterWithoutUserCheck(String login, String ip) throws CSystemException, CSecurityException;
 	
 	/**
 	 * Reset invalid login counter.
@@ -56,14 +56,14 @@ public interface ILoginBlockingService {
 	public abstract void resetInvalidLoginCounter(String login, String ip) throws CSystemException, CSecurityException;
 	
 	/**
-	 * Reset invalid login counter. The user parameter on input is not checked and should be obtained before calling this method
+	 * Reset invalid login counter. The user parameter on input is not checked and should be obtained before calling this method. Login is not checked for valid user
 	 *
-	 * @param user the user
+	 * @param login the login of the user
 	 * @param ip the ip
 	 * @throws CSystemException throws if there is any other error
 	 * @throws CSecurityException throws if the user with given login doesnt exist
 	 */
-	public abstract void resetInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException;
+	public abstract void resetInvalidLoginCounterWithoutUserCheck(String login, String ip) throws CSystemException, CSecurityException;
 
 	/**
 	 * Checks if is login blocked.

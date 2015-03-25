@@ -1,5 +1,7 @@
 package sk.qbsw.core.logging.aspect.param;
 
+import java.io.Serializable;
+
 /**
  * Abstract parameter which handle parameter name
  * 
@@ -7,7 +9,7 @@ package sk.qbsw.core.logging.aspect.param;
  * @since 1.8.0
  * @version 1.8.0
  */
-public abstract class AParameter {
+public abstract class AParameter implements Serializable {
 
 	protected final String name;
 

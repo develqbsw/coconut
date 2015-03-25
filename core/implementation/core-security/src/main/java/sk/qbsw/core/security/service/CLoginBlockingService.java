@@ -109,15 +109,15 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 */
 	@Override
 	@Transactional
-	public void increaseInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException
+	public void increaseInvalidLoginCounterWithoutUserCheck(String login, String ip) throws CSystemException, CSecurityException
 	{
 		//define error message
 		String errorMessage = "The invalid login counter cannot be increased";
 
-		CBlockedLogin blockedLogin = getBlockedLogin(user.getLogin(), ip, errorMessage);
+		CBlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
 		if (blockedLogin == null)
 		{
-			blockedLogin = createBlockedLogin(user.getLogin(), ip);
+			blockedLogin = createBlockedLogin(login, ip);
 		}
 
 		//update blocked login
@@ -156,13 +156,13 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 */
 	@Override
 	@Transactional
-	public void resetInvalidLoginCounter(CUser user, String ip) throws CSystemException, CSecurityException
+	public void resetInvalidLoginCounterWithoutUserCheck(String login, String ip) throws CSystemException, CSecurityException
 	{
 		//define error message
 		String errorMessage = "The login counter cannot be reset";
 
 		//get data from DB - if the user with login does not exist throw an exception
-		CBlockedLogin blockedLogin = getBlockedLogin(user.getLogin(), ip, errorMessage);
+		CBlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
 
 		//remove blocked login
 		if (blockedLogin != null)

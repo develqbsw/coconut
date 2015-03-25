@@ -20,8 +20,9 @@ import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
  * 
  * @author Michal Lacko
  * @author Marián Oravec
+ * @author Peter Bozik
  * @since 1.8.0
- * @version 1.8.0
+ * @version 1.12.4
  */
 @Aspect
 public class CAuditLoggingAspect extends AAuditLoggingAspect
@@ -36,6 +37,11 @@ public class CAuditLoggingAspect extends AAuditLoggingAspect
 	public void loggedClass ()
 	{
 	}
+	
+	@Pointcut ("@within(sk.qbsw.core.base.logging.annotation.CNotAuditLogged)")
+	public void notLoggedClass ()
+	{
+	}
 
 	/**
 	 * logging every method which have annotation auditLogged and don't have annotation CNotAuditLogged
@@ -45,6 +51,15 @@ public class CAuditLoggingAspect extends AAuditLoggingAspect
 	{
 		return this.doBasicLogging(pjp, auditLogged);
 	}
+	
+	/**
+	 * process every method which have annotation {@link CNotAuditLogged} and don't have annotation {@link CAuditLogged}
+	 */
+	@Around ("anyMethod() && @annotation(notAauditLogged) && !@annotation(sk.qbsw.core.base.logging.annotation.CAuditLogged)")
+	public Object loggedMethodPointcut (ProceedingJoinPoint pjp, CNotAuditLogged notAauditLogged) throws Throwable
+	{
+		return this.processNotLogged(pjp,notAauditLogged);
+	}
 
 	/**
 	 * logging every method where class have annotation CAuditLogged and method don't have annotation CNotAuditLogged
@@ -53,6 +68,15 @@ public class CAuditLoggingAspect extends AAuditLoggingAspect
 	public Object loggedClassPointcut (ProceedingJoinPoint pjp) throws Throwable
 	{
 		return this.doBasicLogging(pjp, pjp.getTarget().getClass().getAnnotation(CAuditLogged.class));
+	}
+	
+	/**
+	 * process every method where class have annotation {@link CNotAuditLogged} and method don't have annotation {@link CAuditLogged}
+	 */
+	@Around ("anyMethod() && notLoggedClass() && !@annotation(sk.qbsw.core.base.logging.annotation.CNotAuditLogged) && !@annotation(sk.qbsw.core.base.logging.annotation.CAuditLogged)")
+	public Object loggedClassPointcutNotLogged (ProceedingJoinPoint pjp) throws Throwable
+	{
+		return this.processNotLogged(pjp, pjp.getTarget().getClass().getAnnotation(CNotAuditLogged.class));
 	}
 
 }

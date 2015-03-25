@@ -87,7 +87,7 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 				// call method
 				result = pjp.proceed();
 			}
-
+			
 			catch (final CBusinessException e)
 			{
 				// get error description
@@ -117,6 +117,31 @@ public abstract class AAuditLoggingAspect extends ALoggingAspect
 			this.doLog(actionName, EOperationResult.OK, null, loggedArguments);
 		}
 
+		return result;
+	}
+	
+	public Object processNotLogged(ProceedingJoinPoint pjp,CNotAuditLogged notAuditLogged)throws Throwable
+	{
+		final Object result;
+		if(notAuditLogged!=null){
+			if(notAuditLogged.blockTree()){
+				try{
+					LOCK_HOLDER.set(true);
+					result = pjp.proceed();
+				}catch (final Exception e)
+				{
+					throw e;
+				}
+				finally
+				{
+					LOCK_HOLDER.remove();
+				}
+			}else{
+				result = pjp.proceed();
+			}
+		}else{
+			result = pjp.proceed();
+		}
 		return result;
 	}
 
