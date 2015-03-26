@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -27,10 +28,10 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
 import sk.qbsw.core.testing.mock.IMockHelper;
 
 /**
- * Checks Authentication service for mixed auth.
+ * Checks Authentication service for mixed auth - because the ldap is mocked, the authentication on LDAP passes every time.
  *
  * @autor Tomas Lauro
- * @version 1.11.10
+ * @version 1.13.0
  * @since 1.10.5
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -46,6 +47,10 @@ public class CMixedAuthenticationTestCase
 	@Autowired
 	@Qualifier ("mixedAuthenticationService")
 	private IAuthenticationService authenticationService;
+
+	@Autowired
+	@Qualifier ("ldapAuthenticationService")
+	private IAuthenticationService ldapAuthenticationService;
 
 	/** The authentication test provider. */
 	@Autowired
@@ -78,10 +83,16 @@ public class CMixedAuthenticationTestCase
 
 	/**
 	 * Inits the test case.
+	 * @throws Exception 
 	 */
 	@Before
-	public void initTestCase ()
+	public void initTestCase () throws Exception
 	{
+		//set mock ldap provider
+		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(ldapAuthenticationService), "ldapProvider", ldapProvider);
+		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(authenticationService), "ldapAuthenticationService", ldapAuthenticationService);
+
+		//use without mocks
 		ldapConfigurator.setServerName("192.168.123.78");
 		ldapConfigurator.setServerPort(10389);
 		ldapConfigurator.setUseSslFlag(false);

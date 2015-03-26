@@ -1,7 +1,5 @@
 package sk.qbsw.core.security.service;
 
-import org.apache.directory.api.util.exception.NotImplementedException;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
