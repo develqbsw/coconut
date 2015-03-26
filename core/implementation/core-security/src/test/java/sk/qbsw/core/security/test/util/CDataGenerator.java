@@ -16,6 +16,7 @@ import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
+import sk.qbsw.core.security.model.domain.CBlockedLogin;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -26,7 +27,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * @version 1.12.2
+ * @version 1.13.0
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -496,5 +497,27 @@ public class CDataGenerator
 	public CAuthenticationParams createAuthenticationParams (String code, DateTime validFrom, DateTime validTo)
 	{
 		return createAuthenticationParams(code, null, validFrom, validTo);
+	}
+
+	/**
+	 * Creates the blocked login.
+	 *
+	 * @param login the login
+	 * @param ip the ip
+	 * @param invalidLoginCount the invalid login count
+	 * @param blockedFrom the blocked from
+	 * @param blockedTo the blocked to
+	 * @return the c blocked login
+	 */
+	public CBlockedLogin createBlockedLogin (String login, String ip, int invalidLoginCount, DateTime blockedFrom, DateTime blockedTo)
+	{
+		CBlockedLogin blockedLogin = new CBlockedLogin();
+		blockedLogin.setLogin(login);
+		blockedLogin.setIp(ip);
+		blockedLogin.setInvalidLoginCount(invalidLoginCount);
+		blockedLogin.setBlockedFrom(blockedFrom);
+		blockedLogin.setBlockedTo(blockedTo);
+
+		return blockedLogin;
 	}
 }

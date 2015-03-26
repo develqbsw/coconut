@@ -54,6 +54,7 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 
 		//create where condition
 		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(qBlockedLogin.login.eq(login));
 		if (ip != null)
 		{
 			builder.and(qBlockedLogin.ip.eq(ip));
@@ -72,7 +73,7 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#countCurrentlyBlockedByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public long countCurrentlyBlockedByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException
+	public long countCurrentlyBlockedByLoginAndIp (String login, String ip) throws CSystemException
 	{
 		if (login == null)
 		{

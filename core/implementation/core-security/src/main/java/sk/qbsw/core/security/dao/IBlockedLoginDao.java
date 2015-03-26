@@ -40,8 +40,6 @@ public interface IBlockedLoginDao extends Serializable, IEntityDao<Long, CBlocke
 	 * @return the count
 	 * 
 	 * @throws CSystemException throws if the login is null
-	 * @throws NonUniqueResultException there is no unique result
-	 * @throws NoResultException there is no result
 	 */
-	long countCurrentlyBlockedByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException;
+	long countCurrentlyBlockedByLoginAndIp (String login, String ip) throws CSystemException;
 }
