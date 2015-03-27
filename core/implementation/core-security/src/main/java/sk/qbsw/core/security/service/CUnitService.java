@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IAddressDao;
 import sk.qbsw.core.security.dao.IUnitDao;
@@ -17,7 +18,8 @@ import sk.qbsw.core.security.model.domain.CUser;
  * Service for unit management.
  *
  * @author Tomas Lauro
- * @version 1.7.1
+ * 
+ * @version 1.13.0
  * @since 1.6.0
  */
 @Service ("unitService")
@@ -29,7 +31,7 @@ public class CUnitService extends AService implements IUnitService
 	/** The unit dao. */
 	@Autowired
 	private IUnitDao unitDao;
-	
+
 	/** The unit dao. */
 	@Autowired
 	private IAddressDao addressDao;
@@ -49,20 +51,24 @@ public class CUnitService extends AService implements IUnitService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUnit> getAll (CUser user)
+	public List<CUnit> getAll (CUser user) throws CSecurityException
 	{
 		return unitDao.findByUserId(user.getId());
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.IUnitService#setAddress(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CAddress)
+	 */
+	@Override
 	@Transactional
 	public void setAddress (CUnit unit, CAddress address)
 	{
 		//set address to unit
 		unit.setAddress(address);
-		
+
 		//save entities
 		addressDao.update(address);
 		unitDao.update(unit);
-		
+
 	}
 }

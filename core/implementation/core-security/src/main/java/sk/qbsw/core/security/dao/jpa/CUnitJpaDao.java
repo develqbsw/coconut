@@ -9,6 +9,8 @@ import javax.persistence.NoResultException;
 
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -44,8 +46,13 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 	 * @see sk.qbsw.core.security.dao.IUnitDao#findOneByName(java.lang.String)
 	 */
 	@Override
-	public CUnit findOneByName (String name) throws NoResultException
+	public CUnit findOneByName (String name) throws NoResultException, CSecurityException
 	{
+		if (name == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+		
 		QCUnit qUnit = QCUnit.cUnit;
 
 		//create query
@@ -57,8 +64,13 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 	 * @see sk.qbsw.core.security.dao.IUnitDao#findByUserId(java.lang.Long)
 	 */
 	@Override
-	public List<CUnit> findByUserId (Long userId)
+	public List<CUnit> findByUserId (Long userId) throws CSecurityException
 	{
+		if (userId == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+		
 		QCUnit qUnit = QCUnit.cUnit;
 		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 		QCUser qUser = QCUser.cUser;
