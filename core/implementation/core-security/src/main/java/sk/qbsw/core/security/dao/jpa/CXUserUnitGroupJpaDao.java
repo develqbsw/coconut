@@ -28,7 +28,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
  * @since 1.7.0
  */
 @Repository (value = "xUserUnitGroupDao")
-public class CXUserUnitGroupDao extends AEntityJpaDao<Long, CXUserUnitGroup> implements IXUserUnitGroupDao
+public class CXUserUnitGroupJpaDao extends AEntityJpaDao<Long, CXUserUnitGroup> implements IXUserUnitGroupDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -36,7 +36,7 @@ public class CXUserUnitGroupDao extends AEntityJpaDao<Long, CXUserUnitGroup> imp
 	/**
 	 * Instantiates a new x user unit group dao.
 	 */
-	public CXUserUnitGroupDao ()
+	public CXUserUnitGroupJpaDao ()
 	{
 		super(CXUserUnitGroup.class);
 	}
