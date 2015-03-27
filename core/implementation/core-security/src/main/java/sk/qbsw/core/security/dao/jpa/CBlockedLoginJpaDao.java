@@ -6,7 +6,9 @@ import javax.persistence.NonUniqueResultException;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
@@ -42,12 +44,12 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#findOneByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException
+	public CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSecurityException, NonUniqueResultException, NoResultException
 	{
 		//checks mandatory params
 		if (login == null)
 		{
-			throw new CSystemException("The mandatory parameter not found");
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
 		QCBlockedLogin qBlockedLogin = QCBlockedLogin.cBlockedLogin;

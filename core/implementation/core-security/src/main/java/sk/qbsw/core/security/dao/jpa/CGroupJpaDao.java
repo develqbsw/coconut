@@ -1,9 +1,15 @@
 package sk.qbsw.core.security.dao.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -71,6 +77,7 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCode(java.lang.String)
 	 */
 	@Override
+	@Deprecated
 	public List<CGroup> findByCode (String code)
 	{
 		QCGroup qGroup = QCGroup.cGroup;
@@ -81,11 +88,57 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 	}
 
 	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findOneByCode(java.lang.String)
+	 */
+	@Override
+	public CGroup findOneByCode (String code) throws CSecurityException
+	{
+		if (code == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+
+		QCGroup qGroup = QCGroup.cGroup;
+
+		//create query
+		JPAQuery query = new JPAQuery(getEntityManager()).from(qGroup).where(qGroup.code.eq(code));
+		return CJpaDaoHelper.handleUniqueResultQuery(query, qGroup);
+	}
+
+	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
-	public List<CGroup> findByCodeAndUnit (String code, CUnit unit)
+	@Deprecated
+	public List<CGroup> findByCodeAndUnit (String code, CUnit unit) throws CSecurityException
 	{
+		List<CGroup> groups = new ArrayList<CGroup>();
+
+		try
+		{
+			CGroup group = findOneByCodeAndUnit(code, unit);
+
+			groups.add(group);
+			return groups;
+		}
+		catch (NoResultException ex)
+		{
+			return groups;
+		}
+
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IGroupDao#findOneByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
+	 */
+	@Override
+	public CGroup findOneByCodeAndUnit (String code, CUnit unit) throws CSecurityException, NoResultException, NonUniqueResultException
+	{
+		if (code == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+
 		QCGroup qGroup = QCGroup.cGroup;
 
 		//create where condition
@@ -101,8 +154,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.distinct().from(qGroup).leftJoin(qGroup.roles).fetch().leftJoin(qGroup.units).fetch().where(builder).orderBy(qGroup.code.asc()).list(qGroup);
+		JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qGroup).leftJoin(qGroup.roles).fetch().leftJoin(qGroup.units).fetch().where(builder);
+		return CJpaDaoHelper.handleUniqueResultQuery(query, qGroup);
 	}
 
 	/* (non-Javadoc)

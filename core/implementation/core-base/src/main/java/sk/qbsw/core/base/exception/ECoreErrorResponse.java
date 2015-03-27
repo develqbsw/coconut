@@ -20,7 +20,8 @@ public enum ECoreErrorResponse implements IErrorResponse
 	USER_NOT_ALL_PARAMETERS("10003", "error.security.user.notallfields"),
 	ORGANIZATION_NOT_VALID("10004", "error.security.organization.notvalid"),
 	PASSWORD_MANDATORY("10005", "error.security.password.mandatory"),
-	PASSWORD_CHANGE_DENIED("10006", "error.security.changepassworddenied");
+	PASSWORD_CHANGE_DENIED("10006", "error.security.changepassworddenied"),
+	MISSING_MANDATORY_PARAMETERS("10007", "error.security.missingmandatoryparameters");
 
 	/**
 	 * code of the error. This is shot code represent error in application

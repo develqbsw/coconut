@@ -6,6 +6,7 @@ package sk.qbsw.core.security.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -42,21 +43,43 @@ public interface IGroupDao extends Serializable, IEntityDao<Long, CGroup>
 	 *
 	 * @param code the code (mandatory)
 	 * @return the list
+	 * @deprecated the code is unique, use {@link IGroupDao#findOneByCode(String)}
 	 */
 	List<CGroup> findByCode (String code);
 
 	/**
-	 * Find groups by code and unit. The roles and units for group are fetched.
-	 * 
-	 * @param code the code of requested group (optional)
+	 * Find group by code.
+	 *
+	 * @param code the code (mandatory)
+	 * @return the group with defined code
+	 * @throws CSecurityException the code is missing
+	 */
+	CGroup findOneByCode (String code) throws CSecurityException;
+
+	/**
+	 * Find groups by code and unit - if the unit is null the only group with empty units list is returned. The roles and units for group are fetched.
+	 *
+	 * @param code the code of requested group (mandatory)
 	 * @param unit the unit of group (optional)
 	 * @return the list of groups
+	 * @throws CSecurityException the code is missing
+	 * @deprecated the code is unique
 	 */
-	List<CGroup> findByCodeAndUnit (String code, CUnit unit);
+	List<CGroup> findByCodeAndUnit (String code, CUnit unit) throws CSecurityException;
+
+	/**
+	 * Find group by code and unit - if the unit is null the only group with empty units list is returned. The roles and units for group are fetched.
+	 *
+	 * @param code the code of requested group (mandatory)
+	 * @param unit the unit of group (optional)
+	 * @return the group
+	 * @throws CSecurityException the code is missing
+	 */
+	CGroup findOneByCodeAndUnit (String code, CUnit unit) throws CSecurityException;
 
 	/**
 	 * Find groups by unit.
-	 * 
+	 *
 	 * @param unit the unit of group (optional)
 	 * @return the list of groups
 	 */

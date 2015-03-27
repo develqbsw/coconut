@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -21,7 +22,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.13.0
  * @since 1.0.0
  */
-@Service("cGroupService")
+@Service ("cGroupService")
 public class CGroupService extends AService implements IGroupService
 {
 
@@ -40,8 +41,8 @@ public class CGroupService extends AService implements IGroupService
 	 * @see sk.qbsw.core.security.service.ISecurityService#read(java.lang.Long)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CGroup read(Long id)
+	@Transactional (readOnly = true)
+	public CGroup read (Long id)
 	{
 		return groupDao.findById(id);
 	}
@@ -49,8 +50,8 @@ public class CGroupService extends AService implements IGroupService
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IGroupService#getAll()
 	 */
-	@Transactional(readOnly = true)
-	public List<CGroup> getAll()
+	@Transactional (readOnly = true)
+	public List<CGroup> getAll ()
 	{
 		return groupDao.findAll();
 	}
@@ -58,8 +59,8 @@ public class CGroupService extends AService implements IGroupService
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IGroupService#getByCode(java.lang.String)
 	 */
-	@Transactional(readOnly = true)
-	public List<CGroup> getByCode(String code)
+	@Transactional (readOnly = true)
+	public List<CGroup> getByCode (String code)
 	{
 		return groupDao.findByCode(code);
 	}
@@ -68,16 +69,16 @@ public class CGroupService extends AService implements IGroupService
 	 * @see sk.qbsw.core.security.service.IGroupService#getByUnit(sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
-	public List<CGroup> getByUnit(CUnit unit)
+	public List<CGroup> getByUnit (CUnit unit)
 	{
 		return groupDao.findByUnit(unit);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IGroupService#getByUnitUser(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CUser)
 	 */
 	@Override
-	public List<CGroup> getByUnitUser(CUnit unit, CUser user)
+	public List<CGroup> getByUnitUser (CUnit unit, CUser user)
 	{
 		return groupDao.findByUnitAndUser(unit, user);
 	}
@@ -86,7 +87,7 @@ public class CGroupService extends AService implements IGroupService
 	 * @see sk.qbsw.core.security.service.IGroupService#getByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
-	public List<CGroup> getByCodeAndUnit (String code, CUnit unit)
+	public List<CGroup> getByCodeAndUnit (String code, CUnit unit) throws CSecurityException
 	{
 		return groupDao.findByCodeAndUnit(code, unit);
 	}

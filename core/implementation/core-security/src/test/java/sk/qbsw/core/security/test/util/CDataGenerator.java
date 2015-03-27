@@ -156,12 +156,12 @@ public class CDataGenerator
 		CRole secondRole = createRole(SECOND_ROLE_CODE);
 
 		//groups
-		CGroup firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE);
-		CGroup secondGroupInUnit = createGroup(SECOND_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE);
-		CGroup thirdGroupInUnit = createGroup(THIRD_GROUP_IN_UNIT_CODE, SECOND_CATEGORY_CODE);
+		CGroup firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, true);
+		CGroup secondGroupInUnit = createGroup(SECOND_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, true);
+		CGroup thirdGroupInUnit = createGroup(THIRD_GROUP_IN_UNIT_CODE, SECOND_CATEGORY_CODE, false);
 
-		CGroup firstGroupNotInUnit = createGroup(FIRST_GROUP_NOT_IN_UNIT_CODE, null);
-		CGroup secondGroupNotInUnit = createGroup(SECOND_GROUP_NOT_IN_UNIT_CODE, SECOND_CATEGORY_CODE);
+		CGroup firstGroupNotInUnit = createGroup(FIRST_GROUP_NOT_IN_UNIT_CODE, null, false);
+		CGroup secondGroupNotInUnit = createGroup(SECOND_GROUP_NOT_IN_UNIT_CODE, SECOND_CATEGORY_CODE, false);
 
 		//units
 		CUnit defaultUnit = createUnit(DEFAULT_UNIT_CODE);
@@ -386,13 +386,15 @@ public class CDataGenerator
 	 *
 	 * @param code the code
 	 * @param category the category
+	 * @param flagSystem the flag system
 	 * @return the c group
 	 */
-	public CGroup createGroup (String code, String category)
+	public CGroup createGroup (String code, String category, Boolean flagSystem)
 	{
 		CGroup group = new CGroup();
 		group.setCode(code);
 		group.setCategory(category);
+		group.setFlagSystem(flagSystem);
 
 		return group;
 	}

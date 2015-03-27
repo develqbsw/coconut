@@ -3,6 +3,7 @@ package sk.qbsw.core.security.test.dao;
 import static org.junit.Assert.assertNotNull;
 
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 import org.joda.time.DateTime;
 import org.junit.Assert;
@@ -12,13 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
 import sk.qbsw.core.security.test.util.CDataGenerator;
 
 /**
- * Checks authentication params jpa dao.
+ * Checks blocked login jpa dao.
  *
  * @autor Tomas Lauro
  * 
@@ -43,11 +45,15 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 
 	/**
 	 * Test find one by login and ip positive.
+	 *
+	 * @throws NonUniqueResultException the non unique result exception
+	 * @throws NoResultException the no result exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testFindOneByLoginAndIpPositive ()
+	public void testFindOneByLoginAndIpPositive () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
 
@@ -60,11 +66,15 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 
 	/**
 	 * Test find one by login and ip positive without ip.
+	 *
+	 * @throws NonUniqueResultException the non unique result exception
+	 * @throws NoResultException the no result exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testFindOneByLoginAndIpPositiveWithoutIp ()
+	public void testFindOneByLoginAndIpPositiveWithoutIp () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
 
@@ -77,11 +87,15 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 
 	/**
 	 * Test find one by login and ip negative no login.
+	 *
+	 * @throws NonUniqueResultException the non unique result exception
+	 * @throws NoResultException the no result exception
+	 * @throws CSecurityException the c security exception
 	 */
-	@Test (expected = CSystemException.class)
+	@Test (expected = CSecurityException.class)
 	@Transactional
 	@Rollback (true)
-	public void testFindOneByLoginAndIpNegativeNoLogin ()
+	public void testFindOneByLoginAndIpNegativeNoLogin () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
 
@@ -90,11 +104,15 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 
 	/**
 	 * Test find one by login and ip negative no result.
+	 *
+	 * @throws NonUniqueResultException the non unique result exception
+	 * @throws NoResultException the no result exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = NoResultException.class)
 	@Transactional
 	@Rollback (true)
-	public void testFindOneByLoginAndIpNegativeNoResult ()
+	public void testFindOneByLoginAndIpNegativeNoResult () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
 

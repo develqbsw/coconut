@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
@@ -26,11 +27,11 @@ public interface IBlockedLoginDao extends Serializable, IEntityDao<Long, CBlocke
 	 * @param ip the ip (optional)
 	 * @return the authentication black list record
 	 * 
-	 * @throws CSystemException throws if the login is null
+	 * @throws CSecurityException throws if the login is null
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
-	CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSystemException, NonUniqueResultException, NoResultException;
+	CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSecurityException, NonUniqueResultException, NoResultException;
 
 	/**
 	 * Count currently blocked by login and ip.

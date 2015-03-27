@@ -17,7 +17,6 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 public interface IEntityDao<PK, T extends IEntity<PK>> extends IDao, ICrudDao<PK, T>
 {
-
 	/**
 	 * Finds and returns all entities.
 	 *
