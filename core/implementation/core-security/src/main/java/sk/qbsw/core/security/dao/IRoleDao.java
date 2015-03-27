@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -24,13 +25,15 @@ import sk.qbsw.core.security.model.domain.CUser;
  */
 public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 {
+	
 	/**
 	 * Find all by user.
 	 *
 	 * @param user the user (mandatory)
 	 * @return the list
+	 * @throws CSecurityException throws if the user is null
 	 */
-	List<CRole> findByUser (CUser user);
+	List<CRole> findByUser (CUser user) throws CSecurityException;
 
 	/**
 	 * Find by code.
@@ -47,9 +50,9 @@ public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
 	 *
 	 * @param code the code (mandatory)
 	 * @return the role
-	 * 
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
+	 * @throws CSecurityException The code is null
 	 */
-	CRole findOneByCode (String code) throws NonUniqueResultException, NoResultException;
+	CRole findOneByCode (String code) throws NonUniqueResultException, NoResultException, CSecurityException;
 }

@@ -10,6 +10,8 @@ import javax.persistence.NonUniqueResultException;
 
 import org.springframework.stereotype.Repository;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.model.domain.CRole;
@@ -49,8 +51,13 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 	 * @see sk.qbsw.core.security.dao.IRoleDao#findByUser(sk.qbsw.core.security.model.domain.CUser)
 	 */
 	@Override
-	public List<CRole> findByUser (CUser user)
+	public List<CRole> findByUser (CUser user) throws CSecurityException
 	{
+		if (user == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+
 		QCRole qRole = QCRole.cRole;
 		QCGroup qGroup = QCGroup.cGroup;
 		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
@@ -79,8 +86,13 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 	 * @see sk.qbsw.core.security.dao.IRoleDao#findOneByCode(java.lang.String)
 	 */
 	@Override
-	public CRole findOneByCode (String code) throws NonUniqueResultException, NoResultException
+	public CRole findOneByCode (String code) throws NonUniqueResultException, NoResultException, CSecurityException
 	{
+		if (code == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+
 		QCRole qRole = QCRole.cRole;
 
 		//create query

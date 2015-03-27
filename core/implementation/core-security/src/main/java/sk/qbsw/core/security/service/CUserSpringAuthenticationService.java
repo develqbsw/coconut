@@ -10,7 +10,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUserDao;
@@ -32,8 +33,10 @@ import sk.qbsw.core.security.model.session.CLoggedUser;
  * Class for authentication using Spring and Hibernate with QBSW model.
  *
  * @author Dalibor Rak
- * @version 1.0
- * @since 1.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.0
+ * @since 1.0.0
  */
 @Service (value = "userAuthenticationService")
 public class CUserSpringAuthenticationService extends AService implements UserDetailsService
@@ -59,7 +62,15 @@ public class CUserSpringAuthenticationService extends AService implements UserDe
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
 	{
 		CUser user = userDao.findOneByLogin(username);
-		return buildUserFromEntity(user);
+
+		try
+		{
+			return buildUserFromEntity(user);
+		}
+		catch (CSecurityException ex)
+		{
+			throw new UsernameNotFoundException("The user entity is corrupted", ex);
+		}
 	}
 
 	/**
@@ -67,8 +78,9 @@ public class CUserSpringAuthenticationService extends AService implements UserDe
 	 *
 	 * @param entity the entity
 	 * @return the user
+	 * @throws CSecurityException throws if the entity is null
 	 */
-	private User buildUserFromEntity (CUser entity)
+	private User buildUserFromEntity (CUser entity) throws CSecurityException
 	{
 		String username = entity.getLogin();
 		String password = entity.getPassword();
@@ -79,7 +91,7 @@ public class CUserSpringAuthenticationService extends AService implements UserDe
 
 		for (CRole role : roleDao.findByUser(entity))
 		{
-			authorities.add(new GrantedAuthorityImpl(role.getCode()));
+			authorities.add(new SimpleGrantedAuthority(role.getCode()));
 		}
 
 		// validity of organization

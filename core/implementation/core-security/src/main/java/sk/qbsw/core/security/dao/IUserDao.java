@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
-import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -66,9 +66,9 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @param pinCode
 	 * @return the users
 	 * 
-	 * @throws CBusinessException if the input pinCode is null
+	 * @throws CSecurityException if the input pinCode is null
 	 */
-	List<CUser> findByPinCode (String pinCode) throws CBusinessException;
+	List<CUser> findByPinCode (String pinCode) throws CSecurityException;
 
 	/**
 	 * Count all users.

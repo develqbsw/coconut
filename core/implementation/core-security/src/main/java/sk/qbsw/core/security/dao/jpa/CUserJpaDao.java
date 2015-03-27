@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.stereotype.Repository;
 
-import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -180,11 +181,11 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByPinCode(java.lang.String)
 	 */
 	@Override
-	public List<CUser> findByPinCode (String pinCode) throws CBusinessException
+	public List<CUser> findByPinCode (String pinCode) throws CSecurityException
 	{
 		if (pinCode == null)
 		{
-			throw new CBusinessException("The pin code cannot be null");
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
 		QCUser qUser = QCUser.cUser;
