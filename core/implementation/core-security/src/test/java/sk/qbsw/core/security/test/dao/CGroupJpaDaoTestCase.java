@@ -50,7 +50,9 @@ public class CGroupJpaDaoTestCase extends ADatabaseTestCase
 	public void testInitialization ()
 	{
 		super.testInitialization();
-		assertNotNull("Could not find blocked login dao", groupDao);
+		assertNotNull("Could not find group dao", groupDao);
+		assertNotNull("Could not find unit dao", unitDao);
+		assertNotNull("Could not find user dao", userDao);
 	}
 
 	/**

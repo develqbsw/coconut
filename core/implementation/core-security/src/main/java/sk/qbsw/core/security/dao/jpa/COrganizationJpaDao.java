@@ -12,6 +12,7 @@ import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.QCOrganization;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
@@ -45,13 +46,23 @@ public class COrganizationJpaDao extends AEntityJpaDao<Long, COrganization> impl
 	{
 		QCOrganization qOrganization = QCOrganization.cOrganization;
 
+		BooleanBuilder builder = new BooleanBuilder();
+		if (name != null)
+		{
+			builder.and(qOrganization.name.eq(name));
+		}
+		else
+		{
+			builder.and(qOrganization.name.isNull());
+		}
+
 		//create query
 		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(qOrganization).where(qOrganization.name.eq(name)).list(qOrganization);
+		return query.from(qOrganization).where(builder).list(qOrganization);
 	}
 
 	/**
-	 * Get all organizations order by name.
+	 * Get all organizations ordered by name.
 	 *
 	 * @return the list of organizations
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()

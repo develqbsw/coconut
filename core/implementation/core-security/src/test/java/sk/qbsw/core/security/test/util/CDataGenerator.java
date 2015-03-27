@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.test.util;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IGroupDao;
+import sk.qbsw.core.security.dao.ILicenseDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUnitDao;
@@ -18,10 +21,13 @@ import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
 import sk.qbsw.core.security.model.domain.CGroup;
+import sk.qbsw.core.security.model.domain.CLicense;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.jmx.CLicensingRules;
+import sk.qbsw.core.security.test.util.domain.CLicenseFree;
 
 /**
  * Generate data in DB for tests.
@@ -56,6 +62,10 @@ public class CDataGenerator
 	/** The authentication params dao. */
 	@Autowired
 	private IAuthenticationParamsDao authenticationParamsDao;
+
+	/** The license dao. */
+	@Autowired
+	private ILicenseDao licenseDao;
 
 	/** The Constant ORGANIZATION_CODE. */
 	public static final String ORGANIZATION_CODE = "unit_test_organization";
@@ -138,6 +148,12 @@ public class CDataGenerator
 	/** The Constant TEST_IP_TWO. */
 	public static final String TEST_IP_TWO = "192.168.0.2";
 
+	/** The Constant LICENSE_KEY_ONE. */
+	public static final String LICENSE_KEY_ONE = "unit_test_license_key_one";
+
+	/** The Constant LICENSE_KEY_TWO. */
+	public static final String LICENSE_KEY_TWO = "unit_test_license_key_two";
+
 	/**
 	 * Generate data for database tests.
 	 */
@@ -185,6 +201,10 @@ public class CDataGenerator
 		CUser userEnabledInDisabledOrganization = createUser(USER_ENABLED_IN_DISABLED_ORGANIZATION);
 		CUser userDisabledInDisabledOrganization = createUser(USER_DISABLED_IN_DISABLED_ORGANIZATION, false);
 		CUser userDisabledInEnabledOrganization = createUser(USER_DISABLED_IN_ENABLED_ORGANIZATION, false);
+
+		//license
+		CLicense<CLicensingRules> licenseOne = createLicense(LICENSE_KEY_ONE, true, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
+		CLicense<CLicensingRules> licenseTwo = createLicense(LICENSE_KEY_TWO, false, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
 
 		/** Create connections. */
 		//unit -> organization
@@ -275,6 +295,10 @@ public class CDataGenerator
 		authenticationParamDisabledInDisabledOrganization.setUser(userDisabledInDisabledOrganization);
 		authenticationParamDisabledInEnabledOrganization.setUser(userDisabledInEnabledOrganization);
 
+		//license -> organization
+		licenseOne.setOrganization(organization);
+		licenseTwo.setOrganization(organization2);
+
 		//save data to DB
 		orgDao.update(organization);
 		orgDao.update(organization2);
@@ -304,6 +328,8 @@ public class CDataGenerator
 		authenticationParamsDao.update(authenticationParamEnabledInDisabledOrganization);
 		authenticationParamsDao.update(authenticationParamDisabledInDisabledOrganization);
 		authenticationParamsDao.update(authenticationParamDisabledInEnabledOrganization);
+		licenseDao.update(licenseOne);
+		licenseDao.update(licenseTwo);
 		//flush data to hibernate cache
 		orgDao.flush();
 		roleDao.flush();
@@ -311,6 +337,7 @@ public class CDataGenerator
 		unitDao.flush();
 		authenticationParamsDao.flush();
 		userDao.flush();
+		licenseDao.flush();
 		//clear cache
 		orgDao.clear();
 		roleDao.clear();
@@ -318,6 +345,7 @@ public class CDataGenerator
 		unitDao.clear();
 		authenticationParamsDao.clear();
 		userDao.clear();
+		licenseDao.clear();
 	}
 
 	/**
@@ -521,5 +549,29 @@ public class CDataGenerator
 		blockedLogin.setBlockedTo(blockedTo);
 
 		return blockedLogin;
+	}
+
+	/**
+	 * Creates the license.
+	 *
+	 * @param key the key
+	 * @param flagPayed the flag payed
+	 * @param price the price
+	 * @param taxId the tax id
+	 * @param validFrom the valid from
+	 * @param validTo the valid to
+	 * @return the c license
+	 */
+	public CLicense<CLicensingRules> createLicense (String key, Boolean flagPayed, BigDecimal price, String taxId, Calendar validFrom, Calendar validTo)
+	{
+		CLicense<CLicensingRules> license = new CLicenseFree();
+		license.setKey(key);
+		license.setFlagPayed(flagPayed);
+		license.setPrice(price);
+		license.setTaxId(taxId);
+		license.setValidFrom(validFrom);
+		license.setValidTo(validTo);
+
+		return license;
 	}
 }
