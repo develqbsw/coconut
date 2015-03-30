@@ -46,8 +46,9 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the user
 	 * 
 	 * @throws NoResultException there is no result
+	 * @throws CSecurityException the login is null
 	 */
-	CUser findOneByLogin (String login) throws NoResultException;
+	CUser findOneByLogin (String login) throws NoResultException, CSecurityException;
 
 	/**
 	 * Find by login and unit with fetched organization, groups, units, roles and default groups - if there is no result throws an exception.
@@ -57,8 +58,9 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @return the user
 	 * 
 	 * @throws NoResultException there is no result
+	 * @throws CSecurityException the login is null
 	 */
-	CUser findOneByLoginAndUnit (String login, CUnit unit) throws NoResultException;
+	CUser findOneByLoginAndUnit (String login, CUnit unit) throws NoResultException, CSecurityException;
 
 	/**
 	 * Find by PIN.
@@ -84,8 +86,10 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @param group the group
 	 * @param orderModel the order model
 	 * @return the list
+	 * 
+	 * @throws CSecurityException the unit is null
 	 */
-	List<CUser> findByUnitAndGroup (CUnit unit, CGroup group, COrderModel<? extends IOrderByAttributeSpecifier> orderModel);
+	List<CUser> findByUnitAndGroup (CUnit unit, CGroup group, COrderModel<? extends IOrderByAttributeSpecifier> orderModel) throws CSecurityException;
 
 	/**
 	 * Find by user detail filter with fetched organization, groups, units and default groups.

@@ -3,6 +3,8 @@ package sk.qbsw.core.security.service;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.model.domain.CAddress;
@@ -18,7 +20,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.12.2
+ * @version 1.13.0
  * @since 1.0.0
  */
 public interface IUserService extends Serializable
@@ -68,8 +70,11 @@ public interface IUserService extends Serializable
 	 *
 	 * @param login the login
 	 * @return the user by login or null if user doesn't exist
+	 * 
+	 * @throws NoResultException there is no result
+	 * @throws CSecurityException the login is null
 	 */
-	public CUser getUserByLogin (String login);
+	public CUser getUserByLogin (String login) throws NoResultException, CSecurityException;
 
 	/**
 	 * Gets the user for modification.
@@ -240,7 +245,7 @@ public interface IUserService extends Serializable
 	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
 	 */
 	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException, CBusinessException;
-	
+
 	/**
 	 * Checks if the user with defined login exist.
 	 *

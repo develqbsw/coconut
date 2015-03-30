@@ -13,7 +13,6 @@ import sk.qbsw.core.security.service.ocsp.COCSPCertValidatorBCImpl;
 import sk.qbsw.core.security.service.ocsp.COCSPValidationResult;
 import sk.qbsw.core.security.service.ocsp.EOCSPResponseStatus;
 import sk.qbsw.core.security.service.ocsp.IOCSPCertValidator;
-
 import sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
 
 /**

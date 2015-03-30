@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CLogged;
@@ -41,7 +42,7 @@ public class CAuthenticationUserDetailsService implements AuthenticationUserDeta
 		CUser user = null;
 		try {
 			user = userDao.findOneByLogin(login);
-		} catch (NonUniqueResultException | NoResultException e) {
+		} catch (NonUniqueResultException | NoResultException | CSecurityException e) {
 			//ignore it
 		}
 

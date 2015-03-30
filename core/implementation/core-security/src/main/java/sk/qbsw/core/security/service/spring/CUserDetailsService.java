@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.spring.CUserDetails;
@@ -20,7 +21,7 @@ import sk.qbsw.core.security.service.IUserService;
  * Service for getting user details
  * 
  * @author Dalibor Rak
- * @version 1.6.0
+ * @version 1.13.0
  * @since 1.6.0
  */
 public class CUserDetailsService extends AService implements UserDetailsService
@@ -44,12 +45,12 @@ public class CUserDetailsService extends AService implements UserDetailsService
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
 	{
 		CUser user;
-		
+
 		try
 		{
 			user = userService.getUserByLogin(username);
 		}
-		catch (NoResultException nre)
+		catch (NoResultException | CSecurityException ex)
 		{
 			user = null;
 		}

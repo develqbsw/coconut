@@ -35,7 +35,7 @@ import sk.qbsw.core.security.service.signature.IPasswordDigester;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.12.2
+ * @version 1.13.0
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
@@ -195,7 +195,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		{
 			user = userDao.findOneByLoginAndUnit(login, unit);
 		}
-		catch (NoResultException nre)
+		catch (NoResultException | CSecurityException e)
 		{
 			user = null;
 		}

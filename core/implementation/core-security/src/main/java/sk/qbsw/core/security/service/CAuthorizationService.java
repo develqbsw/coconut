@@ -134,8 +134,11 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	 * @param login the login
 	 * @param unit the unit
 	 * @return the user by login and unit
+	 * 
+	 * @throws NoResultException there is no result
+	 * @throws CSecurityException the login is null
 	 */
-	private CUser getUserByLoginAndUnit (String login, CUnit unit)
+	private CUser getUserByLoginAndUnit (String login, CUnit unit) throws NoResultException, CSecurityException
 	{
 		if (unit == null)
 		{

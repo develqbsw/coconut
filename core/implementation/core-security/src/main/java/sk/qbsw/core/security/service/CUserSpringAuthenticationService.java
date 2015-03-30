@@ -7,6 +7,8 @@ package sk.qbsw.core.security.service;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,13 +63,13 @@ public class CUserSpringAuthenticationService extends AService implements UserDe
 	@Transactional (readOnly = true)
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
 	{
-		CUser user = userDao.findOneByLogin(username);
-
 		try
 		{
+			CUser user = userDao.findOneByLogin(username);
+
 			return buildUserFromEntity(user);
 		}
-		catch (CSecurityException ex)
+		catch (NoResultException | CSecurityException ex)
 		{
 			throw new UsernameNotFoundException("The user entity is corrupted", ex);
 		}

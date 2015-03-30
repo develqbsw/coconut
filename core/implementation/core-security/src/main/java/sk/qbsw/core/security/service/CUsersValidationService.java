@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IGroupDao;
@@ -91,7 +92,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		{
 			userOld = userDao.findOneByLogin(user.getLogin());
 		}
-		catch (NoResultException nre)
+		catch (NoResultException | CSecurityException ex)
 		{
 			userOld = null;
 		}
@@ -172,7 +173,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		{
 			userOld = userDao.findOneByLogin(login);
 		}
-		catch (NoResultException nre)
+		catch (NoResultException | CSecurityException ex)
 		{
 			userOld = null;
 		}

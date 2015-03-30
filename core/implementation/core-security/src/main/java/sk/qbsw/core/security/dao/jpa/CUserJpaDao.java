@@ -114,7 +114,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
 	 */
 	@Override
-	public CUser findOneByLogin (String login) throws NoResultException
+	public CUser findOneByLogin (String login) throws NoResultException, CSecurityException
 	{
 		return findUserByLoginAndUnit(login, null);
 	}
@@ -123,7 +123,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLoginAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
-	public CUser findOneByLoginAndUnit (String login, CUnit unit) throws NoResultException
+	public CUser findOneByLoginAndUnit (String login, CUnit unit) throws NoResultException, CSecurityException
 	{
 		return findUserByLoginAndUnit(login, unit);
 	}
@@ -134,11 +134,17 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @param login the login
 	 * @param unit the unit
 	 * @return the user
-	 * 
 	 * @throws NoResultException there is no result
+	 * @throws CSecurityException throws if the login is null
 	 */
-	private CUser findUserByLoginAndUnit (String login, CUnit unit) throws NoResultException
+	private CUser findUserByLoginAndUnit (String login, CUnit unit) throws NoResultException, CSecurityException
 	{
+		//login is mandatory
+		if (login == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+
 		//get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -147,17 +153,17 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			QCUser qUser = QCUser.cUser;
 			QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 			QCGroup qGroup = QCGroup.cGroup;
+			QCUnit qUnit = QCUnit.cUnit;
 
 			//create where condition
 			BooleanBuilder builder = new BooleanBuilder();
-			if (login != null)
-			{
-				builder.and(qUser.login.eq(login));
-			}
+			//the login cannot be null
+			builder.and(qUser.login.eq(login));
+
 			// 1. The unit has been set
 			if (unit != null)
 			{
-				builder.and(qUserUnitGroup.unit.eq(unit));
+				builder.and(qUnit.eq(unit));
 			}
 			// 2. The unit has not been set
 			else
@@ -167,7 +173,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			}
 
 			//create query
-			JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUser).leftJoin(qUser.organization).fetch().leftJoin(qUser.defaultUnit).fetch().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().leftJoin(qUserUnitGroup.unit).fetch().leftJoin(qGroup.roles).fetch().where(builder);
+			JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUser).leftJoin(qUser.organization).fetch().leftJoin(qUser.defaultUnit).fetch().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().leftJoin(qUserUnitGroup.unit, qUnit).fetch().leftJoin(qGroup.roles).fetch().where(builder);
 			return CJpaDaoHelper.handleUniqueResultQuery(query, qUser);
 		}
 		finally
@@ -223,8 +229,13 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByUnitAndGroup(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CGroup, sk.qbsw.core.security.model.order.COrderModel)
 	 */
 	@Override
-	public List<CUser> findByUnitAndGroup (CUnit unit, CGroup group, COrderModel<? extends IOrderByAttributeSpecifier> orderModel)
+	public List<CUser> findByUnitAndGroup (CUnit unit, CGroup group, COrderModel<? extends IOrderByAttributeSpecifier> orderModel) throws CSecurityException
 	{
+		if (unit == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+		
 		QCUser qUser = QCUser.cUser;
 		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 		QCGroup qGroup = QCGroup.cGroup;
@@ -232,11 +243,8 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 
 		//create where condition
 		BooleanBuilder builder = new BooleanBuilder();
-		if (unit != null)
-		{
-			builder.and(qUnit.eq(unit));
-		}
-
+		builder.and(qUnit.eq(unit));
+		
 		if (group != null)
 		{
 			builder.and(qGroup.eq(group));
@@ -254,12 +262,10 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		return query.list(qUser);
 	}
 
-	/**
-	 * Find by given parameters with fetched, groups, units and default groups.
-	 *
-	 * @param filter the filter
-	 * @return the list
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.dao.IUserDao#findByUserDetailFilter(sk.qbsw.core.security.model.filter.CUserDetailFilter, sk.qbsw.core.security.model.order.COrderModel)
 	 */
+	@Override
 	public List<CUser> findByUserDetailFilter (CUserDetailFilter filter, COrderModel<? extends IOrderByAttributeSpecifier> orderModel)
 	{
 		//get hibernate session from entity manager to set filter

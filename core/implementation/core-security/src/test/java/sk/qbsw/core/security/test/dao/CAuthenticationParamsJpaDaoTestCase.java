@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
@@ -48,11 +49,14 @@ public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
 
 	/**
 	 * Test find one by user id positive.
+	 *
+	 * @throws NoResultException the no result exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testFindOneByUserIdPositive ()
+	public void testFindOneByUserIdPositive () throws NoResultException, CSecurityException
 	{
 		initTest();
 
@@ -81,11 +85,14 @@ public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
 	/**
 	 * Test find one valid by user id positive.
 	 * TODO: maybe create a negative scenario
+	 *
+	 * @throws NoResultException the no result exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional
 	@Rollback (true)
-	public void testFindOneValidByUserIdPositive ()
+	public void testFindOneValidByUserIdPositive () throws NoResultException, CSecurityException
 	{
 		initTest();
 
