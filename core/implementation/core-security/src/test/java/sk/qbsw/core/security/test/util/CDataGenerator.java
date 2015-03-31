@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.ILicenseDao;
@@ -17,6 +20,7 @@ import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
+import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.core.security.model.domain.CAddress;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
@@ -26,7 +30,9 @@ import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
 import sk.qbsw.core.security.model.jmx.CLicensingRules;
+import sk.qbsw.core.security.service.IUserService;
 import sk.qbsw.core.security.test.util.domain.CLicenseFree;
 
 /**
@@ -66,6 +72,14 @@ public class CDataGenerator
 	/** The license dao. */
 	@Autowired
 	private ILicenseDao licenseDao;
+
+	/** The user service. */
+	@Autowired
+	private IUserService userService;
+
+	/** The cross user unit group dao. */
+	@Autowired
+	private IXUserUnitGroupDao crossUserUnitGroupDao;
 
 	/** The Constant ORGANIZATION_CODE. */
 	public static final String ORGANIZATION_CODE = "unit_test_organization";
@@ -241,33 +255,7 @@ public class CDataGenerator
 
 		firstRole.setGroups(groupsForFirstRole);
 		secondRole.setGroups(groupsForSecondRole);
-
-		//group <-> user
-		//       |
-		//	unit
-		userWithDefaultUnit.addGroupUnit(firstGroupInUnit, defaultUnit);
-		userWithDefaultUnit.addGroupUnit(firstGroupInUnit, secondUnit);
-		userWithDefaultUnit.addGroupUnit(secondGroupInUnit, defaultUnit);
-		userWithDefaultUnit.addGroupUnit(secondGroupInUnit, firstUnit);
-		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, firstUnit);
-		userWithDefaultUnit.addGroupUnit(thirdGroupInUnit, secondUnit);
-
-		userWithoutDefaultUnit.addGroup(firstGroupNotInUnit);
-		userWithoutDefaultUnit.addGroup(secondGroupNotInUnit);
-		userWithoutDefaultUnit.addGroupUnit(secondGroupInUnit, defaultUnit);
-		userWithoutDefaultUnit.addGroupUnit(secondGroupInUnit, firstUnit);
-
-		userWithDefaultUnitNoGroup.addGroupUnit(thirdGroupInUnit, firstUnit);
-		userWithDefaultUnitNoGroup.addGroupUnit(thirdGroupInUnit, secondUnit);
-
-		userWithoutDefaultUnitNoGroup.addGroupUnit(secondGroupInUnit, defaultUnit);
-		userWithoutDefaultUnitNoGroup.addGroupUnit(secondGroupInUnit, firstUnit);
-
-		userEnabledInDisabledOrganization.addGroup(firstGroupNotInUnit);
-
-		userDisabledInDisabledOrganization.addGroup(secondGroupNotInUnit);
-
-		userDisabledInEnabledOrganization.addGroup(secondGroupNotInUnit);
+		
 		//user -> organization
 		userWithDefaultUnit.setOrganization(organization);
 		userWithoutDefaultUnit.setOrganization(organization);
@@ -306,21 +294,21 @@ public class CDataGenerator
 		orgDao.update(organizationDisabled);
 		roleDao.update(firstRole);
 		roleDao.update(secondRole);
-		groupDao.update(firstGroupInUnit);
-		groupDao.update(secondGroupInUnit);
-		groupDao.update(thirdGroupInUnit);
-		groupDao.update(firstGroupNotInUnit);
-		groupDao.update(secondGroupNotInUnit);
-		unitDao.update(defaultUnit);
-		unitDao.update(firstUnit);
-		unitDao.update(secondUnit);
-		userDao.update(userWithDefaultUnit);
-		userDao.update(userWithoutDefaultUnit);
-		userDao.update(userWithDefaultUnitNoGroup);
-		userDao.update(userWithoutDefaultUnitNoGroup);
-		userDao.update(userEnabledInDisabledOrganization);
-		userDao.update(userDisabledInDisabledOrganization);
-		userDao.update(userDisabledInEnabledOrganization);
+		firstGroupInUnit = groupDao.update(firstGroupInUnit);
+		secondGroupInUnit = groupDao.update(secondGroupInUnit);
+		thirdGroupInUnit = groupDao.update(thirdGroupInUnit);
+		firstGroupNotInUnit = groupDao.update(firstGroupNotInUnit);
+		secondGroupNotInUnit = groupDao.update(secondGroupNotInUnit);
+		defaultUnit = unitDao.update(defaultUnit);
+		firstUnit = unitDao.update(firstUnit);
+		secondUnit = unitDao.update(secondUnit);
+		userWithDefaultUnit = userDao.update(userWithDefaultUnit);
+		userWithoutDefaultUnit = userDao.update(userWithoutDefaultUnit);
+		userWithDefaultUnitNoGroup = userDao.update(userWithDefaultUnitNoGroup);
+		userWithoutDefaultUnitNoGroup = userDao.update(userWithoutDefaultUnitNoGroup);
+		userEnabledInDisabledOrganization = userDao.update(userEnabledInDisabledOrganization);
+		userDisabledInDisabledOrganization = userDao.update(userDisabledInDisabledOrganization);
+		userDisabledInEnabledOrganization = userDao.update(userDisabledInEnabledOrganization);
 		authenticationParamsDao.update(authenticationParamWithDefaulUnit);
 		authenticationParamsDao.update(authenticationParamWithoutDefaulUnit);
 		authenticationParamsDao.update(authenticationParamWithDefaulUnitNoGroup);
@@ -330,6 +318,42 @@ public class CDataGenerator
 		authenticationParamsDao.update(authenticationParamDisabledInEnabledOrganization);
 		licenseDao.update(licenseOne);
 		licenseDao.update(licenseTwo);
+
+		//group <-> user
+		//       |
+		//	unit
+		try
+		{
+			setUserToGroup(userWithDefaultUnit, firstGroupInUnit, defaultUnit);
+			setUserToGroup(userWithDefaultUnit, firstGroupInUnit, secondUnit);
+			setUserToGroup(userWithDefaultUnit, secondGroupInUnit, defaultUnit);
+			setUserToGroup(userWithDefaultUnit, secondGroupInUnit, firstUnit);
+			setUserToGroup(userWithDefaultUnit, thirdGroupInUnit, firstUnit);
+			setUserToGroup(userWithDefaultUnit, thirdGroupInUnit, secondUnit);
+
+			setUserToGroup(userWithoutDefaultUnit, firstGroupNotInUnit, null);
+			setUserToGroup(userWithoutDefaultUnit, secondGroupNotInUnit, null);
+			setUserToGroup(userWithoutDefaultUnit, secondGroupInUnit, defaultUnit);
+			setUserToGroup(userWithoutDefaultUnit, secondGroupInUnit, firstUnit);
+
+			setUserToGroup(userWithDefaultUnitNoGroup, thirdGroupInUnit, firstUnit);
+			setUserToGroup(userWithDefaultUnitNoGroup, thirdGroupInUnit, secondUnit);
+
+			setUserToGroup(userWithoutDefaultUnitNoGroup, secondGroupInUnit, defaultUnit);
+			setUserToGroup(userWithoutDefaultUnitNoGroup, secondGroupInUnit, firstUnit);
+
+			setUserToGroup(userEnabledInDisabledOrganization, firstGroupNotInUnit, null);
+
+			setUserToGroup(userDisabledInDisabledOrganization, secondGroupNotInUnit, null);
+
+			setUserToGroup(userDisabledInEnabledOrganization, secondGroupNotInUnit, null);
+
+		}
+		catch (CBusinessException e)
+		{
+			throw new CSystemException("The data generator failed", e);
+		}
+
 		//flush data to hibernate cache
 		orgDao.flush();
 		roleDao.flush();
@@ -346,6 +370,24 @@ public class CDataGenerator
 		authenticationParamsDao.clear();
 		userDao.clear();
 		licenseDao.clear();
+	}
+
+	/**
+	 * Sets the user to group.
+	 *
+	 * @param user the user
+	 * @param group the group
+	 * @param unit the unit
+	 * @throws CSecurityException the c security exception
+	 * @throws CBusinessException the c business exception
+	 */
+	private void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException, CBusinessException
+	{
+		CXUserUnitGroup userUnitGroupRecord = new CXUserUnitGroup();
+		userUnitGroupRecord.setUser(user);
+		userUnitGroupRecord.setGroup(group);
+		userUnitGroupRecord.setUnit(unit);
+		crossUserUnitGroupDao.update(userUnitGroupRecord);
 	}
 
 	/**

@@ -516,7 +516,7 @@ public class CUserService extends AService implements IUserService
 
 			//if added group is excluded by group which user already have then group cannot be added
 			Set<CGroup> excludedGroups = userUnitGroup.getGroup().getExcludedGroups();
-			if (excludedGroups.contains(persistedGroup))
+			if (excludedGroups != null && excludedGroups.contains(persistedGroup))
 			{
 				isAddedGroupExcluded = Boolean.TRUE;
 				break;
