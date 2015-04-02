@@ -206,9 +206,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		}
 		else
 		{
-			EAuthenticationType authenticationType = user.authenticationType();
 			CAuthenticationParams userAuthParams = null;
-
 			try
 			{
 				userAuthParams = authenticationParamsDao.findOneValidByUserId(user.getId());
@@ -219,6 +217,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 				throw new CInvalidAuthenticationException("Authentication params are invalid");
 			}
 
+			EAuthenticationType authenticationType = userAuthParams.getAuthenticationType();
 			switch (authenticationType)
 			{
 				case BY_PASSWORD_DIGEST:

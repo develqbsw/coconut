@@ -505,11 +505,11 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return autentication type
 	 */
-	public EAuthenticationType authenticationType ()
+	public EAuthenticationType getAuthenticationType ()
 	{
 		if (getAuthenticationParams() != null)
 		{
-			return getAuthenticationParams().getPasswordDigest() != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
+			return getAuthenticationParams().getAuthenticationType();
 		}
 		else
 		{
