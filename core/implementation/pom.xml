@@ -23,6 +23,7 @@
 		<module>core-api</module>
 		<module>core-communication</module>
 		<module>core-logging</module>
+		<module>core-monitoring</module>
     	<module>core-reporting</module>
 	</modules>
 	<repositories>
