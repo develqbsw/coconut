@@ -168,59 +168,59 @@ CREATE SEQUENCE sec.t_x_group_user_pk_id_seq START WITH 1 INCREMENT BY 1;
 --constraints--
 --primary key
 ALTER TABLE sec.t_address
-    ADD CONSTRAINT t_address_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_address PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_auth_params
-    ADD CONSTRAINT t_auth_params_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_auth_params PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_blocked_login
-    ADD CONSTRAINT t_blocked_login_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_blocked_login PRIMARY KEY (pk_id);
     
 ALTER TABLE sec.t_group
-    ADD CONSTRAINT t_group_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_group PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_licence
-    ADD CONSTRAINT t_licence_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_licence PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_organization
-    ADD CONSTRAINT t_organization_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_organization PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_role
-    ADD CONSTRAINT t_role_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_role PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_unit
-    ADD CONSTRAINT t_unit_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_unit PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_user
-    ADD CONSTRAINT t_user_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_user PRIMARY KEY (pk_id);
 
 ALTER TABLE sec.t_x_group_group
-    ADD CONSTRAINT t_x_group_group_pkey PRIMARY KEY (fk_group, fk_excluded_group);
+    ADD CONSTRAINT pk_x_group_group PRIMARY KEY (fk_group, fk_excluded_group);
 
 ALTER TABLE sec.t_x_group_role
-    ADD CONSTRAINT t_x_group_role_pkey PRIMARY KEY (fk_role, fk_group);
+    ADD CONSTRAINT pk_x_group_role PRIMARY KEY (fk_role, fk_group);
 
 ALTER TABLE sec.t_x_group_unit
-    ADD CONSTRAINT t_x_group_unit_pkey PRIMARY KEY (fk_unit, fk_group);
+    ADD CONSTRAINT pk_x_group_unit PRIMARY KEY (fk_unit, fk_group);
 
 ALTER TABLE sec.t_x_group_user
-    ADD CONSTRAINT t_x_group_user_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_x_group_user PRIMARY KEY (pk_id);
     
 --unique
 ALTER TABLE sec.t_blocked_login
-    ADD CONSTRAINT t_blocked_login_key UNIQUE (c_login, c_ip);
+    ADD CONSTRAINT uk_blocked_login UNIQUE (c_login, c_ip);
     
 ALTER TABLE sec.t_group
-    ADD CONSTRAINT t_group_code_key UNIQUE (code);
+    ADD CONSTRAINT uk_group_code UNIQUE (code);
 
 ALTER TABLE sec.t_role
-    ADD CONSTRAINT t_role_code_key UNIQUE (code);
+    ADD CONSTRAINT uk_role_code UNIQUE (code);
 
 ALTER TABLE sec.t_unit
-    ADD CONSTRAINT t_unit_name_key UNIQUE (name);
+    ADD CONSTRAINT uk_unit_name UNIQUE (name);
 
 ALTER TABLE sec.t_user
-    ADD CONSTRAINT t_user_login_key UNIQUE (login);
+    ADD CONSTRAINT uk_user_login UNIQUE (login);
 
 --foreign key
 ALTER TABLE sec.t_organization

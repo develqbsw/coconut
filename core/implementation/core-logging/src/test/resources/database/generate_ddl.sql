@@ -34,7 +34,7 @@ CREATE SEQUENCE log.t_installation_log_pk_id_seq START WITH 1 INCREMENT BY 1;
 --constraints--
 --primary key
 ALTER TABLE log.t_audit_log
-    ADD CONSTRAINT t_audit_log_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_audit_log PRIMARY KEY (pk_id);
 
 ALTER TABLE log.t_installation_log
-    ADD CONSTRAINT t_installation_log_pkey PRIMARY KEY (pk_id);
+    ADD CONSTRAINT pk_installation_log PRIMARY KEY (pk_id);
