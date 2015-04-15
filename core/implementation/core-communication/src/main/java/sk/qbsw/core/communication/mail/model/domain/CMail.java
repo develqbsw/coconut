@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -35,6 +37,7 @@ import sk.qbsw.core.persistence.model.domain.AEntity;
 @Entity
 @Table(name = "t_mail", schema = "apsys")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("Mail")
 public class CMail extends AEntity<Long> implements Serializable
 {

@@ -59,33 +59,37 @@ public class CUser extends ASecurityChangeEntity<Long>
 	private Long id;
 
 	/** The flag enabled. */
-	@Column (name = "flag_enabled")
+	@Column (name = "c_flag_enabled")
 	private Boolean flagEnabled;
 
 	/** The login. */
 	@Expose
-	@Column (name = "login", unique = true)
+	@Column (name = "c_login", unique = true)
 	private String login;
 
 	/** The name. */
 	@Expose
+	@Column (name = "c_name")
 	private String name;
 
 	/** The surname. */
 	@Expose
+	@Column (name = "c_surname")
 	private String surname;
 
 	/** The email. */
 	@Expose
+	@Column (name = "c_email")
 	private String email;
 
 	/** The degree. */
 	@Expose
+	@Column (name = "c_degree")
 	private String degree;
 
 	/** The working position. */
 	@Expose
-	@Column (name = "working_position")
+	@Column (name = "c_working_position")
 	private String workingPosition;
 	
 	// bi-directional many-to-one association to COrganization
@@ -112,7 +116,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	private List<CAuthenticationParams> authenticationParams;
 
 	/** The user type. */
-	@Column (name = "type", nullable = true)
+	@Column (name = "c_type", nullable = true)
 	@Enumerated (EnumType.STRING)
 	private EUserType userType = EUserType.PERSON;
 

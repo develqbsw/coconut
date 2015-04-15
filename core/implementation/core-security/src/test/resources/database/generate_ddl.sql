@@ -22,15 +22,15 @@ CREATE SEQUENCE sec.t_address_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_auth_params (
     pk_id bigint NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
-    password character varying(255),
-    passworddigest character varying(255),
-    pin character varying(255),
-    fk_user bigint NOT NULL,
-    fk_changed_by bigint,
+    c_password character varying(255),
+    c_password_digest character varying(255),
+    c_pin character varying(255),
     c_operation_id bigint,
     c_password_type character varying(255) NOT NULL,
     c_valid_from timestamp without time zone,
-    c_valid_to timestamp without time zone
+    c_valid_to timestamp without time zone,
+    fk_user bigint NOT NULL,
+    fk_changed_by bigint
 );
 
 CREATE SEQUENCE sec.t_auth_params_pk_id_seq START WITH 1 INCREMENT BY 1;
@@ -38,13 +38,13 @@ CREATE SEQUENCE sec.t_auth_params_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_blocked_login (
     pk_id bigint NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
-    fk_changed_by bigint,
     c_operation_id bigint,
     c_login character varying(255) NOT NULL,
     c_ip character varying(255),
     c_blocked_from timestamp without time zone,
     c_blocked_to timestamp without time zone,
-    c_invalid_login_count integer NOT NULL
+    c_invalid_login_count integer NOT NULL,
+    fk_changed_by bigint
 );
 
 CREATE SEQUENCE sec.t_blocked_login_pk_id_seq START WITH 1 INCREMENT BY 1;
@@ -52,45 +52,45 @@ CREATE SEQUENCE sec.t_blocked_login_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_group (
     pk_id bigint NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
-    category character varying(255),
-    code character varying(255),
-    flag_system boolean,
-    fk_changed_by bigint,
-    c_operation_id bigint
+    c_category character varying(255),
+    c_code character varying(255),
+    c_flag_system boolean,
+    c_operation_id bigint,
+    fk_changed_by bigint
 );
 
 CREATE SEQUENCE sec.t_group_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_licence (
-    type character varying(31) NOT NULL,
     pk_id bigint NOT NULL,
+    d_type character varying(31) NOT NULL,
+    c_operation_id bigint,
     c_change_date_time timestamp without time zone NOT NULL,
-    flag_payed boolean,
+    c_flag_payed boolean,
     c_key character varying(255),
-    price numeric(19,2),
-    tax_id character varying(255),
-    valid_from timestamp without time zone,
-    valid_to timestamp without time zone,
+    c_price numeric(19,2),
+    c_tax_id character varying(255),
+    c_valid_from timestamp without time zone,
+    c_valid_to timestamp without time zone,
     fk_organization bigint,
-    fk_changed_by bigint,
-    c_operation_id bigint
+    fk_changed_by bigint
 );
 
 CREATE SEQUENCE sec.t_licence_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_organization (
-    type character varying(31) NOT NULL,
     pk_id bigint NOT NULL,
+	d_type character varying(31) NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
-    code character varying(255),
-    email character varying(255),
-    flag_enabled boolean,
-    name character varying(255),
-    phone character varying(255),
+    c_code character varying(255),
+    c_email character varying(255),
+    c_flag_enabled boolean,
+    c_name character varying(255),
+    c_phone character varying(255),
+    c_fax character varying(255),
+    c_operation_id bigint,
     fk_address bigint,
-    fax character varying(255),
-    fk_changed_by bigint,
-    c_operation_id bigint
+    fk_changed_by bigint
 );
 
 CREATE SEQUENCE sec.t_organization_pk_id_seq START WITH 1 INCREMENT BY 1;
@@ -98,22 +98,22 @@ CREATE SEQUENCE sec.t_organization_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_role (
     pk_id bigint NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
-    code character varying(255),
+    c_code character varying(255),
+    c_operation_id bigint,
     fk_changed_by bigint,
-    c_operation_id bigint
 );
 
 CREATE SEQUENCE sec.t_role_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_unit (
     pk_id bigint NOT NULL,
+    d_type character varying(31) NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
-    name character varying(255) NOT NULL,
+    c_name character varying(255) NOT NULL,
+    c_operation_id bigint,
     fk_address bigint,
     fk_organization bigint NOT NULL,
-    fk_changed_by bigint,
-    c_operation_id bigint,
-    dtype character varying(31) NOT NULL
+    fk_changed_by bigint
 );
 
 CREATE SEQUENCE sec.t_unit_pk_id_seq START WITH 1 INCREMENT BY 1;
@@ -121,19 +121,19 @@ CREATE SEQUENCE sec.t_unit_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_user (
     pk_id bigint NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
-    email character varying(255),
-    flag_enabled boolean,
-    login character varying(255),
-    name character varying(255),
-    surname character varying(255),
-    type character varying(255),
+    c_email character varying(255),
+    c_flag_enabled boolean,
+    c_login character varying(255),
+    c_name character varying(255),
+    c_surname character varying(255),
+    c_type character varying(255),
+    c_degree character varying(255),
+    c_working_position character varying(255),
+    c_operation_id bigint,
     fk_address bigint,
     fk_default_unit bigint,
     fk_organization bigint NOT NULL,
-    degree character varying(255),
-    working_position character varying(255),
-    fk_changed_by bigint,
-    c_operation_id bigint
+    fk_changed_by bigint
 );
 
 CREATE SEQUENCE sec.t_user_pk_id_seq START WITH 1 INCREMENT BY 1;
@@ -211,16 +211,16 @@ ALTER TABLE sec.t_blocked_login
     ADD CONSTRAINT uk_blocked_login UNIQUE (c_login, c_ip);
     
 ALTER TABLE sec.t_group
-    ADD CONSTRAINT uk_group_code UNIQUE (code);
+    ADD CONSTRAINT uk_group_code UNIQUE (c_code);
 
 ALTER TABLE sec.t_role
-    ADD CONSTRAINT uk_role_code UNIQUE (code);
+    ADD CONSTRAINT uk_role_code UNIQUE (c_code);
 
 ALTER TABLE sec.t_unit
-    ADD CONSTRAINT uk_unit_name UNIQUE (name);
+    ADD CONSTRAINT uk_unit_name UNIQUE (c_name);
 
 ALTER TABLE sec.t_user
-    ADD CONSTRAINT uk_user_login UNIQUE (login);
+    ADD CONSTRAINT uk_user_login UNIQUE (c_login);
 
 --foreign key
 ALTER TABLE sec.t_organization

@@ -45,12 +45,15 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	private Long id;
 
 	/** The password. */
+	@Column (name = "c_password")
 	private String password;
 
 	/** Password digest. */
+	@Column (name = "c_password_digest")
 	private String passwordDigest;
 
 	/** The PIN code. */
+	@Column (name = "c_pin")
 	private String pin;
 
 	/** The user. */

@@ -44,15 +44,15 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	private Long id;
 
 	/** The code. */
-	@Column (name = "code", unique = true)
+	@Column (name = "c_code", unique = true)
 	private String code;
 
 	/** The flag system. */
-	@Column (name = "flag_system")
+	@Column (name = "c_flag_system")
 	private Boolean flagSystem;
 
 	/** The category. */
-	@Column (name = "category", nullable = true)
+	@Column (name = "c_category", nullable = true)
 	private String category;
 
 	//bi-directional many-to-many association to CRole

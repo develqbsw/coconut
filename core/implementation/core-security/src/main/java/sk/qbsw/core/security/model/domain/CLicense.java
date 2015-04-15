@@ -34,7 +34,7 @@ import javax.persistence.Transient;
 @Entity
 @Table (name = "t_licence", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
@@ -44,11 +44,11 @@ public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
 	public final static Integer UNLIMITED = -1;
 
 	/** The flag payed. */
-	@Column (name = "flag_payed")
+	@Column (name = "c_flag_payed")
 	private Boolean flagPayed;
 
 	/** The tax id of a subject which has payed for a license. */
-	@Column (name = "tax_id")
+	@Column (name = "c_tax_id")
 	private String taxId;
 
 	/** The key to activate a licence. */
@@ -69,18 +69,19 @@ public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
 	private Long id;
 
 	/** The price. */
+	@Column (name = "c_price")
 	private BigDecimal price;
 
 	/** Type of the licence. */
-	@Column (insertable = false, updatable = false)
+	@Column (name = "d_type", insertable = false, updatable = false)
 	private String type;
 
 	/** The valid to. */
-	@Column (name = "valid_from")
+	@Column (name = "c_valid_from")
 	private Calendar validFrom;
 
 	/** The valid to. */
-	@Column (name = "valid_to")
+	@Column (name = "c_valid_to")
 	private Calendar validTo;
 
 	/**

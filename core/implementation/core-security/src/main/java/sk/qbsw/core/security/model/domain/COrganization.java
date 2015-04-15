@@ -46,7 +46,7 @@ import com.google.gson.annotations.Expose;
 @Table (name = "t_organization", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("organization")
-@DiscriminatorColumn (name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 public class COrganization extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
@@ -62,16 +62,19 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	private Long id;
 
 	/** The email. */
+	@Column (name = "c_email")
 	private String email;
 
 	/** Phone. */
+	@Column (name = "c_phone")
 	private String phone;
 
 	/** The fax. */
+	@Column (name = "c_fax")
 	private String fax;
 
 	/** The flag enabled. */
-	@Column (name = "flag_enabled")
+	@Column (name = "c_flag_enabled")
 	private Boolean flagEnabled;
 
 	//bi-directional many-to-one association to CLicence
@@ -83,12 +86,13 @@ public class COrganization extends ASecurityChangeEntity<Long>
 
 	/** The name. */
 	@Expose
-	@Column (name = "name")
+	@Column (name = "c_name")
 	private String name;
 
 	/**
 	 * shopper code
 	 */
+	@Column (name = "c_code")
 	private String code;
 
 	//bi-directional many-to-one association to CUser

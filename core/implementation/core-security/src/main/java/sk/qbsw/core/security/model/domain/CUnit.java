@@ -38,7 +38,7 @@ import com.google.gson.annotations.Expose;
 @Table (name = "t_unit", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("unit")
-@DiscriminatorColumn (name = "dtype", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 public class CUnit extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
@@ -52,7 +52,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	private Long id;
 
 	/** The name. */
-	@Column (name = "name", unique = true, nullable = false)
+	@Column (name = "c_name", unique = true, nullable = false)
 	private String name;
 
 	/** The organization. */

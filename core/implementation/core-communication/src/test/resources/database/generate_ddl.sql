@@ -19,8 +19,8 @@ CREATE TABLE apsys.t_attachment (
 CREATE SEQUENCE apsys.t_attachment_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE apsys.t_mail (
-    dtype character varying(31) NOT NULL,
-    pk_id bigint NOT NULL,
+	pk_id bigint NOT NULL,
+    d_type character varying(31) NOT NULL,
     c_attempt_counter integer NOT NULL,
     c_bcc character varying(255),
     c_body character varying(1024),
