@@ -120,6 +120,7 @@ CREATE SEQUENCE sec.t_unit_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_user (
     pk_id bigint NOT NULL,
+	d_type character varying(31) NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
     c_email character varying(255),
     c_flag_enabled boolean,
