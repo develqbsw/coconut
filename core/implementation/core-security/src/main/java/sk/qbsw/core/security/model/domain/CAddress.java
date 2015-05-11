@@ -1,10 +1,15 @@
 package sk.qbsw.core.security.model.domain;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,6 +24,9 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_address", schema = "sec")
+@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue ("address")
+@DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 public class CAddress extends ASecurityChangeEntity<Long>
 {
 
