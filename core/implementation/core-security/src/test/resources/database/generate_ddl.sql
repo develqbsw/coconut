@@ -6,7 +6,8 @@ CREATE SCHEMA sec;
 
 --create tables and sequence
 CREATE TABLE sec.t_address (
-    pk_id bigint NOT NULL,
+    pk_id bigint NOT NULL
+	d_type character varying(31) NOT NULL,
     c_change_date_time timestamp without time zone NOT NULL,
     c_city character varying(255) NOT NULL,
     c_house_number character varying(255),
