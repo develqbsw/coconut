@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>droid-core-logging</artifactId>
+	<packaging>aar</packaging>
+	<organization>
+		<name>QBSW a.s.</name>
+		<url>http://www.qbsw.sk</url>
+	</organization>
+	<name>Android core logging</name>
+	<parent>
+		<groupId>sk.qbsw</groupId>
+		<artifactId>droid-core</artifactId>
+		<version>1.13.0-SNAPSHOT</version>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>android</groupId>
+			<artifactId>android</artifactId>
+			<scope>provided</scope>
+			<version>${android-platform.version}</version>
+		</dependency>
+	</dependencies>
+	<build>	    
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<optimize>true</optimize>
+					<debug>true</debug>
+				</configuration>
+			</plugin>	
+			
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>${android-maven-plugin.version}</version>
+				<configuration>
+					<sdk>
+						<platform>${android-target-sdk.version}</platform>
+					</sdk>
+					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<assetsDirectory>${project.basedir}/assets</assetsDirectory>
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+					<nativeLibrariesDirectory>${project.basedir}/libs</nativeLibrariesDirectory>
+					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<attachNativeArtifacts>true</attachNativeArtifacts>
+					<attachJar>true</attachJar>
+					<attachSources>true</attachSources>
+				</configuration>			
+				<extensions>true</extensions>
+			</plugin>		
+		</plugins>
+	</build>
+</project>
