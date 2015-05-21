@@ -9,8 +9,8 @@ import sk.qbsw.core.security.model.domain.CUser;
 
 /**
  * @author podmajersky
- * @version 1.3.0
- * @since 1.0.0
+ * @version 1.13.0
+ * @since 1.13.0
  *
  */
 public interface ISecurityTokenService {

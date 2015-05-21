@@ -3,8 +3,6 @@
  */
 package sk.qbsw.core.security.oauth.service.impl;
 
-import javax.annotation.PostConstruct;
-
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ESystemParameters.ECoreSystemParameter;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.configuration.model.domain.CSystemParameter;
-import sk.qbsw.core.configuration.service.ISystemParameterService;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
@@ -26,6 +20,7 @@ import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.core.security.model.domain.EPasswordType;
 import sk.qbsw.core.security.oauth.dao.ISecurityTokenDao;
 import sk.qbsw.core.security.oauth.model.CSecurityToken;
+import sk.qbsw.core.security.oauth.service.ICheckTokenStrategy;
 import sk.qbsw.core.security.oauth.service.IIdGeneratorService;
 import sk.qbsw.core.security.oauth.service.ISecurityTokenService;
 import sk.qbsw.core.security.service.IAuthenticationModifierService;
@@ -35,8 +30,8 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  * The Class CSecurityTokenService.
  *
  * @author podmajersky
- * @version 1.0.0
- * @since 1.0.0
+ * @version 1.13.0
+ * @since 1.13.0
  */
 @Service
 public class CSecurityTokenService implements ISecurityTokenService {
@@ -69,35 +64,11 @@ public class CSecurityTokenService implements ISecurityTokenService {
 	@Qualifier("cLoginService")
 	@Autowired
 	private IAuthenticationModifierService authenticationModifierService;
-
-	/** The system parameter service. */
+	
+	/** The check token strategy. */
 	@Autowired
-	private ISystemParameterService systemParameterService;
-
-	/** The expire limit. */
-	private Integer expireLimit;
-
-	/** ak je < 1, tak ignorovat, beriem to tak, ze je to vypnute lebo to niekto chcel vypnut. */
-	private Integer changeLimit;
-
-	/**
-	 * Inits the properties.
-	 */
-	@PostConstruct
-	public void initProperties() {
-		CSystemParameter expireLimitParam = systemParameterService.findByName(ECoreSystemParameter.TOKEN_EXPIRE_LIMIT.getParameterName());
-		if (expireLimitParam == null || expireLimitParam.getIntegerValue() == null || expireLimitParam.getIntegerValue() < 1) {
-			throw new IllegalStateException("nie je nastaveny casovy limit expiracie tokenu");
-		}
-		expireLimit = expireLimitParam.getIntegerValue();
-
-		CSystemParameter changeLimitParam = systemParameterService.findByName(ECoreSystemParameter.TOKEN_CHANGE_LIMIT.getParameterName());
-		if (changeLimitParam == null || changeLimitParam.getIntegerValue() == null) {
-			throw new IllegalStateException("nie je nastaveny casovy limit pre nutnost zmeny tokenu");
-		}
-		changeLimit = changeLimitParam.getIntegerValue();
-	}
-
+	private ICheckTokenStrategy checkTokenStrategy;
+	
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.oauth.service.ISecurityTokenService#findByUser(long)
 	 */
@@ -159,18 +130,19 @@ public class CSecurityTokenService implements ISecurityTokenService {
 		if (secToken == null) {
 			return null;
 		}
-		DateTime expDate = secToken.getLastAccessDate().plusMinutes(expireLimit);
-		if (expDate.isBeforeNow()) {
+
+		if (checkTokenStrategy.hasExpired(secToken)) {
+			log.warn("token expiroval");
 			removeTokenForUser(secToken.getUser().getId());
-			log.warn("token expiroval v case {}", expDate);
 			return null;
 		}
-		DateTime changeDate = secToken.getCreateDate().plusHours(changeLimit);
-		if (changeLimit > 0 && changeDate.isBeforeNow()) {
+
+		if (checkTokenStrategy.hasToBeChangedDueInactivity(secToken)) {
+			log.warn("token je nutne zmenit");
 			removeTokenForUser(secToken.getUser().getId());
-			log.warn("token bolo nutne zmenit do casu {}", expDate);
 			return null;
 		}
+
 		// kvoli zmene last access date
 		secToken.updateLastAccess();
 		tokenDao.update(secToken);
