@@ -1,30 +1,47 @@
 package sk.qbsw.core.security.oauth.service;
 
-import sk.qbsw.core.security.oauth.model.CSecurityToken;
+import sk.qbsw.core.security.oauth.model.domain.CAuthenticationToken;
+import sk.qbsw.core.security.oauth.model.domain.CMasterToken;
 
 /**
  * The check token expiration's limits strategy.
  *
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.13.1
  * @since 1.13.0
  */
 public interface ICheckTokenStrategy
 {
 	/**
-	 * Checks for expired.
+	 * Checks if is master token expired.
 	 *
 	 * @param token the token
-	 * @return true, if successful
+	 * @return true, if is master token expired
 	 */
-	boolean hasExpired (CSecurityToken token);
+	boolean isMasterTokenExpired (CMasterToken token);
 
 	/**
-	 * Checks for to be changed due inactivity - in a shorter time period.
+	 * Checks if is master token inactivity reached.
 	 *
 	 * @param token the token
-	 * @return true, if successful
+	 * @return true, if is master token inactivity reached
 	 */
-	boolean hasToBeChangedDueInactivity (CSecurityToken token);
+	boolean isMasterTokenInactivityReached (CMasterToken token);
+
+	/**
+	 * Checks if is authentication token expired.
+	 *
+	 * @param token the token
+	 * @return true, if is authentication token expired
+	 */
+	boolean isAuthenticationTokenExpired (CAuthenticationToken token);
+
+	/**
+	 * Checks if is authentication token inactivity reached.
+	 *
+	 * @param token the token
+	 * @return true, if is authentication token inactivity reached
+	 */
+	boolean isAuthenticationTokenInactivityReached (CAuthenticationToken token);
 }

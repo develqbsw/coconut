@@ -189,7 +189,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
-		
+
 		<!-- Query dsl -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
@@ -237,8 +237,12 @@
 					<include>**/*.*</include>
 				</includes>
 			</resource>
-
 		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

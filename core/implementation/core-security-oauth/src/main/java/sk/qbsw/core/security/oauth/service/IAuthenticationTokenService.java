@@ -1,30 +1,47 @@
 package sk.qbsw.core.security.oauth.service;
 
+import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.security.model.domain.CUser;
+
 /**
  * The authentication token service.
  *
  * @author Tomas Lauro
  * 
- * @version 1.13.0
- * @since 1.13.0
+ * @version 1.13.1
+ * @since 1.13.1
  */
 public interface IAuthenticationTokenService
 {
 	/**
-	 * Generate token.
-	 *
-	 * @return the string
-	 */
-	String generateToken ();
-
-	/**
-	 * Checks if is generation request valid.
+	 * Generate authentication token and save it or replace it, if the token exists.
 	 *
 	 * @param userId the user id
 	 * @param masterToken the master token
 	 * @param deviceId the device id
 	 * @param ip the ip
-	 * @return true, if is generation request valid
+	 * @return the generated authentication token
+	 * @throws CBusinessException the c business exception
 	 */
-	boolean isGenerationRequestValid (Long userId, String masterToken, String deviceId, String ip);
+	String generateAuthenticationToken (Long userId, String masterToken, String deviceId, String ip) throws CBusinessException;
+
+	/**
+	 * Revoke authentication token.
+	 *
+	 * @param userId the user id
+	 * @param authenticationToken the authentication token
+	 * @throws CBusinessException the c business exception
+	 */
+	void revokeAuthenticationToken (Long userId, String authenticationToken) throws CBusinessException;
+
+	/**
+	 * Gets the user by authentication token.
+	 *
+	 * @param authenticationToken the authentication token
+	 * @param deviceId the device id
+	 * @param ip the ip
+	 * @return the user by authentication token
+	 * @throws CBusinessException the c business exception
+	 */
+	CUser getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip) throws CBusinessException;
 }
