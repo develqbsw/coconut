@@ -6,7 +6,7 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.querydsl.AEntityQueryDslDao;
 import sk.qbsw.core.security.oauth.dao.IAuthenticationTokenDao;
-import sk.qbsw.core.security.oauth.model.QCAuthenticationToken;
+import sk.qbsw.core.security.oauth.model.domain.QCAuthenticationToken;
 import sk.qbsw.core.security.oauth.model.domain.CAuthenticationToken;
 
 import com.mysema.query.BooleanBuilder;
