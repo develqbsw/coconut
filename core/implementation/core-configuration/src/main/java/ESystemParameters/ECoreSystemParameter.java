@@ -4,14 +4,23 @@ package ESystemParameters;
  * The Enum ECoreSystemParameter.
  * 
  * @author Dalibor Rak
- * @version 1.13.0
+ * 
+ * @version 1.13.1
  * @since 1.13.0
  */
-public enum ECoreSystemParameter {
-
+public enum ECoreSystemParameter
+{
 	/** The token expire limit. */
-	TOKEN_EXPIRE_LIMIT("TOKEN_EXPIRE_LIMIT"),
-	TOKEN_CHANGE_LIMIT("TOKEN_CHANGE_LIMIT");
+	MASTER_TOKEN_EXPIRE_LIMIT ("MASTER_TOKEN_EXPIRE_LIMIT"),
+
+	/** The master token change limit. */
+	MASTER_TOKEN_CHANGE_LIMIT ("MASTER_TOKEN_CHANGE_LIMIT"),
+
+	/** The authentication token expire limit. */
+	AUTHENTICATION_TOKEN_EXPIRE_LIMIT ("AUTHENTICATION_TOKEN_EXPIRE_LIMIT"),
+
+	/** The authentication token change limit. */
+	AUTHENTICATION_TOKEN_CHANGE_LIMIT ("AUTHENTICATION_TOKEN_CHANGE_LIMIT");
 
 	/** The parameter name. */
 	private String parameterName;
@@ -21,7 +30,8 @@ public enum ECoreSystemParameter {
 	 *
 	 * @param parameterName the parameter name
 	 */
-	private ECoreSystemParameter(String parameterName) {
+	private ECoreSystemParameter (String parameterName)
+	{
 		this.parameterName = parameterName;
 	}
 
@@ -30,7 +40,8 @@ public enum ECoreSystemParameter {
 	 *
 	 * @return the parameter name
 	 */
-	public String getParameterName() {
+	public String getParameterName ()
+	{
 		return parameterName;
 	}
 

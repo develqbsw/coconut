@@ -22,19 +22,22 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.web.filter.GenericFilterBean;
 
 import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.oauth.service.ISecurityTokenService;
+import sk.qbsw.core.security.oauth.model.jmx.IOauthConfigurator;
+import sk.qbsw.core.security.oauth.service.IAuthenticationTokenService;
+import sk.qbsw.core.security.oauth.service.IMasterTokenService;
 import sk.qbsw.core.security.web.CHttpClientAddressRetriever;
 import sk.qbsw.core.security.web.filter.CMDCFilter;
 
 /**
- * The Class AAuthenticationTokenProcessingFilter.
+ * The abstract authentication token processing filter.
  *
- * @author podmajersky
- * @version 1.3.0
- * @since 1.1.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.1
+ * @since 1.13.0
  */
-public abstract class AAuthenticationTokenProcessingFilter extends GenericFilterBean {
-
+public abstract class AAuthenticationTokenProcessingFilter extends GenericFilterBean
+{
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AAuthenticationTokenProcessingFilter.class);
 
@@ -45,9 +48,17 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 	@Autowired
 	private AuthenticationEntryPoint p;
 
-	/** The token service. */
+	/** The master token service. */
 	@Autowired
-	private ISecurityTokenService tokenService;
+	private IMasterTokenService masterTokenService;
+
+	/** The authentication token service. */
+	@Autowired
+	private IAuthenticationTokenService authenticationTokenService;
+
+	/** The oauth configurator. */
+	@Autowired
+	private IOauthConfigurator oauthConfigurator;
 
 	/** The ip retriever. */
 	private CHttpClientAddressRetriever ipRetriever = new CHttpClientAddressRetriever();
@@ -57,7 +68,8 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 	 *
 	 * @param authManager the auth manager
 	 */
-	public AAuthenticationTokenProcessingFilter(AuthenticationManager authManager) {
+	public AAuthenticationTokenProcessingFilter (AuthenticationManager authManager)
+	{
 		this.authenticationManager = authManager;
 	}
 
@@ -65,42 +77,73 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
 	 */
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter (ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
+	{
 		CMDCFilter.fillMDC(null);
 
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
 		final String token = getToken(httpRequest);
 		final String ip = ipRetriever.getClientIpAddress(httpRequest);
+		final String deviceId = getDeviceId(httpRequest);
 
 		LOGGER.info("Received request with token {} from ip: {}.", token, ip);
 
-		if (!StringUtils.isEmpty(token)) {
-			CUser user = this.tokenService.findByToken(token, ip);
-			if (user != null) {
-				final String login = user.getLogin();
+		if (StringUtils.isEmpty(token) == false && StringUtils.isEmpty(deviceId) == false)
+		{
+			CUser user = getUser(token, deviceId, ip);
 
-				if (!StringUtils.isEmpty(login)) {
+			final PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(user, token, null);
+			authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
 
-					LOGGER.info("Combination was resolved to user login {}. Going to preauthenticate user.", login);
+			try
+			{
+				final Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
 
-					final PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(login, "N/A", null);
+				CMDCFilter.fillMDC(authentication);
 
-					authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-
-					try {
-						final Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-
-						CMDCFilter.fillMDC(authentication);
-
-						SecurityContextHolder.getContext().setAuthentication(authentication);
-					} catch (final AuthenticationException e) {
-						LOGGER.error("AuthenticationException was thrown when processing request with security token " + token + ". Combination was resolved to user login " + login + ".", e);
-					}
-				}
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+			catch (final AuthenticationException e)
+			{
+				LOGGER.error("AuthenticationException was thrown when processing request with security token " + token + ". Combination was resolved to user.", e);
 			}
 		}
 
 		chain.doFilter(request, response);
+	}
+
+	/**
+	 * Choose token.
+	 *
+	 * @param token the token
+	 * @param deviceId the ip
+	 * @return the string
+	 */
+	private CUser getUser (String token, String deviceId, String ip)
+	{
+		try
+		{
+			CUser userBymasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip);
+			CUser userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip);
+
+			if (userBymasterToken != null)
+			{
+				return userBymasterToken;
+			}
+			else if (userByAuthenticationToken != null)
+			{
+				return userByAuthenticationToken;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		catch (Throwable e)
+		{
+			LOGGER.error("The exception in token processing filter", e);
+			return null;
+		}
 	}
 
 	/**
@@ -109,5 +152,13 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 	 * @param request the request
 	 * @return the token
 	 */
-	public abstract String getToken(HttpServletRequest request);
+	public abstract String getToken (HttpServletRequest request);
+
+	/**
+	 * Gets the device id.
+	 *
+	 * @param request the request
+	 * @return the device id
+	 */
+	public abstract String getDeviceId (HttpServletRequest request);
 }
