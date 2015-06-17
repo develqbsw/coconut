@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>droid-top</artifactId>
-		<version>1.13.1</version>
+		<version>1.13.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
