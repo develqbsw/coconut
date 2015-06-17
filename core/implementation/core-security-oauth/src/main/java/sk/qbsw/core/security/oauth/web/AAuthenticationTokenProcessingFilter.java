@@ -29,9 +29,8 @@ import sk.qbsw.core.security.web.CHttpClientAddressRetriever;
 import sk.qbsw.core.security.web.filter.CMDCFilter;
 
 /**
- * The Class AAuthenticationTokenProcessingFilter.
+ * The abstract authentication token processing filter.
  *
- * @author podmajersky
  * @author Tomas Lauro
  * 
  * @version 1.13.1
@@ -39,7 +38,6 @@ import sk.qbsw.core.security.web.filter.CMDCFilter;
  */
 public abstract class AAuthenticationTokenProcessingFilter extends GenericFilterBean
 {
-
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AAuthenticationTokenProcessingFilter.class);
 
@@ -90,35 +88,24 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 
 		LOGGER.info("Received request with token {} from ip: {}.", token, ip);
 
-		if (!StringUtils.isEmpty(token))
+		if (StringUtils.isEmpty(token) == false && StringUtils.isEmpty(deviceId) == false)
 		{
 			CUser user = getUser(token, deviceId, ip);
-			if (user != null)
+
+			final PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(user, token, null);
+			authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+
+			try
 			{
-				final String login = user.getLogin();
+				final Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
 
-				if (!StringUtils.isEmpty(login))
-				{
+				CMDCFilter.fillMDC(authentication);
 
-					LOGGER.info("Combination was resolved to user login {}. Going to preauthenticate user.", login);
-
-					final PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(login, "N/A", null);
-
-					authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-
-					try
-					{
-						final Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-
-						CMDCFilter.fillMDC(authentication);
-
-						SecurityContextHolder.getContext().setAuthentication(authentication);
-					}
-					catch (final AuthenticationException e)
-					{
-						LOGGER.error("AuthenticationException was thrown when processing request with security token " + token + ". Combination was resolved to user login " + login + ".", e);
-					}
-				}
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+			catch (final AuthenticationException e)
+			{
+				LOGGER.error("AuthenticationException was thrown when processing request with security token " + token + ". Combination was resolved to user.", e);
 			}
 		}
 
