@@ -36,7 +36,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @since 1.13.0
  */
 @Entity
-@Table (name = "t_oauth_token ", schema = "sec")
+@Table (name = "t_oauth_token", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("security_token")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
@@ -47,8 +47,8 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 
 	/** The id. */
 	@Id
-	@SequenceGenerator (name = "S_TOKEN_PKID_GENERATOR", sequenceName = "SEC.S_OAUTH_TOKEN")
-	@GeneratedValue (strategy = GenerationType.AUTO, generator = "S_TOKEN_PKID_GENERATOR")
+	@SequenceGenerator (name = "s_token_pkid_generator", sequenceName = "sec.s_oauth_token")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "s_token_pkid_generator")
 	@Column (name = "pk_id")
 	private Long id;
 

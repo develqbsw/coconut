@@ -18,7 +18,7 @@ import sk.qbsw.core.security.service.ILicenseGenerator;
  * @version 1.13.1
  * @since 1.13.1
  */
-@Component
+@Component ("oauthLicenseGenerator")
 public class CLicenseGenerator implements ILicenseGenerator
 {
 	/** The Constant serialVersionUID. */

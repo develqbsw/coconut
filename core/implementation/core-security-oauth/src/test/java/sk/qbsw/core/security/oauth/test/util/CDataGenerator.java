@@ -48,7 +48,7 @@ import sk.qbsw.core.security.service.IUserService;
  * @since 1.13.1
  * 
  */
-@Component (value = "dataGenerator")
+@Component (value = "oauthDataGenerator")
 public class CDataGenerator
 {
 	/** The role dao. */
