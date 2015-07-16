@@ -248,4 +248,15 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	{
 		this.validTo = validTo;
 	}
+	
+	/**
+	 * Authentication by digest.
+	 * 
+	 * @return autentication type
+	 */
+	public EAuthenticationType getAuthenticationType ()
+	{
+			return getPasswordDigest() != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
+	}
+
 }

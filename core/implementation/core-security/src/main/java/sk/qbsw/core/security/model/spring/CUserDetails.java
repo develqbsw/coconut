@@ -14,7 +14,9 @@ import sk.qbsw.core.security.model.domain.CUser;
  * User details for spring Security.
  * 
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.1
  * @since 1.6.0
  */
 public class CUserDetails implements UserDetails
@@ -117,7 +119,14 @@ public class CUserDetails implements UserDetails
 	@Override
 	public boolean isEnabled ()
 	{
-		return user.getFlagEnabled();
+		if (user.getFlagEnabled() == null)
+		{
+			return false;
+		}
+		else
+		{
+			return user.getFlagEnabled();
+		}
 	}
 
 	/**

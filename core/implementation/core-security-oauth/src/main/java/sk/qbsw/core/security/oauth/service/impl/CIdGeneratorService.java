@@ -23,17 +23,17 @@ import com.fasterxml.uuid.impl.NameBasedGenerator;
  */
 @Service
 @CLogged
-public class CIdGeneratorService implements IIdGeneratorService {
-
+public class CIdGeneratorService implements IIdGeneratorService
+{
 	/** The log. */
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	/** The ns uuid. */
 	private UUID nsUuid = NameBasedGenerator.NAMESPACE_URL;
-	
+
 	/** The g. */
 	private NameBasedGenerator g;
-	
+
 	/** The mac string. */
 	private String macString;
 
@@ -42,9 +42,11 @@ public class CIdGeneratorService implements IIdGeneratorService {
 	 *
 	 * @throws NoSuchAlgorithmException the no such algorithm exception
 	 */
-	public CIdGeneratorService () throws NoSuchAlgorithmException {
+	public CIdGeneratorService () throws NoSuchAlgorithmException
+	{
 		InetAddress ip;
-		try {
+		try
+		{
 
 			ip = InetAddress.getLocalHost();
 			NetworkInterface network = NetworkInterface.getByInetAddress(ip);
@@ -52,17 +54,21 @@ public class CIdGeneratorService implements IIdGeneratorService {
 			byte[] mac = network.getHardwareAddress();
 
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < mac.length; i++) {
+			for (int i = 0; i < mac.length; i++)
+			{
 				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
 			}
 			macString = sb.toString();
 
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			log.warn("nepodarilo sa ziskat mac adresu pre generovanie id", e);
 		}
-		finally {
-			if (macString == null) {
+		finally
+		{
+			if (macString == null)
+			{
 				macString = String.valueOf(System.nanoTime());
 			}
 		}
@@ -73,7 +79,8 @@ public class CIdGeneratorService implements IIdGeneratorService {
 	 * @see sk.qbsw.core.security.oauth.service.IIdGeneratorService#getGeneratedId(java.lang.String)
 	 */
 	@Override
-	public String getGeneratedId (String s) {
+	public String getGeneratedId (String s)
+	{
 		return generateId(s);
 	}
 
@@ -81,7 +88,8 @@ public class CIdGeneratorService implements IIdGeneratorService {
 	 * @see sk.qbsw.core.security.oauth.service.IIdGeneratorService#getGeneratedId()
 	 */
 	@Override
-	public String getGeneratedId () {
+	public String getGeneratedId ()
+	{
 		return generateId(macString);
 
 	}
@@ -92,7 +100,8 @@ public class CIdGeneratorService implements IIdGeneratorService {
 	 * @param s the s
 	 * @return the string
 	 */
-	private String generateId (String s) {
+	private String generateId (String s)
+	{
 		UUID uuid = g.generate(String.valueOf(System.nanoTime()) + s);
 		String id = uuid.toString().replaceAll("-", "").toUpperCase();
 		log.debug("generated id: " + id);

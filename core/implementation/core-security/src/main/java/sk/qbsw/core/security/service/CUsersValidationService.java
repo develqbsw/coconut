@@ -6,6 +6,7 @@ import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -57,6 +58,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	 * @see sk.qbsw.core.security.service.IUsersValidationService#isOrganizationExists(sk.qbsw.core.security.model.domain.COrganization)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public Boolean isOrganizationExists (COrganization organization)
 	{
 		//checks if there is an organization with id exists
@@ -83,6 +85,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExists(sk.qbsw.core.security.model.domain.CUser)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public Boolean isUserExists (CUser user)
 	{
 		Boolean exists = false;
@@ -108,6 +111,8 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IUsersValidationService#leastOneAdmin(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.COrganization, java.lang.String)
 	 */
+	@Override
+	@Transactional (readOnly = true)
 	public Boolean leastOneAdmin (CUser user, COrganization organization, String group)
 	{
 
@@ -138,6 +143,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	 * @see sk.qbsw.core.security.service.IUsersValidationService#isOrganizationExists(java.lang.String)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public Boolean isOrganizationExists (String name)
 	{
 		if (name != null)
@@ -162,6 +168,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExists(java.lang.String)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public Boolean isUserExists (String login)
 	{
 
@@ -190,6 +197,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExistsPin(sk.qbsw.core.security.model.domain.CUser)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public Boolean isUserExistsPin (CUser userOld)
 	{
 		Boolean exists = false;
@@ -217,6 +225,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	 * @see sk.qbsw.core.security.service.IUsersValidationService#isUserExistsPin(java.lang.String)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public Boolean isUserExistsPin (String pin)
 	{
 		Boolean exists = false;
