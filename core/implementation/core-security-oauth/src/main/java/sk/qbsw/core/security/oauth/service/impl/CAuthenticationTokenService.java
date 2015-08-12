@@ -90,7 +90,7 @@ public class CAuthenticationTokenService extends ATokenService implements IAuthe
 	 * @see sk.qbsw.core.security.oauth.service.IAuthenticationTokenService#getUserByAuthenticationToken(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional
 	public CUser getUserByAuthenticationToken (String token, String deviceId, String ip) throws CBusinessException
 	{
 		CAuthenticationToken persistedToken = authenticationTokenDao.findByTokenAndDeviceId(token, deviceId);
