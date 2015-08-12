@@ -89,7 +89,7 @@ public class CMasterTokenService extends ATokenService implements IMasterTokenSe
 	 * @see sk.qbsw.core.security.oauth.service.IMasterTokenService#getUserByMasterToken(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional
 	public CUser getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException
 	{
 		CMasterToken persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);

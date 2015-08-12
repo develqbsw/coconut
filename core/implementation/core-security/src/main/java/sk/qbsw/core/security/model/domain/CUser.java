@@ -95,7 +95,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	@Expose
 	@Column (name = "working_position")
 	private String workingPosition;
-	
+
 	// bi-directional many-to-one association to COrganization
 	/** The organization. */
 	@ManyToOne (fetch = FetchType.LAZY)
@@ -105,7 +105,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 
 	// bi-directional many-to-many association to cross entity to group and unit
 	/** set of cross entities. */
-	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY)
 	@Filter (name = "userDefaultUnitFilter", condition = "( (fk_unit = (select us.fk_default_unit from sec.t_user us where us.pk_id = fk_user)) or ( (select us.fk_default_unit from sec.t_user us where us.pk_id = fk_user) is null and fk_unit is null) )")
 	private Set<CXUserUnitGroup> xUserUnitGroups;
 
@@ -524,12 +524,14 @@ public class CUser extends ASecurityChangeEntity<Long>
 			throw new CSystemException("The user has not a authentication params");
 		}
 	}
-	
-	public EPasswordType getPasswordType(){
+
+	public EPasswordType getPasswordType ()
+	{
 		if (getAuthenticationParams() != null)
 		{
 			return getAuthenticationParams().getPasswordType();
-		}else
+		}
+		else
 		{
 			throw new CSystemException("The user has not a authentication params");
 		}
