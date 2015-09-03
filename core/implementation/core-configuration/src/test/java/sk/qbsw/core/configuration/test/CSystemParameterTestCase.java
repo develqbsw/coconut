@@ -95,7 +95,7 @@ public class CSystemParameterTestCase
 		systemParameter.setModule(TEST_SYSTEM_PARAMETER_MODULE);
 		systemParameter.setStringValue(TEST_SYSTEM_PARAMETER_VALUE);
 		systemParameter.setEncryptedValue(TEST_SYSTEM_PARAMETER_ENCRYPTED_VALUE);
-		systemParameter.setValidFromDate(DateTime.now());
+		systemParameter.setValidFromDate(DateTime.now().minusDays(10));
 		systemParameter.setValidToDate(DateTime.now().plusDays(10));
 
 		systemParameterDao.update(systemParameter);
