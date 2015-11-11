@@ -7,6 +7,8 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.request.Request;
 
+import sk.qbsw.core.security.model.IAuthenticationToken;
+
 
 /**
  * Basic authenticated web session. Subclasses must provide a method that authenticates the session
@@ -14,12 +16,18 @@ import org.apache.wicket.request.Request;
  * 
  * @author Jonathan Locke
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.4
  * @since 1.6.0
  */
 public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebSession
 {
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** True when the user is signed in */
+	private volatile boolean signedIn;
 
 	/**
 	 * @return Current authenticated web session
@@ -28,9 +36,6 @@ public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebS
 	{
 		return (AAuthenticatedWebSession) Session.get();
 	}
-
-	/** True when the user is signed in */
-	private volatile boolean signedIn;
 
 	/**
 	 * Construct.
@@ -44,25 +49,12 @@ public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebS
 	}
 
 	/**
-	 * Actual authentication check, has to be implemented by subclasses.
-	 * 
-	 * @param username
-	 *            The username
-	 * @param password
-	 *            The password
-	 * @return True if the user was authenticated successfully
-	 */
-	public abstract boolean authenticate (final String username, final String password);
-
-	/**
-	 * Actual authentication check, has to be implemented by subclasses.
+	 * Authentication checks using authentication token.
 	 *
-	 * @param username The username
-	 * @param password The password
-	 * @param unit the unit
-	 * @return True if the user was authenticated successfully
+	 * @param authenticationToken the authentication token
+	 * @return true, if successful
 	 */
-	public abstract boolean authenticate (final String username, final String password, final String unit);
+	public abstract boolean authenticate (final IAuthenticationToken authenticationToken);
 
 	/**
 	 * Call signOut() and remove the logon data from where ever they have been persisted (e.g.
@@ -103,34 +95,14 @@ public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebS
 	}
 
 	/**
-	 * Try to logon the user. It'll call {@link #authenticate(String, String)} to do the real work
-	 * and that is what you need to subclass to provide your own authentication mechanism.
-	 * 
-	 * @param username
-	 * @param password
+	 * Try to logon the user.
+	 *
+	 * @param authenticationToken the authentication token
 	 * @return true, if logon was successful
 	 */
-	public final boolean signIn (final String username, final String password)
+	public final boolean signIn (final IAuthenticationToken authenticationToken)
 	{
-		signedIn = authenticate(username, password);
-		if (signedIn)
-		{
-			bind();
-		}
-		return signedIn;
-	}
-
-	/**
-	 * Try to logon the user. It'll call {@link #authenticate(String, String)} to do the real work
-	 * and that is what you need to subclass to provide your own authentication mechanism.
-	 * 
-	 * @param username
-	 * @param password
-	 * @return true, if logon was successful
-	 */
-	public final boolean signIn (final String username, final String password, final String unit)
-	{
-		signedIn = authenticate(username, password, unit);
+		signedIn = authenticate(authenticationToken);
 		if (signedIn)
 		{
 			bind();

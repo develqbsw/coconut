@@ -16,7 +16,7 @@ import org.springframework.ws.soap.security.callback.AbstractCallbackHandler;
 
 import com.sun.xml.wss.impl.callback.PasswordValidationCallback;
 
-import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthentication;
 
 /**
  * The callback handler for WS authentication.
@@ -114,7 +114,7 @@ public class CWsAuthenticationCallbackHandler extends AbstractCallbackHandler im
 	 */
 	private boolean authenticate (String username, String password)
 	{
-		UsernamePasswordAuthenticationToken authenticationToken = new CUsernamePasswordUnitAuthenticationToken(username, password, null);
+		UsernamePasswordAuthenticationToken authenticationToken = new CUsernamePasswordUnitAuthentication(username, password, null);
 
 		Authentication authentication = authenticationManager.authenticate(authenticationToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -38,7 +38,6 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AAuthenticatedSecurityWebSession.class);
 
-
 	/**
 	 * Instantiates a new a authenticated session.
 	 *

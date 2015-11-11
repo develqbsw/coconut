@@ -17,7 +17,7 @@ import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthentication;
 import sk.qbsw.core.security.service.IAuthenticationService;
 
 /**
@@ -47,9 +47,9 @@ public class CSecurityAuthenticationProvider extends AService implements Authent
 		Authentication retVal = null;
 		try
 		{
-			if (authentication instanceof CUsernamePasswordUnitAuthenticationToken)
+			if (authentication instanceof CUsernamePasswordUnitAuthentication)
 			{
-				retVal = authenticate((CUsernamePasswordUnitAuthenticationToken) authentication);
+				retVal = authenticate((CUsernamePasswordUnitAuthentication) authentication);
 			}
 		}
 		catch (CSecurityException e)
@@ -66,7 +66,7 @@ public class CSecurityAuthenticationProvider extends AService implements Authent
 	@Override
 	public boolean supports (Class<? extends Object> authentication)
 	{
-		return authentication.equals(CUsernamePasswordUnitAuthenticationToken.class);
+		return authentication.equals(CUsernamePasswordUnitAuthentication.class);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class CSecurityAuthenticationProvider extends AService implements Authent
 	 * @return the authentication
 	 * @throws CSecurityException the c security exception
 	 */
-	private Authentication authenticate (@CNotLogged @CNotAuditLogged CUsernamePasswordUnitAuthenticationToken token) throws CSecurityException
+	private Authentication authenticate (@CNotLogged @CNotAuditLogged CUsernamePasswordUnitAuthentication token) throws CSecurityException
 	{
 		String login = token.getName();
 		String password = (String) token.getCredentials();
@@ -99,7 +99,7 @@ public class CSecurityAuthenticationProvider extends AService implements Authent
 			authorities.add(new SimpleGrantedAuthority(role));
 		}
 
-		CUsernamePasswordUnitAuthenticationToken retVal = new CUsernamePasswordUnitAuthenticationToken(login, password, authorities, unit);
+		CUsernamePasswordUnitAuthentication retVal = new CUsernamePasswordUnitAuthentication(login, password, authorities, unit);
 		retVal.setDetails(user);
 
 		return retVal;
