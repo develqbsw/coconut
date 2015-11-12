@@ -119,11 +119,14 @@ abstract class ATokenService
 	{
 		if (authenticationToken != null)
 		{
-			if ( (authenticationToken.getIp() != null && authenticationToken.getIp().equals(ip) == false) || (authenticationToken.getIp() == null && ip != null))
+			if (oauthConfigurator.isIpIgnored() == false)
 			{
-				authenticationTokenDao.remove(authenticationToken);
-				LOGGER.warn("The authentication token {} for user {} and device {} deleted because of invalid ip", authenticationToken.getToken(), authenticationToken.getUser().getLogin(), authenticationToken.getDeviceId());
-				throw new CBusinessException(ECoreErrorResponse.AUTHENTICATION_TOKEN_INVALIDATED);
+				if ( (authenticationToken.getIp() != null && authenticationToken.getIp().equals(ip) == false) || (authenticationToken.getIp() == null && ip != null))
+				{
+					authenticationTokenDao.remove(authenticationToken);
+					LOGGER.warn("The authentication token {} for user {} and device {} deleted because of invalid ip", authenticationToken.getToken(), authenticationToken.getUser().getLogin(), authenticationToken.getDeviceId());
+					throw new CBusinessException(ECoreErrorResponse.AUTHENTICATION_TOKEN_INVALIDATED);
+				}
 			}
 
 			checkAuthenticationTokenValidity(authenticationToken);
