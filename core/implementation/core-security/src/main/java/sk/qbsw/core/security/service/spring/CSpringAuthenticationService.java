@@ -60,6 +60,6 @@ public class CSpringAuthenticationService extends AService implements ISpringAut
 	@Override
 	public boolean supports (Class<? extends Authentication> authentication)
 	{
-		return (CUsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication.getClass()) == true);
+		return CUsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication);
 	}
 }

@@ -30,7 +30,6 @@ import sk.qbsw.core.security.model.domain.CUser;
 public abstract class ASecurityAuthenticationProvider extends AService implements AuthenticationProvider
 {
 	/** The spring authentication service. */
-	@Autowired
 	private ISpringAuthenticationService springAuthenticationService;
 
 	/* (non-Javadoc)
@@ -81,5 +80,16 @@ public abstract class ASecurityAuthenticationProvider extends AService implement
 		}
 
 		return authorities;
+	}
+
+	/**
+	 * Sets the spring authentication service.
+	 *
+	 * @param springAuthenticationService the new spring authentication service
+	 */
+	@Autowired
+	public void setSpringAuthenticationService (ISpringAuthenticationService springAuthenticationService)
+	{
+		this.springAuthenticationService = springAuthenticationService;
 	}
 }

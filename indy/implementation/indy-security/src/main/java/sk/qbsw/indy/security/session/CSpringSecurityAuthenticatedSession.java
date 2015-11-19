@@ -47,7 +47,7 @@ public class CSpringSecurityAuthenticatedSession extends ASpringSecurityAuthenti
 	 * @see sk.qbsw.indy.security.session.ASpringSecurityAuthenticatedSession#getAuthenticationObject(sk.qbsw.core.security.model.IAuthenticationToken)
 	 */
 	@Override
-	protected Authentication getAuthenticationObject (IAuthenticationToken authenticationToken)
+	protected Authentication transformAuthenticationObject (IAuthenticationToken authenticationToken)
 	{
 		//first of all compare the CUsernamePasswordUnitAuthenticationToken because it has parent CUsernamePasswordAuthenticationToken
 		if (CUsernamePasswordUnitAuthenticationToken.class.isAssignableFrom(authenticationToken.getClass()) == true)

@@ -64,7 +64,7 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 	public boolean authenticate (IAuthenticationToken authenticationToken)
 	{
 		//get authentication and checks if it is supported
-		Authentication authentication = getAuthenticationObject(authenticationToken);
+		Authentication authentication = transformAuthenticationObject(authenticationToken);
 		if (authentication == null)
 		{
 			LOGGER.warn("The given authentication token is not supported");
@@ -161,12 +161,12 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 	}
 
 	/**
-	 * Gets the authentication object from authentication token. Checks if the token is supported and return null if it is not.
+	 * Transform the authentication object from authentication token. Checks if the token is supported and return null if it is not.
 	 *
 	 * @param authenticationToken the authentication token
 	 * @return the authentication object or null if the given token is not supported
 	 */
-	protected abstract Authentication getAuthenticationObject (IAuthenticationToken authenticationToken);
+	protected abstract Authentication transformAuthenticationObject (IAuthenticationToken authenticationToken);
 
 	/**
 	 * Prepare session data from given authentication object. If the give authentication object is not supported return false.

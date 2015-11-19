@@ -28,7 +28,7 @@ public class CSecurityAuthenticationProvider extends ASecurityAuthenticationProv
 	@Override
 	public boolean supports (Class<? extends Object> authentication)
 	{
-		return (CUsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication.getClass()) == true);
+		return CUsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication);
 	}
 
 	/* (non-Javadoc)
