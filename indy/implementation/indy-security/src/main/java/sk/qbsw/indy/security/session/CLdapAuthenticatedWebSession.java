@@ -7,17 +7,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.security.model.IAuthenticationToken;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthentication;
 import sk.qbsw.core.security.service.IAuthenticationService;
 
 /**
  * Session of the logged LDAP user.
  *
  * @author Tomas Lauro
- * @version 1.10.2
+ * 
+ * @version 1.13.4
  * @since 1.7.0
  */
-public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
+public class CLdapAuthenticatedWebSession extends AIndySecurityAuthenticatedWebSession
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -29,9 +32,6 @@ public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSessi
 	@SpringBean (name = "ldapAuthenticationService")
 	private IAuthenticationService loginService;
 
-	/** The organization unit. */
-	//private String organizationUnit;
-
 	/**
 	 * Gets actual session.
 	 *
@@ -39,7 +39,7 @@ public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSessi
 	 */
 	public static CLdapAuthenticatedWebSession get ()
 	{
-		return (CLdapAuthenticatedWebSession) AAuthenticatedSecurityWebSession.get();
+		return (CLdapAuthenticatedWebSession) AIndySecurityAuthenticatedWebSession.get();
 	}
 
 	/**
@@ -66,52 +66,43 @@ public class CLdapAuthenticatedWebSession extends AAuthenticatedSecurityWebSessi
 		}
 	}
 
-	/**
-	 * Authenticates the user for web checkin.
-	 *
-	 * @param login the login
-	 * @param password is represented by ticketNumber
-	 * @return true, if successful
-	 */
-	public boolean authenticate (String login, String password)
-	{
-		try
-		{
-			CUser user = loginService.login(login, password);
-
-			setOrganization(user.getOrganization());
-			setUser(user);
-			//setOrganizationUnit(user.getOrganizationUnit());
-
-			return true;
-		}
-		catch (CSecurityException e)
-		{
-			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", login, e.toString()));
-			setSecurityException(e);
-			return false;
-		}
-	}
-
 	/* (non-Javadoc)
-	 * @see sk.qbsw.indy.security.session.AAuthenticatedSession#authenticate(java.lang.String, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.indy.security.session.AAuthenticatedWebSession#authenticate(sk.qbsw.core.security.model.IAuthenticationToken)
 	 */
 	@Override
-	public boolean authenticate (String login, String password, String unit)
+	public boolean authenticate (IAuthenticationToken authenticationToken)
 	{
+		//get supported token
+		CUsernamePasswordUnitAuthentication token = getAuthenticationObject(authenticationToken);
+
+		//checks if there is a supported token
+		if (token == null)
+		{
+			LOGGER.error("The LDAP authentication session doesn't support given authentication token type");
+			setSecurityException(new CSecurityException("The LDAP authentication session doesn't support given authentication token type"));
+			return false;
+		}
+
 		try
 		{
-			CUser user = loginService.login(login, password, unit);
+			CUser user = null;
 
+			if (token.getUnit() != null)
+			{
+				user = loginService.login((String) token.getPrincipal(), (String) token.getCredentials(), token.getUnit());
+			}
+			else
+			{
+				user = loginService.login((String) token.getPrincipal(), (String) token.getCredentials());
+			}
 			setOrganization(user.getOrganization());
 			setUser(user);
-			//setOrganizationUnit(user.getOrganizationUnit());
 
 			return true;
 		}
 		catch (CSecurityException e)
 		{
-			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", login, e.toString()));
+			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", (String) token.getPrincipal(), e.toString()));
 			setSecurityException(e);
 			return false;
 		}

@@ -9,12 +9,13 @@ import org.springframework.security.core.GrantedAuthority;
  * CUsernamePasswordUnitAuthenticationToken.
  * 
  * @author Dalibor Rak
- * @version 1.6.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.13.4
  * @since 1.6.0
  */
-public class CUsernamePasswordUnitAuthenticationToken extends UsernamePasswordAuthenticationToken
+public class CUsernamePasswordUnitAuthentication extends UsernamePasswordAuthenticationToken
 {
-
 	/** Default serialization version. */
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +29,7 @@ public class CUsernamePasswordUnitAuthenticationToken extends UsernamePasswordAu
 	 * @param credentials the credentials
 	 * @param authorities the authorities
 	 */
-	public CUsernamePasswordUnitAuthenticationToken (Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities, String unit)
+	public CUsernamePasswordUnitAuthentication (Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities, String unit)
 	{
 		super(principal, credentials, authorities);
 		this.unit = unit;
@@ -41,7 +42,7 @@ public class CUsernamePasswordUnitAuthenticationToken extends UsernamePasswordAu
 	 * @param credentials the credentials
 	 * @param unit the unit
 	 */
-	public CUsernamePasswordUnitAuthenticationToken (String principal, String credentials, String unit)
+	public CUsernamePasswordUnitAuthentication (String principal, String credentials, String unit)
 	{
 		super(principal, credentials);
 
