@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.security.model.IAuthenticationToken;
 import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthentication;
 import sk.qbsw.core.security.service.IAuthenticationService;
 
 /**
@@ -15,10 +17,11 @@ import sk.qbsw.core.security.service.IAuthenticationService;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.10.2
+ * 
+ * @version 1.13.4
  * @since 1.0.0
  */
-public class CDBAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
+public class CDBAuthenticatedWebSession extends AIndySecurityAuthenticatedWebSession
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -37,7 +40,7 @@ public class CDBAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
 	 */
 	public static CDBAuthenticatedWebSession get ()
 	{
-		return (CDBAuthenticatedWebSession) AAuthenticatedSecurityWebSession.get();
+		return (CDBAuthenticatedWebSession) AIndySecurityAuthenticatedWebSession.get();
 	}
 
 	/**
@@ -64,40 +67,33 @@ public class CDBAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
 		}
 	}
 
-	/**
-	 * Authenticates the user for web.
-	 *
-	 * @param login the login
-	 * @param password is represented by ticketNumber
-	 * @return true, if successful
-	 */
-	public boolean authenticate (String login, String password)
-	{
-		try
-		{
-			CUser user = loginService.login(login, password);
-			setOrganization(user.getOrganization());
-			setUser(user);
-
-			return true;
-		}
-		catch (CSecurityException e)
-		{
-			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", login, e.toString()));
-			setSecurityException(e);
-			return false;
-		}
-	}
-
 	/* (non-Javadoc)
-	 * @see sk.qbsw.indy.security.session.AAuthenticatedSession#authenticate(java.lang.String, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.indy.security.session.AAuthenticatedWebSession#authenticate(sk.qbsw.core.security.model.IAuthenticationToken)
 	 */
 	@Override
-	public boolean authenticate (String login, String password, String unit)
+	public boolean authenticate (IAuthenticationToken authenticationToken)
 	{
+		//get supported token
+		CUsernamePasswordUnitAuthentication token = getAuthenticationObject(authenticationToken);
+		if (token == null)
+		{
+			LOGGER.error("The DB authentication session doesn't support given authentication token type");
+			setSecurityException(new CSecurityException("The DB authentication session doesn't support given authentication token type"));
+			return false;
+		}
+
 		try
 		{
-			CUser user = loginService.login(login, password, unit);
+			CUser user = null;
+
+			if (token.getUnit() != null)
+			{
+				user = loginService.login((String) token.getPrincipal(), (String) token.getCredentials(), token.getUnit());
+			}
+			else
+			{
+				user = loginService.login((String) token.getPrincipal(), (String) token.getCredentials());
+			}
 			setOrganization(user.getOrganization());
 			setUser(user);
 
@@ -105,7 +101,7 @@ public class CDBAuthenticatedWebSession extends AAuthenticatedSecurityWebSession
 		}
 		catch (CSecurityException e)
 		{
-			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", login, e.toString()));
+			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", (String) token.getPrincipal(), e.toString()));
 			setSecurityException(e);
 			return false;
 		}
