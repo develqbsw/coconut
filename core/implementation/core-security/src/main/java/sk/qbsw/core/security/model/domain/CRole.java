@@ -40,7 +40,7 @@ public class CRole extends ASecurityChangeEntity<Long>
 	private Long id;
 
 	/** The code. */
-	@Column (name = "code", unique = true)
+	@Column (name = "c_code", unique = true)
 	private String code;
 
 	//bi-directional many-to-many association to CGroup

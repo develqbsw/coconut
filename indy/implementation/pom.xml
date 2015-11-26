@@ -5,10 +5,10 @@
 	<artifactId>indy</artifactId>
 	<packaging>pom</packaging>
 	<name>Indy cumulative</name>
-	<parent>
+<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>indy-top</artifactId>
-		<version>1.13.5</version>
+		<version>1.14.0</version>
 	</parent>
 
 	<modules>

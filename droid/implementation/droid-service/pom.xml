@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>droid-core</artifactId>
-		<version>1.13.5</version>
+		<version>1.14.0</version>
 	</parent>
 	<dependencies>
 		<!-- dependency to android -->

@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>core</artifactId>
-		<version>1.13.5</version>
+		<version>1.14.0</version>
 	</parent>
 	<dependencies>
 		<!-- QBSW -->
@@ -134,9 +134,9 @@
 		</dependency>
 
 		<!-- jdbc driver -->
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+				<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -189,7 +189,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
-
+		
 		<!-- Query dsl -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
@@ -237,6 +237,7 @@
 					<include>**/*.*</include>
 				</includes>
 			</resource>
+
 		</resources>
 		<plugins>
 			<plugin>
