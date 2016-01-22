@@ -47,13 +47,13 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	{
 		if (primaryServerConnectionPool == null)
 		{
-			primaryServerConnectionPool = createPool(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getUserDn(), configurationData.getUserPassword());
+			primaryServerConnectionPool = createPool(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getUserDn(), configurationData.getUserPassword(), configurationData.getUseSslFlag());
 			LOGGER.debug("Primary ldap connection pool created.");
 		}
 
 		if (secondaryServerConnectionPool == null && configurationData.getSecondaryServerName() != null)
 		{
-			secondaryServerConnectionPool = createPool(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort(), configurationData.getUserDn(), configurationData.getUserPassword());
+			secondaryServerConnectionPool = createPool(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort(), configurationData.getUserDn(), configurationData.getUserPassword(), configurationData.getUseSslFlag());
 			LOGGER.debug("Secondary ldap connection pool created.");
 		}
 	}
@@ -248,15 +248,17 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	 * @param serverPort the server port
 	 * @param ldapUserDn the ldap user dn
 	 * @param ldapUserPassword the ldap user password
+	 * @param useSslFlag the use ssl flag
 	 * @return the ldap connection pool
 	 */
-	private LdapConnectionPool createPool (String serverName, int serverPort, String ldapUserDn, String ldapUserPassword)
+	private LdapConnectionPool createPool (String serverName, int serverPort, String ldapUserDn, String ldapUserPassword, boolean useSslFlag)
 	{
 		LdapConnectionConfig config = new LdapConnectionConfig();
 		config.setLdapHost(serverName);
 		config.setLdapPort(serverPort);
 		config.setName(ldapUserDn);
 		config.setCredentials(ldapUserPassword);
+		config.setUseSsl(useSslFlag);
 
 		PoolableLdapConnectionFactory factory = new PoolableLdapConnectionFactory(config);
 		LdapConnectionPool pool = new LdapConnectionPool(factory);
