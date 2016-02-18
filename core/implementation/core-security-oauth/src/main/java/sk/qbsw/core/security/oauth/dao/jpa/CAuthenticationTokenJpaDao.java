@@ -18,7 +18,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
  * 
  * @author Tomas Lauro
  * 
- * @version 1.13.1
+ * @version 1.14.2
  * @since 1.13.1
  *
  */
@@ -33,7 +33,7 @@ public class CAuthenticationTokenJpaDao extends AEntityQueryDslDao<Long, CAuthen
 	 */
 	public CAuthenticationTokenJpaDao ()
 	{
-		super(QCAuthenticationToken.cAuthenticationToken);
+		super(QCAuthenticationToken.cAuthenticationToken, Long.class);
 	}
 
 	/* (non-Javadoc)

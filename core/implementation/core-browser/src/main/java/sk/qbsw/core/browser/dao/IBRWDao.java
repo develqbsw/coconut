@@ -3,7 +3,7 @@ package sk.qbsw.core.browser.dao;
 import java.util.List;
 
 import sk.qbsw.core.browser.dto.CBRWDataDTO;
-import sk.qbsw.core.persistence.dao.querydsl.IFilterDao;
+import sk.qbsw.core.persistence.dao.IFilterDao;
 import sk.qbsw.core.persistence.model.CFilterParameter;
 import sk.qbsw.core.persistence.model.COrderParameter;
 import sk.qbsw.core.persistence.model.domain.IEntity;
