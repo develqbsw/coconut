@@ -1,11 +1,10 @@
-package sk.qbsw.core.persistence.dao.querydsl;
+package sk.qbsw.core.persistence.dao;
 
 import java.util.List;
 
 import com.mysema.query.types.expr.SimpleExpression;
 
 import sk.qbsw.core.persistence.model.CFilterParameter;
-
 
 /**
  * The Interface IFilterDAO.
@@ -21,5 +20,4 @@ public interface IFilterDao {
 	 * @return the colummn values list
 	 */
 	public <X>List<X> getColummnValuesList (SimpleExpression<X> column, List<? extends CFilterParameter> fixedFilter);
-
 }
