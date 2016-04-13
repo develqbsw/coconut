@@ -57,7 +57,7 @@ public class CUserDetails implements UserDetails
 	@Override
 	public String getPassword ()
 	{
-		return "notdefined";
+		return user.getPasswordDigest();
 	}
 
 	/*

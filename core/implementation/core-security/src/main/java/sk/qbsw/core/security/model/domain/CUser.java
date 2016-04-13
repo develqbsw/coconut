@@ -31,11 +31,11 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 
+import com.google.gson.annotations.Expose;
+
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.service.CGroupService;
 import sk.qbsw.core.security.service.CUserService;
-
-import com.google.gson.annotations.Expose;
 
 /**
  * The Class CUser.
@@ -216,6 +216,23 @@ public class CUser extends ASecurityChangeEntity<Long>
 		if (getAuthenticationParams() != null)
 		{
 			return getAuthenticationParams().getPassword();
+		}
+		else
+		{
+			throw new CSystemException("The user has not a authentication params");
+		}
+	}
+	/**
+	 * Gets the Digest text password. If there is no Digest text password, returns
+	 * null.
+	 * 
+	 * @return the hash text password
+	 */
+	public String getPasswordDigest ()
+	{
+		if (getAuthenticationParams() != null)
+		{
+			return getAuthenticationParams().getPasswordDigest();
 		}
 		else
 		{
