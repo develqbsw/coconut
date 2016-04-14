@@ -1,9 +1,14 @@
 package sk.qbsw.core.security.model.jmx;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
 import sk.qbsw.core.base.service.AService;
+import sk.qbsw.core.security.model.domain.EAuthParameters;
+import sk.qbsw.core.security.model.domain.EAuthSchema;
 import sk.qbsw.core.security.model.domain.EHashMethod;
 
 /**
@@ -25,6 +30,12 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 
 	/** The hash method to hash user password in database. */
 	private EHashMethod databasePasswordHashMethod = EHashMethod.SHA;
+
+	/** The hash method to hash user password in database. */
+	private EAuthSchema databaseAuthSchema  = EAuthSchema.CUSTOM;
+
+	/** additiona parameters to configurator specific for  */
+	private Map<EAuthParameters, String> additionalConfiguratorParameters = new HashMap<EAuthParameters, String>();
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator#getPasswordPattern()
@@ -78,5 +89,23 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 	public void setDatabasePasswordHashMethod (EHashMethod databasePasswordHashMethod)
 	{
 		this.databasePasswordHashMethod = databasePasswordHashMethod;
+	}
+
+	@Override
+	public EAuthSchema getDatabaseAuthSchema ()
+	{
+		
+		return databaseAuthSchema;
+	}
+
+	public void setDatabaseAuthSchema (EAuthSchema databaseAuthSchema)
+	{
+		this.databaseAuthSchema = databaseAuthSchema;
+	}
+
+	@Override
+	public Map<EAuthParameters, String> getAdditionalAuthParameters ()
+	{
+		return additionalConfiguratorParameters;
 	}
 }

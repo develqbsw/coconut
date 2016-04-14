@@ -1,5 +1,9 @@
 package sk.qbsw.core.security.model.jmx;
 
+import java.util.Map;
+
+import sk.qbsw.core.security.model.domain.EAuthParameters;
+import sk.qbsw.core.security.model.domain.EAuthSchema;
 import sk.qbsw.core.security.model.domain.EHashMethod;
 
 /**
@@ -29,14 +33,18 @@ public interface IAuthenticationConfigurator
 	 * Gets the ldap password hash method.
 	 *
 	 * @return the ldap password hash method
+	 * @deprecated not used,  dont need implement
 	 */
+	@Deprecated
 	public EHashMethod getLdapPasswordHashMethod ();
 
 	/**
 	 * Sets the ldap password hash method.
 	 *
 	 * @param ldapPasswordHashMethod the new ldap password hash method
+	 * @deprecated not used,  dont need implement
 	 */
+	@Deprecated
 	public void setLdapPasswordHashMethod (EHashMethod ldapPasswordHashMethod);
 
 	/**
@@ -52,4 +60,19 @@ public interface IAuthenticationConfigurator
 	 * @param databasePasswordHashMethod the new database password hash method
 	 */
 	public void setDatabasePasswordHashMethod (EHashMethod databasePasswordHashMethod);
+	
+	/**
+	 * Gets the database password hash method.
+	 *
+	 * @return the database password hash method
+	 */
+	public EAuthSchema getDatabaseAuthSchema();
+
+	
+	/**
+	 * gets additional auth parameters needed for correct function of database Auth schema. 
+	 * eg. for digest is mandatory "REALM"
+	 * @return
+	 */
+	public Map<EAuthParameters,String> getAdditionalAuthParameters ();
 }

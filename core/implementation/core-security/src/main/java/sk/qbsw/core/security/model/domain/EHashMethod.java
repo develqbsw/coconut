@@ -13,6 +13,9 @@ import sk.qbsw.core.base.exception.CSystemException;
  */
 public enum EHashMethod
 {
+	/**  The MD5 encryption method. */
+	MD5 ("MD5", "MD5", LdapSecurityConstants.HASH_METHOD_MD5, "MD5"),
+
 	/**  The SHA encryption method. */
 	SHA ("SHA", "SHA", LdapSecurityConstants.HASH_METHOD_SHA, "SHA-1"),
 
