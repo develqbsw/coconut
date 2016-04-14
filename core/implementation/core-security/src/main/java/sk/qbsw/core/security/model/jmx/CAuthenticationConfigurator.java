@@ -35,7 +35,7 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 	private EAuthSchema databaseAuthSchema  = EAuthSchema.CUSTOM;
 
 	/** additiona parameters to configurator specific for  */
-	private Map<EAuthParameters, String> additionalConfiguratorParameters = new HashMap<EAuthParameters, String>();
+	private Map<EAuthParameters, String> additionalAuthParameters = new HashMap<EAuthParameters, String>();
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator#getPasswordPattern()
@@ -106,6 +106,13 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 	@Override
 	public Map<EAuthParameters, String> getAdditionalAuthParameters ()
 	{
-		return additionalConfiguratorParameters;
+		return additionalAuthParameters;
 	}
+
+	public void setAdditionalAuthParameters (Map<EAuthParameters, String> additionalAuthParameters)
+	{
+		this.additionalAuthParameters = additionalAuthParameters;
+	}
+
+	
 }

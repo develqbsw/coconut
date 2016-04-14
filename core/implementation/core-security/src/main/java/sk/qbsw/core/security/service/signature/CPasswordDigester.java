@@ -1,7 +1,6 @@
 package sk.qbsw.core.security.service.signature;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
-import org.jasypt.util.password.rfc2307.RFC2307MD5PasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,11 +64,18 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		{
 			//new auth 
 
-			RFC2307MD5PasswordEncryptor encryptor = new RFC2307MD5PasswordEncryptor();
+			ConfigurablePasswordEncryptor encryptor = new ConfigurablePasswordEncryptor();
 			encryptor.setStringOutputType("hexadecimal");
+			encryptor.setPlainDigest(true);
+			encryptor.setAlgorithm(authenticationConfiguration.getDatabasePasswordHashMethod().getDatabaseAlgorithm());
 			String realm = getRealm();
 			String encodedPasswd = login + ":" + realm + ":" + password;
-			return encryptor.encryptPassword(encodedPasswd);
+			String encryptPassword = encryptor.encryptPassword(encodedPasswd);
+			if (toLowerCase())
+			{
+				encryptPassword = encryptPassword.toLowerCase();
+			}
+			return encryptPassword;
 
 		}
 		else
@@ -79,8 +85,6 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		}
 	}
 
-	
-
 
 
 	@Override
@@ -88,8 +92,10 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 	{
 		if (!EAuthSchema.CUSTOM.equals(authenticationConfiguration.getDatabaseAuthSchema()))
 		{
-			RFC2307MD5PasswordEncryptor encryptor = new RFC2307MD5PasswordEncryptor();
+			ConfigurablePasswordEncryptor encryptor = new ConfigurablePasswordEncryptor();
 			encryptor.setStringOutputType("hexadecimal");
+			encryptor.setPlainDigest(true);
+			encryptor.setAlgorithm(authenticationConfiguration.getDatabasePasswordHashMethod().getDatabaseAlgorithm());
 			String realm = getRealm();
 			String encodedPasswd = plainLogin + ":" + realm + ":" + plainPassword;
 			return encryptor.checkPassword(encodedPasswd, encryptedPassword);
@@ -101,7 +107,7 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		}
 	}
 
-	
+
 	/**
 	 * gets realm. 
 	 * @return
@@ -117,4 +123,17 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		return realm;
 	}
 
+	/**
+	 * if exist to lowercase then do lowercase
+	 * @return
+	 */
+	private boolean toLowerCase ()
+	{
+		String realm = authenticationConfiguration.getAdditionalAuthParameters().get(EAuthParameters.HASH_TO_LOWERCASE);
+		if (realm == null)
+		{
+			return false;
+		}
+		return true;
+	}
 }
