@@ -4,9 +4,10 @@ package sk.qbsw.core.security.service.signature;
  * Password digester interface 
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.6.0
+ * @author Marek Martinkovic
+ * 
+ * @version 1.14.3
  * @since 1.3.0
- *
  */
 public interface IPasswordDigester
 {
@@ -33,8 +34,8 @@ public interface IPasswordDigester
 	 * @param password password to digest
 	 * @return generated digest
 	 */
-	public String generateDigest (String login,String password);
-	
+	public String generateDigest (String login, String password);
+
 	/**
 	 * Check password.
 	 * fall back into legacy code, if custom auth scheme is in configurator
@@ -44,5 +45,5 @@ public interface IPasswordDigester
 	 * @param digest the digest
 	 * @return true, if successful
 	 */
-	public boolean checkPassword (String plainLogin,String plainPassword, String encryptedPassword);
+	public boolean checkPassword (String plainLogin, String plainPassword, String encryptedPassword);
 }

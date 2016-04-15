@@ -4,6 +4,7 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.logging.annotation.CAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
@@ -18,6 +19,7 @@ import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
+ * @author Marek Martinkovic
  * 
  * @version 1.11.8
  * @since 1.3.0
@@ -45,6 +47,9 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		return passwordEncryptor2.encryptPassword(password);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.service.signature.IPasswordDigester#checkPassword(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean checkPassword (@CNotLogged @CNotAuditLogged String plainPassword, @CNotLogged @CNotAuditLogged String encryptedPassword)
 	{
@@ -63,20 +68,22 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		if (!EAuthSchema.CUSTOM.equals(authenticationConfiguration.getDatabaseAuthSchema()))
 		{
 			//new auth 
-
 			ConfigurablePasswordEncryptor encryptor = new ConfigurablePasswordEncryptor();
+
 			encryptor.setStringOutputType("hexadecimal");
 			encryptor.setPlainDigest(true);
 			encryptor.setAlgorithm(authenticationConfiguration.getDatabasePasswordHashMethod().getDatabaseAlgorithm());
+
 			String realm = getRealm();
 			String encodedPasswd = login + ":" + realm + ":" + password;
 			String encryptPassword = encryptor.encryptPassword(encodedPasswd);
+
 			if (toLowerCase())
 			{
 				encryptPassword = encryptPassword.toLowerCase();
 			}
-			return encryptPassword;
 
+			return encryptPassword;
 		}
 		else
 		{
@@ -93,11 +100,14 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		if (!EAuthSchema.CUSTOM.equals(authenticationConfiguration.getDatabaseAuthSchema()))
 		{
 			ConfigurablePasswordEncryptor encryptor = new ConfigurablePasswordEncryptor();
+
 			encryptor.setStringOutputType("hexadecimal");
 			encryptor.setPlainDigest(true);
 			encryptor.setAlgorithm(authenticationConfiguration.getDatabasePasswordHashMethod().getDatabaseAlgorithm());
+
 			String realm = getRealm();
 			String encodedPasswd = plainLogin + ":" + realm + ":" + plainPassword;
+
 			return encryptor.checkPassword(encodedPasswd, encryptedPassword);
 		}
 		else
@@ -106,7 +116,6 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 			return checkPassword(plainPassword, encryptedPassword);
 		}
 	}
-
 
 	/**
 	 * gets realm. 
@@ -118,7 +127,7 @@ public class CPasswordDigester extends AService implements IPasswordDigester
 		if (realm == null)
 		{
 			//if no realm 
-			throw new IllegalStateException("REALM is required for this auth schema");
+			throw new CSystemException("REALM is required for this auth schema");
 		}
 		return realm;
 	}

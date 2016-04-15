@@ -1,19 +1,20 @@
 package sk.qbsw.core.security.model.domain;
 
 /**
- * The helper aprameters enum
+ * The helper parameters enum
  * 
- * @author Marek Martinkovič
- * @version 1.14.2
- * @since 1.14.2
+ * @author Marek Martinkovic
+ * 
+ * @version 1.14.3
+ * @since 1.14.3
  */
 public enum EAuthParameters
 {
 	/**  The custom auth parameter REALM for web digest auth */
-	REALM ,
+	REALM,
+
 	/**
 	 * perform hash into lowercase
 	 */
 	HASH_TO_LOWERCASE;
-
 }

@@ -222,6 +222,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 			throw new CSystemException("The user has not a authentication params");
 		}
 	}
+
 	/**
 	 * Gets the Digest text password. If there is no Digest text password, returns
 	 * null.

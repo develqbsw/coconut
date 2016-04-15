@@ -22,11 +22,14 @@ import sk.qbsw.core.security.service.IUserService;
  * Service for getting user details
  * 
  * @author Dalibor Rak
- * @version 1.13.0
+ * @author Marek Martinkovic
+ * 
+ * @version 1.14.3
  * @since 1.6.0
  */
 public class CUserDetailsService extends AService implements UserDetailsService
 {
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CUserDetailsService.class);
 
 	/** The user service. */
@@ -43,7 +46,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional (readOnly = true)
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
 	{
 		CUser user;
@@ -51,9 +54,6 @@ public class CUserDetailsService extends AService implements UserDetailsService
 		try
 		{
 			user = userService.getUserByLogin(username);
-
-			
-
 		}
 		catch (NoResultException | CSecurityException ex)
 		{
@@ -81,7 +81,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 		//they will be needed
 		user.exportRoles();
 		user.getPassword();
-		
+
 		CUserDetails retVal = new CUserDetails();
 		retVal.setUser(user);
 		return retVal;

@@ -15,7 +15,9 @@ import sk.qbsw.core.security.model.domain.EHashMethod;
  * The Class CAuthenticationConfigurator.
  * 
  * @author Tomas Lauro
- * @version 1.8.0
+ * @author Marek Martinkovic
+ * 
+ * @version 1.14.3
  * @since 1.7.2
  */
 @Service ("authenticationConfigurator")
@@ -32,9 +34,9 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 	private EHashMethod databasePasswordHashMethod = EHashMethod.SHA;
 
 	/** The hash method to hash user password in database. */
-	private EAuthSchema databaseAuthSchema  = EAuthSchema.CUSTOM;
+	private EAuthSchema databaseAuthSchema = EAuthSchema.CUSTOM;
 
-	/** additiona parameters to configurator specific for  */
+	/**  additiona parameters to configurator specific for. */
 	private Map<EAuthParameters, String> additionalAuthParameters = new HashMap<EAuthParameters, String>();
 
 	/* (non-Javadoc)
@@ -91,28 +93,40 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 		this.databasePasswordHashMethod = databasePasswordHashMethod;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator#getDatabaseAuthSchema()
+	 */
 	@Override
 	public EAuthSchema getDatabaseAuthSchema ()
 	{
-		
+
 		return databaseAuthSchema;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator#setDatabaseAuthSchema(sk.qbsw.core.security.model.domain.EAuthSchema)
+	 */
+	@Override
 	public void setDatabaseAuthSchema (EAuthSchema databaseAuthSchema)
 	{
 		this.databaseAuthSchema = databaseAuthSchema;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator#getAdditionalAuthParameters()
+	 */
 	@Override
 	public Map<EAuthParameters, String> getAdditionalAuthParameters ()
 	{
 		return additionalAuthParameters;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator#setAdditionalAuthParameters(java.util.Map)
+	 */
+	@Override
 	public void setAdditionalAuthParameters (Map<EAuthParameters, String> additionalAuthParameters)
 	{
 		this.additionalAuthParameters = additionalAuthParameters;
 	}
-
-	
 }
