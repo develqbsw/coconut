@@ -11,16 +11,29 @@ package sk.qbsw.core.security.oauth.model.jmx;
 public interface IOauthConfigurator
 {
 	/**
-	 * Checks if is ip ignored.
+	 * Checks if is ip ignored when checking master token.
 	 *
 	 * @return true, if is ip ignored
 	 */
 	boolean isIpIgnored ();
 
 	/**
-	 * Sets the ip ignored.
+	 * Sets the ip ignored when checking master token.
 	 *
 	 * @param ipIgnored the new ip ignored
 	 */
 	void setIpIgnored (boolean ipIgnored);
+	/**
+	 * Checks if is ip ignored when checking auth token.
+	 *
+	 * @return true, if is ip ignored
+	 */
+	boolean isAuthIpIgnored ();
+	
+	/**
+	 * Sets the ip ignored when checking auth token.
+	 *
+	 * @param ipIgnored the new ip ignored
+	 */
+	void setAuthIpIgnored (boolean ipIgnored);
 }

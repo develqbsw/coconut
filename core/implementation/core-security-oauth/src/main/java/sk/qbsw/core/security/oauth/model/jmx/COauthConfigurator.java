@@ -9,16 +9,31 @@ import sk.qbsw.core.base.service.AService;
  * The oauth configurator.
  * 
  * @author Tomas Lauro
+ * @author Marek Martinkovic
  * 
- * @version 1.13.1
+ * @version 1.14.3
  * @since 1.13.1
  */
 @Service ("oauthConfigurator")
 @ManagedResource (objectName = "sk.qbsw.core.security.oauth:name=oauthConfigurator", description = "oauth configuration")
 public class COauthConfigurator extends AService implements IOauthConfigurator
 {
-	/** The ip ignored - the ip is not ignored by default. */
+	/** The ip ignored for master token - the ip is not ignored by default. */
 	private boolean ipIgnored = false;
+	/** The ip ignored for authentication token - the ip is not ignored by default. */
+	private boolean authIpIgnored = false;
+
+	@Override
+	public boolean isAuthIpIgnored ()
+	{
+		return authIpIgnored;
+	}
+
+	@Override
+	public void setAuthIpIgnored (boolean authIpIgnored)
+	{
+		this.authIpIgnored = authIpIgnored;
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.oauth.model.jmx.IOauthConfigurator#isIpIgnored()
@@ -37,4 +52,5 @@ public class COauthConfigurator extends AService implements IOauthConfigurator
 	{
 		this.ipIgnored = ipIgnored;
 	}
+
 }
