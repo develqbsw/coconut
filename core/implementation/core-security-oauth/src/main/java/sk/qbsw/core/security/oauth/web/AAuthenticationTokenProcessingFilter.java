@@ -16,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.GenericFilterBean;
@@ -43,11 +42,7 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 
 	/** The authentication manager. */
 	private final AuthenticationManager authenticationManager;
-
-	/** The p. */
-	@Autowired
-	private AuthenticationEntryPoint p;
-
+	
 	/** The master token service. */
 	@Autowired
 	private IMasterTokenService masterTokenService;
