@@ -20,15 +20,22 @@ public class COauthConfigurator extends AService implements IOauthConfigurator
 {
 	/** The ip ignored for master token - the ip is not ignored by default. */
 	private boolean ipIgnored = false;
+
 	/** The ip ignored for authentication token - the ip is not ignored by default. */
 	private boolean authIpIgnored = false;
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.oauth.model.jmx.IOauthConfigurator#isAuthIpIgnored()
+	 */
 	@Override
 	public boolean isAuthIpIgnored ()
 	{
 		return authIpIgnored;
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.security.oauth.model.jmx.IOauthConfigurator#setAuthIpIgnored(boolean)
+	 */
 	@Override
 	public void setAuthIpIgnored (boolean authIpIgnored)
 	{
@@ -52,5 +59,4 @@ public class COauthConfigurator extends AService implements IOauthConfigurator
 	{
 		this.ipIgnored = ipIgnored;
 	}
-
 }
