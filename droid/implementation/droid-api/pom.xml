@@ -43,7 +43,7 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<scope>compile</scope>
-			<version>${httpcomponents.version}</version>
+			<version>${httpmime.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
