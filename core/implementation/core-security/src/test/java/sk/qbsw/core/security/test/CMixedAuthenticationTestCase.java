@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +35,7 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-ldap-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CMixedAuthenticationTestCase
 {
 	/** The database data generator. */
@@ -120,8 +119,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithDefaultUnit () throws Exception
 	{
 		initTest();
@@ -136,8 +134,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	@Ignore
 	public void testLoginWithDefaultUnitIncorrectPassword () throws Exception
 	{
@@ -152,8 +149,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithoutDefaultUnit () throws Exception
 	{
 		initTest();
@@ -167,8 +163,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithDefaultUnitAndRolePositive () throws Exception
 	{
 		initTest();
@@ -182,8 +177,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithDefaultUnitAndRoleNegative () throws Exception
 	{
 		initTest();
@@ -197,8 +191,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithoutDefaultUnitAndRolePositive () throws Exception
 	{
 		initTest();
@@ -212,8 +205,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithoutDefaultUnitAndRoleNegative () throws Exception
 	{
 		initTest();
@@ -227,8 +219,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithDefaultUnitAndUnit () throws Exception
 	{
 		initTest();
@@ -242,8 +233,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginWithoutDefaultUnitAndUnit () throws Exception
 	{
 		initTest();
@@ -257,8 +247,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CUserDisabledException.class)
-	@Transactional (readOnly = true)
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginEnabledUserDisabledOrganization () throws Exception
 	{
 		initTest();
@@ -272,8 +261,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CUserDisabledException.class)
-	@Transactional (readOnly = true)
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginDisabledUserDisabledOrganization () throws Exception
 	{
 		initTest();
@@ -287,8 +275,7 @@ public class CMixedAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CUserDisabledException.class)
-	@Transactional (readOnly = true)
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testLoginDisabledUserEnabledOrganization () throws Exception
 	{
 		initTest();

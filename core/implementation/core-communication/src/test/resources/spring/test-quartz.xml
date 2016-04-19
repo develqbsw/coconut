@@ -12,7 +12,7 @@
 	<bean id="sendMailTask" class="sk.qbsw.core.communication.mail.job.CSendMailTask" />
 
 	<!-- Spring Quartz -->
-	<bean name="sendMailJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<bean name="sendMailJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="sk.qbsw.core.communication.mail.job.CSendMailJob" />
 		<property name="jobDataAsMap">
 			<map>
@@ -22,7 +22,7 @@
 	</bean>
 
 	<!-- Simple Trigger, run every 5 seconds -->
-	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
 		<property name="jobDetail" ref="sendMailJob" />
 		<property name="repeatInterval" value="5000" />
 		<property name="startDelay" value="1000" />

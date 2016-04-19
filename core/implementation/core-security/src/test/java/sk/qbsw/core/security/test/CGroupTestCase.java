@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -33,7 +32,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CGroupTestCase
 {
 	/** The database data generator. */
@@ -67,8 +66,7 @@ public class CGroupTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetByUnit () throws CSecurityException
 	{
 		initTest();
@@ -87,8 +85,7 @@ public class CGroupTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetByUnitUser () throws CSecurityException
 	{
 		initTest();
@@ -107,10 +104,9 @@ public class CGroupTestCase
 		groups = groupService.getByUnitUser(unit2, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 	}
-	
+
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetByCodeAndUnit () throws CSecurityException
 	{
 		initTest();

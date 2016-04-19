@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.communication.mail.dao.IMailDao;
@@ -31,7 +30,7 @@ import sk.qbsw.core.communication.test.mail.util.CTestMailBuilder;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CEmailBackgroundSendTestCase
 {
 	@Autowired
@@ -58,8 +57,7 @@ public class CEmailBackgroundSendTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSendMailToRecipient () throws IOException
 	{
 		//create data
@@ -82,8 +80,7 @@ public class CEmailBackgroundSendTestCase
 	 * @throws IOException 
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSendMailWithAttachmentToRecipient () throws IOException
 	{
 		//create data

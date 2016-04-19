@@ -42,7 +42,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnit(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		CUser user = authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
@@ -56,7 +56,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitIncorrectPassword(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitIncorrectPassword (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "incorrectPassword");
 	}
@@ -66,7 +66,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnit(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		CUser user = authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
@@ -80,7 +80,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitAndRolePositive(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitAndRolePositive (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
@@ -95,7 +95,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitAndRoleNegative(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitAndRoleNegative (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		CRole inputRole = new CRole(CDataGenerator.SECOND_ROLE_CODE);
 		authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole);
@@ -106,7 +106,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnitAndRolePositive(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnitAndRolePositive (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE);
@@ -121,7 +121,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnitAndRoleNegative(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnitAndRoleNegative (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		CRole inputRole = new CRole(CDataGenerator.SECOND_ROLE_CODE);
 		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole);
@@ -132,7 +132,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitAndUnit(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitAndUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(CDataGenerator.SECOND_GROUP_IN_UNIT_CODE);
@@ -147,7 +147,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnitAndUnit(IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnitAndUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(CDataGenerator.SECOND_GROUP_IN_UNIT_CODE);
@@ -161,7 +161,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangePasswordExistingUser(IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testChangePasswordExistingUser (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "change1Password3ExistingUser@";
 		modifierService.changePlainPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
@@ -177,7 +177,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordExistingUser(IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testChangeEncryptedPasswordExistingUser (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		final String newPassword = "change1EncryptedPasswordExistingUser$56";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
@@ -193,8 +193,8 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser(IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, IOrganizationService orgService,
-			CDataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, IOrganizationService orgService,
+		CDataGenerator dataGenerator) throws CSecurityException
 	{
 		//create new user and needed objects
 		CUser newUser = dataGenerator.createUser(CDataGenerator.USER_WITHOUT_PASSWORD);
@@ -217,7 +217,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeLogin(IAuthenticationModifierService authenticationService, IUserService userService) throws CSecurityException
+	public void testChangeLogin (IAuthenticationModifierService authenticationService, IUserService userService) throws CSecurityException
 	{
 		String newLogin = "new1Login#";
 		CUser user = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
@@ -234,7 +234,7 @@ public class CAuthenticationTestProvider
 	 * Test if the source is online.
 	 * 
 	 */
-	public void testIsOnline(IAuthenticationService authenticationService)
+	public void testIsOnline (IAuthenticationService authenticationService)
 	{
 		Assert.assertTrue("Checks is online failed - the source is offline", authenticationService.isOnline());
 	}
@@ -244,7 +244,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginEnabledUserDisabledOrganization(IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	public void testLoginEnabledUserDisabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION, CDataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION);
 	}
@@ -254,7 +254,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginDisabledUserDisabledOrganization(IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	public void testLoginDisabledUserDisabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION, CDataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION);
 	}
@@ -264,7 +264,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginDisabledUserEnabledOrganization(IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	public void testLoginDisabledUserEnabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION, CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION);
 	}
@@ -276,8 +276,9 @@ public class CAuthenticationTestProvider
 	 * @param blockedLoginJpaDao the blocked login jpa dao
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithoutBlocked(ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	public void testBlockedLoginWithoutBlocked (ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -300,6 +301,9 @@ public class CAuthenticationTestProvider
 
 		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
+
+		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		Thread.sleep(1000);
 
 		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -320,8 +324,9 @@ public class CAuthenticationTestProvider
 	 * @param blockedLoginJpaDao the blocked login jpa dao
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithoutBlockedCheckIpNull(ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	public void testBlockedLoginWithoutBlockedCheckIpNull (ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -345,6 +350,8 @@ public class CAuthenticationTestProvider
 		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
+		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		Thread.sleep(1000);
 		boolean isBlocked = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 
 		Assert.assertNotNull(recordIpOne);
@@ -363,8 +370,9 @@ public class CAuthenticationTestProvider
 	 * @param blockedLoginJpaDao the blocked login jpa dao
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithoutBlockedSetIpNull(ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	public void testBlockedLoginWithoutBlockedSetIpNull (ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -388,6 +396,8 @@ public class CAuthenticationTestProvider
 		CBlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
+		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		Thread.sleep(1000);
 		boolean isBlockedIpNull = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
@@ -407,8 +417,9 @@ public class CAuthenticationTestProvider
 	 * @param blockedLoginJpaDao the blocked login jpa dao
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithBlocked(ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	public void testBlockedLoginWithBlocked (ILoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		loginBlockingService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -437,6 +448,8 @@ public class CAuthenticationTestProvider
 		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
+		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		Thread.sleep(1000);
 		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
@@ -456,8 +469,9 @@ public class CAuthenticationTestProvider
 	 * @param blockedLoginJpaDao the blocked login jpa dao
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException 
 	 */
-	public void testBlockedLoginWithBlockedCheckIpNull(ILoginBlockingService blockingLoginService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	public void testBlockedLoginWithBlockedCheckIpNull (ILoginBlockingService blockingLoginService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		blockingLoginService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		blockingLoginService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -486,6 +500,8 @@ public class CAuthenticationTestProvider
 		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_ONE);
 		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
+		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		Thread.sleep(1000);
 		boolean isBlocked = blockingLoginService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 
 		Assert.assertNotNull(recordIpOne);
@@ -504,8 +520,9 @@ public class CAuthenticationTestProvider
 	 * @param blockedLoginJpaDao the blocked login jpa dao
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithBlockedSetIpNull(ILoginBlockingService blockingLoginService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException
+	public void testBlockedLoginWithBlockedSetIpNull (ILoginBlockingService blockingLoginService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		blockingLoginService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		blockingLoginService.increaseInvalidLoginCounter(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
@@ -534,6 +551,8 @@ public class CAuthenticationTestProvider
 		CBlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
+		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		Thread.sleep(1000);
 		boolean isBlockedIpNull = blockingLoginService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		boolean isBlockedIpTwo = blockingLoginService.isLoginBlocked(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.TEST_IP_TWO);
 
@@ -552,7 +571,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidFromAuthParam(IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testLoginInvalidFromAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, DateTime.now().plusHours(2), null);
@@ -566,7 +585,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidToAuthParam(IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testLoginInvalidToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, DateTime.now().minusHours(1));
@@ -580,7 +599,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidFromAndToAuthParam(IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testLoginInvalidFromAndToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, DateTime.now().minusHours(2), DateTime.now().minusHours(1));
@@ -594,7 +613,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangePasswordNullFromAndToAuthParam(IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testChangePasswordNullFromAndToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, null);
@@ -611,7 +630,7 @@ public class CAuthenticationTestProvider
 	 * @param expectedGroupsSize The expected size of groups for user
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithRole(IAuthenticationService authenticationService, String login, String password, CRole inputRole, Set<String> expectedGroups) throws CSecurityException
+	private void testLoginWithRole (IAuthenticationService authenticationService, String login, String password, CRole inputRole, Set<String> expectedGroups) throws CSecurityException
 	{
 		//define output role - found in user
 		CRole outputRole = null;
@@ -668,7 +687,7 @@ public class CAuthenticationTestProvider
 	 * @param expectedGroupsSize The expected size of groups for user
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithUnit(IAuthenticationService authenticationService, String login, String password, String unit, Set<String> expectedGroups) throws CSecurityException
+	private void testLoginWithUnit (IAuthenticationService authenticationService, String login, String password, String unit, Set<String> expectedGroups) throws CSecurityException
 	{
 		CUnit outputUnit = null;
 

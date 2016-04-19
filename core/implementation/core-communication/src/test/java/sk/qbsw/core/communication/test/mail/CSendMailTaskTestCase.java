@@ -15,7 +15,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +38,7 @@ import sk.qbsw.core.testing.mock.IMockHelper;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CSendMailTaskTestCase
 {
 
@@ -91,8 +90,7 @@ public class CSendMailTaskTestCase
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testOneCommunicationFailure () throws Exception
 	{
 		//reset mockito
@@ -129,8 +127,7 @@ public class CSendMailTaskTestCase
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSuccessRun () throws Exception
 	{
 		//reset mockito
@@ -161,8 +158,7 @@ public class CSendMailTaskTestCase
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCommunicationFailure () throws Exception
 	{
 		//reset mockito
@@ -196,8 +192,7 @@ public class CSendMailTaskTestCase
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testDataFailure () throws Exception
 	{
 		//reset mockito

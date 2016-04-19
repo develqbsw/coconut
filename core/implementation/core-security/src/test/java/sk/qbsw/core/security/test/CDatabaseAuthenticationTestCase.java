@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -32,27 +31,27 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  * Checks Authentication service for database.
  *
  * @autor Tomas Lauro
- * @version 1.12.2
+ * 
+ * @version 1.15.0
  * @since 1.6.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/spring/test-context.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@RunWith (SpringJUnit4ClassRunner.class)
+@ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
+@Rollback (true)
 public class CDatabaseAuthenticationTestCase
 {
-
 	/** The database data generator. */
 	@Autowired
 	private CDataGenerator dataGenerator;
 
 	/** The authentication service. */
 	@Autowired
-	@Qualifier("cLoginService")
+	@Qualifier ("cLoginService")
 	private IAuthenticationService authenticationService;
 
 	/** The authentication service. */
 	@Autowired
-	@Qualifier("cLoginService")
+	@Qualifier ("cLoginService")
 	private IAuthenticationModifierService authenticationModifierService;
 
 	/** The login blocking service. */
@@ -87,7 +86,7 @@ public class CDatabaseAuthenticationTestCase
 	 * Inits the test case.
 	 */
 	@Before
-	public void initTestCase()
+	public void initTestCase ()
 	{
 		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
 	}
@@ -96,7 +95,7 @@ public class CDatabaseAuthenticationTestCase
 	 * Test initialization.
 	 */
 	@Test
-	public void testInitialization()
+	public void testInitialization ()
 	{
 		assertNotNull("Could not find Authentication service", authenticationService);
 	}
@@ -107,9 +106,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithDefaultUnit() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithDefaultUnit () throws CSecurityException
 	{
 		initTest();
 
@@ -121,10 +119,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	@Test(expected = CSecurityException.class)
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithDefaultUnitIncorrectPassword() throws CSecurityException
+	@Test (expected = CSecurityException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithDefaultUnitIncorrectPassword () throws CSecurityException
 	{
 		initTest();
 
@@ -137,9 +134,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithoutDefaultUnit() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithoutDefaultUnit () throws CSecurityException
 	{
 		initTest();
 
@@ -152,9 +148,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithDefaultUnitAndRolePositive() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithDefaultUnitAndRolePositive () throws CSecurityException
 	{
 		initTest();
 
@@ -166,10 +161,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	@Test(expected = CSecurityException.class)
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithDefaultUnitAndRoleNegative() throws CSecurityException
+	@Test (expected = CSecurityException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithDefaultUnitAndRoleNegative () throws CSecurityException
 	{
 		initTest();
 
@@ -182,9 +176,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithoutDefaultUnitAndRolePositive() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithoutDefaultUnitAndRolePositive () throws CSecurityException
 	{
 		initTest();
 
@@ -196,10 +189,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	@Test(expected = CSecurityException.class)
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithoutDefaultUnitAndRoleNegative() throws CSecurityException
+	@Test (expected = CSecurityException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithoutDefaultUnitAndRoleNegative () throws CSecurityException
 	{
 		initTest();
 
@@ -212,9 +204,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithDefaultUnitAndUnit() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithDefaultUnitAndUnit () throws CSecurityException
 	{
 		initTest();
 
@@ -227,9 +218,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testLoginWithoutDefaultUnitAndUnit() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginWithoutDefaultUnitAndUnit () throws CSecurityException
 	{
 		initTest();
 
@@ -242,9 +232,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangePasswordExistingUser() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangePasswordExistingUser () throws CSecurityException
 	{
 		initTest();
 
@@ -257,9 +246,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangeEncryptedPasswordExistingUser() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangeEncryptedPasswordExistingUser () throws CSecurityException
 	{
 		initTest();
 
@@ -272,9 +260,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangeEncryptedPasswordNewUser() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangeEncryptedPasswordNewUser () throws CSecurityException
 	{
 		initTest();
 
@@ -287,9 +274,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangeLogin() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangeLogin () throws CSecurityException
 	{
 		initTest();
 
@@ -302,9 +288,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional(readOnly = true)
-	@Rollback(true)
-	public void testIsOnline()
+	@Transactional (transactionManager = "transactionManager")
+	public void testIsOnline ()
 	{
 		initTest();
 
@@ -316,10 +301,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	@Test(expected = CUserDisabledException.class)
-	@Transactional(readOnly = true)
-	@Rollback(true)
-	public void testLoginEnabledUserDisabledOrganization() throws CSecurityException
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginEnabledUserDisabledOrganization () throws CSecurityException
 	{
 		initTest();
 
@@ -331,10 +315,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	@Test(expected = CUserDisabledException.class)
-	@Transactional(readOnly = true)
-	@Rollback(true)
-	public void testLoginDisabledUserDisabledOrganization() throws CSecurityException
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginDisabledUserDisabledOrganization () throws CSecurityException
 	{
 		initTest();
 
@@ -346,10 +329,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	@Test(expected = CUserDisabledException.class)
-	@Transactional(readOnly = true)
-	@Rollback(true)
-	public void testLoginDisabledUserEnabledOrganization() throws CSecurityException
+	@Test (expected = CUserDisabledException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginDisabledUserEnabledOrganization () throws CSecurityException
 	{
 		initTest();
 
@@ -361,11 +343,11 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testBlockedLoginWithoutBlocked() throws CSystemException, CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testBlockedLoginWithoutBlocked () throws CSystemException, CSecurityException, InterruptedException
 	{
 		initTest();
 
@@ -377,11 +359,11 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testBlockedLoginWithoutBlockedCheckIpNull() throws CSystemException, CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testBlockedLoginWithoutBlockedCheckIpNull () throws CSystemException, CSecurityException, InterruptedException
 	{
 		initTest();
 
@@ -393,11 +375,11 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testBlockedLoginWithoutBlockedSetIpNull() throws CSystemException, CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testBlockedLoginWithoutBlockedSetIpNull () throws CSystemException, CSecurityException, InterruptedException
 	{
 		initTest();
 
@@ -409,11 +391,11 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testBlockedLoginWithBlocked() throws CSystemException, CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testBlockedLoginWithBlocked () throws CSystemException, CSecurityException, InterruptedException
 	{
 		initTest();
 
@@ -425,11 +407,11 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException 
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testBlockedLoginWithBlockedCheckIpNull() throws CSystemException, CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testBlockedLoginWithBlockedCheckIpNull () throws CSystemException, CSecurityException, InterruptedException
 	{
 		initTest();
 
@@ -441,11 +423,11 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
+	 * @throws InterruptedException the interrupted exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testBlockedLoginWithBlockedSetIpNull() throws CSystemException, CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testBlockedLoginWithBlockedSetIpNull () throws CSystemException, CSecurityException, InterruptedException
 	{
 		initTest();
 
@@ -457,10 +439,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
-	@Test(expected = CInvalidAuthenticationException.class)
-	@Transactional
-	@Rollback(true)
-	public void testLoginInvalidFromAuthParam() throws CSecurityException
+	@Test (expected = CInvalidAuthenticationException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginInvalidFromAuthParam () throws CSecurityException
 	{
 		initTest();
 
@@ -472,10 +453,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
-	@Test(expected = CInvalidAuthenticationException.class)
-	@Transactional
-	@Rollback(true)
-	public void testLoginInvalidToAuthParam() throws CSecurityException
+	@Test (expected = CInvalidAuthenticationException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginInvalidToAuthParam () throws CSecurityException
 	{
 		initTest();
 
@@ -487,10 +467,9 @@ public class CDatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
-	@Test(expected = CInvalidAuthenticationException.class)
-	@Transactional
-	@Rollback(true)
-	public void testLoginInvalidFromAndToAuthParam() throws CSecurityException
+	@Test (expected = CInvalidAuthenticationException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginInvalidFromAndToAuthParam () throws CSecurityException
 	{
 		initTest();
 
@@ -503,9 +482,8 @@ public class CDatabaseAuthenticationTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangePasswordNullFromAndToAuthParam() throws CSecurityException
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangePasswordNullFromAndToAuthParam () throws CSecurityException
 	{
 		initTest();
 
@@ -515,7 +493,7 @@ public class CDatabaseAuthenticationTestCase
 	/**
 	 * Inits the test.
 	 */
-	private void initTest()
+	private void initTest ()
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();
 	}

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -31,7 +30,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CUnitTestCase
 {
 	/** The database data generator. */
@@ -62,8 +61,7 @@ public class CUnitTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAll () throws CSecurityException
 	{
 		initTest();
@@ -81,8 +79,7 @@ public class CUnitTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllByUser () throws CSecurityException
 	{
 		initTest();
