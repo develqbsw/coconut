@@ -5,7 +5,7 @@ import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapConnectionPool;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
-import org.apache.directory.ldap.client.api.PoolableLdapConnectionFactory;
+import org.apache.directory.ldap.client.api.DefaultPoolableLdapConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -260,7 +260,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		config.setCredentials(ldapUserPassword);
 		config.setUseSsl(useSslFlag);
 
-		PoolableLdapConnectionFactory factory = new PoolableLdapConnectionFactory(config);
+		DefaultPoolableLdapConnectionFactory factory = new DefaultPoolableLdapConnectionFactory(config);
 		LdapConnectionPool pool = new LdapConnectionPool(factory);
 
 		configConnectionPool(pool);
