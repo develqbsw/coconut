@@ -1,15 +1,14 @@
 package sk.qbsw.core.configuration.test;
 
-import junit.framework.Assert;
 
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.configuration.dao.ISystemParameterDao;
@@ -24,9 +23,9 @@ import sk.qbsw.core.configuration.service.ISystemParameterService;
  * @version 1.12.0
  * @since 1.11.10
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/spring/test-context.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@RunWith (SpringJUnit4ClassRunner.class)
+@ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
+@Rollback (true)
 public class CSystemParameterTestCase
 {
 
@@ -54,9 +53,8 @@ public class CSystemParameterTestCase
 	 * Get system parameter.
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void findByName()
+	@Transactional (transactionManager = "transactionManager")
+	public void findByName ()
 	{
 		//create test data
 		createTestParameters();
@@ -71,9 +69,8 @@ public class CSystemParameterTestCase
 	 * Get encrypted system parameter.
 	 */
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testGetEncryptedParameter()
+	@Transactional (transactionManager = "transactionManager")
+	public void testGetEncryptedParameter ()
 	{
 		//create test data
 		createTestParameters();
@@ -88,7 +85,7 @@ public class CSystemParameterTestCase
 	/**
 	 * Creates the test data.
 	 */
-	private void createTestParameters()
+	private void createTestParameters ()
 	{
 		CSystemParameter systemParameter = new CSystemParameter();
 		systemParameter.setName(TEST_SYSTEM_PARAMETER_NAME);

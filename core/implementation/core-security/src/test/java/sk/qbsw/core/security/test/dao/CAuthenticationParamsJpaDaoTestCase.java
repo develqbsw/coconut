@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -54,8 +53,7 @@ public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByUserIdPositive () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -72,8 +70,7 @@ public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find one by user id negative.
 	 */
 	@Test (expected = NoResultException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByUserIdNegative ()
 	{
 		initTest();
@@ -90,8 +87,7 @@ public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneValidByUserIdPositive () throws NoResultException, CSecurityException
 	{
 		initTest();

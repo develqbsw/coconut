@@ -1,14 +1,13 @@
 package sk.qbsw.core.security.oauth.test;
 
-import junit.framework.Assert;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
@@ -27,7 +26,7 @@ import sk.qbsw.core.security.oauth.test.util.CDataGenerator;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CMasterTokenTestCase
 {
 	/** The user dao. */
@@ -48,8 +47,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateMasterTokenTest () throws CBusinessException
 	{
 		initTest();
@@ -66,8 +64,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateMasterTokenInvalidParametersTest () throws CBusinessException
 	{
 		initTest();
@@ -81,8 +78,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateMasterTokenUserNotFoundTest () throws CBusinessException
 	{
 		initTest();
@@ -96,8 +92,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateMasterTokenTokenExistsTest () throws CBusinessException
 	{
 		initTest();
@@ -115,8 +110,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void revokeMasterTokenTest () throws CBusinessException
 	{
 		initTest();
@@ -131,8 +125,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void revokeMasterTokenTokenNotFoundTest () throws CBusinessException
 	{
 		initTest();
@@ -148,8 +141,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void getUserByMasterTokenTest () throws CBusinessException
 	{
 		initTest();
@@ -166,8 +158,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void getUserByMasterTokenInvalidIpTest () throws CBusinessException
 	{
 		initTest();
@@ -182,8 +173,7 @@ public class CMasterTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void getUserByMasterTokenInvalidIpNullTest () throws CBusinessException
 	{
 		initTest();

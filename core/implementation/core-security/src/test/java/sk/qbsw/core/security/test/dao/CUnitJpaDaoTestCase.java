@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -54,8 +53,7 @@ public class CUnitJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByNamePositive () throws CSecurityException
 	{
 		initTest();
@@ -73,8 +71,7 @@ public class CUnitJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = NoResultException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByNameNegativeNoResult () throws CSecurityException
 	{
 		initTest();
@@ -88,8 +85,7 @@ public class CUnitJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByNameNegativeNoName () throws CSecurityException
 	{
 		initTest();
@@ -103,8 +99,7 @@ public class CUnitJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserIdPositive () throws CSecurityException
 	{
 		initTest();
@@ -124,8 +119,7 @@ public class CUnitJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserIdPositiveNotFound () throws CSecurityException
 	{
 		initTest();
@@ -143,8 +137,7 @@ public class CUnitJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserIdPositiveNoUserId () throws CSecurityException
 	{
 		initTest();

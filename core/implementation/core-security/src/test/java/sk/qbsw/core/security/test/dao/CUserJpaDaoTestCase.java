@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -77,8 +76,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByIdPositive () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -95,8 +93,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find by id negative.
 	 */
 	@Test (expected = NoResultException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByIdNegative ()
 	{
 		initTest();
@@ -111,8 +108,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginPositiveWithDefaultUnit () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -131,8 +127,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginPositiveWithoutDefaultUnit () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -151,8 +146,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = NoResultException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginNegativeNoResult () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -167,8 +161,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginNegativeNoLogin () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -183,8 +176,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndUnitPositiveWithDefaultUnit () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -204,8 +196,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndUnitPositiveWithoutDefaultUnit () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -225,8 +216,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = NoResultException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndUnitNegativeUserNotInUnit () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -242,8 +232,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = NoResultException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndUnitNegativeNoResult () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -259,8 +248,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndUnitNegativeNoLogin () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -276,8 +264,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByPinCodePositive () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -297,8 +284,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByPinCodePositiveNoResult () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -317,8 +303,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByPinCodeNegativeNoPin () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -330,8 +315,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * Test count all positive.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCountAllPositive ()
 	{
 		initTest();
@@ -346,8 +330,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find all positive.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindAllPositive ()
 	{
 		initTest();
@@ -363,8 +346,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find all positive no data.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindAllPositiveNoData ()
 	{
 		List<CUser> users = userDao.findAll();
@@ -381,8 +363,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUnitAndGroupPositiveBothWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -410,8 +391,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUnitAndGroupNegativeWithUnitWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -434,8 +414,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUnitAndGroupPositiveWithGroupWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -462,8 +441,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUnitAndGroupNegativeNoneWithoutOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -478,8 +456,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUnitAndGroupNegativeNoneNoResult () throws NoResultException, CSecurityException
 	{
 		userDao.findByUnitAndGroup(null, null, null);
@@ -492,8 +469,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserDetailFilterPositiveWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -527,8 +503,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserDetailFilterPositiveNoResultOneWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -561,8 +536,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserDetailFilterPositiveNoDataWithOrderModel () throws NoResultException, CSecurityException
 	{
 		//without initialization
@@ -594,8 +568,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserDetailFilterPositiveNoneWithoutOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -619,8 +592,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAssociationsFilterPositiveWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -650,8 +622,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAssociationsFilterPositiveNoResultOneWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
@@ -681,8 +652,7 @@ public class CUserJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAssociationsFilterPositiveNoneWithoutOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();

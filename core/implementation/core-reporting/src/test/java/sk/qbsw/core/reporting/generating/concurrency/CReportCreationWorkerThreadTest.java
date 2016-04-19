@@ -1,11 +1,9 @@
 package sk.qbsw.core.reporting.generating.concurrency;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sk.qbsw.core.reporting.generating.concurrency.IReportCreatorWorkerTask;
 import sk.qbsw.core.reporting.generating.mock.ASpringTest;
 import sk.qbsw.core.reporting.generating.mock.model.CReportRequestMock;
 import sk.qbsw.core.reporting.generating.mock.service.CReportCreatorForMockService;

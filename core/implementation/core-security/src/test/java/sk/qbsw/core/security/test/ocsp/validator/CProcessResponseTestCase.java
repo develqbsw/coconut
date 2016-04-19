@@ -1,11 +1,10 @@
 package sk.qbsw.core.security.test.ocsp.validator;
 
-import static junit.framework.Assert.assertTrue;
-
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.util.logging.Logger;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +21,8 @@ import sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
  * @version 1.11.9
  * @since 1.11.9
  */
-public class CProcessResponseTestCase {
+public class CProcessResponseTestCase
+{
 
 	/** The validator. */
 	private IOCSPCertValidator validator;
@@ -31,7 +31,8 @@ public class CProcessResponseTestCase {
 	 * Sets the up.
 	 */
 	@Before
-	public void setUp() {
+	public void setUp ()
+	{
 		validator = new COCSPCertValidatorBCImpl();
 		Logger.getLogger(CProcessResponseTestCase.class.getName()).fine("Setup");
 	}
@@ -43,14 +44,15 @@ public class CProcessResponseTestCase {
 	 *             the certificate exception
 	 */
 	@Test
-	public void testGetResponseSuccess() throws CertificateException {
+	public void testGetResponseSuccess () throws CertificateException
+	{
 		InputStream is = this.getClass().getResourceAsStream("/certs/ocsp-ok.resp");
 		COCSPValidationResult result = validator.processResponse(is);
 
 		// must be good
-		assertTrue(result.getCertificateStatus().equals(CertStatus.GOOD));
+		Assert.assertTrue(result.getCertificateStatus().equals(CertStatus.GOOD));
 
 		// must be successful
-		assertTrue(result.getOcspStatus().equals(EOCSPResponseStatus.SUCCESSFUL));
+		Assert.assertTrue(result.getOcspStatus().equals(EOCSPResponseStatus.SUCCESSFUL));
 	}
 }

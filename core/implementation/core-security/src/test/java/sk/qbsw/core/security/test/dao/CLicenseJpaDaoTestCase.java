@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.ILicenseDao;
@@ -49,8 +48,7 @@ public class CLicenseJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find by organization id positive.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByOrganizationIdPositive ()
 	{
 		initTest();
@@ -68,8 +66,7 @@ public class CLicenseJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find by organization id positive no license found.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByOrganizationIdPositiveNoLicenseFound ()
 	{
 		initTest();

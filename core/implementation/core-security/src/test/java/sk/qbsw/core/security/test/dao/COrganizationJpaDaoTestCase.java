@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.security.dao.IOrganizationDao;
@@ -42,8 +41,7 @@ public class COrganizationJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find by name positive.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByNamePositive ()
 	{
 		initTest();
@@ -59,8 +57,7 @@ public class COrganizationJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find by name positive no name.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByNamePositiveNoName ()
 	{
 		initTest();
@@ -76,8 +73,7 @@ public class COrganizationJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find by name positive not found.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByNamePositiveNotFound ()
 	{
 		initTest();
@@ -93,8 +89,7 @@ public class COrganizationJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find all positive.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindAllPositive ()
 	{
 		initTest();
@@ -110,8 +105,7 @@ public class COrganizationJpaDaoTestCase extends ADatabaseTestCase
 	 * Test find all positive no result.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindAllPositiveNoResult ()
 	{
 		//without init to database
