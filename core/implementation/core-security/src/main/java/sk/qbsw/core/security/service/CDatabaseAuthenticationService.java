@@ -52,7 +52,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private IUserDao userDao;   
 
 	/** The unit dao. */
 	@Autowired
@@ -92,9 +92,9 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @param passwordToCheck the password to check
 	 * @throws CInvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
+	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String login,String passwordToCheck) throws CInvalidPasswordException
 	{
-		if (authenticationParams.getPasswordDigest() == null || digester.checkPassword(passwordToCheck, authenticationParams.getPasswordDigest()) == false)
+		if (authenticationParams.getPasswordDigest() == null || digester.checkPassword(login,passwordToCheck, authenticationParams.getPasswordDigest()) == false)
 		{
 			throw new CInvalidPasswordException("Password dogest doesn't match");
 		}
@@ -221,7 +221,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			switch (authenticationType)
 			{
 				case BY_PASSWORD_DIGEST:
-					authenticateByPasswordDigest(userAuthParams, password);
+					authenticateByPasswordDigest(userAuthParams,login, password);
 					break;
 				case BY_PASSWORD:
 					authenticateByPassword(userAuthParams, password);
@@ -368,7 +368,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 		if (encrypt == true)
 		{
-			authParams.setPasswordDigest(digester.generateDigest(password));
+			authParams.setPasswordDigest(digester.generateDigest(login,password));
 			authParams.setPassword(null);
 		}
 		else

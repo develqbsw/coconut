@@ -119,7 +119,7 @@ abstract class ATokenService
 	{
 		if (authenticationToken != null)
 		{
-			if (oauthConfigurator.isIpIgnored() == false)
+			if (oauthConfigurator.isAuthIpIgnored() == false)
 			{
 				if ( (authenticationToken.getIp() != null && authenticationToken.getIp().equals(ip) == false) || (authenticationToken.getIp() == null && ip != null))
 				{

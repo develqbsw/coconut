@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
@@ -21,11 +22,14 @@ import sk.qbsw.core.security.service.IUserService;
  * Service for getting user details
  * 
  * @author Dalibor Rak
- * @version 1.13.0
+ * @author Marek Martinkovic
+ * 
+ * @version 1.14.3
  * @since 1.6.0
  */
 public class CUserDetailsService extends AService implements UserDetailsService
 {
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CUserDetailsService.class);
 
 	/** The user service. */
@@ -42,6 +46,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
 	 */
 	@Override
+	@Transactional (readOnly = true)
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
 	{
 		CUser user;
@@ -59,6 +64,23 @@ public class CUserDetailsService extends AService implements UserDetailsService
 		{
 			throw new UsernameNotFoundException(String.format("User '%s' not found", username));
 		}
+
+		UserDetails retVal = constructUserDetails(user);
+		return retVal;
+	}
+
+	/**
+	 * override creation 
+	 * here you can do any lazy load
+	 * @param user
+	 * @return
+	 */
+	protected UserDetails constructUserDetails (CUser user)
+	{
+		//lazy load of special params
+		//they will be needed
+		user.exportRoles();
+		user.getPassword();
 
 		CUserDetails retVal = new CUserDetails();
 		retVal.setUser(user);
