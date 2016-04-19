@@ -55,7 +55,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
-			<artifactId>minis</artifactId>
+			<artifactId>wicketstuff-minis</artifactId>
 		</dependency>
 
 		<!-- Slf4j -->
