@@ -12,7 +12,7 @@
 
 		<!-- compiling projects -->
 		<compiler.version>3.5.1</compiler.version>
-		
+
 		<!-- Maven -->
 		<maven-apt-plugin.version>1.0.4</maven-apt-plugin.version>
 		<maven-source-plugin.version>2.4</maven-source-plugin.version>
@@ -21,7 +21,7 @@
 		<!-- QBSW dependences -->
 		<indy.version>${project.version}</indy.version>
 		<core.version>${project.version}</core.version>
-		
+
 		<!-- Java -->
 		<java.version>1.8</java.version>
 		<javaee.version>7.0</javaee.version>
@@ -50,7 +50,7 @@
 		<!-- Logging -->
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.21</slf4j.version>
-		
+
 		<!-- Testing -->
 		<junit.version>4.12</junit.version>
 		<mockito.version>1.10.19</mockito.version>
@@ -94,13 +94,16 @@
 		<!-- Wicket -->
 		<wicketstuff.minis>6.22.0</wicketstuff.minis>
 		<wicket.version>6.22.0</wicket.version>
+		
+		<!-- Testing -->
+		<tempusfugit.version>1.1</tempusfugit.version>
 	</properties>
 
 	<modules>
 		<module>core</module>
 		<module>indy</module>
 	</modules>
-	
+
 	<repositories>
 		<repository>
 			<id>jboss-public-repository-group</id>
@@ -180,7 +183,7 @@
 				<artifactId>core-api</artifactId>
 				<version>${core.version}</version>
 			</dependency>
-			
+
 			<!-- QBSW indy -->
 			<dependency>
 				<groupId>sk.qbsw</groupId>
@@ -445,6 +448,11 @@
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>
 				<version>${mockito.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.tempus-fugit</groupId>
+				<artifactId>tempus-fugit</artifactId>
+				<version>${tempusfugit.version}</version>
 			</dependency>
 
 			<!-- jdbc drivers -->
