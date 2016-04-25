@@ -68,9 +68,6 @@ public class CSFTPVRPConnectPerfTestCase {
 		fe.connect();
 		System.out.println("Connected.");
 
-		List<String> content = fe.ls("./", EFileType.DIRECTORY);
-		System.out.println("Content size:" + content.size());
-
 		System.out.println("Disconnecting...");
 		fe.disconnect();
 		System.out.println("Disconnected.");
