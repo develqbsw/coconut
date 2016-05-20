@@ -185,7 +185,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @throws CInvalidUserException the user with given login not found
 	 * @throws CInvalidPasswordException the invalid password
 	 */
-	private CUser loginWithUnit (String login, String password, CUnit unit) throws CInvalidUserException, CInvalidPasswordException
+	private CUser loginWithUnit (String login, String password, CUnit unit) throws CUserDisabledException, CInvalidAuthenticationException, CInvalidUserException, CInvalidPasswordException
 	{
 		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
 

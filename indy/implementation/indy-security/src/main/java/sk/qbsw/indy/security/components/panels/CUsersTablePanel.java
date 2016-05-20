@@ -42,7 +42,7 @@ public abstract class CUsersTablePanel extends Panel
 	{
 		super(id);
 
-		List<IColumn<?,?>> columns = new ArrayList<IColumn<?,?>>();
+		List<IColumn<?, ?>> columns = new ArrayList<IColumn<?, ?>>();
 
 		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.name", null), "name"));
 		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.surname", null), "surname"));
@@ -120,7 +120,9 @@ public abstract class CUsersTablePanel extends Panel
 				}
 			};
 			add(link);
-			link.add(detailImage = new Image("detail", new PackageResourceReference(CUsersTablePanel.class, "detail.png")));
+
+			detailImage = new Image("detail", new PackageResourceReference(CUsersTablePanel.class, "detail.png"));
+			link.add(detailImage);
 
 			detailImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.detail", null)));
 
@@ -135,7 +137,8 @@ public abstract class CUsersTablePanel extends Panel
 				}
 			};
 			add(passwdLink);
-			passwdLink.add(passwdImage = new Image("passwd", new PackageResourceReference(CUsersTablePanel.class, "password.png")));
+			passwdImage = new Image("passwd", new PackageResourceReference(CUsersTablePanel.class, "password.png"));
+			passwdLink.add(passwdImage);
 
 			passwdImage.add(new AttributeModifier("title", new StringResourceModel("tooltip.passwd", null)));
 		}

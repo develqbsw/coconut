@@ -93,7 +93,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 	private void init ()
 	{
 		setType(Calendar.class);
-		add(hoursField = new TextField<Integer>("hours", new PropertyModel<Integer>(this, "hours"), Integer.class)
+		hoursField = new TextField<Integer>("hours", new PropertyModel<Integer>(this, "hours"), Integer.class)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -120,7 +120,8 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 					}
 				}
 			}
-		});
+		};
+		add(hoursField);
 		hoursField.add(new RangeValidator<Integer>(0, 23)
 		{
 
@@ -146,7 +147,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 		});
 		hoursField.setLabel(new Model<String>("hours"));
 
-		add(minutesField = new TextField<Integer>("minutes", new PropertyModel<Integer>(this, "minutes"), Integer.class)
+		minutesField = new TextField<Integer>("minutes", new PropertyModel<Integer>(this, "minutes"), Integer.class)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -173,7 +174,8 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 					}
 				}
 			}
-		});
+		};
+		add(minutesField);
 		minutesField.add(new RangeValidator<Integer>(0, 59)
 		{
 
@@ -199,7 +201,8 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 		});
 		minutesField.setLabel(new Model<String>("minutes"));
 
-		add(timeZomeChoice = new DropDownChoice<String>("timezone", new PropertyModel<String>(this, "timeZone"), EtcTimeZones.values()));
+		timeZomeChoice = new DropDownChoice<String>("timezone", new PropertyModel<String>(this, "timeZone"), EtcTimeZones.values());
+		add(timeZomeChoice);
 		// initial one value
 		timeZomeChoice.setModelObject("Etc/GMT+1");
 
