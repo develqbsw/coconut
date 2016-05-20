@@ -99,7 +99,15 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 		}
 
 		// throws last exception
-		throw new CApiHttpException("Repeated call failed", lastEx, lastEx.getHttpErrorCode(), lastEx.getResponse());
+		if (lastEx != null)
+		{
+			throw new CApiHttpException("Repeated call failed", lastEx, lastEx.getHttpErrorCode(), lastEx.getResponse());
+		}
+		else
+		{
+			throw new CApiHttpException("Repeated call failed", lastEx, 500);
+		}
+
 	}
 
 	/**
@@ -178,12 +186,10 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	 */
 	protected String getEntityContent (HttpResponse response) throws IOException
 	{
-		StringBuffer output = new StringBuffer();
-		Reader inputReader = null;
-		try
+		StringBuilder output = new StringBuilder();
+		try (Reader inputReader = createInputStreamReader(response.getEntity()))
 		{
 			//create readers
-			inputReader = createInputStreamReader(response.getEntity());
 			BufferedReader br = new BufferedReader(inputReader);
 
 			//reads output
@@ -197,26 +203,8 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 			}
 			finally
 			{
-				if (br != null)
-				{
-					br.close();
-				}
+				br.close();
 			}
-		}
-		finally
-		{
-			if (inputReader != null)
-			{
-				try
-				{
-					inputReader.close();
-				}
-				catch (IOException e)
-				{
-					// nothing to do
-				}
-			}
-
 		}
 		return output.toString();
 	}
@@ -229,7 +217,7 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 	 * @throws IllegalStateException the illegal state exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	private Reader createInputStreamReader (HttpEntity httpEntity) throws IllegalStateException, IOException
+	private Reader createInputStreamReader (HttpEntity httpEntity) throws IOException
 	{
 		//get charset from response
 		ContentType contentType = ContentType.get(httpEntity);
