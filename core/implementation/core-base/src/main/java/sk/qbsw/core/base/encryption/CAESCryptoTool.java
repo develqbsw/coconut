@@ -26,7 +26,8 @@ import sk.qbsw.core.base.exception.CSecurityException;
  * @version 1.12.0
  * @since 1.12.0
  */
-public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<byte[], byte[]> {
+public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<byte[], byte[]>
+{
 
 	/** The Constant CIPHER_TYPE. */
 	private static final String CIPHER_TYPE = "AES/CBC/PKCS5Padding";
@@ -51,7 +52,8 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 *
 	 * @param key the key in Base64 encoding
 	 */
-	public void init(String key) {
+	public void init (String key)
+	{
 		init(Base64.decodeBase64(key));
 	}
 
@@ -60,16 +62,19 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 *
 	 * @param key key to use
 	 */
-	public void init(byte[] key) {
+	public void init (byte[] key)
+	{
 		this.encryptionKey = key;
 	}
 
 	/**
 	 * Inits the encryption tool using CAESCryptoTool.key value.
 	 */
-	public void init() {
+	public void init ()
+	{
 		String keyFromSystem = System.getProperty("CAESCryptoTool.key");
-		if (keyFromSystem != null && keyFromSystem.length() > 0) {
+		if (keyFromSystem != null && keyFromSystem.length() > 0)
+		{
 			this.init(keyFromSystem);
 		}
 	}
@@ -78,14 +83,19 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 * @see sk.qbsw.core.base.encryption.IDecryptor#decrypt(java.lang.Object)
 	 */
 	@Override
-	public byte[] decrypt(byte[] cipherData) throws CSecurityException {
+	public byte[] decrypt (byte[] cipherData) throws CSecurityException
+	{
 		if (cipherData == null || cipherData.length == 0)
+		{
 			throw new InvalidParameterException("CipherData cannot be null");
-
-		try {
+		}
+		try
+		{
 			Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
 			return cipher.doFinal(cipherData);
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 			throw new CSecurityException("Cannot decrypt data", ex);
 		}
 	}
@@ -94,15 +104,20 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 * @see sk.qbsw.core.base.encryption.IEncryptor#encrypt(java.lang.Object)
 	 */
 	@Override
-	public byte[] encrypt(byte[] plain) throws CSecurityException {
+	public byte[] encrypt (byte[] plain) throws CSecurityException
+	{
 		if (plain == null || plain.length == 0)
+		{
 			throw new InvalidParameterException("Plain cannot be null");
+		}
 
-		try {
+		try
+		{
 			Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
-			byte[] cipherArray = cipher.doFinal(plain);
-			return cipherArray;
-		} catch (Exception ex) {
+			return cipher.doFinal(plain);
+		}
+		catch (Exception ex)
+		{
 			throw new CSecurityException("Cannot encrypt data", ex);
 		}
 	}
@@ -119,8 +134,8 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 * @throws InvalidKeyException the invalid key exception
 	 * @throws InvalidAlgorithmParameterException the invalid algorithm parameter exception
 	 */
-	private synchronized Cipher getCipher(int mode) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, InvalidKeyException,
-			InvalidAlgorithmParameterException {
+	private synchronized Cipher getCipher (int mode) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, InvalidKeyException, InvalidAlgorithmParameterException
+	{
 		Cipher cipher = Cipher.getInstance(CIPHER_TYPE, CIPHER_PROVIDER);
 		SecretKeySpec key = new SecretKeySpec(encryptionKey, CIPHER_ALG);
 		cipher.init(mode, key, new IvParameterSpec(IV.getBytes(ENCODING)));
@@ -133,8 +148,10 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 	 * @param keyPart keyPart for generating message
 	 * @return the key encoded in Base64
 	 */
-	public static String generateKey(String keyPart) throws CSecurityException {
-		try {
+	public static String generateKey (String keyPart) throws CSecurityException
+	{
+		try
+		{
 			if (keyPart == null || keyPart.length() < 5)
 			{
 				throw new InvalidParameterException("Key part is too short");
@@ -148,8 +165,10 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 			key = sha.digest(key);
 			key = Arrays.copyOf(key, 16);
 			return Base64.encodeBase64String(key);
-		} catch (Throwable th) {
-			throw new CSecurityException("Cannot encrypt data", th);
+		}
+		catch (Exception ex)
+		{
+			throw new CSecurityException("Cannot encrypt data", ex);
 		}
 	}
 }
