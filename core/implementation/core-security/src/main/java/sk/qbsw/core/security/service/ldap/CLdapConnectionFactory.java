@@ -136,8 +136,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 
 			return connectionModel;
 		}
-
-	}
+	} 
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#releaseConnection(sk.qbsw.core.security.service.ldap.CLdapConnectionModel)
@@ -170,22 +169,22 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	public CLdapConnection getOneTimeConnection () throws LdapException
 	{
 		LdapConnection connection = null;
-		LdapConnection poolConnection = null;
+		LdapConnection primaryServerPoolConnection = null;
 
 		try
 		{
-			poolConnection = primaryServerConnectionPool.getConnection();
+			primaryServerPoolConnection = primaryServerConnectionPool.getConnection();
 		}
 		catch (Exception ex)
 		{
 			LOGGER.warn("Primary Ldap server is down", ex);
-			poolConnection = null;
+			primaryServerPoolConnection = null;
 		}
 
 		try
 		{
 			//checks if the connection to primary server is active or not
-			if (poolConnection != null && poolConnection.isConnected())
+			if (primaryServerPoolConnection != null && primaryServerPoolConnection.isConnected())
 			{
 				connection = new LdapNetworkConnection(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getUseSslFlag());
 
@@ -202,7 +201,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		}
 		finally
 		{
-			primaryServerConnectionPool.releaseConnection(poolConnection);
+			primaryServerConnectionPool.releaseConnection(primaryServerPoolConnection);
 		}
 
 		//create connection model

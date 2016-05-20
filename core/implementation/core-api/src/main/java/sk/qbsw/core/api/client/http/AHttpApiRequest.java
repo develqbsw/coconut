@@ -86,9 +86,9 @@ public abstract class AHttpApiRequest implements IHttpApiRequest
 		CApiHttpException lastEx = null;
 
 		for (int counter = 0; counter < repeatCount; counter++)
-		{
+		{ 
 			try
-			{
+			{ 
 				// try call
 				return makeOneCall(url, contentType, entity);
 			}
