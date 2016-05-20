@@ -37,8 +37,6 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	/** The secondary server connection pool. */
 	private LdapConnectionPool secondaryServerConnectionPool = null;
 
-	private static volatile int ONE_TIME_CONNECTIONS_COUNT = 0;
-
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#init()
 	 */
@@ -107,13 +105,13 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 			connection = primaryServerConnectionPool.getConnection();
 			LOGGER.debug("Get connection - the number of active connections in primary pool is {}", primaryServerConnectionPool.getNumActive());
 		}
-		catch (Throwable ex)
+		catch (Exception ex)
 		{
-			LOGGER.warn("Primary Ldap server is down");
+			LOGGER.warn("Primary Ldap server is down", ex);
 			connection = null;
 		}
 
-		if (connection != null && connection.isConnected() == true && connection.isAuthenticated() == true)
+		if (connection != null && connection.isConnected() && connection.isAuthenticated())
 		{
 			LOGGER.debug("Primary ldap connection borrowed.");
 
@@ -178,28 +176,28 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		{
 			poolConnection = primaryServerConnectionPool.getConnection();
 		}
-		catch (Throwable ex)
+		catch (Exception ex)
 		{
-			LOGGER.warn("Primary Ldap server is down");
+			LOGGER.warn("Primary Ldap server is down", ex);
 			poolConnection = null;
 		}
 
 		try
 		{
 			//checks if the connection to primary server is active or not
-			if (poolConnection != null && poolConnection.isConnected() == true)
+			if (poolConnection != null && poolConnection.isConnected())
 			{
 				connection = new LdapNetworkConnection(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getUseSslFlag());
 
-				ONE_TIME_CONNECTIONS_COUNT++;
-				LOGGER.debug("One time connection to primary server created. Connections count is {}", ONE_TIME_CONNECTIONS_COUNT);
+				CConnectionCounter.increase();
+				LOGGER.debug("One time connection to primary server created. Connections count is {}", CConnectionCounter.value());
 			}
 			else
 			{
 				connection = new LdapNetworkConnection(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort(), configurationData.getUseSslFlag());
 
-				ONE_TIME_CONNECTIONS_COUNT++;
-				LOGGER.debug("One time connection to secondary server created. Connections count is {}", ONE_TIME_CONNECTIONS_COUNT);
+				CConnectionCounter.increase();
+				LOGGER.debug("One time connection to secondary server created. Connections count is {}", CConnectionCounter.value());
 			}
 		}
 		finally
@@ -231,13 +229,12 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 				connection.setType(null);
 			}
 
-			ONE_TIME_CONNECTIONS_COUNT--;
-			LOGGER.debug("One time connection closed. Connections count is {}", ONE_TIME_CONNECTIONS_COUNT);
+			CConnectionCounter.decrease();
+			LOGGER.debug("One time connection closed. Connections count is {}", CConnectionCounter.value());
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
-			LOGGER.debug("One time connection closing failed.");
-			//Do nothing
+			LOGGER.debug("One time connection closing failed.", e);
 		}
 	}
 
@@ -298,5 +295,47 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		{
 			connectionPool.setMaxWait(configurationData.getMaxWait());
 		}
+	}
+}
+
+/**
+ * Connection counter 
+ * @author Dalibor Rak
+ *
+ */
+class CConnectionCounter
+{
+	/** Local counter of connections*/
+	private static volatile int oneTimeConnectionsCount = 0;
+
+	/** Hide connection counter */
+	private CConnectionCounter ()
+	{
+		// hide construction
+	}
+
+	/**
+	 * 
+	 */
+	public static void increase ()
+	{
+		oneTimeConnectionsCount++;
+	}
+
+	/**
+	 * 
+	 */
+	public static void decrease ()
+	{
+		oneTimeConnectionsCount--;
+	}
+
+	/**
+	 * Reads value
+	 * @return current count of connections
+	 */
+	public static int value ()
+	{
+		return oneTimeConnectionsCount;
 	}
 }
