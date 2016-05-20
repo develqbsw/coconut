@@ -79,7 +79,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		{
 			Set<Entry> entries = searchResults(baseDn, filter, scope, attributes);
 
-			if (entries.size() == 0)
+			if (entries.isEmpty())
 			{
 				throw new CBusinessException("There is not a single result.");
 			}
@@ -94,7 +94,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		}
 		catch (CursorException ex)
 		{
-			throw new CBusinessException("The result's set can't be searched.");
+			throw new CBusinessException("The result's set can't be searched.", ex);
 		}
 	}
 
@@ -107,22 +107,16 @@ public class CLdapProvider extends AService implements ILdapProvider
 		//init the connection
 		init();
 
-		Set<Entry> entries = new HashSet<Entry>();
+		Set<Entry> entries = new HashSet<>();
 		EntryCursor cursor = null;
 		CLdapConnection connection = null;
 
 		try
 		{
-			//String escapedBaseDn = CLDAPInjectionProtector.escapeDN(baseDn);
-			//String escapedFilter = CLDAPInjectionProtector.escapeDN(filter);
-			//
-			//LOGGER.debug("LDAP: escaped Base dn "+escapedBaseDn);
-			//LOGGER.debug("LDAP: escaped Filter "+escapedFilter);
-
 			connection = ldapConnectionFactory.getConnection();
 			cursor = connection.getConnection().search(baseDn, filter, scope, attributes);
 
-			if (cursor.next() == true)
+			if (cursor.next())
 			{
 				entries.add(cursor.get());
 			}
@@ -253,8 +247,6 @@ public class CLdapProvider extends AService implements ILdapProvider
 	{
 		//init the connection
 		init();
-
-		EntryCursor cursor = null;
 		CLdapConnection connection = null;
 
 		try
@@ -274,11 +266,6 @@ public class CLdapProvider extends AService implements ILdapProvider
 		}
 		finally
 		{
-			if (cursor != null)
-			{
-				cursor.close();
-			}
-
 			if (connection != null)
 			{
 				ldapConnectionFactory.releaseOneTimeConnection(connection);
@@ -297,19 +284,11 @@ public class CLdapProvider extends AService implements ILdapProvider
 		try
 		{
 			init();
-
 			connection = ldapConnectionFactory.getConnection();
 
-			if (connection != null && connection.getConnection() != null && connection.getConnection().isConnected() && connection.getConnection().isAuthenticated())
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return connection != null && connection.getConnection() != null && connection.getConnection().isConnected() && connection.getConnection().isAuthenticated();
 		}
-		catch (Throwable ex)
+		catch (Exception ex)
 		{
 			LOGGER.error("The main LDAP connection throws an exception", ex);
 			return false;
