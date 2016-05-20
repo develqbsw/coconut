@@ -8,7 +8,6 @@ import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.MailAuthenticationException;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,7 +27,7 @@ import sk.qbsw.core.communication.mail.model.domain.EMailState;
  * @version 1.9.0
  * @since 1.9.0
  */
-@Repository(value = "senderMailDao")
+@Repository (value = "senderMailDao")
 public class CMailDao implements IMailDao
 {
 
@@ -51,7 +50,7 @@ public class CMailDao implements IMailDao
 	 * @param mail The mail to send.
 	 */
 	@Override
-	public CMail update(CMail mail)
+	public CMail update (CMail mail)
 	{
 		try
 		{
@@ -97,16 +96,12 @@ public class CMailDao implements IMailDao
 			mailSender.send(message);
 
 			return mail;
-		} catch (MailAuthenticationException e)
+		}
+		catch (MailAuthenticationException | MailSendException e)
 		{
 			throw new CCommunicationException("Mail sending failed", e);
-		} catch (MailSendException e)
-		{
-			throw new CCommunicationException("Mail sending failed", e);
-		} catch (MailException e)
-		{
-			throw new CCommunicationException("Mail sending failed", e);
-		} catch (Throwable e)
+		}
+		catch (Exception e)
 		{
 			throw new CSystemException("Mail creating failed", e);
 		}
@@ -118,7 +113,7 @@ public class CMailDao implements IMailDao
 	 * @throws NotImplementedException
 	 */
 	@Override
-	public void remove(CMail object)
+	public void remove (CMail object)
 	{
 		throw new NotImplementedException();
 	}
@@ -129,7 +124,7 @@ public class CMailDao implements IMailDao
 	 * @throws NotImplementedException
 	 */
 	@Override
-	public void flush()
+	public void flush ()
 	{
 		throw new NotImplementedException();
 	}
@@ -140,7 +135,7 @@ public class CMailDao implements IMailDao
 	 * @throws NotImplementedException
 	 */
 	@Override
-	public void clear()
+	public void clear ()
 	{
 		throw new NotImplementedException();
 	}
@@ -151,7 +146,7 @@ public class CMailDao implements IMailDao
 	 * @throws NotImplementedException
 	 */
 	@Override
-	public List<CMail> findAllQueued(EMailState state)
+	public List<CMail> findAllQueued (EMailState state)
 	{
 		throw new NotImplementedException();
 	}
@@ -162,33 +157,38 @@ public class CMailDao implements IMailDao
 	 * @throws NotImplementedException
 	 */
 	@Override
-	public List<CMail> findBySubject(String subject)
+	public List<CMail> findBySubject (String subject)
 	{
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public Long create(CMail e) {
+	public Long create (CMail e)
+	{
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public CMail read(Long id) {
+	public CMail read (Long id)
+	{
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void invalidate(CMail e) {
+	public void invalidate (CMail e)
+	{
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void validate(CMail e) {
+	public void validate (CMail e)
+	{
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public Long getSequenceNextValue(String sequenceName) {
+	public Long getSequenceNextValue (String sequenceName)
+	{
 		throw new NotImplementedException();
 	}
 }

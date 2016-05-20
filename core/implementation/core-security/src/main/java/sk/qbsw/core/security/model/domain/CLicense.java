@@ -41,7 +41,7 @@ public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
 	private static final long serialVersionUID = 6005150237733706948L;
 
 	/** The UNLIMITED. */
-	public final static Integer UNLIMITED = -1;
+	public static final Integer UNLIMITED = -1;
 
 	/** The flag payed. */
 	@Column (name = "c_flag_payed")
@@ -231,7 +231,7 @@ public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
 	protected Boolean isValidForActualDate ()
 	{
 		Calendar now = Calendar.getInstance();
-		return (now.before(getValidTo()) && now.after(getValidFrom()));
+		return now.before(getValidTo()) && now.after(getValidFrom());
 	}
 
 	/**
@@ -342,7 +342,7 @@ public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
 
 		double result = value * 100;
 		result = (int) (result);
-		this.price = new BigDecimal(result / 100);
+		this.price = BigDecimal.valueOf(result / 100);
 	}
 
 	/**
