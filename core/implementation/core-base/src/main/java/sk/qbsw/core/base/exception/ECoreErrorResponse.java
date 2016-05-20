@@ -104,9 +104,10 @@ public enum ECoreErrorResponse implements IErrorResponse
 	/* (non-Javadoc)
 	 * @see java.lang.Enum#toString()
 	 */
+	@Override
 	public String toString ()
 	{
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append(code);
 		if (buffer.length() > 0 && messageKey != null && messageKey.length() > 0)
 		{

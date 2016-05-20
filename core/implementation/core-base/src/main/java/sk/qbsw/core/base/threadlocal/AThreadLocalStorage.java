@@ -12,6 +12,13 @@ import org.slf4j.MDC;
 public class AThreadLocalStorage {
 
 	/**
+	 * Default constructor, may be used only from children
+	 */
+	protected AThreadLocalStorage(){
+		
+	}
+	
+	/**
 	 * Put.
 	 *
 	 * @param key the key
