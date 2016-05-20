@@ -8,11 +8,11 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 /**
  * The Class CBRWDataDTO.
  *
- * @param <PK> the generic type
+ * @param <P> the generic type
  * @param <T> the generic type
  */
 @SuppressWarnings("serial")
-public class CBRWDataDTO<PK, T extends IEntity<PK>> implements IDTO {
+public class CBRWDataDTO<P, T extends IEntity<P>> implements IDTO {
 
 	/** The data. */
 	private final List<T> data;

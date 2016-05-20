@@ -37,19 +37,47 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 /**
  * The Class ABRWQueryDslDao.
  *
- * @param <PK> Primary key
+ * @param <P> Primary key
  * @param <V> Browser Entity
  */
-@SuppressWarnings("serial")
-public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryDslDao<PK, V> implements IBRWDao<PK, V> {
+@SuppressWarnings ("serial")
+public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslDao<P, V> implements IBRWDao<P, V>
+{
+	/** The join query. */
+	private final Set<CJoinedExpression<?>> joinQuery;//used for brw
 
 	/** The entity path brw. */
 	protected final EntityPathBase<V> entityPathBRW;
 
 	/**
+	 * Instantiates a new ABRW query dsl dao.
+	 *
+	 * @param entityPathBRW the entity path brw
+	 * @param entityPathCRUD the entity path crud
+	 * @param joinQueryArr the join query arr
+	 */
+	public ABRWQueryDslDao (EntityPathBase<V> entityPathBRW, CJoinedExpression<?>[] joinQueryArr)
+	{
+		super();
+		this.entityPathBRW = entityPathBRW;
+
+		if (joinQueryArr == null)
+		{
+			this.joinQuery = null;
+		}
+		else
+		{
+			this.joinQuery = new HashSet<CJoinedExpression<?>>();
+			addAndCheckCJoinedExpression(joinQueryArr);
+
+		}
+	}
+
+	/**
 	 * The Class EntityFetchInformation.
 	 */
-	private static class EntityFetchInformation implements Serializable {
+	private static class EntityFetchInformation implements Serializable
+	{
 
 		/** The entity class. */
 		private final Class<?> entityClass;
@@ -63,7 +91,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		 * @param entityClass the entity class
 		 * @param fieldsFetchInformation the fields fetch information
 		 */
-		public EntityFetchInformation(Class<?> entityClass, List<FieldFetchInformation> fieldsFetchInformation) {
+		public EntityFetchInformation (Class<?> entityClass, List<FieldFetchInformation> fieldsFetchInformation)
+		{
 			this.entityClass = entityClass;
 			this.fieldsFetchInformation = fieldsFetchInformation;
 		}
@@ -73,8 +102,9 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		 *
 		 * @return the entity class
 		 */
-		@SuppressWarnings("unused")
-		public Class<?> getEntityClass() {
+		@SuppressWarnings ("unused")
+		public Class<?> getEntityClass ()
+		{
 			return this.entityClass;
 		}
 
@@ -83,7 +113,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		 *
 		 * @return the fields fetch information
 		 */
-		public List<FieldFetchInformation> getFieldsFetchInformation() {
+		public List<FieldFetchInformation> getFieldsFetchInformation ()
+		{
 			return this.fieldsFetchInformation;
 		}
 
@@ -92,7 +123,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	/**
 	 * The Class FieldFetchInformation.
 	 */
-	private static class FieldFetchInformation implements Serializable {
+	private static class FieldFetchInformation implements Serializable
+	{
 
 		/** The entity path. */
 		private final EntityPathBase<?> entityPath;
@@ -106,7 +138,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		 * @param entityPath the entity path
 		 * @param joinType the join type
 		 */
-		public FieldFetchInformation(EntityPathBase<?> entityPath, JoinType joinType) {
+		public FieldFetchInformation (EntityPathBase<?> entityPath, JoinType joinType)
+		{
 			this.entityPath = entityPath;
 			this.joinType = joinType;
 		}
@@ -116,7 +149,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		 *
 		 * @return the entity path
 		 */
-		public EntityPathBase<?> getEntityPath() {
+		public EntityPathBase<?> getEntityPath ()
+		{
 			return this.entityPath;
 		}
 
@@ -125,7 +159,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		 *
 		 * @return the join type
 		 */
-		public JoinType getJoinType() {
+		public JoinType getJoinType ()
+		{
 			return this.joinType;
 		}
 
@@ -140,63 +175,75 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @param entityPath the entity path
 	 * @return the entity fetch information
 	 */
-	private static EntityFetchInformation evaluteEntityFetchInformation(EntityPathBase<?> entityPath) {
+	private static EntityFetchInformation evaluteEntityFetchInformation (EntityPathBase<?> entityPath)
+	{
 		final Class<?> entityClass = (Class<?>) entityPath.getAnnotatedElement();
 		final Field[] entityFields = entityClass.getDeclaredFields();
 		EntityFetchInformation result = null;
 		List<FieldFetchInformation> fieldFetchInformationList = null;
 
-		for (final Field entityField : entityFields) {
+		for (final Field entityField : entityFields)
+		{
 			final Annotation[] entityFieldAnnotations = entityField.getAnnotations();
 
 			Fetch foundFetch = null;
 			JoinColumn foundJoinColumn = null;
 
-			for (final Annotation entityFieldAnnotation : entityFieldAnnotations) {
-				if (entityFieldAnnotation instanceof Fetch) {
+			for (final Annotation entityFieldAnnotation : entityFieldAnnotations)
+			{
+				if (entityFieldAnnotation instanceof Fetch)
+				{
 					foundFetch = (Fetch) entityFieldAnnotation;
 
-					if (foundJoinColumn != null) {
+					if (foundJoinColumn != null)
+					{
 						break;
 					}
 				}
-				else if (entityFieldAnnotation instanceof JoinColumn) {
+				else if (entityFieldAnnotation instanceof JoinColumn)
+				{
 					foundJoinColumn = (JoinColumn) entityFieldAnnotation;
 
-					if (foundFetch != null) {
+					if (foundFetch != null)
+					{
 						break;
 					}
 				}
 			}
 
-			if ((foundFetch != null) && (foundFetch.value() == FetchMode.JOIN) && (foundJoinColumn != null)) {
+			if ( (foundFetch != null) && (foundFetch.value() == FetchMode.JOIN) && (foundJoinColumn != null))
+			{
 				EntityPathBase<?> joinedEntityPath = null;
 
-				for (final Field qfield : entityPath.getClass().getFields()) {
-					if (qfield.getName().equals(entityField.getName())) {
-						try {
+				for (final Field qfield : entityPath.getClass().getFields())
+				{
+					if (qfield.getName().equals(entityField.getName()))
+					{
+						try
+						{
 							joinedEntityPath = (EntityPathBase<?>) qfield.get(entityPath);
 							break;
-						} catch (final IllegalAccessException e) {
+						}
+						catch (final IllegalAccessException e)
+						{
 							throw new IllegalStateException(e.getMessage(), e);
 						}
 					}
 				}
 
-				if (joinedEntityPath != null) {
+				if (joinedEntityPath != null)
+				{
 					final JoinType joinType = foundJoinColumn.nullable() ? JoinType.LEFTJOIN : JoinType.INNERJOIN;
+
 					final FieldFetchInformation fieldFetchInformation = new FieldFetchInformation(joinedEntityPath, joinType);
-
-					if (fieldFetchInformationList == null) {
-						fieldFetchInformationList = new ArrayList<FieldFetchInformation>();
-					}
-
+					fieldFetchInformationList = new ArrayList<FieldFetchInformation>();
 					fieldFetchInformationList.add(fieldFetchInformation);
 				}
 			}
 		}
 
-		if (fieldFetchInformationList != null) {
+		if (fieldFetchInformationList != null)
+		{
 			result = new EntityFetchInformation(entityClass, fieldFetchInformationList);
 		}
 
@@ -209,14 +256,17 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @param entityPath the entity path
 	 * @return the entity fetch information
 	 */
-	private static EntityFetchInformation getEntityFetchInformation(EntityPathBase<?> entityPath) {
+	private static EntityFetchInformation getEntityFetchInformation (EntityPathBase<?> entityPath)
+	{
 		EntityFetchInformation result;
 		final Class<?> entityClass = (Class<?>) entityPath.getAnnotatedElement();
 
-		synchronized (ENTITIES_FETCH_INFORMATION_CACHE) {
+		synchronized (ENTITIES_FETCH_INFORMATION_CACHE)
+		{
 			result = ENTITIES_FETCH_INFORMATION_CACHE.get(entityClass);
 
-			if (result == null) {
+			if (result == null)
+			{
 				result = evaluteEntityFetchInformation(entityPath);
 
 				ENTITIES_FETCH_INFORMATION_CACHE.put(entityClass, result);
@@ -226,39 +276,19 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		return result;
 	}
 
-	/** The join query. */
-	private final Set<CJoinedExpression<?>> joinQuery;//used for brw
-
-	/**
-	 * Instantiates a new ABRW query dsl dao.
-	 *
-	 * @param entityPathBRW the entity path brw
-	 * @param entityPathCRUD the entity path crud
-	 * @param joinQueryArr the join query arr
-	 */
-	public ABRWQueryDslDao(EntityPathBase<V> entityPathBRW, CJoinedExpression<?>[] joinQueryArr) {
-		super();
-		this.entityPathBRW = entityPathBRW;
-
-		if (joinQueryArr == null) {
-			this.joinQuery = null;
-		}
-		else {
-			this.joinQuery = new HashSet<CJoinedExpression<?>>();
-			addAndCheckCJoinedExpression(joinQueryArr);
-
-		}
-	}
 
 	/**
 	 * Adds the and check c joined expression.
 	 *
 	 * @param joinQueryArr the join query arr
 	 */
-	private void addAndCheckCJoinedExpression(CJoinedExpression<?>[] joinQueryArr) {
-		for (CJoinedExpression<?> cJoinedExpression : joinQueryArr) {
+	private void addAndCheckCJoinedExpression (CJoinedExpression<?>[] joinQueryArr)
+	{
+		for (CJoinedExpression<?> cJoinedExpression : joinQueryArr)
+		{
 			boolean existing = !this.joinQuery.add(cJoinedExpression);
-			if (existing) {
+			if (existing)
+			{
 				throw new IllegalStateException("duplicate item for " + cJoinedExpression);
 			}
 		}
@@ -269,18 +299,22 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 *
 	 * @param q the q
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void appendJoinPart(JPAQuery q) {
+	@SuppressWarnings ({"rawtypes", "unchecked"})
+	protected void appendJoinPart (JPAQuery q)
+	{
 		final EntityFetchInformation efi = getEntityFetchInformation(this.entityPathBRW);
 
-		if (efi != null) {
+		if (efi != null)
+		{
 			final List<FieldFetchInformation> fieldsFetchInformation = efi.getFieldsFetchInformation();
 
-			for (final FieldFetchInformation fieldFetchInformation : fieldsFetchInformation) {
+			for (final FieldFetchInformation fieldFetchInformation : fieldsFetchInformation)
+			{
 				final EntityPathBase<?> entityPath = fieldFetchInformation.getEntityPath();
 				final JoinType joinType = fieldFetchInformation.getJoinType();
 
-				switch (joinType) {
+				switch (joinType)
+				{
 					case INNERJOIN:
 						q.innerJoin(entityPath);
 						break;
@@ -296,52 +330,67 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 				q.fetch();
 			}
 		}
-		if (joinQuery != null && joinQuery.size() > 0) {
-			for (CJoinedExpression exp : joinQuery) {
+		if (joinQuery != null && !joinQuery.isEmpty())
+		{
+			for (CJoinedExpression exp : joinQuery)
+			{
 				// TODO: treba sa opytat autora, naco je toto dobre...
-				JPAQuery quer;
-				switch (exp.getJoinType()) {
+				switch (exp.getJoinType())
+				{
 					case LEFT:
-						if (exp.getAllias() != null) {
-							if (exp.getEntity() == null) {
-								quer = q.leftJoin(exp.getCollection(), exp.getAllias());
+						if (exp.getAllias() != null)
+						{
+							if (exp.getEntity() == null)
+							{
+								q.leftJoin(exp.getCollection(), exp.getAllias());
 							}
-							else {
-								quer = q.leftJoin(exp.getEntity(), exp.getAllias());
+							else
+							{
+								q.leftJoin(exp.getEntity(), exp.getAllias());
 							}
 						}
-						else {
-							if (exp.getEntity() == null) {
-								quer = q.leftJoin(exp.getCollection());
+						else
+						{
+							if (exp.getEntity() == null)
+							{
+								q.leftJoin(exp.getCollection());
 							}
-							else {
-								quer = q.leftJoin(exp.getEntity());
+							else
+							{
+								q.leftJoin(exp.getEntity());
 							}
 
 						}
 						break;
 					case INNER:
-						if (exp.getAllias() != null) {
-							if (exp.getEntity() == null) {
-								quer = q.innerJoin(exp.getCollection(), exp.getAllias());
+						if (exp.getAllias() != null)
+						{
+							if (exp.getEntity() == null)
+							{
+								q.innerJoin(exp.getCollection(), exp.getAllias());
 							}
-							else {
-								quer = q.innerJoin(exp.getEntity(), exp.getAllias());
+							else
+							{
+								q.innerJoin(exp.getEntity(), exp.getAllias());
 							}
 						}
-						else {
-							if (exp.getEntity() == null) {
-								quer = q.innerJoin(exp.getCollection());
+						else
+						{
+							if (exp.getEntity() == null)
+							{
+								q.innerJoin(exp.getCollection());
 							}
-							else {
-								quer = q.innerJoin(exp.getEntity());
+							else
+							{
+								q.innerJoin(exp.getEntity());
 							}
 						}
 						break;
 					default:
 						throw new IllegalStateException("Unsupported joinType in CJoinedExpression: " + exp.getJoinType());
 				}
-				if (exp.isFetch()) {
+				if (exp.isFetch())
+				{
 					q.fetch();
 				}
 
@@ -355,8 +404,10 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 *
 	 * @return the JPA query
 	 */
-	private JPAQuery createBRWQuery() {
-		if (this.entityPathBRW == null) {
+	private JPAQuery createBRWQuery ()
+	{
+		if (this.entityPathBRW == null)
+		{
 			throw new IllegalStateException("Cannot create query: pathBaseBRW is null. Subclass of " + this.getClass() + " passed null to super contructor call?");
 		}
 
@@ -367,7 +418,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @see sk.qbsw.core.persistence.dao.querydsl.IBRWDAO#getBRWCount(java.util.List)
 	 */
 	@Override
-	public long getBRWCount(final List<? extends CFilterParameter> wheres) {
+	public long getBRWCount (final List<? extends CFilterParameter> wheres)
+	{
 		final JPAQuery q = this.createBRWQuery();
 
 		this.appendWherePart(q, wheres);
@@ -383,7 +435,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @param q the q
 	 * @return the BRW list
 	 */
-	protected List<V> getBRWList(final JPAQuery q) {
+	protected List<V> getBRWList (final JPAQuery q)
+	{
 
 		return q.list(this.entityPathBRW);
 	}
@@ -392,7 +445,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @see sk.qbsw.core.persistence.dao.querydsl.IBRWDAO#getBRWList(java.util.List, java.util.List, java.lang.Long, java.lang.Long)
 	 */
 	@Override
-	public List<V> getBRWList(final List<? extends CFilterParameter> wheres, final List<COrderParameter> orderSpecifiers, final Long from, final Long count) {
+	public List<V> getBRWList (final List<? extends CFilterParameter> wheres, final List<COrderParameter> orderSpecifiers, final Long from, final Long count)
+	{
 		final JPAQuery q = this.createBRWQuery();
 
 		this.appendJoinPart(q);
@@ -409,7 +463,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @see sk.qbsw.core.persistence.dao.querydsl.IFilterDAO#getColummnValuesList(com.mysema.query.types.expr.SimpleExpression, java.util.List)
 	 */
 	@Override
-	public <X> List<X> getColummnValuesList(SimpleExpression<X> column, List<? extends CFilterParameter> fixedFilter) {
+	public <X> List<X> getColummnValuesList (SimpleExpression<X> column, List<? extends CFilterParameter> fixedFilter)
+	{
 		final JPAQuery q = this.createBRWQuery();
 
 		this.appendWherePart(q, fixedFilter);
@@ -424,8 +479,9 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @param q the q
 	 * @return the complete brw list
 	 */
-	protected CBRWDataDTO<PK, V> getCompleteBRWList(final JPAQuery q) {
-		final CBRWDataDTO<PK, V> result;
+	protected CBRWDataDTO<P, V> getCompleteBRWList (final JPAQuery q)
+	{
+		final CBRWDataDTO<P, V> result;
 		final NumberExpression<Long> totalCountExpression = Expressions.numberTemplate(Long.class, "totalcount()");
 		final List<Tuple> tuples = q.list(this.entityPathBRW, totalCountExpression);
 		final Iterator<Tuple> iter = tuples.iterator();
@@ -433,24 +489,27 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		final Long totalCount;
 		Tuple tuple;
 
-		if (iter.hasNext()) {
+		if (iter.hasNext())
+		{
 			tuple = iter.next();
 			list = new ArrayList<V>(tuples.size());
 			totalCount = tuple.get(totalCountExpression);
 
 			list.add(tuple.get(this.entityPathBRW));
 
-			while (iter.hasNext()) {
+			while (iter.hasNext())
+			{
 				tuple = iter.next();
 				list.add(tuple.get(this.entityPathBRW));
 			}
 		}
-		else {
+		else
+		{
 			list = Collections.emptyList();
 			totalCount = 0L;
 		}
 
-		result = new CBRWDataDTO<PK, V>(list, totalCount);
+		result = new CBRWDataDTO<P, V>(list, totalCount);
 
 		return result;
 	}
@@ -459,7 +518,8 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 	 * @see sk.qbsw.core.persistence.dao.querydsl.IBRWDAO#getCompleteBRWList(java.util.List, java.util.List, java.lang.Long, java.lang.Long)
 	 */
 	@Override
-	public CBRWDataDTO<PK, V> getCompleteBRWList(final List<? extends CFilterParameter> wheres, final List<COrderParameter> orderSpecifiers, final Long from, final Long count) {
+	public CBRWDataDTO<P, V> getCompleteBRWList (final List<? extends CFilterParameter> wheres, final List<COrderParameter> orderSpecifiers, final Long from, final Long count)
+	{
 		final JPAQuery q = this.createBRWQuery();
 
 		this.appendJoinPart(q); // treba doriesit problem so selektom ktory obsahuje dvakrat rovnaky stlpec v pripade pridania joinov
@@ -467,20 +527,20 @@ public abstract class ABRWQueryDslDao<PK, V extends IEntity<PK>> extends AQueryD
 		this.appendOrderByPart(q, orderSpecifiers);
 		this.appendLimit(q, from, count);
 
-		final CBRWDataDTO<PK, V> result = this.getCompleteBRWList(q);
-
-		return result;
+		return this.getCompleteBRWList(q);
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.querydsl.IBRWDAO#readFromView(java.lang.Object)
 	 */
 	@Override
-	public V readFromView(PK id) {
+	public V readFromView (P id)
+	{
 		final Class<? extends V> cls = this.entityPathBRW.getType();
 		final V result = this.em.find(cls, id);
 
-		if (result == null) {
+		if (result == null)
+		{
 			throw new EntityNotFoundException("Entity (BRW) of class " + cls + " with primary key " + id + " was not found.");
 		}
 

@@ -16,5 +16,4 @@ public abstract class AParameter implements Serializable {
 	protected AParameter (String name) {
 		this.name = name;
 	}
-
 }
