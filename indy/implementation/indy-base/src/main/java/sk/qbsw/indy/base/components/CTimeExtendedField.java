@@ -101,7 +101,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			public void validate ()
 			{
 				List<ValidationError> errors = checkInputHours();
-				if (errors.size() > 0)
+				if (!errors.isEmpty())
 				{
 					for (ValidationError error : errors)
 					{
@@ -154,7 +154,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			public void validate ()
 			{
 				List<ValidationError> errors = checkInputMinutes();
-				if (errors.size() > 0)
+				if (!errors.isEmpty())
 				{
 					for (ValidationError error : errors)
 					{
@@ -295,17 +295,17 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 		try
 		{
 
-			if ( (hoursValue != null))
+			if (hoursValue != null)
 			{
 				calendar = Calendar.getInstance();
 				calendar.set(Calendar.HOUR_OF_DAY, hoursValue);
 			}
-			if ( (minutesValue != null))
+			if (minutesValue != null)
 			{
 				calendar = (calendar == null) ? Calendar.getInstance() : calendar;
 				calendar.set(Calendar.MINUTE, minutesValue);
 			}
-			if ( (timeZoneValue != null))
+			if (timeZoneValue != null)
 			{
 				calendar = (calendar == null) ? Calendar.getInstance() : calendar;
 				calendar.setTimeZone(TimeZone.getTimeZone(timeZoneValue));
