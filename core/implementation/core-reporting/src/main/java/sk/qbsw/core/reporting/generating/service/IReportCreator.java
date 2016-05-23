@@ -1,5 +1,6 @@
 package sk.qbsw.core.reporting.generating.service;
 
+import sk.qbsw.core.reporting.generating.exception.CReportCreationException;
 import sk.qbsw.core.reporting.generating.model.IReportRequest;
 
 /**
@@ -13,11 +14,12 @@ public interface IReportCreator
 	 * Sets the report to the creator
 	 * @param report
 	 */
-	void setObject(IReportRequest report);
+	void setObject (IReportRequest report);
+
 	/**
 	 * Execute report creation for given report
-	 * @throws Exception
+	 * @throws CReportCreationException
 	 */
-	void execute () throws Exception;
+	void execute () throws CReportCreationException;
 
 }
