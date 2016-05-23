@@ -42,7 +42,7 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 
 	/** The authentication manager. */
 	private final AuthenticationManager authenticationManager;
-	
+
 	/** The master token service. */
 	@Autowired
 	private IMasterTokenService masterTokenService;
@@ -83,7 +83,7 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 
 		LOGGER.info("Received request with token {} from ip: {}.", token, ip);
 
-		if (StringUtils.isEmpty(token) == false && StringUtils.isEmpty(deviceId) == false)
+		if (!StringUtils.isEmpty(token) && !StringUtils.isEmpty(deviceId))
 		{
 			CUser user = getUser(token, deviceId, ip);
 
@@ -134,7 +134,7 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 				return null;
 			}
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
 			LOGGER.error("The exception in token processing filter", e);
 			return null;

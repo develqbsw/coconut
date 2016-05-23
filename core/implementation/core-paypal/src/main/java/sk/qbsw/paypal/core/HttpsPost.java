@@ -34,6 +34,15 @@ final class HttpsPost implements Transport
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The proxy port. */
+	private Integer proxyPort = 3128;
+
+	/** The proxy url. */
+	private String proxyURL = "192.168.121.21";
+
+	/** The use proxy. */
+	private Boolean useProxy = Boolean.FALSE;
+
 	/**
 	 * Sends request (message attribute) to the specified URL and returns response
 	 * as a string.
@@ -49,11 +58,6 @@ final class HttpsPost implements Transport
 		/* write request */
 		TrustManager[] trustManagers = new TrustManager[] {new X509TrustManager()
 		{
-			public java.security.cert.X509Certificate[] getAcceptedIssuers ()
-			{
-				return null;
-			}
-
 			public void checkClientTrusted (X509Certificate[] certs, String authType)
 			{
 			}
@@ -62,11 +66,16 @@ final class HttpsPost implements Transport
 			{
 			}
 
+			public java.security.cert.X509Certificate[] getAcceptedIssuers ()
+			{
+				return new X509Certificate[]{};
+			}
+
 		}};
 
 		URL url = new URL(urlString);
 		URLConnection connection;
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 
 		try
 		{
@@ -101,25 +110,13 @@ final class HttpsPost implements Transport
 			}
 			reader.close();
 		}
-		catch (Throwable ex)
+		catch (Exception ex)
 		{
 			LoggerFactory.getLogger(HttpsPost.class).error("Error during call URL:" + url + " MSG:" + msg, ex);
 		}
 
 		/* return response */
 		return response.toString();
-	}
-
-	/**
-	 * To string.
-	 *
-	 * @return the string
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString ()
-	{
-		return "instance of HttpsPost class :" + this;
 	}
 
 	/**
@@ -137,13 +134,16 @@ final class HttpsPost implements Transport
 		this.proxyPort = proxyPort;
 	}
 
-	/** The use proxy. */
-	private Boolean useProxy = Boolean.FALSE;
-
-	/** The proxy url. */
-	private String proxyURL = "192.168.121.21";
-
-	/** The proxy port. */
-	private Integer proxyPort = 3128;
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString ()
+	{
+		return "instance of HttpsPost class :" + this;
+	}
 
 }

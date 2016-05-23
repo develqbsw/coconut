@@ -24,7 +24,8 @@ import sk.qbsw.core.reporting.generating.service.IReportRequestService;
  *
  * @author Peter Bozik
  */
-public abstract class ACreateReportService implements ICreateReportService, IMonitored {
+public abstract class ACreateReportService implements ICreateReportService, IMonitored
+{
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ACreateReportService.class);
@@ -38,7 +39,8 @@ public abstract class ACreateReportService implements ICreateReportService, IMon
 	private ApplicationContext appContext;
 
 	@PostConstruct
-	public void init () {
+	public void init ()
+	{
 
 	}
 
@@ -49,13 +51,16 @@ public abstract class ACreateReportService implements ICreateReportService, IMon
 	public List<IReportRequest> getReportsForGenerating (Long id, String queueType, String[] type, Long limit) throws CBusinessException
 	{
 		List<IReportRequest> reports;
-		if (limit == 0) {
+		if (limit == 0)
+		{
 			return new ArrayList<IReportRequest>();
 		}
-		if (id == null) {
+		if (id == null)
+		{
 			reports = this.reportService.findNewestReportsWithLockAndMarkAsProcessing(queueType, type, limit);
 		}
-		else {
+		else
+		{
 			reports = new ArrayList<IReportRequest>();
 			IReportRequest report = this.reportService.findByIdAndMarkAsProcessing(id);
 			reports.add(report);
@@ -68,14 +73,17 @@ public abstract class ACreateReportService implements ICreateReportService, IMon
 	 * Create report for given model. Overriding method should be transactional with proper timeout (@Transactional (readOnly = false, timeout = 300))
 	 */
 	@Override
-	public void createReport (IReportRequest report) throws CBusinessException {
+	public void createReport (IReportRequest report) throws CBusinessException
+	{
 		createReportInner(report);
 	}
 
 
-	private void createReportInner (IReportRequest report) throws CBusinessException {
+	private void createReportInner (IReportRequest report) throws CBusinessException
+	{
 		Long time = System.currentTimeMillis();
-		try {
+		try
+		{
 			IReportCreator reportCreator = this.getReportCreatorByReportType(report);
 			ACreateReportService.LOGGER.info("Begin report execution");
 			reportCreator.setObject(report);
@@ -84,12 +92,14 @@ public abstract class ACreateReportService implements ICreateReportService, IMon
 			this.reportService.changeReportStateDone(report);
 			ACreateReportService.LOGGER.info("SYNC: Leatest report ID:" + report.getIdentificator() + "  is marked as PROCESSED. process duration: " + (System.currentTimeMillis() - time));
 		}
-		catch (Throwable e) {
+		catch (Exception e)
+		{
 			LOGGER.error("chyba pri generovani reportu: " + (report != null ? report.getIdentificator() : "null") + " process duration: " + (System.currentTimeMillis() - time), e);
-			if (e instanceof CBusinessException) {
-				throw (CBusinessException)e;
+			if (e instanceof CBusinessException)
+			{
+				throw (CBusinessException) e;
 			}
-			throw new CBusinessException("erro generating",e);
+			throw new CBusinessException("erro generating", e);
 		}
 	}
 
@@ -101,10 +111,10 @@ public abstract class ACreateReportService implements ICreateReportService, IMon
 	 * @throws BeansException 
 	 * @throws Exception
 	 */
-	private IReportCreator getReportCreatorByReportType (IReportRequest report) throws BeansException, ClassNotFoundException {
-		return (IReportCreator)appContext.getBean(Class.forName(report.getReportCreatorClassName()));
+	private IReportCreator getReportCreatorByReportType (IReportRequest report) throws BeansException, ClassNotFoundException
+	{
+		return (IReportCreator) appContext.getBean(Class.forName(report.getReportCreatorClassName()));
 	}
-
 
 
 

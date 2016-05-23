@@ -217,7 +217,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	private boolean authenticateUser (String login, String password) throws CSecurityException
 	{
 		// the exceptions thrown in ldap authentication process
-		List<Throwable> exceptions = new ArrayList<Throwable>();
+		List<Throwable> exceptions = new ArrayList<>();
 
 		if (data.getUserSearchBaseDns() != null)
 		{
@@ -234,7 +234,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 
 					return true;
 				}
-				catch (Throwable ex)
+				catch (Exception ex)
 				{
 					exceptions.add(ex);
 					continue;

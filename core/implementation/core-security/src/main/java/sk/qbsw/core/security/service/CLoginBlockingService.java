@@ -193,7 +193,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 		{
 			LOGGER.debug(errorMessage + " - the user with login " + login + " dont exists", ex);
 			throw new CSecurityException(errorMessage);
-		} catch (Throwable ex)
+		} catch (Exception ex)
 		{
 			LOGGER.debug(errorMessage + " - the system exception raised", ex);
 			throw new CSystemException(errorMessage);
@@ -217,7 +217,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 		} catch (NoResultException ex)
 		{
 			return null;
-		} catch (Throwable ex)
+		} catch (Exception ex)
 		{
 			LOGGER.debug(errorMessage + " - the system exception raised", ex);
 			throw new CSystemException(errorMessage);
