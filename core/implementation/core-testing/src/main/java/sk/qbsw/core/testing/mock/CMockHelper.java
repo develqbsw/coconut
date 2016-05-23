@@ -1,6 +1,7 @@
 package sk.qbsw.core.testing.mock;
 
 import org.springframework.aop.framework.Advised;
+import org.springframework.aop.framework.AopConfigException;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public class CMockHelper implements IMockHelper
 		}
 		else
 		{
-			throw new Exception("The object is not a aop advise proxy object");
+			throw new AopConfigException("The object is not a aop advise proxy object");
 		}
 	}
 }
