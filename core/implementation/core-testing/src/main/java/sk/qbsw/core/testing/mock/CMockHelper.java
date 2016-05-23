@@ -20,15 +20,20 @@ public class CMockHelper implements IMockHelper
 	 * @see sk.qbsw.core.testing.mock.IMockHelper#unwrapSpringProxyObject(java.lang.Object)
 	 */
 	@SuppressWarnings ("unchecked")
-	public <T>T unwrapSpringProxyObject (T object) throws Exception
+	public <T> T unwrapSpringProxyObject (T object) throws AopConfigException
 	{
-		if (AopUtils.isAopProxy(object) && object instanceof Advised)
+		try
 		{
-			return (T) ((Advised) object).getTargetSource().getTarget();
+
+			if (AopUtils.isAopProxy(object) && object instanceof Advised)
+			{
+				return (T) ((Advised) object).getTargetSource().getTarget();
+			}
 		}
-		else
+		catch (Exception e)
 		{
-			throw new AopConfigException("The object is not a aop advise proxy object");
+			throw new AopConfigException("The object is not a aop advise proxy object", e);
 		}
+		throw new AopConfigException("The object is not a aop advise proxy object");
 	}
 }
