@@ -78,9 +78,9 @@ public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializ
 		{
 			parseDocument(toParse);
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
-			throw new CBusinessException("Parsing geocode response");
+			throw new CBusinessException("Parsing geocode response", e);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class CAddressGeocodeXmlParser extends DefaultHandler implements Serializ
 		SAXParser sp = spf.newSAXParser();
 
 		//parse the file content and also register this class for call backs
-		InputStream is = null;
+		InputStream is;
 
 		is = new ByteArrayInputStream(fileContent.getBytes("UTF-8"));
 		sp.parse(is, this);
