@@ -38,7 +38,7 @@ final class HttpsPost implements Transport
 	private Integer proxyPort = 3128;
 
 	/** The proxy url. */
-	private String proxyURL = "192.168.121.21";
+	private String proxyURL = "";
 
 	/** The use proxy. */
 	private Boolean useProxy = Boolean.FALSE;
@@ -58,17 +58,22 @@ final class HttpsPost implements Transport
 		/* write request */
 		TrustManager[] trustManagers = new TrustManager[] {new X509TrustManager()
 		{
+			@Override
 			public void checkClientTrusted (X509Certificate[] certs, String authType)
 			{
+				// nothing to do
 			}
 
+			@Override
 			public void checkServerTrusted (X509Certificate[] certs, String authType)
 			{
+				// nothing to do
 			}
 
+			@Override
 			public java.security.cert.X509Certificate[] getAcceptedIssuers ()
 			{
-				return new X509Certificate[]{};
+				return new X509Certificate[] {};
 			}
 
 		}};
