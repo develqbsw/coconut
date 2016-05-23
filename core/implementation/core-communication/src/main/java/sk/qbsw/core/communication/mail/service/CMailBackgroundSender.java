@@ -55,7 +55,8 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 		return new CQueuedMail();
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * @deprecated
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendEmail(java.lang.String, java.lang.String, java.io.InputStream, java.util.Map)
 	 */
 	@Override
@@ -72,14 +73,7 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 	@Transactional
 	public void sendMail (List<String> to, String subject, String body)
 	{
-		if (to != null && to.size() > 0)
-		{
-			saveMail(to, null, null, subject, body, new CAttachmentDefinition[] {});
-		}
-		else
-		{
-			throw new InvalidParameterException("Recipient address not set");
-		}
+		sendMail(to, subject, body, new CAttachmentDefinition[] {});
 	}
 
 	/* (non-Javadoc)
@@ -89,7 +83,7 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 	@Transactional
 	public void sendMail (List<String> to, String subject, String body, CAttachmentDefinition... attachments)
 	{
-		if (to != null && to.size() > 0)
+		if (to != null && !to.isEmpty())
 		{
 			saveMail(to, null, null, subject, body, attachments);
 		}
@@ -132,7 +126,7 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 			LOGGER.error("Mail creating problem", e);
 			throw e;
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
 			LOGGER.error("Mail creating problem", e);
 			throw new CSystemException("Mail creating problem", e);
