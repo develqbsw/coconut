@@ -32,7 +32,7 @@ import sk.qbsw.core.communication.mail.model.domain.EMailState;
  * @since 1.6.0
  */
 
-@Service("cMailService")
+@Service ("cMailService")
 public class CMailSender extends AMailService implements IMailService
 {
 
@@ -45,16 +45,16 @@ public class CMailSender extends AMailService implements IMailService
 
 	/** The jpa mail dao. */
 	@Autowired
-	@Qualifier("jpaMailDao")
+	@Qualifier ("jpaMailDao")
 	private IMailDao jpaMailDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.mail.service.AMailService#setMailDao(sk.qbsw.core.communication.mail.dao.IMailDao)
 	 */
 	@Autowired
-	@Qualifier("senderMailDao")
+	@Qualifier ("senderMailDao")
 	@Override
-	protected void setMailDao(IMailDao mailDao)
+	protected void setMailDao (IMailDao mailDao)
 	{
 		this.mailDao = mailDao;
 	}
@@ -63,17 +63,18 @@ public class CMailSender extends AMailService implements IMailService
 	 * @see sk.qbsw.core.communication.mail.service.AMailService#getMailInstance()
 	 */
 	@Override
-	protected CMail getMailInstance()
+	protected CMail getMailInstance ()
 	{
 		return new CMail();
 	}
 
-	/* (non-Javadoc)
+	/** (non-Javadoc)
+	 * @deprecated
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendEmail(java.lang.String, java.lang.String, java.io.InputStream, java.util.Map)
 	 */
 	@Override
 	@Deprecated
-	public void sendEmail(String to, String subject, InputStream template, Map<String, Object> params)
+	public void sendEmail (String to, String subject, InputStream template, Map<String, Object> params)
 	{
 		if (to == null || to.length() == 0)
 		{
@@ -91,7 +92,8 @@ public class CMailSender extends AMailService implements IMailService
 
 			//send mail
 			mailDao.update(mail);
-		} catch (Throwable e)
+		}
+		catch (Exception e)
 		{
 			LOGGER.error("Mail sending problem", e);
 			throw new CSystemException("Mail sending problem", e);
@@ -102,9 +104,9 @@ public class CMailSender extends AMailService implements IMailService
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendMail(java.util.List, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void sendMail(List<String> to, String subject, String body)
+	public void sendMail (List<String> to, String subject, String body)
 	{
-		if (to != null && to.size() > 0)
+		if (to != null && !to.isEmpty())
 		{
 			saveMail(to, null, null, subject, body, new CAttachmentDefinition[] {});
 		}
@@ -118,9 +120,9 @@ public class CMailSender extends AMailService implements IMailService
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#sendMail(java.util.List, java.lang.String, java.lang.String, sk.qbsw.core.communication.mail.model.CAttachmentDefinition[])
 	 */
 	@Override
-	public void sendMail(List<String> to, String subject, String body, CAttachmentDefinition... attachments)
+	public void sendMail (List<String> to, String subject, String body, CAttachmentDefinition... attachments)
 	{
-		if (to != null && to.size() > 0)
+		if (to != null && !to.isEmpty())
 		{
 			saveMail(to, null, null, subject, body, attachments);
 		}
@@ -140,7 +142,7 @@ public class CMailSender extends AMailService implements IMailService
 	 * @param body the body
 	 * @param attachmentDefinitions the attachment definitions
 	 */
-	private void saveMail(List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions)
+	private void saveMail (List<String> to, List<String> cc, List<String> bcc, String subject, String body, CAttachmentDefinition... attachmentDefinitions)
 	{
 		CMail mail = null;
 
@@ -155,30 +157,37 @@ public class CMailSender extends AMailService implements IMailService
 			//send mail
 			mailDao.update(mail);
 			mail.setState(EMailState.SENT);
-		} catch (CCommunicationException e)
+		}
+		catch (CCommunicationException e)
 		{
 			LOGGER.error("Mail sending problem", e);
-			if (mail != null) {
+			if (mail != null)
+			{
 				mail.setState(EMailState.COMMUNICATION_ERROR);
 			}
 			throw e;
-		} catch (CSystemException e)
+		}
+		catch (CSystemException e)
 		{
 			LOGGER.error("Mail creating problem", e);
-			if (mail != null) {
+			if (mail != null)
+			{
 				mail.setState(EMailState.DATA_ERROR); //the mail is probably null
 			}
 			throw e;
-		} catch (Throwable e)
+		}
+		catch (Exception e)
 		{
 			LOGGER.error("Mail creating problem", e);
-			if (mail != null) {
+			if (mail != null)
+			{
 				mail.setState(EMailState.DATA_ERROR); //the mail is probably null
 			}
 			throw new CSystemException("Mail creating problem", e);
-		} finally
+		}
+		finally
 		{
-			if (archive == true && mail != null)
+			if (archive && mail != null)
 			{
 				jpaMailDao.update(mail);
 			}
@@ -189,7 +198,7 @@ public class CMailSender extends AMailService implements IMailService
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#setSMTPServer(java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public void setSMTPServer(String host, Integer port)
+	public void setSMTPServer (String host, Integer port)
 	{
 		super.setSMTPServer(host, port);
 	}
@@ -198,7 +207,7 @@ public class CMailSender extends AMailService implements IMailService
 	 * @see sk.qbsw.core.communication.mail.service.IMailService#setSenderAddress(java.lang.String)
 	 */
 	@Override
-	public void setSenderAddress(String senderAddress)
+	public void setSenderAddress (String senderAddress)
 	{
 		super.setSenderAddress(senderAddress);
 	}
