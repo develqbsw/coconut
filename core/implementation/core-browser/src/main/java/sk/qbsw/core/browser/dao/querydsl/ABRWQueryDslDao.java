@@ -43,11 +43,17 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 @SuppressWarnings ("serial")
 public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslDao<P, V> implements IBRWDao<P, V>
 {
-	/** The join query. */
-	private final Set<CJoinedExpression<?>> joinQuery;//used for brw
+
+
+	/** The Constant ENTITIES_FETCH_INFORMATION_CACHE. */
+	private static final Map<Class<?>, EntityFetchInformation> ENTITIES_FETCH_INFORMATION_CACHE = new HashMap<>();
 
 	/** The entity path brw. */
 	protected final EntityPathBase<V> entityPathBRW;
+
+	/** The join query. */
+	private final Set<CJoinedExpression<?>> joinQuery;//used for brw
+
 
 	/**
 	 * Instantiates a new ABRW query dsl dao.
@@ -67,7 +73,7 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 		}
 		else
 		{
-			this.joinQuery = new HashSet<CJoinedExpression<?>>();
+			this.joinQuery = new HashSet<>();
 			addAndCheckCJoinedExpression(joinQueryArr);
 
 		}
@@ -166,9 +172,6 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 
 	}
 
-	/** The Constant ENTITIES_FETCH_INFORMATION_CACHE. */
-	private static final Map<Class<?>, EntityFetchInformation> ENTITIES_FETCH_INFORMATION_CACHE = new HashMap<>();
-
 	/**
 	 * Evalute entity fetch information.
 	 *
@@ -236,7 +239,7 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 					final JoinType joinType = foundJoinColumn.nullable() ? JoinType.LEFTJOIN : JoinType.INNERJOIN;
 
 					final FieldFetchInformation fieldFetchInformation = new FieldFetchInformation(joinedEntityPath, joinType);
-					fieldFetchInformationList = new ArrayList<FieldFetchInformation>();
+					fieldFetchInformationList = new ArrayList<>();
 					fieldFetchInformationList.add(fieldFetchInformation);
 				}
 			}
@@ -424,9 +427,7 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 
 		this.appendWherePart(q, wheres);
 
-		final long result = this.getCount(q);
-
-		return result;
+		return this.getCount(q);
 	}
 
 	/**
@@ -454,9 +455,7 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 		this.appendOrderByPart(q, orderSpecifiers);
 		this.appendLimit(q, from, count);
 
-		final List<V> result = this.getBRWList(q);
-
-		return result;
+		return this.getBRWList(q);
 	}
 
 	/* (non-Javadoc)
@@ -468,9 +467,7 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 		final JPAQuery q = this.createBRWQuery();
 
 		this.appendWherePart(q, fixedFilter);
-		final List<X> result = q.distinct().list(column);
-
-		return result;
+		return q.distinct().list(column);
 	}
 
 	/**
@@ -492,7 +489,7 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 		if (iter.hasNext())
 		{
 			tuple = iter.next();
-			list = new ArrayList<V>(tuples.size());
+			list = new ArrayList<>(tuples.size());
 			totalCount = tuple.get(totalCountExpression);
 
 			list.add(tuple.get(this.entityPathBRW));
@@ -509,7 +506,7 @@ public abstract class ABRWQueryDslDao<P, V extends IEntity<P>>extends AQueryDslD
 			totalCount = 0L;
 		}
 
-		result = new CBRWDataDTO<P, V>(list, totalCount);
+		result = new CBRWDataDTO<>(list, totalCount);
 
 		return result;
 	}
