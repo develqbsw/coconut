@@ -59,7 +59,6 @@ public class COCSPCertValidatorBCImpl implements IOCSPCertValidator {
 		byte[] retVal = null;
 
 		try {
-			OCSPReq ocspRequest = null;
 			// Add provider BC
 			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
@@ -75,10 +74,10 @@ public class COCSPCertValidatorBCImpl implements IOCSPCertValidator {
 			Extension e = new Extension(OCSPObjectIdentifiers.id_pkix_ocsp_nonce, false, new DEROctetString(nonce.toByteArray()));
 			gen.setRequestExtensions(new Extensions(e));
 
-			ocspRequest = gen.build();
+			OCSPReq ocspRequest = gen.build();
 			retVal = ocspRequest.getEncoded();
 		} catch (CertificateEncodingException | OCSPException | IOException e) {
-			throw new RuntimeException("Cannot generate OCSP request.", e);
+			throw new CSystemException("Cannot generate OCSP request.", e);
 		}
 
 		return retVal;
