@@ -99,7 +99,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		}
 		catch (NoResultException | CSecurityException ex)
 		{
-			LOGGER.debug("User not found", ex);
+			LOGGER.debug("User does not exist", ex);
 			userOld = null;
 		}
 

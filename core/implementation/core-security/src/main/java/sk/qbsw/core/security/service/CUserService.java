@@ -625,7 +625,6 @@ public class CUserService extends AService implements IUserService
 				isAddedGroupExcluded = Boolean.TRUE;
 				break;
 			}
-
 		}
 
 		//if is not combination user group unit already added

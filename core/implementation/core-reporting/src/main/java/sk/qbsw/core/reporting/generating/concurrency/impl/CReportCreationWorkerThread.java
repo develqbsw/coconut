@@ -74,12 +74,6 @@ public class CReportCreationWorkerThread extends AReportCreatorTask implements I
 			{
 				serviceInst.createReport(reportRequest);
 			}
-			catch (CReporProcessingLimitExceededException e)
-			{
-				LOGGER.error("SYNC: Latest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
-				reportService.changeReportStateLimitExceeded(reportRequest);
-				throw new CBusinessException("Error report generating", e);
-			}
 			catch (CBusinessException e)
 			{
 				LOGGER.error("SYNC: Latest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);

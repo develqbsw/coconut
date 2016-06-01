@@ -99,20 +99,21 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	{
 		CUser user = null;
 
+		String msgLogging = "User" + login;
 		try
 		{
 			user = callLdapLoginMethod(login, password, unit, role);
-			LOGGER.debug("User " + login + " was authenticated by LDAP");
+			LOGGER.debug(msgLogging + " was authenticated by LDAP");
 
 			return user;
 		}
 		catch (CSecurityException ex)
 		{
-			LOGGER.debug("User " + login + " was not authenticated by LDAP", ex);
+			LOGGER.debug(msgLogging + " was not authenticated by LDAP", ex);
 
 			// try with DB
 			user = callDatabaseLoginMethod(login, password, unit, role);
-			LOGGER.debug("User " + login + " was authenticated by DB");
+			LOGGER.debug(msgLogging + " was authenticated by DB");
 
 			return user;
 		}
