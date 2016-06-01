@@ -78,15 +78,11 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 			Authentication populatedAuthentication = authenticate(authentication);
 			boolean authenticated = populatedAuthentication.isAuthenticated();
 
-			if (authenticated)
+			if (authenticated && !prepareSessionData(populatedAuthentication))
 			{
-				//prepare session data and checks result
-				if (prepareSessionData(populatedAuthentication) == false)
-				{
-					LOGGER.warn("The data population failed - maybe the given authentication token is not supported");
-					setSecurityException(new CSecurityException("The data population failed - maybe the given authentication token is not supported"));
-					return false;
-				}
+				LOGGER.warn("The data population failed - maybe the given authentication token is not supported");
+				setSecurityException(new CSecurityException("The data population failed - maybe the given authentication token is not supported"));
+				return false;
 			}
 
 			return authenticated;
@@ -94,7 +90,7 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 		}
 		catch (AuthenticationException e)
 		{
-			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", String.valueOf(authenticationToken.getPrincipal()), e.getMessage()));
+			LOGGER.warn(String.format("User '%s' failed to login. Reason: %s", String.valueOf(authenticationToken.getPrincipal()), e));
 			setSecurityException(new CSecurityException(e.getMessage()));
 		}
 		return false;

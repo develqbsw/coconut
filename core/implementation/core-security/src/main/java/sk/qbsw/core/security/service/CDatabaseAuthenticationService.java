@@ -52,7 +52,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;   
+	private IUserDao userDao;
 
 	/** The unit dao. */
 	@Autowired
@@ -92,9 +92,9 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @param passwordToCheck the password to check
 	 * @throws CInvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String login,String passwordToCheck) throws CInvalidPasswordException
+	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String login, String passwordToCheck) throws CInvalidPasswordException
 	{
-		if (authenticationParams.getPasswordDigest() == null || !digester.checkPassword(login,passwordToCheck, authenticationParams.getPasswordDigest()))
+		if (authenticationParams.getPasswordDigest() == null || !digester.checkPassword(login, passwordToCheck, authenticationParams.getPasswordDigest()))
 		{
 			throw new CInvalidPasswordException("Password dogest doesn't match");
 		}
@@ -157,6 +157,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		}
 		catch (NoResultException ex)
 		{
+			LOGGER.error("Unit not found", ex);
 			throw new CSecurityException("There is not a unit with name " + unit);
 		}
 
@@ -197,6 +198,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		}
 		catch (NoResultException | CSecurityException e)
 		{
+			LOGGER.error("User not found by unit and login", e);
 			user = null;
 		}
 
@@ -214,6 +216,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			catch (NoResultException ex)
 			{
 				LOGGER.debug("The authentication params of user with login {} are invalid", user.getLogin());
+				LOGGER.error("Valid authentication params not found", ex);
+
 				throw new CInvalidAuthenticationException("Authentication params are invalid");
 			}
 
@@ -221,7 +225,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			switch (authenticationType)
 			{
 				case BY_PASSWORD_DIGEST:
-					authenticateByPasswordDigest(userAuthParams,login, password);
+					authenticateByPasswordDigest(userAuthParams, login, password);
 					break;
 				case BY_PASSWORD:
 					authenticateByPassword(userAuthParams, password);
@@ -309,6 +313,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		}
 		catch (PersistenceException ex)
 		{
+			LOGGER.debug("CountAll exception", ex);
 			return false;
 		}
 	}
@@ -338,11 +343,12 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		}
 		catch (NoResultException ex)
 		{
+			LOGGER.error("Login not found", ex);
 			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
 		}
 
 		//checks email if enctypt flag is false
-		if (!encrypt  && email != null && user.getEmail() != null && !email.equals(user.getEmail()))
+		if (!encrypt && email != null && user.getEmail() != null && !email.equals(user.getEmail()))
 		{
 			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
 		}
@@ -355,6 +361,8 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 		}
 		catch (NoResultException ex)
 		{
+			LOGGER.error("Authentication params not found", ex);
+
 			//create new because user has no auth params
 			authParams = new CAuthenticationParams();
 			authParams.setUser(user);
@@ -368,7 +376,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 		if (encrypt)
 		{
-			authParams.setPasswordDigest(digester.generateDigest(login,password));
+			authParams.setPasswordDigest(digester.generateDigest(login, password));
 			authParams.setPassword(null);
 		}
 		else

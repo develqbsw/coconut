@@ -3,6 +3,8 @@ package sk.qbsw.core.security.service;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,26 +32,37 @@ import sk.qbsw.core.security.model.spring.CUserDetails;
  */
 @CLogged
 @Service
-public class CAuthenticationUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
+public class CAuthenticationUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken>
+{
+
+	/** The log. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CAuthenticationUserDetailsService.class);
 
 	@Autowired
 	private IUserDao userDao;
 
 	@Override
-	@Transactional(readOnly = true)
-	public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
+	@Transactional (readOnly = true)
+	public UserDetails loadUserDetails (PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException
+	{
 		final String login = (String) token.getPrincipal();
 		CUser user = null;
-		try {
+		try
+		{
 			user = userDao.findOneByLogin(login);
-		} catch (NonUniqueResultException | NoResultException | CSecurityException e) {
+		}
+		catch (NonUniqueResultException | NoResultException | CSecurityException e)
+		{
+			LOGGER.error("User details not loaded", e);
 			//ignore it
 		}
 
-		if (user == null) {
+		if (user == null)
+		{
 			throw new CSystemException(ECoreErrorResponse.ACCESS_DENIED);
 		}
-		else if (!Boolean.TRUE.equals(user.getFlagEnabled())) {
+		else if (!Boolean.TRUE.equals(user.getFlagEnabled()))
+		{
 			throw new CSystemException(ECoreErrorResponse.ACCESS_DENIED);
 		}
 

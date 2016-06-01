@@ -34,7 +34,7 @@ public abstract class ALoggingAspect
 
 	static final Logger LOGGER = LoggerFactory.getLogger("auditLog");
 
-	static final Map<Class<?>, Map<Method, CMethodRepresentation>> MAPPING_CACHE = new HashMap<Class<?>, Map<Method, CMethodRepresentation>>();
+	static final Map<Class<?>, Map<Method, CMethodRepresentation>> MAPPING_CACHE = new HashMap<>();
 
 	public ALoggingAspect ()
 	{
@@ -61,7 +61,7 @@ public abstract class ALoggingAspect
 
 			if (classSpecificMethodMapping == null)
 			{
-				classSpecificMethodMapping = new HashMap<Method, CMethodRepresentation>();
+				classSpecificMethodMapping = new HashMap<>();
 				MAPPING_CACHE.put(targetClass, classSpecificMethodMapping);
 			}
 		}
@@ -81,13 +81,10 @@ public abstract class ALoggingAspect
 					{
 						method = targetClass.getMethod(signature.getName(), signature.getParameterTypes());
 					}
-					catch (final SecurityException e)
+					catch (NoSuchMethodException | SecurityException e)
 					{
 						LOGGER.error("Failed to get real implementation of interface method: {}. JoinPoint target class: {}. Using original method.", method.toGenericString(), targetClass);
-					}
-					catch (NoSuchMethodException e)
-					{
-						LOGGER.error("Failed to get real implementation of interface method: {}. JoinPoint target class: {}. Using original method.", method.toGenericString(), targetClass);
+						LOGGER.error("Failed to get real implementation of interface method", e);
 					}
 				}
 
@@ -112,7 +109,7 @@ public abstract class ALoggingAspect
 	private List<AParameterFactory> logParameters (Method method)
 	{
 		final String signatureString = method.toGenericString();
-		final List<AParameterFactory> parameterFactories = new ArrayList<AParameterFactory>();
+		final List<AParameterFactory> parameterFactories = new ArrayList<>();
 		final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultSecurityParameterNameDiscoverer();
 		final String[] paramNames = parameterNameDiscoverer.getParameterNames(method);
 
@@ -162,10 +159,11 @@ public abstract class ALoggingAspect
 		}
 		return argumentFactory;
 	}
-	
-	protected List<AParameter> getArguments(ProceedingJoinPoint pjp, final CMethodRepresentation methodRepresentation) {
+
+	protected List<AParameter> getArguments (ProceedingJoinPoint pjp, final CMethodRepresentation methodRepresentation)
+	{
 		final List<AParameterFactory> parameterFactories = methodRepresentation.getParameterFactories();
-		final List<AParameter> loggedArguments = new ArrayList<AParameter>(parameterFactories.size());
+		final List<AParameter> loggedArguments = new ArrayList<>(parameterFactories.size());
 		final Object[] arguments = pjp.getArgs();
 
 		int parameterIndex = 0;

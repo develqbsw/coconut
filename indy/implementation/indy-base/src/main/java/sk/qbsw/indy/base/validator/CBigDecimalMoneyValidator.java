@@ -36,8 +36,7 @@ public class CBigDecimalMoneyValidator extends AbstractValidator<BigDecimal>
 		try
 		{
 			// First check that a normal conversion works
-			@SuppressWarnings ("unused")
-			BigDecimal bigDecimal = CBigDecimalParser.parseBigDecimal(validatable.getValue(), getSessionLocale());
+			CBigDecimalParser.parseBigDecimal(validatable.getValue(), getSessionLocale());
 
 			// Now check if the only non digit character is the decimal sign
 			// corresponding to the locale and that it appears only once.

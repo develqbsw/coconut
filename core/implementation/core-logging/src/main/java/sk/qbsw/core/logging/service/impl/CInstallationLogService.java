@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,10 @@ public class CInstallationLogService implements IInstallationLogService
 	@Qualifier ("jpaInstallationLogDao")
 	private IInstallationLogDao installationLogDao;
 
+	/** The logger. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CInstallationLogService.class);
+
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.logging.service.IInstallationLogService#checkVersion(java.lang.String)
 	 */
@@ -42,15 +48,12 @@ public class CInstallationLogService implements IInstallationLogService
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
 		}
 		catch (NoResultException e)
 		{
-			return false;
+			LOGGER.error("Version not found", e);
 		}
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -61,7 +64,7 @@ public class CInstallationLogService implements IInstallationLogService
 	public boolean checkVersionList (List<String> versions)
 	{
 		//checks if the list is null or empty
-		if (versions == null || versions.isEmpty() == true)
+		if (versions == null || versions.isEmpty())
 		{
 			throw new IllegalArgumentException("The versions list is empty");
 		}
@@ -72,9 +75,6 @@ public class CInstallationLogService implements IInstallationLogService
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 }

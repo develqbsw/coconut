@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,9 @@ import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
 @Service ("cUsersValidationService")
 public class CUsersValidationService extends AService implements IUsersValidationService
 {
+	/** The logger. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CUserService.class);
+
 	/** The organization dao. */
 	@Autowired
 	private IOrganizationDao organizationDao;
@@ -69,10 +74,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 		else
 		{
@@ -97,6 +99,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		}
 		catch (NoResultException | CSecurityException ex)
 		{
+			LOGGER.debug("User not found", ex);
 			userOld = null;
 		}
 
@@ -126,7 +129,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		filter.setExcludedUser(user);
 		filter.setEnabled(true);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		List<CUser> users = userDao.findByUserAssociationsFilter(filter, orderModel);
@@ -149,19 +152,12 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		if (name != null)
 		{
 			List<COrganization> persistedOrganizations = organizationDao.findByName(name);
-			if (persistedOrganizations != null && persistedOrganizations.isEmpty() == false)
+			if (persistedOrganizations != null && !persistedOrganizations.isEmpty())
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -182,6 +178,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		}
 		catch (NoResultException | CSecurityException ex)
 		{
+			LOGGER.debug("User not found", ex);
 			userOld = null;
 		}
 
@@ -208,13 +205,14 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 			List<CUser> users = userDao.findByPinCode(oldUserAuthParams.getPin());
 
 			//if the users is not empty - any user has assigned given pin
-			if (users != null && users.isEmpty() == false)
+			if (users != null && !users.isEmpty())
 			{
 				exists = true;
 			}
 		}
 		catch (CBusinessException e)
 		{
+			LOGGER.debug("User with pin not found", e);
 			//the user with pin null does not exists
 		}
 
@@ -234,13 +232,14 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 		{
 			List<CUser> users = userDao.findByPinCode(pin);
 
-			if (users != null && users.isEmpty() == false)
+			if (users != null && !users.isEmpty())
 			{
 				exists = true;
 			}
 		}
 		catch (CBusinessException e)
 		{
+			LOGGER.debug("User not found", e);
 			//the user with pin null does not exists
 		}
 

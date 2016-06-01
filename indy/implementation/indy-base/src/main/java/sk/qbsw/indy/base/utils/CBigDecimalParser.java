@@ -17,15 +17,13 @@ public class CBigDecimalParser
 	public static BigDecimal parseBigDecimal (String s, Locale locale)
 	{
 		BigDecimalConverter converter = new BigDecimalConverter();
-		BigDecimal bigDecimal = (BigDecimal) converter.convertToObject(s, locale);
-		return bigDecimal;
+		return (BigDecimal) converter.convertToObject(s, locale);
 	}
 
 	public static BigDecimal parseBigDecimal (Object so, Locale locale)
 	{
 		BigDecimalConverter converter = new BigDecimalConverter();
-		BigDecimal bigDecimal = (BigDecimal) converter.convertToObject(so.toString(), locale);
-		return bigDecimal;
+		return (BigDecimal) converter.convertToObject(so.toString(), locale);
 	}
 
 }

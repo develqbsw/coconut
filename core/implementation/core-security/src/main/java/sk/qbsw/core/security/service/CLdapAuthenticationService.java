@@ -45,7 +45,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	private static final long serialVersionUID = 1L;
 
 	/** The logger. */
-	final Logger logger = LoggerFactory.getLogger(CLdapAuthenticationService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapAuthenticationService.class);
 
 	/** The data. */
 	@Autowired
@@ -90,6 +90,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		}
 		catch (CSecurityException ex)
 		{
+			LOGGER.debug("User is not allowed to login", ex);
 			return false;
 		}
 	}
@@ -145,10 +146,11 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		}
 		catch (NoResultException ex)
 		{
+			LOGGER.debug("User login retry", ex);
 			user = loginUser(login, password, null);
 		}
 
-		if (user.isInUnit(databaseUnit) == true)
+		if (user.isInUnit(databaseUnit))
 		{
 			return user;
 		}
@@ -179,6 +181,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 		}
 		catch (NoResultException nre)
 		{
+			LOGGER.debug("User not found", nre);
 			user = null;
 		}
 
@@ -191,7 +194,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 			}
 
 			// authenticate user in ldap
-			if (authenticateUser(login, password) == true)
+			if (authenticateUser(login, password))
 			{
 				return user;
 			}
@@ -226,11 +229,11 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 				try
 				{
 					String escapedLogin = CLDAPInjectionProtector.escapeDN(login);
-					logger.debug("LDAP escaped login:" + escapedLogin);
+					LOGGER.debug("LDAP escaped login:" + escapedLogin);
 
 					// authenticate
 					ldapProvider.authenticate(userSearchDn, String.format(data.getUserSearchFilter(), escapedLogin), password);
-					logger.debug("User " + login + " was authenticated by LDAP in tree " + userSearchDn);
+					LOGGER.debug("User " + login + " was authenticated by LDAP in tree " + userSearchDn);
 
 					return true;
 				}
@@ -243,7 +246,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 
 			for (int i = 0; i < exceptions.size(); i++)
 			{
-				logger.error("LDAP authentication error in " + (i + 1) + ". baseDn: ", exceptions.get(i));
+				LOGGER.error("LDAP authentication error in " + (i + 1) + ". baseDn: ", exceptions.get(i));
 			}
 
 			return false;

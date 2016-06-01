@@ -47,7 +47,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
+	public UserDetails loadUserByUsername (String username) throws DataAccessException
 	{
 		CUser user;
 
@@ -57,6 +57,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 		}
 		catch (NoResultException | CSecurityException ex)
 		{
+			LOGGER.debug("User not found", ex);
 			user = null;
 		}
 
@@ -65,8 +66,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 			throw new UsernameNotFoundException(String.format("User '%s' not found", username));
 		}
 
-		UserDetails retVal = constructUserDetails(user);
-		return retVal;
+		return constructUserDetails(user);
 	}
 
 	/**

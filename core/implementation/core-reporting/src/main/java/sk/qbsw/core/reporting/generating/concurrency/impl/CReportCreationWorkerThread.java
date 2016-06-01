@@ -53,7 +53,7 @@ public class CReportCreationWorkerThread extends AReportCreatorTask implements I
 		}
 		catch (Exception e)
 		{
-			LOGGER.error("WorkerThread: CBusinessException : " + e.getMessage());
+			LOGGER.error("WorkerThread: CBusinessException : " + e.getMessage(), e);
 		}
 		finally
 		{
@@ -74,22 +74,24 @@ public class CReportCreationWorkerThread extends AReportCreatorTask implements I
 			{
 				serviceInst.createReport(reportRequest);
 			}
+			catch (CReporProcessingLimitExceededException e)
+			{
+				LOGGER.error("SYNC: Latest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
+				reportService.changeReportStateLimitExceeded(reportRequest);
+				throw new CBusinessException("Error report generating", e);
+			}
+			catch (CBusinessException e)
+			{
+				LOGGER.error("SYNC: Latest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
+				reportService.changeReportStateLimitExceeded(reportRequest);
+
+				throw e;
+			}
 			catch (Exception e)
 			{
-				LOGGER.error("SYNC: Leatest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
-				if (e instanceof CReporProcessingLimitExceededException)
-				{
-					reportService.changeReportStateLimitExceeded(reportRequest);
-				}
-				else
-				{
-					reportService.changeReportStateErrorProcessing(reportRequest);
-				}
-				if (e instanceof CBusinessException)
-				{
-					throw e;
-				}
-				throw new CBusinessException("error report generating", e);
+				LOGGER.error("SYNC: Latest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
+				reportService.changeReportStateLimitExceeded(reportRequest);
+				throw new CBusinessException("Error report generating", e);
 			}
 		}
 		else

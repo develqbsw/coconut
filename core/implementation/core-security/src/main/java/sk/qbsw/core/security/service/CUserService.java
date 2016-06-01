@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.NoResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +57,8 @@ import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
 @Service ("cUserService")
 public class CUserService extends AService implements IUserService
 {
+	/** The logger. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CUserService.class);
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -145,7 +149,7 @@ public class CUserService extends AService implements IUserService
 		CUserAssociationsFilter filter = new CUserAssociationsFilter();
 		filter.setOrganization(organization);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
@@ -164,7 +168,7 @@ public class CUserService extends AService implements IUserService
 		filter.setExcludedUser(user);
 		filter.setEnabled(true);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
@@ -175,7 +179,7 @@ public class CUserService extends AService implements IUserService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser getUserByLogin (String login) throws NoResultException, CSecurityException
+	public CUser getUserByLogin (String login) throws CSecurityException
 	{
 		return userDao.findOneByLogin(login);
 	}
@@ -211,7 +215,7 @@ public class CUserService extends AService implements IUserService
 		filter.setOrganization(organization);
 		filter.setEnabled(enabled);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
@@ -229,7 +233,7 @@ public class CUserService extends AService implements IUserService
 		filter.setEnabled(enabled);
 		filter.setGroup(group);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EOrganizationOrderByAttributeSpecifier.NAME, EOrderSpecifier.ASC));
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
@@ -248,7 +252,7 @@ public class CUserService extends AService implements IUserService
 		filter.setEnabled(enabled);
 		filter.setGroup(group);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
@@ -267,7 +271,7 @@ public class CUserService extends AService implements IUserService
 			filter.setOrganization(organization);
 			filter.setRole(role);
 
-			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 			orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 			return userDao.findByUserAssociationsFilter(filter, orderModel);
@@ -277,7 +281,7 @@ public class CUserService extends AService implements IUserService
 			CUserAssociationsFilter filter = new CUserAssociationsFilter();
 			filter.setOrganization(organization);
 
-			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 			orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 			return userDao.findByUserAssociationsFilter(filter, orderModel);
@@ -297,7 +301,7 @@ public class CUserService extends AService implements IUserService
 		filter.setLogin(login);
 		filter.setEnabled(enabled);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
@@ -317,7 +321,7 @@ public class CUserService extends AService implements IUserService
 		filter.setEnabled(enabled);
 		filter.setOrganization(organization);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
@@ -337,7 +341,7 @@ public class CUserService extends AService implements IUserService
 		filter.setEnabled(enabled);
 		filter.setGroupCodePrefix(groupPrefix);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
@@ -353,7 +357,7 @@ public class CUserService extends AService implements IUserService
 		CUserDetailFilter filter = new CUserDetailFilter();
 		filter.setEmail(email);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
+		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
@@ -393,7 +397,7 @@ public class CUserService extends AService implements IUserService
 		}
 		catch (NoResultException nre)
 		{
-
+			LOGGER.debug("Login not used, can continue", nre);
 		}
 
 		if (user.getLogin() == null || organization == null || organization.getId() == null)
@@ -401,16 +405,18 @@ public class CUserService extends AService implements IUserService
 			throw new CSecurityException(ECoreErrorResponse.USER_NOT_ALL_PARAMETERS);
 		}
 
+		COrganization redOrg;
 		try
 		{
-			organization = organizationDao.findById(organization.getId());
+			redOrg = organizationDao.findById(organization.getId());
 		}
 		catch (NoResultException nre)
 		{
+			LOGGER.debug("Organization not found", nre);
 			throw new CSecurityException(ECoreErrorResponse.ORGANIZATION_NOT_VALID);
 		}
 
-		user.setOrganization(organization);
+		user.setOrganization(redOrg);
 		userDao.update(user);
 
 		//create and save empty authentication params
@@ -499,7 +505,12 @@ public class CUserService extends AService implements IUserService
 	public void unsetUserFromGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException
 	{
 		//validates input objects
-		if ( (user == null || user.getId() == null || group == null || group.getId() == null) || (unit != null && unit.getId() == null))
+		if (user == null || user.getId() == null || group == null || group.getId() == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+
+		if (unit != null && unit.getId() == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -533,7 +544,7 @@ public class CUserService extends AService implements IUserService
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (Long userId, Long groupId, Long unitId) throws CSecurityException, CBusinessException
+	public void setUserToGroup (Long userId, Long groupId, Long unitId) throws CBusinessException
 	{
 		if (userId == null || groupId == null)
 		{
@@ -567,7 +578,7 @@ public class CUserService extends AService implements IUserService
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (Long userId, Long groupId) throws CSecurityException, CBusinessException
+	public void setUserToGroup (Long userId, Long groupId) throws CBusinessException
 	{
 		setUserToGroup(userId, groupId, null);
 	}
@@ -577,10 +588,15 @@ public class CUserService extends AService implements IUserService
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException, CBusinessException
+	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CBusinessException
 	{
 		//validates input objects
-		if ( (user == null || user.getId() == null || group == null || group.getId() == null) || (unit != null && unit.getId() == null))
+		if (user == null || user.getId() == null || group == null || group.getId() == null)
+		{
+			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
+		}
+
+		if (unit != null && unit.getId() == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -633,7 +649,7 @@ public class CUserService extends AService implements IUserService
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException, CBusinessException
+	public void setUserToGroup (CUser user, CGroup group) throws CBusinessException
 	{
 		setUserToGroup(user, group, null);
 	}
@@ -652,6 +668,7 @@ public class CUserService extends AService implements IUserService
 		}
 		catch (NoResultException | CSecurityException e)
 		{
+			LOGGER.debug("User does not exist", e);
 			return false;
 		}
 	}
@@ -665,7 +682,7 @@ public class CUserService extends AService implements IUserService
 	 * @return the persisted entity
 	 * @throws CSecurityException the security exception occures if the input parameters are incorrect or if there is no entity in database
 	 */
-	private <T extends IEntity<Long>>T getPersistedEntity (T entity, IEntityDao<Long, T> dao) throws CSecurityException
+	private <T extends IEntity<Long>> T getPersistedEntity (T entity, IEntityDao<Long, T> dao) throws CSecurityException
 	{
 		if (entity != null && entity.getId() != null)
 		{
@@ -683,6 +700,8 @@ public class CUserService extends AService implements IUserService
 			}
 			catch (NoResultException ex)
 			{
+				LOGGER.debug("Entity not found", ex);
+
 				throw new CSecurityException("The invalid input entity");
 			}
 		}
