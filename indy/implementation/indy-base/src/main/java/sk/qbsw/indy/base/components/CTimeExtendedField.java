@@ -32,11 +32,11 @@ import org.apache.wicket.validation.validator.RangeValidator;
 public class CTimeExtendedField extends FormComponentPanel<Calendar>
 {
 
-	private static final String MINUTES = "minutes";
-	private static final String HOURS = "hours";
-	private static final String MAXIMUM = "maximum";
-	private static final String MINIMUM = "minimum";
-	private static final String FIELD_NAME = "fieldName";
+	private static final String PROP_MINUTES = "minutes";
+	private static final String PROP_HOURS = "hours";
+	private static final String PROP_MAXIMUM = "maximum";
+	private static final String PROP_MINIMUM = "minimum";
+	private static final String PROP_FIELD_NAME = "fieldName";
 
 	/**
 	 * Enumerated type for represent type of timeZones
@@ -95,7 +95,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 	private void init ()
 	{
 		setType(Calendar.class);
-		hoursField = new TextField<Integer>(HOURS, new PropertyModel<Integer>(this, HOURS), Integer.class)
+		hoursField = new TextField<Integer>(PROP_HOURS, new PropertyModel<Integer>(this, PROP_HOURS), Integer.class)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -139,17 +139,17 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				{
 					ValidationError error = new ValidationError();
 					error.addKey("error.range_hours_error_in_field");
-					error.setVariable(FIELD_NAME, fieldName);
-					error.setVariable(MINIMUM, min);
-					error.setVariable(MAXIMUM, max);
+					error.setVariable(PROP_FIELD_NAME, fieldName);
+					error.setVariable(PROP_MINIMUM, min);
+					error.setVariable(PROP_MAXIMUM, max);
 					validatable.error(error);
 				}
 			}
 
 		});
-		hoursField.setLabel(new Model<String>(HOURS));
+		hoursField.setLabel(new Model<String>(PROP_HOURS));
 
-		minutesField = new TextField<Integer>(MINUTES, new PropertyModel<Integer>(this, MINUTES), Integer.class)
+		minutesField = new TextField<Integer>(PROP_MINUTES, new PropertyModel<Integer>(this, PROP_MINUTES), Integer.class)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -193,15 +193,15 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				{
 					ValidationError error = new ValidationError();
 					error.addKey("error.range_minutes_error_in_field");
-					error.setVariable(FIELD_NAME, fieldName);
-					error.setVariable(MINIMUM, min);
-					error.setVariable(MAXIMUM, max);
+					error.setVariable(PROP_FIELD_NAME, fieldName);
+					error.setVariable(PROP_MINIMUM, min);
+					error.setVariable(PROP_MAXIMUM, max);
 					validatable.error(error);
 				}
 			}
 
 		});
-		minutesField.setLabel(new Model<String>(MINUTES));
+		minutesField.setLabel(new Model<String>(PROP_MINUTES));
 
 		timeZomeChoice = new DropDownChoice<>("timezone", new PropertyModel<String>(this, "timeZone"), EtcTimeZones.values());
 		add(timeZomeChoice);
@@ -221,7 +221,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 		{
 			ValidationError error = new ValidationError();
 			error.addKey("error.required_hours_field");
-			error.setVariable(FIELD_NAME, fieldName);
+			error.setVariable(PROP_FIELD_NAME, fieldName);
 			errors.add(error);
 		}
 
@@ -235,7 +235,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			{
 				ValidationError error = new ValidationError();
 				error.addKey("error.parse_hours_field");
-				error.setVariable(FIELD_NAME, fieldName);
+				error.setVariable(PROP_FIELD_NAME, fieldName);
 				errors.add(error);
 			}
 		}
@@ -250,7 +250,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 		{
 			ValidationError error = new ValidationError();
 			error.addKey("error.required_minutes_field");
-			error.setVariable(FIELD_NAME, fieldName);
+			error.setVariable(PROP_FIELD_NAME, fieldName);
 			errors.add(error);
 		}
 		if (minutesValue != null && !"".equals(minutesValue))
@@ -263,7 +263,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			{
 				ValidationError error = new ValidationError();
 				error.addKey("error.parse_minutes_field");
-				error.setVariable(FIELD_NAME, fieldName);
+				error.setVariable(PROP_FIELD_NAME, fieldName);
 				errors.add(error);
 			}
 		}
@@ -295,7 +295,6 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 
 		try
 		{
-
 			if (hoursValue != null)
 			{
 				calendar = Calendar.getInstance();
@@ -311,9 +310,8 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				calendar = (calendar == null) ? Calendar.getInstance() : calendar;
 				calendar.setTimeZone(TimeZone.getTimeZone(timeZoneValue));
 			}
-
 		}
-		catch (RuntimeException e)
+		catch (Exception e)
 		{
 			CTimeExtendedField.this.error(e.getMessage());
 			invalid();
