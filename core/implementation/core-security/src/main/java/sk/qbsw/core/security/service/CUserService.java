@@ -515,6 +515,11 @@ public class CUserService extends AService implements IUserService
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
+		removeUserUnitGroup(user, group, unit);
+	}
+
+	private void removeUserUnitGroup (CUser user, CGroup group, CUnit unit)
+	{
 		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
 		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, group);
 
@@ -591,45 +596,18 @@ public class CUserService extends AService implements IUserService
 	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CBusinessException
 	{
 		//validates input objects
-		if (user == null || user.getId() == null || group == null || group.getId() == null)
+		if (!CUser.isKnown(user) || !CGroup.isKnown(group))
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		if (unit != null && unit.getId() == null)
+		if (!CUnit.isKnown(unit))
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		// if group which will be added to user is excluded another group then cannot be added
-		Boolean isAddedGroupExcluded = Boolean.FALSE;
-		//if already exist combination of user group unit 
-		Boolean isGroupAlreadyAdded = Boolean.FALSE;
-
-		//find all groups assigned to user
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, null);
-
-		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
-		{
-			if (group.equals(userUnitGroup.getGroup()))
-			{
-				//if is group already added
-				isGroupAlreadyAdded = Boolean.TRUE;
-				break;
-			}
-
-			//if added group is excluded by group which user already have then group cannot be added
-			Set<CGroup> excludedGroups = userUnitGroup.getGroup().getExcludedGroups();
-			if (excludedGroups != null && excludedGroups.contains(group))
-			{
-				isAddedGroupExcluded = Boolean.TRUE;
-				break;
-			}
-		}
-
-		//if is not combination user group unit already added
-		//or if existing group assigned to user not exclude added group
-		if (!isGroupAlreadyAdded && !isAddedGroupExcluded)
+		boolean canBeAdded = canBeGroupUnitAssignedToUser(user, group, unit);
+		if (canBeAdded)
 		{
 			CXUserUnitGroup userUnitGroupRecord = new CXUserUnitGroup();
 			userUnitGroupRecord.setUser(user);
@@ -641,6 +619,31 @@ public class CUserService extends AService implements IUserService
 		{
 			throw new CBusinessException("The group " + group.getCode() + " cannot be set to user: it's excluded or already has been set to user.");
 		}
+	}
+
+	private boolean canBeGroupUnitAssignedToUser (CUser user, CGroup group, CUnit unit)
+	{
+		//find all groups assigned to user
+		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, null);
+
+		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
+		{
+			if (group.equals(userUnitGroup.getGroup()))
+			{
+				//if is group already added
+				return false;
+			}
+
+			//if added group is excluded by group which user already have then group cannot be added
+			Set<CGroup> excludedGroups = userUnitGroup.getGroup().getExcludedGroups();
+			if (excludedGroups != null && excludedGroups.contains(group))
+			{
+				return false;
+			}
+		}
+		//if is not combination user group unit already added
+		//or if existing group assigned to user not exclude added group
+		return true;
 	}
 
 	/* (non-Javadoc)
