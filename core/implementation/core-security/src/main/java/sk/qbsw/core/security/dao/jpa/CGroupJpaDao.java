@@ -10,9 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
+
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.logging.service.impl.CInstallationLogService;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
@@ -22,9 +24,6 @@ import sk.qbsw.core.security.model.domain.QCGroup;
 import sk.qbsw.core.security.model.domain.QCUnit;
 import sk.qbsw.core.security.model.domain.QCUser;
 import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
-
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * The Class CGroupJpaDao.
@@ -43,7 +42,7 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 	private static final long serialVersionUID = 1L;
 
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CInstallationLogService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CGroupJpaDao.class);
 
 	/**
 	 * Default constructor - nothing special.
