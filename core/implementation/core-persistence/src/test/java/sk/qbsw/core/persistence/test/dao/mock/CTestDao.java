@@ -9,10 +9,8 @@ import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
  * @version 1.3.0
  * @since 1.3.0
  */
-@SuppressWarnings("serial")
 public class CTestDao extends AEntityJpaDao<Long, CTestEntity> implements ITestDao
 {
-
 	/**
 	 * Instantiates a new c test dao.
 	 */

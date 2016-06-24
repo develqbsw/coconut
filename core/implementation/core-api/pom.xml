@@ -42,16 +42,6 @@
 			<artifactId>jackson-core-asl</artifactId>
 		</dependency>
 
-		<!-- HTTP -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-		</dependency>
-
 		<!-- SLF4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

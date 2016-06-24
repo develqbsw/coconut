@@ -5,21 +5,24 @@ import javax.persistence.AccessType;
 import javax.persistence.MappedSuperclass;
 
 /**
- * Base entity implementation
+ * Base entity implementation.
  *
- * @param <PK> the primary key type
+ * @param <P> the generic type
  */
 @Access (AccessType.FIELD)
 @MappedSuperclass
 public abstract class AEntity<P> implements IEntity<P>
 {
+	/**
+	 * Instantiates a new a entity.
+	 */
 	protected AEntity ()
 	{
-
 	}
-	
+
 	/**
-	 * Identifies if the entity has identity (ID)
+	 * Identifies if the entity has identity (ID).
+	 *
 	 * @return true / false
 	 */
 	public boolean isKnown ()
@@ -27,9 +30,14 @@ public abstract class AEntity<P> implements IEntity<P>
 		return AEntity.isKnown(this);
 	}
 
-	public static boolean isKnown (IEntity entity)
+	/**
+	 * Checks if is known.
+	 *
+	 * @param entity the entity
+	 * @return true, if is known
+	 */
+	public static <T> boolean isKnown (IEntity<T> entity)
 	{
 		return entity != null && entity.getId() != null;
 	}
-
 }

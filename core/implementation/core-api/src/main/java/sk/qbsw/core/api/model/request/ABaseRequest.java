@@ -9,14 +9,17 @@ import sk.qbsw.core.api.client.jackson.serializer.CDateJSonSerializer;
 /**
  * Base request for API interface.
  * 
- * @param <T>
- *            the generic type
  * @author Dalibor Rak
- * @version 1.2.0
+ * @author Tomas Lauro
+ * 
+ * @version 1.15.0
  * @since 1.2.0
  */
-public class ABaseRequest
+public class ABaseRequest extends ARequest
 {
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 6837231152329254832L;
+
 	/**
 	 * Identifier of client's device.
 	 */

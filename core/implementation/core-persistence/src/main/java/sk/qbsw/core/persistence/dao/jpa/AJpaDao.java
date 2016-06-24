@@ -13,15 +13,24 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.jdbc.ReturningWork;
 
-import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.persistence.dao.IDao;
 
-@SuppressWarnings("serial")
-@CLogged
-public abstract class AJpaDao implements IDao {
-
+/**
+ * The base dao class - holds the entity manager.
+ *
+ * @param <PK> the generic type for Entity Primary key
+ * @param <T> the generic type for Entity itself
+ * 
+ * @author Dalibor Rak
+ * @author Tomas Lauro
+ * 
+ * @version 1.15.0
+ * @since 1.0.0
+ */
+public abstract class AJpaDao implements IDao
+{
 	/** The em. */
-	@PersistenceContext(name = "persistenceContext")
+	@PersistenceContext (name = "persistenceContext")
 	protected EntityManager em;
 
 	/**
@@ -29,7 +38,7 @@ public abstract class AJpaDao implements IDao {
 	 *
 	 * @param em the new entity manager
 	 */
-	public void setEntityManager(EntityManager em)
+	public void setEntityManager (EntityManager em)
 	{
 		this.em = em;
 	}
@@ -39,7 +48,8 @@ public abstract class AJpaDao implements IDao {
 	 *
 	 * @return the entity manager
 	 */
-	public EntityManager getEntityManager() {
+	public EntityManager getEntityManager ()
+	{
 		return em;
 	}
 
@@ -47,7 +57,7 @@ public abstract class AJpaDao implements IDao {
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#flush()
 	 */
 	@Override
-	public void flush()
+	public void flush ()
 	{
 		em.flush();
 	}
@@ -56,7 +66,7 @@ public abstract class AJpaDao implements IDao {
 	 * @see sk.qbsw.core.persistence.dao.IEntityDao#clear()
 	 */
 	@Override
-	public void clear()
+	public void clear ()
 	{
 		em.clear();
 	}
@@ -65,28 +75,35 @@ public abstract class AJpaDao implements IDao {
 	 * @see sk.qbsw.core.persistence.dao.IDao#getSequenceNextValue(java.lang.String)
 	 */
 	@Override
-	public Long getSequenceNextValue(final String sequenceName) {
+	public Long getSequenceNextValue (final String sequenceName)
+	{
 		final Session s = this.em.unwrap(Session.class);
-		final Long result = s.doReturningWork(new ReturningWork<Long>() {
+		final Long result = s.doReturningWork(new ReturningWork<Long>()
+		{
 
 			@Override
-			public Long execute(Connection connection) throws SQLException {
+			public Long execute (Connection connection) throws SQLException
+			{
 				final Dialect dialect = ((SessionFactoryImplementor) s.getSessionFactory()).getDialect();
 				PreparedStatement ps = null;
 				ResultSet rs = null;
 
-				try {
+				try
+				{
 					ps = connection.prepareStatement(dialect.getSequenceNextValString(sequenceName));
 					rs = ps.executeQuery();
 					rs.next();
 
 					return rs.getLong(1);
 				}
-				finally {
-					if (ps != null) {
+				finally
+				{
+					if (ps != null)
+					{
 						ps.close();
 					}
-					if (rs != null) {
+					if (rs != null)
+					{
 						rs.close();
 					}
 				}
@@ -96,5 +113,4 @@ public abstract class AJpaDao implements IDao {
 
 		return result;
 	}
-
 }

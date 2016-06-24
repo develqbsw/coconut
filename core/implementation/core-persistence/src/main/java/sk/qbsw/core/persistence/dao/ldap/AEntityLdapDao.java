@@ -19,7 +19,6 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.6.0
  * @version 1.13.0
  */
-@SuppressWarnings("serial")
 public abstract class AEntityLdapDao<PK, T extends IEntity<PK>> implements IEntityDao<PK, T>, ICrudDao<PK, T>
 {
 	/* (non-Javadoc)

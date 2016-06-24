@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.querydsl.AEntityQueryDslDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.oauth.dao.IAuthenticationTokenDao;
 import sk.qbsw.core.security.oauth.model.domain.QCAuthenticationToken;
 import sk.qbsw.core.security.oauth.model.domain.CAuthenticationToken;
@@ -23,7 +23,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
  *
  */
 @Repository ("authenticationTokenJpaDao")
-public class CAuthenticationTokenJpaDao extends AEntityQueryDslDao<Long, CAuthenticationToken> implements IAuthenticationTokenDao
+public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthenticationToken> implements IAuthenticationTokenDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -7138807761826410928L;

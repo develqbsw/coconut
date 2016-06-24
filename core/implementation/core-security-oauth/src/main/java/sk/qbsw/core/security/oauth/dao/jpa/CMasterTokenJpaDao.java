@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.querydsl.AEntityQueryDslDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.oauth.dao.IMasterTokenDao;
 import sk.qbsw.core.security.oauth.model.domain.QCMasterToken;
 import sk.qbsw.core.security.oauth.model.domain.CMasterToken;
@@ -23,7 +23,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
  *
  */
 @Repository ("masterTokenJpaDao")
-public class CMasterTokenJpaDao extends AEntityQueryDslDao<Long, CMasterToken> implements IMasterTokenDao
+public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> implements IMasterTokenDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6313012649405515609L;

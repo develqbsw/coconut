@@ -47,6 +47,9 @@
 		<httpcore.version>4.4.4</httpcore.version>
 		<httpmime.version>4.5.2</httpmime.version>
 
+		<!-- validation -->
+		<validation-api.version>1.1.0.Final</validation-api.version>
+
 		<!-- Logging -->
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.21</slf4j.version>
@@ -94,7 +97,7 @@
 		<!-- Wicket -->
 		<wicketstuff.minis>6.22.0</wicketstuff.minis>
 		<wicket.version>6.22.0</wicket.version>
-		
+
 		<!-- Testing -->
 		<tempusfugit.version>1.1</tempusfugit.version>
 	</properties>
@@ -523,6 +526,13 @@
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
 				<version>${aspectj.version}</version>
+			</dependency>
+
+			<!-- validation -->
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation-api.version}</version>
 			</dependency>
 
 			<!-- Parsers - XML, ... -->
