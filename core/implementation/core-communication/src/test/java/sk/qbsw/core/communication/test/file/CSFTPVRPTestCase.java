@@ -6,9 +6,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
+import com.google.code.tempusfugit.concurrency.ConcurrentRule;
 import com.jcraft.jsch.Logger;
 
 import sk.qbsw.core.communication.file.EFileType;
@@ -17,19 +18,19 @@ import sk.qbsw.core.communication.file.sftp.CFileExchangerSFTP;
 /**
  * The Class CSFTPVRPTestCase.
  */
-@Ignore
-public class CSFTPVRPTestCase
-{
+public class CSFTPVRPTestCase {
 
 	/** The fe. */
 	private CFileExchangerSFTP fe = new CFileExchangerSFTP("chaos.qbsw.local", 22);
+
+	@Rule
+	public ConcurrentRule rule = new ConcurrentRule();
 
 	/**
 	 * Inits the connection.
 	 */
 	@Before
-	public void initConnection()
-	{
+	public void initConnection() {
 		try {
 			JSchCommonsLogger jschLogger = new JSchCommonsLogger();
 			com.jcraft.jsch.JSch.setLogger(jschLogger);
@@ -48,12 +49,10 @@ public class CSFTPVRPTestCase
 	 * Test ls file.
 	 */
 	@Test
-	public void testLsFile()
-	{
+	public void testLsFile() {
 		System.out.println("Listing files:");
 		List<String> content = fe.ls(".", EFileType.FILE);
-		for (String val : content)
-		{
+		for (String val : content) {
 			System.out.println(val);
 		}
 	}
@@ -62,12 +61,10 @@ public class CSFTPVRPTestCase
 	 * Test ls dir.
 	 */
 	@Test
-	public void testLsDir()
-	{
+	public void testLsDir() {
 		System.out.println("Listing dir:");
 		List<String> content = fe.ls("./", EFileType.DIRECTORY);
-		for (String val : content)
-		{
+		for (String val : content) {
 			System.out.println(val);
 		}
 	}
@@ -76,8 +73,7 @@ public class CSFTPVRPTestCase
 	 * Close connections.
 	 */
 	@After
-	public void closeConnections()
-	{
+	public void closeConnections() {
 		System.out.println("Disconnecting...");
 		fe.disconnect();
 		System.out.println("Disconnected.");
@@ -95,9 +91,10 @@ class JSchCommonsLogger implements Logger {
 	private Log log;
 
 	/**
-	 * Constructor with custom category name 
+	 * Constructor with custom category name
 	 * 
-	 * @param logName the category name used by this logger for Apache Commons.
+	 * @param logName
+	 *            the category name used by this logger for Apache Commons.
 	 */
 	public JSchCommonsLogger(String logName) {
 		log = LogFactory.getLog(logName);
@@ -110,45 +107,49 @@ class JSchCommonsLogger implements Logger {
 		this(Logger.class.getName());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jcraft.jsch.Logger#isEnabled(int)
 	 */
 	public boolean isEnabled(int level) {
 		switch (level) {
-			case DEBUG:
-				return log.isDebugEnabled();
-			case INFO:
-				return log.isInfoEnabled();
-			case WARN:
-				return log.isWarnEnabled();
-			case ERROR:
-				return log.isErrorEnabled();
-			case FATAL:
-				return log.isFatalEnabled();
+		case DEBUG:
+			return log.isDebugEnabled();
+		case INFO:
+			return log.isInfoEnabled();
+		case WARN:
+			return log.isWarnEnabled();
+		case ERROR:
+			return log.isErrorEnabled();
+		case FATAL:
+			return log.isFatalEnabled();
 		}
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jcraft.jsch.Logger#log(int, java.lang.String)
 	 */
 	public void log(int level, String message) {
 		switch (level) {
-			case DEBUG:
-				log.debug(message);
-				break;
-			case INFO:
-				log.info(message);
-				break;
-			case WARN:
-				log.warn(message);
-				break;
-			case ERROR:
-				log.error(message);
-				break;
-			case FATAL:
-				log.fatal(message);
-				break;
+		case DEBUG:
+			log.debug(message);
+			break;
+		case INFO:
+			log.info(message);
+			break;
+		case WARN:
+			log.warn(message);
+			break;
+		case ERROR:
+			log.error(message);
+			break;
+		case FATAL:
+			log.fatal(message);
+			break;
 		}
 	}
 

@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>core</artifactId>
-		<version>1.14.3</version>
+		<version>1.15.0</version>
 	</parent>
 	<dependencies>
 		<!-- QBSW -->
@@ -194,7 +194,7 @@
 		<!-- Web -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 
 		<!-- SLF4J -->

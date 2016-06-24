@@ -142,7 +142,7 @@ public class CFileExchangerSFTP implements IFileExchanger, IFileExchangerAuthent
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.file.IFileExchanger#connect()
 	 */
-	public void connect ()
+	public synchronized void connect ()
 	{
 		try
 		{
@@ -165,7 +165,7 @@ public class CFileExchangerSFTP implements IFileExchanger, IFileExchangerAuthent
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.file.IFileExchanger#disconnect()
 	 */
-	public void disconnect ()
+	public synchronized void disconnect ()
 	{
 		if (this.session != null)
 		{

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -26,7 +25,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CDatabaseAuthorizationTestCase
 {
 	/** The database data generator. */
@@ -57,8 +56,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithDefaultUnitPositive () throws CSecurityException
 	{
 		initTest();
@@ -72,8 +70,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithDefaultUnitNegative () throws CSecurityException
 	{
 		initTest();
@@ -87,8 +84,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithUnitPositive () throws CSecurityException
 	{
 		initTest();
@@ -102,8 +98,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithUnitNegative () throws CSecurityException
 	{
 		initTest();
@@ -117,8 +112,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithCategoryPositive () throws CSecurityException
 	{
 		initTest();
@@ -132,8 +126,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithCategoryNegative () throws CSecurityException
 	{
 		initTest();
@@ -147,8 +140,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithUnitAndCategoryPositive () throws CSecurityException
 	{
 		initTest();
@@ -162,8 +154,7 @@ public class CDatabaseAuthorizationTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testAuthorizationWithUnitAndCategoryNegative () throws CSecurityException
 	{
 		initTest();

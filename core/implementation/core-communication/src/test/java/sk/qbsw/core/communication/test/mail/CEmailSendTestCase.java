@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSystemException;
@@ -37,7 +35,7 @@ import sk.qbsw.core.communication.test.mail.util.CTestMailBuilder;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 @Ignore
 public class CEmailSendTestCase
 {
@@ -96,8 +94,7 @@ public class CEmailSendTestCase
 	 * @throws IOException 
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSendMailToRecipient () throws IOException
 	{
 		//create data
@@ -122,8 +119,7 @@ public class CEmailSendTestCase
 	 * @throws IOException 
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSendMailToRecipientArchive () throws IOException
 	{
 		//create data
@@ -147,8 +143,7 @@ public class CEmailSendTestCase
 	 * @throws IOException 
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSendMailToRecipientArchiveError () throws IOException
 	{
 		mailService.setSMTPServer("195.168.142.242", 25);
@@ -183,8 +178,7 @@ public class CEmailSendTestCase
 	 * @throws IOException 
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSendMailWithAttachmentToRecipient () throws IOException
 	{
 		//create data

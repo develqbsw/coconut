@@ -8,7 +8,7 @@
 <parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>indy-top</artifactId>
-		<version>1.14.3</version>
+		<version>1.15.0</version>
 	</parent>
 
 	<modules>

@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>core</artifactId>
-		<version>1.14.3</version>
+		<version>1.15.0</version>
 	</parent>
 
 	<dependencies>
@@ -132,6 +132,11 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.tempus-fugit</groupId>
+			<artifactId>tempus-fugit</artifactId>
 			<scope>test</scope>
 		</dependency>
 

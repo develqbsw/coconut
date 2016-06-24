@@ -1,14 +1,13 @@
 package sk.qbsw.core.security.oauth.test;
 
-import junit.framework.Assert;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
@@ -28,7 +27,7 @@ import sk.qbsw.core.security.oauth.test.util.CDataGenerator;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CAuthenticationTokenTestCase
 {
 	/** The user dao. */
@@ -49,8 +48,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateAuthenticationTokenTest () throws CBusinessException
 	{
 		initTest();
@@ -67,8 +65,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateAuthenticationTokenInvalidParametersTest () throws CBusinessException
 	{
 		initTest();
@@ -82,8 +79,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateAuthenticationTokenUserNotFoundTest () throws CBusinessException
 	{
 		initTest();
@@ -97,8 +93,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateAuthenticationTokenTokenExistsTest () throws CBusinessException
 	{
 		initTest();
@@ -116,8 +111,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateAuthenticationTokenMasterTokenNotFoundTest () throws CBusinessException
 	{
 		initTest();
@@ -132,8 +126,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void generateAuthenticationTokenMasterTokenInvalidTest () throws CBusinessException
 	{
 		initTest();
@@ -148,8 +141,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void revokeAuthenticationTokenTest () throws CBusinessException
 	{
 		initTest();
@@ -164,8 +156,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void revokeAuthenticationTokenTokenNotFoundTest () throws CBusinessException
 	{
 		initTest();
@@ -181,8 +172,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void getUserByAuthenticationTokenTest () throws CBusinessException
 	{
 		initTest();
@@ -199,8 +189,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void getUserByAuthenticationTokenInvalidIpTest () throws CBusinessException
 	{
 		initTest();
@@ -215,8 +204,7 @@ public class CAuthenticationTokenTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void getUserByAuthenticationTokenInvalidIpNullTest () throws CBusinessException
 	{
 		initTest();

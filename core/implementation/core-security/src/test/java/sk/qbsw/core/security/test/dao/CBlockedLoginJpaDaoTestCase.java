@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -51,8 +50,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndIpPositive () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
@@ -72,8 +70,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndIpPositiveWithoutIp () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
@@ -93,8 +90,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndIpNegativeNoLogin () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
@@ -110,8 +106,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = NoResultException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindOneByLoginAndIpNegativeNoResult () throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		initTest();
@@ -123,8 +118,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * Test count currently blocked by login and ip positive.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCountCurrentlyBlockedByLoginAndIpPositive ()
 	{
 		initTest();
@@ -140,8 +134,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * Test count currently blocked by login and ip positive without ip.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCountCurrentlyBlockedByLoginAndIpPositiveWithoutIp ()
 	{
 		initTest();
@@ -157,8 +150,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * Test count currently blocked by login and ip positive count zero.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCountCurrentlyBlockedByLoginAndIpPositiveCountZero ()
 	{
 		initTest();
@@ -174,8 +166,7 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 	 * Test count currently blocked by login and ip negative no login.
 	 */
 	@Test (expected = CSystemException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCountCurrentlyBlockedByLoginAndIpNegativeNoLogin ()
 	{
 		initTest();

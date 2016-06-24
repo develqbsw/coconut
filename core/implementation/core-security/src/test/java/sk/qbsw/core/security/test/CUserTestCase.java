@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
@@ -47,7 +46,7 @@ import sk.qbsw.core.security.test.util.CDataGenerator;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CUserTestCase
 {
 	/** The database data generator. */
@@ -96,8 +95,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCreateUserWithPassword () throws CSecurityException
 	{
 		initTest();
@@ -122,8 +120,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testCreateUserWithoutPassword () throws CSecurityException
 	{
 		initTest();
@@ -148,8 +145,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAll () throws CSecurityException
 	{
 		initTest();
@@ -170,8 +166,7 @@ public class CUserTestCase
 	 */
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllOrderByOrganization () throws CSecurityException
 	{
 		initTest();
@@ -191,8 +186,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllByGroupCodePrefix () throws CSecurityException
 	{
 		initTest();
@@ -213,8 +207,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllByGroup () throws CSecurityException
 	{
 		initTest();
@@ -234,8 +227,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllByGroupOrderByOrganization () throws CSecurityException
 	{
 		initTest();
@@ -255,8 +247,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGet () throws CSecurityException
 	{
 		initTest();
@@ -274,8 +265,7 @@ public class CUserTestCase
 	 * @throws CSecurityException
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllByGroupAndUnit () throws CSecurityException
 	{
 		initTest();
@@ -291,7 +281,7 @@ public class CUserTestCase
 
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
-		
+
 		//tests
 		List<CUser> users = userDao.findByUnitAndGroup(firstUnit, firstGroupInUnit.get(0), orderModel);
 		Assert.assertEquals("The expected count of users with firstGroupInUnit is 0 ", users.size(), 0);
@@ -306,8 +296,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllByEmail () throws CSecurityException
 	{
 		initTest();
@@ -329,8 +318,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetAllByNameAndOrganization () throws CSecurityException
 	{
 		initTest();
@@ -356,8 +344,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testUnsetGroupWithUnit () throws CSecurityException
 	{
 		initTest();
@@ -383,8 +370,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSetGroupWithUnit () throws CSecurityException, CBusinessException
 	{
 		initTest();
@@ -410,8 +396,7 @@ public class CUserTestCase
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CBusinessException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testSetGroupWithUnitAlreadySet () throws CSecurityException, CBusinessException
 	{
 		initTest();
@@ -431,8 +416,7 @@ public class CUserTestCase
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
-	@Transactional (readOnly = true)
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testGetUsersByPin () throws CBusinessException
 	{
 		initTest();

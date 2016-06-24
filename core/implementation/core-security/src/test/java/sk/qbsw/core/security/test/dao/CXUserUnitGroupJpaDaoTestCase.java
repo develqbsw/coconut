@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -60,8 +59,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveAll () throws CSecurityException
 	{
 		initTest();
@@ -78,8 +76,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveUserGroup () throws CSecurityException
 	{
 		initTest();
@@ -95,8 +92,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveUserUnit () throws CSecurityException
 	{
 		initTest();
@@ -112,8 +108,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveGroupUnit () throws CSecurityException
 	{
 		initTest();
@@ -129,8 +124,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveUser () throws CSecurityException
 	{
 		initTest();
@@ -145,8 +139,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveGroup () throws CSecurityException
 	{
 		initTest();
@@ -161,8 +154,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveUnit () throws CSecurityException
 	{
 		initTest();
@@ -177,8 +169,7 @@ public class CXUserUnitGroupJpaDaoTestCase extends ADatabaseTestCase
 	}
 
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void testFindByUserAndUnitAndGroupPositiveNone () throws CSecurityException
 	{
 		initTest();

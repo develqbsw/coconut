@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.logging.dao.IInstallationLogDao;
@@ -28,7 +26,7 @@ import sk.qbsw.core.logging.service.IInstallationLogService;
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@TransactionConfiguration (transactionManager = "transactionManager", defaultRollback = true)
+@Rollback (true)
 public class CInstallationLogTestCase
 {
 	/** The installation log dao. */
@@ -43,8 +41,7 @@ public class CInstallationLogTestCase
 	 * Checks version with positive result.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void checksVersionPositive ()
 	{
 		String versionToCheck = "unit_test_1.1.0";
@@ -63,8 +60,7 @@ public class CInstallationLogTestCase
 	 * Checks version with negative result.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void checksVersionNegative ()
 	{
 		//create new version
@@ -81,8 +77,7 @@ public class CInstallationLogTestCase
 	 * Checks versions with positive result - same list to compare.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void checksFullVersionListPositive ()
 	{
 		List<String> versionsToCheck = Arrays.asList("unit_test_1.1.0", "unit_test_1.1.1");
@@ -104,8 +99,7 @@ public class CInstallationLogTestCase
 	 * Checks versions with positive result - smaller list to compare.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void checksLessVersionListPositive ()
 	{
 		List<String> versionsToSave = Arrays.asList("unit_test_1.0.0", "unit_test_1.1.0", "unit_test_1.2.0");
@@ -127,8 +121,7 @@ public class CInstallationLogTestCase
 	 * Checks versions with negative result - more versions as input as in list.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void checksMoreVersionListNegative ()
 	{
 		List<String> versionsToSave = Arrays.asList("unit_test_1.0.0", "unit_test_1.2.0");
@@ -150,8 +143,7 @@ public class CInstallationLogTestCase
 	 * Checks versions with negative result - no version in DB.
 	 */
 	@Test
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void checksNoneVersionListNegative ()
 	{
 		//checks version
@@ -165,8 +157,7 @@ public class CInstallationLogTestCase
 	 * Checks versions with negative result - empty list as input.
 	 */
 	@Test (expected = IllegalArgumentException.class)
-	@Transactional
-	@Rollback (true)
+	@Transactional (transactionManager = "transactionManager")
 	public void checksEmptyVersionListNegative ()
 	{
 		//checks version

@@ -4,149 +4,106 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sk.qbsw</groupId>
 	<artifactId>coconut</artifactId>
-	<version>1.14.3</version>
+	<version>1.15.0</version>
 	<packaging>pom</packaging>
 	<name>[CoconutTree]</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- compiling projects -->
-		<compiler.version>2.3.2</compiler.version>
-		<java.version>1.6</java.version>
-		<jasypt.version>1.9.0</jasypt.version>
+		<compiler.version>3.5.1</compiler.version>
+
+		<!-- Maven -->
+		<maven-apt-plugin.version>1.0.4</maven-apt-plugin.version>
+		<maven-source-plugin.version>2.4</maven-source-plugin.version>
+		<build-helper-plugin.version>1.10</build-helper-plugin.version>
 
 		<!-- QBSW dependences -->
-		<droid.version>${project.version}</droid.version>
 		<indy.version>${project.version}</indy.version>
 		<core.version>${project.version}</core.version>
-		<winnetou.version>${project.version}</winnetou.version>
 
-		<!-- ENTERPRISE -->
+		<!-- Java -->
+		<java.version>1.8</java.version>
+		<javaee.version>7.0</javaee.version>
+		<aspectj.version>1.8.9</aspectj.version>
+
 		<!-- Spring -->
-		<spring.version>4.0.5.RELEASE</spring.version>
-		<spring.security.version>3.2.4.RELEASE</spring.security.version>
-		<spring.ws.version>2.1.4.RELEASE</spring.ws.version>
+		<spring.version>4.2.5.RELEASE</spring.version>
+		<spring.security.version>4.0.4.RELEASE</spring.security.version>
+		<spring.ws.version>2.2.4.RELEASE</spring.ws.version>
 		<xws-security.version>1.3.1</xws-security.version>
-    <spring.support.version>2.0.8</spring.support.version>
-		<spring-security-oauth2.version>2.0.2.RELEASE</spring-security-oauth2.version>
+		<spring.support.version>2.0.8</spring.support.version>
 
-
-		<!-- Hibernate -->
-		<hibernate.version>4.3.7.Final</hibernate.version>
-		<hibernate-entitymanager.version>4.3.7.Final</hibernate-entitymanager.version>
-		<javaee.version>6.0</javaee.version>
-		<apache-velocity.version>1.7</apache-velocity.version>
-		<jpa.version>1.0.0.Final</jpa.version>
-		<jta.version>1.1</jta.version>
-		<!-- <persistence-api.version>1.0</persistence-api.version> -->
-		<dbcp.version>1.3</dbcp.version>
-		<dom4j.version>1.6.1</dom4j.version>
-		<javax-mail.version>1.4.1</javax-mail.version>
-		<jetty.version>6.1.25</jetty.version>
-		<postgresql-driver.version>9.0-801.jdbc4</postgresql-driver.version>
-		<mssql-driver.version>4.0</mssql-driver.version>
-		<hsqldb-driver.version>2.3.2</hsqldb-driver.version>
-
-		<!-- querydsl -->
+		<!-- Persistence -->
+		<hibernate.version>4.3.11.Final</hibernate.version>
+		<hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
 		<querydsl.version>3.3.1</querydsl.version>
-		<querydsl-apt-plugin.version>1.0.4</querydsl-apt-plugin.version>
+		<postgresql-driver.version>9.0-801.jdbc4</postgresql-driver.version>
+		<hsqldb-driver.version>2.3.3</hsqldb-driver.version>
 
-		<!-- UTILS -->
-		<log4j.version>1.2.16</log4j.version>
-		<slf4j.version>1.7.10</slf4j.version>
-		<mockito.version>1.9.5</mockito.version>
-		<xstream.version>1.2.2</xstream.version>
+		<!-- Servlet and http components -->
+		<servlet-api.version>3.1.0</servlet-api.version>
+		<httpclient.version>4.5.2</httpclient.version>
+		<httpcore.version>4.4.4</httpcore.version>
+		<httpmime.version>4.5.2</httpmime.version>
 
-		<antlr.version>2.7.7</antlr.version>
-		<aspectj.version>1.7.1</aspectj.version>
+		<!-- Logging -->
+		<log4j.version>1.2.17</log4j.version>
+		<slf4j.version>1.7.21</slf4j.version>
 
+		<!-- Testing -->
+		<junit.version>4.12</junit.version>
+		<mockito.version>1.10.19</mockito.version>
+
+		<!-- Communication -->
+		<mail.version>1.4.7</mail.version>
 		<velocity.version>1.7</velocity.version>
-		<mail.version>1.4.3</mail.version>
 
-		<commons-beanutils.version>1.8.3</commons-beanutils.version>
-		<commons-collections.version>3.2.1</commons-collections.version>
+		<!-- Apache utils -->
 		<commons-io.version>2.4</commons-io.version>
-		<commons-lang.version>2.4</commons-lang.version>
 		<commons-lang.version>2.6</commons-lang.version>
-		<commons-fileupload>1.2.2</commons-fileupload>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<commons-codec.version>1.10</commons-codec.version>
-		<servlet-api.version>2.5</servlet-api.version>
-		<jsp-api.version>2.1</jsp-api.version>
 
-		<junit.version>4.10</junit.version>
-
-		<!-- GSON DEPENDENCY -->
-		<gson.version>2.0</gson.version>
-		<jackson.version>1.9.9</jackson.version>
-		<httpclient.version>4.2.1</httpclient.version>
-
-		<!-- Wicket -->
-		<wicketstuff.minis>1.5-RC5.1</wicketstuff.minis>
-		<wicket.version>6.6.0</wicket.version>
-		<wicket-spring-annot.version>1.3.7</wicket-spring-annot.version>
-
-		<!-- SMARTGWT, GWT= -->
-		<gwt.version>2.0.3</gwt.version>
-		<gwtrpcspring.version>1.01</gwtrpcspring.version>
-		<gwtmavenplugin.version>1.2</gwtmavenplugin.version>
-		<smartgwt.version>2.1</smartgwt.version>
+		<!-- json and xml -->
+		<gson.version>2.6.2</gson.version>
+		<jackson.version>1.9.13</jackson.version>
+		<xstream.version>1.4.9</xstream.version>
 
 		<!-- joda time -->
-		<joda-time.version>2.1</joda-time.version>
+		<joda-time.version>2.9.3</joda-time.version>
 		<jadira.usertype.version>2.0.1</jadira.usertype.version>
 
 		<!-- uuid generator -->
-		<java-uuid-generator.version>3.1.3</java-uuid-generator.version>
+		<java-uuid-generator.version>3.1.4</java-uuid-generator.version>
 
 		<!-- melody -->
-		<melody.version>1.55.0</melody.version>
+		<melody.version>1.56.0</melody.version>
 
 		<!-- Apache directory API - LDAP -->
-		<directory.api.version>1.0.0-M24</directory.api.version>
+		<directory.api.version>1.0.0-M33</directory.api.version>
 
-		<!-- ANDROID DEPENDENCIES -->
-		<android-platform.version>4.4.2_r4</android-platform.version>
-		<android.platform>19</android.platform>
-		<android-support.version>20.0.0</android-support.version>
-		<android-maps.version>14.0.0</android-maps.version>
-		<java.version>1.7</java.version>
-		<core-api.version>1.6.0</core-api.version>
-		<!-- maven plugins -->
-		<android-maven-plugin.version>4.0.0-rc.2</android-maven-plugin.version>
-		<maven-jarsigner-plugin.version>1.2</maven-jarsigner-plugin.version>
-		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
-		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
-		<maven-source-plugin.version>2.4</maven-source-plugin.version>
-		<maven-apt-plugin.version>0.3.2</maven-apt-plugin.version>
-		<!-- orm lite -->
-		<ormlite-core.version> 4.41 </ormlite-core.version>
-		<ormlite-android.version> 4.41 </ormlite-android.version>
-		<!-- gson -->
-		<gson.version> 2.2.2 </gson.version>
-		<httpcomponents.version> 4.2.1 </httpcomponents.version>
-		<google-api-client.version> 1.0.6-alpha </google-api-client.version>
-		<!-- ACRA -->
-		<acra.version> 4.3.0 </acra.version>
-		<!-- google play services -->
-		<google-play-services.version>6.1.71</google-play-services.version>
+		<!-- Encryption -->
+		<bouncy-castle.version>1.54</bouncy-castle.version>
+		<jasypt.version>1.9.2</jasypt.version>
+		<jsch.ssh2.version>0.1.53</jsch.ssh2.version>
+
 		<!-- quartz -->
-		<quartz.version>1.8.6</quartz.version>
+		<quartz.version>2.2.2</quartz.version>
 
-		<!-- Bouncy castle -->
-		<bouncy-castle.version>1.51</bouncy-castle.version>
-
-		<maven-apt-plugin.version>0.3.2</maven-apt-plugin.version>
-
-		<build-helper-plugin.version>1.9.1</build-helper-plugin.version>
+		<!-- Wicket -->
+		<wicketstuff.minis>6.22.0</wicketstuff.minis>
+		<wicket.version>6.22.0</wicket.version>
+		
+		<!-- Testing -->
+		<tempusfugit.version>1.1</tempusfugit.version>
 	</properties>
 
 	<modules>
 		<module>core</module>
 		<module>indy</module>
-		<!--<module>winnetou</module> -->
-		<module>droid</module>
 	</modules>
+
 	<repositories>
 		<repository>
 			<id>jboss-public-repository-group</id>
@@ -226,38 +183,12 @@
 				<artifactId>core-api</artifactId>
 				<version>${core.version}</version>
 			</dependency>
-			<!-- QBSW Android -->
-			<dependency>
-				<groupId>sk.qbsw</groupId>
-				<artifactId>droid-core-logging</artifactId>
-				<version>${droid.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>sk.qbsw</groupId>
-				<artifactId>droid-core-utils</artifactId>
-				<version>${droid.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>sk.qbsw</groupId>
-				<artifactId>droid-core-persistence</artifactId>
-				<version>${droid.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>sk.qbsw</groupId>
-				<artifactId>droid-core-service</artifactId>
-				<version>${droid.version}</version>
-			</dependency>
+
 			<!-- QBSW indy -->
 			<dependency>
 				<groupId>sk.qbsw</groupId>
 				<artifactId>indy-base</artifactId>
 				<version>${indy.version}</version>
-			</dependency>
-			<!-- QBSW winnetou -->
-			<dependency>
-				<groupId>sk.qbsw</groupId>
-				<artifactId>winnetou-base</artifactId>
-				<version>${winnetou.version}</version>
 			</dependency>
 
 			<!-- security -->
@@ -313,11 +244,6 @@
 				<version>${commons-dbcp.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-				<version>${commons-collections.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>${commons-codec.version}</version>
@@ -332,19 +258,19 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore</artifactId>
-				<version>${httpclient.version}</version>
+				<version>${httpcore.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpmime</artifactId>
-				<version>${httpcomponents.version}</version>
+				<version>${httpmime.version}</version>
 			</dependency>
 
 			<!-- SFTP -->
 			<dependency>
 				<groupId>com.jcraft</groupId>
 				<artifactId>jsch</artifactId>
-				<version>0.1.50</version>
+				<version>${jsch.ssh2.version}</version>
 			</dependency>
 
 			<!-- SPRING -->
@@ -419,7 +345,7 @@
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-      <dependency>
+			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-support</artifactId>
 				<version>${spring.support.version}</version>
@@ -468,49 +394,15 @@
 			</dependency>
 			<dependency>
 				<groupId>org.wicketstuff</groupId>
-				<artifactId>minis</artifactId>
+				<artifactId>wicketstuff-minis</artifactId>
 				<version>${wicketstuff.minis}</version>
-			</dependency>
-
-			<!-- GWT -->
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-servlet</artifactId>
-				<version>${gwt.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-user</artifactId>
-				<version>${gwt.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.smartgwt</groupId>
-				<artifactId>smartgwt</artifactId>
-				<version>${smartgwt.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.gwtrpcspring</groupId>
-				<artifactId>gwtrpcspring</artifactId>
-				<version>${gwtrpcspring.version}</version>
 			</dependency>
 
 			<!-- JAVAX -->
 			<dependency>
-				<groupId>javax.transaction</groupId>
-				<artifactId>jta</artifactId>
-				<version>${jta.version}</version>
-			</dependency>
-			<!-- <dependency> <groupId>javax.persistence</groupId> <artifactId>persistence-api</artifactId> 
-				<version>${persistence-api.version}</version> </dependency> -->
-			<dependency>
 				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
+				<artifactId>javax.servlet-api</artifactId>
 				<version>${servlet-api.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet.jsp</groupId>
-				<artifactId>jsp-api</artifactId>
-				<version>${jsp-api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax</groupId>
@@ -557,6 +449,11 @@
 				<artifactId>mockito-all</artifactId>
 				<version>${mockito.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.google.code.tempus-fugit</groupId>
+				<artifactId>tempus-fugit</artifactId>
+				<version>${tempusfugit.version}</version>
+			</dependency>
 
 			<!-- jdbc drivers -->
 			<dependency>
@@ -565,22 +462,12 @@
 				<version>${postgresql-driver.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.microsoft.sqlserver</groupId>
-				<artifactId>sqljdbc4</artifactId>
-				<version>${mssql-driver.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>${hsqldb-driver.version}</version>
 			</dependency>
 
 			<!-- Hibernate, JPA -->
-			<dependency>
-				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.1-api</artifactId>
-				<version>${jpa.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
@@ -640,16 +527,6 @@
 
 			<!-- Parsers - XML, ... -->
 			<dependency>
-				<groupId>dom4j</groupId>
-				<artifactId>dom4j</artifactId>
-				<version>${dom4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>antlr</groupId>
-				<artifactId>antlr</artifactId>
-				<version>${antlr.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
 				<version>${xstream.version}</version>
@@ -660,44 +537,6 @@
 				<groupId>org.apache.directory.api</groupId>
 				<artifactId>api-all</artifactId>
 				<version>${directory.api.version}</version>
-			</dependency>
-
-			<!-- Android platform -->
-			<dependency>
-				<groupId>android</groupId>
-				<artifactId>android</artifactId>
-				<version>${android-platform.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.android.support</groupId>
-				<artifactId>support-v4</artifactId>
-				<version>${android-support.version}</version>
-				<type>aar</type>
-			</dependency>
-
-			<!-- Android utils -->
-			<dependency>
-				<groupId>com.google.android.gms</groupId>
-				<artifactId>play-services</artifactId>
-				<version>${google-play-services.version}</version>
-				<type>aar</type>
-			</dependency>
-			<dependency>
-				<groupId>com.google.api.client</groupId>
-				<artifactId>google-api-client-util</artifactId>
-				<version>${google-api-client.version}</version>
-			</dependency>
-
-			<!-- ORMLite -->
-			<dependency>
-				<groupId>com.j256.ormlite</groupId>
-				<artifactId>ormlite-core</artifactId>
-				<version>${ormlite-core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.j256.ormlite</groupId>
-				<artifactId>ormlite-android</artifactId>
-				<version>${ormlite-android.version}</version>
 			</dependency>
 
 			<!-- Bouncy Castle -->
