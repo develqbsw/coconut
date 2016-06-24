@@ -3,6 +3,8 @@ package sk.qbsw.core.communication.mail.job;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,25 +25,27 @@ import sk.qbsw.core.communication.mail.model.domain.EMailState;
  */
 public class CSendMailTask
 {
+	/** The logger. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CSendMailTask.class);
 
 	/** The sending attempt counts limit. */
 	private final int SENDING_ATTEMPT_COUNTS_LIMIT = 5;
 
 	/** The jpa mail dao. */
 	@Autowired
-	@Qualifier("jpaMailDao")
+	@Qualifier ("jpaMailDao")
 	private IMailDao jpaMailDao;
 
 	/** The sender mail dao. */
 	@Autowired
-	@Qualifier("senderMailDao")
+	@Qualifier ("senderMailDao")
 	private IMailDao senderMailDao;
 
 	/**
 	 * Checks database and send mail.
 	 */
 	@Transactional
-	public void run()
+	public void run ()
 	{
 		List<CMail> unsentMails = jpaMailDao.findAllQueued(EMailState.UNSENT);
 
@@ -56,6 +60,7 @@ public class CSendMailTask
 			//exception in sending process - try again
 			catch (CCommunicationException e)
 			{
+				LOGGER.error("Mail retry exception.", e);
 				unsentMail.setAttemptCounter(unsentMail.getAttemptCounter() + 1);
 				if (unsentMail.getAttemptCounter() >= SENDING_ATTEMPT_COUNTS_LIMIT)
 				{
@@ -65,6 +70,7 @@ public class CSendMailTask
 			//exception in mail creating process - leave it
 			catch (CSystemException e)
 			{
+				LOGGER.error("Mail sending error.", e);
 				unsentMail.setState(EMailState.DATA_ERROR);
 			}
 

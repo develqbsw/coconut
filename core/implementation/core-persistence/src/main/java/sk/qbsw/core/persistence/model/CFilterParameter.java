@@ -21,7 +21,7 @@ public class CFilterParameter implements Serializable {
 	private final SimpleExpression<?> expression;
 	
 	/** The value. */
-	private final Object value;
+	private final transient Object value;
 	
 	/** The operator. */
 	private final EOperator operator;

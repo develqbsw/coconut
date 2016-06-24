@@ -49,10 +49,10 @@ public class CPriceConverter implements IConverter<BigDecimal>
 		{
 			return CBigDecimalParser.parseBigDecimal(value, locale);
 		}
-		catch (Throwable ex)
+		catch (Exception ex)
 		{
 			LOGGER.error("Error parsing big decimal value");
-			throw new ConversionException("chyba");
+			throw new ConversionException("Error parsing value", ex);
 		}
 	}
 

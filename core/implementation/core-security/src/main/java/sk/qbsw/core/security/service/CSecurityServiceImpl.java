@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +19,6 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.dao.ILicenseDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
-import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CLicense;
@@ -32,21 +33,20 @@ import sk.qbsw.core.security.model.jmx.CLicensingRules;
  * @version 1.13.0
  * @since 1.0.0
  */
-@Service(value = "securityService")
+@Service (value = "securityService")
 public class CSecurityServiceImpl extends AService implements ISecurityService
 {
 	/** The license generator. */
 	@Autowired
 	private ILicenseGenerator licenseGenerator;
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	/** The group dao. */
-	private IRoleDao roleDao;
+	/** The logger. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CSecurityServiceImpl.class);
 
 	/** The group dao. */
 	@Autowired
@@ -68,12 +68,12 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	@Autowired
 	private CLicensingRules rules;
 
-	public void setRules(CLicensingRules rules)
+	public void setRules (CLicensingRules rules)
 	{
 		this.rules = rules;
 	}
 
-	public CLicensingRules getRules()
+	public CLicensingRules getRules ()
 	{
 		return this.rules;
 	}
@@ -85,8 +85,8 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#addLicense(sk.qbsw.core.security.model.domain.CLicense)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void addLicense(CLicense<?> license)
+	@Transactional (readOnly = false)
+	public void addLicense (CLicense<?> license)
 	{
 		license.recalculateLicensePrice(rules.getDayPricing());
 		licenseDao.update(license);
@@ -99,8 +99,8 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#deleteLicense(sk.qbsw.core.security.model.domain.CLicense)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void deleteLicense(CLicense<?> license)
+	@Transactional (readOnly = false)
+	public void deleteLicense (CLicense<?> license)
 	{
 		CLicense<?> toModify = licenseDao.findById(license.getId());
 		licenseDao.remove(toModify);
@@ -110,8 +110,8 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAvailabelLicenses()
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public List<CLicense<?>> getAvailabelLicenses()
+	@Transactional (readOnly = true)
+	public List<CLicense<?>> getAvailabelLicenses ()
 	{
 		return licenseGenerator.getAvailableLicenses();
 	}
@@ -120,8 +120,8 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAvailabelLicensesForCustomer()
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public List<CLicense<?>> getAvailabelLicensesForCustomer()
+	@Transactional (readOnly = true)
+	public List<CLicense<?>> getAvailabelLicensesForCustomer ()
 	{
 		return licenseGenerator.getAvailableLicensesForCustomer();
 	}
@@ -133,8 +133,8 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#getAvailableGroups()
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public List<CGroup> getAvailableGroups()
+	@Transactional (readOnly = false)
+	public List<CGroup> getAvailableGroups ()
 	{
 		return groupDao.findByFlagSystem(Boolean.FALSE);
 	}
@@ -147,11 +147,11 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#getOrganizationLicenses(sk.qbsw.core.security.model.domain.COrganization)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public List<CLicense<?>> getOrganizationLicenses(COrganization org)
+	@Transactional (readOnly = true)
+	public List<CLicense<?>> getOrganizationLicenses (COrganization org)
 	{
 		COrganization organization = orgDao.findById(org.getId());
-		return new ArrayList<CLicense<?>>(organization.getLicences());
+		return new ArrayList<>(organization.getLicences());
 	}
 
 	/**
@@ -163,16 +163,18 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#isLoginFree(java.lang.String, java.lang.Long)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public boolean isLoginFree(String login, Long id)
+	@Transactional (readOnly = true)
+	public boolean isLoginFree (String login, Long id)
 	{
 		CUser user;
 
 		try
 		{
 			user = userDao.findOneByLogin(login);
-		} catch (NoResultException | CSecurityException e)
+		}
+		catch (NoResultException | CSecurityException e)
 		{
+			LOGGER.debug("User not found", e);
 			user = null;
 		}
 
@@ -180,6 +182,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 		{
 			return user.getId().equals(id);
 		}
+
 		return true;
 	}
 
@@ -192,8 +195,8 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#matchLicensePayment(sk.qbsw.core.security.model.domain.CLicense, java.lang.Boolean)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void matchLicensePayment(CLicense<?> license, Boolean payed)
+	@Transactional (readOnly = false)
+	public void matchLicensePayment (CLicense<?> license, Boolean payed)
 	{
 		CLicense<?> toModify = licenseDao.findById(license.getId());
 		toModify.setFlagPayed(payed);
@@ -207,8 +210,8 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @see sk.qbsw.core.security.service.ISecurityService#updateLicense(sk.qbsw.core.security.model.domain.CLicense)
 	 */
 	@Override
-	@Transactional(readOnly = false)
-	public void updateLicense(CLicense<?> license)
+	@Transactional (readOnly = false)
+	public void updateLicense (CLicense<?> license)
 	{
 		licenseDao.update(license);
 	}

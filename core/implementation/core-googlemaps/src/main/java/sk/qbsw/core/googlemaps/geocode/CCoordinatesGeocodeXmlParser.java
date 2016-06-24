@@ -88,9 +88,9 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		{
 			parseDocument(toParse);
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
-			throw new CBusinessException("Parsing geocode response");
+			throw new CBusinessException("Parsing geocode response", e);
 		}
 	}
 

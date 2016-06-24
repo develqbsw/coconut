@@ -32,26 +32,28 @@ import org.apache.wicket.validation.validator.RangeValidator;
 public class CTimeExtendedField extends FormComponentPanel<Calendar>
 {
 
+	private static final String PROP_MINUTES = "minutes";
+	private static final String PROP_HOURS = "hours";
+	private static final String PROP_MAXIMUM = "maximum";
+	private static final String PROP_MINIMUM = "minimum";
+	private static final String PROP_FIELD_NAME = "fieldName";
+
 	/**
 	 * Enumerated type for represent type of timeZones
 	 */
 	private static class EtcTimeZones extends EnumeratedType
 	{
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
-
-		public static List<String> values ()
-		{
-			return Arrays.asList(new String[] {"Etc/GMT-12", "Etc/GMT-11", "Etc/GMT-10", "Etc/GMT-9", "Etc/GMT-8", "Etc/GMT-7", "Etc/GMT-6", "Etc/GMT-5", "Etc/GMT-4", "Etc/GMT-3", "Etc/GMT-2", "Etc/GMT-1", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12"});
-
-		}
 
 		private EtcTimeZones (final String name)
 		{
 			super(name);
+		}
+
+		public static List<String> values ()
+		{
+			return Arrays.asList(new String[] {"Etc/GMT-12", "Etc/GMT-11", "Etc/GMT-10", "Etc/GMT-9", "Etc/GMT-8", "Etc/GMT-7", "Etc/GMT-6", "Etc/GMT-5", "Etc/GMT-4", "Etc/GMT-3", "Etc/GMT-2", "Etc/GMT-1", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12"});
 		}
 	}
 
@@ -93,7 +95,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 	private void init ()
 	{
 		setType(Calendar.class);
-		add(hoursField = new TextField<Integer>("hours", new PropertyModel<Integer>(this, "hours"), Integer.class)
+		hoursField = new TextField<Integer>(PROP_HOURS, new PropertyModel<Integer>(this, PROP_HOURS), Integer.class)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -101,7 +103,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			public void validate ()
 			{
 				List<ValidationError> errors = checkInputHours();
-				if (errors.size() > 0)
+				if (!errors.isEmpty())
 				{
 					for (ValidationError error : errors)
 					{
@@ -120,7 +122,8 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 					}
 				}
 			}
-		});
+		};
+		add(hoursField);
 		hoursField.add(new RangeValidator<Integer>(0, 23)
 		{
 
@@ -136,17 +139,17 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				{
 					ValidationError error = new ValidationError();
 					error.addKey("error.range_hours_error_in_field");
-					error.setVariable("fieldName", fieldName);
-					error.setVariable("minimum", min);
-					error.setVariable("maximum", max);
+					error.setVariable(PROP_FIELD_NAME, fieldName);
+					error.setVariable(PROP_MINIMUM, min);
+					error.setVariable(PROP_MAXIMUM, max);
 					validatable.error(error);
 				}
 			}
 
 		});
-		hoursField.setLabel(new Model<String>("hours"));
+		hoursField.setLabel(new Model<String>(PROP_HOURS));
 
-		add(minutesField = new TextField<Integer>("minutes", new PropertyModel<Integer>(this, "minutes"), Integer.class)
+		minutesField = new TextField<Integer>(PROP_MINUTES, new PropertyModel<Integer>(this, PROP_MINUTES), Integer.class)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -154,7 +157,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			public void validate ()
 			{
 				List<ValidationError> errors = checkInputMinutes();
-				if (errors.size() > 0)
+				if (!errors.isEmpty())
 				{
 					for (ValidationError error : errors)
 					{
@@ -173,7 +176,8 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 					}
 				}
 			}
-		});
+		};
+		add(minutesField);
 		minutesField.add(new RangeValidator<Integer>(0, 59)
 		{
 
@@ -189,17 +193,18 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 				{
 					ValidationError error = new ValidationError();
 					error.addKey("error.range_minutes_error_in_field");
-					error.setVariable("fieldName", fieldName);
-					error.setVariable("minimum", min);
-					error.setVariable("maximum", max);
+					error.setVariable(PROP_FIELD_NAME, fieldName);
+					error.setVariable(PROP_MINIMUM, min);
+					error.setVariable(PROP_MAXIMUM, max);
 					validatable.error(error);
 				}
 			}
 
 		});
-		minutesField.setLabel(new Model<String>("minutes"));
+		minutesField.setLabel(new Model<String>(PROP_MINUTES));
 
-		add(timeZomeChoice = new DropDownChoice<String>("timezone", new PropertyModel<String>(this, "timeZone"), EtcTimeZones.values()));
+		timeZomeChoice = new DropDownChoice<>("timezone", new PropertyModel<String>(this, "timeZone"), EtcTimeZones.values());
+		add(timeZomeChoice);
 		// initial one value
 		timeZomeChoice.setModelObject("Etc/GMT+1");
 
@@ -209,18 +214,17 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 
 	private List<ValidationError> checkInputHours ()
 	{
-		List<ValidationError> errors = new ArrayList<ValidationError>();
+		List<ValidationError> errors = new ArrayList<>();
 		String hoursValue = hoursField.getInput();
-		if (isRequired())
+
+		if (isRequired() && (hoursValue == null || "".equals(hoursValue)))
 		{
-			if (hoursValue == null || "".equals(hoursValue))
-			{
-				ValidationError error = new ValidationError();
-				error.addKey("error.required_hours_field");
-				error.setVariable("fieldName", fieldName);
-				errors.add(error);
-			}
+			ValidationError error = new ValidationError();
+			error.addKey("error.required_hours_field");
+			error.setVariable(PROP_FIELD_NAME, fieldName);
+			errors.add(error);
 		}
+
 		if (hoursValue != null && !"".equals(hoursValue))
 		{
 			try
@@ -231,7 +235,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			{
 				ValidationError error = new ValidationError();
 				error.addKey("error.parse_hours_field");
-				error.setVariable("fieldName", fieldName);
+				error.setVariable(PROP_FIELD_NAME, fieldName);
 				errors.add(error);
 			}
 		}
@@ -240,17 +244,14 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 
 	private List<ValidationError> checkInputMinutes ()
 	{
-		List<ValidationError> errors = new ArrayList<ValidationError>();
+		List<ValidationError> errors = new ArrayList<>();
 		String minutesValue = minutesField.getInput();
-		if (isRequired())
+		if (isRequired() && (minutesValue == null || "".equals(minutesValue)))
 		{
-			if (minutesValue == null || "".equals(minutesValue))
-			{
-				ValidationError error = new ValidationError();
-				error.addKey("error.required_minutes_field");
-				error.setVariable("fieldName", fieldName);
-				errors.add(error);
-			}
+			ValidationError error = new ValidationError();
+			error.addKey("error.required_minutes_field");
+			error.setVariable(PROP_FIELD_NAME, fieldName);
+			errors.add(error);
 		}
 		if (minutesValue != null && !"".equals(minutesValue))
 		{
@@ -262,7 +263,7 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 			{
 				ValidationError error = new ValidationError();
 				error.addKey("error.parse_minutes_field");
-				error.setVariable("fieldName", fieldName);
+				error.setVariable(PROP_FIELD_NAME, fieldName);
 				errors.add(error);
 			}
 		}
@@ -294,25 +295,23 @@ public class CTimeExtendedField extends FormComponentPanel<Calendar>
 
 		try
 		{
-
-			if ( (hoursValue != null))
+			if (hoursValue != null)
 			{
 				calendar = Calendar.getInstance();
 				calendar.set(Calendar.HOUR_OF_DAY, hoursValue);
 			}
-			if ( (minutesValue != null))
+			if (minutesValue != null)
 			{
 				calendar = (calendar == null) ? Calendar.getInstance() : calendar;
 				calendar.set(Calendar.MINUTE, minutesValue);
 			}
-			if ( (timeZoneValue != null))
+			if (timeZoneValue != null)
 			{
 				calendar = (calendar == null) ? Calendar.getInstance() : calendar;
 				calendar.setTimeZone(TimeZone.getTimeZone(timeZoneValue));
 			}
-
 		}
-		catch (RuntimeException e)
+		catch (Exception e)
 		{
 			CTimeExtendedField.this.error(e.getMessage());
 			invalid();

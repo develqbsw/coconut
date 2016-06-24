@@ -16,6 +16,15 @@ import com.mysema.query.types.expr.DslExpression;
  */
 public class CQueryDslDaoHelper
 {
+
+	/**
+	 * Hide construction
+	 */
+	private CQueryDslDaoHelper ()
+	{
+
+	}
+
 	/**
 	 * Handle unique result query - if there is no result or no unique result throws an exception.
 	 *
@@ -27,7 +36,7 @@ public class CQueryDslDaoHelper
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
-	public static <R, Q extends DslExpression<R>>R handleUniqueResultQuery (JPAQuery query, Q queryEntity) throws NonUniqueResultException
+	public static <R, Q extends DslExpression<R>> R handleUniqueResultQuery (JPAQuery query, Q queryEntity) throws NonUniqueResultException
 	{
 		try
 		{

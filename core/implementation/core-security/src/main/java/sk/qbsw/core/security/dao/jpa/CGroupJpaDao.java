@@ -6,7 +6,12 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
@@ -19,9 +24,6 @@ import sk.qbsw.core.security.model.domain.QCGroup;
 import sk.qbsw.core.security.model.domain.QCUnit;
 import sk.qbsw.core.security.model.domain.QCUser;
 import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
-
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * The Class CGroupJpaDao.
@@ -38,6 +40,9 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** The logger. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CGroupJpaDao.class);
 
 	/**
 	 * Default constructor - nothing special.
@@ -73,7 +78,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		return query.from(qGroup).orderBy(qGroup.code.asc()).list(qGroup);
 	}
 
-	/* (non-Javadoc)
+	/** (non-Javadoc)
+	 * @deprecated
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCode(java.lang.String)
 	 */
 	@Override
@@ -105,14 +111,15 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		return CJpaDaoHelper.handleUniqueResultQuery(query, qGroup);
 	}
 
-	/* (non-Javadoc)
+	/** (non-Javadoc)
+	 * @deprecated
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
 	@Deprecated
 	public List<CGroup> findByCodeAndUnit (String code, CUnit unit) throws CSecurityException
 	{
-		List<CGroup> groups = new ArrayList<CGroup>();
+		List<CGroup> groups = new ArrayList<>();
 
 		try
 		{
@@ -123,6 +130,7 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		}
 		catch (NoResultException ex)
 		{
+			LOGGER.error("No groups found", ex);
 			return groups;
 		}
 

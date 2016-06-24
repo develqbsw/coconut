@@ -1,5 +1,7 @@
 package sk.qbsw.core.testing.mock;
 
+import org.springframework.aop.framework.AopConfigException;
+
 /**
  * The helper for mocking.
  *
@@ -18,5 +20,5 @@ public interface IMockHelper
 	 * @return the unwrapped object
 	 * @throws Exception the exception
 	 */
-	public <T>T unwrapSpringProxyObject (T object) throws Exception;
+	public <T>T unwrapSpringProxyObject (T object) throws AopConfigException;
 }

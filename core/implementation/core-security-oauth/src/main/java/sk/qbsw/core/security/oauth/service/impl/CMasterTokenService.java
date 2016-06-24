@@ -46,6 +46,7 @@ public class CMasterTokenService extends ATokenService implements IMasterTokenSe
 		catch (NoResultException ex)
 		{
 			LOGGER.error("The user {} not found", userId);
+			LOGGER.error("The user not found", ex);
 			throw new CBusinessException(ECoreErrorResponse.USER_NOT_FOUND);
 		}
 

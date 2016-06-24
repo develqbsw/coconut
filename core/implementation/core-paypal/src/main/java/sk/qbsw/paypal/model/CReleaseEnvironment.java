@@ -17,15 +17,16 @@ public class CReleaseEnvironment implements Serializable
 
 	/** invitation URL. */
 	private String invitationUrl = "http://localhost:8080/airlinesbooking-webtickets/destinations/";
-	
+
 	/** The owner. */
 	private String owner = "QBSW";
 
 	/** The proxy port. */
 	private Integer proxyPort = new Integer(3128);
 
-	/** The proxy url. */
-	private String proxyUrl = "192.168.121.31";
+	/** The proxy url. Must be set programatically
+	 *  */
+	private String proxyUrl = "";
 
 	/** email address for reply. */
 	private String replyEmail = "nonreply@qbsw.sk";
@@ -35,7 +36,7 @@ public class CReleaseEnvironment implements Serializable
 
 	/** The version. */
 	private String version = "0.2.10";
-	
+
 	/**
 	 * Gets the date.
 	 *
@@ -45,6 +46,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return date;
 	}
+
 	/**
 	 * Sets the date.
 	 *
@@ -64,6 +66,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return invitationUrl;
 	}
+
 	/**
 	 * Sets the invitation url.
 	 *
@@ -83,6 +86,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return owner;
 	}
+
 	/**
 	 * Sets the owner.
 	 *
@@ -92,7 +96,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		this.owner = owner;
 	}
-	
+
 
 	/**
 	 * Gets the proxy port.
@@ -103,6 +107,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return proxyPort;
 	}
+
 	/**
 	 * Sets the proxy port.
 	 *
@@ -112,7 +117,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		this.proxyPort = proxyPort;
 	}
-	
+
 
 	/**
 	 * Gets the proxy url.
@@ -123,6 +128,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return proxyUrl;
 	}
+
 	/**
 	 * Sets the proxy url.
 	 *
@@ -142,6 +148,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return replyEmail;
 	}
+
 	/**
 	 * Sets the reply email.
 	 *
@@ -151,7 +158,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		this.replyEmail = replyEmail;
 	}
-	
+
 
 	/**
 	 * Gets the use proxy.
@@ -162,6 +169,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return useProxy;
 	}
+
 	/**
 	 * Sets the use proxy.
 	 *
@@ -181,6 +189,7 @@ public class CReleaseEnvironment implements Serializable
 	{
 		return version;
 	}
+
 	/**
 	 * Sets the version.
 	 *

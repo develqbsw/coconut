@@ -30,7 +30,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 {
 
 	/** The logger. */
-	final static Logger LOGGER = LoggerFactory.getLogger(CLoginBlockingService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CLoginBlockingService.class);
 
 	/** The block login limit. */
 	private int blockLoginLimit = 5;
@@ -50,7 +50,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#init(int)
 	 */
-	public void init(int blockLoginLimit)
+	public void init (int blockLoginLimit)
 	{
 		this.blockLoginLimit = blockLoginLimit;
 	}
@@ -58,7 +58,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#init()
 	 */
-	public void init()
+	public void init ()
 	{
 		String keyFromSystem = System.getProperty("Authentication.blockLoginLimit");
 		try
@@ -69,7 +69,8 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 				this.blockLoginLimit = keyToInt;
 			}
 
-		} catch (NumberFormatException ex)
+		}
+		catch (NumberFormatException ex)
 		{
 			LOGGER.error("Authentication.blockLoginLimit not set", ex);
 			//do nothing, use default
@@ -81,7 +82,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 */
 	@Override
 	@Transactional
-	public void increaseInvalidLoginCounter(String login, String ip) throws CSystemException, CSecurityException
+	public void increaseInvalidLoginCounter (String login, String ip) throws CSecurityException
 	{
 		//define error message
 		String errorMessage = "The invalid login counter cannot be increased";
@@ -96,13 +97,13 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 
 		increaseInvalidLoginCounterInner(blockedLogin);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#increaseInvalidLoginCounter(sk.qbsw.core.security.model.domain.CUser user, java.lang.String ip)
 	 */
 	@Override
-	@Transactional(readOnly=false)
-	public void increaseInvalidLoginCounterWithoutUserCheck(String login, String ip) throws CSystemException, CSecurityException
+	@Transactional (readOnly = false)
+	public void increaseInvalidLoginCounterWithoutUserCheck (String login, String ip) throws CSecurityException
 	{
 		//define error message
 		String errorMessage = "The invalid login counter cannot be increased";
@@ -121,7 +122,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 */
 	@Override
 	@Transactional
-	public void resetInvalidLoginCounter(String login, String ip) throws CSystemException, CSecurityException
+	public void resetInvalidLoginCounter (String login, String ip) throws CSecurityException
 	{
 		//define error message
 		String errorMessage = "The login counter cannot be reset";
@@ -132,13 +133,13 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 
 		resetInvalidLoginCounterInner(blockedLogin);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#resetInvalidLoginCounter(sk.qbsw.core.security.model.domain.CUser user, java.lang.String ip)
 	 */
 	@Override
 	@Transactional
-	public void resetInvalidLoginCounterWithoutUserCheck(String login, String ip) throws CSystemException, CSecurityException
+	public void resetInvalidLoginCounterWithoutUserCheck (String login, String ip) throws CSecurityException
 	{
 		//define error message
 		String errorMessage = "The login counter cannot be reset";
@@ -163,16 +164,13 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 */
 	@Override
 	@Transactional
-	public boolean isLoginBlocked(String login, String ip) throws CSystemException
+	public boolean isLoginBlocked (String login, String ip) throws CSystemException
 	{
 		if (blockedLoginJpaDao.countCurrentlyBlockedByLoginAndIp(login, ip) > 0)
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	/**
@@ -184,16 +182,18 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 * @throws CSecurityException throws if user doesn't exists
 	 * @throws CSystemException throws if there is any other error
 	 */
-	private CUser getUserByLogin(String login, String errorMessage) throws CSecurityException, CSystemException
+	private CUser getUserByLogin (String login, String errorMessage) throws CSecurityException
 	{
 		try
 		{
 			return userDao.findOneByLogin(login);
-		} catch (NoResultException ex)
+		}
+		catch (NoResultException ex)
 		{
 			LOGGER.debug(errorMessage + " - the user with login " + login + " dont exists", ex);
 			throw new CSecurityException(errorMessage);
-		} catch (Throwable ex)
+		}
+		catch (Exception ex)
 		{
 			LOGGER.debug(errorMessage + " - the system exception raised", ex);
 			throw new CSystemException(errorMessage);
@@ -209,15 +209,18 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 * @return the auth black list record or a null if there is no such record
 	 * @throws CSystemException throws if there is any other error
 	 */
-	private CBlockedLogin getBlockedLogin(String login, String ip, String errorMessage) throws CSystemException
+	private CBlockedLogin getBlockedLogin (String login, String ip, String errorMessage) throws CSystemException
 	{
 		try
 		{
 			return blockedLoginJpaDao.findOneByLoginAndIp(login, ip);
-		} catch (NoResultException ex)
+		}
+		catch (NoResultException ex)
 		{
+			LOGGER.debug(" Blocked login not found", ex);
 			return null;
-		} catch (Throwable ex)
+		}
+		catch (Exception ex)
 		{
 			LOGGER.debug(errorMessage + " - the system exception raised", ex);
 			throw new CSystemException(errorMessage);
@@ -231,7 +234,7 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 * @param ip the ip
 	 * @return the auth blacklist record
 	 */
-	private CBlockedLogin createBlockedLogin(String login, String ip)
+	private CBlockedLogin createBlockedLogin (String login, String ip)
 	{
 		CBlockedLogin blacklistRecord = new CBlockedLogin();
 		blacklistRecord.setLogin(login);
@@ -246,9 +249,9 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	 * @param invalidLoginCount the invalid login count
 	 * @return the int
 	 */
-	private int countBlockLoginMinutes(int invalidLoginCount)
+	private int countBlockLoginMinutes (int invalidLoginCount)
 	{
-		double blockingTime = Math.pow((double) blockLoginLimit, ((double) invalidLoginCount - (double) blockLoginLimit));
+		double blockingTime = Math.pow((double) blockLoginLimit, (double) invalidLoginCount - (double) blockLoginLimit);
 
 		if (Double.isInfinite(blockingTime) || Double.isNaN(blockingTime))
 		{
@@ -262,32 +265,37 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 		}
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional (readOnly = true)
 	@Override
-	public CBlockedLogin findBlockedLogin(String login, String ip)
-			throws CSystemException {
-		CBlockedLogin result=null;
-		try{
-			result=blockedLoginJpaDao.findOneByLoginAndIp(login, ip);
-		}catch(Exception e){
-			
+	public CBlockedLogin findBlockedLogin (String login, String ip) throws CSystemException
+	{
+		CBlockedLogin result = null;
+		try
+		{
+			result = blockedLoginJpaDao.findOneByLoginAndIp(login, ip);
+		}
+		catch (Exception e)
+		{
+			LOGGER.debug("Blocking for user " + login + " not found", e);
 		}
 		return result;
 	}
 
 	@Override
-	@Transactional(readOnly=false)
-	public CBlockedLogin increaseInvalidLoginCounter (CBlockedLogin blockedLogin,String login, String ip) throws CSystemException, CSecurityException
+	@Transactional (readOnly = false)
+	public CBlockedLogin increaseInvalidLoginCounter (CBlockedLogin blockedLogin, String login, String ip) throws CSecurityException
 	{
-		if (blockedLogin == null)
+		CBlockedLogin block = blockedLogin;
+		if (block == null)
 		{
-			blockedLogin = createBlockedLogin(login, ip);
+			block = createBlockedLogin(login, ip);
 		}
-		increaseInvalidLoginCounterInner(blockedLogin);
-		return blockedLogin;
+		increaseInvalidLoginCounterInner(block);
+		return block;
 	}
-	
-	private void increaseInvalidLoginCounterInner(CBlockedLogin blockedLogin){
+
+	private void increaseInvalidLoginCounterInner (CBlockedLogin blockedLogin)
+	{
 
 
 		//update blocked login
@@ -300,11 +308,11 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 		blockedLoginJpaDao.update(blockedLogin);
 	}
 
-	@Transactional(readOnly=false)
+	@Transactional (readOnly = false)
 	@Override
-	public void resetInvalidLoginCounter (CBlockedLogin blockedLogin) throws CSystemException, CSecurityException
+	public void resetInvalidLoginCounter (CBlockedLogin blockedLogin) throws CSecurityException
 	{
 		resetInvalidLoginCounterInner(blockedLogin);
-		
+
 	}
 }

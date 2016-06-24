@@ -26,6 +26,15 @@ final class HttpPost implements Transport
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The use proxy. */
+	private Boolean useProxy = Boolean.FALSE;
+
+	/** The proxy url. */
+	private String proxyURL;
+
+	/** The proxy port. */
+	private Integer proxyPort;
+
 	/**
 	 * Sends request (msg attribute) to the specified url and returns response
 	 * as a string.
@@ -39,7 +48,7 @@ final class HttpPost implements Transport
 	{
 		URL url = new URL(urlString);
 		URLConnection connection;
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 
 		try
 		{
@@ -71,7 +80,7 @@ final class HttpPost implements Transport
 			reader.close();
 
 		}
-		catch (Throwable ex)
+		catch (Exception ex)
 		{
 			LoggerFactory.getLogger(HttpPost.class).error("Error during call URL:" + url + " MSG:" + msg, ex);
 		}
@@ -107,12 +116,4 @@ final class HttpPost implements Transport
 		this.proxyPort = proxyPort;
 	}
 
-	/** The use proxy. */
-	private Boolean useProxy = Boolean.FALSE;
-
-	/** The proxy url. */
-	private String proxyURL;
-
-	/** The proxy port. */
-	private Integer proxyPort;
 }

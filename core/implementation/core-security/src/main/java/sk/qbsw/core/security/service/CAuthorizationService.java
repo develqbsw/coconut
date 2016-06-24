@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,11 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * LOGGER
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CAuthorizationService.class);
+
 	/** The role dao. */
 	@Autowired
 	private IRoleDao roleDao;
@@ -57,36 +64,30 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 		try
 		{
 			user = getUserByLoginAndUnit(login, localUnit);
-		}
-		catch (NoResultException nre)
-		{
-			user = null;
-		}
 
-		if (user == null)
-		{
-			throw new CInvalidUserException("User with login " + login + " not recognised");
-		}
-		else
-		{
 			//if the user has not a role throw an exception
-			if (user.hasRole(role) == false)
+			if (!user.hasRole(role))
 			{
 				throw new CSecurityException("User has not a role with code " + role.getCode());
 			}
 
-			if (localUnit != null)
+			// if the user is not in unit, throw an exception
+			if (localUnit != null && !user.isInUnit(localUnit))
 			{
-				if (user.isInUnit(localUnit) == false)
-				{
-					throw new CSecurityException("User is not is unit with name " + localUnit.getName());
-				}
+				throw new CSecurityException("User is not is unit with name " + localUnit.getName());
 			}
 
-			if (category != null && user.hasCategory(category, role) == false)
+			// if the user has not category, throw exception
+			if (category != null && !user.hasCategory(category, role))
 			{
 				throw new CSecurityException("User has not a category with name " + category);
 			}
+
+		}
+		catch (NoResultException nre)
+		{
+			LOGGER.error("User not found", nre);
+			throw new CInvalidUserException("User with login " + login + " not recognised");
 		}
 	}
 
@@ -119,7 +120,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 			}
 			catch (NoResultException ex)
 			{
-				throw new CSecurityException("There is not a unit with name " + unitName);
+				throw new CSecurityException("There is not a unit with name " + unitName, ex);
 			}
 		}
 		else
@@ -138,15 +139,25 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException the login is null
 	 */
-	private CUser getUserByLoginAndUnit (String login, CUnit unit) throws NoResultException, CSecurityException
+	private CUser getUserByLoginAndUnit (String login, CUnit unit) throws CSecurityException
 	{
+		CUser user;
+
 		if (unit == null)
 		{
-			return userDao.findOneByLogin(login);
+			user = userDao.findOneByLogin(login);
 		}
 		else
 		{
-			return userDao.findOneByLoginAndUnit(login, unit);
+			user = userDao.findOneByLoginAndUnit(login, unit);
 		}
+
+
+		if (user == null)
+		{
+			throw new CInvalidUserException("User with login " + login + " not recognised");
+		}
+		return user;
+
 	}
 }

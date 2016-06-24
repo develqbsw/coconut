@@ -11,6 +11,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -23,6 +25,9 @@ import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 @SuppressWarnings ("serial")
 public abstract class CAJAXPreparedDownload extends AAJAXDownload implements Serializable
 {
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CAJAXPreparedDownload.class);
+
 
 	/** The type. */
 	private String type;
@@ -59,6 +64,8 @@ public abstract class CAJAXPreparedDownload extends AAJAXDownload implements Ser
 		}
 		catch (ResourceStreamNotFoundException snf)
 		{
+			LOGGER.debug("Resource not found", snf);
+
 			is = null;
 		}
 		super.initiate(target);

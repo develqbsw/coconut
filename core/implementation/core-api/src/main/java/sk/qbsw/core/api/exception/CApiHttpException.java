@@ -16,15 +16,15 @@ public class CApiHttpException extends CSystemException
 	private static final long serialVersionUID = 1L;
 
 	/** HTTP error code. */
-	private int httpErrorCode;
+	private final int httpErrorCode;
 
 	/** HTTP response. */
-	private String response;
+	private final String response;
 
 	/**
 	 * deserialized response from object
 	 */
-	private Object objectResponse;
+	private transient Object objectResponse;
 
 	/**
 	 * Instantiates a new api http exception.

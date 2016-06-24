@@ -51,14 +51,14 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	/** The Constant LANGUAGE_EN. */
 	public static final String LANGUAGE_EN = "en";
 
-	
+
 	/**
 	 * specify witch protocol to use.
 	 * 
 	 * @see PROTOCOL_HTTPS or PROTOCOL_HTTP in this class
 	 * @param protocol
 	 */
-	public CGoogleGeocodeClient(String protocol) 
+	public CGoogleGeocodeClient (String protocol)
 	{
 		super();
 		this.protocol = protocol;
@@ -67,20 +67,20 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	/**
 	 * using PROTOCOL_HTTP
 	 */
-	public CGoogleGeocodeClient() 
+	public CGoogleGeocodeClient ()
 	{
 		super();
 		this.protocol = PROTOCOL_HTTP;
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.googlemaps.geocode.IGoogleGeocodeClient#getGeocodeResponseForCoordinates(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String getGeocodeResponseForCoordinates (String latitude, String longitude) throws CBusinessException
 	{
-		String url =  getGoogleURL() + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
+		String url = getGoogleURL() + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -91,7 +91,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForCoordinates (String output, String latitude, String longitude) throws CBusinessException
 	{
-		String url =  getGoogleURL() + output + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
+		String url = getGoogleURL() + output + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -102,7 +102,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForCoordinates (String output, String language, String latitude, String longitude) throws CBusinessException
 	{
-		String url =  getGoogleURL() + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + language;
+		String url = getGoogleURL() + OUTPUT_XML + "?latlng=" + latitude + "," + longitude + "&sensor=false&language=" + language;
 
 		return getFromServer(url);
 	}
@@ -113,7 +113,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForAddress (String address) throws CBusinessException, UnsupportedEncodingException
 	{
-		String url =  getGoogleURL() + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
+		String url = getGoogleURL() + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -124,7 +124,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForAddress (String output, String address) throws CBusinessException, UnsupportedEncodingException
 	{
-		String url =  getGoogleURL() + output + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
+		String url = getGoogleURL() + output + "?address=" + encodeAddress(address) + "&sensor=false&language=" + LANGUAGE_SK;
 
 		return getFromServer(url);
 	}
@@ -135,7 +135,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	@Override
 	public String getGeocodeResponseForAddress (String output, String language, String address) throws CBusinessException, UnsupportedEncodingException
 	{
-		String url =  getGoogleURL() + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + language;
+		String url = getGoogleURL() + OUTPUT_XML + "?address=" + encodeAddress(address) + "&sensor=false&language=" + language;
 
 		return getFromServer(url);
 	}
@@ -159,7 +159,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 	 * @return the string
 	 * @throws UnsupportedEncodingException the unsupported encoding exception
 	 */
-	protected String getGoogleURL()
+	protected String getGoogleURL ()
 	{
 		return protocol + "://" + serviceUrl;
 	}
@@ -185,7 +185,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 		}
 		catch (final Exception e)
 		{
-			throw new CBusinessException("Problem getting String from stream.");
+			throw new CBusinessException("Problem getting String from stream.", e);
 		}
 	}
 
@@ -212,7 +212,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 		for (CGeocodeCoordinates coordinates : parser.getGeocodeCoordinates())
 		{
-			if ( (coordinates.getType().equals("sublocality") || coordinates.getType().equals("locality")) && coordinates.getCity().equalsIgnoreCase(address))
+			if ( ("sublocality".equals(coordinates.getType()) || "locality".equals(coordinates.getType())) && coordinates.getCity().equalsIgnoreCase(address))
 			{
 				location.setLat(coordinates.getGeometry().getLocation().getLat());
 				location.setLng(coordinates.getGeometry().getLocation().getLng());
@@ -254,7 +254,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 			for (CGeocodeCoordinates coordinates : parser.getGeocodeCoordinates())
 			{
-				if ( (coordinates.getType().equals("route") || coordinates.getType().equals("street_address")) && coordinates.getCity().equalsIgnoreCase(city))
+				if ( ("route".equals(coordinates.getType()) || "street_address".equals(coordinates.getType())) && coordinates.getCity().equalsIgnoreCase(city))
 				{
 					location.setLat(coordinates.getGeometry().getLocation().getLat());
 					location.setLng(coordinates.getGeometry().getLocation().getLng());
@@ -282,7 +282,7 @@ public class CGoogleGeocodeClient implements IGoogleGeocodeClient, Serializable
 
 		for (CGeocodeAddress geocodeAddress : parser.getGeocodeAddresses())
 		{
-			if (geocodeAddress.getType().equals("street_address") || geocodeAddress.getType().equals("route"))
+			if ("street_address".equals(geocodeAddress.getType()) || "route".equals(geocodeAddress.getType()))
 			{
 				address = getAddress(geocodeAddress);
 			}

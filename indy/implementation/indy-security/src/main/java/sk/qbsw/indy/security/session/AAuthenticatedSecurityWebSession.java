@@ -73,7 +73,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 
 		if (roles.isEmpty())
 		{
-			LOGGER.warn(String.format("No roles found."));
+			LOGGER.warn("No roles found.");
 		}
 
 		return roles;
@@ -88,11 +88,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	public final boolean hasRole (String role)
 	{
 		Boolean hasRole = Boolean.FALSE;
-		if (getRoles() == null)
-		{
-			hasRole = Boolean.FALSE;
-		}
-		else
+		if (getRoles() != null)
 		{
 			hasRole = getRoles().hasAnyRole(new Roles(role));
 		}

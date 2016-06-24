@@ -20,7 +20,7 @@ public class CAttachmentDefinition implements Serializable
 	private String fileName;
 
 	/** The data stream. */
-	private InputStream dataStream;
+	private transient InputStream dataStream;
 
 	/** The content type. */
 	private String contentType;

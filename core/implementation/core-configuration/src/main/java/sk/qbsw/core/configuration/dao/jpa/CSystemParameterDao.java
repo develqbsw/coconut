@@ -9,6 +9,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import sk.qbsw.core.configuration.dao.ISystemParameterDao;
@@ -27,6 +29,9 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** The logger. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CSystemParameterDao.class);
 
 	/**
 	 * Instantiates a new unit jpa dao.
@@ -70,6 +75,7 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 		}
 		catch (NoResultException e)
 		{
+			LOGGER.error("No parameter found.", e);
 			parameter = null;
 		}
 		return parameter;

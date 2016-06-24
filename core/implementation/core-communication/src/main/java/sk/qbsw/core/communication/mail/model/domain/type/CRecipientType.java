@@ -27,10 +27,10 @@ import sk.qbsw.core.communication.mail.model.domain.CRecipient;
 public class CRecipientType implements UserType
 {
 	/** The separator. */
-	private final char SEPARATOR = ';';
+	private static final char SEPARATOR = ';';
 
 	/** The sql type. */
-	private final int SQL_TYPE = Types.VARCHAR;
+	private static final int SQL_TYPE = Types.VARCHAR;
 
 	/* (non-Javadoc)
 	 * @see org.hibernate.usertype.UserType#sqlTypes()
@@ -93,7 +93,7 @@ public class CRecipientType implements UserType
 		{
 			return new CRecipient(Arrays.asList(StringUtils.split(value, SEPARATOR)));
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
 			throw new HibernateException(e);
 		}
@@ -111,7 +111,7 @@ public class CRecipientType implements UserType
 			return;
 		}
 
-		if ( (value instanceof CRecipient) == false)
+		if (!(value instanceof CRecipient))
 		{
 			throw new UnsupportedOperationException("can't convert " + value.getClass());
 
@@ -122,7 +122,7 @@ public class CRecipientType implements UserType
 			String recipientString = StringUtils.join( ((CRecipient) value).getAddressList().toArray(), SEPARATOR);
 			stmt.setString(index, recipientString);
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
 			throw new HibernateException(e);
 		}
@@ -139,7 +139,7 @@ public class CRecipientType implements UserType
 			return null;
 		}
 
-		if ( (value instanceof CRecipient) == false)
+		if (!(value instanceof CRecipient))
 		{
 			throw new UnsupportedOperationException("can't convert " + value.getClass());
 		}

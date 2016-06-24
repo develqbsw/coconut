@@ -23,7 +23,8 @@ import sk.qbsw.core.reporting.generating.service.IReportRequestService;
 @Component
 @Scope (ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @CNotAuditLogged (blockTree = true)
-public class CReportCreationWorkerThread extends AReportCreatorTask implements IReportCreatorWorkerTask {
+public class CReportCreationWorkerThread extends AReportCreatorTask implements IReportCreatorWorkerTask
+{
 
 	@Autowired
 	private ICreateReportService serviceInst;
@@ -36,48 +37,59 @@ public class CReportCreationWorkerThread extends AReportCreatorTask implements I
 	private IReportRequest reportRequest;
 
 	@Override
-	public void configure (IReportRequest reportRequest, CountDownLatch latch) {
+	public void configure (IReportRequest reportRequest, CountDownLatch latch)
+	{
 		this.reportRequest = reportRequest;
 		this.latch = latch;
 	}
 
 	@Override
-	public void run () {
+	public void run ()
+	{
 		LOGGER.debug("WorkerThread: Waiting for report generation " + Thread.currentThread().getId());
-		try {
+		try
+		{
 			generateReports();
 		}
-		catch (Exception e) {
-			LOGGER.error("WorkerThread: CBusinessException : " + e.getMessage());
+		catch (Exception e)
+		{
+			LOGGER.error("WorkerThread: CBusinessException : " + e.getMessage(), e);
 		}
-		finally {
-			if (latch != null) {
+		finally
+		{
+			if (latch != null)
+			{
 				latch.countDown();
 			}
 		}
 		LOGGER.debug("WorkerThread: End of Report generation " + Thread.currentThread().getId());
 	}
 
-	private void generateReports() throws CBusinessException{
+	private void generateReports () throws CBusinessException
+	{
 		LOGGER.debug("SYNC: Begin of Report processing at thread " + Thread.currentThread().getId());
-		if (reportRequest != null) {
-			try {
+		if (reportRequest != null)
+		{
+			try
+			{
 				serviceInst.createReport(reportRequest);
 			}
-			catch (Throwable e) {
-				LOGGER.error("SYNC: Leatest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
-				if(e instanceof CReporProcessingLimitExceededException){
-					reportService.changeReportStateLimitExceeded(reportRequest);
-				}else{
-					reportService.changeReportStateErrorProcessing(reportRequest);
-				}
-				if(e instanceof CBusinessException){
-					throw e;
-				}
-				throw new CBusinessException("error report generating", e);
+			catch (CBusinessException e)
+			{
+				LOGGER.error("SYNC: Latest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
+				reportService.changeReportStateLimitExceeded(reportRequest);
+
+				throw e;
+			}
+			catch (Exception e)
+			{
+				LOGGER.error("SYNC: Latest report ID:" + reportRequest.getIdentificator() + "  is marked as ERROR_PROCESSING", e);
+				reportService.changeReportStateLimitExceeded(reportRequest);
+				throw new CBusinessException("Error report generating", e);
 			}
 		}
-		else {
+		else
+		{
 			LOGGER.debug("SYNC: Suitable report not found at thread" + Thread.currentThread().getId());
 		}
 		LOGGER.debug("SYNC: End of Report processing at thread " + Thread.currentThread().getId());

@@ -21,7 +21,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.12.2
  * @since 1.10.5
  */
-@Service(value = "mixedAuthenticationService")
+@Service (value = "mixedAuthenticationService")
 public class CMixedAuthenticationService extends CLoginBlockingService implements IAuthenticationService
 {
 
@@ -29,41 +29,38 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	private static final long serialVersionUID = 1L;
 
 	/** The logger. */
-	final Logger logger = LoggerFactory.getLogger(CMixedAuthenticationService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CMixedAuthenticationService.class);
 
 	/** The database authentication service. */
 	@Autowired
-	@Qualifier("cLoginService")
+	@Qualifier ("cLoginService")
 	private IAuthenticationService databaseAuthenticationService;
 
 	/** The ldap authentication service. */
 	@Autowired
-	@Qualifier("ldapAuthenticationService")
+	@Qualifier ("ldapAuthenticationService")
 	private IAuthenticationService ldapAuthenticationService;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public boolean canLogin(String login, @CNotLogged @CNotAuditLogged String password, CRole role)
+	@Transactional (readOnly = true)
+	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
 	{
-		if (ldapAuthenticationService.canLogin(login, password, role) == true || databaseAuthenticationService.canLogin(login, password, role) == true)
+		if (ldapAuthenticationService.canLogin(login, password, role) || databaseAuthenticationService.canLogin(login, password, role))
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginUser(login, password, null, null);
 	}
@@ -72,8 +69,8 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
 	{
 		return loginUser(login, password, null, role);
 	}
@@ -82,8 +79,8 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly = true)
-	public CUser login(String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	@Transactional (readOnly = true)
+	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		return loginUser(login, password, unit, null);
 	}
@@ -98,28 +95,27 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	private CUser loginUser(String login, String password, String unit, CRole role) throws CSecurityException
+	private CUser loginUser (String login, String password, String unit, CRole role) throws CSecurityException
 	{
 		CUser user = null;
 
+		String msgLogging = "User" + login;
 		try
 		{
 			user = callLdapLoginMethod(login, password, unit, role);
-			logger.debug("User " + login + " was authenticated by LDAP");
+			LOGGER.debug(msgLogging + " was authenticated by LDAP");
 
 			return user;
-		} catch (CSecurityException ex)
+		}
+		catch (CSecurityException ex)
 		{
-			try
-			{
-				user = callDatabaseLoginMethod(login, password, unit, role);
-				logger.debug("User " + login + " was authenticated by DB");
+			LOGGER.debug(msgLogging + " was not authenticated by LDAP", ex);
 
-				return user;
-			} catch (CSecurityException exa)
-			{
-				throw exa;
-			}
+			// try with DB
+			user = callDatabaseLoginMethod(login, password, unit, role);
+			LOGGER.debug(msgLogging + " was authenticated by DB");
+
+			return user;
 		}
 	}
 
@@ -133,7 +129,7 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	private CUser callLdapLoginMethod(String login, String password, String unit, CRole role) throws CSecurityException
+	private CUser callLdapLoginMethod (String login, String password, String unit, CRole role) throws CSecurityException
 	{
 		if (unit != null)
 		{
@@ -159,7 +155,7 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	private CUser callDatabaseLoginMethod(String login, String password, String unit, CRole role) throws CSecurityException
+	private CUser callDatabaseLoginMethod (String login, String password, String unit, CRole role) throws CSecurityException
 	{
 		if (unit != null)
 		{
@@ -179,7 +175,7 @@ public class CMixedAuthenticationService extends CLoginBlockingService implement
 	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
 	 */
 	@Override
-	public boolean isOnline()
+	public boolean isOnline ()
 	{
 		return databaseAuthenticationService.isOnline() || ldapAuthenticationService.isOnline();
 	}

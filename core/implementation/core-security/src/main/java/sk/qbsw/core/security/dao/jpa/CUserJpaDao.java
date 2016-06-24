@@ -8,9 +8,10 @@ import java.util.List;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.PropertyResolver;
 import org.springframework.stereotype.Repository;
+
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
@@ -34,9 +35,6 @@ import sk.qbsw.core.security.model.order.EOrderSpecifier;
 import sk.qbsw.core.security.model.order.EUserOrderByAttributeSpecifier;
 import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
 
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
-
 /**
  * User DAO implementation.
  * 
@@ -52,9 +50,6 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private PropertyResolver resolver;
-
 	/**
 	 * Instantiates a new user jpa dao.
 	 * 
@@ -67,8 +62,8 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findForModification(java.lang.Long)
 	 */
-	@Deprecated
 	@Override
+	@Deprecated
 	public CUser findForModification (Long id)
 	{
 		return findById(id);
@@ -123,7 +118,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLoginAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
-	public CUser findOneByLoginAndUnit (String login, CUnit unit) throws NoResultException, CSecurityException
+	public CUser findOneByLoginAndUnit (String login, CUnit unit) throws CSecurityException
 	{
 		return findUserByLoginAndUnit(login, unit);
 	}
@@ -137,7 +132,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException throws if the login is null
 	 */
-	private CUser findUserByLoginAndUnit (String login, CUnit unit) throws NoResultException, CSecurityException
+	private CUser findUserByLoginAndUnit (String login, CUnit unit) throws CSecurityException
 	{
 		//login is mandatory
 		if (login == null)
