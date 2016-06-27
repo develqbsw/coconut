@@ -601,7 +601,7 @@ public class CUserService extends AService implements IUserService
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		if (!CUnit.isKnown(unit))
+		if (unit != null && unit.getId() == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
