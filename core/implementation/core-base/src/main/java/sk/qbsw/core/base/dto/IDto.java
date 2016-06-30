@@ -5,5 +5,5 @@ import java.io.Serializable;
 /**
  * The Interface IDTO.
  */
-public interface IDTO extends Serializable {
+public interface IDto extends Serializable {
 }
