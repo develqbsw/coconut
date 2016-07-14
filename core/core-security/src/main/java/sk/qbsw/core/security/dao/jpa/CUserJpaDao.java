@@ -10,12 +10,13 @@ import javax.persistence.NoResultException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -41,11 +42,11 @@ import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.0.0
  */
 @Repository (value = "userDao")
-public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
+public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -56,7 +57,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	 */
 	public CUserJpaDao ()
 	{
-		super(CUser.class);
+		super(QCUser.cUser, Long.class);
 	}
 
 	/* (non-Javadoc)
@@ -95,8 +96,8 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			QCGroup qGroup = QCGroup.cGroup;
 
 			//create query
-			JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUser).leftJoin(qUser.organization).fetch().leftJoin(qUser.defaultUnit).fetch().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().leftJoin(qUserUnitGroup.unit).fetch().leftJoin(qGroup.roles).fetch().where(qUser.id.eq(id));
-			return CJpaDaoHelper.handleUniqueResultQuery(query, qUser);
+			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).fetchJoin().leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit).fetchJoin().leftJoin(qGroup.roles).fetchJoin().where(qUser.id.eq(id));
+			return CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
 		finally
 		{
@@ -168,8 +169,8 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			}
 
 			//create query
-			JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUser).leftJoin(qUser.organization).fetch().leftJoin(qUser.defaultUnit).fetch().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().leftJoin(qUserUnitGroup.unit, qUnit).fetch().leftJoin(qGroup.roles).fetch().where(builder);
-			return CJpaDaoHelper.handleUniqueResultQuery(query, qUser);
+			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).fetchJoin().leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qGroup.roles).fetchJoin().where(builder);
+			return CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
 		finally
 		{
@@ -193,8 +194,8 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		QCAuthenticationParams qAuthParams = QCAuthenticationParams.cAuthenticationParams;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.distinct().from(qUser).leftJoin(qUser.organization).fetch().leftJoin(qUser.authenticationParams, qAuthParams).where(qAuthParams.pin.eq(pinCode)).list(qUser);
+		JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).fetchJoin().leftJoin(qUser.authenticationParams, qAuthParams).where(qAuthParams.pin.eq(pinCode));
+		return query.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -204,8 +205,8 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 	public long countAll ()
 	{
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(QCUser.cUser).count();
+		JPAQuery<CUser> query = queryFactory.selectFrom(QCUser.cUser);
+		return query.fetchCount();
 	}
 
 	/* (non-Javadoc)
@@ -230,7 +231,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
-		
+
 		QCUser qUser = QCUser.cUser;
 		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 		QCGroup qGroup = QCGroup.cGroup;
@@ -239,14 +240,14 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 		//create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qUnit.eq(unit));
-		
+
 		if (group != null)
 		{
 			builder.and(qGroup.eq(group));
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUser).leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetch().leftJoin(qUserUnitGroup.unit, qUnit).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().where(builder);
+		JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().where(builder);
 
 		//set order
 		if (orderModel != null)
@@ -254,7 +255,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			query = query.orderBy(orderModel.getOrderSpecifiers());
 		}
 
-		return query.list(qUser);
+		return query.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -316,7 +317,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			}
 
 			//create query
-			JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUser).leftJoin(qUser.organization).leftJoin(qUser.defaultUnit).fetch().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().leftJoin(qUserUnitGroup.unit).fetch().where(builder);
+			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit).fetchJoin().where(builder);
 
 			//set order
 			if (orderModel != null)
@@ -324,7 +325,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 				query = query.orderBy(orderModel.getOrderSpecifiers());
 			}
 
-			return query.list(qUser);
+			return query.fetch();
 		}
 		finally
 		{
@@ -384,7 +385,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 			}
 
 			//create query
-			JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUser).leftJoin(qUser.organization, qOrganization).fetch().leftJoin(qUser.defaultUnit).fetch().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().leftJoin(qUserUnitGroup.unit).fetch().leftJoin(qGroup.roles, qRole).fetch().where(builder);
+			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization, qOrganization).fetchJoin().leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit).fetchJoin().leftJoin(qGroup.roles, qRole).fetchJoin().where(builder);
 
 			//set order
 			if (orderModel != null)
@@ -392,7 +393,7 @@ public class CUserJpaDao extends AEntityJpaDao<Long, CUser> implements IUserDao
 				query = query.orderBy(orderModel.getOrderSpecifiers());
 			}
 
-			return query.list(qUser);
+			return query.fetch();
 		}
 		finally
 		{

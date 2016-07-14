@@ -2,7 +2,7 @@ package sk.qbsw.et.browser.core.service;
 
 import java.util.List;
 
-import com.mysema.query.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.core.model.CFilterParameter;

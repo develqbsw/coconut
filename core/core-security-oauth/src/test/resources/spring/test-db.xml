@@ -47,4 +47,12 @@
 
 	<!-- TX annotations -->
 	<tx:annotation-driven />
+	
+	<bean id="queryFactory" class="com.querydsl.jpa.impl.JPAQueryFactory">
+		<constructor-arg>
+			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+				<property name="entityManagerFactory" ref="entityManagerFactory" />
+			</bean>
+		</constructor-arg>
+	</bean>
 </beans>

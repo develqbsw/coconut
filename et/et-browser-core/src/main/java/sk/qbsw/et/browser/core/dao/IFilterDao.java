@@ -2,7 +2,7 @@ package sk.qbsw.et.browser.core.dao;
 
 import java.util.List;
 
-import com.mysema.query.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 import sk.qbsw.core.persistence.dao.IDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;

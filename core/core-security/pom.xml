@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>sk.qbsw.core</groupId>
 		<artifactId>core-top</artifactId>
-		<version>1.15.2</version>
+		<version>1.16.0-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -89,13 +89,16 @@
 
 		<!-- Query dsl -->
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-sql-spring</artifactId>
 		</dependency>
 
 		<!-- Apache -->
@@ -240,7 +243,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>${project.build.directory}/generated-sources/mysema/</source>
+								<source>${project.build.directory}/generated-sources/querydsl/</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -256,8 +259,8 @@
 							<goal>process</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/generated-sources/mysema</outputDirectory>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+							<outputDirectory>target/generated-sources/querydsl</outputDirectory>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 						</configuration>
 					</execution>
 				</executions>

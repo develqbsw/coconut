@@ -2,8 +2,8 @@ package sk.qbsw.et.browser.core.model;
 
 import java.io.Serializable;
 
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 import sk.qbsw.core.persistence.dao.jpa.qdsl.EOperator;
 

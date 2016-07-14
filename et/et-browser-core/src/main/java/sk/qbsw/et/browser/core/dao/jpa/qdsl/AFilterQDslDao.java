@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanOperation;
-import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.expr.ComparableExpressionBase;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.path.NumberPath;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanOperation;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.EOperator;
@@ -44,7 +44,7 @@ public class AFilterQDslDao<PK, T extends IEntity<PK>>extends AQDslDao<PK, T> im
 	@SuppressWarnings ({"unchecked", "rawtypes"})
 	public List<T> getColumnValuesList (final SimpleExpression<T> column, final List<? extends CFilterParameter> fixedFilter, boolean ascendingOrder)
 	{
-		final JPAQuery query = this.createQuery();
+		final JPAQuery query = this.createQuery().distinct();
 
 		this.appendWherePart(query, fixedFilter);
 
@@ -57,7 +57,7 @@ public class AFilterQDslDao<PK, T extends IEntity<PK>>extends AQDslDao<PK, T> im
 			this.appendOrder(query, orderSpecifiers);
 		}
 
-		return query.distinct().list(column);
+		return query.fetch();
 	}
 
 	/**

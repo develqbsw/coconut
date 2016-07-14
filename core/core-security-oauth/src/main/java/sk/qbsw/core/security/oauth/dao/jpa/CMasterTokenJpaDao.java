@@ -2,16 +2,14 @@ package sk.qbsw.core.security.oauth.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.oauth.dao.IMasterTokenDao;
-import sk.qbsw.core.security.oauth.model.domain.QCMasterToken;
 import sk.qbsw.core.security.oauth.model.domain.CMasterToken;
-
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPADeleteClause;
-import com.mysema.query.jpa.impl.JPAQuery;
+import sk.qbsw.core.security.oauth.model.domain.QCMasterToken;
 
 /**
  * The master token dao.
@@ -55,7 +53,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 		builder.and(qMasterToken.deviceId.eq(deviceId));
 
 		//create query
-		return new JPAQuery(getEntityManager()).from(qMasterToken).leftJoin(qMasterToken.user).fetch().where(builder).singleResult(qMasterToken);
+		return queryFactory.selectFrom(qMasterToken).leftJoin(qMasterToken.user).fetchJoin().where(builder).fetchFirst();
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +75,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 		builder.and(qMasterToken.token.eq(token));
 
 		//create query
-		return new JPAQuery(getEntityManager()).from(qMasterToken).leftJoin(qMasterToken.user).fetch().where(builder).singleResult(qMasterToken);
+		return queryFactory.selectFrom(qMasterToken).leftJoin(qMasterToken.user).fetchJoin().where(builder).fetchFirst();
 	}
 
 	/* (non-Javadoc)
@@ -100,7 +98,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 		builder.and(qMasterToken.deviceId.eq(deviceId));
 
 		//create query
-		return new JPAQuery(getEntityManager()).from(qMasterToken).leftJoin(qMasterToken.user).fetch().where(builder).singleResult(qMasterToken);
+		return queryFactory.selectFrom(qMasterToken).leftJoin(qMasterToken.user).fetchJoin().where(builder).fetchFirst();
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +120,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 		builder.and(qMasterToken.deviceId.eq(deviceId));
 
 		//create query
-		return new JPAQuery(getEntityManager()).from(qMasterToken).leftJoin(qMasterToken.user).fetch().where(builder).singleResult(qMasterToken);
+		return queryFactory.selectFrom(qMasterToken).leftJoin(qMasterToken.user).fetchJoin().where(builder).fetchFirst();
 	}
 
 	/* (non-Javadoc)
@@ -133,6 +131,6 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 	{
 		QCMasterToken qMasterToken = QCMasterToken.cMasterToken;
 
-		new JPADeleteClause(getEntityManager(), qMasterToken).where(qMasterToken.id.eq(token.getId())).execute();
+		queryFactory.delete(qMasterToken).where(qMasterToken.id.eq(token.getId())).execute();
 	}
 }

@@ -1,10 +1,10 @@
 package sk.qbsw.core.security.model.order;
 
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
+
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.model.domain.QCOrganization;
-
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ComparableExpressionBase;
 
 /**
  * The organization order by attribute specifier.

@@ -7,11 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.support.Expressions;
-import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.path.EntityPathBase;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.core.dao.IBrwDao;
@@ -111,7 +111,7 @@ public class ABrwQDslDao<PK, T extends IEntity<PK>>extends AFilterQDslDao<PK, T>
 		this.appendOrder(q, orderSpecifiers);
 		this.appendLimit(q, from, count);
 
-		return q.list(entityPath);
+		return q.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -124,7 +124,7 @@ public class ABrwQDslDao<PK, T extends IEntity<PK>>extends AFilterQDslDao<PK, T>
 
 		this.appendWherePart(q, wheres);
 
-		return q.count();
+		return q.fetchCount();
 	}
 
 	/**
@@ -137,7 +137,8 @@ public class ABrwQDslDao<PK, T extends IEntity<PK>>extends AFilterQDslDao<PK, T>
 	{
 		final CBrwDataDto<PK, T> result;
 		final NumberExpression<Long> totalCountExpression = Expressions.numberTemplate(Long.class, "totalcount()");
-		final List<Tuple> tuples = query.list(this.entityPath, totalCountExpression);
+		//final List<Tuple> tuples = query.list(this.entityPath, totalCountExpression);
+		final List<Tuple> tuples = query.fetchResults().getResults();// list(this.entityPath, totalCountExpression); //TODO
 		final Iterator<Tuple> iter = tuples.iterator();
 		final List<T> list;
 		final Long totalCount;

@@ -10,9 +10,12 @@ import javax.persistence.NonUniqueResultException;
 
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
+
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IRoleDao;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -21,19 +24,17 @@ import sk.qbsw.core.security.model.domain.QCRole;
 import sk.qbsw.core.security.model.domain.QCUser;
 import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-
 /**
  * The role jpa dao.
  *
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.0.0
  */
 @Repository (value = "roleDao")
-public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
+public class CRoleJpaDao extends AEntityQDslDao<Long, CRole> implements IRoleDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -44,7 +45,7 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 	 */
 	public CRoleJpaDao ()
 	{
-		super(CRole.class);
+		super(QCRole.cRole, Long.class);
 	}
 
 	/* (non-Javadoc)
@@ -64,8 +65,8 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 		QCUser qUser = QCUser.cUser;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.distinct().from(qRole).join(qRole.groups, qGroup).join(qGroup.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.eq(user)).list(qRole);
+		JPAQuery<CRole> query = queryFactory.selectFrom(qRole).distinct().join(qRole.groups, qGroup).join(qGroup.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.eq(user));
+		return query.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -78,8 +79,8 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 		QCRole qRole = QCRole.cRole;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(qRole).where(qRole.code.eq(code)).list(qRole);
+		JPAQuery<CRole> query = queryFactory.selectFrom(qRole).where(qRole.code.eq(code));
+		return query.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -96,7 +97,7 @@ public class CRoleJpaDao extends AEntityJpaDao<Long, CRole> implements IRoleDao
 		QCRole qRole = QCRole.cRole;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager()).from(qRole).where(qRole.code.eq(code));
-		return CJpaDaoHelper.handleUniqueResultQuery(query, qRole);
+		JPAQuery<CRole> query = queryFactory.selectFrom(qRole).where(qRole.code.eq(code));
+		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 }

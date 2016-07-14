@@ -2,7 +2,7 @@ package sk.qbsw.et.browser.core.model;
 
 import java.io.Serializable;
 
-import com.mysema.query.types.expr.ComparableExpressionBase;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
 
 /**
  * The order parameter.

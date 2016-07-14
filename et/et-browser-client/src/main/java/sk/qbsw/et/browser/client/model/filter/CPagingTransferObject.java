@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.api.filter;
+package sk.qbsw.et.browser.client.model.filter;
 
 import java.io.Serializable;
 
@@ -6,15 +6,15 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 /**
- * The ordering.
+ * The paging.
  * 
  * @author podmajersky
  * @author Tomas Lauro
  * 
- * @version 1.15.0
- * @since 1.15.0
+ * @version 1.16.0
+ * @since 1.16.0
  */
-public class CPaging implements Serializable
+public class CPagingTransferObject implements Serializable
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 4778551662700950445L;

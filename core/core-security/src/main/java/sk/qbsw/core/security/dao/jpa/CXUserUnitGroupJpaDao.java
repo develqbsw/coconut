@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -15,20 +18,17 @@ import sk.qbsw.core.security.model.domain.QCUnit;
 import sk.qbsw.core.security.model.domain.QCUser;
 import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
 
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
-
 /**
  * DAO for cross entities between user, unit and group
  * 
  * @author farkas.roman
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.7.0
  */
 @Repository (value = "xUserUnitGroupDao")
-public class CXUserUnitGroupJpaDao extends AEntityJpaDao<Long, CXUserUnitGroup> implements IXUserUnitGroupDao
+public class CXUserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup> implements IXUserUnitGroupDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public class CXUserUnitGroupJpaDao extends AEntityJpaDao<Long, CXUserUnitGroup> 
 	 */
 	public CXUserUnitGroupJpaDao ()
 	{
-		super(CXUserUnitGroup.class);
+		super(QCXUserUnitGroup.cXUserUnitGroup, Long.class);
 	}
 
 	/* (non-Javadoc)
@@ -68,7 +68,7 @@ public class CXUserUnitGroupJpaDao extends AEntityJpaDao<Long, CXUserUnitGroup> 
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.distinct().from(qUserUnitGroup).leftJoin(qUserUnitGroup.user, qUser).fetch().leftJoin(qUserUnitGroup.unit, qUnit).fetch().leftJoin(qUserUnitGroup.group, qGroup).fetch().where(builder).list(qUserUnitGroup);
+		JPAQuery<CXUserUnitGroup> query = queryFactory.selectFrom(qUserUnitGroup).distinct().leftJoin(qUserUnitGroup.user, qUser).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().where(builder);
+		return query.fetch();
 	}
 }

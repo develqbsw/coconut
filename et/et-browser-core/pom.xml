@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>sk.qbsw.et</groupId>
 		<artifactId>et-top</artifactId>
-		<version>1.15.2</version>
+		<version>1.16.0-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -40,10 +40,16 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>1.10.2.RELEASE</version>
 		</dependency>
 
 		<!-- slf4j -->

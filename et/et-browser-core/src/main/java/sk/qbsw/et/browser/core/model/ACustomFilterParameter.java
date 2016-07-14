@@ -1,7 +1,7 @@
 package sk.qbsw.et.browser.core.model;
 
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.SimpleExpression;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 import sk.qbsw.core.persistence.dao.jpa.qdsl.EOperator;
 

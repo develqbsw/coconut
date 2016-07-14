@@ -1,12 +1,14 @@
 package sk.qbsw.core.persistence.dao.jpa.qdsl;
 
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.jpa.impl.JPADeleteClause;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.jpa.impl.JPAUpdateClause;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.SimpleExpression;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.jpa.impl.JPADeleteClause;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import sk.qbsw.core.persistence.dao.IDao;
 import sk.qbsw.core.persistence.dao.jpa.AJpaDao;
@@ -17,7 +19,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  *
  * @author Marián Oravec
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.13.0
  * 
  * @param <PK> the generic type
@@ -25,26 +27,19 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  */
 public abstract class AQDslDao<PK, T extends IEntity<PK>>extends AJpaDao implements IDao
 {
+	/** The query factory. */
+	@Autowired
+	protected JPAQueryFactory queryFactory;
+
 	/**
 	 * Creates the query.
 	 *
 	 * @param entityPaths the entity paths
 	 * @return the JPA query
 	 */
-	protected JPAQuery createQuery (EntityPath<?>... entityPaths)
+	protected JPAQuery<?> createQuery (EntityPath<?>... entityPaths)
 	{
-		return new JPAQuery(this.em).from(entityPaths);
-	}
-
-	/**
-	 * Creates the sub query.
-	 *
-	 * @param entityPaths the entity paths
-	 * @return the JPA sub query
-	 */
-	protected JPASubQuery createSubQuery (EntityPath<?>... entityPaths)
-	{
-		return new JPASubQuery().from(entityPaths);
+		return queryFactory.from(entityPaths);
 	}
 
 	/**
@@ -55,7 +50,7 @@ public abstract class AQDslDao<PK, T extends IEntity<PK>>extends AJpaDao impleme
 	 */
 	protected JPAUpdateClause createUpdateClause (EntityPath<?> entityPath)
 	{
-		return new JPAUpdateClause(this.em, entityPath);
+		return queryFactory.update(entityPath);
 	}
 
 	/**
@@ -66,7 +61,7 @@ public abstract class AQDslDao<PK, T extends IEntity<PK>>extends AJpaDao impleme
 	 */
 	protected JPADeleteClause createDeleteClause (EntityPath<?> entityPath)
 	{
-		return new JPADeleteClause(this.em, entityPath);
+		return queryFactory.delete(entityPath);
 	}
 
 	/**
@@ -112,8 +107,8 @@ public abstract class AQDslDao<PK, T extends IEntity<PK>>extends AJpaDao impleme
 	 * @param q the q
 	 * @return the count
 	 */
-	protected long getCount (final JPAQuery q)
+	protected long getCount (final JPAQuery<?> q)
 	{
-		return q.count();
+		return q.fetchCount();
 	}
 }

@@ -6,27 +6,28 @@ import javax.persistence.NonUniqueResultException;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
 import sk.qbsw.core.security.model.domain.QCBlockedLogin;
-
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * Blocked login DAO implementation.
  * 
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.12.2
  */
 @Repository (value = "blockedLoginJpaDao")
-public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> implements IBlockedLoginDao
+public class CBlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> implements IBlockedLoginDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -37,7 +38,7 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 	 */
 	public CBlockedLoginJpaDao ()
 	{
-		super(CBlockedLogin.class);
+		super(QCBlockedLogin.cBlockedLogin, Long.class);
 	}
 
 	/* (non-Javadoc)
@@ -67,8 +68,8 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager()).from(qBlockedLogin).where(builder);
-		return CJpaDaoHelper.handleUniqueResultQuery(query, qBlockedLogin);
+		JPAQuery<CBlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
+		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
 	/* (non-Javadoc)
@@ -95,7 +96,7 @@ public class CBlockedLoginJpaDao extends AEntityJpaDao<Long, CBlockedLogin> impl
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(qBlockedLogin).where(builder).count();
+		JPAQuery<CBlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
+		return query.fetchCount();
 	}
 }

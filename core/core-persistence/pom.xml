@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>sk.qbsw.core</groupId>
 		<artifactId>core-top</artifactId>
-		<version>1.15.2</version>
+		<version>1.16.0-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -22,10 +22,15 @@
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-base</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-testing</artifactId>
+		</dependency>
+
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
 		</dependency>
 
 		<!-- Testing -->
@@ -47,13 +52,16 @@
 
 		<!-- querydsl -->
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-sql-spring</artifactId>
 		</dependency>
 
 		<!-- joda time -->
@@ -102,7 +110,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>${project.build.directory}/generated-sources/mysema/</source>
+								<source>${project.build.directory}/generated-sources/querydsl/</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -118,8 +126,8 @@
 							<goal>process</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/generated-sources/mysema</outputDirectory>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+							<outputDirectory>target/generated-sources/querydsl</outputDirectory>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 						</configuration>
 					</execution>
 				</executions>

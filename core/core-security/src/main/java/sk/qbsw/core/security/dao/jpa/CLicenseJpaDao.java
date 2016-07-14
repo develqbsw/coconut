@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+import com.querydsl.jpa.impl.JPAQuery;
+
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.dao.ILicenseDao;
 import sk.qbsw.core.security.model.domain.CLicense;
 import sk.qbsw.core.security.model.domain.QCLicense;
-
-import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * The Class CLicenseJpaDao.
@@ -20,12 +20,12 @@ import com.mysema.query.jpa.impl.JPAQuery;
  * @author rosenberg
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.0.0
  */
 
 @Repository (value = "licenceDao")
-public class CLicenseJpaDao extends AEntityJpaDao<Long, CLicense<?>> implements ILicenseDao
+public class CLicenseJpaDao extends AEntityQDslDao<Long, CLicense<?>> implements ILicenseDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -33,10 +33,9 @@ public class CLicenseJpaDao extends AEntityJpaDao<Long, CLicense<?>> implements 
 	/**
 	 * Instantiates a new c license jpa dao.
 	 */
-	@SuppressWarnings ({"unchecked", "rawtypes"})
 	public CLicenseJpaDao ()
 	{
-		super((Class) CLicense.class);
+		super(QCLicense.cLicense, Long.class);
 	}
 
 	/* (non-Javadoc)
@@ -47,8 +46,8 @@ public class CLicenseJpaDao extends AEntityJpaDao<Long, CLicense<?>> implements 
 		QCLicense qLicense = QCLicense.cLicense;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(qLicense).where(qLicense.organization.id.eq(orgId)).list(qLicense);
+		JPAQuery<CLicense<?>> query = queryFactory.selectFrom(qLicense).where(qLicense.organization.id.eq(orgId));
+		return query.fetch();
 	}
 
 }

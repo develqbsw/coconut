@@ -3,7 +3,7 @@ package sk.qbsw.core.security.model.order;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.query.types.OrderSpecifier;
+import com.querydsl.core.types.OrderSpecifier;
 
 /**
  * The order model.

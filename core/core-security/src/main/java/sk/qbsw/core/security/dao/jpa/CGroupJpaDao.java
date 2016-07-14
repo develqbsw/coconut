@@ -10,12 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IGroupDao;
 import sk.qbsw.core.security.model.domain.CGroup;
 import sk.qbsw.core.security.model.domain.CUnit;
@@ -32,11 +33,11 @@ import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.0.0
  */
 @Repository (value = "groupDao")
-public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupDao
+public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroupDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -49,7 +50,7 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 	 */
 	public CGroupJpaDao ()
 	{
-		super(CGroup.class);
+		super(QCGroup.cGroup, Long.class);
 	}
 
 	/* (non-Javadoc)
@@ -61,8 +62,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		QCGroup qGroup = QCGroup.cGroup;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(qGroup).where(qGroup.flagSystem.eq(flagSystem)).orderBy(qGroup.code.asc()).list(qGroup);
+		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.flagSystem.eq(flagSystem)).orderBy(qGroup.code.asc());
+		return query.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -74,8 +75,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		QCGroup qGroup = QCGroup.cGroup;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(qGroup).orderBy(qGroup.code.asc()).list(qGroup);
+		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).orderBy(qGroup.code.asc());
+		return query.fetch();
 	}
 
 	/** (non-Javadoc)
@@ -89,8 +90,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		QCGroup qGroup = QCGroup.cGroup;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.from(qGroup).where(qGroup.code.eq(code)).orderBy(qGroup.code.asc()).list(qGroup);
+		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code)).orderBy(qGroup.code.asc());
+		return query.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -107,8 +108,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		QCGroup qGroup = QCGroup.cGroup;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager()).from(qGroup).where(qGroup.code.eq(code));
-		return CJpaDaoHelper.handleUniqueResultQuery(query, qGroup);
+		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code));
+		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
 	/** (non-Javadoc)
@@ -162,8 +163,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qGroup).leftJoin(qGroup.roles).fetch().leftJoin(qGroup.units).fetch().where(builder);
-		return CJpaDaoHelper.handleUniqueResultQuery(query, qGroup);
+		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.roles).fetchJoin().leftJoin(qGroup.units).fetchJoin().where(builder);
+		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
 	/* (non-Javadoc)
@@ -183,8 +184,8 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.distinct().from(qGroup).leftJoin(qGroup.units, qUnit).fetch().where(builder).orderBy(qGroup.code.asc()).list(qGroup);
+		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.units, qUnit).fetchJoin().where(builder).orderBy(qGroup.code.asc());
+		return query.fetch();
 	}
 
 	/* (non-Javadoc)
@@ -210,7 +211,7 @@ public class CGroupJpaDao extends AEntityJpaDao<Long, CGroup> implements IGroupD
 		}
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.distinct().from(qGroup).leftJoin(qGroup.xUserUnitGroups, qXuserUnitGroup).fetch().leftJoin(qXuserUnitGroup.unit, qUnit).fetch().leftJoin(qXuserUnitGroup.user, qUser).fetch().where(builder).orderBy(qGroup.code.asc()).list(qGroup);
+		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.xUserUnitGroups, qXuserUnitGroup).fetchJoin().leftJoin(qXuserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qXuserUnitGroup.user, qUser).fetchJoin().where(builder).orderBy(qGroup.code.asc());
+		return query.fetch();
 	}
 }

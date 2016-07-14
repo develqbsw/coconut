@@ -1,7 +1,7 @@
 package sk.qbsw.et.browser.core.model;
 
-import com.mysema.query.types.CollectionExpression;
-import com.mysema.query.types.EntityPath;
+import com.querydsl.core.types.CollectionExpression;
+import com.querydsl.core.types.EntityPath;
 
 /**
  * The join model for brw dao.

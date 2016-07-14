@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.persistence.model.domain.IEntity;
@@ -133,7 +133,7 @@ public abstract class AEntityQDslDao<PK extends Number & Comparable<?>, T extend
 	{
 		PathBuilder<T> qEntity = new PathBuilder<>(entityPathCRUD.getType(), entityPathCRUD.getMetadata());
 
-		return new JPAQuery(getEntityManager()).from(qEntity).list(qEntity);
+		return queryFactory.selectFrom(qEntity).fetch();
 	}
 
 	/* (non-Javadoc)
@@ -145,8 +145,8 @@ public abstract class AEntityQDslDao<PK extends Number & Comparable<?>, T extend
 		PathBuilder<T> qEntity = new PathBuilder<>(entityPathCRUD.getType(), entityPathCRUD.getMetadata());
 		NumberPath<PK> number = qEntity.getNumber("id", primaryKeyClass);
 
-		JPAQuery query = new JPAQuery(getEntityManager()).from(entityPathCRUD).where(number.eq(id));
-		return CQueryDslDaoHelper.handleUniqueResultQuery(query, entityPathCRUD);
+		JPAQuery<T> query = queryFactory.selectFrom(entityPathCRUD).where(number.eq(id));
+		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
 	/* (non-Javadoc)
@@ -158,6 +158,6 @@ public abstract class AEntityQDslDao<PK extends Number & Comparable<?>, T extend
 		PathBuilder<T> qEntity = new PathBuilder<>(entityPathCRUD.getType(), entityPathCRUD.getMetadata());
 		NumberPath<PK> number = qEntity.getNumber("id", primaryKeyClass);
 
-		return new JPAQuery(getEntityManager()).from(qEntity).where(number.in(ids)).list(qEntity);
+		return queryFactory.selectFrom(qEntity).where(number.in(ids)).fetch();
 	}
 }

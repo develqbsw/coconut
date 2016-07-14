@@ -1,6 +1,6 @@
 package sk.qbsw.core.security.model.order;
 
-import com.mysema.query.types.OrderSpecifier;
+import com.querydsl.core.types.OrderSpecifier;
 
 /**
  * The order by attribute specifier.

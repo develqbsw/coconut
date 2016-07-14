@@ -2,16 +2,14 @@ package sk.qbsw.core.security.oauth.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.oauth.dao.IAuthenticationTokenDao;
-import sk.qbsw.core.security.oauth.model.domain.QCAuthenticationToken;
 import sk.qbsw.core.security.oauth.model.domain.CAuthenticationToken;
-
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPADeleteClause;
-import com.mysema.query.jpa.impl.JPAQuery;
+import sk.qbsw.core.security.oauth.model.domain.QCAuthenticationToken;
 
 /**
  * The authentication token dao.
@@ -55,7 +53,7 @@ public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthentica
 		builder.and(qAuthenticationToken.deviceId.eq(deviceId));
 
 		//create query
-		return new JPAQuery(getEntityManager()).from(qAuthenticationToken).leftJoin(qAuthenticationToken.user).fetch().where(builder).singleResult(qAuthenticationToken);
+		return queryFactory.selectFrom(qAuthenticationToken).leftJoin(qAuthenticationToken.user).fetchJoin().where(builder).fetchFirst();
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +75,7 @@ public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthentica
 		builder.and(qAuthenticationToken.token.eq(token));
 
 		//create query
-		return new JPAQuery(getEntityManager()).from(qAuthenticationToken).leftJoin(qAuthenticationToken.user).fetch().where(builder).singleResult(qAuthenticationToken);
+		return queryFactory.selectFrom(qAuthenticationToken).leftJoin(qAuthenticationToken.user).fetchJoin().where(builder).fetchFirst();
 	}
 
 	/* (non-Javadoc)
@@ -99,7 +97,7 @@ public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthentica
 		builder.and(qAuthenticationToken.deviceId.eq(deviceId));
 
 		//create query
-		return new JPAQuery(getEntityManager()).from(qAuthenticationToken).leftJoin(qAuthenticationToken.user).fetch().where(builder).singleResult(qAuthenticationToken);
+		return queryFactory.selectFrom(qAuthenticationToken).leftJoin(qAuthenticationToken.user).fetchJoin().where(builder).fetchFirst();
 	}
 
 	/* (non-Javadoc)
@@ -110,6 +108,6 @@ public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthentica
 	{
 		QCAuthenticationToken qAuthenticationToken = QCAuthenticationToken.cAuthenticationToken;
 
-		new JPADeleteClause(getEntityManager(), qAuthenticationToken).where(qAuthenticationToken.id.eq(token.getId())).execute();
+		queryFactory.delete(qAuthenticationToken).where(qAuthenticationToken.id.eq(token.getId())).execute();
 	}
 }

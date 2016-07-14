@@ -1,10 +1,9 @@
 package sk.qbsw.core.persistence.dao.jpa.qdsl;
 
 import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.expr.DslExpression;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.jpa.impl.JPAQuery;
 
 /**
  * The query dsl dao helper.
@@ -14,12 +13,12 @@ import com.mysema.query.types.expr.DslExpression;
  * @version 2.0.0
  * @since 2.0.0
  */
-public class CQueryDslDaoHelper
+public class CQDslDaoHelper
 {
 	/**
 	 * Hide construction
 	 */
-	private CQueryDslDaoHelper ()
+	private CQDslDaoHelper ()
 	{
 	}
 
@@ -34,16 +33,24 @@ public class CQueryDslDaoHelper
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
-	public static <R, Q extends DslExpression<R>> R handleUniqueResultQuery (JPAQuery query, Q queryEntity) throws NonUniqueResultException
+	public static <R> R handleUniqueResultQuery (JPAQuery<R> query) throws NonUniqueResultException
 	{
 		try
 		{
-			//run query
-			return query.uniqueResult(queryEntity);
+			R result = query.fetchOne();
+
+			if (result != null)
+			{
+				return result;
+			}
+			else
+			{
+				throw new NoResultException();
+			}
 		}
-		catch (com.mysema.query.NonUniqueResultException ex)
+		catch (NonUniqueResultException ex)
 		{
-			throw new NonUniqueResultException();
+			throw new javax.persistence.NonUniqueResultException();
 		}
 	}
 }

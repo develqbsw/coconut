@@ -9,27 +9,28 @@ import javax.persistence.NoResultException;
 
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
+
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.QCUnit;
 import sk.qbsw.core.security.model.domain.QCUser;
 import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-
 /**
  * The unit jpa dao.
  *
  * @author Tomas Lauro
  * 
- * @version 1.13.0
+ * @version 1.16.0
  * @since 1.6.0
  */
 @Repository (value = "unitDao")
-public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
+public class CUnitJpaDao extends AEntityQDslDao<Long, CUnit> implements IUnitDao
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -39,7 +40,7 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 	 */
 	public CUnitJpaDao ()
 	{
-		super(CUnit.class);
+		super(QCUnit.cUnit, Long.class);
 	}
 
 	/* (non-Javadoc)
@@ -52,12 +53,12 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
-		
+
 		QCUnit qUnit = QCUnit.cUnit;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager()).distinct().from(qUnit).leftJoin(qUnit.groups).fetch().leftJoin(qUnit.organization).fetch().where(qUnit.name.eq(name));
-		return CJpaDaoHelper.handleUniqueResultQuery(query, qUnit);
+		JPAQuery<CUnit> query = queryFactory.selectFrom(qUnit).distinct().leftJoin(qUnit.groups).fetchJoin().leftJoin(qUnit.organization).fetchJoin().where(qUnit.name.eq(name));
+		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
 	/* (non-Javadoc)
@@ -70,13 +71,13 @@ public class CUnitJpaDao extends AEntityJpaDao<Long, CUnit> implements IUnitDao
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
-		
+
 		QCUnit qUnit = QCUnit.cUnit;
 		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 		QCUser qUser = QCUser.cUser;
 
 		//create query
-		JPAQuery query = new JPAQuery(getEntityManager());
-		return query.distinct().from(qUnit).join(qUnit.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.id.eq(userId)).orderBy(qUnit.name.asc()).list(qUnit);
+		JPAQuery<CUnit> query = queryFactory.selectFrom(qUnit).distinct().join(qUnit.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.id.eq(userId)).orderBy(qUnit.name.asc());
+		return query.fetch();
 	}
 }
