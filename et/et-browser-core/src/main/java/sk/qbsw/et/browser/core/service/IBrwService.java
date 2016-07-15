@@ -1,64 +1,52 @@
 package sk.qbsw.et.browser.core.service;
 
-import java.util.List;
+import java.io.Serializable;
+
+import org.springframework.data.domain.Pageable;
+
+import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
-import sk.qbsw.et.browser.core.dto.CBrwDataDto;
-import sk.qbsw.et.browser.core.model.CFilterParameter;
-import sk.qbsw.et.browser.core.model.COrderParameter;
+import sk.qbsw.et.browser.core.dto.IBrwDto;
+import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
  * The browser service.
- * 
+ *
+ * @param <PK> the id type
+ * @param <T> the entity type
+ *
  * @author Marian Oravec
  * @author Tomas Lauro
  * 
- * @since 1.15.0
- * @version 1.15.0
+ * @version 1.16.0
+ * @since 1.16.0
  */
-public interface IBrwService<PK, T extends IEntity<PK>>extends IFilterService<PK, T>
+public interface IBrwService<PK extends Serializable, T extends IEntity<PK>>extends IFilterService<PK, T>
 {
 	/**
 	 * Read.
 	 *
-	 * @param entityPath the entity path
 	 * @param id the id
 	 * @return the t
 	 */
 	T read (final PK id);
 
 	/**
-	 * Gets the complete list.
+	 * Find all.
 	 *
-	 * @param entityPath the entity path
-	 * @param wheres the wheres
-	 * @param orderSpecifiers the order specifiers
-	 * @param offset the offset
-	 * @param limit the limit
-	 * @return the complete list
+	 * @param predicate the predicate
+	 * @param pageable the pageable
+	 * @param joinDescriptors the join descriptors
+	 * @return the i brw dto
 	 */
-	CBrwDataDto<PK, T> getCompleteList (final List<? extends CFilterParameter> wheres, List<COrderParameter> orderSpecifiers, Long offset, Long limit);
+	IBrwDto<PK, T> findAll (final Predicate predicate, final Pageable pageable, final CJoinDescriptor<?>... joinDescriptors);
 
 	/**
-	 * Gets the list.
+	 * Count.
 	 *
-	 * @param <T> the generic type
-	 * @param entityPath the entity path
-	 * @param wheres the wheres
-	 * @param orderSpecifiers the order specifiers
-	 * @param offset the offset
-	 * @param count the count
-	 * @return the BRW list
+	 * @param predicate the predicate
+	 * @return the long
 	 */
-	List<T> getList (final List<? extends CFilterParameter> wheres, List<COrderParameter> orderSpecifiers, Long offset, Long count);
-
-	/**
-	 * Gets the count.
-	 *
-	 * @param <T> the generic type
-	 * @param entityPath the entity path
-	 * @param wheres the wheres
-	 * @return the BRW count
-	 */
-	long getCount (final List<? extends CFilterParameter> wheres);
+	long count (final Predicate predicate);
 }

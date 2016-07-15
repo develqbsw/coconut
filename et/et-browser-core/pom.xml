@@ -28,6 +28,10 @@
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.et</groupId>
+			<artifactId>et-browser-client</artifactId>
+		</dependency>
 
 		<!-- testing -->
 		<dependency>

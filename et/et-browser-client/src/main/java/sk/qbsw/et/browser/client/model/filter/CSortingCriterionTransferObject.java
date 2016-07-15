@@ -13,7 +13,7 @@ import sk.qbsw.et.browser.client.model.IFilterable;
  * The sorting criterion.
  *
  * @param <F> the filterable
- * 
+ *
  * @author Tomas Lauro
  * 
  * @version 1.16.0
@@ -24,34 +24,61 @@ public class CSortingCriterionTransferObject<F extends IFilterable> implements S
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6534359748372988981L;
 
-	/** The column. */
+	/** The property. */
 	@NotNull
-	private final F column;
+	private F property;
 
 	/** The direction. */
 	@NotNull
-	private final ESortDirection direction;
+	private ESortDirection direction = ESortDirection.ASC;
+
+	/** The null precedence. */
+	@NotNull
+	private ENullPrecedence nullPrecedence = ENullPrecedence.NONE;
+
+	/**
+	 * Instantiates a new c sorting criterion transfer object.
+	 *
+	 * @param property the variable
+	 */
+	public CSortingCriterionTransferObject (F property)
+	{
+		this(property, ESortDirection.ASC, ENullPrecedence.NONE);
+	}
 
 	/**
 	 * Instantiates a new c filter criterion.
 	 *
-	 * @param column the column
+	 * @param property the variable
 	 * @param direction the direction
 	 */
-	public CSortingCriterionTransferObject (F column, ESortDirection direction)
+	public CSortingCriterionTransferObject (F property, ESortDirection direction)
 	{
-		this.column = column;
-		this.direction = direction;
+		this(property, direction, ENullPrecedence.NONE);
 	}
 
 	/**
-	 * Gets the column.
+	 * Instantiates a new c sorting criterion transfer object.
 	 *
-	 * @return the column
+	 * @param property the variable
+	 * @param direction the direction
+	 * @param nullPrecedence the null precedence
 	 */
-	public F getColumn ()
+	public CSortingCriterionTransferObject (F property, ESortDirection direction, ENullPrecedence nullPrecedence)
 	{
-		return column;
+		this.property = property;
+		this.direction = direction;
+		this.nullPrecedence = nullPrecedence;
+	}
+
+	/**
+	 * Gets the variable.
+	 *
+	 * @return the variable
+	 */
+	public F getProperty ()
+	{
+		return property;
 	}
 
 	/**
@@ -62,5 +89,45 @@ public class CSortingCriterionTransferObject<F extends IFilterable> implements S
 	public ESortDirection getDirection ()
 	{
 		return direction;
+	}
+
+	/**
+	 * Gets the null precedence.
+	 *
+	 * @return the null precedence
+	 */
+	public ENullPrecedence getNullPrecedence ()
+	{
+		return nullPrecedence;
+	}
+
+	/**
+	 * Sets the property.
+	 *
+	 * @param property the new property
+	 */
+	public void setProperty (F property)
+	{
+		this.property = property;
+	}
+
+	/**
+	 * Sets the direction.
+	 *
+	 * @param direction the new direction
+	 */
+	public void setDirection (ESortDirection direction)
+	{
+		this.direction = direction;
+	}
+
+	/**
+	 * Sets the null precedence.
+	 *
+	 * @param nullPrecedence the new null precedence
+	 */
+	public void setNullPrecedence (ENullPrecedence nullPrecedence)
+	{
+		this.nullPrecedence = nullPrecedence;
 	}
 }

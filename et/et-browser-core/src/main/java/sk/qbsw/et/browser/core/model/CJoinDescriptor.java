@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.dao.support;
+package sk.qbsw.et.browser.core.model;
 
 import com.querydsl.core.JoinType;
 import com.querydsl.core.types.EntityPath;

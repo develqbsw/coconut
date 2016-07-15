@@ -11,7 +11,9 @@ import sk.qbsw.et.browser.client.model.IFilterable;
 
 /**
  * The filter criterion.
- * 
+ *
+ * @param <F> the property
+ *
  * @author Tomas Lauro
  * 
  * @version 1.16.0
@@ -22,40 +24,40 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5338691866901178569L;
 
-	/** The column. */
+	/** The property. */
 	@NotNull
-	private final F column;
+	private F property;
 
 	/** The value. */
 	@NotNull
-	private final Serializable value;
+	private Serializable value;
 
 	/** The operator. */
 	@NotNull
-	private final EOperator operator;
+	private EOperator operator;
 
 	/**
 	 * Instantiates a new c filter criterion.
 	 *
-	 * @param column the column
+	 * @param variable the variable
 	 * @param value the value
 	 * @param operator the operator
 	 */
-	public CFilterCriterionTransferObject (F column, Serializable value, EOperator operator)
+	public CFilterCriterionTransferObject (F variable, Serializable value, EOperator operator)
 	{
-		this.column = column;
+		this.property = variable;
 		this.value = value;
 		this.operator = operator;
 	}
 
 	/**
-	 * Gets the column.
+	 * Gets the variable.
 	 *
-	 * @return the column
+	 * @return the variable
 	 */
-	public F getColumn ()
+	public F getProperty ()
 	{
-		return column;
+		return property;
 	}
 
 	/**
@@ -76,5 +78,35 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	public EOperator getOperator ()
 	{
 		return operator;
+	}
+
+	/**
+	 * Sets the property.
+	 *
+	 * @param property the new property
+	 */
+	public void setProperty (F property)
+	{
+		this.property = property;
+	}
+
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
+	public void setValue (Serializable value)
+	{
+		this.value = value;
+	}
+
+	/**
+	 * Sets the operator.
+	 *
+	 * @param operator the new operator
+	 */
+	public void setOperator (EOperator operator)
+	{
+		this.operator = operator;
 	}
 }

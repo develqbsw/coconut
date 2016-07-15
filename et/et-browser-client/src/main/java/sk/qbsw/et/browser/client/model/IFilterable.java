@@ -3,7 +3,7 @@ package sk.qbsw.et.browser.client.model;
 import java.io.Serializable;
 
 /**
- * The filterable item - the enum with entity variables as values.
+ * The filterable item - the enum with entity properties as values.
  *
  * @author Tomas Lauro
  * 
@@ -12,10 +12,4 @@ import java.io.Serializable;
  */
 public interface IFilterable extends Serializable
 {
-	/**
-	 * Gets the variable name.
-	 *
-	 * @return the variable name
-	 */
-	String getVariableName ();
 }

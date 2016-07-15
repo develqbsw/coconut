@@ -13,10 +13,8 @@ import sk.qbsw.et.browser.client.model.IFilterable;
  * The filter criteria class.
  *
  * @author Tomas Lauro
- * 
- * @param <F> the filterable model
- * 
  * @version 1.16.0
+ * @param <F> the filterable model
  * @since 1.16.0
  */
 public class CFilterCriteriaTransferObject<F extends IFilterable> implements Serializable
@@ -24,11 +22,8 @@ public class CFilterCriteriaTransferObject<F extends IFilterable> implements Ser
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3042853921547434892L;
 
-	/** The validator. */
-	private IFilterCriteriaValidator<F> validator;
-
 	/** The criteria. */
-	private final List<CFilterCriterionTransferObject<F>> criteria;
+	private List<CFilterCriterionTransferObject<F>> criteria;
 
 	/**
 	 * Instantiates a new c filter criteria.
@@ -36,17 +31,6 @@ public class CFilterCriteriaTransferObject<F extends IFilterable> implements Ser
 	public CFilterCriteriaTransferObject ()
 	{
 		this.criteria = new ArrayList<>();
-	}
-
-	/**
-	 * Instantiates a new c filter criteria.
-	 *
-	 * @param validator the validator
-	 */
-	public CFilterCriteriaTransferObject (IFilterCriteriaValidator<F> validator)
-	{
-		this();
-		this.validator = validator;
 	}
 
 	/**
@@ -72,23 +56,12 @@ public class CFilterCriteriaTransferObject<F extends IFilterable> implements Ser
 	}
 
 	/**
-	 * Checks if is valid.
+	 * Sets the criteria.
 	 *
-	 * @return true, if is valid
+	 * @param criteria the new criteria
 	 */
-	public boolean isValid ()
+	public void setCriteria (List<CFilterCriterionTransferObject<F>> criteria)
 	{
-		if (validator != null)
-		{
-			for (CFilterCriterionTransferObject<F> criterion : criteria)
-			{
-				if (!validator.validateCriterion(criterion))
-				{
-					return false;
-				}
-			}
-		}
-
-		return true;
+		this.criteria = criteria;
 	}
 }

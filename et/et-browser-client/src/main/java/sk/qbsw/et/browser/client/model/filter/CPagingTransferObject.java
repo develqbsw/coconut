@@ -2,7 +2,6 @@ package sk.qbsw.et.browser.client.model.filter;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,52 +18,51 @@ public class CPagingTransferObject implements Serializable
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 4778551662700950445L;
 
-	/** The offset. */
+	/** The page. */
 	@NotNull
-	private Long offset;
+	private Integer page;
 
-	/** The limit. */
+	/** The size. */
 	@NotNull
-	@Max (100L)
-	private Long limit;
+	private Integer size;
 
 	/**
-	 * Gets the offset.
+	 * Gets the page.
 	 *
-	 * @return the offset
+	 * @return the page
 	 */
-	public Long getOffset ()
+	public Integer getPage ()
 	{
-		return offset;
+		return page;
 	}
 
 	/**
-	 * Sets the offset.
+	 * Sets the page.
 	 *
-	 * @param offset the new offset
+	 * @param page the new page
 	 */
-	public void setOffset (Long offset)
+	public void setPage (Integer page)
 	{
-		this.offset = offset;
+		this.page = page;
 	}
 
 	/**
-	 * Gets the limit.
+	 * Gets the size.
 	 *
-	 * @return the limit
+	 * @return the size
 	 */
-	public Long getLimit ()
+	public Integer getSize ()
 	{
-		return limit;
+		return size;
 	}
 
 	/**
-	 * Sets the limit.
+	 * Sets the size.
 	 *
-	 * @param limit the new limit
+	 * @param size the new size
 	 */
-	public void setLimit (Long limit)
+	public void setSize (Integer size)
 	{
-		this.limit = limit;
+		this.size = size;
 	}
 }

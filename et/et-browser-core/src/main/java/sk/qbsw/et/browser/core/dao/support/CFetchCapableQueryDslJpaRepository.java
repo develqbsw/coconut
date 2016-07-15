@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
 import org.springframework.data.jpa.repository.support.Querydsl;
@@ -20,11 +21,13 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
 
+import sk.qbsw.et.browser.core.model.CJoinDescriptor;
+
 /**
  * The join fetch capable querydsl repository implementation. 
  *
  * @param <T> the entity type
- * @param <ID> the id type
+ * @param <PK> the id type
  *
  * @author Adrian Lopez (http://stackoverflow.com/a/21630123)
  * @author Tomas Lauro
@@ -32,7 +35,7 @@ import com.querydsl.jpa.JPQLQuery;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CFetchCapableQueryDslJpaRepository<T, ID extends Serializable>extends QueryDslJpaRepository<T, ID> implements IFetchCapableQueryDslJpaRepository<T, ID>
+public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends QueryDslJpaRepository<T, PK> implements IFetchCapableQueryDslJpaRepository<T, PK>
 {
 	/** The Constant DEFAULT_ENTITY_PATH_RESOLVER. */
 	//All instance variables are available in super, but they are private
@@ -53,7 +56,7 @@ public class CFetchCapableQueryDslJpaRepository<T, ID extends Serializable>exten
 	 * @param entityInformation the entity information
 	 * @param entityManager the entity manager
 	 */
-	public CFetchCapableQueryDslJpaRepository (JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager)
+	public CFetchCapableQueryDslJpaRepository (JpaEntityInformation<T, PK> entityInformation, EntityManager entityManager)
 	{
 		this(entityInformation, entityManager, DEFAULT_ENTITY_PATH_RESOLVER);
 	}
@@ -65,7 +68,7 @@ public class CFetchCapableQueryDslJpaRepository<T, ID extends Serializable>exten
 	 * @param entityManager the entity manager
 	 * @param resolver the resolver
 	 */
-	public CFetchCapableQueryDslJpaRepository (JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager, EntityPathResolver resolver)
+	public CFetchCapableQueryDslJpaRepository (JpaEntityInformation<T, PK> entityInformation, EntityManager entityManager, EntityPathResolver resolver)
 	{
 		super(entityInformation, entityManager);
 		this.path = resolver.createPath(entityInformation.getJavaType());
@@ -88,6 +91,12 @@ public class CFetchCapableQueryDslJpaRepository<T, ID extends Serializable>exten
 		List<T> content = total > pageable.getOffset() ? query.fetch() : Collections.<T>emptyList();
 
 		return new PageImpl<>(content, pageable, total);
+	}
+
+	@Override
+	public List<T> findAll (Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors)
+	{
+		return executeSorted(createFetchQuery(predicate, joinDescriptors).select(path), sort);
 	}
 
 	/**
@@ -135,5 +144,17 @@ public class CFetchCapableQueryDslJpaRepository<T, ID extends Serializable>exten
 				throw new IllegalArgumentException("the join not supported");
 		}
 		return query;
+	}
+
+	/**
+	 * Executes the given {@link JPQLQuery} after applying the given {@link Sort}.
+	 * 
+	 * @param query must not be {@literal null}.
+	 * @param sort must not be {@literal null}.
+	 * @return
+	 */
+	private List<T> executeSorted (JPQLQuery<T> query, Sort sort)
+	{
+		return querydsl.applySorting(sort, query).fetch();
 	}
 }

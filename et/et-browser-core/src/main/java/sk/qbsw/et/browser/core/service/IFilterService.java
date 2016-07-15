@@ -1,22 +1,42 @@
 package sk.qbsw.et.browser.core.service;
 
+import java.io.Serializable;
 import java.util.List;
 
-import com.querydsl.core.types.dsl.SimpleExpression;
+import org.springframework.data.domain.Sort;
+
+import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
-import sk.qbsw.et.browser.core.model.CFilterParameter;
+import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
  * The filter service.
- * 
+ *
  * @author Marian Oravec
  * @author Tomas Lauro
  * 
- * @since 1.15.0
- * @version 1.15.0
+ * @version 1.16.0
+ * @since 1.16.0
  */
-public interface IFilterService<PK, T extends IEntity<PK>>
+public interface IFilterService<PK extends Serializable, T extends IEntity<PK>>
 {
-	List<T> getColumnValuesList (final SimpleExpression<T> column, final List<? extends CFilterParameter> filter, boolean ascendingOrder);
+	/**
+	 * Find all.
+	 *
+	 * @param predicate the predicate
+	 * @param sorting the sorting
+	 * @return the list
+	 */
+	List<T> findAll (final Predicate predicate, final Sort sorting);
+
+	/**
+	 * Find all.
+	 *
+	 * @param predicate the predicate
+	 * @param sorting the sorting
+	 * @param joinDescriptors the join descriptors
+	 * @return the list
+	 */
+	List<T> findAll (final Predicate predicate, final Sort sorting, final CJoinDescriptor<?>... joinDescriptors);
 }

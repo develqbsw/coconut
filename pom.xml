@@ -21,6 +21,7 @@
 		<!-- QBSW dependences -->
 		<indy.version>${project.version}</indy.version>
 		<core.version>${project.version}</core.version>
+		<et.version>${project.version}</et.version>
 
 		<!-- Java -->
 		<java.version>1.8</java.version>
@@ -166,6 +167,13 @@
 				<groupId>sk.qbsw.indy</groupId>
 				<artifactId>indy-base</artifactId>
 				<version>${indy.version}</version>
+			</dependency>
+
+			<!-- et -->
+			<dependency>
+				<groupId>sk.qbsw.et</groupId>
+				<artifactId>et-browser-client</artifactId>
+				<version>${et.version}</version>
 			</dependency>
 
 			<!-- security -->
