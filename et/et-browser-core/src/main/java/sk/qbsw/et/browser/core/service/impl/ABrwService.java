@@ -2,14 +2,12 @@ package sk.qbsw.et.browser.core.service.impl;
 
 import java.io.Serializable;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
-import sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository;
 import sk.qbsw.et.browser.core.dto.IBrwDto;
 import sk.qbsw.et.browser.core.dto.impl.CBrwDto;
 import sk.qbsw.et.browser.core.model.CJoinDescriptor;
@@ -28,10 +26,6 @@ import sk.qbsw.et.browser.core.service.IBrwService;
  */
 public abstract class ABrwService<PK extends Serializable, T extends IEntity<PK>>extends AFilterService<PK, T> implements IBrwService<PK, T>
 {
-	/** The brw dao. */
-	@Autowired
-	private IFetchCapableQueryDslJpaRepository<T, PK> dao;
-
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.service.IBrwService#read(java.io.Serializable)
 	 */

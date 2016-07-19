@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.provider.impl;
+package sk.qbsw.et.browser.api.provider.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,13 +16,13 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.SimpleExpression;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.et.browser.api.provider.IBrwDataProvider;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.request.IBrwRequest;
 import sk.qbsw.et.browser.client.request.IFilterRequest;
 import sk.qbsw.et.browser.core.dto.IBrwDto;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedVariableMappingException;
 import sk.qbsw.et.browser.core.model.CJoinDescriptor;
-import sk.qbsw.et.browser.core.provider.IBrwDataProvider;
 import sk.qbsw.et.browser.core.service.IBrwService;
 
 /**

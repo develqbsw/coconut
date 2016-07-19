@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.provider;
+package sk.qbsw.et.browser.api.provider;
 
 import java.io.Serializable;
 import java.util.List;

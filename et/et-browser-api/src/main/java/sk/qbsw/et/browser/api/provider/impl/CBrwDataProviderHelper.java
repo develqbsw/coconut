@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.provider.impl;
+package sk.qbsw.et.browser.api.provider.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -15,5 +15,6 @@
 	<modules>
 		<module>et-browser-client</module>
 		<module>et-browser-core</module>
+		<module>et-browser-api</module>
 	</modules>
 </project>

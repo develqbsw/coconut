@@ -28,7 +28,7 @@ public abstract class AFilterService<PK extends Serializable, T extends IEntity<
 {
 	/** The dao. */
 	@Autowired
-	private IFetchCapableQueryDslJpaRepository<T, PK> dao;
+	protected IFetchCapableQueryDslJpaRepository<T, PK> dao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.service.IFilterService#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort)

@@ -34,10 +34,12 @@
 		<spring.ws.version>2.2.4.RELEASE</spring.ws.version>
 		<xws-security.version>1.3.1</xws-security.version>
 		<spring.support.version>2.0.8</spring.support.version>
+		<spring.data.release.train.version>Hopper-RELEASE</spring.data.release.train.version>
 
 		<!-- Persistence -->
 		<hibernate.version>4.3.11.Final</hibernate.version>
 		<hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
+		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
 		<querydsl.version>4.1.3</querydsl.version>
 		<postgresql-driver.version>9.0-801.jdbc4</postgresql-driver.version>
 		<hsqldb-driver.version>2.3.3</hsqldb-driver.version>
@@ -124,6 +126,15 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Spring data compatibility definition -->
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-releasetrain</artifactId>
+				<version>${spring.data.release.train.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+
 			<!-- QBSW -->
 			<dependency>
 				<groupId>sk.qbsw.core</groupId>
@@ -173,6 +184,11 @@
 			<dependency>
 				<groupId>sk.qbsw.et</groupId>
 				<artifactId>et-browser-client</artifactId>
+				<version>${et.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.et</groupId>
+				<artifactId>et-browser-core</artifactId>
 				<version>${et.version}</version>
 			</dependency>
 
@@ -462,6 +478,11 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hibernate-entitymanager.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+				<version>${hibernate-jpa-2.1-api.version}</version>
 			</dependency>
 
 			<!-- Query dsl -->
