@@ -3,7 +3,6 @@ package sk.qbsw.et.browser.api.provider.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +21,8 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 
+import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
+import sk.qbsw.et.browser.api.provider.IBrwDataConverter;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriterionTransferObject;
@@ -31,10 +32,10 @@ import sk.qbsw.et.browser.client.model.filter.CSortingCriterionTransferObject;
 import sk.qbsw.et.browser.client.model.filter.ENullPrecedence;
 import sk.qbsw.et.browser.client.model.filter.EOperator;
 import sk.qbsw.et.browser.client.model.filter.ESortDirection;
-import sk.qbsw.et.browser.core.exception.CBrwUndefinedVariableMappingException;
+import sk.qbsw.et.browser.core.exception.CBrwUndefinedEntityMappingException;
 
 /**
- * The client data mapper.
+ * The default data converter.
  *
  * @author Marian Oravec
  * @author Peter Bozik
@@ -43,25 +44,13 @@ import sk.qbsw.et.browser.core.exception.CBrwUndefinedVariableMappingException;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CBrwDataProviderHelper
+public class CBrwDataConverter implements IBrwDataConverter
 {
-	/**
-	 * Instantiates a new c brw data provider helper.
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProviderConverter#convertFilterCriteriaToPredicate(sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject, sk.qbsw.et.browser.api.mapping.CBrwEntityMapping)
 	 */
-	private CBrwDataProviderHelper ()
-	{
-	}
-
-	/**
-	 * Convert filter criteria to predicate.
-	 *
-	 * @param <F> the generic type
-	 * @param filterCriteria the filter criteria
-	 * @param mapping the mapping
-	 * @return the predicate
-	 * @throws CBrwUndefinedVariableMappingException the c brw undefined variable mapping exception
-	 */
-	public static <F extends IFilterable> Predicate convertFilterCriteriaToPredicate (final CFilterCriteriaTransferObject<F> filterCriteria, final Map<F, SimpleExpression<?>> mapping) throws CBrwUndefinedVariableMappingException
+	@Override
+	public <F extends IFilterable> Predicate convertFilterCriteriaToPredicate (final CFilterCriteriaTransferObject<F> filterCriteria, final CBrwEntityMapping<F> mapping) throws CBrwUndefinedEntityMappingException
 	{
 		BooleanBuilder predicateBuilder = new BooleanBuilder();
 
@@ -76,14 +65,13 @@ public class CBrwDataProviderHelper
 	/**
 	 * Convert filter criterion to predicate.
 	 *
-	 * @param <F> the generic type
 	 * @param filterCriterion the filter criterion
 	 * @param mapping the mapping
 	 * @return the predicate
-	 * @throws CBrwUndefinedVariableMappingException the c brw undefined variable mapping exception
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
 	 */
 	@SuppressWarnings ({"unchecked", "rawtypes"})
-	private static <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final Map<F, SimpleExpression<?>> mapping) throws CBrwUndefinedVariableMappingException
+	private <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwUndefinedEntityMappingException
 	{
 		final SimpleExpression<?> expression = getExpressionFromMapping(filterCriterion.getProperty(), mapping);
 		final Serializable value = filterCriterion.getValue();
@@ -167,38 +155,27 @@ public class CBrwDataProviderHelper
 		}
 	}
 
-	/**
-	 * Convert sorting criteria and paging to pageable.
-	 *
-	 * @param <F> the generic type
-	 * @param sortingCriteria the sorting criteria
-	 * @param paging the paging
-	 * @param propertiesMapping the properties mapping
-	 * @return the pageable
-	 * @throws CBrwUndefinedVariableMappingException the c brw undefined variable mapping exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProviderConverter#convertSortingCriteriaAndPagingToPageable(sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject, sk.qbsw.et.browser.client.model.filter.CPagingTransferObject, sk.qbsw.et.browser.api.mapping.CBrwEntityMapping)
 	 */
-	public static <F extends IFilterable> Pageable convertSortingCriteriaAndPagingToPageable (final CSortingCriteriaTransferObject<F> sortingCriteria, final CPagingTransferObject paging, final Map<F, String> propertiesMapping) throws CBrwUndefinedVariableMappingException
+	@Override
+	public <F extends IFilterable> Pageable convertSortingCriteriaAndPagingToPageable (final CSortingCriteriaTransferObject<F> sortingCriteria, final CPagingTransferObject paging, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		return new PageRequest(paging.getPage(), paging.getSize(), convertSortingCriteriaToSort(sortingCriteria, propertiesMapping));
+		return new PageRequest(paging.getPage(), paging.getSize(), convertSortingCriteriaToSort(sortingCriteria, entityMapping));
 
 	}
 
-	/**
-	 * Convert sorting criteria to sort.
-	 *
-	 * @param <F> the generic type
-	 * @param sortingCriteria the sorting criteria
-	 * @param propertiesMapping the properties mapping
-	 * @return the sort
-	 * @throws CBrwUndefinedVariableMappingException the c brw undefined variable mapping exception
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProviderConverter#convertSortingCriteriaToSort(sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject, sk.qbsw.et.browser.api.mapping.CBrwEntityMapping)
 	 */
-	public static <F extends IFilterable> Sort convertSortingCriteriaToSort (CSortingCriteriaTransferObject<F> sortingCriteria, final Map<F, String> propertiesMapping) throws CBrwUndefinedVariableMappingException
+	@Override
+	public <F extends IFilterable> Sort convertSortingCriteriaToSort (CSortingCriteriaTransferObject<F> sortingCriteria, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
 		List<Order> orders = new ArrayList<>();
 
 		for (CSortingCriterionTransferObject<F> sortingCriterion : sortingCriteria.getCriteria())
 		{
-			orders.add(convertSortingCriterionToOrder(sortingCriterion, propertiesMapping));
+			orders.add(convertSortingCriterionToOrder(sortingCriterion, entityMapping));
 		}
 
 		return new Sort(orders);
@@ -207,16 +184,15 @@ public class CBrwDataProviderHelper
 	/**
 	 * Convert sorting criterion to order.
 	 *
-	 * @param <F> the generic type
 	 * @param sortingCriterion the sorting criterion
-	 * @param propertiesMapping the properties mapping
+	 * @param entityMapping the properties mapping
 	 * @return the order
-	 * @throws CBrwUndefinedVariableMappingException the c brw undefined variable mapping exception
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
 	 */
-	private static <F extends IFilterable> Order convertSortingCriterionToOrder (CSortingCriterionTransferObject<F> sortingCriterion, final Map<F, String> propertiesMapping) throws CBrwUndefinedVariableMappingException
+	private <F extends IFilterable> Order convertSortingCriterionToOrder (final CSortingCriterionTransferObject<F> sortingCriterion, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
 		final Direction direction = convertClientDirectionToDirection(sortingCriterion.getDirection());
-		final String propertyName = getVariableFromMapping(sortingCriterion.getProperty(), propertiesMapping);
+		final String propertyName = getVariableFromMapping(sortingCriterion.getProperty(), entityMapping);
 		final NullHandling nullHandling = convertNullPrecedenceToNullHandling(sortingCriterion.getNullPrecedence());
 
 		return new Order(direction, propertyName, nullHandling);
@@ -228,7 +204,7 @@ public class CBrwDataProviderHelper
 	 * @param clientDirection the client direction
 	 * @return the direction
 	 */
-	private static Direction convertClientDirectionToDirection (ESortDirection clientDirection)
+	private Direction convertClientDirectionToDirection (ESortDirection clientDirection)
 	{
 		switch (clientDirection)
 		{
@@ -247,7 +223,7 @@ public class CBrwDataProviderHelper
 	 * @param clientNullPrecedence the client null precedence
 	 * @return the null handling
 	 */
-	private static NullHandling convertNullPrecedenceToNullHandling (ENullPrecedence clientNullPrecedence)
+	private NullHandling convertNullPrecedenceToNullHandling (ENullPrecedence clientNullPrecedence)
 	{
 		switch (clientNullPrecedence)
 		{
@@ -265,19 +241,18 @@ public class CBrwDataProviderHelper
 	/**
 	 * Gets the expression from mapping.
 	 *
-	 * @param <F> the generic type
-	 * @param variable the variable
-	 * @param mapping the mapping
+	 * @param property the property
+	 * @param entityMapping the mapping
 	 * @return the expression from mapping
-	 * @throws CBrwUndefinedVariableMappingException the c brw undefined variable mapping exception
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
 	 */
-	private static <F extends IFilterable> SimpleExpression<?> getExpressionFromMapping (F variable, final Map<F, SimpleExpression<?>> mapping) throws CBrwUndefinedVariableMappingException
+	private <F extends IFilterable> SimpleExpression<?> getExpressionFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		SimpleExpression<?> expression = mapping.get(variable);
+		SimpleExpression<?> expression = entityMapping.getPair(property).getExpression();
 
 		if (expression == null)
 		{
-			throw new CBrwUndefinedVariableMappingException("The variable mapping not found for variable: " + variable);
+			throw new CBrwUndefinedEntityMappingException("The entity mapping not found for property: " + property);
 		}
 
 		return expression;
@@ -286,22 +261,20 @@ public class CBrwDataProviderHelper
 	/**
 	 * Gets the variable from mapping.
 	 *
-	 * @param <F> the generic type
 	 * @param property the property
-	 * @param mapping the mapping
+	 * @param entityMapping the mapping
 	 * @return the variable from mapping
-	 * @throws CBrwUndefinedVariableMappingException the c brw undefined variable mapping exception
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
 	 */
-	private static <F extends IFilterable> String getVariableFromMapping (F property, final Map<F, String> mapping) throws CBrwUndefinedVariableMappingException
+	private <F extends IFilterable> String getVariableFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		String propertyName = mapping.get(property);
+		String propertyName = entityMapping.getPair(property).getPropertyName();
 
 		if (propertyName == null)
 		{
-			throw new CBrwUndefinedVariableMappingException("The variable mapping not found for variable: " + property);
+			throw new CBrwUndefinedEntityMappingException("The variable mapping not found for variable: " + property);
 		}
 
 		return propertyName;
 	}
-
 }

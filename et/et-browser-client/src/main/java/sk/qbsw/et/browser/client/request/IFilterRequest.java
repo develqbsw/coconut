@@ -16,6 +16,20 @@ import sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject;
 public interface IFilterRequest<F extends IFilterable>
 {
 	/**
+	 * Gets the browser code.
+	 *
+	 * @return the browser code
+	 */
+	String getBrowserCode ();
+
+	/**
+	 * Sets the browser code.
+	 *
+	 * @param browserCode the new browser code
+	 */
+	void setBrowserCode (String browserCode);
+
+	/**
 	 * Gets the filter criteria.
 	 *
 	 * @return the filter criteria

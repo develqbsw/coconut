@@ -12,9 +12,11 @@ import sk.qbsw.et.browser.client.model.IFilterable;
 /**
  * The sorting criteria.
  *
- * @author Tomas Lauro
- * @version 1.16.0
  * @param <F> the filterable model
+ *
+ * @author Tomas Lauro
+ * 
+ * @version 1.16.0
  * @since 1.16.0
  */
 public class CSortingCriteriaTransferObject<F extends IFilterable> implements Serializable

@@ -11,18 +11,21 @@ import sk.qbsw.et.browser.client.request.IFilterRequest;
 /**
  * The abstract filter request.
  *
+ * @param <F> the filterable type
+ *
  * @author Peter Bozik
  * @author Tomas Lauro
- * 
- * @param <F> the filterable type
  * 
  * @version 1.16.0
  * @since 1.16.0
  */
-public abstract class AFilterRequest<F extends IFilterable>extends ARequest implements IFilterRequest<F>
+public class CFilterRequest<F extends IFilterable>extends ARequest implements IFilterRequest<F>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7751636869920682118L;
+
+	/** The browser code. */
+	private String browserCode;
 
 	/** The filter criteria. */
 	@Valid
@@ -31,6 +34,28 @@ public abstract class AFilterRequest<F extends IFilterable>extends ARequest impl
 	/** The ordering. */
 	@Valid
 	private CSortingCriteriaTransferObject<F> sortingCriteria;
+
+	/**
+	 * Gets the browser code.
+	 *
+	 * @return the browser code
+	 */
+	@Override
+	public String getBrowserCode ()
+	{
+		return browserCode;
+	}
+
+	/**
+	 * Sets the browser code.
+	 *
+	 * @param browserCode the new browser code
+	 */
+	@Override
+	public void setBrowserCode (String browserCode)
+	{
+		this.browserCode = browserCode;
+	}
 
 	/**
 	 * Gets the filter criteria.

@@ -13,7 +13,9 @@ import sk.qbsw.core.base.exception.IErrorResponse;
  */
 public enum EBrwError implements IErrorResponse
 {
-	UNDEFINED_VARIABLE_MAPPING ("11000", "error.brw.core.undefinedvariablemapping");
+	UNDEFINED_ENTITY_MAPPING ("11000", "error.brw.core.undefinedentitymapping"),
+
+	UNDEFINED_BROWSER_MAPPING ("11001", "error.brw.core.undefinedbrowsermapping");
 
 	/**
 	 * code of the error. This is shot code represent error in application

@@ -8,20 +8,20 @@ package sk.qbsw.et.browser.core.exception;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CBrwUndefinedVariableMappingException extends CBrwBusinessException
+public class CBrwUndefinedEntityMappingException extends CBrwBusinessException
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7329606376468938876L;
 
 	/** The Constant ERROR. */
-	private static final EBrwError ERROR = EBrwError.UNDEFINED_VARIABLE_MAPPING;
+	private static final EBrwError ERROR = EBrwError.UNDEFINED_ENTITY_MAPPING;
 
 	/**
 	 * Instantiates a new c brw undefined variable mapping exception.
 	 *
 	 * @param message the message
 	 */
-	public CBrwUndefinedVariableMappingException (String message)
+	public CBrwUndefinedEntityMappingException (String message)
 	{
 		super(message, ERROR);
 	}
@@ -29,7 +29,7 @@ public class CBrwUndefinedVariableMappingException extends CBrwBusinessException
 	/**
 	 * Instantiates a new c brw undefined variable mapping exception.
 	 */
-	public CBrwUndefinedVariableMappingException ()
+	public CBrwUndefinedEntityMappingException ()
 	{
 		super(ERROR);
 	}
@@ -40,7 +40,7 @@ public class CBrwUndefinedVariableMappingException extends CBrwBusinessException
 	 * @param message the message
 	 * @param cause the cause
 	 */
-	public CBrwUndefinedVariableMappingException (String message, Throwable cause)
+	public CBrwUndefinedEntityMappingException (String message, Throwable cause)
 	{
 		super(message, cause, ERROR);
 	}
