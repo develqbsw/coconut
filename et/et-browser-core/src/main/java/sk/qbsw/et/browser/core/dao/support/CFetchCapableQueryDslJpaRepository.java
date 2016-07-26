@@ -26,13 +26,11 @@ import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 /**
  * The join fetch capable querydsl repository implementation. 
  *
- * @param <T> the entity type
- * @param <PK> the id type
- *
  * @author Adrian Lopez (http://stackoverflow.com/a/21630123)
  * @author Tomas Lauro
- * 
  * @version 1.16.0
+ * @param <T> the entity type
+ * @param <PK> the id type
  * @since 1.16.0
  */
 public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends QueryDslJpaRepository<T, PK> implements IFetchCapableQueryDslJpaRepository<T, PK>
@@ -93,6 +91,9 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		return new PageImpl<>(content, pageable, total);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort, sk.qbsw.et.browser.core.model.CEntityJoin[])
+	 */
 	@Override
 	public List<T> findAll (Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors)
 	{
@@ -112,46 +113,190 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		JPQLQuery<T> query = (JPQLQuery<T>) querydsl.createQuery(path);
 		for (CJoinDescriptor<?> joinDescriptor : joinDescriptors)
 		{
-			join(joinDescriptor, query);
+			addFetchJoin(joinDescriptor, query);
 		}
 		return query.where(predicate);
 	}
 
 	/**
-	 * Join.
+	 * Adds the fetch join.
 	 *
 	 * @param joinDescriptor the join descriptor
 	 * @param query the query
 	 * @return the JPQL query
 	 */
-	private JPQLQuery<T> join (CJoinDescriptor<?> joinDescriptor, JPQLQuery<T> query)
+	private JPQLQuery<T> addFetchJoin (CJoinDescriptor<?> joinDescriptor, JPQLQuery<T> query)
 	{
-		switch (joinDescriptor.type)
+		switch (joinDescriptor.getType())
 		{
 			case INNERJOIN:
-				query.innerJoin(joinDescriptor.path).fetchJoin();
+				addInnerJoin(joinDescriptor, query);
 				break;
 			case JOIN:
-				query.join(joinDescriptor.path).fetchJoin();
+				addJoin(joinDescriptor, query);
 				break;
 			case LEFTJOIN:
-				query.leftJoin(joinDescriptor.path).fetchJoin();
+				addLeftJoin(joinDescriptor, query);
 				break;
 			case RIGHTJOIN:
-				query.rightJoin(joinDescriptor.path).fetchJoin();
+				addRightJoin(joinDescriptor, query);
 				break;
 			default:
 				throw new IllegalArgumentException("the join not supported");
 		}
+		return query.fetchJoin();
+	}
+
+	/**
+	 * Adds the left join.
+	 *
+	 * @param <P> the generic type
+	 * @param joinDescriptor the join descriptor
+	 * @param query the query
+	 * @return the JPQL query
+	 */
+	private <P> JPQLQuery<T> addLeftJoin (CJoinDescriptor<P> joinDescriptor, JPQLQuery<T> query)
+	{
+		if (joinDescriptor.getTarget() != null)
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.leftJoin(joinDescriptor.getTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.leftJoin(joinDescriptor.getTarget());
+			}
+		}
+		else
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.leftJoin(joinDescriptor.getCollectionTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.leftJoin(joinDescriptor.getCollectionTarget());
+			}
+		}
+
+		return query;
+	}
+
+	/**
+	 * Adds the right join.
+	 *
+	 * @param <P> the generic type
+	 * @param joinDescriptor the join descriptor
+	 * @param query the query
+	 * @return the JPQL query
+	 */
+	private <P> JPQLQuery<T> addRightJoin (CJoinDescriptor<P> joinDescriptor, JPQLQuery<T> query)
+	{
+		if (joinDescriptor.getTarget() != null)
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.rightJoin(joinDescriptor.getTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.rightJoin(joinDescriptor.getTarget());
+			}
+		}
+		else
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.rightJoin(joinDescriptor.getCollectionTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.rightJoin(joinDescriptor.getCollectionTarget());
+			}
+		}
+
+		return query;
+	}
+
+	/**
+	 * Adds the inner join.
+	 *
+	 * @param <P> the generic type
+	 * @param joinDescriptor the join descriptor
+	 * @param query the query
+	 * @return the JPQL query
+	 */
+	private <P> JPQLQuery<T> addInnerJoin (CJoinDescriptor<P> joinDescriptor, JPQLQuery<T> query)
+	{
+		if (joinDescriptor.getTarget() != null)
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.innerJoin(joinDescriptor.getTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.innerJoin(joinDescriptor.getTarget());
+			}
+		}
+		else
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.innerJoin(joinDescriptor.getCollectionTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.innerJoin(joinDescriptor.getCollectionTarget());
+			}
+		}
+
+		return query;
+	}
+
+	/**
+	 * Adds the join.
+	 *
+	 * @param <P> the generic type
+	 * @param joinDescriptor the join descriptor
+	 * @param query the query
+	 * @return the JPQL query
+	 */
+	private <P> JPQLQuery<T> addJoin (CJoinDescriptor<P> joinDescriptor, JPQLQuery<T> query)
+	{
+		if (joinDescriptor.getTarget() != null)
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.join(joinDescriptor.getTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.join(joinDescriptor.getTarget());
+			}
+		}
+		else
+		{
+			if (joinDescriptor.getAlias() != null)
+			{
+				query.join(joinDescriptor.getCollectionTarget(), joinDescriptor.getAlias());
+			}
+			else
+			{
+				query.join(joinDescriptor.getCollectionTarget());
+			}
+		}
+
 		return query;
 	}
 
 	/**
 	 * Executes the given {@link JPQLQuery} after applying the given {@link Sort}.
-	 * 
+	 *
 	 * @param query must not be {@literal null}.
 	 * @param sort must not be {@literal null}.
-	 * @return
+	 * @return the list
 	 */
 	private List<T> executeSorted (JPQLQuery<T> query, Sort sort)
 	{
