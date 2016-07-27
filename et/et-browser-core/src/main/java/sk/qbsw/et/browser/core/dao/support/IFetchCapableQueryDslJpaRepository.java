@@ -17,13 +17,11 @@ import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 /**
  * The join fetch capable querydsl repository.
  *
- * @param <T> the entity type
- * @param <PK> the id type
- *
  * @author Adrian Lopez (http://stackoverflow.com/a/21630123)
  * @author Tomas Lauro
- * 
  * @version 1.16.0
+ * @param <T> the entity type
+ * @param <PK> the id type
  * @since 1.16.0
  */
 @NoRepositoryBean
@@ -48,4 +46,26 @@ public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>e
 	 * @return the page
 	 */
 	List<T> findAll (Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors);
+
+	/**
+	 * Find all.
+	 *
+	 * @param predicate the predicate
+	 * @param pageable the pageable
+	 * @param joinDescriptors the join descriptors
+	 * @param distinct the distinct
+	 * @return the page
+	 */
+	Page<T> findAll (boolean distinct, Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors);
+
+	/**
+	 * Find all.
+	 *
+	 * @param predicate the predicate
+	 * @param sort the sort
+	 * @param joinDescriptors the join descriptors
+	 * @param distinct the distinct
+	 * @return the list
+	 */
+	List<T> findAll (boolean distinct, Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors);
 }

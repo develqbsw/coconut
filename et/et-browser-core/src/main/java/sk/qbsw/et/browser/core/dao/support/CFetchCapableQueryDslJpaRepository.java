@@ -79,16 +79,9 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.dao.support.CJoinDescriptor[])
 	 */
 	@Override
-	@SuppressWarnings ("unchecked")
 	public Page<T> findAll (Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors)
 	{
-		JPQLQuery<T> countQuery = (JPQLQuery<T>) createQuery(predicate);
-		JPQLQuery<T> query = querydsl.applyPagination(pageable, createFetchQuery(predicate, joinDescriptors));
-
-		Long total = countQuery.fetchCount();
-		List<T> content = total > pageable.getOffset() ? query.fetch() : Collections.<T>emptyList();
-
-		return new PageImpl<>(content, pageable, total);
+		return findAll(false, predicate, pageable, joinDescriptors);
 	}
 
 	/* (non-Javadoc)
@@ -97,7 +90,32 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	@Override
 	public List<T> findAll (Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors)
 	{
-		return executeSorted(createFetchQuery(predicate, joinDescriptors).select(path), sort);
+		return findAll(false, predicate, sort, joinDescriptors);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
+	 */
+	@Override
+	@SuppressWarnings ("unchecked")
+	public Page<T> findAll (boolean distinct, Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors)
+	{
+		JPQLQuery<T> countQuery = (JPQLQuery<T>) createQuery(predicate);
+		JPQLQuery<T> query = querydsl.applyPagination(pageable, createFetchQuery(distinct, predicate, joinDescriptors));
+
+		Long total = countQuery.fetchCount();
+		List<T> content = total > pageable.getOffset() ? query.fetch() : Collections.<T>emptyList();
+
+		return new PageImpl<>(content, pageable, total);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
+	 */
+	@Override
+	public List<T> findAll (boolean distinct, Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors)
+	{
+		return executeSorted(createFetchQuery(distinct, predicate, joinDescriptors).select(path), sort);
 	}
 
 	/**
@@ -108,9 +126,15 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	 * @return the JPQL query
 	 */
 	@SuppressWarnings ("unchecked")
-	protected JPQLQuery<T> createFetchQuery (Predicate predicate, CJoinDescriptor<?>... joinDescriptors)
+	protected JPQLQuery<T> createFetchQuery (boolean distinct, Predicate predicate, CJoinDescriptor<?>... joinDescriptors)
 	{
 		JPQLQuery<T> query = (JPQLQuery<T>) querydsl.createQuery(path);
+
+		if (distinct)
+		{
+			query.distinct(); //add distinct
+		}
+
 		for (CJoinDescriptor<?> joinDescriptor : joinDescriptors)
 		{
 			addFetchJoin(joinDescriptor, query);
