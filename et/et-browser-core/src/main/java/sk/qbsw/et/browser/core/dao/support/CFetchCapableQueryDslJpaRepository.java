@@ -97,10 +97,9 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
-	@SuppressWarnings ("unchecked")
 	public Page<T> findAll (boolean distinct, Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors)
 	{
-		JPQLQuery<T> countQuery = (JPQLQuery<T>) createQuery(predicate);
+		JPQLQuery<T> countQuery = (JPQLQuery<T>) createFetchCountQuery(distinct, predicate, joinDescriptors);
 		JPQLQuery<T> query = querydsl.applyPagination(pageable, createFetchQuery(distinct, predicate, joinDescriptors));
 
 		Long total = countQuery.fetchCount();
@@ -116,6 +115,50 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	public List<T> findAll (boolean distinct, Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors)
 	{
 		return executeSorted(createFetchQuery(distinct, predicate, joinDescriptors).select(path), sort);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#count(com.querydsl.core.types.Predicate, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
+	 */
+	@Override
+	public long count (Predicate predicate, CJoinDescriptor<?>... joinDescriptors)
+	{
+		return createFetchCountQuery(false, predicate, joinDescriptors).fetchCount();
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#count(boolean, com.querydsl.core.types.Predicate, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
+	 */
+	@Override
+	public long count (boolean distinct, Predicate predicate, CJoinDescriptor<?>... joinDescriptors)
+	{
+		return createFetchCountQuery(distinct, predicate, joinDescriptors).fetchCount();
+	}
+
+	/**
+	 * Creates the fetch count query.
+	 *
+	 * @param distinct the distinct
+	 * @param predicate the predicate
+	 * @param joinDescriptors the join descriptors
+	 * @return the JPQL query
+	 */
+	@SuppressWarnings ("unchecked")
+	protected JPQLQuery<T> createFetchCountQuery (boolean distinct, Predicate predicate, CJoinDescriptor<?>... joinDescriptors)
+	{
+		JPQLQuery<T> countQuery = (JPQLQuery<T>) createQuery(predicate);
+
+		if (distinct)
+		{
+			countQuery.distinct(); //add distinct
+		}
+
+		for (CJoinDescriptor<?> joinDescriptor : joinDescriptors)
+		{
+			addFetchJoin(joinDescriptor, countQuery);
+		}
+		return countQuery;
 	}
 
 	/**

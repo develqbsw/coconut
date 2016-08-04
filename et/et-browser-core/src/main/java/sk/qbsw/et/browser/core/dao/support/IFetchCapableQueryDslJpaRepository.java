@@ -50,10 +50,10 @@ public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>e
 	/**
 	 * Find all.
 	 *
+	 * @param distinct the distinct
 	 * @param predicate the predicate
 	 * @param pageable the pageable
 	 * @param joinDescriptors the join descriptors
-	 * @param distinct the distinct
 	 * @return the page
 	 */
 	Page<T> findAll (boolean distinct, Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors);
@@ -61,11 +61,30 @@ public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>e
 	/**
 	 * Find all.
 	 *
+	 * @param distinct the distinct
 	 * @param predicate the predicate
 	 * @param sort the sort
 	 * @param joinDescriptors the join descriptors
-	 * @param distinct the distinct
 	 * @return the list
 	 */
 	List<T> findAll (boolean distinct, Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors);
+	
+	/**
+	 * Count.
+	 *
+	 * @param predicate the predicate
+	 * @param joinDescriptors the join descriptors
+	 * @return the long
+	 */
+	long count (Predicate predicate, CJoinDescriptor<?>... joinDescriptors);
+	
+	/**
+	 * Count.
+	 *
+	 * @param distinct the distinct
+	 * @param predicate the predicate
+	 * @param joinDescriptors the join descriptors
+	 * @return the long
+	 */
+	long count (boolean distinct, Predicate predicate, CJoinDescriptor<?>... joinDescriptors);
 }
