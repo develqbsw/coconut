@@ -1,10 +1,10 @@
-package sk.qbsw.et.browser.client.request.impl;
+package sk.qbsw.et.browser.client.request;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CPagingTransferObject;
-import sk.qbsw.et.browser.client.request.IBrwRequest;
 
 /**
  * The abstract brw request.
@@ -22,9 +22,10 @@ public class CBrwRequest<F extends IFilterable>extends CFilterRequest<F> impleme
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8804636840815516951L;
 
-	/** The paging. */
+	/** The paging - with default empty object. */
 	@Valid
-	private CPagingTransferObject paging;
+	@NotNull
+	private CPagingTransferObject paging = new CPagingTransferObject();
 
 	/**
 	 * Gets the paging.

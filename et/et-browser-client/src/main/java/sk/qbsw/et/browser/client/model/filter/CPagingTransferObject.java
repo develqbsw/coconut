@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 /**
- * The paging.
+ * The paging - empty object has range from 0 to Integet.MAX_VALUE.
  * 
  * @author podmajersky
  * @author Tomas Lauro
@@ -18,51 +18,51 @@ public class CPagingTransferObject implements Serializable
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 4778551662700950445L;
 
-	/** The page. */
+	/** The offset. */
 	@NotNull
-	private Integer page;
+	private Integer offset = 0;
 
-	/** The size. */
+	/** The limit. */
 	@NotNull
-	private Integer size;
+	private Integer limit = Integer.MAX_VALUE;
 
 	/**
-	 * Gets the page.
+	 * Gets the offset.
 	 *
-	 * @return the page
+	 * @return the offset
 	 */
-	public Integer getPage ()
+	public Integer getOffset ()
 	{
-		return page;
+		return offset;
 	}
 
 	/**
-	 * Sets the page.
+	 * Sets the offset.
 	 *
-	 * @param page the new page
+	 * @param offset the new offset
 	 */
-	public void setPage (Integer page)
+	public void setOffset (Integer offset)
 	{
-		this.page = page;
+		this.offset = offset;
 	}
 
 	/**
-	 * Gets the size.
+	 * Gets the limit.
 	 *
-	 * @return the size
+	 * @return the limit
 	 */
-	public Integer getSize ()
+	public Integer getLimit ()
 	{
-		return size;
+		return limit;
 	}
 
 	/**
-	 * Sets the size.
+	 * Sets the limit.
 	 *
-	 * @param size the new size
+	 * @param limit the new limit
 	 */
-	public void setSize (Integer size)
+	public void setLimit (Integer limit)
 	{
-		this.size = size;
+		this.limit = limit;
 	}
 }

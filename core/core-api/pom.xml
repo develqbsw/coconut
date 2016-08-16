@@ -4,7 +4,7 @@
 	<artifactId>core-api</artifactId>
 	<name>Core Api</name>
 	<packaging>jar</packaging>
-	
+
 	<organization>
 		<name>QBSW a.s.</name>
 		<url>http://www.qbsw.sk</url>
@@ -33,6 +33,12 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
+		</dependency>
+
+		<!-- validation -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
 		</dependency>
 
 		<!-- JACKSON -->

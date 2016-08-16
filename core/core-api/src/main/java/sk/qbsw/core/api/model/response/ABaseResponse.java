@@ -1,106 +1,69 @@
 package sk.qbsw.core.api.model.response;
 
-import java.util.Date;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
-import sk.qbsw.core.api.client.jackson.serializer.CDateJSonSerializer;
+import javax.validation.Valid;
 
 /**
- * Base response for API methods.
+ * The base response.
+ *
+ * @param <T> the response data type
+ *
+ * @author Tomas Lauro
  * 
- * @param <T>
- *            the generic type for response
- * @author Dalibor Rak
- * @version 1.2.0
- * @since 1.2.0
+ * @version 1.16.0
+ * @since   1.16.0
  */
-public class ABaseResponse
+public class ABaseResponse<T> implements IBaseResponse<T>
 {
+	/** The data. */
+	@Valid
+	private T data;
 
-	/**
-	 * Indicates that call was finished with error.
+	/** The error. */
+	@Valid
+	private CResponseError error;
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.client.response.IBaseResponse#getData()
 	 */
-	private boolean hasError = false;
-
-	/**
-	 * Error code. 0 is alternative to no error.
-	 */
-	private int errorCode = 0;
-
-	/** Date of response. */
-	@JsonSerialize (using = CDateJSonSerializer.class)
-	private Date responseDate;
-
-	/**
-	 * Instantiates a new a base response.
-	 */
-	public ABaseResponse ()
+	@Override
+	public T getData ()
 	{
-
+		return data;
 	}
 
-	/**
-	 * Checks if is checks for error.
-	 * 
-	 * @return true, if is checks for error
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.client.response.IBaseResponse#setData(java.lang.Object)
 	 */
-	public boolean isHasError ()
+	@Override
+	public void setData (T data)
 	{
-		return hasError;
+		this.data = data;
 	}
 
-	/**
-	 * Sets the checks for error.
-	 * 
-	 * @param hasError
-	 *            the new checks for error
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.client.response.IBaseResponse#getError()
 	 */
-	public void setHasError (boolean hasError)
+	@Override
+	public CResponseError getError ()
 	{
-		this.hasError = hasError;
+		return error;
 	}
 
-	/**
-	 * Gets the error code.
-	 * 
-	 * @return the error code
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.client.response.IBaseResponse#setError(sk.qbsw.et.browser.client.response.CResponseError)
 	 */
-	public int getErrorCode ()
+	@Override
+	public void setError (CResponseError error)
 	{
-		return errorCode;
+		this.error = error;
 	}
 
-	/**
-	 * Sets the error code.
-	 * 
-	 * @param errorCode
-	 *            the new error code
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.client.response.IBaseResponse#validate()
 	 */
-	public void setErrorCode (int errorCode)
+	@Override
+	public boolean validate ()
 	{
-		this.errorCode = errorCode;
+		return true;
 	}
-
-	/**
-	 * Gets the response date.
-	 * 
-	 * @return the response date
-	 */
-	public Date getResponseDate ()
-	{
-		return responseDate;
-	}
-
-	/**
-	 * Sets the response date.
-	 * 
-	 * @param responseDate
-	 *            the new response date
-	 */
-	public void setResponseDate (Date responseDate)
-	{
-		this.responseDate = responseDate;
-	}
-
 }

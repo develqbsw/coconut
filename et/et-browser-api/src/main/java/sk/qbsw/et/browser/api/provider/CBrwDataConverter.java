@@ -1,11 +1,10 @@
-package sk.qbsw.et.browser.api.provider.impl;
+package sk.qbsw.et.browser.api.provider;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -22,7 +21,6 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
-import sk.qbsw.et.browser.api.provider.IBrwDataConverter;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriterionTransferObject;
@@ -33,6 +31,7 @@ import sk.qbsw.et.browser.client.model.filter.ENullPrecedence;
 import sk.qbsw.et.browser.client.model.filter.EOperator;
 import sk.qbsw.et.browser.client.model.filter.ESortDirection;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedEntityMappingException;
+import sk.qbsw.et.browser.core.model.COffsetPageRequest;
 
 /**
  * The default data converter.
@@ -161,7 +160,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 	@Override
 	public <F extends IFilterable> Pageable convertSortingCriteriaAndPagingToPageable (final CSortingCriteriaTransferObject<F> sortingCriteria, final CPagingTransferObject paging, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		return new PageRequest(paging.getPage(), paging.getSize(), convertSortingCriteriaToSort(sortingCriteria, entityMapping));
+		return new COffsetPageRequest(paging.getOffset(), paging.getLimit(), convertSortingCriteriaToSort(sortingCriteria, entityMapping));
 
 	}
 

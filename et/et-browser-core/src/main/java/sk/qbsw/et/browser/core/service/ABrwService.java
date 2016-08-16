@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.service.impl;
+package sk.qbsw.et.browser.core.service;
 
 import java.io.Serializable;
 
@@ -8,10 +8,9 @@ import org.springframework.data.domain.Pageable;
 import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
+import sk.qbsw.et.browser.core.dto.CBrwDto;
 import sk.qbsw.et.browser.core.dto.IBrwDto;
-import sk.qbsw.et.browser.core.dto.impl.CBrwDto;
 import sk.qbsw.et.browser.core.model.CJoinDescriptor;
-import sk.qbsw.et.browser.core.service.IBrwService;
 
 /**
  * The abstract brw service.

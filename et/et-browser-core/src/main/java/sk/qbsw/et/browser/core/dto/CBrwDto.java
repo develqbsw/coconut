@@ -1,10 +1,9 @@
-package sk.qbsw.et.browser.core.dto.impl;
+package sk.qbsw.et.browser.core.dto;
 
 import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
-import sk.qbsw.et.browser.core.dto.IBrwDto;
 
 /**
  * The brw dto.

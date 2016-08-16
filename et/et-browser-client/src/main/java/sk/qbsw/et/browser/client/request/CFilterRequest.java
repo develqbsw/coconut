@@ -1,12 +1,12 @@
-package sk.qbsw.et.browser.client.request.impl;
+package sk.qbsw.et.browser.client.request;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import sk.qbsw.core.api.model.request.ARequest;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject;
-import sk.qbsw.et.browser.client.request.IFilterRequest;
 
 /**
  * The abstract filter request.
@@ -25,15 +25,18 @@ public class CFilterRequest<F extends IFilterable>extends ARequest implements IF
 	private static final long serialVersionUID = 7751636869920682118L;
 
 	/** The browser code. */
+	@NotNull
 	private String browserCode;
 
-	/** The filter criteria. */
+	/** The filter criteria - the default is empty object. */
 	@Valid
-	private CFilterCriteriaTransferObject<F> filterCriteria;
+	@NotNull
+	private CFilterCriteriaTransferObject<F> filterCriteria = new CFilterCriteriaTransferObject<>();
 
-	/** The ordering. */
+	/** The ordering - the default is empty object */
 	@Valid
-	private CSortingCriteriaTransferObject<F> sortingCriteria;
+	@NotNull
+	private CSortingCriteriaTransferObject<F> sortingCriteria = new CSortingCriteriaTransferObject<>();
 
 	/**
 	 * Gets the browser code.

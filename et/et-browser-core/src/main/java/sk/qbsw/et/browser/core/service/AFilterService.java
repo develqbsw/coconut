@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.service.impl;
+package sk.qbsw.et.browser.core.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,7 +11,6 @@ import com.querydsl.core.types.Predicate;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository;
 import sk.qbsw.et.browser.core.model.CJoinDescriptor;
-import sk.qbsw.et.browser.core.service.IFilterService;
 
 /**
  * The abstract filter service.

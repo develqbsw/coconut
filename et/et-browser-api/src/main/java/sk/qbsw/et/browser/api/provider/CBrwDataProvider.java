@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.api.provider.impl;
+package sk.qbsw.et.browser.api.provider;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,9 +12,6 @@ import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
-import sk.qbsw.et.browser.api.provider.IBrwDataConverter;
-import sk.qbsw.et.browser.api.provider.IBrwDataProvider;
-import sk.qbsw.et.browser.api.provider.IBrwServiceFactory;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.request.IBrwRequest;
 import sk.qbsw.et.browser.client.request.IFilterRequest;
