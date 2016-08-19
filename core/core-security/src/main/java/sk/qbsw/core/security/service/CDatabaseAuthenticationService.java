@@ -1,9 +1,10 @@
 package sk.qbsw.core.security.service;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * LOGGER for authentication messages logging
-	 */
+	/** LOGGER for authentication messages logging. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CDatabaseAuthenticationService.class);
 
 	/** The user dao. */
@@ -89,6 +88,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * Authenticate by password.
 	 *
 	 * @param authenticationParams the authentication parameters of user
+	 * @param login the login
 	 * @param passwordToCheck the password to check
 	 * @throws CInvalidPasswordException the c wrong password exception
 	 */
@@ -257,11 +257,11 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String, org.joda.time.DateTime, org.joda.time.DateTime)
+	 * @see sk.qbsw.core.security.service.IAuthenticationModifierService#changeEncryptedPassword(java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
 	{
 		changePassword(login, password, null, validFrom, validTo, true, true);
 	}
@@ -277,11 +277,11 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, org.joda.time.DateTime, org.joda.time.DateTime)
+	 * @see sk.qbsw.core.security.service.IAuthenticationModifierService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, DateTime validFrom, DateTime validTo) throws CSecurityException
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
 	{
 		changePassword(login, password, email, validFrom, validTo, true, true);
 	}
@@ -330,7 +330,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	 * @param setValidityDate flag indicates the valid dates are going to be overridden
 	 * @throws CSecurityException the c security exception
 	 */
-	private void changePassword (String login, String password, String email, DateTime validFrom, DateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
+	private void changePassword (String login, String password, String email, OffsetDateTime validFrom, OffsetDateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
 	{
 		CUser user = null;
 

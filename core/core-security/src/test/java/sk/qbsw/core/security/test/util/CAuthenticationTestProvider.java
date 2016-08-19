@@ -2,11 +2,11 @@ package sk.qbsw.core.security.test.util;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
 
@@ -193,8 +193,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, IOrganizationService orgService,
-		CDataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, IOrganizationService orgService, CDataGenerator dataGenerator) throws CSecurityException
 	{
 		//create new user and needed objects
 		CUser newUser = dataGenerator.createUser(CDataGenerator.USER_WITHOUT_PASSWORD);
@@ -574,7 +573,7 @@ public class CAuthenticationTestProvider
 	public void testLoginInvalidFromAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, DateTime.now().plusHours(2), null);
+		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().plusHours(2), null);
 
 		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
@@ -588,7 +587,7 @@ public class CAuthenticationTestProvider
 	public void testLoginInvalidToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, DateTime.now().minusHours(1));
+		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, OffsetDateTime.now().minusHours(1));
 
 		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
@@ -602,7 +601,7 @@ public class CAuthenticationTestProvider
 	public void testLoginInvalidFromAndToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, DateTime.now().minusHours(2), DateTime.now().minusHours(1));
+		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().minusHours(2), OffsetDateTime.now().minusHours(1));
 
 		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}

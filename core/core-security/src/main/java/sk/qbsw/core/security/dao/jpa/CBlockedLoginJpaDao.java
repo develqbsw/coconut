@@ -1,9 +1,10 @@
 package sk.qbsw.core.security.dao.jpa;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.BooleanBuilder;
@@ -88,8 +89,8 @@ public class CBlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> imp
 		//create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qBlockedLogin.login.eq(login));
-		builder.and(qBlockedLogin.blockedFrom.lt(DateTime.now()));
-		builder.and(qBlockedLogin.blockedTo.goe(DateTime.now()));
+		builder.and(qBlockedLogin.blockedFrom.lt(OffsetDateTime.now()));
+		builder.and(qBlockedLogin.blockedTo.goe(OffsetDateTime.now()));
 		if (ip != null)
 		{
 			builder.and(qBlockedLogin.ip.eq(ip));

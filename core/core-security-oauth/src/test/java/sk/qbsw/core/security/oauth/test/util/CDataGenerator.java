@@ -1,11 +1,11 @@
 package sk.qbsw.core.security.oauth.test.util;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -162,8 +162,8 @@ public class CDataGenerator
 		CLicense<CLicensingRules> licenseOne = createLicense(LICENSE_KEY_ONE, true, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
 
 		//tokens
-		CAuthenticationToken authenticationToken = createAuthenticationToken(AUTHENTICATION_TOKEN, DateTime.now(), DateTime.now().plusHours(1), DEVICE_ID, TEST_IP_ONE);
-		CMasterToken masterToken = createMasterToken(MASTER_TOKEN, DateTime.now(), DateTime.now().plusHours(1), DEVICE_ID, TEST_IP_ONE);
+		CAuthenticationToken authenticationToken = createAuthenticationToken(AUTHENTICATION_TOKEN, OffsetDateTime.now(), OffsetDateTime.now().plusHours(1), DEVICE_ID, TEST_IP_ONE);
+		CMasterToken masterToken = createMasterToken(MASTER_TOKEN, OffsetDateTime.now(), OffsetDateTime.now().plusHours(1), DEVICE_ID, TEST_IP_ONE);
 
 		/** Create connections. */
 		//unit -> organization
@@ -410,7 +410,7 @@ public class CDataGenerator
 	 * @param validTo the valid to
 	 * @return the c authentication params
 	 */
-	public CAuthenticationParams createAuthenticationParams (String code, String pin, DateTime validFrom, DateTime validTo)
+	public CAuthenticationParams createAuthenticationParams (String code, String pin, OffsetDateTime validFrom, OffsetDateTime validTo)
 	{
 		CAuthenticationParams userAuthParams = new CAuthenticationParams();
 		userAuthParams.setPassword(code);
@@ -440,7 +440,7 @@ public class CDataGenerator
 	 * @param validTo the valid to
 	 * @return the c authentication params
 	 */
-	public CAuthenticationParams createAuthenticationParams (String code, DateTime validFrom, DateTime validTo)
+	public CAuthenticationParams createAuthenticationParams (String code, OffsetDateTime validFrom, OffsetDateTime validTo)
 	{
 		return createAuthenticationParams(code, null, validFrom, validTo);
 	}
@@ -455,7 +455,7 @@ public class CDataGenerator
 	 * @param blockedTo the blocked to
 	 * @return the c blocked login
 	 */
-	public CBlockedLogin createBlockedLogin (String login, String ip, int invalidLoginCount, DateTime blockedFrom, DateTime blockedTo)
+	public CBlockedLogin createBlockedLogin (String login, String ip, int invalidLoginCount, OffsetDateTime blockedFrom, OffsetDateTime blockedTo)
 	{
 		CBlockedLogin blockedLogin = new CBlockedLogin();
 		blockedLogin.setLogin(login);
@@ -501,7 +501,7 @@ public class CDataGenerator
 	 * @param ip the ip
 	 * @return the c authentication token
 	 */
-	public CAuthenticationToken createAuthenticationToken (String token, DateTime createDate, DateTime lastAccess, String deviceId, String ip)
+	public CAuthenticationToken createAuthenticationToken (String token, OffsetDateTime createDate, OffsetDateTime lastAccess, String deviceId, String ip)
 	{
 		CAuthenticationToken tokenObject = new CAuthenticationToken();
 		tokenObject.setCreateDate(createDate);
@@ -523,7 +523,7 @@ public class CDataGenerator
 	 * @param ip the ip
 	 * @return the c master token
 	 */
-	public CMasterToken createMasterToken (String token, DateTime createDate, DateTime lastAccess, String deviceId, String ip)
+	public CMasterToken createMasterToken (String token, OffsetDateTime createDate, OffsetDateTime lastAccess, String deviceId, String ip)
 	{
 		CMasterToken tokenObject = new CMasterToken();
 		tokenObject.setCreateDate(createDate);

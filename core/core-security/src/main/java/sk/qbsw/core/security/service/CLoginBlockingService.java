@@ -1,8 +1,9 @@
 package sk.qbsw.core.security.service;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.NoResultException;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -302,8 +303,8 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 		blockedLogin.setInvalidLoginCount(blockedLogin.getInvalidLoginCount() + 1);
 		if (blockedLogin.getInvalidLoginCount() >= blockLoginLimit)
 		{
-			blockedLogin.setBlockedFrom(DateTime.now());
-			blockedLogin.setBlockedTo(DateTime.now().plusMinutes(countBlockLoginMinutes(blockedLogin.getInvalidLoginCount())));
+			blockedLogin.setBlockedFrom(OffsetDateTime.now());
+			blockedLogin.setBlockedTo(OffsetDateTime.now().plusMinutes(countBlockLoginMinutes(blockedLogin.getInvalidLoginCount())));
 		}
 		blockedLoginJpaDao.update(blockedLogin);
 	}

@@ -1,20 +1,21 @@
 package sk.qbsw.core.security.oauth.service.impl;
 
+import java.time.OffsetDateTime;
+
 import javax.annotation.PostConstruct;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ESystemParameters.ECoreSystemParameter;
 import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 import sk.qbsw.core.configuration.service.ISystemParameterService;
 import sk.qbsw.core.security.oauth.model.domain.CAuthenticationToken;
 import sk.qbsw.core.security.oauth.model.domain.CMasterToken;
 import sk.qbsw.core.security.oauth.model.domain.CSecurityToken;
 import sk.qbsw.core.security.oauth.service.ICheckTokenStrategy;
-import ESystemParameters.ECoreSystemParameter;
 
 /**
  * The check token expiration's limits strategy.
@@ -156,8 +157,8 @@ public class CDefaultCheckTokenStrategy implements ICheckTokenStrategy
 		}
 		else
 		{
-			DateTime expDate = token.getLastAccessDate().plusMinutes(expireLimit);
-			if (expDate.isBeforeNow())
+			OffsetDateTime expDate = token.getLastAccessDate().plusMinutes(expireLimit);
+			if (expDate.isBefore(OffsetDateTime.now()))
 			{
 				LOGGER.warn("The token expiration time: {}", expDate);
 				return true;
@@ -184,8 +185,8 @@ public class CDefaultCheckTokenStrategy implements ICheckTokenStrategy
 		}
 		else
 		{
-			DateTime changeDate = token.getCreateDate().plusHours(changeLimit);
-			if (changeLimit > 0 && changeDate.isBeforeNow())
+			OffsetDateTime changeDate = token.getCreateDate().plusHours(changeLimit);
+			if (changeLimit > 0 && changeDate.isBefore(OffsetDateTime.now()))
 			{
 				LOGGER.warn("The token inactivity expiration time: {}", changeDate);
 				return true;

@@ -1,10 +1,11 @@
 package sk.qbsw.et.browser.api.provider;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -141,11 +142,11 @@ public class CBrwDataConverter implements IBrwDataConverter
 	@SuppressWarnings ({"unchecked", "rawtypes"})
 	private static Predicate createWhereBetweenDateTimePredicate (final SimpleExpression<?> expression, final Object value)
 	{
-		if (value instanceof DateTime)
+		if (value instanceof OffsetDateTime)
 		{
-			DateTime valueDT = (DateTime) value;
-			DateTime start = valueDT.withTimeAtStartOfDay();
-			DateTime end = start.plusDays(1).minusMillis(1);
+			OffsetDateTime valueDT = (OffsetDateTime) value;
+			LocalDateTime start = valueDT.toLocalDate().atStartOfDay();
+			LocalDateTime end = start.plusDays(1).minusSeconds(1);
 			return ((ComparableExpression) expression).goe(start).and( ((ComparableExpression) expression).loe(end));
 		}
 		else

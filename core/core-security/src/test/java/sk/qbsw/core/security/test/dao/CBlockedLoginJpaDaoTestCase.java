@@ -2,10 +2,11 @@ package sk.qbsw.core.security.test.dao;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -188,10 +189,10 @@ public class CBlockedLoginJpaDaoTestCase extends ADatabaseTestCase
 		CBlockedLogin blockedLoginWithoutIp = dataGenerator.createBlockedLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, null, 1, null, null);
 		blockedLoginDao.update(blockedLoginWithoutIp);
 
-		CBlockedLogin blockedLoginWithDatesOne = dataGenerator.createBlockedLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP, CDataGenerator.TEST_IP_ONE, 5, DateTime.now().minusDays(1), DateTime.now().plusDays(1));
+		CBlockedLogin blockedLoginWithDatesOne = dataGenerator.createBlockedLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP, CDataGenerator.TEST_IP_ONE, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
 		blockedLoginDao.update(blockedLoginWithDatesOne);
 
-		CBlockedLogin blockedLoginWithDatesTwo = dataGenerator.createBlockedLogin(CDataGenerator.USER_WITHOUT_PASSWORD, null, 5, DateTime.now().minusDays(1), DateTime.now().plusDays(1));
+		CBlockedLogin blockedLoginWithDatesTwo = dataGenerator.createBlockedLogin(CDataGenerator.USER_WITHOUT_PASSWORD, null, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
 		blockedLoginDao.update(blockedLoginWithDatesTwo);
 
 		blockedLoginDao.flush();

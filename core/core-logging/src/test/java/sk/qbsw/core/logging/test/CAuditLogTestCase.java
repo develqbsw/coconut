@@ -1,9 +1,9 @@
 package sk.qbsw.core.logging.test;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,7 +66,7 @@ public class CAuditLogTestCase
 		CTestData data = new CTestData();
 		data.setAtributeObjectDouble(new Double(123456789));
 		data.setAttributeBytes(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
-		data.setAttributeDateTime(new DateTime());
+		data.setAttributeDateTime(OffsetDateTime.now());
 		data.setAttributeSmallDouble(123456789D);
 		data.setAttributeString("test data");
 		return data;

@@ -2,11 +2,11 @@ package sk.qbsw.core.communication.mail.service;
 
 import java.io.InputStream;
 import java.security.InvalidParameterException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +111,7 @@ public class CMailBackgroundSender extends AMailService implements IMailService
 			CMail mail = createMail(to, cc, bcc, subject, body, attachmentDefinitions);
 
 			//set date of creation
-			mail.setCreated(DateTime.now());
+			mail.setCreated(OffsetDateTime.now());
 
 			//send mail
 			mailDao.update(mail);

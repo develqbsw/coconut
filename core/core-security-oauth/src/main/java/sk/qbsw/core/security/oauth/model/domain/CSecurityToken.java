@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.oauth.model.domain;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -21,7 +22,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 
 import sk.qbsw.core.persistence.model.domain.AEntity;
 import sk.qbsw.core.security.model.domain.CUser;
@@ -53,14 +53,14 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	private Long id;
 
 	/** The create date. */
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Type (type = "org.hibernate.type.OffsetDateTimeType")
 	@Column (name = "c_create_date", nullable = false)
-	private DateTime createDate;
+	private OffsetDateTime createDate;
 
 	/** The last access date. */
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Type (type = "org.hibernate.type.OffsetDateTimeType")
 	@Column (name = "c_last_access_date", nullable = false)
-	private DateTime lastAccessDate;
+	private OffsetDateTime lastAccessDate;
 
 	/** The token. */
 	@Column (name = "c_token", unique = true, nullable = false)
@@ -85,8 +85,8 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	@PrePersist
 	protected void onCreate ()
 	{
-		createDate = new DateTime();
-		lastAccessDate = new DateTime();
+		createDate = OffsetDateTime.now();
+		lastAccessDate = OffsetDateTime.now();
 	}
 
 	/**
@@ -95,7 +95,7 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	@PreUpdate
 	protected void onUpdate ()
 	{
-		lastAccessDate = new DateTime();
+		lastAccessDate = OffsetDateTime.now();
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +122,7 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	 *
 	 * @return the creates the date
 	 */
-	public DateTime getCreateDate ()
+	public OffsetDateTime getCreateDate ()
 	{
 		return createDate;
 	}
@@ -132,7 +132,7 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	 *
 	 * @param createDate the new creates the date
 	 */
-	public void setCreateDate (DateTime createDate)
+	public void setCreateDate (OffsetDateTime createDate)
 	{
 		this.createDate = createDate;
 	}
@@ -142,7 +142,7 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	 *
 	 * @return the last access date
 	 */
-	public DateTime getLastAccessDate ()
+	public OffsetDateTime getLastAccessDate ()
 	{
 		return lastAccessDate;
 	}
@@ -152,7 +152,7 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	 *
 	 * @param lastAccessDate the new last access date
 	 */
-	public void setLastAccessDate (DateTime lastAccessDate)
+	public void setLastAccessDate (OffsetDateTime lastAccessDate)
 	{
 		this.lastAccessDate = lastAccessDate;
 	}
@@ -242,6 +242,6 @@ public abstract class CSecurityToken extends AEntity<Long> implements Serializab
 	 */
 	public void updateLastAccess ()
 	{
-		lastAccessDate = new DateTime();
+		lastAccessDate = OffsetDateTime.now();
 	}
 }

@@ -1,8 +1,8 @@
 package sk.qbsw.core.communication.mail.job;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class CSendMailTask
 			{
 				senderMailDao.update(unsentMail);
 				unsentMail.setState(EMailState.SENT);
-				unsentMail.setSent(DateTime.now());
+				unsentMail.setSent(OffsetDateTime.now());
 			}
 			//exception in sending process - try again
 			catch (CCommunicationException e)

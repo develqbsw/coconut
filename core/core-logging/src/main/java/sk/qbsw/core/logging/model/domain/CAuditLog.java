@@ -1,6 +1,7 @@
 package sk.qbsw.core.logging.model.domain;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 
 import sk.qbsw.core.persistence.model.domain.AEntity;
 
@@ -27,7 +27,7 @@ import sk.qbsw.core.persistence.model.domain.AEntity;
  * @since 1.8.0
  */
 @Entity
-@Table(name = "t_audit_log", schema = "log")
+@Table (name = "t_audit_log", schema = "log")
 public class CAuditLog extends AEntity<Long> implements Serializable
 {
 
@@ -36,50 +36,50 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 
 	/** The id. */
 	@Id
-	@SequenceGenerator (name = "t_audit_log_pkid_generator", sequenceName = "log.t_audit_log_pk_id_seq",allocationSize =500)
+	@SequenceGenerator (name = "t_audit_log_pkid_generator", sequenceName = "log.t_audit_log_pk_id_seq", allocationSize = 500)
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_audit_log_pkid_generator")
 	@Column (name = "pk_id")
 	private Long id;
 
 	/** The operation code. */
-	@Column(name = "c_operation_code", nullable = false)
+	@Column (name = "c_operation_code", nullable = false)
 	private String operationCode;
 
 	/** The user identifier. */
 	//nullable true if user isn't logged
-	@Column(name = "c_user_identifier", nullable = true)
+	@Column (name = "c_user_identifier", nullable = true)
 	private String userIdentifier;
 
 	/** The request date time. */
-	@Column(name = "c_request_date_time", nullable = false)
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime requestDateTime;
+	@Column (name = "c_request_date_time", nullable = false)
+	@Type (type = "org.hibernate.type.OffsetDateTimeType")
+	private OffsetDateTime requestDateTime;
 
 	/** The request data. */
 	@Lob
-	@Column(name = "c_request_data", nullable = false)
+	@Column (name = "c_request_data", nullable = false)
 	private String requestData;
 
 	/** The result description. */
-	@Column(name = "c_result_description", nullable = true)
+	@Column (name = "c_result_description", nullable = true)
 	private String resultDescription;
 
 	/** The uuid for mapping users. */
-	@Column(name = "c_uuid", length = 1024, nullable = true)
+	@Column (name = "c_uuid", length = 1024, nullable = true)
 	private String uuid;
 
 	/** The operation result. */
-	@Enumerated(EnumType.STRING)
-	@Column(name = "c_operation_result", nullable = true)
+	@Enumerated (EnumType.STRING)
+	@Column (name = "c_operation_result", nullable = true)
 	private EOperationResult operationResult;
 
 	/**
 	 * On create.
 	 */
 	@PrePersist
-	protected void onCreate()
+	protected void onCreate ()
 	{
-		this.requestDateTime = new DateTime();
+		this.requestDateTime = OffsetDateTime.now();
 	}
 
 	/**
@@ -87,7 +87,8 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the uuid
 	 */
-	public String getUuid() {
+	public String getUuid ()
+	{
 		return uuid;
 	}
 
@@ -96,7 +97,8 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @param uuid the new uuid
 	 */
-	public void setUuid(String uuid) {
+	public void setUuid (String uuid)
+	{
 		this.uuid = uuid;
 	}
 
@@ -105,7 +107,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the id
 	 */
-	public Long getId()
+	public Long getId ()
 	{
 		return id;
 	}
@@ -115,7 +117,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @param id the id to set
 	 */
-	public void setId(Long id)
+	public void setId (Long id)
 	{
 		this.id = id;
 	}
@@ -125,7 +127,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the operationCode
 	 */
-	public String getOperationCode()
+	public String getOperationCode ()
 	{
 		return operationCode;
 	}
@@ -135,7 +137,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @param operationCode the operationCode to set
 	 */
-	public void setOperationCode(String operationCode)
+	public void setOperationCode (String operationCode)
 	{
 		this.operationCode = operationCode;
 	}
@@ -145,7 +147,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the userIdentifier
 	 */
-	public String getUserIdentifier()
+	public String getUserIdentifier ()
 	{
 		return userIdentifier;
 	}
@@ -155,7 +157,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @param userIdentifier the userIdentifier to set
 	 */
-	public void setUserIdentifier(String userIdentifier)
+	public void setUserIdentifier (String userIdentifier)
 	{
 		this.userIdentifier = userIdentifier;
 	}
@@ -165,7 +167,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the requestDateTime
 	 */
-	public DateTime getRequestDateTime()
+	public OffsetDateTime getRequestDateTime ()
 	{
 		return requestDateTime;
 	}
@@ -175,7 +177,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the resultDescription
 	 */
-	public String getResultDescription()
+	public String getResultDescription ()
 	{
 		return resultDescription;
 	}
@@ -185,7 +187,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @param resultDescription the resultDescription to set
 	 */
-	public void setResultDescription(String resultDescription)
+	public void setResultDescription (String resultDescription)
 	{
 		this.resultDescription = resultDescription;
 	}
@@ -195,7 +197,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the operationResult
 	 */
-	public EOperationResult getOperationResult()
+	public EOperationResult getOperationResult ()
 	{
 		return operationResult;
 	}
@@ -205,7 +207,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @param operationResult the operationResult to set
 	 */
-	public void setOperationResult(EOperationResult operationResult)
+	public void setOperationResult (EOperationResult operationResult)
 	{
 		this.operationResult = operationResult;
 	}
@@ -215,7 +217,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @return the requestData
 	 */
-	public String getRequestData()
+	public String getRequestData ()
 	{
 		return requestData;
 	}
@@ -225,7 +227,7 @@ public class CAuditLog extends AEntity<Long> implements Serializable
 	 *
 	 * @param requestData the requestData to set
 	 */
-	public void setRequestData(String requestData)
+	public void setRequestData (String requestData)
 	{
 		this.requestData = requestData;
 	}

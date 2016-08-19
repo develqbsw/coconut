@@ -3,12 +3,12 @@
  */
 package sk.qbsw.core.configuration.dao.jpa;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -45,11 +45,11 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 	@Override
 	public CSystemParameter findByName (String name)
 	{
-		return findByName(name, new DateTime());
+		return findByName(name, OffsetDateTime.now());
 	}
 
 	@Override
-	public CSystemParameter findByName (String name, DateTime validDateTime)
+	public CSystemParameter findByName (String name, OffsetDateTime validDateTime)
 	{
 		CSystemParameter parameter;
 
@@ -84,12 +84,12 @@ public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> i
 	@Override
 	public List<CSystemParameter> findByModule (String module)
 	{
-		return findByModule(module, new DateTime());
+		return findByModule(module, OffsetDateTime.now());
 	}
 
 	@Override
 	@SuppressWarnings ("unchecked")
-	public List<CSystemParameter> findByModule (String module, DateTime validDateTime)
+	public List<CSystemParameter> findByModule (String module, OffsetDateTime validDateTime)
 	{
 		StringBuilder strQuery = new StringBuilder("select ap from CSystemParameter ap where ap.module = :module ");
 

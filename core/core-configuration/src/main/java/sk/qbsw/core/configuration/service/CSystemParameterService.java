@@ -1,8 +1,8 @@
 package sk.qbsw.core.configuration.service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,6 @@ import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 @Service
 public class CSystemParameterService extends AService implements ISystemParameterService
 {
-
 	@Autowired
 	private ISystemParameterDao systemParameterDao;
 
@@ -42,14 +41,14 @@ public class CSystemParameterService extends AService implements ISystemParamete
 
 	@Override
 	@Transactional(readOnly = true)
-	public CSystemParameter findByName(String name, DateTime validDateTime)
+	public CSystemParameter findByName(String name, OffsetDateTime validDateTime)
 	{
 		return systemParameterDao.findByName(name, validDateTime);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<CSystemParameter> findByModule(String module, DateTime validDateTime)
+	public List<CSystemParameter> findByModule(String module, OffsetDateTime validDateTime)
 	{
 		return systemParameterDao.findByModule(module, validDateTime);
 	}

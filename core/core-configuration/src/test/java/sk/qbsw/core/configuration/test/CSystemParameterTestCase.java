@@ -1,7 +1,8 @@
 package sk.qbsw.core.configuration.test;
 
 
-import org.joda.time.DateTime;
+import java.time.OffsetDateTime;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -92,8 +93,8 @@ public class CSystemParameterTestCase
 		systemParameter.setModule(TEST_SYSTEM_PARAMETER_MODULE);
 		systemParameter.setStringValue(TEST_SYSTEM_PARAMETER_VALUE);
 		systemParameter.setEncryptedValue(TEST_SYSTEM_PARAMETER_ENCRYPTED_VALUE);
-		systemParameter.setValidFromDate(DateTime.now().minusDays(10));
-		systemParameter.setValidToDate(DateTime.now().plusDays(10));
+		systemParameter.setValidFromDate(OffsetDateTime.now().minusDays(10));
+		systemParameter.setValidToDate(OffsetDateTime.now().plusDays(10));
 
 		systemParameterDao.update(systemParameter);
 		systemParameterDao.flush();

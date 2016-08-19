@@ -35,7 +35,7 @@ import javax.persistence.Transient;
 @Table (name = "t_licence", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class CLicense<T> extends ASecurityChangeEntity<Long>
+public abstract class CLicense<T>extends ASecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 6005150237733706948L;

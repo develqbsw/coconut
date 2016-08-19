@@ -3,6 +3,8 @@
  */
 package sk.qbsw.core.security.model.domain;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,7 +19,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 
 import com.google.gson.annotations.Expose;
 
@@ -68,15 +69,15 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 
 	/** The valid from. */
 	@Column (name = "c_valid_from")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Type (type = "org.hibernate.type.OffsetDateTimeType")
 	@Expose
-	private DateTime validFrom;
+	private OffsetDateTime validFrom;
 
 	/** The valid to. */
 	@Column (name = "c_valid_to")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Type (type = "org.hibernate.type.OffsetDateTimeType")
 	@Expose
-	private DateTime validTo;
+	private OffsetDateTime validTo;
 
 	/**
 	 * Instantiates a authentication params.
@@ -214,7 +215,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the valid from
 	 */
-	public DateTime getValidFrom ()
+	public OffsetDateTime getValidFrom ()
 	{
 		return validFrom;
 	}
@@ -224,7 +225,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	 *
 	 * @param validFrom the new valid from
 	 */
-	public void setValidFrom (DateTime validFrom)
+	public void setValidFrom (OffsetDateTime validFrom)
 	{
 		this.validFrom = validFrom;
 	}
@@ -234,7 +235,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the valid to
 	 */
-	public DateTime getValidTo ()
+	public OffsetDateTime getValidTo ()
 	{
 		return validTo;
 	}
@@ -244,11 +245,11 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	 *
 	 * @param validTo the new valid to
 	 */
-	public void setValidTo (DateTime validTo)
+	public void setValidTo (OffsetDateTime validTo)
 	{
 		this.validTo = validTo;
 	}
-	
+
 	/**
 	 * Authentication by digest.
 	 * 
@@ -256,7 +257,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	 */
 	public EAuthenticationType getAuthenticationType ()
 	{
-			return getPasswordDigest() != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
+		return getPasswordDigest() != null ? EAuthenticationType.BY_PASSWORD_DIGEST : EAuthenticationType.BY_PASSWORD;
 	}
 
 }

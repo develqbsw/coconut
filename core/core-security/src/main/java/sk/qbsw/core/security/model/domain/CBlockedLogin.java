@@ -1,5 +1,7 @@
 package sk.qbsw.core.security.model.domain;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 
 import com.google.gson.annotations.Expose;
 
@@ -49,15 +50,15 @@ public class CBlockedLogin extends ASecurityChangeEntity<Long>
 
 	/** The blocked from. */
 	@Column (name = "c_blocked_from")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Type (type = "org.hibernate.type.OffsetDateTimeType")
 	@Expose
-	private DateTime blockedFrom;
+	private OffsetDateTime blockedFrom;
 
 	/** The blocked to. */
 	@Column (name = "c_blocked_to")
-	@Type (type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Type (type = "org.hibernate.type.OffsetDateTimeType")
 	@Expose
-	private DateTime blockedTo;
+	private OffsetDateTime blockedTo;
 
 	/** The invalid login count. */
 	@Column (name = "c_invalid_login_count", nullable = false)
@@ -128,7 +129,7 @@ public class CBlockedLogin extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the blocked from
 	 */
-	public DateTime getBlockedFrom ()
+	public OffsetDateTime getBlockedFrom ()
 	{
 		return blockedFrom;
 	}
@@ -138,7 +139,7 @@ public class CBlockedLogin extends ASecurityChangeEntity<Long>
 	 *
 	 * @param blockedFrom the new blocked from
 	 */
-	public void setBlockedFrom (DateTime blockedFrom)
+	public void setBlockedFrom (OffsetDateTime blockedFrom)
 	{
 		this.blockedFrom = blockedFrom;
 	}
@@ -148,7 +149,7 @@ public class CBlockedLogin extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the blocked to
 	 */
-	public DateTime getBlockedTo ()
+	public OffsetDateTime getBlockedTo ()
 	{
 		return blockedTo;
 	}
@@ -158,7 +159,7 @@ public class CBlockedLogin extends ASecurityChangeEntity<Long>
 	 *
 	 * @param blockedTo the new blocked to
 	 */
-	public void setBlockedTo (DateTime blockedTo)
+	public void setBlockedTo (OffsetDateTime blockedTo)
 	{
 		this.blockedTo = blockedTo;
 	}

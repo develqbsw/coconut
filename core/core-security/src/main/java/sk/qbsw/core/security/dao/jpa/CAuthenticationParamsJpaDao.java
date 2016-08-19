@@ -3,10 +3,11 @@
  */
 package sk.qbsw.core.security.dao.jpa;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.BooleanBuilder;
@@ -65,8 +66,8 @@ public class CAuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthentic
 		//create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qAuthParams.user.id.eq(userId));
-		builder.and(qAuthParams.validFrom.isNull().orAllOf(qAuthParams.validFrom.isNotNull(), qAuthParams.validFrom.lt(DateTime.now())));
-		builder.and(qAuthParams.validTo.isNull().orAllOf(qAuthParams.validTo.isNotNull(), qAuthParams.validTo.goe(DateTime.now())));
+		builder.and(qAuthParams.validFrom.isNull().orAllOf(qAuthParams.validFrom.isNotNull(), qAuthParams.validFrom.lt(OffsetDateTime.now())));
+		builder.and(qAuthParams.validTo.isNull().orAllOf(qAuthParams.validTo.isNotNull(), qAuthParams.validTo.goe(OffsetDateTime.now())));
 
 		//create query
 		JPAQuery<CAuthenticationParams> query = queryFactory.selectFrom(qAuthParams).distinct().where(builder);

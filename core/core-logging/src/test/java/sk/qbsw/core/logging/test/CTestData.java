@@ -1,6 +1,6 @@
 package sk.qbsw.core.logging.test;
 
-import org.joda.time.DateTime;
+import java.time.OffsetDateTime;
 
 /**
  * Test data to store in the log
@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 class CTestData
 {
 	private String attributeString;
-	private DateTime attributeDateTime;
+	private OffsetDateTime attributeDateTime;
 	private double attributeSmallDouble;
 	private Double atributeObjectDouble;
 	private byte[] attributeBytes;
@@ -36,7 +36,7 @@ class CTestData
 	/**
 	 * @return the attributeDateTime
 	 */
-	public DateTime getAttributeDateTime ()
+	public OffsetDateTime getAttributeDateTime ()
 	{
 		return attributeDateTime;
 	}
@@ -44,7 +44,7 @@ class CTestData
 	/**
 	 * @param attributeDateTime the attributeDateTime to set
 	 */
-	public void setAttributeDateTime (DateTime attributeDateTime)
+	public void setAttributeDateTime (OffsetDateTime attributeDateTime)
 	{
 		this.attributeDateTime = attributeDateTime;
 	}

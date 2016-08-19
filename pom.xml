@@ -76,10 +76,6 @@
 		<jackson.version>1.9.13</jackson.version>
 		<xstream.version>1.4.9</xstream.version>
 
-		<!-- joda time -->
-		<joda-time.version>2.9.3</joda-time.version>
-		<jadira.usertype.version>6.0.0.GA</jadira.usertype.version>
-
 		<!-- uuid generator -->
 		<java-uuid-generator.version>3.1.4</java-uuid-generator.version>
 
@@ -508,20 +504,6 @@
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
 				<version>${quartz.version}</version>
-			</dependency>
-
-			<!-- jadira.usertype for persisting joda time via hibernate 5.x -->
-			<dependency>
-				<groupId>org.jadira.usertype</groupId>
-				<artifactId>usertype.core</artifactId>
-				<version>${jadira.usertype.version}</version>
-			</dependency>
-
-			<!-- joda time -->
-			<dependency>
-				<groupId>joda-time</groupId>
-				<artifactId>joda-time</artifactId>
-				<version>${joda-time.version}</version>
 			</dependency>
 
 			<!-- AspectJ -->

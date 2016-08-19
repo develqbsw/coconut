@@ -6,15 +6,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,7 +32,7 @@ public class CTemplateBuilder implements ITemplateBuilder
 	private final String TEMPLATE_ENCODING = "UTF-8";
 
 	/** The df. */
-	private DateTimeFormatter df = DateTimeFormat.shortDateTime().withLocale(Locale.GERMAN); // .forPattern("yyyy.MM.dd HH:mm:ss")
+	private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss", Locale.GERMAN); // .forPattern("yyyy.MM.dd HH:mm:ss")
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.communication.mail.service.ITemplateBuilder#buildMailBody(java.io.InputStream, java.util.Map)
@@ -46,7 +45,7 @@ public class CTemplateBuilder implements ITemplateBuilder
 		paramsShallowCopy.putAll(params);
 
 		//add date to parameters
-		paramsShallowCopy.put("date", df.print(new DateTime()));
+		paramsShallowCopy.put("date", OffsetDateTime.now().format(df));
 
 		StringWriter writer = new StringWriter();
 		VelocityContext context = new VelocityContext(paramsShallowCopy);
