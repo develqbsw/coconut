@@ -25,9 +25,9 @@ CREATE TABLE apsys.t_mail (
     c_bcc character varying(255),
     c_body character varying(1024),
     c_cc character varying(255),
-    c_created timestamp without time zone,
+    c_created timestamp with time zone,
     c_from character varying(255) NOT NULL,
-    c_sent timestamp without time zone,
+    c_sent timestamp with time zone,
     c_state character varying(255) NOT NULL,
     c_subject character varying(255),
     c_to character varying(255)

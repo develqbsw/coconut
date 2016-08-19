@@ -8,7 +8,7 @@ CREATE SCHEMA sec;
 CREATE TABLE sec.t_address (
     pk_id bigint NOT NULL,
 	d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_city character varying(255) NOT NULL,
     c_house_number character varying(255),
     c_state character varying(255) NOT NULL,
@@ -22,14 +22,14 @@ CREATE SEQUENCE sec.t_address_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_auth_params (
     pk_id bigint NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_password character varying(255),
     c_password_digest character varying(255),
     c_pin character varying(255),
     c_operation_id bigint,
     c_password_type character varying(255) NOT NULL,
-    c_valid_from timestamp without time zone,
-    c_valid_to timestamp without time zone,
+    c_valid_from timestamp with time zone,
+    c_valid_to timestamp with time zone,
     fk_user bigint NOT NULL,
     fk_changed_by bigint
 );
@@ -38,12 +38,12 @@ CREATE SEQUENCE sec.t_auth_params_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_blocked_login (
     pk_id bigint NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_operation_id bigint,
     c_login character varying(255) NOT NULL,
     c_ip character varying(255),
-    c_blocked_from timestamp without time zone,
-    c_blocked_to timestamp without time zone,
+    c_blocked_from timestamp with time zone,
+    c_blocked_to timestamp with time zone,
     c_invalid_login_count integer NOT NULL,
     fk_changed_by bigint
 );
@@ -52,7 +52,7 @@ CREATE SEQUENCE sec.t_blocked_login_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_group (
     pk_id bigint NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_category character varying(255),
     c_code character varying(255),
     c_flag_system boolean,
@@ -66,13 +66,13 @@ CREATE TABLE sec.t_licence (
     pk_id bigint NOT NULL,
     d_type character varying(31) NOT NULL,
     c_operation_id bigint,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_flag_payed boolean,
     c_key character varying(255),
     c_price numeric(19,2),
     c_tax_id character varying(255),
-    c_valid_from timestamp without time zone,
-    c_valid_to timestamp without time zone,
+    c_valid_from timestamp with time zone,
+    c_valid_to timestamp with time zone,
     fk_organization bigint,
     fk_changed_by bigint
 );
@@ -82,7 +82,7 @@ CREATE SEQUENCE sec.t_licence_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_organization (
     pk_id bigint NOT NULL,
 	d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_code character varying(255),
     c_email character varying(255),
     c_flag_enabled boolean,
@@ -98,7 +98,7 @@ CREATE SEQUENCE sec.t_organization_pk_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE sec.t_role (
     pk_id bigint NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_code character varying(255),
     c_operation_id bigint,
     fk_changed_by bigint,
@@ -109,7 +109,7 @@ CREATE SEQUENCE sec.t_role_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_unit (
     pk_id bigint NOT NULL,
     d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_name character varying(255) NOT NULL,
     c_operation_id bigint,
     fk_address bigint,
@@ -122,7 +122,7 @@ CREATE SEQUENCE sec.t_unit_pk_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE sec.t_user (
     pk_id bigint NOT NULL,
 	d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     c_email character varying(255),
     c_flag_enabled boolean,
     c_login character varying(255),
@@ -157,7 +157,7 @@ CREATE TABLE sec.t_x_group_unit (
 
 CREATE TABLE sec.t_x_group_user (
     pk_id bigint NOT NULL,
-    c_change_date_time timestamp without time zone NOT NULL,
+    c_change_date_time timestamp with time zone NOT NULL,
     fk_group bigint NOT NULL,
     fk_unit bigint,
     fk_user bigint NOT NULL,

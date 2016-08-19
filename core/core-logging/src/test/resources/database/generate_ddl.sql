@@ -12,7 +12,7 @@ CREATE TABLE log.t_audit_log (
     pk_id bigint NOT NULL,
     c_operation_code character varying(255) NOT NULL,
     c_user_identifier character varying(255),
-    c_request_date_time timestamp without time zone NOT NULL,
+    c_request_date_time timestamp with time zone NOT NULL,
     c_result_description character varying(255),
     c_operation_result character varying(255),
     c_request_data text NOT NULL,

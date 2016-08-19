@@ -7,15 +7,15 @@ CREATE SCHEMA cfg;
 --create tables and sequence
 CREATE TABLE cfg.t_system_parameter (
     pk_id bigint NOT NULL,
-    c_date_value timestamp without time zone,
+    c_date_value timestamp with time zone,
     c_description character varying(255),
     c_float_value numeric(19,2),
     c_integer_value integer,
     c_module character varying(255),
     c_name character varying(255),
     c_string_value character varying(255),
-    c_valid_from_date timestamp without time zone,
-    c_valid_to_date timestamp without time zone,
+    c_valid_from_date timestamp with time zone,
+    c_valid_to_date timestamp with time zone,
     c_encrypted_value character varying(255)
 );
 
