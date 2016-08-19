@@ -159,18 +159,6 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 
-		<!-- JPA Persistence Dependencies -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.hibernate.javax.persistence</groupId>
-					<artifactId>hibernate-jpa-2.1-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 		<!-- Joda Time -->
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -178,7 +166,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.jodatime</artifactId>
+			<artifactId>usertype.core</artifactId>
 		</dependency>
 
 		<!-- LDAP -->

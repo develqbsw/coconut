@@ -11,7 +11,7 @@
 		<name>QBSW a.s.</name>
 		<url>http://www.qbsw.sk</url>
 	</organization>
-	
+
 	<parent>
 		<groupId>sk.qbsw.core</groupId>
 		<artifactId>core-top</artifactId>
@@ -100,7 +100,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.jodatime</artifactId>
+			<artifactId>usertype.core</artifactId>
 		</dependency>
 
 		<!-- Slf4j -->

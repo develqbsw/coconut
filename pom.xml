@@ -29,19 +29,18 @@
 		<aspectj.version>1.8.9</aspectj.version>
 
 		<!-- Spring -->
-		<spring.version>4.2.5.RELEASE</spring.version>
-		<spring.security.version>4.0.4.RELEASE</spring.security.version>
-		<spring.ws.version>2.2.4.RELEASE</spring.ws.version>
+		<spring.version>4.3.2.RELEASE</spring.version>
+		<spring.security.version>4.1.2.RELEASE</spring.security.version>
+		<spring.ws.version>2.3.0.RELEASE</spring.ws.version>
 		<xws-security.version>1.3.1</xws-security.version>
 		<spring.support.version>2.0.8</spring.support.version>
 		<spring.data.release.train.version>Hopper-RELEASE</spring.data.release.train.version>
 
 		<!-- Persistence -->
-		<hibernate.version>4.3.11.Final</hibernate.version>
-		<hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
+		<hibernate.version>5.2.2.Final</hibernate.version>
 		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
 		<querydsl.version>4.1.3</querydsl.version>
-		<postgresql-driver.version>9.0-801.jdbc4</postgresql-driver.version>
+		<postgresql-driver.version>9.4.1209</postgresql-driver.version>
 		<hsqldb-driver.version>2.3.3</hsqldb-driver.version>
 
 		<!-- Servlet and http components -->
@@ -79,7 +78,7 @@
 
 		<!-- joda time -->
 		<joda-time.version>2.9.3</joda-time.version>
-		<jadira.usertype.version>2.0.1</jadira.usertype.version>
+		<jadira.usertype.version>6.0.0.GA</jadira.usertype.version>
 
 		<!-- uuid generator -->
 		<java-uuid-generator.version>3.1.4</java-uuid-generator.version>
@@ -464,7 +463,7 @@
 
 			<!-- jdbc drivers -->
 			<dependency>
-				<groupId>postgresql</groupId>
+				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
 				<version>${postgresql-driver.version}</version>
 			</dependency>
@@ -479,11 +478,6 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate-entitymanager.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
@@ -516,10 +510,10 @@
 				<version>${quartz.version}</version>
 			</dependency>
 
-			<!-- jadira.usertype for persisting joda time via hibernate 4.x -->
+			<!-- jadira.usertype for persisting joda time via hibernate 5.x -->
 			<dependency>
 				<groupId>org.jadira.usertype</groupId>
-				<artifactId>usertype.jodatime</artifactId>
+				<artifactId>usertype.core</artifactId>
 				<version>${jadira.usertype.version}</version>
 			</dependency>
 

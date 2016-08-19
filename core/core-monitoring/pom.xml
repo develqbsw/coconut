@@ -63,13 +63,6 @@
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
-		<!-- Jdbc -->
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -96,7 +89,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.jodatime</artifactId>
+			<artifactId>usertype.core</artifactId>
 		</dependency>
 
 		<dependency>

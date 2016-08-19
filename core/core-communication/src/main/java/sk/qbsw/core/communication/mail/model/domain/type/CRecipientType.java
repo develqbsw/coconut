@@ -10,7 +10,7 @@ import java.util.Arrays;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.springframework.beans.BeanUtils;
 
@@ -77,10 +77,10 @@ public class CRecipientType implements UserType
 	}
 
 	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], org.hibernate.engine.spi.SessionImplementor, java.lang.Object)
+	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], org.hibernate.engine.spi.SharedSessionContractImplementor, java.lang.Object)
 	 */
 	@Override
-	public Object nullSafeGet (ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException
+	public Object nullSafeGet (ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException
 	{
 		// assume that we only map to one column, so there's only one column name
 		String value = rs.getString(names[0]);
@@ -100,10 +100,10 @@ public class CRecipientType implements UserType
 	}
 
 	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int, org.hibernate.engine.spi.SessionImplementor)
+	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int, org.hibernate.engine.spi.SharedSessionContractImplementor)
 	 */
 	@Override
-	public void nullSafeSet (PreparedStatement stmt, Object value, int index, SessionImplementor session) throws HibernateException, SQLException
+	public void nullSafeSet (PreparedStatement stmt, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException
 	{
 		if (value == null)
 		{
@@ -111,7 +111,7 @@ public class CRecipientType implements UserType
 			return;
 		}
 
-		if (!(value instanceof CRecipient))
+		if (! (value instanceof CRecipient))
 		{
 			throw new UnsupportedOperationException("can't convert " + value.getClass());
 
@@ -139,7 +139,7 @@ public class CRecipientType implements UserType
 			return null;
 		}
 
-		if (!(value instanceof CRecipient))
+		if (! (value instanceof CRecipient))
 		{
 			throw new UnsupportedOperationException("can't convert " + value.getClass());
 		}
