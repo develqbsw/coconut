@@ -28,6 +28,15 @@ import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends JpaRepository<T, PK>, QueryDslPredicateExecutor<T>
 {
 	/**
+	 * Find one.
+	 *
+	 * @param id the id
+	 * @param joinDescriptors the join descriptors
+	 * @return the t
+	 */
+	T findOne (PK id, CJoinDescriptor<?>... joinDescriptors);
+
+	/**
 	 * Find all.
 	 *
 	 * @param predicate the predicate
@@ -68,7 +77,7 @@ public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>e
 	 * @return the list
 	 */
 	List<T> findAll (boolean distinct, Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors);
-	
+
 	/**
 	 * Count.
 	 *
@@ -77,7 +86,7 @@ public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>e
 	 * @return the long
 	 */
 	long count (Predicate predicate, CJoinDescriptor<?>... joinDescriptors);
-	
+
 	/**
 	 * Count.
 	 *

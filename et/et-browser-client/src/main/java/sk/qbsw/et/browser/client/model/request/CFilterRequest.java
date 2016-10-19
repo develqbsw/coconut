@@ -24,10 +24,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7751636869920682118L;
 
-	/** The browser code. */
-	@NotNull
-	private String browserCode;
-
 	/** The filter criteria - the default is empty object. */
 	@Valid
 	@NotNull
@@ -37,26 +33,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest
 	@Valid
 	@NotNull
 	private CSortingCriteriaTransferObject<F> sortingCriteria = new CSortingCriteriaTransferObject<>();
-
-	/**
-	 * Gets the browser code.
-	 *
-	 * @return the browser code
-	 */
-	public String getBrowserCode ()
-	{
-		return browserCode;
-	}
-
-	/**
-	 * Sets the browser code.
-	 *
-	 * @param browserCode the new browser code
-	 */
-	public void setBrowserCode (String browserCode)
-	{
-		this.browserCode = browserCode;
-	}
 
 	/**
 	 * Gets the filter criteria.

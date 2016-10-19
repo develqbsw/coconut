@@ -25,12 +25,13 @@ import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 public interface IBrwService<PK extends Serializable, T extends IEntity<PK>>extends IFilterService<PK, T>
 {
 	/**
-	 * Read.
+	 * Find one.
 	 *
 	 * @param id the id
+	 * @param joinDescriptors the join descriptors
 	 * @return the t
 	 */
-	T read (final PK id);
+	T findOne (final PK id, final CJoinDescriptor<?>... joinDescriptors);
 
 	/**
 	 * Find all.

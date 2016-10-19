@@ -74,6 +74,14 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		this.querydsl = new Querydsl(entityManager, builder);
 	}
 
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findOne(java.io.Serializable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
+	 */
+	@Override
+	public T findOne (PK id, CJoinDescriptor<?>... joinDescriptors)
+	{
+		return createFetchQuery(false, this.builder.get("id").eq(id), joinDescriptors).select(path).fetchOne();
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.dao.support.CJoinDescriptor[])

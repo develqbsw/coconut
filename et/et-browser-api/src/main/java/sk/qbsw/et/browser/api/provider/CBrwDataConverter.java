@@ -161,8 +161,14 @@ public class CBrwDataConverter implements IBrwDataConverter
 	@Override
 	public <F extends IFilterable> Pageable convertSortingCriteriaAndPagingToPageable (final CSortingCriteriaTransferObject<F> sortingCriteria, final CPagingTransferObject paging, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		return new COffsetPageRequest(paging.getOffset(), paging.getLimit(), convertSortingCriteriaToSort(sortingCriteria, entityMapping));
-
+		if (sortingCriteria.getCriteria().isEmpty())
+		{
+			return new COffsetPageRequest(paging.getOffset(), paging.getLimit());
+		}
+		else
+		{
+			return new COffsetPageRequest(paging.getOffset(), paging.getLimit(), convertSortingCriteriaToSort(sortingCriteria, entityMapping));
+		}
 	}
 
 	/* (non-Javadoc)

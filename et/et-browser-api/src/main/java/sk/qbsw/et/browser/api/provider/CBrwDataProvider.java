@@ -39,48 +39,60 @@ public class CBrwDataProvider implements IBrwDataProvider
 	private IBrwServiceFactory serviceFactory;
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.provider.IBrwDataProvider#getData(sk.qbsw.et.browser.client.request.IBrwRequest)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getOne(java.lang.String, java.io.Serializable)
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (CBrwRequest<F> request) throws CBrwBusinessException
+	public <PK extends Serializable, T extends IEntity<PK>> T getOne (String browserCode, PK id) throws CBrwBusinessException
 	{
-		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(request.getBrowserCode());
-		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(request.getBrowserCode());
+		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
+
+		return (T) serviceFactory.getBrwService(browserCode).findOne(id, joins.toArray(new CJoinDescriptor[joins.size()]));
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getData(java.lang.String, sk.qbsw.et.browser.client.model.request.CBrwRequest)
+	 */
+	@Override
+	@SuppressWarnings ("unchecked")
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
+	{
+		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
+		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
 
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
 		Pageable pageable = dataConverter.convertSortingCriteriaAndPagingToPageable(request.getSortingCriteria(), request.getPaging(), entityMapping);
 
-		return (CBrwDto<PK, T>) serviceFactory.getBrwService(request.getBrowserCode()).findAll(predicate, pageable, joins.toArray(new CJoinDescriptor[joins.size()]));
+		return (CBrwDto<PK, T>) serviceFactory.getBrwService(browserCode).findAll(predicate, pageable, joins.toArray(new CJoinDescriptor[joins.size()]));
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#count(sk.qbsw.et.browser.client.request.IBrwRequest)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#count(java.lang.String, sk.qbsw.et.browser.client.model.request.CBrwRequest)
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable> long count (CBrwRequest<F> request) throws CBrwBusinessException
+	public <F extends IFilterable> long count (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
 	{
-		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(request.getBrowserCode());
+		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
 
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
-		return serviceFactory.getBrwService(request.getBrowserCode()).count(predicate);
+		return serviceFactory.getBrwService(browserCode).count(predicate);
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.provider.IBrwDataProvider#getData(sk.qbsw.et.browser.client.request.IFilterRequest)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getData(java.lang.String, sk.qbsw.et.browser.client.model.request.CFilterRequest)
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (CFilterRequest<F> request) throws CBrwBusinessException
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException
 	{
-		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(request.getBrowserCode());
-		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(request.getBrowserCode());
+		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
+		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
 
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
 		Sort sort = dataConverter.convertSortingCriteriaToSort(request.getSortingCriteria(), entityMapping);
 
-		return (List<T>) serviceFactory.getBrwFilterService(request.getBrowserCode()).findAll(predicate, sort, joins.toArray(new CJoinDescriptor[joins.size()]));
+		return (List<T>) serviceFactory.getBrwFilterService(browserCode).findAll(predicate, sort, joins.toArray(new CJoinDescriptor[joins.size()]));
 	}
 
 	/**
@@ -119,6 +131,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#setMapping(java.util.Map)
 	 */
+	@Override
 	public void setMapping (Map<String, CBrwEntityMapping<? extends IFilterable>> mapping)
 	{
 		this.mapping = mapping;
@@ -127,6 +140,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#setDataConverter(sk.qbsw.et.browser.api.provider.IBrwDataConverter)
 	 */
+	@Override
 	public void setDataConverter (IBrwDataConverter dataConverter)
 	{
 		this.dataConverter = dataConverter;
@@ -135,6 +149,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#setServiceFactory(sk.qbsw.et.browser.api.provider.IBrwServiceFactory)
 	 */
+	@Override
 	public void setServiceFactory (IBrwServiceFactory serviceFactory)
 	{
 		this.serviceFactory = serviceFactory;

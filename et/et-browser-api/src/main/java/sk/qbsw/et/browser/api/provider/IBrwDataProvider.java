@@ -23,27 +23,40 @@ import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 public interface IBrwDataProvider
 {
 	/**
+	 * Gets the one.
+	 *
+	 * @param <PK> the generic type
+	 * @param <T> the generic type
+	 * @param browserCode the browser code
+	 * @param id the id
+	 * @return the one
+	 * @throws CBrwBusinessException the c brw business exception
+	 */
+	<PK extends Serializable, T extends IEntity<PK>> T getOne (String browserCode, PK id) throws CBrwBusinessException;
+
+	/**
 	 * Gets the data.
 	 *
 	 * @param <F> the filterable
 	 * @param <PK> the pk
 	 * @param <T> the entity
-	 * 
+	 * @param browserCode the browser code
 	 * @param request the request
 	 * @return the data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (CBrwRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Count.
 	 *
 	 * @param <F> the generic type
+	 * @param browserCode the browser code
 	 * @param request the request
 	 * @return the long
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable> long count (CBrwRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable> long count (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Gets the data.
@@ -51,12 +64,12 @@ public interface IBrwDataProvider
 	 * @param <F> the filterable
 	 * @param <PK> the pk
 	 * @param <T> the entity
-	 * 
+	 * @param browserCode the browser code
 	 * @param request the request
 	 * @return the data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (CFilterRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Sets the mapping.

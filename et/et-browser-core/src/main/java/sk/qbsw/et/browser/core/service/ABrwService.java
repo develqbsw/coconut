@@ -25,12 +25,12 @@ import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 public abstract class ABrwService<PK extends Serializable, T extends IEntity<PK>>extends AFilterService<PK, T> implements IBrwService<PK, T>
 {
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.service.IBrwService#read(java.io.Serializable)
+	 * @see sk.qbsw.et.browser.core.service.IBrwService#findOne(java.io.Serializable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
-	public T read (PK id)
+	public T findOne (PK id, CJoinDescriptor<?>... joinDescriptors)
 	{
-		return dao.findOne(id);
+		return dao.findOne(id, joinDescriptors);
 	}
 
 	/* (non-Javadoc)
