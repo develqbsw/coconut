@@ -9,7 +9,6 @@ import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.core.dto.CBrwDto;
-import sk.qbsw.et.browser.core.dto.IBrwDto;
 import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
@@ -38,7 +37,7 @@ public abstract class ABrwService<PK extends Serializable, T extends IEntity<PK>
 	 * @see sk.qbsw.et.browser.core.service.IBrwService#getAllByFilter(com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
-	public IBrwDto<PK, T> findAll (Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors)
+	public CBrwDto<PK, T> findAll (Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors)
 	{
 		return convertPageToBrwDto(dao.findAll(predicate, pageable, joinDescriptors));
 	}
@@ -58,8 +57,8 @@ public abstract class ABrwService<PK extends Serializable, T extends IEntity<PK>
 	 * @param page the page
 	 * @return the i brw dto
 	 */
-	private IBrwDto<PK, T> convertPageToBrwDto (Page<T> page)
+	private CBrwDto<PK, T> convertPageToBrwDto (Page<T> page)
 	{
-		return new CBrwDto<>(page.getContent(), page.getTotalPages(), page.getTotalElements());
+		return new CBrwDto<>(page.getContent(), page.getTotalElements());
 	}
 }

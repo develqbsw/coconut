@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.client.request;
+package sk.qbsw.et.browser.client.model.request;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ import sk.qbsw.et.browser.client.model.filter.CPagingTransferObject;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CBrwRequest<F extends IFilterable>extends CFilterRequest<F> implements IBrwRequest<F>
+public class CBrwRequest<F extends IFilterable>extends CFilterRequest<F>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8804636840815516951L;
@@ -32,7 +32,6 @@ public class CBrwRequest<F extends IFilterable>extends CFilterRequest<F> impleme
 	 *
 	 * @return the paging
 	 */
-	@Override
 	public CPagingTransferObject getPaging ()
 	{
 		return paging;
@@ -43,7 +42,6 @@ public class CBrwRequest<F extends IFilterable>extends CFilterRequest<F> impleme
 	 *
 	 * @param paging the new paging
 	 */
-	@Override
 	public void setPaging (CPagingTransferObject paging)
 	{
 		this.paging = paging;

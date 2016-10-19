@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.client.request;
+package sk.qbsw.et.browser.client.model.request;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -19,7 +19,7 @@ import sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CFilterRequest<F extends IFilterable>extends ARequest implements IFilterRequest<F>
+public class CFilterRequest<F extends IFilterable>extends ARequest
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7751636869920682118L;
@@ -43,7 +43,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest implements IF
 	 *
 	 * @return the browser code
 	 */
-	@Override
 	public String getBrowserCode ()
 	{
 		return browserCode;
@@ -54,7 +53,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest implements IF
 	 *
 	 * @param browserCode the new browser code
 	 */
-	@Override
 	public void setBrowserCode (String browserCode)
 	{
 		this.browserCode = browserCode;
@@ -65,7 +63,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest implements IF
 	 *
 	 * @return the filter criteria
 	 */
-	@Override
 	public CFilterCriteriaTransferObject<F> getFilterCriteria ()
 	{
 		return filterCriteria;
@@ -76,7 +73,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest implements IF
 	 *
 	 * @param filterCriteria the new filter criteria
 	 */
-	@Override
 	public void setFilterCriteria (CFilterCriteriaTransferObject<F> filterCriteria)
 	{
 		this.filterCriteria = filterCriteria;
@@ -87,7 +83,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest implements IF
 	 *
 	 * @return the sorting criteria
 	 */
-	@Override
 	public CSortingCriteriaTransferObject<F> getSortingCriteria ()
 	{
 		return sortingCriteria;
@@ -98,7 +93,6 @@ public class CFilterRequest<F extends IFilterable>extends ARequest implements IF
 	 *
 	 * @param sortingCriteria the new sorting criteria
 	 */
-	@Override
 	public void setSortingCriteria (CSortingCriteriaTransferObject<F> sortingCriteria)
 	{
 		this.sortingCriteria = sortingCriteria;

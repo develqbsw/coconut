@@ -13,9 +13,9 @@ import com.querydsl.core.types.Predicate;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
 import sk.qbsw.et.browser.client.model.IFilterable;
-import sk.qbsw.et.browser.client.request.IBrwRequest;
-import sk.qbsw.et.browser.client.request.IFilterRequest;
-import sk.qbsw.et.browser.core.dto.IBrwDto;
+import sk.qbsw.et.browser.client.model.request.CBrwRequest;
+import sk.qbsw.et.browser.client.model.request.CFilterRequest;
+import sk.qbsw.et.browser.core.dto.CBrwDto;
 import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedBrowserMappingException;
 import sk.qbsw.et.browser.core.model.CJoinDescriptor;
@@ -43,7 +43,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> IBrwDto<PK, T> getData (IBrwRequest<F> request) throws CBrwBusinessException
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (CBrwRequest<F> request) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(request.getBrowserCode());
 		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(request.getBrowserCode());
@@ -51,7 +51,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
 		Pageable pageable = dataConverter.convertSortingCriteriaAndPagingToPageable(request.getSortingCriteria(), request.getPaging(), entityMapping);
 
-		return (IBrwDto<PK, T>) serviceFactory.getBrwService(request.getBrowserCode()).findAll(predicate, pageable, joins.toArray(new CJoinDescriptor[joins.size()]));
+		return (CBrwDto<PK, T>) serviceFactory.getBrwService(request.getBrowserCode()).findAll(predicate, pageable, joins.toArray(new CJoinDescriptor[joins.size()]));
 	}
 
 	/* (non-Javadoc)
@@ -59,7 +59,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable> long count (IBrwRequest<F> request) throws CBrwBusinessException
+	public <F extends IFilterable> long count (CBrwRequest<F> request) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(request.getBrowserCode());
 
@@ -72,7 +72,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (IFilterRequest<F> request) throws CBrwBusinessException
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (CFilterRequest<F> request) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(request.getBrowserCode());
 		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(request.getBrowserCode());

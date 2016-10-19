@@ -28,13 +28,23 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	@NotNull
 	private F property;
 
-	/** The value. */
-	@NotNull
-	private Serializable value;
+	/** The string value. */
+	private String stringValue;
+
+	/** The number value. */
+	private Number numberValue;
 
 	/** The operator. */
 	@NotNull
 	private EOperator operator;
+
+	/**
+	 * Instantiates a new c filter criterion transfer object.
+	 */
+	public CFilterCriterionTransferObject ()
+	{
+		//default constuctor
+	}
 
 	/**
 	 * Instantiates a new c filter criterion.
@@ -43,11 +53,29 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	 * @param value the value
 	 * @param operator the operator
 	 */
-	public CFilterCriterionTransferObject (F variable, Serializable value, EOperator operator)
+	public CFilterCriterionTransferObject (F variable, String stringValue, Number numberValue, EOperator operator)
 	{
 		this.property = variable;
-		this.value = value;
+		this.stringValue = stringValue;
+		this.numberValue = numberValue;
 		this.operator = operator;
+	}
+
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public Serializable getValue ()
+	{
+		if (stringValue != null)
+		{
+			return stringValue;
+		}
+		else
+		{
+			return numberValue;
+		}
 	}
 
 	/**
@@ -61,13 +89,23 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	}
 
 	/**
-	 * Gets the value.
+	 * Gets the string value.
 	 *
-	 * @return the value
+	 * @return the string value
 	 */
-	public Serializable getValue ()
+	public String getStringValue ()
 	{
-		return value;
+		return stringValue;
+	}
+
+	/**
+	 * Gets the number value.
+	 *
+	 * @return the number value
+	 */
+	public Number getNumberValue ()
+	{
+		return numberValue;
 	}
 
 	/**
@@ -91,13 +129,23 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	}
 
 	/**
-	 * Sets the value.
+	 * Sets the string value.
 	 *
-	 * @param value the new value
+	 * @param stringValue the new string value
 	 */
-	public void setValue (Serializable value)
+	public void setStringValue (String stringValue)
 	{
-		this.value = value;
+		this.stringValue = stringValue;
+	}
+
+	/**
+	 * Sets the number value.
+	 *
+	 * @param numberValue the new number value
+	 */
+	public void setNumberValue (Number numberValue)
+	{
+		this.numberValue = numberValue;
 	}
 
 	/**

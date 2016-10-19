@@ -37,12 +37,13 @@ public class CFilterCriteriaTransferObject<F extends IFilterable> implements Ser
 	 * Adds the filter criterion.
 	 *
 	 * @param column the column
-	 * @param value the value
+	 * @param stringValue the string value
+	 * @param numberValue the number value
 	 * @param operator the operator
 	 */
-	public void addFilterCriterion (F column, Serializable value, EOperator operator)
+	public void addFilterCriterion (F column, String stringValue, Number numberValue, EOperator operator)
 	{
-		criteria.add(new CFilterCriterionTransferObject<>(column, value, operator));
+		criteria.add(new CFilterCriterionTransferObject<>(column, stringValue, numberValue, operator));
 	}
 
 	/**

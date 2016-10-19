@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.domain.IEntity;
-import sk.qbsw.et.browser.core.dto.IBrwDto;
+import sk.qbsw.et.browser.core.dto.CBrwDto;
 import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
@@ -40,7 +40,7 @@ public interface IBrwService<PK extends Serializable, T extends IEntity<PK>>exte
 	 * @param joinDescriptors the join descriptors
 	 * @return the i brw dto
 	 */
-	IBrwDto<PK, T> findAll (final Predicate predicate, final Pageable pageable, final CJoinDescriptor<?>... joinDescriptors);
+	CBrwDto<PK, T> findAll (final Predicate predicate, final Pageable pageable, final CJoinDescriptor<?>... joinDescriptors);
 
 	/**
 	 * Count.

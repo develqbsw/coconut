@@ -8,65 +8,80 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
 /**
  * The brw dto.
  *
+ * @version 1.16.0
  * @param <PK> the primary key type
  * @param <T> the data type
- *
- * @version 1.16.0
  * @since 1.16.0
  */
-public class CBrwDto<PK extends Serializable, T extends IEntity<PK>> implements IBrwDto<PK, T>
+public class CBrwDto<PK extends Serializable, T extends IEntity<PK>> implements Serializable
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7640767817652819983L;
 
 	/** The content. */
-	private final List<T> content;
-
-	/** The total pages. */
-	private final int totalPages;
+	private List<T> content;
 
 	/** The total elements. */
-	private final long totalElements;
+	private long totalElements;
+
+	/**
+	 * Instantiates a new brw dto.
+	 */
+	public CBrwDto ()
+	{
+		//default constructor
+	}
 
 	/**
 	 * Instantiates a new c brw dto.
 	 *
 	 * @param content the content
-	 * @param totalPages the total pages
 	 * @param totalElements the total elements
 	 */
-	public CBrwDto (List<T> content, int totalPages, long totalElements)
+	public CBrwDto (List<T> content, long totalElements)
 	{
 		this.content = content;
-		this.totalPages = totalPages;
 		this.totalElements = totalElements;
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.dto.IBrwDto#getContent()
+	/**
+	 * Gets the content.
+	 *
+	 * @return the content
 	 */
-	@Override
 	public List<T> getContent ()
 	{
 		return content;
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.dto.IBrwDto#getTotalPages()
+	/**
+	 * Sets the content.
+	 *
+	 * @param content the new content
 	 */
-	@Override
-	public int getTotalPages ()
+	public void setContent (List<T> content)
 	{
-		return totalPages;
+		this.content = content;
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.dto.IBrwDto#getTotalElements()
+	/**
+	 * Gets the total elements.
+	 *
+	 * @return the total elements
 	 */
-	@Override
 	public long getTotalElements ()
 	{
 		return totalElements;
+	}
+
+	/**
+	 * Sets the total elements.
+	 *
+	 * @param totalElements the new total elements
+	 */
+	public void setTotalElements (long totalElements)
+	{
+		this.totalElements = totalElements;
 	}
 
 	/* (non-Javadoc)
@@ -75,6 +90,6 @@ public class CBrwDto<PK extends Serializable, T extends IEntity<PK>> implements 
 	@Override
 	public String toString ()
 	{
-		return "CBrwDto [totalPages=" + this.totalPages + ", totalElemetns=" + this.totalElements + ", content=" + this.content + "]";
+		return "CBrwDto [totalElements=" + this.totalElements + ", content=" + this.content + "]";
 	}
 }

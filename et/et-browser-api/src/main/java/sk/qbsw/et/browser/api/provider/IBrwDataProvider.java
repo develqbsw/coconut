@@ -7,9 +7,9 @@ import java.util.Map;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
 import sk.qbsw.et.browser.client.model.IFilterable;
-import sk.qbsw.et.browser.client.request.IBrwRequest;
-import sk.qbsw.et.browser.client.request.IFilterRequest;
-import sk.qbsw.et.browser.core.dto.IBrwDto;
+import sk.qbsw.et.browser.client.model.request.CBrwRequest;
+import sk.qbsw.et.browser.client.model.request.CFilterRequest;
+import sk.qbsw.et.browser.core.dto.CBrwDto;
 import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 
 /**
@@ -33,7 +33,7 @@ public interface IBrwDataProvider
 	 * @return the data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> IBrwDto<PK, T> getData (IBrwRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (CBrwRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Count.
@@ -43,7 +43,7 @@ public interface IBrwDataProvider
 	 * @return the long
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable> long count (IBrwRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable> long count (CBrwRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Gets the data.
@@ -56,7 +56,7 @@ public interface IBrwDataProvider
 	 * @return the data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (IFilterRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (CFilterRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Sets the mapping.

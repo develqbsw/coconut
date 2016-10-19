@@ -7,6 +7,9 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import sk.qbsw.et.browser.client.model.IFilterable;
 
 /**
@@ -30,11 +33,21 @@ public class CSortingCriterionTransferObject<F extends IFilterable> implements S
 
 	/** The direction. */
 	@NotNull
+	@JsonInclude (Include.NON_NULL)
 	private ESortDirection direction = ESortDirection.ASC;
 
 	/** The null precedence. */
 	@NotNull
+	@JsonInclude (Include.NON_NULL)
 	private ENullPrecedence nullPrecedence = ENullPrecedence.NONE;
+
+	/**
+	 * Instantiates a new c sorting criterion transfer object.
+	 */
+	public CSortingCriterionTransferObject ()
+	{
+		//default constuctor
+	}
 
 	/**
 	 * Instantiates a new c sorting criterion transfer object.

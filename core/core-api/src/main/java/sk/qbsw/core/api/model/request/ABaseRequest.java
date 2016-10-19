@@ -2,7 +2,7 @@ package sk.qbsw.core.api.model.request;
 
 import java.util.Date;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import sk.qbsw.core.api.client.jackson.serializer.CDateJSonSerializer;
 
