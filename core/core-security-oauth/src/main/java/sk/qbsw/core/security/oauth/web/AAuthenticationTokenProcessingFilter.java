@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.web.filter.GenericFilterBean;
 
 import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.oauth.model.jmx.IOauthConfigurator;
 import sk.qbsw.core.security.oauth.service.IAuthenticationTokenService;
 import sk.qbsw.core.security.oauth.service.IMasterTokenService;
 import sk.qbsw.core.security.web.CHttpClientAddressRetriever;
@@ -50,10 +49,6 @@ public abstract class AAuthenticationTokenProcessingFilter extends GenericFilter
 	/** The authentication token service. */
 	@Autowired
 	private IAuthenticationTokenService authenticationTokenService;
-
-	/** The oauth configurator. */
-	@Autowired
-	private IOauthConfigurator oauthConfigurator;
 
 	/** The ip retriever. */
 	private CHttpClientAddressRetriever ipRetriever = new CHttpClientAddressRetriever();

@@ -157,7 +157,7 @@ public class CDefaultCheckTokenStrategy implements ICheckTokenStrategy
 		}
 		else
 		{
-			OffsetDateTime expDate = token.getLastAccessDate().plusMinutes(expireLimit);
+			OffsetDateTime expDate = token.getLastAccessDate().plusHours(expireLimit);
 			if (expDate.isBefore(OffsetDateTime.now()))
 			{
 				LOGGER.warn("The token expiration time: {}", expDate);
