@@ -5,14 +5,11 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
-
-import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
  * The fetch capable querydsl repository factory.
@@ -23,7 +20,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CFetchCapableQueryDslJpaRepositoryFactoryBean<R extends JpaRepository<T, I>, T extends IEntity<I>, I extends Serializable>extends JpaRepositoryFactoryBean<R, T, I>
+public class CFetchCapableQueryDslJpaRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable>extends JpaRepositoryFactoryBean<R, T, I>
 {
 	/* (non-Javadoc)
 	 * @see org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean#createRepositoryFactory(javax.persistence.EntityManager)
@@ -36,7 +33,7 @@ public class CFetchCapableQueryDslJpaRepositoryFactoryBean<R extends JpaReposito
 	/**
 	 * A factory for creating CFetchCapableQueryDslJpaRepository objects.
 	 */
-	private static class CFetchCapableQueryDslJpaRepositoryFactory<T extends IEntity<I>, I extends Serializable>extends JpaRepositoryFactory
+	private static class CFetchCapableQueryDslJpaRepositoryFactory<T, I extends Serializable>extends JpaRepositoryFactory
 	{
 		/** The entity manager. */
 		private EntityManager entityManager;
@@ -56,10 +53,10 @@ public class CFetchCapableQueryDslJpaRepositoryFactoryBean<R extends JpaReposito
 		 * @see org.springframework.data.jpa.repository.support.JpaRepositoryFactory#getTargetRepository(org.springframework.data.repository.core.RepositoryInformation)
 		 */
 		@Override
-		@SuppressWarnings ("unchecked")
+		@SuppressWarnings ({"unchecked", "rawtypes"})
 		protected Object getTargetRepository (RepositoryInformation information)
 		{
-			return new CFetchCapableQueryDslJpaRepository<T, I>((JpaEntityInformation<T, I>) getEntityInformation(information.getDomainType()), entityManager);
+			return new CFetchCapableQueryDslJpaRepository(getEntityInformation(information.getDomainType()), entityManager);
 		}
 
 		/* (non-Javadoc)

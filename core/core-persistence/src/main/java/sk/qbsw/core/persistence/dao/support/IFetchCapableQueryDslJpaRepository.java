@@ -13,7 +13,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 import com.querydsl.core.types.Predicate;
 
 import sk.qbsw.core.persistence.model.CJoinDescriptor;
-import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
  * The join fetch capable querydsl repository.
@@ -26,7 +25,7 @@ import sk.qbsw.core.persistence.model.domain.IEntity;
  * @since 1.16.0
  */
 @NoRepositoryBean
-public interface IFetchCapableQueryDslJpaRepository<T extends IEntity<PK>, PK extends Serializable>extends JpaRepository<T, PK>, QueryDslPredicateExecutor<T>
+public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends JpaRepository<T, PK>, QueryDslPredicateExecutor<T>
 {
 	/**
 	 * Find one.
