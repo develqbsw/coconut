@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.dao.support;
+package sk.qbsw.core.persistence.dao.support;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -21,7 +21,8 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
 
-import sk.qbsw.et.browser.core.model.CJoinDescriptor;
+import sk.qbsw.core.persistence.model.CJoinDescriptor;
+import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
  * The join fetch capable querydsl repository implementation. 
@@ -33,7 +34,7 @@ import sk.qbsw.et.browser.core.model.CJoinDescriptor;
  * @param <PK> the id type
  * @since 1.16.0
  */
-public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends QueryDslJpaRepository<T, PK> implements IFetchCapableQueryDslJpaRepository<T, PK>
+public class CFetchCapableQueryDslJpaRepository<T extends IEntity<PK>, PK extends Serializable>extends QueryDslJpaRepository<T, PK> implements IFetchCapableQueryDslJpaRepository<T, PK>
 {
 	/** The Constant DEFAULT_ENTITY_PATH_RESOLVER. */
 	//All instance variables are available in super, but they are private
@@ -100,6 +101,15 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	{
 		return findAll(false, predicate, sort, joinDescriptors);
 	}
+	
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.support.IFetchCapableQueryDslJpaRepository#findAll(org.springframework.data.domain.Sort, sk.qbsw.core.persistence.model.CJoinDescriptor[])
+	 */
+	@Override
+	public List<T> findAll (Sort sort, CJoinDescriptor<?>... joinDescriptors)
+	{
+		return findAll(false, null, sort, joinDescriptors);
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
@@ -123,6 +133,15 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	public List<T> findAll (boolean distinct, Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors)
 	{
 		return executeSorted(createFetchQuery(distinct, predicate, joinDescriptors).select(path), sort);
+	}
+	
+	/* (non-Javadoc)
+	 * @see sk.qbsw.core.persistence.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, org.springframework.data.domain.Sort, sk.qbsw.core.persistence.model.CJoinDescriptor[])
+	 */
+	@Override
+	public List<T> findAll (boolean distinct, Sort sort, CJoinDescriptor<?>... joinDescriptors)
+	{
+		return findAll(distinct, null, sort, joinDescriptors);
 	}
 
 
@@ -190,7 +209,15 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		{
 			addFetchJoin(joinDescriptor, query);
 		}
-		return query.where(predicate);
+
+		if (predicate != null)
+		{
+			return query.where(predicate);
+		}
+		else
+		{
+			return query;
+		}
 	}
 
 	/**

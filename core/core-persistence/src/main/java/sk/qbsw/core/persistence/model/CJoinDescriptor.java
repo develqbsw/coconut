@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.model;
+package sk.qbsw.core.persistence.model;
 
 import com.querydsl.core.JoinType;
 import com.querydsl.core.types.CollectionExpression;

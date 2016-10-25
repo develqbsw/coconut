@@ -7,8 +7,8 @@ import java.util.Map;
 
 import com.querydsl.core.types.dsl.SimpleExpression;
 
+import sk.qbsw.core.persistence.model.CJoinDescriptor;
 import sk.qbsw.et.browser.client.model.IFilterable;
-import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
  * The entity mapping.

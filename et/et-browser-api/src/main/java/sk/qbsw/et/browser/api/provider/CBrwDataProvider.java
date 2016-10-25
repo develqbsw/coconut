@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import com.querydsl.core.types.Predicate;
 
+import sk.qbsw.core.persistence.model.CJoinDescriptor;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
 import sk.qbsw.et.browser.client.model.IFilterable;
@@ -18,7 +19,6 @@ import sk.qbsw.et.browser.client.model.request.CFilterRequest;
 import sk.qbsw.et.browser.core.dto.CBrwDto;
 import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedBrowserMappingException;
-import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
  * The browser data provider.

@@ -2,8 +2,8 @@ package sk.qbsw.et.browser.api.mapping;
 
 import com.querydsl.core.types.dsl.SimpleExpression;
 
+import sk.qbsw.core.persistence.model.CJoinDescriptor;
 import sk.qbsw.et.browser.client.model.IFilterable;
-import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
  * The browser data mapper builder.

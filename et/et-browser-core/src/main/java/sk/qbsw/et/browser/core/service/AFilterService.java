@@ -8,9 +8,9 @@ import org.springframework.data.domain.Sort;
 
 import com.querydsl.core.types.Predicate;
 
+import sk.qbsw.core.persistence.dao.support.IFetchCapableQueryDslJpaRepository;
+import sk.qbsw.core.persistence.model.CJoinDescriptor;
 import sk.qbsw.core.persistence.model.domain.IEntity;
-import sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository;
-import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
  * The abstract filter service.

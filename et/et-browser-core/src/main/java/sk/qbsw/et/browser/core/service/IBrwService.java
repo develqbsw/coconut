@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
 
+import sk.qbsw.core.persistence.model.CJoinDescriptor;
 import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.et.browser.core.dto.CBrwDto;
-import sk.qbsw.et.browser.core.model.CJoinDescriptor;
 
 /**
  * The browser service.

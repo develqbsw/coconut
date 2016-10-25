@@ -1,4 +1,4 @@
-package sk.qbsw.et.browser.core.dao.support;
+package sk.qbsw.core.persistence.dao.support;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +12,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import com.querydsl.core.types.Predicate;
 
-import sk.qbsw.et.browser.core.model.CJoinDescriptor;
+import sk.qbsw.core.persistence.model.CJoinDescriptor;
+import sk.qbsw.core.persistence.model.domain.IEntity;
 
 /**
  * The join fetch capable querydsl repository.
@@ -25,7 +26,7 @@ import sk.qbsw.et.browser.core.model.CJoinDescriptor;
  * @since 1.16.0
  */
 @NoRepositoryBean
-public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends JpaRepository<T, PK>, QueryDslPredicateExecutor<T>
+public interface IFetchCapableQueryDslJpaRepository<T extends IEntity<PK>, PK extends Serializable>extends JpaRepository<T, PK>, QueryDslPredicateExecutor<T>
 {
 	/**
 	 * Find one.
@@ -59,6 +60,15 @@ public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>e
 	/**
 	 * Find all.
 	 *
+	 * @param sort the sort
+	 * @param joinDescriptors the join descriptors
+	 * @return the list
+	 */
+	List<T> findAll (Sort sort, CJoinDescriptor<?>... joinDescriptors);
+
+	/**
+	 * Find all.
+	 *
 	 * @param distinct the distinct
 	 * @param predicate the predicate
 	 * @param pageable the pageable
@@ -77,6 +87,16 @@ public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>e
 	 * @return the list
 	 */
 	List<T> findAll (boolean distinct, Predicate predicate, Sort sort, CJoinDescriptor<?>... joinDescriptors);
+
+	/**
+	 * Find all.
+	 *
+	 * @param distinct the distinct
+	 * @param sort the sort
+	 * @param joinDescriptors the join descriptors
+	 * @return the list
+	 */
+	List<T> findAll (boolean distinct, Sort sort, CJoinDescriptor<?>... joinDescriptors);
 
 	/**
 	 * Count.
