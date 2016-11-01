@@ -35,7 +35,7 @@ public interface IBrwDataProvider
 	<PK extends Serializable, T extends IEntity<PK>> T getOne (String browserCode, PK id) throws CBrwBusinessException;
 
 	/**
-	 * Gets the data.
+	 * Gets the browser data - the paging is important. The lazy joined entity are fetched.
 	 *
 	 * @param <F> the filterable
 	 * @param <PK> the pk
@@ -45,7 +45,7 @@ public interface IBrwDataProvider
 	 * @return the data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getBrowserData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Count.
@@ -59,7 +59,7 @@ public interface IBrwDataProvider
 	<F extends IFilterable> long count (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
 
 	/**
-	 * Gets the data.
+	 * Gets the filter data - the data are filtered and sorted. There is no paging. The lazy joined entity are fetched.
 	 *
 	 * @param <F> the filterable
 	 * @param <PK> the pk
@@ -69,7 +69,7 @@ public interface IBrwDataProvider
 	 * @return the data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Sets the mapping.

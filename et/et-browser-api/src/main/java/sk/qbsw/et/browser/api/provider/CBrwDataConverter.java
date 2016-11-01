@@ -28,6 +28,7 @@ import sk.qbsw.et.browser.client.model.filter.CFilterCriterionTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CPagingTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CSortingCriterionTransferObject;
+import sk.qbsw.et.browser.client.model.filter.ELogicalOperator;
 import sk.qbsw.et.browser.client.model.filter.ENullPrecedence;
 import sk.qbsw.et.browser.client.model.filter.EOperator;
 import sk.qbsw.et.browser.client.model.filter.ESortDirection;
@@ -53,11 +54,26 @@ public class CBrwDataConverter implements IBrwDataConverter
 	public <F extends IFilterable> Predicate convertFilterCriteriaToPredicate (final CFilterCriteriaTransferObject<F> filterCriteria, final CBrwEntityMapping<F> mapping) throws CBrwUndefinedEntityMappingException
 	{
 		BooleanBuilder predicateBuilder = new BooleanBuilder();
+		BooleanBuilder orBuilder = new BooleanBuilder();
 
 		for (CFilterCriterionTransferObject<F> filterCriterion : filterCriteria.getCriteria())
 		{
-			predicateBuilder.and(convertFilterCriterionToPredicate(filterCriterion, mapping));
+			if (filterCriterion.getLogicalOperator().equals(ELogicalOperator.OR))
+			{
+				//just add to or builder
+				orBuilder.or(convertFilterCriterionToPredicate(filterCriterion, mapping));
+			}
+
+			if (filterCriterion.getLogicalOperator().equals(ELogicalOperator.AND))
+			{
+				//add current orbuilder to predicate and create new one
+				predicateBuilder.and(orBuilder.getValue());
+				orBuilder = new BooleanBuilder().or(convertFilterCriterionToPredicate(filterCriterion, mapping));
+			}
 		}
+
+		//final add or conditions
+		predicateBuilder.and(orBuilder.getValue());
 
 		return predicateBuilder;
 	}

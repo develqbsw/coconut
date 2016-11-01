@@ -55,7 +55,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getBrowserData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
 		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
@@ -84,7 +84,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 	 */
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
 		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);

@@ -41,9 +41,9 @@ public class CFilterCriteriaTransferObject<F extends IFilterable> implements Ser
 	 * @param numberValue the number value
 	 * @param operator the operator
 	 */
-	public void addFilterCriterion (F column, String stringValue, Number numberValue, EOperator operator)
+	public void addFilterCriterion (ELogicalOperator logicalOperator, F column, String stringValue, Number numberValue, EOperator operator)
 	{
-		criteria.add(new CFilterCriterionTransferObject<>(column, stringValue, numberValue, operator));
+		criteria.add(new CFilterCriterionTransferObject<>(logicalOperator, column, stringValue, numberValue, operator));
 	}
 
 	/**

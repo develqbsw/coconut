@@ -12,17 +12,19 @@ import sk.qbsw.et.browser.client.model.IFilterable;
 /**
  * The filter criterion.
  *
- * @param <F> the property
- *
  * @author Tomas Lauro
- * 
  * @version 1.16.0
+ * @param <F> the property
  * @since 1.16.0
  */
 public class CFilterCriterionTransferObject<F extends IFilterable> implements Serializable
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5338691866901178569L;
+
+	/** The logical operator. */
+	@NotNull
+	private ELogicalOperator logicalOperator;
 
 	/** The property. */
 	@NotNull
@@ -53,8 +55,9 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	 * @param value the value
 	 * @param operator the operator
 	 */
-	public CFilterCriterionTransferObject (F variable, String stringValue, Number numberValue, EOperator operator)
+	public CFilterCriterionTransferObject (ELogicalOperator logicalOperator, F variable, String stringValue, Number numberValue, EOperator operator)
 	{
+		this.logicalOperator = logicalOperator;
 		this.property = variable;
 		this.stringValue = stringValue;
 		this.numberValue = numberValue;
@@ -76,6 +79,16 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 		{
 			return numberValue;
 		}
+	}
+
+	/**
+	 * Gets the logical operator.
+	 *
+	 * @return the logical operator
+	 */
+	public ELogicalOperator getLogicalOperator ()
+	{
+		return logicalOperator;
 	}
 
 	/**
