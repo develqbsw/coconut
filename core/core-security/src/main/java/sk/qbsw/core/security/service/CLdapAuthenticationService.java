@@ -15,7 +15,6 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.dao.IUnitDao;
 import sk.qbsw.core.security.dao.IUserDao;
 import sk.qbsw.core.security.exception.CInvalidPasswordException;
@@ -24,7 +23,6 @@ import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUnit;
 import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.model.jmx.ILdapAuthenticationConfigurator;
 import sk.qbsw.core.security.service.ldap.CLDAPInjectionProtector;
 import sk.qbsw.core.security.service.ldap.ILdapProvider;
@@ -49,11 +47,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 
 	/** The data. */
 	@Autowired
-	private ILdapAuthenticationConfigurator data;
-
-	/** The authentication configuration. */
-	@Autowired
-	private IAuthenticationConfigurator authenticationConfiguration;
+	private transient ILdapAuthenticationConfigurator data;
 
 	/** The unit dao. */
 	@Autowired
@@ -63,17 +57,9 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 	@Autowired
 	private IUserDao userDao;
 
-	/** The authentication params dao. */
-	@Autowired
-	private IAuthenticationParamsDao authenticationParamsDao;
-
 	/** The ldap provider. */
 	@Autowired
-	private ILdapProvider ldapProvider;
-
-	/** The authentication data validation service. */
-	@Autowired
-	private IAuthDataValidationService authDataValidationService;
+	private transient ILdapProvider ldapProvider;
 
 	/*
 	 * (non-Javadoc)

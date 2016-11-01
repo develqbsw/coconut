@@ -11,7 +11,10 @@ package sk.qbsw.core.logging.aspect.param;
  */
 public class CLoggedParameter extends AParameter {
 
-	protected final Object value;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+	
+	protected final transient Object value;
 
 	public CLoggedParameter (String name, Object value) {
 		super(name);

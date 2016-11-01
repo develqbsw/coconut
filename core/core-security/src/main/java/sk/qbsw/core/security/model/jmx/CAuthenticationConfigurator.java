@@ -1,6 +1,6 @@
 package sk.qbsw.core.security.model.jmx;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import org.springframework.jmx.export.annotation.ManagedResource;
@@ -37,7 +37,7 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 	private EAuthSchema databaseAuthSchema = EAuthSchema.CUSTOM;
 
 	/**  additiona parameters to configurator specific for. */
-	private Map<EAuthParameters, String> additionalAuthParameters = new HashMap<EAuthParameters, String>();
+	private Map<EAuthParameters, String> additionalAuthParameters = new EnumMap<>(EAuthParameters.class);
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator#getPasswordPattern()

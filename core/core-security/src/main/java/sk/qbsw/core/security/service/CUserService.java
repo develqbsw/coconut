@@ -81,7 +81,7 @@ public class CUserService extends AService implements IUserService
 
 	/** The authentication service. */
 	@Autowired
-	private IAuthenticationModifierService authenticationService;
+	private transient IAuthenticationModifierService authenticationService;
 
 	/** The group dao. */
 	@Autowired
