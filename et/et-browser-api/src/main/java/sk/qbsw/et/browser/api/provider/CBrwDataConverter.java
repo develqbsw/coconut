@@ -17,11 +17,14 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.EnumExpression;
+import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
+import sk.qbsw.et.browser.api.mapping.CBrwEntityPropertyIdentityEnumTern;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriterionTransferObject;
@@ -100,6 +103,10 @@ public class CBrwDataConverter implements IBrwDataConverter
 		else if (EOperator.LIKE_IGNORE_CASE == operator && (expression instanceof StringExpression))
 		{
 			return ((StringExpression) expression).containsIgnoreCase((String) value);
+		}
+		else if ( (operator != null) && (expression instanceof EnumExpression))
+		{
+			return ((EnumPath) expression).eq(Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), value.toString()));
 		}
 		else if ( (operator != null) && (expression instanceof ComparableExpression))
 		{
@@ -278,6 +285,25 @@ public class CBrwDataConverter implements IBrwDataConverter
 		}
 
 		return expression;
+	}
+
+	/**
+	 * Gets the enum type from mapping.
+	 *
+	 * @param <F> the generic type
+	 * @param property the property
+	 * @param entityMapping the entity mapping
+	 * @return the enum type from mapping
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined entity mapping exception
+	 */
+	private <F extends IFilterable> Class<? extends Enum<?>> getEnumTypeFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
+	{
+		if (entityMapping.getPair(property) instanceof CBrwEntityPropertyIdentityEnumTern)
+		{
+			return ((CBrwEntityPropertyIdentityEnumTern) entityMapping.getPair(property)).getEnumType();
+		}
+
+		throw new CBrwUndefinedEntityMappingException("The entity property identity enum not found for property: " + property);
 	}
 
 	/**

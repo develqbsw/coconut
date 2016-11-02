@@ -37,6 +37,21 @@ public class CBrwEntityMappingBuilder<F extends IFilterable>
 	}
 
 	/**
+	 * Adds the property mapping.
+	 *
+	 * @param property the property
+	 * @param expression the expression
+	 * @param propertyName the property name
+	 * @param enumType the enum type
+	 * @return the c brw entity mapping builder
+	 */
+	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression, String propertyName, Class<? extends Enum<?>> enumType)
+	{
+		entityMapping.putPair(property, new CBrwEntityPropertyIdentityEnumTern(expression, propertyName, enumType));
+		return this;
+	}
+
+	/**
 	 * Adds the join.
 	 *
 	 * @param join the join
