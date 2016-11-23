@@ -9,6 +9,7 @@ import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.request.CBrwRequest;
 import sk.qbsw.et.browser.client.model.request.CFilterRequest;
+import sk.qbsw.et.browser.client.model.request.CFilterSortRequest;
 import sk.qbsw.et.browser.core.dto.CBrwDto;
 import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 
@@ -56,7 +57,7 @@ public interface IBrwDataProvider
 	 * @return the long
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable> long count (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable> long count (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Gets the filter data - the data are filtered and sorted. There is no paging. The lazy joined entity are fetched.
@@ -69,7 +70,7 @@ public interface IBrwDataProvider
 	 * @return the data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredData (String browserCode, CFilterSortRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Sets the mapping.
