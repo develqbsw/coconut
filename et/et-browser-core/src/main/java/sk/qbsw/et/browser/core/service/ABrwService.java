@@ -46,9 +46,9 @@ public abstract class ABrwService<PK extends Serializable, T extends IEntity<PK>
 	 * @see sk.qbsw.et.browser.core.service.IBrwService#count(com.querydsl.core.types.Predicate)
 	 */
 	@Override
-	public long count (Predicate predicate)
+	public long count (Predicate predicate, CJoinDescriptor<?>... joinDescriptors)
 	{
-		return dao.count(predicate);
+		return dao.count(predicate, joinDescriptors);
 	}
 
 	/**

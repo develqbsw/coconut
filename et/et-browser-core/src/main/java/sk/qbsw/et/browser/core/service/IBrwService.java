@@ -19,7 +19,7 @@ import sk.qbsw.et.browser.core.dto.CBrwDto;
  * @author Marian Oravec
  * @author Tomas Lauro
  * 
- * @version 1.16.0
+ * @version 1.16.1
  * @since 1.16.0
  */
 public interface IBrwService<PK extends Serializable, T extends IEntity<PK>>extends IFilterService<PK, T>
@@ -47,7 +47,8 @@ public interface IBrwService<PK extends Serializable, T extends IEntity<PK>>exte
 	 * Count.
 	 *
 	 * @param predicate the predicate
+	 * @param joinDescriptors the join descriptors
 	 * @return the long
 	 */
-	long count (final Predicate predicate);
+	long count (final Predicate predicate, final CJoinDescriptor<?>... joinDescriptors);
 }

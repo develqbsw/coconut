@@ -75,9 +75,10 @@ public class CBrwDataProvider implements IBrwDataProvider
 	public <F extends IFilterable> long count (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
+		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
 
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
-		return serviceFactory.getBrwService(browserCode).count(predicate);
+		return serviceFactory.getBrwService(browserCode).count(predicate, joins.toArray(new CJoinDescriptor[joins.size()]));
 	}
 
 	/* (non-Javadoc)
