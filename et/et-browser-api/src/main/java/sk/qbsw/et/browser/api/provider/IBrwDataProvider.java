@@ -36,20 +36,20 @@ public interface IBrwDataProvider
 	<PK extends Serializable, T extends IEntity<PK>> T getOne (String browserCode, PK id) throws CBrwBusinessException;
 
 	/**
-	 * Gets the browser data - the paging is important. The lazy joined entity are fetched.
+	 * Gets the browser data.
 	 *
-	 * @param <F> the filterable
-	 * @param <PK> the pk
-	 * @param <T> the entity
+	 * @param <F> the generic type
+	 * @param <PK> the generic type
+	 * @param <T> the generic type
 	 * @param browserCode the browser code
 	 * @param request the request
-	 * @return the data
+	 * @return the browser data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
 	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getBrowserData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
 
 	/**
-	 * Count.
+	 * Count data.
 	 *
 	 * @param <F> the generic type
 	 * @param browserCode the browser code
@@ -57,20 +57,57 @@ public interface IBrwDataProvider
 	 * @return the long
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable> long count (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
+	<F extends IFilterable> long countData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
 
 	/**
-	 * Gets the filter data - the data are filtered and sorted. There is no paging. The lazy joined entity are fetched.
+	 * Gets the filtered data.
 	 *
-	 * @param <F> the filterable
-	 * @param <PK> the pk
-	 * @param <T> the entity
+	 * @param <F> the generic type
+	 * @param <PK> the generic type
+	 * @param <T> the generic type
 	 * @param browserCode the browser code
 	 * @param request the request
-	 * @return the data
+	 * @return the filtered data
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
 	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredData (String browserCode, CFilterSortRequest<F> request) throws CBrwBusinessException;
+
+	/**
+	 * Gets the browser distinct data.
+	 *
+	 * @param <F> the generic type
+	 * @param <PK> the generic type
+	 * @param <T> the generic type
+	 * @param browserCode the browser code
+	 * @param request the request
+	 * @return the browser distinct data
+	 * @throws CBrwBusinessException the c brw business exception
+	 */
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getBrowserDistinctData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException;
+
+	/**
+	 * Count distinct data.
+	 *
+	 * @param <F> the generic type
+	 * @param browserCode the browser code
+	 * @param request the request
+	 * @return the long
+	 * @throws CBrwBusinessException the c brw business exception
+	 */
+	<F extends IFilterable> long countDistinctData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException;
+
+	/**
+	 * Gets the filtered distinct data.
+	 *
+	 * @param <F> the generic type
+	 * @param <PK> the generic type
+	 * @param <T> the generic type
+	 * @param browserCode the browser code
+	 * @param request the request
+	 * @return the filtered distinct data
+	 * @throws CBrwBusinessException the c brw business exception
+	 */
+	<F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredDistinctData (String browserCode, CFilterSortRequest<F> request) throws CBrwBusinessException;
 
 	/**
 	 * Sets the mapping.

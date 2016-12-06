@@ -24,19 +24,21 @@ public interface IFilterService<PK extends Serializable, T extends IEntity<PK>>
 	/**
 	 * Find all.
 	 *
+	 * @param distinct the distinct
 	 * @param predicate the predicate
 	 * @param sorting the sorting
 	 * @return the list
 	 */
-	List<T> findAll (final Predicate predicate, final Sort sorting);
+	List<T> findAll (final boolean distinct, final Predicate predicate, final Sort sorting);
 
 	/**
 	 * Find all.
 	 *
+	 * @param distinct the distinct
 	 * @param predicate the predicate
 	 * @param sorting the sorting
 	 * @param joinDescriptors the join descriptors
 	 * @return the list
 	 */
-	List<T> findAll (final Predicate predicate, final Sort sorting, final CJoinDescriptor<?>... joinDescriptors);
+	List<T> findAll (final boolean distinct, final Predicate predicate, final Sort sorting, final CJoinDescriptor<?>... joinDescriptors);
 }
