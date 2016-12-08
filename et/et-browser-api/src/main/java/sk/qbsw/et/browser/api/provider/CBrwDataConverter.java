@@ -1,8 +1,10 @@
 package sk.qbsw.et.browser.api.provider;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.EnumExpression;
 import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -35,7 +38,9 @@ import sk.qbsw.et.browser.client.model.filter.ELogicalOperator;
 import sk.qbsw.et.browser.client.model.filter.ENullPrecedence;
 import sk.qbsw.et.browser.client.model.filter.EOperator;
 import sk.qbsw.et.browser.client.model.filter.ESortDirection;
+import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedEntityMappingException;
+import sk.qbsw.et.browser.core.exception.EBrwError;
 import sk.qbsw.et.browser.core.model.COffsetPageRequest;
 
 /**
@@ -54,7 +59,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProviderConverter#convertFilterCriteriaToPredicate(sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject, sk.qbsw.et.browser.api.mapping.CBrwEntityMapping)
 	 */
 	@Override
-	public <F extends IFilterable> Predicate convertFilterCriteriaToPredicate (final CFilterCriteriaTransferObject<F> filterCriteria, final CBrwEntityMapping<F> mapping) throws CBrwUndefinedEntityMappingException
+	public <F extends IFilterable> Predicate convertFilterCriteriaToPredicate (final CFilterCriteriaTransferObject<F> filterCriteria, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
 	{
 		BooleanBuilder predicateBuilder = new BooleanBuilder();
 		BooleanBuilder orBuilder = new BooleanBuilder();
@@ -87,15 +92,19 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 * @param filterCriterion the filter criterion
 	 * @param mapping the mapping
 	 * @return the predicate
-	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
+	 * @throws CBrwBusinessException 
 	 */
 	@SuppressWarnings ({"unchecked", "rawtypes"})
-	private <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwUndefinedEntityMappingException
+	private <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
 	{
 		final SimpleExpression<?> expression = getExpressionFromMapping(filterCriterion.getProperty(), mapping);
-		final Serializable value = filterCriterion.getValue();
+		final Serializable value = parseValueFromFilterCriterion(filterCriterion);
 		final EOperator operator = filterCriterion.getOperator();
 
+		if (value instanceof Class<?> && expression instanceof EntityPathBase)
+		{
+			return ((EntityPathBase) expression).instanceOf((Class) value);
+		}
 		if (expression instanceof BooleanOperation)
 		{
 			return (BooleanOperation) expression;
@@ -164,6 +173,40 @@ public class CBrwDataConverter implements IBrwDataConverter
 		else
 		{
 			return ((SimpleExpression) expression).eq(value);
+		}
+	}
+
+	/**
+	 * Parses the value from filter criterion.
+	 *
+	 * @param <F> the generic type
+	 * @param filterCriterion the filter criterion
+	 * @return the serializable
+	 * @throws CBrwBusinessException the c brw business exception
+	 */
+	private <F extends IFilterable> Serializable parseValueFromFilterCriterion (final CFilterCriterionTransferObject<F> filterCriterion) throws CBrwBusinessException
+	{
+		switch (filterCriterion.getValueType())
+		{
+			case STRING:
+				return filterCriterion.getValue();
+			case NUMBER:
+				return Long.parseLong(filterCriterion.getValue());
+			case DATE:
+				return LocalDate.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_LOCAL_DATE);
+			case DATE_TIME:
+				return OffsetDateTime.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+			case CLASS_NAME:
+				try
+				{
+					return Class.forName(filterCriterion.getValue());
+				}
+				catch (ClassNotFoundException e)
+				{
+					throw new CBrwBusinessException("Classs with name " + filterCriterion.getValue() + " not found", e, EBrwError.UNDEFINED_CLASS);
+				}
+			default:
+				return filterCriterion.getValue();
 		}
 	}
 

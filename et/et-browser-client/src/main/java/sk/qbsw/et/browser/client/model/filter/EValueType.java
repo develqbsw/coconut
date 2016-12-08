@@ -19,5 +19,8 @@ public enum EValueType
 	DATE,
 
 	/** The date time. */
-	DATE_TIME;
+	DATE_TIME,
+
+	/** The class name. */
+	CLASS_NAME;
 }

@@ -4,9 +4,6 @@
 package sk.qbsw.et.browser.client.model.filter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javax.validation.constraints.NotNull;
 
@@ -69,28 +66,6 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 		this.value = value;
 		this.valueType = valueType;
 		this.operator = operator;
-	}
-
-	/**
-	 * Gets the value.
-	 *
-	 * @return the value
-	 */
-	public Serializable getValue ()
-	{
-		switch (valueType)
-		{
-			case STRING:
-				return value;
-			case NUMBER:
-				return Long.parseLong(value);
-			case DATE:
-				return LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
-			case DATE_TIME:
-				return OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-			default:
-				return value;
-		}
 	}
 
 	/**
@@ -173,6 +148,16 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	public void setValueType (EValueType valueType)
 	{
 		this.valueType = valueType;
+	}
+
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public String getValue ()
+	{
+		return value;
 	}
 
 	/**

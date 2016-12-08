@@ -15,7 +15,9 @@ public enum EBrwError implements IErrorResponse
 {
 	UNDEFINED_ENTITY_MAPPING ("11000", "error.brw.core.undefinedentitymapping"),
 
-	UNDEFINED_BROWSER_MAPPING ("11001", "error.brw.core.undefinedbrowsermapping");
+	UNDEFINED_BROWSER_MAPPING ("11001", "error.brw.core.undefinedbrowsermapping"),
+
+	UNDEFINED_CLASS ("11002", "error.brw.core.undefinedclass");
 
 	/**
 	 * code of the error. This is shot code represent error in application
