@@ -106,12 +106,22 @@ public class CBrwDataConverter implements IBrwDataConverter
 		}
 		else if ( (operator != null) && (expression instanceof EnumExpression))
 		{
-			return ((EnumPath) expression).eq(Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), value.toString()));
+			Enum<? extends Enum<?>> valueOf = Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), value.toString());
+			if (EOperator.EQ.equals(operator))
+			{
+				return ((EnumPath) expression).eq(valueOf);
+			}
+			else
+			{
+				return ((EnumPath) expression).ne(valueOf);
+			}
 		}
 		else if ( (operator != null) && (expression instanceof ComparableExpression))
 		{
 			switch (operator)
 			{
+				case NE:
+					return ((ComparableExpression) expression).ne((Comparable) value);
 				case GT:
 					return ((ComparableExpression) expression).gt((Comparable) value);
 				case GOE:
@@ -137,6 +147,8 @@ public class CBrwDataConverter implements IBrwDataConverter
 		{
 			switch (operator)
 			{
+				case NE:
+					return ((NumberPath) expression).ne((Number) value);
 				case GT:
 					return ((NumberPath) expression).gt((Number) value);
 				case GOE:
