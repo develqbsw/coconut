@@ -10,11 +10,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.NullHandling;
-import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.querydsl.QSort;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.OrderSpecifier.NullHandling;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
@@ -27,7 +28,7 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
-import sk.qbsw.et.browser.api.mapping.CBrwEntityPropertyIdentityEnumTern;
+import sk.qbsw.et.browser.api.mapping.CBrwEntityPropertyEnumExpression;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriterionTransferObject;
@@ -255,49 +256,50 @@ public class CBrwDataConverter implements IBrwDataConverter
 	@Override
 	public <F extends IFilterable> Sort convertSortingCriteriaToSort (CSortingCriteriaTransferObject<F> sortingCriteria, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		List<Order> orders = new ArrayList<>();
+		List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
 
 		for (CSortingCriterionTransferObject<F> sortingCriterion : sortingCriteria.getCriteria())
 		{
-			orders.add(convertSortingCriterionToOrder(sortingCriterion, entityMapping));
+			orderSpecifiers.add(convertSortingCriterionToOrderSpecifier(sortingCriterion, entityMapping));
 		}
 
-		return new Sort(orders);
+		return new QSort(orderSpecifiers);
 	}
 
 	/**
-	 * Convert sorting criterion to order.
+	 * Convert sorting criterion to order specifier.
 	 *
+	 * @param <F> the generic type
 	 * @param sortingCriterion the sorting criterion
-	 * @param entityMapping the properties mapping
-	 * @return the order
-	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
+	 * @param entityMapping the entity mapping
+	 * @return the order specifier
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined entity mapping exception
 	 */
-	private <F extends IFilterable> Order convertSortingCriterionToOrder (final CSortingCriterionTransferObject<F> sortingCriterion, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
+	@SuppressWarnings ({"unchecked", "rawtypes"})
+	private <F extends IFilterable> OrderSpecifier<?> convertSortingCriterionToOrderSpecifier (final CSortingCriterionTransferObject<F> sortingCriterion, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		final Direction direction = convertClientDirectionToDirection(sortingCriterion.getDirection());
-		final String propertyName = getVariableFromMapping(sortingCriterion.getProperty(), entityMapping);
-		final NullHandling nullHandling = convertNullPrecedenceToNullHandling(sortingCriterion.getNullPrecedence());
+		final com.querydsl.core.types.Order order = convertClientDirectionToOrder(sortingCriterion.getDirection());
+		final com.querydsl.core.types.OrderSpecifier.NullHandling nullHandling = convertNullPrecedenceToNullHandling(sortingCriterion.getNullPrecedence());
 
-		return new Order(direction, propertyName, nullHandling);
+		return new OrderSpecifier(order, getExpressionFromMapping(sortingCriterion.getProperty(), entityMapping), nullHandling);
 	}
 
 	/**
-	 * Convert client direction to direction.
+	 * Convert client direction to order.
 	 *
 	 * @param clientDirection the client direction
-	 * @return the direction
+	 * @return the order
 	 */
-	private Direction convertClientDirectionToDirection (ESortDirection clientDirection)
+	private Order convertClientDirectionToOrder (ESortDirection clientDirection)
 	{
 		switch (clientDirection)
 		{
 			case ASC:
-				return Direction.ASC;
+				return Order.ASC;
 			case DESC:
-				return Direction.DESC;
+				return Order.DESC;
 			default:
-				return Direction.ASC;
+				return Order.ASC;
 		}
 	}
 
@@ -312,13 +314,13 @@ public class CBrwDataConverter implements IBrwDataConverter
 		switch (clientNullPrecedence)
 		{
 			case FIRST:
-				return NullHandling.NULLS_FIRST;
+				return NullHandling.NullsFirst;
 			case LAST:
-				return NullHandling.NULLS_LAST;
+				return NullHandling.NullsLast;
 			case NONE:
-				return NullHandling.NATIVE;
+				return NullHandling.Default;
 			default:
-				return NullHandling.NATIVE;
+				return NullHandling.Default;
 		}
 	}
 
@@ -332,7 +334,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 */
 	private <F extends IFilterable> SimpleExpression<?> getExpressionFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		SimpleExpression<?> expression = entityMapping.getPair(property).getExpression();
+		SimpleExpression<?> expression = entityMapping.getExpression(property).getExpression();
 
 		if (expression == null)
 		{
@@ -353,31 +355,11 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 */
 	private <F extends IFilterable> Class<? extends Enum<?>> getEnumTypeFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		if (entityMapping.getPair(property) instanceof CBrwEntityPropertyIdentityEnumTern)
+		if (entityMapping.getExpression(property) instanceof CBrwEntityPropertyEnumExpression)
 		{
-			return ((CBrwEntityPropertyIdentityEnumTern) entityMapping.getPair(property)).getEnumType();
+			return ((CBrwEntityPropertyEnumExpression) entityMapping.getExpression(property)).getEnumType();
 		}
 
 		throw new CBrwUndefinedEntityMappingException("The entity property identity enum not found for property: " + property);
-	}
-
-	/**
-	 * Gets the variable from mapping.
-	 *
-	 * @param property the property
-	 * @param entityMapping the mapping
-	 * @return the variable from mapping
-	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
-	 */
-	private <F extends IFilterable> String getVariableFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
-	{
-		String propertyName = entityMapping.getPair(property).getPropertyName();
-
-		if (propertyName == null)
-		{
-			throw new CBrwUndefinedEntityMappingException("The variable mapping not found for variable: " + property);
-		}
-
-		return propertyName;
 	}
 }

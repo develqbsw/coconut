@@ -17,13 +17,13 @@ import sk.qbsw.et.browser.client.model.IFilterable;
  *
  * @author Tomas Lauro
  * 
- * @version 1.16.0
- * @since 1.16.0
+ * @version 1.16.1
+ * @since 1.16.1
  */
 public class CBrwEntityMapping<F extends IFilterable>
 {
 	/** The mapping. */
-	private final Map<F, CBrwEntityPropertyIdentityPair> mapping = new HashMap<>();
+	private final Map<F, CBrwEntityPropertyExpression> mapping = new HashMap<>();
 
 	/** The joins. */
 	private final List<CJoinDescriptor<?>> joins = new ArrayList<>();
@@ -42,53 +42,52 @@ public class CBrwEntityMapping<F extends IFilterable>
 	 * @param mapping the mapping
 	 * @param joins the joins
 	 */
-	public CBrwEntityMapping (Map<F, CBrwEntityPropertyIdentityPair> mapping, List<CJoinDescriptor<?>> joins)
+	public CBrwEntityMapping (Map<F, CBrwEntityPropertyExpression> mapping, List<CJoinDescriptor<?>> joins)
 	{
 		this.mapping.putAll(mapping);
 		this.joins.addAll(joins);
 	}
 
 	/**
-	 * Put pair.
+	 * Put expression.
 	 *
 	 * @param property the property
 	 * @param expressionPropertyPair the expression property pair
 	 */
-	public void putPair (F property, CBrwEntityPropertyIdentityPair expressionPropertyPair)
+	public void putExpression (F property, CBrwEntityPropertyExpression expressionPropertyPair)
 	{
 		mapping.put(property, expressionPropertyPair);
 	}
 
 	/**
-	 * Put pair.
+	 * Put expression.
 	 *
 	 * @param property the property
 	 * @param expression the expression
-	 * @param propertyName the property name
 	 */
-	public void putPair (F property, SimpleExpression<?> expression, String propertyName)
+	public void putExpression (F property, SimpleExpression<?> expression)
 	{
-		mapping.put(property, new CBrwEntityPropertyIdentityPair(expression, propertyName));
+		mapping.put(property, new CBrwEntityPropertyExpression(expression));
 	}
 
 	/**
-	 * Gets the pair.
+	 * Gets the expression.
 	 *
 	 * @param property the property
-	 * @return the pair
+	 * @return the expression
 	 */
-	public CBrwEntityPropertyIdentityPair getPair (F property)
+	public CBrwEntityPropertyExpression getExpression (F property)
 	{
 		return mapping.get(property);
 	}
 
 	/**
-	 * Contains pair.
+	 * Contains expression.
 	 *
 	 * @param property the property
 	 * @return true, if successful
 	 */
-	public boolean containsPair (F property)
+	public boolean containsExpression (F property)
 	{
 		return mapping.containsKey(property);
 	}

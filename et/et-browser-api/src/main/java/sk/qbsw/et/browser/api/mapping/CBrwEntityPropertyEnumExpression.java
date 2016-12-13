@@ -3,28 +3,27 @@ package sk.qbsw.et.browser.api.mapping;
 import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
- * The querydsl expression and property name pair with enum class.
+ * The querydsl expression with enum class.
  *
  * @author Tomas Lauro
  * 
- * @version 1.16.0
- * @since 1.16.0
+ * @version 1.16.1
+ * @since 1.16.1
  */
-public class CBrwEntityPropertyIdentityEnumTern extends CBrwEntityPropertyIdentityPair
+public class CBrwEntityPropertyEnumExpression extends CBrwEntityPropertyExpression
 {
 	/** The enum type. */
 	private final Class<? extends Enum<?>> enumType;
 
 	/**
-	 * Instantiates a new c brw entity property identity enum tern.
+	 * Instantiates a new c brw entity property enum expression.
 	 *
 	 * @param expression the expression
-	 * @param propertyName the property name
 	 * @param enumType the enum type
 	 */
-	public CBrwEntityPropertyIdentityEnumTern (SimpleExpression<?> expression, String propertyName, Class<? extends Enum<?>> enumType)
+	public CBrwEntityPropertyEnumExpression (SimpleExpression<?> expression, Class<? extends Enum<?>> enumType)
 	{
-		super(expression, propertyName);
+		super(expression);
 		this.enumType = enumType;
 	}
 

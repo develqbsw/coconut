@@ -30,9 +30,9 @@ public class CBrwEntityMappingBuilder<F extends IFilterable>
 	 * @param propertyName the property name
 	 * @return the c brw entity mapping builder
 	 */
-	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression, String propertyName)
+	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression)
 	{
-		entityMapping.putPair(property, new CBrwEntityPropertyIdentityPair(expression, propertyName));
+		entityMapping.putExpression(property, new CBrwEntityPropertyExpression(expression));
 		return this;
 	}
 
@@ -45,9 +45,9 @@ public class CBrwEntityMappingBuilder<F extends IFilterable>
 	 * @param enumType the enum type
 	 * @return the c brw entity mapping builder
 	 */
-	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression, String propertyName, Class<? extends Enum<?>> enumType)
+	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression, Class<? extends Enum<?>> enumType)
 	{
-		entityMapping.putPair(property, new CBrwEntityPropertyIdentityEnumTern(expression, propertyName, enumType));
+		entityMapping.putExpression(property, new CBrwEntityPropertyEnumExpression(expression, enumType));
 		return this;
 	}
 
