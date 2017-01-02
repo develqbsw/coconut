@@ -1,9 +1,12 @@
 package sk.qbsw.et.browser.api.mapping;
 
+import java.util.Map;
+
 import com.querydsl.core.types.dsl.SimpleExpression;
 
 import sk.qbsw.core.persistence.model.CJoinDescriptor;
 import sk.qbsw.et.browser.client.model.IFilterable;
+import sk.qbsw.et.browser.client.model.IFilterableType;
 
 /**
  * The browser data mapper builder.
@@ -30,9 +33,38 @@ public class CBrwEntityMappingBuilder<F extends IFilterable>
 	 * @param propertyName the property name
 	 * @return the c brw entity mapping builder
 	 */
-	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression, String propertyName)
+	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression)
 	{
-		entityMapping.putPair(property, new CBrwEntityPropertyIdentityPair(expression, propertyName));
+		entityMapping.putExpression(property, new CBrwEntityPropertyExpression(expression));
+		return this;
+	}
+
+	/**
+	 * Adds the property mapping.
+	 *
+	 * @param property the property
+	 * @param expression the expression
+	 * @param propertyName the property name
+	 * @param enumType the enum type
+	 * @return the c brw entity mapping builder
+	 */
+	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression, Class<? extends Enum<?>> enumType)
+	{
+		entityMapping.putExpression(property, new CBrwEntityPropertyEnumExpression(expression, enumType));
+		return this;
+	}
+
+	/**
+	 * Adds the property mapping.
+	 *
+	 * @param property the property
+	 * @param expression the expression
+	 * @param typeClassPairs the type class pairs
+	 * @return the c brw entity mapping builder
+	 */
+	public CBrwEntityMappingBuilder<F> addPropertyMapping (F property, SimpleExpression<?> expression, Class<? extends Enum<?>> enumType, Map<IFilterableType, Class<?>> typeDefinitions)
+	{
+		entityMapping.putExpression(property, new CBrwEntityPropertyTypeExpression(expression, enumType, typeDefinitions));
 		return this;
 	}
 

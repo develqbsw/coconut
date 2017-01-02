@@ -30,20 +30,20 @@ public abstract class AFilterService<PK extends Serializable, T extends IEntity<
 	protected IFetchCapableQueryDslJpaRepository<T, PK> dao;
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.service.IFilterService#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort)
+	 * @see sk.qbsw.et.browser.core.service.IFilterService#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort)
 	 */
 	@Override
-	public List<T> findAll (Predicate predicate, Sort sorting)
+	public List<T> findAll (boolean distinct, Predicate predicate, Sort sorting)
 	{
-		return (List<T>) dao.findAll(predicate, sorting);
+		return (List<T>) dao.findAll(distinct, predicate, sorting);
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.service.IFilterService#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
+	 * @see sk.qbsw.et.browser.core.service.IFilterService#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort, sk.qbsw.core.persistence.model.CJoinDescriptor[])
 	 */
 	@Override
-	public List<T> findAll (Predicate predicate, Sort sorting, CJoinDescriptor<?>... joinDescriptors)
+	public List<T> findAll (boolean distinct, Predicate predicate, Sort sorting, CJoinDescriptor<?>... joinDescriptors)
 	{
-		return dao.findAll(predicate, sorting, joinDescriptors);
+		return dao.findAll(distinct, predicate, sorting, joinDescriptors);
 	}
 }

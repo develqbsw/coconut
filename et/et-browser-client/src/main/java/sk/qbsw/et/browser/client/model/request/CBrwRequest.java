@@ -7,7 +7,7 @@ import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CPagingTransferObject;
 
 /**
- * The abstract brw request.
+ * The brw request.
  *
  * @param <F> the filterable type
  *
@@ -17,7 +17,7 @@ import sk.qbsw.et.browser.client.model.filter.CPagingTransferObject;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CBrwRequest<F extends IFilterable>extends CFilterRequest<F>
+public class CBrwRequest<F extends IFilterable>extends CFilterSortRequest<F>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8804636840815516951L;

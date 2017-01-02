@@ -1,36 +1,47 @@
 package sk.qbsw.et.browser.api.provider;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.NullHandling;
-import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.querydsl.QSort;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.OrderSpecifier.NullHandling;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 
 import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
+import sk.qbsw.et.browser.api.mapping.CBrwEntityPropertyEnumExpression;
+import sk.qbsw.et.browser.api.mapping.CBrwEntityPropertyTypeExpression;
 import sk.qbsw.et.browser.client.model.IFilterable;
+import sk.qbsw.et.browser.client.model.IFilterableType;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriterionTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CPagingTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CSortingCriterionTransferObject;
+import sk.qbsw.et.browser.client.model.filter.ELogicalOperator;
 import sk.qbsw.et.browser.client.model.filter.ENullPrecedence;
 import sk.qbsw.et.browser.client.model.filter.EOperator;
 import sk.qbsw.et.browser.client.model.filter.ESortDirection;
+import sk.qbsw.et.browser.client.model.filter.EValueType;
+import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedEntityMappingException;
 import sk.qbsw.et.browser.core.model.COffsetPageRequest;
 
@@ -50,14 +61,29 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProviderConverter#convertFilterCriteriaToPredicate(sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject, sk.qbsw.et.browser.api.mapping.CBrwEntityMapping)
 	 */
 	@Override
-	public <F extends IFilterable> Predicate convertFilterCriteriaToPredicate (final CFilterCriteriaTransferObject<F> filterCriteria, final CBrwEntityMapping<F> mapping) throws CBrwUndefinedEntityMappingException
+	public <F extends IFilterable> Predicate convertFilterCriteriaToPredicate (final CFilterCriteriaTransferObject<F> filterCriteria, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
 	{
 		BooleanBuilder predicateBuilder = new BooleanBuilder();
+		BooleanBuilder orBuilder = new BooleanBuilder();
 
 		for (CFilterCriterionTransferObject<F> filterCriterion : filterCriteria.getCriteria())
 		{
-			predicateBuilder.and(convertFilterCriterionToPredicate(filterCriterion, mapping));
+			if (filterCriterion.getLogicalOperator().equals(ELogicalOperator.OR))
+			{
+				//just add to or builder
+				orBuilder.or(convertFilterCriterionToPredicate(filterCriterion, mapping));
+			}
+
+			if (filterCriterion.getLogicalOperator().equals(ELogicalOperator.AND))
+			{
+				//add current orbuilder to predicate and create new one
+				predicateBuilder.and(orBuilder.getValue());
+				orBuilder = new BooleanBuilder().or(convertFilterCriterionToPredicate(filterCriterion, mapping));
+			}
 		}
+
+		//final add or conditions
+		predicateBuilder.and(orBuilder.getValue());
 
 		return predicateBuilder;
 	}
@@ -68,67 +94,118 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 * @param filterCriterion the filter criterion
 	 * @param mapping the mapping
 	 * @return the predicate
-	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
+	 * @throws CBrwBusinessException 
 	 */
 	@SuppressWarnings ({"unchecked", "rawtypes"})
-	private <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwUndefinedEntityMappingException
+	private <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
 	{
 		final SimpleExpression<?> expression = getExpressionFromMapping(filterCriterion.getProperty(), mapping);
-		final Serializable value = filterCriterion.getValue();
+		final CValueAndTypePair valueAndTypePair = parseValueFromFilterCriterion(filterCriterion, mapping);
 		final EOperator operator = filterCriterion.getOperator();
 
-		if (expression instanceof BooleanOperation)
+		if (EValueType.TYPE.equals(valueAndTypePair.getType()))
+		{
+			return ((EntityPathBase) expression).instanceOf((Class) valueAndTypePair.getValue());
+		}
+		else if (EValueType.ENUM.equals(valueAndTypePair.getType()))
+		{
+			if (EOperator.EQ.equals(operator))
+			{
+				return ((EnumPath) expression).eq(valueAndTypePair.getValue());
+			}
+			else
+			{
+				return ((EnumPath) expression).ne(valueAndTypePair.getValue());
+			}
+		}
+		else if (EValueType.STRING.equals(valueAndTypePair.getType()) && expression instanceof BooleanOperation)
 		{
 			return (BooleanOperation) expression;
 		}
-		else if (EOperator.LIKE_IGNORE_CASE == operator && (expression instanceof StringExpression))
+		else if (EValueType.STRING.equals(valueAndTypePair.getType()) && EOperator.LIKE_IGNORE_CASE == operator && (expression instanceof StringExpression))
 		{
-			return ((StringExpression) expression).containsIgnoreCase((String) value);
+			return ((StringExpression) expression).containsIgnoreCase((String) valueAndTypePair.getValue());
 		}
-		else if ( (operator != null) && (expression instanceof ComparableExpression))
+		else if (expression instanceof ComparableExpression)
 		{
 			switch (operator)
 			{
+				case NE:
+					return ((ComparableExpression) expression).ne((Comparable) valueAndTypePair.getValue());
 				case GT:
-					return ((ComparableExpression) expression).gt((Comparable) value);
+					return ((ComparableExpression) expression).gt((Comparable) valueAndTypePair.getValue());
 				case GOE:
-					return ((ComparableExpression) expression).goe((Comparable) value);
+					return ((ComparableExpression) expression).goe((Comparable) valueAndTypePair.getValue());
 				case LT:
-					return ((ComparableExpression) expression).lt((Comparable<?>) value);
+					return ((ComparableExpression) expression).lt((Comparable<?>) valueAndTypePair.getValue());
 				case LOE:
-					return ((ComparableExpression) expression).loe((Comparable<?>) value);
+					return ((ComparableExpression) expression).loe((Comparable<?>) valueAndTypePair.getValue());
 				case BETWEEN_DATE_TIME:
-					return createWhereBetweenDateTimePredicate(expression, value);
+					return createWhereBetweenDateTimePredicate(expression, valueAndTypePair.getValue());
 				default:
 					if (expression instanceof BooleanExpression)
 					{
-						return ((ComparableExpression) expression).eq(Boolean.valueOf(value.toString()));
+						return ((ComparableExpression) expression).eq(Boolean.valueOf(valueAndTypePair.getValue().toString()));
 					}
 					else
 					{
-						return ((ComparableExpression) expression).eq(value);
+						return ((ComparableExpression) expression).eq(valueAndTypePair.getValue());
 					}
 			}
 		}
-		else if ( (operator != null) && (expression instanceof NumberPath) && (value instanceof Number))
+		else if (expression instanceof NumberPath && valueAndTypePair.getValue() instanceof Number)
 		{
 			switch (operator)
 			{
+				case NE:
+					return ((NumberPath) expression).ne((Number) valueAndTypePair.getValue());
 				case GT:
-					return ((NumberPath) expression).gt((Number) value);
+					return ((NumberPath) expression).gt((Number) valueAndTypePair.getValue());
 				case GOE:
-					return ((NumberPath) expression).goe((Number) value);
+					return ((NumberPath) expression).goe((Number) valueAndTypePair.getValue());
 				case LT:
-					return ((NumberPath) expression).lt((Number) value);
+					return ((NumberPath) expression).lt((Number) valueAndTypePair.getValue());
 				case LOE:
-					return ((NumberPath) expression).loe((Number) value);
+					return ((NumberPath) expression).loe((Number) valueAndTypePair.getValue());
 				default:
-					return ((NumberPath) expression).eq(value);
+					return ((NumberPath) expression).eq(valueAndTypePair.getValue());
 			}
 		}
 		else
 		{
-			return ((SimpleExpression) expression).eq(value);
+			return ((SimpleExpression) expression).eq(valueAndTypePair.getValue());
+		}
+	}
+
+	/**
+	 * Parses the value from filter criterion.
+	 *
+	 * @param <F> the generic type
+	 * @param filterCriterion the filter criterion
+	 * @param mapping the mapping
+	 * @return the serializable
+	 * @throws CBrwBusinessException the c brw business exception
+	 */
+	@SuppressWarnings ({"unchecked", "rawtypes"})
+	private <F extends IFilterable> CValueAndTypePair parseValueFromFilterCriterion (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
+	{
+		switch (filterCriterion.getValueType())
+		{
+			case NUMBER:
+				return new CValueAndTypePair(Long.parseLong(filterCriterion.getValue()), filterCriterion.getValueType());
+			case DATE:
+				return new CValueAndTypePair(LocalDate.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_LOCAL_DATE), filterCriterion.getValueType());
+			case DATE_TIME:
+				return new CValueAndTypePair(OffsetDateTime.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_OFFSET_DATE_TIME), filterCriterion.getValueType());
+			case ENUM:
+				Enum<? extends Enum<?>> enumValue = Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), filterCriterion.getValue());
+				return new CValueAndTypePair(enumValue, filterCriterion.getValueType());
+			case TYPE:
+				Enum<? extends Enum<?>> typeValue = Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), filterCriterion.getValue());
+				Class<?> type = getTypeFromMapping(filterCriterion.getProperty(), (IFilterableType) typeValue, mapping);
+				return new CValueAndTypePair(type, filterCriterion.getValueType());
+			default:
+				return new CValueAndTypePair(filterCriterion.getValue(), filterCriterion.getValueType());
 		}
 	}
 
@@ -177,49 +254,50 @@ public class CBrwDataConverter implements IBrwDataConverter
 	@Override
 	public <F extends IFilterable> Sort convertSortingCriteriaToSort (CSortingCriteriaTransferObject<F> sortingCriteria, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		List<Order> orders = new ArrayList<>();
+		List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
 
 		for (CSortingCriterionTransferObject<F> sortingCriterion : sortingCriteria.getCriteria())
 		{
-			orders.add(convertSortingCriterionToOrder(sortingCriterion, entityMapping));
+			orderSpecifiers.add(convertSortingCriterionToOrderSpecifier(sortingCriterion, entityMapping));
 		}
 
-		return new Sort(orders);
+		return new QSort(orderSpecifiers);
 	}
 
 	/**
-	 * Convert sorting criterion to order.
+	 * Convert sorting criterion to order specifier.
 	 *
+	 * @param <F> the generic type
 	 * @param sortingCriterion the sorting criterion
-	 * @param entityMapping the properties mapping
-	 * @return the order
-	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
+	 * @param entityMapping the entity mapping
+	 * @return the order specifier
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined entity mapping exception
 	 */
-	private <F extends IFilterable> Order convertSortingCriterionToOrder (final CSortingCriterionTransferObject<F> sortingCriterion, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
+	@SuppressWarnings ({"unchecked", "rawtypes"})
+	private <F extends IFilterable> OrderSpecifier<?> convertSortingCriterionToOrderSpecifier (final CSortingCriterionTransferObject<F> sortingCriterion, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		final Direction direction = convertClientDirectionToDirection(sortingCriterion.getDirection());
-		final String propertyName = getVariableFromMapping(sortingCriterion.getProperty(), entityMapping);
-		final NullHandling nullHandling = convertNullPrecedenceToNullHandling(sortingCriterion.getNullPrecedence());
+		final com.querydsl.core.types.Order order = convertClientDirectionToOrder(sortingCriterion.getDirection());
+		final com.querydsl.core.types.OrderSpecifier.NullHandling nullHandling = convertNullPrecedenceToNullHandling(sortingCriterion.getNullPrecedence());
 
-		return new Order(direction, propertyName, nullHandling);
+		return new OrderSpecifier(order, getExpressionFromMapping(sortingCriterion.getProperty(), entityMapping), nullHandling);
 	}
 
 	/**
-	 * Convert client direction to direction.
+	 * Convert client direction to order.
 	 *
 	 * @param clientDirection the client direction
-	 * @return the direction
+	 * @return the order
 	 */
-	private Direction convertClientDirectionToDirection (ESortDirection clientDirection)
+	private Order convertClientDirectionToOrder (ESortDirection clientDirection)
 	{
 		switch (clientDirection)
 		{
 			case ASC:
-				return Direction.ASC;
+				return Order.ASC;
 			case DESC:
-				return Direction.DESC;
+				return Order.DESC;
 			default:
-				return Direction.ASC;
+				return Order.ASC;
 		}
 	}
 
@@ -234,13 +312,13 @@ public class CBrwDataConverter implements IBrwDataConverter
 		switch (clientNullPrecedence)
 		{
 			case FIRST:
-				return NullHandling.NULLS_FIRST;
+				return NullHandling.NullsFirst;
 			case LAST:
-				return NullHandling.NULLS_LAST;
+				return NullHandling.NullsLast;
 			case NONE:
-				return NullHandling.NATIVE;
+				return NullHandling.Default;
 			default:
-				return NullHandling.NATIVE;
+				return NullHandling.Default;
 		}
 	}
 
@@ -254,7 +332,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 */
 	private <F extends IFilterable> SimpleExpression<?> getExpressionFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		SimpleExpression<?> expression = entityMapping.getPair(property).getExpression();
+		SimpleExpression<?> expression = entityMapping.getExpression(property).getExpression();
 
 		if (expression == null)
 		{
@@ -265,22 +343,67 @@ public class CBrwDataConverter implements IBrwDataConverter
 	}
 
 	/**
-	 * Gets the variable from mapping.
+	 * Gets the enum type from mapping.
 	 *
+	 * @param <F> the generic type
 	 * @param property the property
-	 * @param entityMapping the mapping
-	 * @return the variable from mapping
-	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
+	 * @param entityMapping the entity mapping
+	 * @return the enum type from mapping
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined entity mapping exception
 	 */
-	private <F extends IFilterable> String getVariableFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
+	private <F extends IFilterable> Class<? extends Enum<?>> getEnumTypeFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
-		String propertyName = entityMapping.getPair(property).getPropertyName();
-
-		if (propertyName == null)
+		if (entityMapping.getExpression(property) instanceof CBrwEntityPropertyEnumExpression)
 		{
-			throw new CBrwUndefinedEntityMappingException("The variable mapping not found for variable: " + property);
+			return ((CBrwEntityPropertyEnumExpression) entityMapping.getExpression(property)).getEnumType();
 		}
 
-		return propertyName;
+		throw new CBrwUndefinedEntityMappingException("The entity property identity enum not found for property: " + property);
+	}
+
+	/**
+	 * Gets the type from mapping.
+	 *
+	 * @param <F> the generic type
+	 * @param property the property
+	 * @param type the type
+	 * @param entityMapping the entity mapping
+	 * @return the type from mapping
+	 * @throws CBrwUndefinedEntityMappingException the c brw undefined entity mapping exception
+	 */
+	private <F extends IFilterable> Class<?> getTypeFromMapping (final F property, final IFilterableType type, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
+	{
+		if (entityMapping.getExpression(property) instanceof CBrwEntityPropertyTypeExpression)
+		{
+			return ((CBrwEntityPropertyTypeExpression) entityMapping.getExpression(property)).getPairs().get(type);
+		}
+
+		throw new CBrwUndefinedEntityMappingException("The entity property identity type not found for property: " + property);
+	}
+
+	/**
+	 * The Class CValueAndTypePair.
+	 */
+	private class CValueAndTypePair
+	{
+		private final Serializable value;
+
+		private final EValueType type;
+
+		public CValueAndTypePair (Serializable value, EValueType type)
+		{
+			this.value = value;
+			this.type = type;
+		}
+
+		public Serializable getValue ()
+		{
+			return value;
+		}
+
+		public EValueType getType ()
+		{
+			return type;
+		}
 	}
 }

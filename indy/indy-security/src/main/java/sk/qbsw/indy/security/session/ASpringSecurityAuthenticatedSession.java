@@ -34,7 +34,7 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 
 	/** The authentication manager. */
 	@SpringBean (name = "authenticationManager")
-	private AuthenticationManager authenticationManager;
+	private transient AuthenticationManager authenticationManager;
 
 	/**
 	 * Instantiates a new c spring ws authenticated session.

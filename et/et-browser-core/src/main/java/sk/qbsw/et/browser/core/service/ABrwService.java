@@ -34,21 +34,21 @@ public abstract class ABrwService<PK extends Serializable, T extends IEntity<PK>
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.service.IBrwService#getAllByFilter(com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
+	 * @see sk.qbsw.et.browser.core.service.IBrwService#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.core.persistence.model.CJoinDescriptor[])
 	 */
 	@Override
-	public CBrwDto<PK, T> findAll (Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors)
+	public CBrwDto<PK, T> findAll (boolean distinct, Predicate predicate, Pageable pageable, CJoinDescriptor<?>... joinDescriptors)
 	{
-		return convertPageToBrwDto(dao.findAll(predicate, pageable, joinDescriptors));
+		return convertPageToBrwDto(dao.findAll(distinct, predicate, pageable, joinDescriptors));
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.core.service.IBrwService#count(com.querydsl.core.types.Predicate)
+	 * @see sk.qbsw.et.browser.core.service.IBrwService#count(boolean, com.querydsl.core.types.Predicate, sk.qbsw.core.persistence.model.CJoinDescriptor[])
 	 */
 	@Override
-	public long count (Predicate predicate)
+	public long count (boolean distinct, Predicate predicate, CJoinDescriptor<?>... joinDescriptors)
 	{
-		return dao.count(predicate);
+		return dao.count(distinct, predicate, joinDescriptors);
 	}
 
 	/**

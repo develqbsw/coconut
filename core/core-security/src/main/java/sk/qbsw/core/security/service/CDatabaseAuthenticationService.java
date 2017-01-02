@@ -63,7 +63,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 
 	/** Password digester *. */
 	@Autowired
-	private IPasswordDigester digester;
+	private transient IPasswordDigester digester;
 
 	/** The authentication data validation service. */
 	@Autowired

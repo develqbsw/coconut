@@ -30,19 +30,12 @@ import sk.qbsw.core.communication.mail.model.domain.EMailState;
 @Repository (value = "senderMailDao")
 public class CMailDao implements IMailDao
 {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The mail sender. */
 	@Autowired
-	private JavaMailSender mailSender;
-
-	/** Constructed email message. */
-	private MimeMessage message;
-
-	/** The helper. */
-	private MimeMessageHelper helper;
+	private transient JavaMailSender mailSender;
 
 	/**
 	 * Send the mail through protocol defined in configuration.
@@ -52,6 +45,9 @@ public class CMailDao implements IMailDao
 	@Override
 	public CMail update (CMail mail)
 	{
+		MimeMessage message;
+		MimeMessageHelper helper;
+		
 		try
 		{
 			//create message and message helper
@@ -77,7 +73,7 @@ public class CMailDao implements IMailDao
 			helper.setSubject(mail.getSubject());
 			helper.setText(mail.getBody(), true);
 
-			if (mail.getAttachments() != null && mail.getAttachments().size() > 0)
+			if (mail.getAttachments() != null && !mail.getAttachments().isEmpty())
 			{
 				for (CAttachment attachment : mail.getAttachments())
 				{

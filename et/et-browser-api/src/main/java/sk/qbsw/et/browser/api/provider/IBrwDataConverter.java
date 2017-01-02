@@ -10,6 +10,7 @@ import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CPagingTransferObject;
 import sk.qbsw.et.browser.client.model.filter.CSortingCriteriaTransferObject;
+import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedEntityMappingException;
 
 /**
@@ -29,9 +30,9 @@ public interface IBrwDataConverter
 	 * @param filterCriteria the filter criteria
 	 * @param entityMapping the mapping
 	 * @return the predicate
-	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
+	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	<F extends IFilterable> Predicate convertFilterCriteriaToPredicate (CFilterCriteriaTransferObject<F> filterCriteria, CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException;
+	<F extends IFilterable> Predicate convertFilterCriteriaToPredicate (CFilterCriteriaTransferObject<F> filterCriteria, CBrwEntityMapping<F> entityMapping) throws CBrwBusinessException;
 
 	/**
 	 * Convert sorting criteria and paging to pageable.

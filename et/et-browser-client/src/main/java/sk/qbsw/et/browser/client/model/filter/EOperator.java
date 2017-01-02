@@ -4,14 +4,16 @@ package sk.qbsw.et.browser.client.model.filter;
  * The filtering operator.
  *
  * @author Tomas Lauro
- * 
- * @since 1.16.0
  * @version 1.16.0
+ * @since 1.16.0
  */
 public enum EOperator
 {
 	/** The eq. */
 	EQ,
+
+	/** The ne. */
+	NE,
 
 	/** The gt. */
 	GT,

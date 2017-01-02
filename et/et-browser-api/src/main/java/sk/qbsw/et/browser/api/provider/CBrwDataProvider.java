@@ -16,6 +16,7 @@ import sk.qbsw.et.browser.api.mapping.CBrwEntityMapping;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.request.CBrwRequest;
 import sk.qbsw.et.browser.client.model.request.CFilterRequest;
+import sk.qbsw.et.browser.client.model.request.CFilterSortRequest;
 import sk.qbsw.et.browser.core.dto.CBrwDto;
 import sk.qbsw.et.browser.core.exception.CBrwBusinessException;
 import sk.qbsw.et.browser.core.exception.CBrwUndefinedBrowserMappingException;
@@ -51,11 +52,72 @@ public class CBrwDataProvider implements IBrwDataProvider
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getData(java.lang.String, sk.qbsw.et.browser.client.model.request.CBrwRequest)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getBrowserData(java.lang.String, sk.qbsw.et.browser.client.model.request.CBrwRequest)
 	 */
 	@Override
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getBrowserData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
+	{
+		return getBrowserData(browserCode, request, false);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#countData(java.lang.String, sk.qbsw.et.browser.client.model.request.CFilterRequest)
+	 */
+	@Override
+	public <F extends IFilterable> long countData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException
+	{
+		return countData(browserCode, request, false);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getFilteredData(java.lang.String, sk.qbsw.et.browser.client.model.request.CFilterSortRequest)
+	 */
+	@Override
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredData (String browserCode, CFilterSortRequest<F> request) throws CBrwBusinessException
+	{
+		return getFilteredData(browserCode, request, false);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getBrowserDistinctData(java.lang.String, sk.qbsw.et.browser.client.model.request.CBrwRequest)
+	 */
+	@Override
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getBrowserDistinctData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
+	{
+		return getBrowserData(browserCode, request, true);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#countDistinctData(java.lang.String, sk.qbsw.et.browser.client.model.request.CFilterRequest)
+	 */
+	@Override
+	public <F extends IFilterable> long countDistinctData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException
+	{
+		return countData(browserCode, request, true);
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getFilteredDistinctData(java.lang.String, sk.qbsw.et.browser.client.model.request.CFilterSortRequest)
+	 */
+	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredDistinctData (String browserCode, CFilterSortRequest<F> request) throws CBrwBusinessException
+	{
+		return getFilteredData(browserCode, request, true);
+	}
+
+	/**
+	 * Gets the browser data.
+	 *
+	 * @param <F> the generic type
+	 * @param <PK> the generic type
+	 * @param <T> the generic type
+	 * @param browserCode the browser code
+	 * @param request the request
+	 * @param distinct the distinct
+	 * @return the browser data
+	 * @throws CBrwBusinessException the c brw business exception
+	 */
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getData (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
+	private <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> CBrwDto<PK, T> getBrowserData (String browserCode, CBrwRequest<F> request, boolean distinct) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
 		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
@@ -63,28 +125,43 @@ public class CBrwDataProvider implements IBrwDataProvider
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
 		Pageable pageable = dataConverter.convertSortingCriteriaAndPagingToPageable(request.getSortingCriteria(), request.getPaging(), entityMapping);
 
-		return (CBrwDto<PK, T>) serviceFactory.getBrwService(browserCode).findAll(predicate, pageable, joins.toArray(new CJoinDescriptor[joins.size()]));
+		return (CBrwDto<PK, T>) serviceFactory.getBrwService(browserCode).findAll(distinct, predicate, pageable, joins.toArray(new CJoinDescriptor[joins.size()]));
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#count(java.lang.String, sk.qbsw.et.browser.client.model.request.CBrwRequest)
+	/**
+	 * Count data.
+	 *
+	 * @param <F> the generic type
+	 * @param browserCode the browser code
+	 * @param request the request
+	 * @param distinct the distinct
+	 * @return the long
+	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable> long count (String browserCode, CBrwRequest<F> request) throws CBrwBusinessException
+	private <F extends IFilterable> long countData (String browserCode, CFilterRequest<F> request, boolean distinct) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
+		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
 
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
-		return serviceFactory.getBrwService(browserCode).count(predicate);
+		return serviceFactory.getBrwService(browserCode).count(distinct, predicate, joins.toArray(new CJoinDescriptor[joins.size()]));
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#getData(java.lang.String, sk.qbsw.et.browser.client.model.request.CFilterRequest)
+	/**
+	 * Gets the filtered data.
+	 *
+	 * @param <F> the generic type
+	 * @param <PK> the generic type
+	 * @param <T> the generic type
+	 * @param browserCode the browser code
+	 * @param request the request
+	 * @param distinct the distinct
+	 * @return the filtered data
+	 * @throws CBrwBusinessException the c brw business exception
 	 */
-	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getData (String browserCode, CFilterRequest<F> request) throws CBrwBusinessException
+	private <F extends IFilterable, PK extends Serializable, T extends IEntity<PK>> List<T> getFilteredData (String browserCode, CFilterSortRequest<F> request, boolean distinct) throws CBrwBusinessException
 	{
 		CBrwEntityMapping<F> entityMapping = (CBrwEntityMapping<F>) getEntityMappingByBrowserCode(browserCode);
 		List<CJoinDescriptor<?>> joins = getJoinsByBrowserCode(browserCode);
@@ -92,7 +169,7 @@ public class CBrwDataProvider implements IBrwDataProvider
 		Predicate predicate = dataConverter.convertFilterCriteriaToPredicate(request.getFilterCriteria(), entityMapping);
 		Sort sort = dataConverter.convertSortingCriteriaToSort(request.getSortingCriteria(), entityMapping);
 
-		return (List<T>) serviceFactory.getBrwFilterService(browserCode).findAll(predicate, sort, joins.toArray(new CJoinDescriptor[joins.size()]));
+		return (List<T>) serviceFactory.getBrwFilterService(browserCode).findAll(distinct, predicate, sort, joins.toArray(new CJoinDescriptor[joins.size()]));
 	}
 
 	/**
@@ -128,6 +205,11 @@ public class CBrwDataProvider implements IBrwDataProvider
 		return entityMapping.getJoins();
 	}
 
+	/**
+	 * Sets the mapping.
+	 *
+	 * @param mapping the mapping
+	 */
 	/* (non-Javadoc)
 	 * @see sk.qbsw.et.browser.api.provider.IBrwDataProvider#setMapping(java.util.Map)
 	 */

@@ -19,7 +19,7 @@ import sk.qbsw.et.browser.core.dto.CBrwDto;
  * @author Marian Oravec
  * @author Tomas Lauro
  * 
- * @version 1.16.0
+ * @version 1.16.1
  * @since 1.16.0
  */
 public interface IBrwService<PK extends Serializable, T extends IEntity<PK>>extends IFilterService<PK, T>
@@ -36,18 +36,21 @@ public interface IBrwService<PK extends Serializable, T extends IEntity<PK>>exte
 	/**
 	 * Find all.
 	 *
+	 * @param distinct the distinct
 	 * @param predicate the predicate
 	 * @param pageable the pageable
 	 * @param joinDescriptors the join descriptors
 	 * @return the i brw dto
 	 */
-	CBrwDto<PK, T> findAll (final Predicate predicate, final Pageable pageable, final CJoinDescriptor<?>... joinDescriptors);
+	CBrwDto<PK, T> findAll (final boolean distinct, final Predicate predicate, final Pageable pageable, final CJoinDescriptor<?>... joinDescriptors);
 
 	/**
 	 * Count.
 	 *
+	 * @param distinct the distinct
 	 * @param predicate the predicate
+	 * @param joinDescriptors the join descriptors
 	 * @return the long
 	 */
-	long count (final Predicate predicate);
+	long count (final boolean distinct, final Predicate predicate, final CJoinDescriptor<?>... joinDescriptors);
 }

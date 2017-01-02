@@ -28,7 +28,7 @@ class CAuthDataValidationService extends AService implements IAuthDataValidation
 
 	/** The data. */
 	@Autowired
-	private IAuthenticationConfigurator authenticationConfigurator;
+	private transient IAuthenticationConfigurator authenticationConfigurator;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.IAuthDataValidationService#validatePassword(java.lang.String)

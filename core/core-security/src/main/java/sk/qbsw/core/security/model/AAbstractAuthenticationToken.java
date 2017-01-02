@@ -15,10 +15,10 @@ public abstract class AAbstractAuthenticationToken implements IAuthenticationTok
 	private static final long serialVersionUID = -8386599362496103338L;
 
 	/** The credentials. */
-	private final Object credentials;
+	private final transient Object credentials;
 
 	/** The principal. */
-	private final Object principal;
+	private final transient Object principal;
 
 	/**
 	 * Instantiates a new a abstract authentication token.
