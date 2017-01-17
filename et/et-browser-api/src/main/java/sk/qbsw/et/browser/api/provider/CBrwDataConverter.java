@@ -126,7 +126,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 		{
 			return ((StringExpression) expression).containsIgnoreCase((String) valueAndTypePair.getValue());
 		}
-		else if (expression instanceof ComparableExpression)
+		else if (expression instanceof ComparableExpression && valueAndTypePair.getValue() != null)
 		{
 			switch (operator)
 			{
@@ -173,7 +173,15 @@ public class CBrwDataConverter implements IBrwDataConverter
 		}
 		else
 		{
-			return ((SimpleExpression) expression).eq(valueAndTypePair.getValue());
+			switch (operator)
+			{
+				case IS_NULL:
+					return ((SimpleExpression) expression).isNull();
+				case IS_NOT_NULL:
+					return ((SimpleExpression) expression).isNotNull();
+				default:
+					return ((SimpleExpression) expression).eq(valueAndTypePair.getValue());
+			}
 		}
 	}
 
@@ -189,23 +197,30 @@ public class CBrwDataConverter implements IBrwDataConverter
 	@SuppressWarnings ({"unchecked", "rawtypes"})
 	private <F extends IFilterable> CValueAndTypePair parseValueFromFilterCriterion (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
 	{
-		switch (filterCriterion.getValueType())
+		if (filterCriterion.getValue() != null)
 		{
-			case NUMBER:
-				return new CValueAndTypePair(Long.parseLong(filterCriterion.getValue()), filterCriterion.getValueType());
-			case DATE:
-				return new CValueAndTypePair(LocalDate.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_LOCAL_DATE), filterCriterion.getValueType());
-			case DATE_TIME:
-				return new CValueAndTypePair(OffsetDateTime.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_OFFSET_DATE_TIME), filterCriterion.getValueType());
-			case ENUM:
-				Enum<? extends Enum<?>> enumValue = Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), filterCriterion.getValue());
-				return new CValueAndTypePair(enumValue, filterCriterion.getValueType());
-			case TYPE:
-				Enum<? extends Enum<?>> typeValue = Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), filterCriterion.getValue());
-				Class<?> type = getTypeFromMapping(filterCriterion.getProperty(), (IFilterableType) typeValue, mapping);
-				return new CValueAndTypePair(type, filterCriterion.getValueType());
-			default:
-				return new CValueAndTypePair(filterCriterion.getValue(), filterCriterion.getValueType());
+			switch (filterCriterion.getValueType())
+			{
+				case NUMBER:
+					return new CValueAndTypePair(Long.parseLong(filterCriterion.getValue()), filterCriterion.getValueType());
+				case DATE:
+					return new CValueAndTypePair(LocalDate.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_LOCAL_DATE), filterCriterion.getValueType());
+				case DATE_TIME:
+					return new CValueAndTypePair(OffsetDateTime.parse(filterCriterion.getValue(), DateTimeFormatter.ISO_OFFSET_DATE_TIME), filterCriterion.getValueType());
+				case ENUM:
+					Enum<? extends Enum<?>> enumValue = Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), filterCriterion.getValue());
+					return new CValueAndTypePair(enumValue, filterCriterion.getValueType());
+				case TYPE:
+					Enum<? extends Enum<?>> typeValue = Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(filterCriterion.getProperty(), mapping), filterCriterion.getValue());
+					Class<?> type = getTypeFromMapping(filterCriterion.getProperty(), (IFilterableType) typeValue, mapping);
+					return new CValueAndTypePair(type, filterCriterion.getValueType());
+				default:
+					return new CValueAndTypePair(filterCriterion.getValue(), filterCriterion.getValueType());
+			}
+		}
+		else
+		{
+			return new CValueAndTypePair(filterCriterion.getValue(), filterCriterion.getValueType());
 		}
 	}
 

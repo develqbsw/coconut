@@ -31,5 +31,11 @@ public enum EOperator
 	BETWEEN_DATE_TIME,
 
 	/** The like ignore case. */
-	LIKE_IGNORE_CASE;
+	LIKE_IGNORE_CASE,
+
+	/** The is null. */
+	IS_NULL,
+
+	/** The is not null. */
+	IS_NOT_NULL;
 }
