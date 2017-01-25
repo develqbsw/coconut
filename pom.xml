@@ -51,6 +51,10 @@
 
 		<!-- validation -->
 		<validation-api.version>1.1.0.Final</validation-api.version>
+		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+
+		<!-- swagger -->
+		<swagger.version>1.5.10</swagger.version>
 
 		<!-- Logging -->
 		<log4j.version>1.2.17</log4j.version>
@@ -207,11 +211,15 @@
 				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
-	<groupId>com.fasterxml.jackson.core</groupId>
-	<artifactId>jackson-databind</artifactId>
-	<version>${jackson.version}</version>
-</dependency>
-
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
 
 			<!-- MAIL -->
 			<dependency>
@@ -525,6 +533,12 @@
 				<artifactId>validation-api</artifactId>
 				<version>${validation-api.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator.version}</version>
+				<scope>test</scope>
+			</dependency>
 
 			<!-- Parsers - XML, ... -->
 			<dependency>
@@ -563,6 +577,13 @@
 						<groupId>log4j</groupId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+
+			<!-- swagger -->
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-annotations</artifactId>
+				<version>${swagger.version}</version>
 			</dependency>
 
 			<!-- monitoring -->

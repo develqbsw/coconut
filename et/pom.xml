@@ -16,5 +16,6 @@
 		<module>et-browser-client</module>
 		<module>et-browser-core</module>
 		<module>et-browser-api</module>
+		<module>et-mailchimp-client</module>
 	</modules>
 </project>
