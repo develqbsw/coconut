@@ -42,7 +42,7 @@ public class RequestResponseValidationAspect
 	 * @return the object
 	 * @throws Throwable the throwable
 	 */
-	@Around ("execution(* sk.qbsw.lomnicagallery.mailchimp.client.service.MailchimpClientImpl.*(..)) && args(request, ..)")
+	@Around ("execution(* sk.qbsw.et.mailchimp.client.service.MailchimpClientImpl.*(..)) && args(request, ..)")
 	public Object validateRequestAndResponse (ProceedingJoinPoint joinPoint, Object request) throws Throwable
 	{
 		validateRequest(request);
