@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>et-browser-core</artifactId>
-	<name>ET Browser Core</name>
+	<artifactId>core-image</artifactId>
+	<name>Core Image</name>
 	<packaging>jar</packaging>
 
 	<organization>
@@ -13,48 +12,53 @@
 	</organization>
 
 	<parent>
-		<groupId>sk.qbsw.et</groupId>
-		<artifactId>et-top</artifactId>
+		<groupId>sk.qbsw.core</groupId>
+		<artifactId>core-top</artifactId>
 		<version>1.17.0</version>
 	</parent>
 
 	<dependencies>
-		<!-- qbsw -->
+		<!-- QBSW -->
 		<dependency>
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-base</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.core</groupId>
-			<artifactId>core-persistence</artifactId>
-		</dependency>
 
-		<!-- Spring -->
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-commons</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
 
-		<!-- jpa -->
+		<!-- apache -->
 		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
 		</dependency>
 
-		<!-- slf4j -->
+		<!-- logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -68,21 +72,6 @@
 					<optimize>true</optimize>
 					<debug>true</debug>
 				</configuration>
-			</plugin>
-
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven-source-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

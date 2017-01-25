@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>coconut</artifactId>
-		<version>1.16.2</version>
+		<version>1.17.0</version>
 	</parent>
 
 	<modules>
