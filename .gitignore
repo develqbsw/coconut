@@ -2,7 +2,6 @@
 *.project
 *.classpath
 */target/
-*.gitignore
 rebel.xml
 core/core-api/target/
 core/core-base/target/
@@ -21,4 +20,3 @@ et/et-browser-core/target/
 indy/indy-base/target/
 indy/indy-security/target/
 core/core-logging/logs/
-core/core-security/logs/core-security-junit.log.2016-07-27
