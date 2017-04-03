@@ -20,3 +20,7 @@ et/et-browser-core/target/
 indy/indy-base/target/
 indy/indy-security/target/
 core/core-logging/logs/
+et/et-mailchimp-client/target/
+core/core-image/target/
+et/et-browser-api/target/
+et/et-browser-client/target/
