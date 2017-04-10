@@ -3,64 +3,44 @@
  */
 package sk.qbsw.core.security.dao.jpa;
 
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
-import org.hibernate.Session;
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
-
+import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IUserDao;
-import sk.qbsw.core.security.model.domain.CGroup;
-import sk.qbsw.core.security.model.domain.CUnit;
-import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.model.domain.QCAuthenticationParams;
-import sk.qbsw.core.security.model.domain.QCGroup;
-import sk.qbsw.core.security.model.domain.QCOrganization;
-import sk.qbsw.core.security.model.domain.QCRole;
-import sk.qbsw.core.security.model.domain.QCUnit;
-import sk.qbsw.core.security.model.domain.QCUser;
-import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
+import sk.qbsw.core.security.model.domain.*;
 import sk.qbsw.core.security.model.filter.CUserAssociationsFilter;
 import sk.qbsw.core.security.model.filter.CUserDetailFilter;
-import sk.qbsw.core.security.model.order.COrderModel;
-import sk.qbsw.core.security.model.order.COrderSpecification;
-import sk.qbsw.core.security.model.order.EOrderSpecifier;
-import sk.qbsw.core.security.model.order.EUserOrderByAttributeSpecifier;
-import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
+import sk.qbsw.core.security.model.order.*;
+
+import javax.persistence.NoResultException;
+import java.util.List;
 
 /**
  * User DAO implementation.
  * 
  * @author rosenberg
  * @author Tomas Lauro
- * 
  * @version 1.16.0
  * @since 1.0.0
  */
 @Repository (value = "userDao")
 public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new user jpa dao.
-	 * 
 	 */
 	public CUserJpaDao ()
 	{
 		super(QCUser.cUser, Long.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findForModification(java.lang.Long)
 	 */
 	@Override
@@ -71,42 +51,41 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 	}
 
 	/**
-	 * Find by id  with fetched organization, groups, units, roles and default groups - if there is no result throws an exception.
+	 * Find by id with fetched organization, groups, units, roles and default groups - if there is no result throws an exception.
 	 *
 	 * @param id the id
 	 * @return the user with given id
-	 * 
 	 * @throws NoResultException the no result exception
-	 * 
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findById(java.lang.Object)
 	 */
 	@Override
 	public CUser findById (Long id) throws NoResultException
 	{
-		//get hibernate session from entity manager to set filter
+		// get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
 
 		try
 		{
-			//set filter to get just groups with proper default units
+			// set filter to get just groups with proper default units
 			session.enableFilter("userDefaultUnitFilter");
 
 			QCUser qUser = QCUser.cUser;
 			QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 			QCGroup qGroup = QCGroup.cGroup;
 
-			//create query
+			// create query
 			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).fetchJoin().leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit).fetchJoin().leftJoin(qGroup.roles).fetchJoin().where(qUser.id.eq(id));
 			return CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
 		finally
 		{
-			//disable filter
+			// disable filter
 			session.disableFilter("userDefaultUnitFilter");
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLogin(java.lang.String)
 	 */
 	@Override
@@ -115,7 +94,8 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 		return findUserByLoginAndUnit(login, null);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByLoginAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
@@ -135,13 +115,13 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 	 */
 	private CUser findUserByLoginAndUnit (String login, CUnit unit) throws CSecurityException
 	{
-		//login is mandatory
+		// login is mandatory
 		if (login == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		//get hibernate session from entity manager to set filter
+		// get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
 
 		try
@@ -151,9 +131,9 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 			QCGroup qGroup = QCGroup.cGroup;
 			QCUnit qUnit = QCUnit.cUnit;
 
-			//create where condition
+			// create where condition
 			BooleanBuilder builder = new BooleanBuilder();
-			//the login cannot be null
+			// the login cannot be null
 			builder.and(qUser.login.eq(login));
 
 			// 1. The unit has been set
@@ -164,22 +144,23 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 			// 2. The unit has not been set
 			else
 			{
-				//set filter to get just groups with proper default units
+				// set filter to get just groups with proper default units
 				session.enableFilter("userDefaultUnitFilter");
 			}
 
-			//create query
+			// create query
 			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).fetchJoin().leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qGroup.roles).fetchJoin().where(builder);
 			return CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
 		finally
 		{
-			//disable filter
+			// disable filter
 			session.disableFilter("userDefaultUnitFilter");
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByPinCode(java.lang.String)
 	 */
 	@Override
@@ -193,23 +174,25 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 		QCUser qUser = QCUser.cUser;
 		QCAuthenticationParams qAuthParams = QCAuthenticationParams.cAuthenticationParams;
 
-		//create query
+		// create query
 		JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).fetchJoin().leftJoin(qUser.authenticationParams, qAuthParams).where(qAuthParams.pin.eq(pinCode));
 		return query.fetch();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#countAll()
 	 */
 	@Override
 	public long countAll ()
 	{
-		//create query
+		// create query
 		JPAQuery<CUser> query = queryFactory.selectFrom(QCUser.cUser);
 		return query.fetchCount();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
 	 */
 	@Override
@@ -221,7 +204,8 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 		return findByUserAssociationsFilter(null, orderModel);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByUnitAndGroup(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CGroup, sk.qbsw.core.security.model.order.COrderModel)
 	 */
 	@Override
@@ -237,7 +221,7 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 		QCGroup qGroup = QCGroup.cGroup;
 		QCUnit qUnit = QCUnit.cUnit;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qUnit.eq(unit));
 
@@ -246,10 +230,10 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 			builder.and(qGroup.eq(group));
 		}
 
-		//create query
+		// create query
 		JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().where(builder);
 
-		//set order
+		// set order
 		if (orderModel != null)
 		{
 			query = query.orderBy(orderModel.getOrderSpecifiers());
@@ -258,25 +242,26 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 		return query.fetch();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByUserDetailFilter(sk.qbsw.core.security.model.filter.CUserDetailFilter, sk.qbsw.core.security.model.order.COrderModel)
 	 */
 	@Override
 	public List<CUser> findByUserDetailFilter (CUserDetailFilter filter, COrderModel<? extends IOrderByAttributeSpecifier> orderModel)
 	{
-		//get hibernate session from entity manager to set filter
+		// get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
 
 		try
 		{
-			//set filter to get just groups with proper default units
+			// set filter to get just groups with proper default units
 			session.enableFilter("userDefaultUnitFilter");
 
 			QCUser qUser = QCUser.cUser;
 			QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 			QCGroup qGroup = QCGroup.cGroup;
 
-			//create where condition
+			// create where condition
 			BooleanBuilder builder = new BooleanBuilder();
 			if (filter != null)
 			{
@@ -316,10 +301,10 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 				}
 			}
 
-			//create query
+			// create query
 			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization).leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit).fetchJoin().where(builder);
 
-			//set order
+			// set order
 			if (orderModel != null)
 			{
 				query = query.orderBy(orderModel.getOrderSpecifiers());
@@ -329,23 +314,24 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 		}
 		finally
 		{
-			//disable filter
+			// disable filter
 			session.disableFilter("userDefaultUnitFilter");
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUserDao#findByUserAssociationsFilter(sk.qbsw.core.security.model.filter.CUserAssociationsFilter, sk.qbsw.core.security.model.order.COrderModel)
 	 */
 	@Override
 	public List<CUser> findByUserAssociationsFilter (CUserAssociationsFilter filter, COrderModel<? extends IOrderByAttributeSpecifier> orderModel)
 	{
-		//get hibernate session from entity manager to set filter
+		// get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
 
 		try
 		{
-			//set filter to get just groups with proper default units
+			// set filter to get just groups with proper default units
 			session.enableFilter("userDefaultUnitFilter");
 
 			QCUser qUser = QCUser.cUser;
@@ -354,7 +340,7 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 			QCRole qRole = QCRole.cRole;
 			QCOrganization qOrganization = QCOrganization.cOrganization;
 
-			//create where condition
+			// create where condition
 			BooleanBuilder builder = new BooleanBuilder();
 			if (filter != null)
 			{
@@ -384,10 +370,10 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 				}
 			}
 
-			//create query
+			// create query
 			JPAQuery<CUser> query = queryFactory.selectFrom(qUser).distinct().leftJoin(qUser.organization, qOrganization).fetchJoin().leftJoin(qUser.defaultUnit).fetchJoin().leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().leftJoin(qUserUnitGroup.unit).fetchJoin().leftJoin(qGroup.roles, qRole).fetchJoin().where(builder);
 
-			//set order
+			// set order
 			if (orderModel != null)
 			{
 				query = query.orderBy(orderModel.getOrderSpecifiers());
@@ -397,7 +383,7 @@ public class CUserJpaDao extends AEntityQDslDao<Long, CUser> implements IUserDao
 		}
 		finally
 		{
-			//disable filter
+			// disable filter
 			session.disableFilter("userDefaultUnitFilter");
 		}
 	}

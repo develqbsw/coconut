@@ -23,18 +23,16 @@ import sk.qbsw.core.security.model.order.IOrderByAttributeSpecifier;
  *
  * @author rosenberg
  * @author Tomas Lauro
- * 
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
+public interface IUserDao extends IEntityDao<Long, CUser>
 {
 	/**
 	 * Find for modification.
 	 *
 	 * @param id the pk id
 	 * @return the c user
-	 * 
 	 * @deprecated use {@link sk.qbsw.core.security.dao.IUserDao#findById(Long)}
 	 */
 	CUser findForModification (Long id);
@@ -44,7 +42,6 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 *
 	 * @param login the login (mandatory)
 	 * @return the user
-	 * 
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException the login is null
 	 */
@@ -56,7 +53,6 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @param login the login (optional)
 	 * @param unit the unit (optional)
 	 * @return the user
-	 * 
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException the login is null
 	 */
@@ -67,7 +63,6 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 *
 	 * @param pinCode
 	 * @return the users
-	 * 
 	 * @throws CSecurityException if the input pinCode is null
 	 */
 	List<CUser> findByPinCode (String pinCode) throws CSecurityException;
@@ -86,7 +81,6 @@ public interface IUserDao extends Serializable, IEntityDao<Long, CUser>
 	 * @param group the group
 	 * @param orderModel the order model
 	 * @return the list
-	 * 
 	 * @throws CSecurityException the unit is null
 	 */
 	List<CUser> findByUnitAndGroup (CUnit unit, CGroup group, COrderModel<? extends IOrderByAttributeSpecifier> orderModel) throws CSecurityException;

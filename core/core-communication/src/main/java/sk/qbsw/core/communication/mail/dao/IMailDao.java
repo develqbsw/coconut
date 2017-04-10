@@ -1,11 +1,10 @@
 package sk.qbsw.core.communication.mail.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
 import sk.qbsw.core.communication.mail.model.domain.CMail;
 import sk.qbsw.core.communication.mail.model.domain.EMailState;
 import sk.qbsw.core.persistence.dao.ICrudDao;
+
+import java.util.List;
 
 /**
  * The interface for mail dao.
@@ -15,7 +14,7 @@ import sk.qbsw.core.persistence.dao.ICrudDao;
  * @version 1.9.1
  * @since 1.9.0
  */
-public interface IMailDao extends Serializable, ICrudDao<Long, CMail>
+public interface IMailDao extends ICrudDao<Long, CMail>
 {
 
 	/**

@@ -3,11 +3,10 @@
  */
 package sk.qbsw.core.security.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CLicense;
+
+import java.util.List;
 
 /**
  * The Interface ILicenseDao.
@@ -16,7 +15,7 @@ import sk.qbsw.core.security.model.domain.CLicense;
  * @version 1.0
  * @since 1.0
  */
-public interface ILicenseDao extends Serializable, IEntityDao<Long, CLicense<?>>
+public interface ILicenseDao extends IEntityDao<Long, CLicense<?>>
 {
 	/**
 	 * Find by organization id.

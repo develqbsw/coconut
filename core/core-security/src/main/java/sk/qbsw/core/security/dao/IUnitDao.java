@@ -3,14 +3,12 @@
  */
 package sk.qbsw.core.security.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CUnit;
+
+import javax.persistence.NoResultException;
+import java.util.List;
 
 /**
  * The Interface IUnitDao.
@@ -20,7 +18,7 @@ import sk.qbsw.core.security.model.domain.CUnit;
  * @version 1.13.0
  * @since 1.6.0
  */
-public interface IUnitDao extends Serializable, IEntityDao<Long, CUnit>
+public interface IUnitDao extends IEntityDao<Long, CUnit>
 {
 
 	/**

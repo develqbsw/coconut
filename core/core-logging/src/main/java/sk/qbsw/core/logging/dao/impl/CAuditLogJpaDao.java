@@ -19,9 +19,6 @@ import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 @Repository (value = "auditLogDao")
 public class CAuditLogJpaDao extends AEntityJpaDao<Long, CAuditLog> implements IAuditLogDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new unit jpa dao.
 	 */

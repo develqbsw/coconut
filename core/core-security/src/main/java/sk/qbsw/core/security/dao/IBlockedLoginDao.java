@@ -1,14 +1,12 @@
 package sk.qbsw.core.security.dao;
 
-import java.io.Serializable;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
+
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 /**
  * The Interface IBlockedLoginDao.
@@ -18,7 +16,7 @@ import sk.qbsw.core.security.model.domain.CBlockedLogin;
  * @version 1.13.0
  * @since 1.12.2
  */
-public interface IBlockedLoginDao extends Serializable, IEntityDao<Long, CBlockedLogin>
+public interface IBlockedLoginDao extends IEntityDao<Long, CBlockedLogin>
 {
 	/**
 	 * Find the blocked login by login and ip.

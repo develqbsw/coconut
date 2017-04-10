@@ -3,16 +3,14 @@
  */
 package sk.qbsw.core.security.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.CRole;
 import sk.qbsw.core.security.model.domain.CUser;
+
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import java.util.List;
 
 /**
  * The Interface IRoleDao.
@@ -23,7 +21,7 @@ import sk.qbsw.core.security.model.domain.CUser;
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface IRoleDao extends Serializable, IEntityDao<Long, CRole>
+public interface IRoleDao extends IEntityDao<Long, CRole>
 {
 	
 	/**

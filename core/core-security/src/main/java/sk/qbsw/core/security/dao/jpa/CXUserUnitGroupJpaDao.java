@@ -1,38 +1,25 @@
 package sk.qbsw.core.security.dao.jpa;
 
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
-
+import org.springframework.stereotype.Repository;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.dao.IXUserUnitGroupDao;
-import sk.qbsw.core.security.model.domain.CGroup;
-import sk.qbsw.core.security.model.domain.CUnit;
-import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.model.domain.CXUserUnitGroup;
-import sk.qbsw.core.security.model.domain.QCGroup;
-import sk.qbsw.core.security.model.domain.QCUnit;
-import sk.qbsw.core.security.model.domain.QCUser;
-import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
+import sk.qbsw.core.security.model.domain.*;
+
+import java.util.List;
 
 /**
  * DAO for cross entities between user, unit and group
  * 
  * @author farkas.roman
  * @author Tomas Lauro
- * 
  * @version 1.16.0
  * @since 1.7.0
  */
 @Repository (value = "xUserUnitGroupDao")
 public class CXUserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup> implements IXUserUnitGroupDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new x user unit group dao.
 	 */
@@ -41,7 +28,8 @@ public class CXUserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup>
 		super(QCXUserUnitGroup.cXUserUnitGroup, Long.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IXUserUnitGroupDao#findByUserAndUnitAndGroup(sk.qbsw.core.security.model.domain.CUser, sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CGroup)
 	 */
 	@Override
@@ -52,7 +40,7 @@ public class CXUserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup>
 		QCUnit qUnit = QCUnit.cUnit;
 		QCGroup qGroup = QCGroup.cGroup;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		if (user != null)
 		{
@@ -67,7 +55,7 @@ public class CXUserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup>
 			builder.and(qGroup.eq(group));
 		}
 
-		//create query
+		// create query
 		JPAQuery<CXUserUnitGroup> query = queryFactory.selectFrom(qUserUnitGroup).distinct().leftJoin(qUserUnitGroup.user, qUser).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().where(builder);
 		return query.fetch();
 	}

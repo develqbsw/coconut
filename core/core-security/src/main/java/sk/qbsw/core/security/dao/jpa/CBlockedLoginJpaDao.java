@@ -1,15 +1,8 @@
 package sk.qbsw.core.security.dao.jpa;
 
-import java.time.OffsetDateTime;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
-
+import org.springframework.stereotype.Repository;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
@@ -19,36 +12,36 @@ import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.model.domain.CBlockedLogin;
 import sk.qbsw.core.security.model.domain.QCBlockedLogin;
 
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import java.time.OffsetDateTime;
+
 /**
  * Blocked login DAO implementation.
  * 
  * @author Tomas Lauro
- * 
  * @version 1.16.0
  * @since 1.12.2
  */
 @Repository (value = "blockedLoginJpaDao")
 public class CBlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> implements IBlockedLoginDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new authentication black list jpa dao.
-	 * 
 	 */
 	public CBlockedLoginJpaDao ()
 	{
 		super(QCBlockedLogin.cBlockedLogin, Long.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#findOneByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSecurityException, NonUniqueResultException, NoResultException
 	{
-		//checks mandatory params
+		// checks mandatory params
 		if (login == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
@@ -56,7 +49,7 @@ public class CBlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> imp
 
 		QCBlockedLogin qBlockedLogin = QCBlockedLogin.cBlockedLogin;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qBlockedLogin.login.eq(login));
 		if (ip != null)
@@ -68,12 +61,13 @@ public class CBlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> imp
 			builder.and(qBlockedLogin.ip.isNull());
 		}
 
-		//create query
+		// create query
 		JPAQuery<CBlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IBlockedLoginDao#countCurrentlyBlockedByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -86,7 +80,7 @@ public class CBlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> imp
 
 		QCBlockedLogin qBlockedLogin = QCBlockedLogin.cBlockedLogin;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qBlockedLogin.login.eq(login));
 		builder.and(qBlockedLogin.blockedFrom.lt(OffsetDateTime.now()));
@@ -96,7 +90,7 @@ public class CBlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> imp
 			builder.and(qBlockedLogin.ip.eq(ip));
 		}
 
-		//create query
+		// create query
 		JPAQuery<CBlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
 		return query.fetchCount();
 	}

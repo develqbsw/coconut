@@ -3,19 +3,17 @@
  */
 package sk.qbsw.core.configuration.dao.jpa;
 
-import java.time.OffsetDateTime;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
 import sk.qbsw.core.configuration.dao.ISystemParameterDao;
 import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * The Class CSystemParameter
@@ -27,9 +25,6 @@ import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 @Repository (value = "systemParameterDao")
 public class CSystemParameterDao extends AEntityJpaDao<Long, CSystemParameter> implements ISystemParameterDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CSystemParameterDao.class);
 
