@@ -3,22 +3,20 @@
  */
 package sk.qbsw.core.security.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.core.security.model.domain.COrganization;
+
+import java.util.List;
 
 /**
  * The Interface IOrganizationDao.
  *
  * @author rosenberg
  * @author Tomas Lauro
- * 
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface IOrganizationDao extends Serializable, IEntityDao<Long, COrganization>
+public interface IOrganizationDao extends IEntityDao<Long, COrganization>
 {
 	/**
 	 * Find all organizations by name.
@@ -33,7 +31,6 @@ public interface IOrganizationDao extends Serializable, IEntityDao<Long, COrgani
 	 *
 	 * @param name the name (mandatory)
 	 * @return organization or null if organization not exist
-	 * 
 	 * @deprecated the organization name is no longer unique
 	 */
 	COrganization findOneByName (String name);

@@ -1,14 +1,12 @@
 package sk.qbsw.core.logging.dao.impl;
 
-import java.util.List;
-
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
-
 import sk.qbsw.core.logging.dao.IInstallationLogDao;
 import sk.qbsw.core.logging.model.domain.CInstallationLog;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * The installation log jpa dao.
@@ -20,9 +18,6 @@ import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 @Repository (value = "jpaInstallationLogDao")
 public class CInstallationLogJpaDao extends AEntityJpaDao<Long, CInstallationLog> implements IInstallationLogDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new installation log jpa dao.
 	 */
@@ -31,7 +26,8 @@ public class CInstallationLogJpaDao extends AEntityJpaDao<Long, CInstallationLog
 		super(CInstallationLog.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.logging.dao.IInstallationLogDao#findByVersion(java.lang.String)
 	 */
 	@Override
@@ -45,7 +41,8 @@ public class CInstallationLogJpaDao extends AEntityJpaDao<Long, CInstallationLog
 		return (CInstallationLog) query.getSingleResult();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.logging.dao.IInstallationLogDao#findAll(java.util.List)
 	 */
 	@SuppressWarnings ("unchecked")

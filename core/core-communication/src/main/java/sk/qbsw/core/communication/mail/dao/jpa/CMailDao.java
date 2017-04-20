@@ -1,15 +1,13 @@
 package sk.qbsw.core.communication.mail.dao.jpa;
 
-import java.util.List;
-
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
-
 import sk.qbsw.core.communication.mail.dao.IMailDao;
 import sk.qbsw.core.communication.mail.model.domain.CMail;
 import sk.qbsw.core.communication.mail.model.domain.EMailState;
 import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
+
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * The jpa dao for mail.
@@ -22,9 +20,6 @@ import sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao;
 @Repository (value = "jpaMailDao")
 public class CMailDao extends AEntityJpaDao<Long, CMail> implements IMailDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new mail jpa dao.
 	 */

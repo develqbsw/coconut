@@ -3,14 +3,8 @@
  */
 package sk.qbsw.core.security.dao.jpa;
 
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.jpa.impl.JPAQuery;
-
+import org.springframework.stereotype.Repository;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
@@ -21,20 +15,19 @@ import sk.qbsw.core.security.model.domain.QCUnit;
 import sk.qbsw.core.security.model.domain.QCUser;
 import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
 
+import javax.persistence.NoResultException;
+import java.util.List;
+
 /**
  * The unit jpa dao.
  *
  * @author Tomas Lauro
- * 
  * @version 1.16.0
  * @since 1.6.0
  */
 @Repository (value = "unitDao")
 public class CUnitJpaDao extends AEntityQDslDao<Long, CUnit> implements IUnitDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new unit jpa dao.
 	 */
@@ -43,7 +36,8 @@ public class CUnitJpaDao extends AEntityQDslDao<Long, CUnit> implements IUnitDao
 		super(QCUnit.cUnit, Long.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUnitDao#findOneByName(java.lang.String)
 	 */
 	@Override
@@ -56,12 +50,13 @@ public class CUnitJpaDao extends AEntityQDslDao<Long, CUnit> implements IUnitDao
 
 		QCUnit qUnit = QCUnit.cUnit;
 
-		//create query
+		// create query
 		JPAQuery<CUnit> query = queryFactory.selectFrom(qUnit).distinct().leftJoin(qUnit.groups).fetchJoin().leftJoin(qUnit.organization).fetchJoin().where(qUnit.name.eq(name));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IUnitDao#findByUserId(java.lang.Long)
 	 */
 	@Override
@@ -76,7 +71,7 @@ public class CUnitJpaDao extends AEntityQDslDao<Long, CUnit> implements IUnitDao
 		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
 		QCUser qUser = QCUser.cUser;
 
-		//create query
+		// create query
 		JPAQuery<CUnit> query = queryFactory.selectFrom(qUnit).distinct().join(qUnit.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.id.eq(userId)).orderBy(qUnit.name.asc());
 		return query.fetch();
 	}

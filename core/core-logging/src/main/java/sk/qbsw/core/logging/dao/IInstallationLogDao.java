@@ -1,12 +1,10 @@
 package sk.qbsw.core.logging.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
 import sk.qbsw.core.logging.model.domain.CInstallationLog;
 import sk.qbsw.core.persistence.dao.IEntityDao;
+
+import javax.persistence.NoResultException;
+import java.util.List;
 
 /**
  * The installation log dao.
@@ -15,7 +13,7 @@ import sk.qbsw.core.persistence.dao.IEntityDao;
  * @version 1.9.0
  * @since 1.9.0
  */
-public interface IInstallationLogDao extends Serializable, IEntityDao<Long, CInstallationLog>
+public interface IInstallationLogDao extends IEntityDao<Long, CInstallationLog>
 {
 	/**
 	 * Find installation log by version.

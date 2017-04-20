@@ -3,33 +3,27 @@
  */
 package sk.qbsw.core.security.dao.jpa;
 
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
-
+import org.springframework.stereotype.Repository;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.security.dao.IOrganizationDao;
 import sk.qbsw.core.security.model.domain.COrganization;
 import sk.qbsw.core.security.model.domain.QCOrganization;
+
+import java.util.List;
 
 /**
  * The organization jpa dao.
  *
  * @author rosenberg
  * @author Tomas Lauro
- * 
  * @version 1.16.0
  * @since 1.0.0
  */
 @Repository (value = "orgDao")
 public class COrganizationJpaDao extends AEntityQDslDao<Long, COrganization> implements IOrganizationDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new organization jpa dao.
 	 */
@@ -38,7 +32,8 @@ public class COrganizationJpaDao extends AEntityQDslDao<Long, COrganization> imp
 		super(QCOrganization.cOrganization, Long.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findByName(java.lang.String)
 	 */
 	@Override
@@ -56,7 +51,7 @@ public class COrganizationJpaDao extends AEntityQDslDao<Long, COrganization> imp
 			builder.and(qOrganization.name.isNull());
 		}
 
-		//create query
+		// create query
 		JPAQuery<COrganization> query = queryFactory.selectFrom(qOrganization).where(builder);
 		return query.fetch();
 	}
@@ -72,12 +67,13 @@ public class COrganizationJpaDao extends AEntityQDslDao<Long, COrganization> imp
 	{
 		QCOrganization qOrganization = QCOrganization.cOrganization;
 
-		//create query
+		// create query
 		JPAQuery<COrganization> query = queryFactory.selectFrom(qOrganization).orderBy(qOrganization.name.asc());
 		return query.fetch();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IOrganizationDao#findOneByName(java.lang.String)
 	 */
 	@Deprecated
@@ -86,7 +82,7 @@ public class COrganizationJpaDao extends AEntityQDslDao<Long, COrganization> imp
 	{
 		QCOrganization qOrganization = QCOrganization.cOrganization;
 
-		//create query
+		// create query
 		JPAQuery<COrganization> query = queryFactory.selectFrom(qOrganization).where(qOrganization.name.eq(name));
 		List<COrganization> organizations = query.fetch();
 

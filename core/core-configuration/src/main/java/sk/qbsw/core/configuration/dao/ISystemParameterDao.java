@@ -3,12 +3,11 @@
  */
 package sk.qbsw.core.configuration.dao;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.List;
-
 import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 import sk.qbsw.core.persistence.dao.IEntityDao;
+
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * The Interface ISystemParameterDao.
@@ -17,7 +16,7 @@ import sk.qbsw.core.persistence.dao.IEntityDao;
  * @version 1.8.0
  * @since 1.8.0
  */
-public interface ISystemParameterDao extends Serializable, IEntityDao<Long, CSystemParameter>
+public interface ISystemParameterDao extends IEntityDao<Long, CSystemParameter>
 {
 	/**
 	 * find system parameter by name where actual system date is between validFromDate and validToDate 

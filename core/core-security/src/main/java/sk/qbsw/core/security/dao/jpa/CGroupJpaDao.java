@@ -1,30 +1,21 @@
 package sk.qbsw.core.security.dao.jpa;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IGroupDao;
-import sk.qbsw.core.security.model.domain.CGroup;
-import sk.qbsw.core.security.model.domain.CUnit;
-import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.model.domain.QCGroup;
-import sk.qbsw.core.security.model.domain.QCUnit;
-import sk.qbsw.core.security.model.domain.QCUser;
-import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
+import sk.qbsw.core.security.model.domain.*;
+
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Class CGroupJpaDao.
@@ -32,16 +23,12 @@ import sk.qbsw.core.security.model.domain.QCXUserUnitGroup;
  * @author Ladislav Rosenberg
  * @author Dalibor Rak
  * @author Tomas Lauro
- * 
  * @version 1.16.0
  * @since 1.0.0
  */
 @Repository (value = "groupDao")
 public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroupDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CGroupJpaDao.class);
 
@@ -53,7 +40,8 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 		super(QCGroup.cGroup, Long.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByFlagSystem(boolean)
 	 */
 	@Override
@@ -61,12 +49,13 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 	{
 		QCGroup qGroup = QCGroup.cGroup;
 
-		//create query
+		// create query
 		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.flagSystem.eq(flagSystem)).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
 	 */
 	@Override
@@ -74,12 +63,14 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 	{
 		QCGroup qGroup = QCGroup.cGroup;
 
-		//create query
+		// create query
 		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
-	/** (non-Javadoc)
+	/**
+	 * (non-Javadoc)
+	 * 
 	 * @deprecated
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCode(java.lang.String)
 	 */
@@ -89,12 +80,13 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 	{
 		QCGroup qGroup = QCGroup.cGroup;
 
-		//create query
+		// create query
 		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code)).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findOneByCode(java.lang.String)
 	 */
 	@Override
@@ -107,12 +99,14 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 
 		QCGroup qGroup = QCGroup.cGroup;
 
-		//create query
+		// create query
 		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
-	/** (non-Javadoc)
+	/**
+	 * (non-Javadoc)
+	 * 
 	 * @deprecated
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
@@ -137,7 +131,8 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findOneByCodeAndUnit(java.lang.String, sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
@@ -150,7 +145,7 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 
 		QCGroup qGroup = QCGroup.cGroup;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qGroup.code.eq(code));
 		if (unit != null)
@@ -162,12 +157,13 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 			builder.and(qGroup.units.isEmpty());
 		}
 
-		//create query
+		// create query
 		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.roles).fetchJoin().leftJoin(qGroup.units).fetchJoin().where(builder);
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByUnit(sk.qbsw.core.security.model.domain.CUnit)
 	 */
 	@Override
@@ -176,19 +172,20 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 		QCGroup qGroup = QCGroup.cGroup;
 		QCUnit qUnit = QCUnit.cUnit;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		if (unit != null)
 		{
 			builder.and(qGroup.units.contains(unit));
 		}
 
-		//create query
+		// create query
 		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.units, qUnit).fetchJoin().where(builder).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IGroupDao#findByUnitAndUser(sk.qbsw.core.security.model.domain.CUnit, sk.qbsw.core.security.model.domain.CUser)
 	 */
 	@Override
@@ -199,7 +196,7 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 		QCUnit qUnit = QCUnit.cUnit;
 		QCUser qUser = QCUser.cUser;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		if (unit != null)
 		{
@@ -210,7 +207,7 @@ public class CGroupJpaDao extends AEntityQDslDao<Long, CGroup> implements IGroup
 			builder.and(qUser.eq(user));
 		}
 
-		//create query
+		// create query
 		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.xUserUnitGroups, qXuserUnitGroup).fetchJoin().leftJoin(qXuserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qXuserUnitGroup.user, qUser).fetchJoin().where(builder).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}

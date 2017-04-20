@@ -3,46 +3,39 @@
  */
 package sk.qbsw.core.security.dao.jpa;
 
-import java.time.OffsetDateTime;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
-
+import org.springframework.stereotype.Repository;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.core.security.dao.IAuthenticationParamsDao;
 import sk.qbsw.core.security.model.domain.CAuthenticationParams;
 import sk.qbsw.core.security.model.domain.QCAuthenticationParams;
 
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import java.time.OffsetDateTime;
+
 /**
  * Authentication params DAO implementation.
  * 
  * @author Tomas Lauro
- * 
  * @version 1.16.0
  * @since 1.6.0
  */
 @Repository (value = "authenticationParamsDao")
 public class CAuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthenticationParams> implements IAuthenticationParamsDao
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Instantiates a new authentication params role jpa dao.
-	 * 
 	 */
 	public CAuthenticationParamsJpaDao ()
 	{
 		super(QCAuthenticationParams.cAuthenticationParams, Long.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IAuthenticationParamsDao#findOneByUserId(java.lang.Long)
 	 */
 	@Override
@@ -50,12 +43,13 @@ public class CAuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthentic
 	{
 		QCAuthenticationParams qAuthParams = QCAuthenticationParams.cAuthenticationParams;
 
-		//create query
+		// create query
 		JPAQuery<CAuthenticationParams> query = queryFactory.selectFrom(qAuthParams).distinct().where(qAuthParams.user.id.eq(userId));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.security.dao.IAuthenticationParamsDao#findValidByUserId(java.lang.Long)
 	 */
 	@Override
@@ -63,13 +57,13 @@ public class CAuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthentic
 	{
 		QCAuthenticationParams qAuthParams = QCAuthenticationParams.cAuthenticationParams;
 
-		//create where condition
+		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qAuthParams.user.id.eq(userId));
 		builder.and(qAuthParams.validFrom.isNull().orAllOf(qAuthParams.validFrom.isNotNull(), qAuthParams.validFrom.lt(OffsetDateTime.now())));
 		builder.and(qAuthParams.validTo.isNull().orAllOf(qAuthParams.validTo.isNotNull(), qAuthParams.validTo.goe(OffsetDateTime.now())));
 
-		//create query
+		// create query
 		JPAQuery<CAuthenticationParams> query = queryFactory.selectFrom(qAuthParams).distinct().where(builder);
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
