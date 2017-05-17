@@ -1,0 +1,176 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>integration-mail</artifactId>
+	<name>Integration Mail</name>
+	<packaging>jar</packaging>
+
+	<organization>
+		<name>QBSW a.s.</name>
+		<url>http://www.qbsw.sk</url>
+	</organization>
+
+	<parent>
+		<groupId>sk.qbsw.integration</groupId>
+		<artifactId>integration-top</artifactId>
+		<version>1.17.1</version>
+	</parent>
+
+	<dependencies>
+		<!-- QBSW -->
+		<dependency>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-testing</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-persistence</artifactId>
+		</dependency>
+
+		<!-- Apache commons -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+
+		<!-- MAIL -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
+
+		<!-- SPRING -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Hibernate core (the dateTime Type annotation) -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+
+		<!-- jdbc drivers -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- log4j and it's dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<optimize>true</optimize>
+					<debug>true</debug>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
