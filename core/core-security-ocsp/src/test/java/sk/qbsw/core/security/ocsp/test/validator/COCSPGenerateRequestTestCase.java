@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.test.ocsp.validator;
+package sk.qbsw.core.security.ocsp.test.validator;
 
 import java.io.InputStream;
 import java.security.cert.CertificateException;
@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import sk.qbsw.core.security.service.ocsp.COCSPCertValidatorBCImpl;
-import sk.qbsw.core.security.service.ocsp.IOCSPCertValidator;
+import sk.qbsw.core.security.ocsp.service.COCSPCertValidatorBCImpl;
+import sk.qbsw.core.security.ocsp.service.IOCSPCertValidator;
 
 /**
  * Test for basic behavipur for OCSP implementatin from Bouncy castle

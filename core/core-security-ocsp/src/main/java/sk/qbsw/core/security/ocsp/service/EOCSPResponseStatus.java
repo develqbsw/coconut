@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.service.ocsp;
+package sk.qbsw.core.security.ocsp.service;
 
 /**
  * Enumeration for OCSP respones. Complies with RFC specification

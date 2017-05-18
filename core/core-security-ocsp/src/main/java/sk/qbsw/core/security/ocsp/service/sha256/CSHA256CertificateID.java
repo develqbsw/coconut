@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.service.ocsp.sha256;
+package sk.qbsw.core.security.ocsp.service.sha256;
 
 import java.io.IOException;
 import java.math.BigInteger;

@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.test.ocsp;
+package sk.qbsw.core.security.ocsp.test;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -18,10 +18,10 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.FileUtils;
 
-import sk.qbsw.core.security.service.ocsp.COCSPCertValidatorBCImpl;
-import sk.qbsw.core.security.service.ocsp.COCSPHttpURLConnection;
-import sk.qbsw.core.security.service.ocsp.COCSPValidationResult;
-import sk.qbsw.core.security.service.ocsp.IOCSPCertValidator;
+import sk.qbsw.core.security.ocsp.service.COCSPCertValidatorBCImpl;
+import sk.qbsw.core.security.ocsp.service.COCSPHttpURLConnection;
+import sk.qbsw.core.security.ocsp.service.COCSPValidationResult;
+import sk.qbsw.core.security.ocsp.service.IOCSPCertValidator;
 
 /**
  * Test application for validating requests.

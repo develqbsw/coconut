@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.service.ocsp;
+package sk.qbsw.core.security.ocsp.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +24,7 @@ import org.bouncycastle.cert.ocsp.UnknownStatus;
 import org.springframework.stereotype.Service;
 
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.core.security.service.ocsp.sha256.CSHA256CertificateID;
-
+import sk.qbsw.core.security.ocsp.service.sha256.CSHA256CertificateID;
 import sun.security.provider.certpath.OCSP.RevocationStatus;
 import sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
 

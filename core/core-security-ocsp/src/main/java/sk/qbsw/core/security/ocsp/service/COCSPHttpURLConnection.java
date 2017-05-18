@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.service.ocsp;
+package sk.qbsw.core.security.ocsp.service;
 
 import java.io.IOException;
 import java.io.InputStream;

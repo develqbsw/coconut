@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.test.ocsp.validator;
+package sk.qbsw.core.security.ocsp.test.validator;
 
 import java.io.InputStream;
 import java.security.cert.CertificateException;
@@ -8,10 +8,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import sk.qbsw.core.security.service.ocsp.COCSPCertValidatorBCImpl;
-import sk.qbsw.core.security.service.ocsp.COCSPValidationResult;
-import sk.qbsw.core.security.service.ocsp.EOCSPResponseStatus;
-import sk.qbsw.core.security.service.ocsp.IOCSPCertValidator;
+import sk.qbsw.core.security.ocsp.service.COCSPCertValidatorBCImpl;
+import sk.qbsw.core.security.ocsp.service.COCSPValidationResult;
+import sk.qbsw.core.security.ocsp.service.EOCSPResponseStatus;
+import sk.qbsw.core.security.ocsp.service.IOCSPCertValidator;
 import sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
 
 /**
