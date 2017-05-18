@@ -163,6 +163,11 @@
 			</dependency>
 			<dependency>
 				<groupId>sk.qbsw.core</groupId>
+				<artifactId>core-security-web</artifactId>
+				<version>${core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.core</groupId>
 				<artifactId>core-configuration</artifactId>
 				<version>${core.version}</version>
 			</dependency>

@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.test.web.filter;
+package sk.qbsw.core.security.web.test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

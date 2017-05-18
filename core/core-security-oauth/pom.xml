@@ -44,6 +44,10 @@
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-security</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-security-web</artifactId>
+		</dependency>
 
 		<!-- Spring -->
 		<dependency>
