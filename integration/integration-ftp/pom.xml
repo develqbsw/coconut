@@ -22,6 +22,11 @@
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-base</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-logging</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Apache commons -->
 		<dependency>
@@ -31,10 +36,6 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
 		</dependency>
 
 		<!-- SFTP -->
