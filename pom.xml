@@ -180,6 +180,11 @@
 				<artifactId>core-api</artifactId>
 				<version>${core.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.core</groupId>
+				<artifactId>core-security-base</artifactId>
+				<version>${core.version}</version>
+			</dependency>
 
 			<!-- QBSW indy -->
 			<dependency>

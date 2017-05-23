@@ -2,6 +2,7 @@
 *.project
 *.classpath
 */target/
+*/logs/
 rebel.xml
 core/core-api/target/
 core/core-base/target/
@@ -24,3 +25,4 @@ et/et-mailchimp-client/target/
 core/core-image/target/
 et/et-browser-api/target/
 et/et-browser-client/target/
+*.log.*

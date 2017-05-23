@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.exception.CPasswordFormatException;
+import sk.qbsw.core.security.base.exception.CPasswordFormatException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 
 /**

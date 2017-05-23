@@ -2,7 +2,7 @@ package sk.qbsw.core.security.service;
 
 import java.io.Serializable;
 
-import sk.qbsw.core.security.exception.CPasswordFormatException;
+import sk.qbsw.core.security.base.exception.CPasswordFormatException;
 
 /**
  * Authentication data validation service.

@@ -1,4 +1,4 @@
-package sk.qbsw.core.security.test.performance;
+package sk.qbsw.core.security.ldap.test.performance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import sk.qbsw.core.security.test.performance.task.CLoginTask;
+import sk.qbsw.core.security.ldap.test.performance.task.CLoginTask;
+
 
 /**
  * The login performance test. Measures the time of login for specified login iterations and threads count.
@@ -32,19 +33,19 @@ public class CLoginPerformanceTest
 	 */
 	public static void main (String[] args)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("./spring/test-context.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("./spring/test-ldap-context.xml");
 		ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) context.getBean("loginTaskExecutor");
 
 		System.out.println("-------------------------------------------------");
-		System.out.println("| Database login performance test begins \t|");
+		System.out.println("| LDAP login performance test begins \t\t|");
 		System.out.println("-------------------------------------------------");
-		float databasePerformanceTestTime = testLogin(context, taskExecutor, "databaseLoginTask");
+		float ldapPerformanceTestTime = testLogin(context, taskExecutor, "ldapLoginTask");
 
 		System.out.println("-------------------------------------------------");
 		System.out.println("| Login iterations: " + LOGIN_COUNT + "\t\t\t\t|");
 		System.out.println("| Threads count   : " + THREADS_COUNT + "\t\t\t\t|");
 		System.out.println("|-----------------------------------------------|");
-		System.out.println("| The database test takes " + databasePerformanceTestTime + " seconds \t|");
+		System.out.println("| The LDAP test takes " + ldapPerformanceTestTime + " seconds \t\t|");
 		System.out.println("-------------------------------------------------");
 
 		//shutdown executor

@@ -9,14 +9,23 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-	<context:component-scan base-package="sk.qbsw.core.security">
-	    <!-- <context:exclude-filter type="regex" expression="sk\.qbsw\.core\.security\.service\.CDatabaseAuthenticationService"/> -->
-	</context:component-scan>
-	
-	<bean id="authenticationService" class="sk.qbsw.core.security.service.CDatabaseAuthenticationService" />
+	<context:component-scan base-package="sk.qbsw.core.security" />
+	<context:component-scan base-package="sk.qbsw.core.testing.mock" />
+
+	<bean id="authenticationService"
+		class="sk.qbsw.core.security.ldap.service.CLdapAuthenticationService" />
 
 	<bean id="loginBlockingService"
 		class="sk.qbsw.core.security.service.CLoginBlockingService" />
+	
+	<bean class="sk.qbsw.core.security.ldap.test.performance.task.CLdapLoginTask" id="ldapLoginTask" scope="prototype"/>
+	
+	<bean id="loginTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="60" />
+		<property name="maxPoolSize" value="60" />
+		<property name="WaitForTasksToCompleteOnShutdown" value="true" />
+	</bean>
 	
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="loginBlockingService" />
@@ -28,12 +37,9 @@
 		</property>
 	</bean>
 
-	<bean id="databaseLoginTask" scope="prototype"
-		class="sk.qbsw.core.security.test.performance.task.CDatabaseLoginTask" />
-	<bean id="loginTaskExecutor"
-		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="60" />
-		<property name="maxPoolSize" value="60" />
-		<property name="WaitForTasksToCompleteOnShutdown" value="true" />
+	<!-- Mocks object for testing -->
+	<bean id="ldapProviderMock" class="sk.qbsw.core.testing.mock.CMockitoFactoryBean">
+		<constructor-arg name="classToBeMocked"
+			value="sk.qbsw.core.security.ldap.service.CLdapProvider" />
 	</bean>
 </beans>

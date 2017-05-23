@@ -28,6 +28,10 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-security-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-testing</artifactId>
 			<scope>test</scope>
 		</dependency>

@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
+import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.core.security.dao.IBlockedLoginDao;
 import sk.qbsw.core.security.dao.IUserDao;
-import sk.qbsw.core.security.exception.CInvalidAuthenticationException;
-import sk.qbsw.core.security.exception.CUserDisabledException;
 import sk.qbsw.core.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.core.security.service.IAuthenticationModifierService;
 import sk.qbsw.core.security.service.IAuthenticationService;
