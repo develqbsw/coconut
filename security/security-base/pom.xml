@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>indy-base</artifactId>
-	<name>Indy Base</name>
+	<artifactId>security-base</artifactId>
+	<name>Security Base</name>
 	<packaging>jar</packaging>
 
 	<organization>
@@ -11,57 +11,24 @@
 	</organization>
 
 	<parent>
-		<groupId>sk.qbsw.indy</groupId>
-		<artifactId>indy-top</artifactId>
+		<groupId>sk.qbsw.core.security</groupId>
+		<artifactId>security-top</artifactId>
 		<version>1.18.0</version>
 	</parent>
 
 	<dependencies>
-		<!-- QBSW -->
 		<dependency>
-			<groupId>sk.qbsw.core.security</groupId>
-			<artifactId>security-core</artifactId>
-		</dependency>
-		
-		<!-- WICKET DEPENDENCIES -->
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-request</artifactId>
-		</dependency>
-
-		<!-- Slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<!-- javax -->
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-			<scope>provided</scope>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-base</artifactId>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>
 					<include>**/*.properties</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.*</include>
 				</includes>
 			</resource>
 		</resources>

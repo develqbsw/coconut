@@ -18,12 +18,6 @@
 		<module>core-paypal</module>
 		<module>core-persistence</module>
 		<module>core-configuration</module>
-		<module>core-security-base</module>
-		<module>core-security</module>
-		<module>core-security-oauth</module>
-		<module>core-security-ldap</module> 
-		<module>core-security-ocsp</module>
-		<module>core-security-web</module>
 		<module>core-api</module>
 		<module>core-logging</module>
 		<module>core-monitoring</module>

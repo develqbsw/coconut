@@ -22,6 +22,7 @@
 		<indy.version>${project.version}</indy.version>
 		<core.version>${project.version}</core.version>
 		<et.version>${project.version}</et.version>
+		<security.version>${project.version}</security.version>
 
 		<!-- Java -->
 		<java.version>1.8</java.version>
@@ -107,6 +108,7 @@
 
 	<modules>
 		<module>core</module>
+		<module>security</module>
 		<module>et</module>
 		<module>geolocation</module>
 		<module>indy</module>
@@ -157,16 +159,6 @@
 			</dependency>
 			<dependency>
 				<groupId>sk.qbsw.core</groupId>
-				<artifactId>core-security</artifactId>
-				<version>${core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>sk.qbsw.core</groupId>
-				<artifactId>core-security-web</artifactId>
-				<version>${core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>sk.qbsw.core</groupId>
 				<artifactId>core-configuration</artifactId>
 				<version>${core.version}</version>
 			</dependency>
@@ -180,10 +172,22 @@
 				<artifactId>core-api</artifactId>
 				<version>${core.version}</version>
 			</dependency>
+
+			<!-- QBSW security -->
 			<dependency>
-				<groupId>sk.qbsw.core</groupId>
-				<artifactId>core-security-base</artifactId>
-				<version>${core.version}</version>
+				<groupId>sk.qbsw.core.security</groupId>
+				<artifactId>security-core</artifactId>
+				<version>${security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.core.security</groupId>
+				<artifactId>security-web</artifactId>
+				<version>${security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.core.security</groupId>
+				<artifactId>security-base</artifactId>
+				<version>${security.version}</version>
 			</dependency>
 
 			<!-- QBSW indy -->

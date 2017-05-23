@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>indy-security</artifactId>
-	<name>Indy Security</name>
+	<artifactId>security-ocsp</artifactId>
+	<name>Security OCSP</name>
 	<packaging>jar</packaging>
 
 	<organization>
@@ -11,72 +11,55 @@
 	</organization>
 
 	<parent>
-		<groupId>sk.qbsw.indy</groupId>
-		<artifactId>indy-top</artifactId>
+		<groupId>sk.qbsw.core.security</groupId>
+		<artifactId>security-top</artifactId>
 		<version>1.18.0</version>
 	</parent>
 
 	<dependencies>
 		<!-- QBSW -->
 		<dependency>
-			<groupId>sk.qbsw.core.security</groupId>
-			<artifactId>security-core</artifactId>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-base</artifactId>
 		</dependency>
-
+	
 		<!-- Spring -->
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
-
-		<!-- WICKET DEPENDENCIES -->
+	
+		<!-- Apache -->
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-core</artifactId>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
+		
+		<!-- JUnit and Mockito -->
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-ioc</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
+		
+		<!-- Bouncy castle -->
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-request</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-spring</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-auth-roles</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.wicketstuff</groupId>
-			<artifactId>wicketstuff-minis</artifactId>
-		</dependency>
-
-		<!-- Slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<resources>
 			<resource>
-				<filtering>false</filtering>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<filtering>false</filtering>
 				<directory>src/main/java</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
 			</resource>
 		</resources>
 		<plugins>
