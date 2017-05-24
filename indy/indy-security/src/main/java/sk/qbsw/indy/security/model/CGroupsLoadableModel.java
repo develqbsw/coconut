@@ -6,8 +6,8 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import sk.qbsw.core.security.model.domain.CGroup;
-import sk.qbsw.core.security.service.IGroupService;
+import sk.qbsw.security.model.domain.CGroup;
+import sk.qbsw.security.service.IGroupService;
 
 public class CGroupsLoadableModel extends LoadableDetachableModel<List<CGroup>>
 {

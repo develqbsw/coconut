@@ -11,7 +11,7 @@
 	</organization>
 
 	<parent>
-		<groupId>sk.qbsw.core.security</groupId>
+		<groupId>sk.qbsw.security</groupId>
 		<artifactId>security-top</artifactId>
 		<version>1.18.0</version>
 	</parent>
@@ -43,15 +43,15 @@
 		
 		<!-- QBSW security -->
 		<dependency>
-			<groupId>sk.qbsw.core.security</groupId>
+			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-base</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>sk.qbsw.core.security</groupId>
+			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>sk.qbsw.core.security</groupId>
+			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-web</artifactId>
 		</dependency>
 

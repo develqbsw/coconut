@@ -175,17 +175,17 @@
 
 			<!-- QBSW security -->
 			<dependency>
-				<groupId>sk.qbsw.core.security</groupId>
+				<groupId>sk.qbsw.security</groupId>
 				<artifactId>security-core</artifactId>
 				<version>${security.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>sk.qbsw.core.security</groupId>
+				<groupId>sk.qbsw.security</groupId>
 				<artifactId>security-web</artifactId>
 				<version>${security.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>sk.qbsw.core.security</groupId>
+				<groupId>sk.qbsw.security</groupId>
 				<artifactId>security-base</artifactId>
 				<version>${security.version}</version>
 			</dependency>

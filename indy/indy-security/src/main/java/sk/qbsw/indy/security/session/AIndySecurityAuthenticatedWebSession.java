@@ -2,10 +2,10 @@ package sk.qbsw.indy.security.session;
 
 import org.apache.wicket.request.Request;
 
-import sk.qbsw.core.security.model.CUsernamePasswordAuthenticationToken;
-import sk.qbsw.core.security.model.CUsernamePasswordUnitAuthenticationToken;
-import sk.qbsw.core.security.model.IAuthenticationToken;
-import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthentication;
+import sk.qbsw.security.model.CUsernamePasswordAuthenticationToken;
+import sk.qbsw.security.model.CUsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.model.IAuthenticationToken;
+import sk.qbsw.security.model.spring.CUsernamePasswordUnitAuthentication;
 
 /**
  * Authentication for Wicket using Spring security.
@@ -50,7 +50,7 @@ public abstract class AIndySecurityAuthenticatedWebSession extends AAuthenticate
 		//first of all compare the CUsernamePasswordUnitAuthenticationToken because it has parent CUsernamePasswordAuthenticationToken
 		if (CUsernamePasswordUnitAuthenticationToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
 		{
-			return new CUsernamePasswordUnitAuthentication((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), ((sk.qbsw.core.security.model.CUsernamePasswordUnitAuthenticationToken) authenticationToken).getUnit());
+			return new CUsernamePasswordUnitAuthentication((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), ((CUsernamePasswordUnitAuthenticationToken) authenticationToken).getUnit());
 		}
 		else if (CUsernamePasswordAuthenticationToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
 		{

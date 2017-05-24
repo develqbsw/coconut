@@ -22,11 +22,11 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.wicketstuff.minis.behavior.mootip.MootipSettings;
 
-import sk.qbsw.core.security.model.domain.CGroup;
-import sk.qbsw.core.security.model.domain.COrganization;
-import sk.qbsw.core.security.model.domain.CUser;
 import sk.qbsw.indy.security.model.dataprovider.CUsersDataProvider;
 import sk.qbsw.indy.security.model.enums.EFlagEnabled;
+import sk.qbsw.security.model.domain.CGroup;
+import sk.qbsw.security.model.domain.COrganization;
+import sk.qbsw.security.model.domain.CUser;
 
 public abstract class CUsersTablePanel extends Panel
 {

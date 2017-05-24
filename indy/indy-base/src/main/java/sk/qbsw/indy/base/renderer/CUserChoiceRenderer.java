@@ -2,7 +2,7 @@ package sk.qbsw.indy.base.renderer;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
-import sk.qbsw.core.security.model.domain.CUser;
+import sk.qbsw.security.model.domain.CUser;
 
 /**
  * Choice renderer for user DropDownChoice

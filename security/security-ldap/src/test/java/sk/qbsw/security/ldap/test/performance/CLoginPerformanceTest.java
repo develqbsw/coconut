@@ -1,0 +1,105 @@
+package sk.qbsw.security.ldap.test.performance;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import sk.qbsw.security.ldap.test.performance.task.CLoginTask;
+
+
+/**
+ * The login performance test. Measures the time of login for specified login iterations and threads count.
+ *
+ * @author Tomas Lauro
+ * 
+ * @version 1.11.4
+ * @since 1.7.2
+ */
+public class CLoginPerformanceTest
+{
+	/** The Constant LOGIN_COUNT. */
+	private static final int LOGIN_COUNT = 5000;
+
+	/** The Constant THREADS_COUNT. */
+	private static final int THREADS_COUNT = 10;
+
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main (String[] args)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("./spring/test-ldap-context.xml");
+		ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) context.getBean("loginTaskExecutor");
+
+		System.out.println("-------------------------------------------------");
+		System.out.println("| LDAP login performance test begins \t\t|");
+		System.out.println("-------------------------------------------------");
+		float ldapPerformanceTestTime = testLogin(context, taskExecutor, "ldapLoginTask");
+
+		System.out.println("-------------------------------------------------");
+		System.out.println("| Login iterations: " + LOGIN_COUNT + "\t\t\t\t|");
+		System.out.println("| Threads count   : " + THREADS_COUNT + "\t\t\t\t|");
+		System.out.println("|-----------------------------------------------|");
+		System.out.println("| The LDAP test takes " + ldapPerformanceTestTime + " seconds \t\t|");
+		System.out.println("-------------------------------------------------");
+
+		//shutdown executor
+		taskExecutor.shutdown();
+		System.exit(0);
+	}
+
+	/**
+	 * Test login.
+	 *
+	 * @param context the context
+	 * @param taskExecutor the task executor
+	 * @param loginBeanId the login bean id
+	 * @return the float
+	 */
+	private static float testLogin (ApplicationContext context, ThreadPoolTaskExecutor taskExecutor, String loginBeanId)
+	{
+		//create login tasks
+		List<CLoginTask> loginTasks = new ArrayList<CLoginTask>();
+		for (int i = 0; i < THREADS_COUNT; i++)
+		{
+			CLoginTask loginTask = (CLoginTask) context.getBean(loginBeanId);
+			loginTask.init("Login task " + i, LOGIN_COUNT);
+			loginTasks.add(loginTask);
+		}
+
+		//take the begin time
+		long start = System.currentTimeMillis();
+
+		//run task
+		for (CLoginTask loginTask : loginTasks)
+		{
+			taskExecutor.execute(loginTask);
+		}
+
+		//wait unit finished
+		for (;;)
+		{
+			int count = taskExecutor.getActiveCount();
+			try
+			{
+				Thread.sleep(100);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			if (count == 0)
+			{
+				break;
+			}
+		}
+
+		//elapsed time in seconds
+		return (System.currentTimeMillis() - start) / 1000F;
+	}
+}

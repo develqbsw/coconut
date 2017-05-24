@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.security.model.IAuthenticationToken;
-import sk.qbsw.core.security.model.domain.CUser;
-import sk.qbsw.core.security.model.spring.CUsernamePasswordUnitAuthentication;
-import sk.qbsw.core.security.service.IAuthenticationService;
+import sk.qbsw.security.model.IAuthenticationToken;
+import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.model.spring.CUsernamePasswordUnitAuthentication;
+import sk.qbsw.security.service.IAuthenticationService;
 
 /**
  * Session of the logged LDAP user.
