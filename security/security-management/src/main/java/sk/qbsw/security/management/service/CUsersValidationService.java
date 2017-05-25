@@ -1,4 +1,4 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ import sk.qbsw.security.model.order.IOrderByAttributeSpecifier;
 public class CUsersValidationService extends AService implements IUsersValidationService
 {
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CUserService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CUserManagementService.class);
 
 	/** The organization dao. */
 	@Autowired

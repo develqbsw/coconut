@@ -1,7 +1,7 @@
 /**
  * 
  */
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ import sk.qbsw.security.model.domain.CLicense;
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CUser;
 import sk.qbsw.security.model.jmx.CLicensingRules;
+import sk.qbsw.security.service.ILicenseGenerator;
 
 /**
  * The Class CSecurityServiceImpl.
@@ -82,7 +83,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Adds the license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.service.ISecurityService#addLicense(sk.qbsw.security.model.domain.CLicense)
+	 * @see sk.qbsw.security.management.service.ISecurityService#addLicense(sk.qbsw.security.model.domain.CLicense)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -96,7 +97,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Delete license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.service.ISecurityService#deleteLicense(sk.qbsw.security.model.domain.CLicense)
+	 * @see sk.qbsw.security.management.service.ISecurityService#deleteLicense(sk.qbsw.security.model.domain.CLicense)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -107,7 +108,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	}
 
 	/** 
-	 * @see sk.qbsw.security.service.ISecurityService#getAvailabelLicenses()
+	 * @see sk.qbsw.security.management.service.ISecurityService#getAvailabelLicenses()
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -117,7 +118,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	}
 
 	/** 
-	 * @see sk.qbsw.security.service.ISecurityService#getAvailabelLicensesForCustomer()
+	 * @see sk.qbsw.security.management.service.ISecurityService#getAvailabelLicensesForCustomer()
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -130,7 +131,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Gets the available groups.
 	 *
 	 * @return the available groups
-	 * @see sk.qbsw.security.service.ISecurityService#getAvailableGroups()
+	 * @see sk.qbsw.security.management.service.ISecurityService#getAvailableGroups()
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -144,7 +145,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 *
 	 * @param org the org
 	 * @return the organization licenses
-	 * @see sk.qbsw.security.service.ISecurityService#getOrganizationLicenses(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.management.service.ISecurityService#getOrganizationLicenses(sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -160,7 +161,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param login the login
 	 * @param id the pk id
 	 * @return true, if is login free
-	 * @see sk.qbsw.security.service.ISecurityService#isLoginFree(java.lang.String, java.lang.Long)
+	 * @see sk.qbsw.security.management.service.ISecurityService#isLoginFree(java.lang.String, java.lang.Long)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -192,7 +193,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 *
 	 * @param license the license
 	 * @param payed the payed
-	 * @see sk.qbsw.security.service.ISecurityService#matchLicensePayment(sk.qbsw.security.model.domain.CLicense, java.lang.Boolean)
+	 * @see sk.qbsw.security.management.service.ISecurityService#matchLicensePayment(sk.qbsw.security.model.domain.CLicense, java.lang.Boolean)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -207,7 +208,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Update license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.service.ISecurityService#updateLicense(sk.qbsw.security.model.domain.CLicense)
+	 * @see sk.qbsw.security.management.service.ISecurityService#updateLicense(sk.qbsw.security.model.domain.CLicense)
 	 */
 	@Override
 	@Transactional (readOnly = false)

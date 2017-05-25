@@ -17,23 +17,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.configuration.UserCredentialsConfiguration;
 import sk.qbsw.security.dao.IGroupDao;
 import sk.qbsw.security.dao.IUnitDao;
 import sk.qbsw.security.dao.IUserDao;
 import sk.qbsw.security.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.management.service.IOrganizationService;
+import sk.qbsw.security.management.service.IUserManagementService;
+import sk.qbsw.security.management.service.IUserPermissionManagementService;
 import sk.qbsw.security.model.domain.CGroup;
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
 import sk.qbsw.security.model.domain.CXUserUnitGroup;
-import sk.qbsw.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.model.order.COrderModel;
 import sk.qbsw.security.model.order.COrderSpecification;
 import sk.qbsw.security.model.order.EOrderSpecifier;
 import sk.qbsw.security.model.order.EUserOrderByAttributeSpecifier;
 import sk.qbsw.security.model.order.IOrderByAttributeSpecifier;
-import sk.qbsw.security.service.IOrganizationService;
-import sk.qbsw.security.service.IUserService;
 import sk.qbsw.security.test.util.CDataGenerator;
 
 /**
@@ -55,8 +56,12 @@ public class CUserTestCase
 
 	/** The unit service. */
 	@Autowired
-	@Qualifier ("cUserService")
-	private IUserService userService;
+	@Qualifier ("userManagementService")
+	private IUserManagementService userManagementService;
+
+	@Autowired
+	@Qualifier ("userPermissionManagementService")
+	private IUserPermissionManagementService userPermissionManagementService;
 
 	@Autowired
 	private IUserDao userDao;
@@ -75,9 +80,9 @@ public class CUserTestCase
 	@Autowired
 	private IXUserUnitGroupDao crossUserUnitGroupDao;
 
-	/** The authentication configurator. */
+	/** The UserCredentials configurator. */
 	@Autowired
-	private IAuthenticationConfigurator authenticationConfigurator;
+	private UserCredentialsConfiguration userCredentialsConfiguration;
 
 	/**
 	 * Test initialization.
@@ -85,8 +90,8 @@ public class CUserTestCase
 	@Before
 	public void testInitialization ()
 	{
-		assertNotNull("Could not find user service", userService);
-		authenticationConfigurator.setPasswordPattern("((?=.*[a-z])(?=.*[@#$%_]).{6,40})");
+		assertNotNull("Could not find user service", userManagementService);
+		userCredentialsConfiguration.setPasswordPattern("((?=.*[a-z])(?=.*[@#$%_]).{6,40})");
 	}
 
 	/**
@@ -106,9 +111,9 @@ public class CUserTestCase
 		user.setLogin(CDataGenerator.USER_CREATED);
 		user.setName(CDataGenerator.USER_CREATED);
 
-		userService.registerNewUser(user, CDataGenerator.USER_CREATED, organization);
+		userManagementService.registerNewUser(user, CDataGenerator.USER_CREATED, organization);
 
-		CUser queryUser = userService.getUserByLogin(CDataGenerator.USER_CREATED);
+		CUser queryUser = userManagementService.getUserByLogin(CDataGenerator.USER_CREATED);
 
 		//asserts
 		assertNotNull("User has not been created", queryUser);
@@ -131,9 +136,9 @@ public class CUserTestCase
 		user.setLogin(CDataGenerator.USER_CREATED);
 		user.setName(CDataGenerator.USER_CREATED);
 
-		userService.registerNewUser(user, organization);
+		userManagementService.registerNewUser(user, organization);
 
-		CUser queryUser = userService.getUserByLogin(CDataGenerator.USER_CREATED);
+		CUser queryUser = userManagementService.getUserByLogin(CDataGenerator.USER_CREATED);
 
 		//asserts
 		assertNotNull("User has not been created", queryUser);
@@ -150,7 +155,7 @@ public class CUserTestCase
 	{
 		initTest();
 
-		List<CUser> users = userService.getUsers();
+		List<CUser> users = userManagementService.getUsers();
 
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", users);
@@ -171,7 +176,7 @@ public class CUserTestCase
 	{
 		initTest();
 
-		List<CUser> users = userService.getUsersOrderByOrganization(null, null, null);
+		List<CUser> users = userManagementService.getUsersOrderByOrganization(null, null, null);
 
 		//asserts
 		assertNotNull("Get all users order by organization failed: list of users is null", users);
@@ -191,8 +196,8 @@ public class CUserTestCase
 	{
 		initTest();
 
-		List<CUser> usersInGroupInUnit = userService.getUsers(null, null, null, null, CDataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
-		List<CUser> usersInGroupNotInUnit = userService.getUsers(null, null, null, null, CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE.substring(0, 20));
+		List<CUser> usersInGroupInUnit = userManagementService.getUsers(null, null, null, null, CDataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
+		List<CUser> usersInGroupNotInUnit = userManagementService.getUsers(null, null, null, null, CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE.substring(0, 20));
 
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", usersInGroupInUnit);
@@ -214,7 +219,7 @@ public class CUserTestCase
 
 		List<CGroup> groups = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
-		List<CUser> users = userService.getUsers(null, null, groups.get(0));
+		List<CUser> users = userManagementService.getUsers(null, null, groups.get(0));
 
 		//asserts
 		assertNotNull("Get all users by group failed: list of users is null", users);
@@ -234,7 +239,7 @@ public class CUserTestCase
 
 		List<CGroup> groups = groupDao.findByCode(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
-		List<CUser> users = userService.getUsersOrderByOrganization(null, null, groups.get(0));
+		List<CUser> users = userManagementService.getUsersOrderByOrganization(null, null, groups.get(0));
 
 		//asserts
 		assertNotNull("Get all users by group failed: list of users is null", users);
@@ -252,8 +257,8 @@ public class CUserTestCase
 	{
 		initTest();
 
-		CUser userByLogin = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CUser userById = userService.get(userByLogin.getId());
+		CUser userByLogin = userManagementService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser userById = userManagementService.get(userByLogin.getId());
 
 		//asserts
 		assertNotNull("Get user by id failed: cannot find user with login " + userByLogin.getLogin(), userByLogin);
@@ -302,7 +307,7 @@ public class CUserTestCase
 		initTest();
 
 		String email = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk";
-		List<CUser> users = userService.getUsers(email);
+		List<CUser> users = userManagementService.getUsers(email);
 
 		//asserts
 		assertNotNull("Get user by email failed: cannot find user with email " + email, users);
@@ -325,13 +330,13 @@ public class CUserTestCase
 
 		COrganization organization = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_CODE).get(0);
 		COrganization organization2 = orgService.getOrganizationByName(CDataGenerator.ORGANIZATION_2_CODE).get(0);
-		List<CUser> users = userService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization);
+		List<CUser> users = userManagementService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization);
 
 		//asserts
 		assertNotNull("Get user by name and organization failed: cannot find users", users);
 		Assert.assertEquals("Get user by name and organization failed: the number of users is not 1", users.size(), 1);
 
-		users = userService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization2);
+		users = userManagementService.getUsers(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization2);
 
 		//asserts
 		assertNotNull("Get user by name and organization failed: cannot find users", users);
@@ -355,7 +360,7 @@ public class CUserTestCase
 		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//unset group
-		userService.unsetUserFromGroup(testUser, testGroup, testUnit);
+		userPermissionManagementService.unsetUserFromGroup(testUser, testGroup, testUnit);
 
 		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
@@ -381,7 +386,7 @@ public class CUserTestCase
 		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
-		userService.setUserToGroup(testUser, testGroup, testUnit);
+		userPermissionManagementService.setUserToGroup(testUser, testGroup, testUnit);
 
 		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
@@ -407,7 +412,7 @@ public class CUserTestCase
 		CUnit testUnit = unitDao.findOneByName(CDataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
-		userService.setUserToGroup(testUser, testGroup, testUnit);
+		userPermissionManagementService.setUserToGroup(testUser, testGroup, testUnit);
 	}
 
 	/**

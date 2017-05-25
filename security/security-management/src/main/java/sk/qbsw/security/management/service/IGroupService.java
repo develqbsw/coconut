@@ -1,4 +1,4 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.io.Serializable;
 import java.util.List;

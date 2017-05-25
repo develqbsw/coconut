@@ -15,6 +15,7 @@
 	<modules>
 		<module>security-base</module>
 		<module>security-core</module>
+		<module>security-management</module>
 		<module>security-oauth</module>
 		<module>security-auth-ldap</module> 
 		<module>security-ocsp</module>

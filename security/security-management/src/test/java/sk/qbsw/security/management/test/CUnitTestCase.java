@@ -1,4 +1,4 @@
-package sk.qbsw.security.test;
+package sk.qbsw.security.management.test;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -15,10 +15,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.management.service.IUnitService;
+import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IUnitService;
-import sk.qbsw.security.service.IUserService;
 import sk.qbsw.security.test.util.CDataGenerator;
 
 /**
@@ -44,7 +44,7 @@ public class CUnitTestCase
 
 	/** The user service. */
 	@Autowired
-	private IUserService userService;
+	private IUserManagementService userService;
 
 	/**
 	 * Test initialization.

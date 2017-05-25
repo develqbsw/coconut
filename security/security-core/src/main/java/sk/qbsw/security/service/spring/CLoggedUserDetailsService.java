@@ -63,7 +63,7 @@ public class CLoggedUserDetailsService extends AService implements UserDetailsSe
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
 	 */
 	@Transactional (readOnly = true)
-	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException, DataAccessException
+	public UserDetails loadUserByUsername (String username)
 	{
 		try
 		{

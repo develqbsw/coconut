@@ -6,7 +6,6 @@ import javax.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
+import sk.qbsw.security.dao.IUserDao;
 import sk.qbsw.security.model.domain.CUser;
 import sk.qbsw.security.model.spring.CUserDetails;
-import sk.qbsw.security.service.IUserService;
 
 /**
  * Service for getting user details
@@ -34,7 +33,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 
 	/** The user service. */
 	@Autowired
-	private IUserService userService;
+	private IUserDao userDao;
 
 	@PostConstruct
 	private void postCondtruct ()
@@ -47,13 +46,13 @@ public class CUserDetailsService extends AService implements UserDetailsService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public UserDetails loadUserByUsername (String username) throws DataAccessException
+	public UserDetails loadUserByUsername (String username)
 	{
 		CUser user;
 
 		try
 		{
-			user = userService.getUserByLogin(username);
+			user = userDao.findOneByLogin(username);
 		}
 		catch (NoResultException | CSecurityException ex)
 		{

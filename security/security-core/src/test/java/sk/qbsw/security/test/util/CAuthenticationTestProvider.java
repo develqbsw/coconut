@@ -13,18 +13,18 @@ import org.springframework.stereotype.Component;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.dao.IBlockedLoginDao;
+import sk.qbsw.security.dao.IOrganizationDao;
 import sk.qbsw.security.dao.IUserDao;
+import sk.qbsw.security.management.service.IUserCredentialManagementService;
+import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.model.domain.CBlockedLogin;
 import sk.qbsw.security.model.domain.CGroup;
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CRole;
 import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IAuthenticationModifierService;
 import sk.qbsw.security.service.IAuthenticationService;
 import sk.qbsw.security.service.ILoginBlockingService;
-import sk.qbsw.security.service.IOrganizationService;
-import sk.qbsw.security.service.IUserService;
 
 /**
  * Provides test for authentication.
@@ -161,7 +161,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangePasswordExistingUser (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testChangePasswordExistingUser (IAuthenticationService authenticationService, IUserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "change1Password3ExistingUser@";
 		modifierService.changePlainPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
@@ -177,7 +177,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordExistingUser (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testChangeEncryptedPasswordExistingUser (IAuthenticationService authenticationService, IUserCredentialManagementService modifierService) throws CSecurityException
 	{
 		final String newPassword = "change1EncryptedPasswordExistingUser$56";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
@@ -193,11 +193,11 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserService userService, IUserDao userDao, IOrganizationService orgService, CDataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, IUserManagementService userService, IUserDao userDao, IOrganizationDao orgDao, CDataGenerator dataGenerator) throws CSecurityException
 	{
 		//create new user and needed objects
 		CUser newUser = dataGenerator.createUser(CDataGenerator.USER_WITHOUT_PASSWORD);
-		COrganization organization = orgService.getOrganizationByNameNull(CDataGenerator.ORGANIZATION_CODE);
+		COrganization organization = orgDao.findOneByName(CDataGenerator.ORGANIZATION_CODE);
 		String newPassword = "change56%PasswordNewUser";
 
 		//register user
@@ -216,7 +216,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeLogin (IAuthenticationModifierService authenticationService, IUserService userService) throws CSecurityException
+	public void testChangeLogin (IUserCredentialManagementService authenticationService, IUserManagementService userService) throws CSecurityException
 	{
 		String newLogin = "new1Login#";
 		CUser user = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
@@ -243,7 +243,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginEnabledUserDisabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	public void testLoginEnabledUserDisabledOrganization (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION, CDataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION);
 	}
@@ -253,7 +253,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginDisabledUserDisabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	public void testLoginDisabledUserDisabledOrganization (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION, CDataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION);
 	}
@@ -263,7 +263,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginDisabledUserEnabledOrganization (IAuthenticationService authenticationService, IUserService userService) throws CSecurityException
+	public void testLoginDisabledUserEnabledOrganization (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION, CDataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION);
 	}
@@ -570,7 +570,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidFromAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testLoginInvalidFromAuthParam (IAuthenticationService authenticationService, IUserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().plusHours(2), null);
@@ -584,7 +584,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testLoginInvalidToAuthParam (IAuthenticationService authenticationService, IUserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, OffsetDateTime.now().minusHours(1));
@@ -598,7 +598,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidFromAndToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testLoginInvalidFromAndToAuthParam (IAuthenticationService authenticationService, IUserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().minusHours(2), OffsetDateTime.now().minusHours(1));
@@ -612,7 +612,7 @@ public class CAuthenticationTestProvider
 	 * @param authenticationService the authentication service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangePasswordNullFromAndToAuthParam (IAuthenticationService authenticationService, IAuthenticationModifierService modifierService) throws CSecurityException
+	public void testChangePasswordNullFromAndToAuthParam (IAuthenticationService authenticationService, IUserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
 		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, null);

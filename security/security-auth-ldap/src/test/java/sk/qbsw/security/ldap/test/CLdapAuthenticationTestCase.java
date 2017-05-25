@@ -21,9 +21,9 @@ import sk.qbsw.security.ldap.configuration.ILdapAuthenticationConfigurator;
 import sk.qbsw.security.ldap.service.ILdapProvider;
 import sk.qbsw.security.ldap.test.util.CAuthenticationTestProvider;
 import sk.qbsw.security.ldap.test.util.CDataGenerator;
+import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.service.IAuthenticationService;
-import sk.qbsw.security.service.IUserService;
 
 /**
  * Checks Authentication service for ldap.
@@ -62,13 +62,13 @@ public class CLdapAuthenticationTestCase
 
 	/** The user service. */
 	@Autowired
-	private IUserService userService;
+	private IUserManagementService userService;
 
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
 
-	/** The authentication configurator. */
+	/** The Authentication Configurator. */
 	@Autowired
 	private IAuthenticationConfigurator authenticationConfigurator;
 
@@ -216,7 +216,7 @@ public class CLdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService, userService);
+		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService);
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class CLdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService, userService);
+		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService);
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class CLdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService, userService);
+		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService);
 	}
 
 	/**

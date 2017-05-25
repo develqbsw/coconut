@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>security-auth-ldap</artifactId>
-	<name>Security Authentication LDAP</name>
+	<artifactId>security-management</artifactId>
+	<name>Security Management</name>
 	<packaging>jar</packaging>
 
 	<organization>
@@ -23,75 +23,45 @@
 			<artifactId>core-base</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>sk.qbsw.core</groupId>
-			<artifactId>core-persistence</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.core</groupId>
-			<artifactId>core-testing</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-		<!-- QBSW security -->
-		<dependency>
-			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-base</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-management</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
+	
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-				
+	
+		<!-- Apache -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		
 		<!-- JUnit and Mockito -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<scope>test</scope>
-		</dependency>
 		
-		<!-- jdbc driver -->
+		<!-- Bouncy castle -->
 		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<scope>test</scope>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
-		
-		<!-- LDAP -->
 		<dependency>
-			<groupId>org.apache.directory.api</groupId>
-			<artifactId>api-all</artifactId>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
 		</dependency>
 	</dependencies>
-
+	
 	<build>
 		<resources>
 			<resource>

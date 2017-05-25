@@ -189,6 +189,11 @@
 				<artifactId>security-base</artifactId>
 				<version>${security.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.security</groupId>
+				<artifactId>security-management</artifactId>
+				<version>${security.version}</version>
+			</dependency>
 
 			<!-- QBSW indy -->
 			<dependency>

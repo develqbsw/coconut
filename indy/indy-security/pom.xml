@@ -22,6 +22,10 @@
 			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-management</artifactId>
+		</dependency>
 
 		<!-- Spring -->
 		<dependency>

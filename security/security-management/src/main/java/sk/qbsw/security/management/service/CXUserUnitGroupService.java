@@ -1,4 +1,4 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.util.List;
 

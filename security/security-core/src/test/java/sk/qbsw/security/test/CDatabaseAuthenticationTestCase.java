@@ -17,13 +17,13 @@ import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.security.dao.IBlockedLoginDao;
+import sk.qbsw.security.dao.IOrganizationDao;
 import sk.qbsw.security.dao.IUserDao;
+import sk.qbsw.security.management.service.IUserCredentialManagementService;
+import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.service.IAuthenticationModifierService;
 import sk.qbsw.security.service.IAuthenticationService;
 import sk.qbsw.security.service.ILoginBlockingService;
-import sk.qbsw.security.service.IOrganizationService;
-import sk.qbsw.security.service.IUserService;
 import sk.qbsw.security.test.util.CAuthenticationTestProvider;
 import sk.qbsw.security.test.util.CDataGenerator;
 
@@ -51,8 +51,8 @@ public class CDatabaseAuthenticationTestCase
 
 	/** The authentication service. */
 	@Autowired
-	@Qualifier ("cLoginService")
-	private IAuthenticationModifierService authenticationModifierService;
+	@Qualifier ("userCredentialManagementService")
+	private IUserCredentialManagementService authenticationModifierService;
 
 	/** The login blocking service. */
 	@Autowired
@@ -64,11 +64,11 @@ public class CDatabaseAuthenticationTestCase
 
 	/** The user service. */
 	@Autowired
-	private IUserService userService;
+	private IUserManagementService userService;
 
 	/** The org service. */
 	@Autowired
-	private IOrganizationService orgService;
+	private IOrganizationDao orgDao;
 
 	/** The user dao. */
 	@Autowired
@@ -78,7 +78,7 @@ public class CDatabaseAuthenticationTestCase
 	@Autowired
 	private IBlockedLoginDao blockedLoginJpaDao;
 
-	/** The authentication configurator. */
+	/** The Authentication Configurator. */
 	@Autowired
 	private IAuthenticationConfigurator authenticationConfigurator;
 
@@ -265,7 +265,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, orgService, dataGenerator);
+		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, orgDao, dataGenerator);
 	}
 
 	/**
@@ -307,7 +307,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService, userService);
+		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService);
 	}
 
 	/**
@@ -321,7 +321,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService, userService);
+		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService);
 	}
 
 	/**
@@ -335,7 +335,7 @@ public class CDatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService, userService);
+		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService);
 	}
 
 	/**

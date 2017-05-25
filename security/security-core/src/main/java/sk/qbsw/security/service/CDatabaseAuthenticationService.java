@@ -1,7 +1,5 @@
 package sk.qbsw.security.service;
 
-import java.time.OffsetDateTime;
-
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
@@ -40,7 +37,7 @@ import sk.qbsw.security.service.signature.IPasswordDigester;
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
-public class CDatabaseAuthenticationService extends AService implements IAuthenticationService, IAuthenticationModifierService
+public class CDatabaseAuthenticationService extends AService implements IAuthenticationService
 {
 
 	/** The Constant serialVersionUID. */
@@ -64,10 +61,6 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	/** Password digester *. */
 	@Autowired
 	private transient IPasswordDigester digester;
-
-	/** The authentication data validation service. */
-	@Autowired
-	private IAuthDataValidationService authDataValidationService;
 
 	/**
 	 * Authenticate by digest.
@@ -247,59 +240,6 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
-	{
-		changePassword(login, password, null, null, null, true, false);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationModifierService#changeEncryptedPassword(java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
-	{
-		changePassword(login, password, null, validFrom, validTo, true, true);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
-	{
-		changePassword(login, password, email, null, null, true, false);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationModifierService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
-	{
-		changePassword(login, password, email, validFrom, validTo, true, true);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#changeLogin(sk.qbsw.security.model.domain.CUser)
-	 */
-	@Override
-	@Transactional (readOnly = false)
-	public void changeLogin (Long userId, String login)
-	{
-		CUser user = userDao.findById(userId);
-		user.setLogin(login);
-
-		userDao.update(user);
-	}
-
-	/* (non-Javadoc)
 	 * @see sk.qbsw.security.service.IAuthenticationService#isOnline()
 	 */
 	@Override
@@ -316,75 +256,5 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 			LOGGER.debug("CountAll exception", ex);
 			return false;
 		}
-	}
-
-	/**
-	 * Change password.
-	 *
-	 * @param login the login
-	 * @param password the password
-	 * @param email the email
-	 * @param validFrom the valid from
-	 * @param validTo the valid to
-	 * @param encrypt the encrypt
-	 * @param setValidityDate flag indicates the valid dates are going to be overridden
-	 * @throws CSecurityException the c security exception
-	 */
-	private void changePassword (String login, String password, String email, OffsetDateTime validFrom, OffsetDateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
-	{
-		CUser user = null;
-
-		//validate password, if not valid throw an exception
-		authDataValidationService.validatePassword(password);
-
-		try
-		{
-			user = userDao.findOneByLogin(login);
-		}
-		catch (NoResultException ex)
-		{
-			LOGGER.error("Login not found", ex);
-			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
-		}
-
-		//checks email if enctypt flag is false
-		if (!encrypt && email != null && user.getEmail() != null && !email.equals(user.getEmail()))
-		{
-			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
-		}
-
-		//set auth params
-		CAuthenticationParams authParams = null;
-		try
-		{
-			authParams = authenticationParamsDao.findOneByUserId(user.getId());
-		}
-		catch (NoResultException ex)
-		{
-			LOGGER.error("Authentication params not found", ex);
-
-			//create new because user has no auth params
-			authParams = new CAuthenticationParams();
-			authParams.setUser(user);
-		}
-
-		if (setValidityDate)
-		{
-			authParams.setValidFrom(validFrom);
-			authParams.setValidTo(validTo);
-		}
-
-		if (encrypt)
-		{
-			authParams.setPasswordDigest(digester.generateDigest(login, password));
-			authParams.setPassword(null);
-		}
-		else
-		{
-			authParams.setPassword(password);
-			authParams.setPasswordDigest(null);
-		}
-
-		authenticationParamsDao.update(authParams);
 	}
 }

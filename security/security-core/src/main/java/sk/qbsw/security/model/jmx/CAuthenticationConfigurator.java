@@ -24,9 +24,10 @@ import sk.qbsw.security.model.domain.EHashMethod;
 @ManagedResource (objectName = "sk.qbsw.security:name=authenticationConfigurator", description = "authentication configuration")
 public class CAuthenticationConfigurator extends AService implements IAuthenticationConfigurator
 {
+
 	/** The password pattern. */
 	private String passwordPattern;
-
+	
 	/** The hash method to hash user password in LDAP. */
 	private EHashMethod ldapPasswordHashMethod = EHashMethod.SSHA512;
 
@@ -38,24 +39,6 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 
 	/**  additiona parameters to configurator specific for. */
 	private Map<EAuthParameters, String> additionalAuthParameters = new EnumMap<>(EAuthParameters.class);
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.model.jmx.IAuthenticationConfigurator#getPasswordPattern()
-	 */
-	@Override
-	public String getPasswordPattern ()
-	{
-		return passwordPattern;
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.model.jmx.IAuthenticationConfigurator#setPasswordPattern(java.lang.String)
-	 */
-	@Override
-	public void setPasswordPattern (String passwordPattern)
-	{
-		this.passwordPattern = passwordPattern;
-	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.model.jmx.IAuthenticationConfigurator#getLdapPasswordHashMethod()
@@ -128,5 +111,23 @@ public class CAuthenticationConfigurator extends AService implements IAuthentica
 	public void setAdditionalAuthParameters (Map<EAuthParameters, String> additionalAuthParameters)
 	{
 		this.additionalAuthParameters = additionalAuthParameters;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.security.model.jmx.IAuthenticationConfigurator#getPasswordPattern()
+	 */
+	@Override
+	public String getPasswordPattern ()
+	{
+		return passwordPattern;
+	}
+
+	/* (non-Javadoc)
+	 * @see sk.qbsw.security.model.jmx.IAuthenticationConfigurator#setPasswordPattern(java.lang.String)
+	 */
+	@Override
+	public void setPasswordPattern (String passwordPattern)
+	{
+		this.passwordPattern = passwordPattern;
 	}
 }

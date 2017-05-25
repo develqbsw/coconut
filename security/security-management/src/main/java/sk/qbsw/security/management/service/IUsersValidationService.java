@@ -1,4 +1,4 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CUser;

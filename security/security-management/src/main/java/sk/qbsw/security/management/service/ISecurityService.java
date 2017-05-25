@@ -1,7 +1,7 @@
 /**
  * 
  */
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,7 +11,7 @@ import sk.qbsw.security.model.domain.CLicense;
 import sk.qbsw.security.model.domain.COrganization;
 
 /**
- * The Interface IUserService.
+ * The Interface IUserManagementService.
  *
  * @author Dalibor Rak
  * @version 1.13.0

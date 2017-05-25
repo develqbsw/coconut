@@ -54,6 +54,11 @@
 			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-management</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Spring -->
 		<dependency>

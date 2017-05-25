@@ -1,7 +1,6 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.NoResultException;
 
@@ -11,29 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.persistence.dao.IEntityDao;
-import sk.qbsw.core.persistence.model.domain.IEntity;
 import sk.qbsw.security.dao.IAddressDao;
 import sk.qbsw.security.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.dao.IGroupDao;
 import sk.qbsw.security.dao.IOrganizationDao;
-import sk.qbsw.security.dao.IUnitDao;
 import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.security.model.domain.CAddress;
 import sk.qbsw.security.model.domain.CAuthenticationParams;
 import sk.qbsw.security.model.domain.CGroup;
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.domain.CXUserUnitGroup;
 import sk.qbsw.security.model.filter.CUserAssociationsFilter;
 import sk.qbsw.security.model.filter.CUserDetailFilter;
 import sk.qbsw.security.model.order.COrderModel;
@@ -54,14 +45,11 @@ import sk.qbsw.security.model.order.IOrderByAttributeSpecifier;
  * @version 1.13.0
  * @since 1.0.0
  */
-@Service ("cUserService")
-public class CUserService extends AService implements IUserService
+@Service ("userManagementService")
+public class CUserManagementService extends AService implements IUserManagementService
 {
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CUserService.class);
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = LoggerFactory.getLogger(CUserManagementService.class);
 
 	/** The user dao. */
 	@Autowired
@@ -81,25 +69,13 @@ public class CUserService extends AService implements IUserService
 
 	/** The authentication service. */
 	@Autowired
-	private transient IAuthenticationModifierService authenticationService;
-
-	/** The group dao. */
-	@Autowired
-	private IGroupDao groupDao;
-
-	/** The unit dao. */
-	@Autowired
-	private IUnitDao unitDao;
-
-	/** The cross user unit group dao. */
-	@Autowired
-	private IXUserUnitGroupDao crossUserUnitGroupDao;
+	private IUserCredentialManagementService authenticationService;
 
 	/**
 	 * Disable user.
 	 *
 	 * @param user the user
-	 * @see sk.qbsw.security.service.ISecurityService#disableUser(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.management.service.ISecurityService#disableUser(sk.qbsw.security.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -114,7 +90,7 @@ public class CUserService extends AService implements IUserService
 	 * Enable user.
 	 *
 	 * @param user the user
-	 * @see sk.qbsw.security.service.ISecurityService#enableUser(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.management.service.ISecurityService#enableUser(sk.qbsw.security.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -126,7 +102,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#get(java.lang.Long)
+	 * @see sk.qbsw.security.service.IUserManagementService#get(java.lang.Long)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -140,7 +116,7 @@ public class CUserService extends AService implements IUserService
 	 *
 	 * @param organization the organization
 	 * @return the all users
-	 * @see sk.qbsw.security.service.ISecurityService#getAllUsers(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.management.service.ISecurityService#getAllUsers(sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -156,7 +132,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getOtherActiveUsers(sk.qbsw.security.model.domain.COrganization, sk.qbsw.security.model.domain.CGroup, sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.service.IUserManagementService#getOtherActiveUsers(sk.qbsw.security.model.domain.COrganization, sk.qbsw.security.model.domain.CGroup, sk.qbsw.security.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -175,7 +151,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUserByLogin(java.lang.String)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUserByLogin(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -185,7 +161,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUserForModification(java.lang.Long)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUserForModification(java.lang.Long)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -205,7 +181,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUsers(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -222,7 +198,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUsersOrderByOrganization(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.model.domain.CGroup)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUsersOrderByOrganization(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.model.domain.CGroup)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -241,7 +217,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUsers(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.model.domain.CGroup)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.model.domain.CGroup)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -289,7 +265,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -308,7 +284,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -328,7 +304,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -348,7 +324,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#getUsers(java.lang.String)
+	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -364,7 +340,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#registerNewUser(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.service.IUserManagementService#registerNewUser(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -383,7 +359,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#registerNewUser(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.service.IUserManagementService#registerNewUser(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -429,7 +405,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#updateUser(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.service.IUserManagementService#updateUser(sk.qbsw.security.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -439,7 +415,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#setAddress(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CAddress)
+	 * @see sk.qbsw.security.service.IUserManagementService#setAddress(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CAddress)
 	 */
 	@Override
 	@Transactional
@@ -455,209 +431,7 @@ public class CUserService extends AService implements IUserService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#unsetUserFromGroup(java.lang.Long, java.lang.Long, java.lang.Long)
-	 */
-	@Override
-	@Transactional
-	public void unsetUserFromGroup (Long userId, Long groupId, Long unitId) throws CSecurityException
-	{
-		if (userId == null || groupId == null)
-		{
-			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
-
-		//get persisted objects
-		CUser user = userDao.findById(userId);
-		CGroup group = groupDao.findById(groupId);
-		CUnit unit = null;
-
-		if (unitId != null)
-		{
-			unit = unitDao.findById(unitId);
-		}
-
-		//call method with logic
-		if (unit != null)
-		{
-			unsetUserFromGroup(user, group, unit);
-		}
-		else
-		{
-			unsetUserFromGroup(user, group);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#unsetUserFromGroup(java.lang.Long, java.lang.Long)
-	 */
-	@Override
-	@Transactional
-	public void unsetUserFromGroup (Long userId, Long groupId) throws CSecurityException
-	{
-		unsetUserFromGroup(userId, groupId, null);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#unsetUserFromGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup, sk.qbsw.security.model.domain.CUnit)
-	 */
-	@Override
-	@Transactional
-	public void unsetUserFromGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException
-	{
-		//validates input objects
-		if (user == null || user.getId() == null || group == null || group.getId() == null)
-		{
-			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
-
-		if (unit != null && unit.getId() == null)
-		{
-			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
-
-		removeUserUnitGroup(user, group, unit);
-	}
-
-	private void removeUserUnitGroup (CUser user, CGroup group, CUnit unit)
-	{
-		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, group);
-
-		//remove records
-		for (CXUserUnitGroup userUnitGroupRecord : userUnitGroupRecords)
-		{
-			if (user.getxUserUnitGroups().contains(userUnitGroupRecord))
-			{
-				user.getxUserUnitGroups().remove(userUnitGroupRecord);
-			}
-			crossUserUnitGroupDao.remove(userUnitGroupRecord);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#unsetUserFromGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup)
-	 */
-	@Override
-	@Transactional
-	public void unsetUserFromGroup (CUser user, CGroup group) throws CSecurityException
-	{
-		unsetUserFromGroup(user, group, null);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#setUserToGroup(java.lang.Long, java.lang.Long, java.lang.Long)
-	 */
-	@Override
-	@Transactional
-	public void setUserToGroup (Long userId, Long groupId, Long unitId) throws CBusinessException
-	{
-		if (userId == null || groupId == null)
-		{
-			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
-
-		//get persisted objects
-		CUser user = userDao.findById(userId);
-		CGroup group = groupDao.findById(groupId);
-		CUnit unit = null;
-
-		if (unitId != null)
-		{
-			unit = unitDao.findById(unitId);
-		}
-
-		//call method with logic
-		if (unit != null)
-		{
-			setUserToGroup(user, group, unit);
-		}
-		else
-		{
-			setUserToGroup(user, group);
-		}
-
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#setUserToGroup(java.lang.Long, java.lang.Long)
-	 */
-	@Override
-	@Transactional
-	public void setUserToGroup (Long userId, Long groupId) throws CBusinessException
-	{
-		setUserToGroup(userId, groupId, null);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#setUserToGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup, sk.qbsw.security.model.domain.CUnit)
-	 */
-	@Override
-	@Transactional
-	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CBusinessException
-	{
-		//validates input objects
-		if (!CUser.isKnown(user) || !CGroup.isKnown(group))
-		{
-			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
-
-		if (unit != null && unit.getId() == null)
-		{
-			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
-
-		boolean canBeAdded = canBeGroupUnitAssignedToUser(user, group, unit);
-		if (canBeAdded)
-		{
-			CXUserUnitGroup userUnitGroupRecord = new CXUserUnitGroup();
-			userUnitGroupRecord.setUser(user);
-			userUnitGroupRecord.setGroup(group);
-			userUnitGroupRecord.setUnit(unit);
-			crossUserUnitGroupDao.update(userUnitGroupRecord);
-		}
-		else
-		{
-			throw new CBusinessException("The group " + group.getCode() + " cannot be set to user: it's excluded or already has been set to user.");
-		}
-	}
-
-	private boolean canBeGroupUnitAssignedToUser (CUser user, CGroup group, CUnit unit)
-	{
-		//find all groups assigned to user
-		List<CXUserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, null);
-
-		for (CXUserUnitGroup userUnitGroup : userUnitGroupRecords)
-		{
-			if (group.equals(userUnitGroup.getGroup()))
-			{
-				//if is group already added
-				return false;
-			}
-
-			//if added group is excluded by group which user already have then group cannot be added
-			Set<CGroup> excludedGroups = userUnitGroup.getGroup().getExcludedGroups();
-			if (excludedGroups != null && excludedGroups.contains(group))
-			{
-				return false;
-			}
-		}
-		//if is not combination user group unit already added
-		//or if existing group assigned to user not exclude added group
-		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#setUserToGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup)
-	 */
-	@Override
-	@Transactional
-	public void setUserToGroup (CUser user, CGroup group) throws CBusinessException
-	{
-		setUserToGroup(user, group, null);
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserService#checksUserExist(java.lang.String)
+	 * @see sk.qbsw.security.service.IUserManagementService#checksUserExist(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -675,41 +449,4 @@ public class CUserService extends AService implements IUserService
 		}
 	}
 
-	/**
-	 * Gets the persisted entity from transaction manager for input entity.
-	 *
-	 * @param <T> the generic type for entity
-	 * @param entity the entity
-	 * @param dao the dao for operations with entity
-	 * @return the persisted entity
-	 * @throws CSecurityException the security exception occures if the input parameters are incorrect or if there is no entity in database
-	 */
-	private <T extends IEntity<Long>> T getPersistedEntity (T entity, IEntityDao<Long, T> dao) throws CSecurityException
-	{
-		if (entity != null && entity.getId() != null)
-		{
-			try
-			{
-				T persistedEntity = dao.findById(entity.getId());
-				if (persistedEntity == null)
-				{
-					throw new NoResultException();
-				}
-				else
-				{
-					return persistedEntity;
-				}
-			}
-			catch (NoResultException ex)
-			{
-				LOGGER.debug("Entity not found", ex);
-
-				throw new CSecurityException("The invalid input entity");
-			}
-		}
-		else
-		{
-			throw new CSecurityException("The invalid input entity");
-		}
-	}
 }

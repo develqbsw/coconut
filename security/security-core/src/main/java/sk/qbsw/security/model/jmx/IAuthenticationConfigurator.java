@@ -88,4 +88,5 @@ public interface IAuthenticationConfigurator
 	 * @param additionalAuthParameters the additional auth parameters
 	 */
 	public void setAdditionalAuthParameters (Map<EAuthParameters, String> additionalAuthParameters);
+	
 }

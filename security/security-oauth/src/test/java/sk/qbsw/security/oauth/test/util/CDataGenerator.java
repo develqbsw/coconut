@@ -21,6 +21,7 @@ import sk.qbsw.security.dao.IRoleDao;
 import sk.qbsw.security.dao.IUnitDao;
 import sk.qbsw.security.dao.IUserDao;
 import sk.qbsw.security.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.model.domain.CAddress;
 import sk.qbsw.security.model.domain.CAuthenticationParams;
 import sk.qbsw.security.model.domain.CBlockedLogin;
@@ -37,7 +38,6 @@ import sk.qbsw.security.oauth.dao.IMasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.CAuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.CMasterToken;
 import sk.qbsw.security.oauth.test.util.domain.CLicenseFree;
-import sk.qbsw.security.service.IUserService;
 
 /**
  * Generate data in DB for tests.
@@ -81,7 +81,7 @@ public class CDataGenerator
 
 	/** The user service. */
 	@Autowired
-	private IUserService userService;
+	private IUserManagementService userService;
 
 	/** The cross user unit group dao. */
 	@Autowired

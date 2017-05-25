@@ -1,4 +1,4 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import sk.qbsw.security.model.domain.CAddress;
 import sk.qbsw.security.model.domain.CLicense;
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.service.ILicenseGenerator;
 
 /**
  * Service for organization management.
@@ -127,7 +128,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 * Disable organization.
 	 *
 	 * @param org the org
-	 * @see sk.qbsw.security.service.ISecurityService#disableOrganization(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.management.service.ISecurityService#disableOrganization(sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)
@@ -142,7 +143,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 * Enable organization.
 	 *
 	 * @param org the org
-	 * @see sk.qbsw.security.service.ISecurityService#enableOrganization(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.management.service.ISecurityService#enableOrganization(sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)
@@ -204,7 +205,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 *
 	 * @param org the org
 	 * @param manager the manager
-	 * @see sk.qbsw.security.service.ISecurityService#registerOrganization(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.management.service.ISecurityService#registerOrganization(sk.qbsw.security.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)

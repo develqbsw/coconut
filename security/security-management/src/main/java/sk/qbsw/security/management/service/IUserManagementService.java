@@ -1,21 +1,18 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.NoResultException;
 
-import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.model.domain.CAddress;
 import sk.qbsw.security.model.domain.CGroup;
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
 
 /**
- * The Interface IUserService.
+ * The Interface IUserManagementService.
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
@@ -23,7 +20,7 @@ import sk.qbsw.security.model.domain.CUser;
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface IUserService extends Serializable
+public interface IUserManagementService
 {
 	/**
 	 * Enable user.
@@ -206,87 +203,6 @@ public interface IUserService extends Serializable
 	 */
 	public void setAddress (CUser user, CAddress address);
 
-	/**
-	 * Unset user from group in specified unit. The user, group and unit are loaded from persistence manager.
-	 *
-	 * @param userId the user id (mandatory)
-	 * @param groupId the group id (mandatory)
-	 * @param unitId the unit id (optional)
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect
-	 */
-	public void unsetUserFromGroup (Long userId, Long groupId, Long unitId) throws CSecurityException;
-
-	/**
-	 * Unset user from group. The user and group are loaded from persistence manager.
-	 *
-	 * @param userId the user id (mandatory)
-	 * @param groupId the group id (mandatory)
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect
-	 */
-	public void unsetUserFromGroup (Long userId, Long groupId) throws CSecurityException;
-
-	/**
-	 * Unset user from group in specified unit. The user, group and unit must be attached objects.
-	 *
-	 * @param user the user (mandatory)
-	 * @param group the group (mandatory)
-	 * @param unit the unit (optional)
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the unsetting failed
-	 */
-	public void unsetUserFromGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException;
-
-	/**
-	 * Unset user from group. The user and group must be attached objects.
-	 *
-	 * @param user the user (mandatory)
-	 * @param group the group (mandatory)
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the unsetting failed
-	 */
-	public void unsetUserFromGroup (CUser user, CGroup group) throws CSecurityException;
-
-	/**
-	 * Set user to group in specified unit. The user, group and unit are loaded from persistence manager.
-	 *
-	 * @param userId the user id (mandatory)
-	 * @param groupId the group id (mandatory)
-	 * @param unitId the unit id (optional)
-	 * 
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
-	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
-	 */
-	public void setUserToGroup (Long userId, Long groupId, Long unitId) throws CSecurityException, CBusinessException;
-
-	/**
-	 * Set user to group. The user and group are loaded from persistence manager.
-	 *
-	 * @param userId the user id (mandatory)
-	 * @param groupId the group id (mandatory)
-	 * 
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
-	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
-	 */
-	public void setUserToGroup (Long userId, Long groupId) throws CSecurityException, CBusinessException;
-
-	/**
-	 * Set user to group in specified unit. The user, group and unit must be attached objects.
-	 *
-	 * @param user the user (mandatory)
-	 * @param group the group (mandatory)
-	 * @param unit the unit (optional)
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
-	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
-	 */
-	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException, CBusinessException;
-
-	/**
-	 * Set user to group. The user and group must be attached objects.
-	 *
-	 * @param user the user (mandatory)
-	 * @param group the group (mandatory)
-	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
-	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
-	 */
-	public void setUserToGroup (CUser user, CGroup group) throws CSecurityException, CBusinessException;
 
 	/**
 	 * Checks if the user with defined login exist.
@@ -295,4 +211,5 @@ public interface IUserService extends Serializable
 	 * @return true, if successful
 	 */
 	public boolean checksUserExist (String login);
+
 }

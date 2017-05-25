@@ -1,17 +1,18 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.time.OffsetDateTime;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.security.base.exception.CPasswordFormatException;
 
 /**
- * The Interface IAuthenticationModifierService.
+ * The Interface IUserCredentialManagementService.
  * 
  * @author Dalibor Rak
  * @version 1.13.0
  * @since 1.13.0
  */
-public interface IAuthenticationModifierService
+public interface IUserCredentialManagementService
 {
 
 	/**
@@ -64,5 +65,12 @@ public interface IAuthenticationModifierService
 	 * @throws CSecurityException the exception raised
 	 */
 	public abstract void changeLogin (Long userId, String login) throws CSecurityException;
-
+	
+	/**
+	 * Validate password format.
+	 *
+	 * @param password the password
+	 * @throws CPasswordFormatException the password format exception
+	 */
+	public void validatePassword (String password) throws CPasswordFormatException;
 }

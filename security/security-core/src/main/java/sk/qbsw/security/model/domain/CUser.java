@@ -34,8 +34,6 @@ import org.hibernate.annotations.FilterDef;
 import com.google.gson.annotations.Expose;
 
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.service.CGroupService;
-import sk.qbsw.security.service.CUserService;
 
 /**
  * The Class CUser.
@@ -351,7 +349,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * Adds the group.
 	 *
 	 * @param grp the grp
-	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup)}
 	 */
 	@Deprecated
 	public void addGroup (CGroup grp)
@@ -367,7 +365,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @param grp the grp
 	 * @param unt unit
-	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup, CUnit)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup, CUnit)}
 	 */
 	@Deprecated
 	public void addGroupUnit (CGroup grp, CUnit unt)
@@ -383,7 +381,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * bind groups with this user.
 	 *
 	 * @param groups the new groups
-	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup)}
 	 */
 	@Deprecated
 	public void setGroups (Set<CGroup> groups)
@@ -399,7 +397,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @param groups the groups
 	 * @param unit the unit
-	 * @deprecated use {@link CUserService#setUserToGroup(CUser, CGroup)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup)}
 	 */
 	@Deprecated
 	public void setGroupsUnit (Set<CGroup> groups, CUnit unit)

@@ -1,4 +1,4 @@
-package sk.qbsw.security.test;
+package sk.qbsw.security.management.test;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -17,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.dao.IUnitDao;
 import sk.qbsw.security.dao.IUserDao;
+import sk.qbsw.security.management.service.IGroupService;
+import sk.qbsw.security.management.test.util.CDataGenerator;
 import sk.qbsw.security.model.domain.CGroup;
 import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IGroupService;
-import sk.qbsw.security.test.util.CDataGenerator;
 
 /**
  * Checks group service.

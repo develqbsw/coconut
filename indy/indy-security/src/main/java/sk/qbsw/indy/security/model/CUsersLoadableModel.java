@@ -6,10 +6,10 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CRole;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IUserService;
 
 public class CUsersLoadableModel extends LoadableDetachableModel<List<CUser>>
 {
@@ -19,7 +19,7 @@ public class CUsersLoadableModel extends LoadableDetachableModel<List<CUser>>
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private IUserService userService;
+	private IUserManagementService userService;
 
 	private COrganization organization;
 

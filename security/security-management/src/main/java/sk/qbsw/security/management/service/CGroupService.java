@@ -1,4 +1,4 @@
-package sk.qbsw.security.service;
+package sk.qbsw.security.management.service;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class CGroupService extends AService implements IGroupService
 	 *
 	 * @param id the pk id
 	 * @return the role group
-	 * @see sk.qbsw.security.service.ISecurityService#read(java.lang.Long)
+	 * @see sk.qbsw.security.management.service.ISecurityService#read(java.lang.Long)
 	 */
 	@Override
 	@Transactional (readOnly = true)
