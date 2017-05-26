@@ -13,10 +13,7 @@
 	    <!-- <context:exclude-filter type="regex" expression="sk\.qbsw\.core\.security\.service\.CDatabaseAuthenticationService"/> -->
 	</context:component-scan>
 	
-	<bean id="authenticationService" class="sk.qbsw.security.service.CDatabaseAuthenticationService" />
-
-	<bean id="loginBlockingService"
-		class="sk.qbsw.security.service.CLoginBlockingService" />
+	<bean id="loginBlockingService"	class="sk.qbsw.security.service.CLoginBlockingService" />
 	
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="loginBlockingService" />
@@ -28,8 +25,6 @@
 		</property>
 	</bean>
 
-	<bean id="databaseLoginTask" scope="prototype"
-		class="sk.qbsw.security.test.performance.task.CDatabaseLoginTask" />
 	<bean id="loginTaskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="60" />

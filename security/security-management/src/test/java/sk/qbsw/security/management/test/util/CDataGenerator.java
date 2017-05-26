@@ -22,6 +22,7 @@ import sk.qbsw.security.dao.IUnitDao;
 import sk.qbsw.security.dao.IUserDao;
 import sk.qbsw.security.dao.IXUserUnitGroupDao;
 import sk.qbsw.security.management.service.IUserManagementService;
+import sk.qbsw.security.management.test.util.domain.CLicenseFree;
 import sk.qbsw.security.model.domain.CAddress;
 import sk.qbsw.security.model.domain.CAuthenticationParams;
 import sk.qbsw.security.model.domain.CBlockedLogin;
@@ -33,7 +34,6 @@ import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
 import sk.qbsw.security.model.domain.CXUserUnitGroup;
 import sk.qbsw.security.model.jmx.CLicensingRules;
-import sk.qbsw.security.test.util.domain.CLicenseFree;
 
 /**
  * Generate data in DB for tests.

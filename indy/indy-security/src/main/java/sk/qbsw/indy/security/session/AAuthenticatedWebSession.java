@@ -7,7 +7,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.request.Request;
 
-import sk.qbsw.security.model.IAuthenticationToken;
+import sk.qbsw.security.auth.model.IAuthenticationToken;
 
 
 /**

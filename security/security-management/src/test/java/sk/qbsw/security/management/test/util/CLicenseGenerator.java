@@ -5,11 +5,11 @@ import java.util.Calendar;
 
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.security.management.test.util.domain.CLicenseFree;
+import sk.qbsw.security.management.test.util.domain.CLicenseOwner;
 import sk.qbsw.security.model.domain.CLicense;
 import sk.qbsw.security.model.jmx.CLicensingRules;
 import sk.qbsw.security.service.ILicenseGenerator;
-import sk.qbsw.security.test.util.domain.CLicenseFree;
-import sk.qbsw.security.test.util.domain.CLicenseOwner;
 
 /**
  * License Generator.

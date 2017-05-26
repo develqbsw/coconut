@@ -11,7 +11,5 @@
 
 	<context:component-scan base-package="sk.qbsw.security" />
 	<context:component-scan base-package="sk.qbsw.core.configuration" />
-
-	<bean id="authenticationService"
-		class="sk.qbsw.security.service.CDatabaseAuthenticationService" />
+	
 </beans>

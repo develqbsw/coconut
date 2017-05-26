@@ -21,7 +21,6 @@ import sk.qbsw.security.dao.IRoleDao;
 import sk.qbsw.security.dao.IUnitDao;
 import sk.qbsw.security.dao.IUserDao;
 import sk.qbsw.security.dao.IXUserUnitGroupDao;
-import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.model.domain.CAddress;
 import sk.qbsw.security.model.domain.CAuthenticationParams;
 import sk.qbsw.security.model.domain.CBlockedLogin;
@@ -72,10 +71,6 @@ public class CDataGenerator
 	/** The license dao. */
 	@Autowired
 	private ILicenseDao licenseDao;
-
-	/** The user service. */
-	@Autowired
-	private IUserManagementService userService;
 
 	/** The cross user unit group dao. */
 	@Autowired
