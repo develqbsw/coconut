@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.dao.IAddressDao;
-import sk.qbsw.security.dao.IGroupDao;
-import sk.qbsw.security.dao.IOrganizationDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CAddress;
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.ILicenseGenerator;
+import sk.qbsw.security.core.dao.IAddressDao;
+import sk.qbsw.security.core.dao.IGroupDao;
+import sk.qbsw.security.core.dao.IOrganizationDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CAddress;
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.service.ILicenseGenerator;
 
 /**
  * Service for organization management.
@@ -51,7 +51,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	private IAddressDao addressDao;
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#registerNewOrganization(sk.qbsw.security.model.domain.COrganization, sk.qbsw.security.model.domain.CUser, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#registerNewOrganization(sk.qbsw.security.core.core.model.domain.COrganization, sk.qbsw.security.core.core.model.domain.CUser, java.lang.String)
 	 */
 	@Override
 	@Transactional
@@ -66,7 +66,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#registerNewOrganization(sk.qbsw.security.model.domain.COrganization, sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#registerNewOrganization(sk.qbsw.security.core.core.model.domain.COrganization, sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional
@@ -82,7 +82,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#getOrganizationByNameNull(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#getOrganizationByNameNull(java.lang.String)
 	 */
 	@Deprecated
 	@Override
@@ -93,7 +93,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#getOrganizationByName(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#getOrganizationByName(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -104,7 +104,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 
 	//TODO: REWRITE
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#getOrganizationByGPS(java.lang.Float, java.lang.Float)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#getOrganizationByGPS(java.lang.Float, java.lang.Float)
 	 */
 	@Override
 	@Deprecated
@@ -115,7 +115,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#getOrganizations()
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#getOrganizations()
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -128,7 +128,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 * Disable organization.
 	 *
 	 * @param org the org
-	 * @see sk.qbsw.security.management.service.ISecurityService#disableOrganization(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#disableOrganization(sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)
@@ -143,7 +143,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 * Enable organization.
 	 *
 	 * @param org the org
-	 * @see sk.qbsw.security.management.service.ISecurityService#enableOrganization(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#enableOrganization(sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)
@@ -155,7 +155,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#getOrganizations(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#getOrganizations(java.lang.String)
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -165,7 +165,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#updateOrganization(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#updateOrganization(sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional
@@ -175,7 +175,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#getOrganizationById(java.lang.Long)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#getOrganizationById(java.lang.Long)
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -185,7 +185,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IOrganizationService#setAddress(sk.qbsw.security.model.domain.COrganization, sk.qbsw.security.model.domain.CAddress)
+	 * @see sk.qbsw.security.core.core.service.IOrganizationService#setAddress(sk.qbsw.security.core.core.model.domain.COrganization, sk.qbsw.security.core.core.model.domain.CAddress)
 	 */
 	@Override
 	@Transactional
@@ -205,7 +205,7 @@ public class COrganizationService extends AService implements IOrganizationServi
 	 *
 	 * @param org the org
 	 * @param manager the manager
-	 * @see sk.qbsw.security.management.service.ISecurityService#registerOrganization(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#registerOrganization(sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)

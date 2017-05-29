@@ -24,7 +24,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import sk.qbsw.core.persistence.model.domain.AEntity;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * Security token held for authentication.

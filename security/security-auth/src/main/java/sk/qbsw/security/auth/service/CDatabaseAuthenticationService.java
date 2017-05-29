@@ -18,15 +18,15 @@ import sk.qbsw.core.security.base.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.base.exception.CInvalidUserException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.security.auth.base.service.IAuthenticationService;
-import sk.qbsw.security.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.dao.IUnitDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CAuthenticationParams;
-import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.domain.EAuthenticationType;
-import sk.qbsw.security.service.signature.IPasswordDigester;
+import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
+import sk.qbsw.security.core.dao.IUnitDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CAuthenticationParams;
+import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.EAuthenticationType;
+import sk.qbsw.security.core.service.signature.IPasswordDigester;
 
 /**
  * Authentication service.
@@ -95,7 +95,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.security.model.domain.CRole)
+	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.security.core.core.model.domain.CRole)
 	 */
 	@Transactional (readOnly = true)
 	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
@@ -121,7 +121,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.security.model.domain.CRole)
+	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.security.core.core.model.domain.CRole)
 	 */
 	@Transactional (readOnly = true)
 	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
@@ -137,7 +137,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -241,7 +241,7 @@ public class CDatabaseAuthenticationService extends AService implements IAuthent
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#isOnline()
+	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#isOnline()
 	 */
 	@Override
 	@Transactional (readOnly = true)

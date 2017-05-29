@@ -2,9 +2,9 @@ package sk.qbsw.security.management.service;
 
 import java.util.List;
 
-import sk.qbsw.security.model.domain.CAddress;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CAddress;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The service for a organizations.

@@ -16,16 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.dao.IGroupDao;
-import sk.qbsw.security.dao.ILicenseDao;
-import sk.qbsw.security.dao.IOrganizationDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.jmx.CLicensingRules;
-import sk.qbsw.security.service.ILicenseGenerator;
+import sk.qbsw.security.core.dao.IGroupDao;
+import sk.qbsw.security.core.dao.ILicenseDao;
+import sk.qbsw.security.core.dao.IOrganizationDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.jmx.CLicensingRules;
+import sk.qbsw.security.core.service.ILicenseGenerator;
 
 /**
  * The Class CSecurityServiceImpl.
@@ -83,7 +83,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Adds the license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.management.service.ISecurityService#addLicense(sk.qbsw.security.model.domain.CLicense)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#addLicense(sk.qbsw.security.core.core.model.domain.CLicense)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -97,7 +97,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Delete license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.management.service.ISecurityService#deleteLicense(sk.qbsw.security.model.domain.CLicense)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#deleteLicense(sk.qbsw.security.core.core.model.domain.CLicense)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -108,7 +108,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	}
 
 	/** 
-	 * @see sk.qbsw.security.management.service.ISecurityService#getAvailabelLicenses()
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#getAvailabelLicenses()
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -118,7 +118,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	}
 
 	/** 
-	 * @see sk.qbsw.security.management.service.ISecurityService#getAvailabelLicensesForCustomer()
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#getAvailabelLicensesForCustomer()
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -131,7 +131,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Gets the available groups.
 	 *
 	 * @return the available groups
-	 * @see sk.qbsw.security.management.service.ISecurityService#getAvailableGroups()
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#getAvailableGroups()
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -145,7 +145,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 *
 	 * @param org the org
 	 * @return the organization licenses
-	 * @see sk.qbsw.security.management.service.ISecurityService#getOrganizationLicenses(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#getOrganizationLicenses(sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -161,7 +161,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * @param login the login
 	 * @param id the pk id
 	 * @return true, if is login free
-	 * @see sk.qbsw.security.management.service.ISecurityService#isLoginFree(java.lang.String, java.lang.Long)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#isLoginFree(java.lang.String, java.lang.Long)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -193,7 +193,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 *
 	 * @param license the license
 	 * @param payed the payed
-	 * @see sk.qbsw.security.management.service.ISecurityService#matchLicensePayment(sk.qbsw.security.model.domain.CLicense, java.lang.Boolean)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#matchLicensePayment(sk.qbsw.security.core.core.model.domain.CLicense, java.lang.Boolean)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -208,7 +208,7 @@ public class CSecurityServiceImpl extends AService implements ISecurityService
 	 * Update license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.management.service.ISecurityService#updateLicense(sk.qbsw.security.model.domain.CLicense)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#updateLicense(sk.qbsw.security.core.core.model.domain.CLicense)
 	 */
 	@Override
 	@Transactional (readOnly = false)

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.oauth.model.domain.CMasterToken;
 import sk.qbsw.security.oauth.service.IMasterTokenService;
 
@@ -31,7 +31,7 @@ public class CMasterTokenService extends ATokenService implements IMasterTokenSe
 	private static final Logger LOGGER = LoggerFactory.getLogger(CMasterTokenService.class);
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IMasterTokenService#generateMasterToken(java.lang.Long, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#generateMasterToken(java.lang.Long, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional
@@ -68,7 +68,7 @@ public class CMasterTokenService extends ATokenService implements IMasterTokenSe
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IMasterTokenService#revokeMasterToken(java.lang.Long, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#revokeMasterToken(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	@Transactional
@@ -87,7 +87,7 @@ public class CMasterTokenService extends ATokenService implements IMasterTokenSe
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IMasterTokenService#getUserByMasterToken(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#getUserByMasterToken(java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional

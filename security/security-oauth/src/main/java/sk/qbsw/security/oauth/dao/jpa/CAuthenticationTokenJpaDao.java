@@ -35,7 +35,7 @@ public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthentica
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.dao.IAuthenticationTokenDao#findByUserAndDevice(java.lang.Long, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.dao.IAuthenticationTokenDao#findByUserAndDevice(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	public CAuthenticationToken findByUserAndDevice (Long userId, String deviceId) throws CBusinessException
@@ -57,7 +57,7 @@ public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthentica
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.dao.IAuthenticationTokenDao#findByUserAndToken(java.lang.Long, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.dao.IAuthenticationTokenDao#findByUserAndToken(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	public CAuthenticationToken findByUserAndToken (Long userId, String token) throws CBusinessException
@@ -79,7 +79,7 @@ public class CAuthenticationTokenJpaDao extends AEntityQDslDao<Long, CAuthentica
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.dao.IAuthenticationTokenDao#findByTokenAndDeviceId(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.dao.IAuthenticationTokenDao#findByTokenAndDeviceId(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public CAuthenticationToken findByTokenAndDeviceId (String token, String deviceId) throws CBusinessException

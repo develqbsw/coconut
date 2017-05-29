@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CRole;
 
 /**
  * The Interface IAuthorizationService.

@@ -11,14 +11,14 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.dao.IGroupDao;
-import sk.qbsw.security.dao.IUnitDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.dao.IXUserUnitGroupDao;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.dao.IGroupDao;
+import sk.qbsw.security.core.dao.IUnitDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
 
 /**
  * Authentication service.
@@ -52,7 +52,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#unsetUserFromGroup(java.lang.Long, java.lang.Long, java.lang.Long)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#unsetUserFromGroup(java.lang.Long, java.lang.Long, java.lang.Long)
 	 */
 	@Override
 	@Transactional
@@ -85,7 +85,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#unsetUserFromGroup(java.lang.Long, java.lang.Long)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#unsetUserFromGroup(java.lang.Long, java.lang.Long)
 	 */
 	@Override
 	@Transactional
@@ -95,7 +95,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#unsetUserFromGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup, sk.qbsw.security.model.domain.CUnit)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#unsetUserFromGroup(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.CGroup, sk.qbsw.security.core.core.model.domain.CUnit)
 	 */
 	@Override
 	@Transactional
@@ -132,7 +132,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#unsetUserFromGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#unsetUserFromGroup(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.CGroup)
 	 */
 	@Override
 	@Transactional
@@ -142,7 +142,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#setUserToGroup(java.lang.Long, java.lang.Long, java.lang.Long)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#setUserToGroup(java.lang.Long, java.lang.Long, java.lang.Long)
 	 */
 	@Override
 	@Transactional
@@ -176,7 +176,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#setUserToGroup(java.lang.Long, java.lang.Long)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#setUserToGroup(java.lang.Long, java.lang.Long)
 	 */
 	@Override
 	@Transactional
@@ -186,7 +186,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#setUserToGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup, sk.qbsw.security.model.domain.CUnit)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#setUserToGroup(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.CGroup, sk.qbsw.security.core.core.model.domain.CUnit)
 	 */
 	@Override
 	@Transactional
@@ -219,7 +219,7 @@ public class CUserPermissionManagementService extends AService implements IUserP
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#setUserToGroup(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CGroup)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#setUserToGroup(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.CGroup)
 	 */
 	@Override
 	@Transactional

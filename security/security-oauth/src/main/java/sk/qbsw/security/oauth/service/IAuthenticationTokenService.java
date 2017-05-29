@@ -1,7 +1,7 @@
 package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The authentication token service.

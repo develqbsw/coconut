@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.auth.model.spring.CUserDetails;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * Service for getting user details

@@ -15,24 +15,24 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.dao.IAddressDao;
-import sk.qbsw.security.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.dao.IOrganizationDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CAddress;
-import sk.qbsw.security.model.domain.CAuthenticationParams;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.filter.CUserAssociationsFilter;
-import sk.qbsw.security.model.filter.CUserDetailFilter;
-import sk.qbsw.security.model.order.COrderModel;
-import sk.qbsw.security.model.order.COrderSpecification;
-import sk.qbsw.security.model.order.EOrderSpecifier;
-import sk.qbsw.security.model.order.EOrganizationOrderByAttributeSpecifier;
-import sk.qbsw.security.model.order.EUserOrderByAttributeSpecifier;
-import sk.qbsw.security.model.order.IOrderByAttributeSpecifier;
+import sk.qbsw.security.core.dao.IAddressDao;
+import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
+import sk.qbsw.security.core.dao.IOrganizationDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CAddress;
+import sk.qbsw.security.core.model.domain.CAuthenticationParams;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.filter.CUserAssociationsFilter;
+import sk.qbsw.security.core.model.filter.CUserDetailFilter;
+import sk.qbsw.security.core.model.order.COrderModel;
+import sk.qbsw.security.core.model.order.COrderSpecification;
+import sk.qbsw.security.core.model.order.EOrderSpecifier;
+import sk.qbsw.security.core.model.order.EOrganizationOrderByAttributeSpecifier;
+import sk.qbsw.security.core.model.order.EUserOrderByAttributeSpecifier;
+import sk.qbsw.security.core.model.order.IOrderByAttributeSpecifier;
 
 /**
  * Service for user management.
@@ -75,7 +75,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	 * Disable user.
 	 *
 	 * @param user the user
-	 * @see sk.qbsw.security.management.service.ISecurityService#disableUser(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#disableUser(sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -90,7 +90,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	 * Enable user.
 	 *
 	 * @param user the user
-	 * @see sk.qbsw.security.management.service.ISecurityService#enableUser(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#enableUser(sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -102,7 +102,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#get(java.lang.Long)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#get(java.lang.Long)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -116,7 +116,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	 *
 	 * @param organization the organization
 	 * @return the all users
-	 * @see sk.qbsw.security.management.service.ISecurityService#getAllUsers(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#getAllUsers(sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -132,7 +132,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getOtherActiveUsers(sk.qbsw.security.model.domain.COrganization, sk.qbsw.security.model.domain.CGroup, sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getOtherActiveUsers(sk.qbsw.security.core.core.model.domain.COrganization, sk.qbsw.security.core.core.model.domain.CGroup, sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -151,7 +151,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUserByLogin(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUserByLogin(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -161,7 +161,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUserForModification(java.lang.Long)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUserForModification(java.lang.Long)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -181,7 +181,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUsers(sk.qbsw.security.core.core.model.domain.COrganization, java.lang.Boolean)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -198,7 +198,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUsersOrderByOrganization(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.model.domain.CGroup)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUsersOrderByOrganization(sk.qbsw.security.core.core.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.core.core.model.domain.CGroup)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -217,7 +217,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(sk.qbsw.security.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.model.domain.CGroup)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUsers(sk.qbsw.security.core.core.model.domain.COrganization, java.lang.Boolean, sk.qbsw.security.core.core.model.domain.CGroup)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -265,7 +265,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -284,7 +284,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -304,7 +304,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUsers(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -324,7 +324,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#getUsers(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#getUsers(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -340,7 +340,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#registerNewUser(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#registerNewUser(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -359,7 +359,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#registerNewUser(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#registerNewUser(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -405,7 +405,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#updateUser(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#updateUser(sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -415,7 +415,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#setAddress(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.CAddress)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#setAddress(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.CAddress)
 	 */
 	@Override
 	@Transactional
@@ -431,7 +431,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserManagementService#checksUserExist(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUserManagementService#checksUserExist(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)

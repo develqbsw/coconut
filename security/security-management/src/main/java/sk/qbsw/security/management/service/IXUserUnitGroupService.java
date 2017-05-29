@@ -3,10 +3,10 @@ package sk.qbsw.security.management.service;
 import java.io.Serializable;
 import java.util.List;
 
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
 
 /**
  * Service for CXUserUnitGroup entity operations 

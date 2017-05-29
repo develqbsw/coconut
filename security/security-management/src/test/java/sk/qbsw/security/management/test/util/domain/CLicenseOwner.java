@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.jmx.CLicensingRules;
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.jmx.CLicensingRules;
 
 /**
  * The licence owner.
@@ -37,7 +37,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	 * Gets the priority.
 	 *
 	 * @return the priority
-	 * @see sk.qbsw.security.model.domain.CLicense#getPriority()
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#getPriority()
 	 */
 	@Override
 	public Integer getPriority ()
@@ -49,7 +49,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	 * Validate license.
 	 *
 	 * @return true, if successful
-	 * @see sk.qbsw.security.model.domain.CLicense#validateLicense()
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#validateLicense()
 	 */
 	public boolean validateLicense ()
 	{
@@ -62,7 +62,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	 * @param rules
 	 *            the rules
 	 * @return the integer
-	 * @see sk.qbsw.security.model.domain.CLicense#restrictExport()
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#restrictExport()
 	 */
 	@Override
 	public Integer restrictExport (CLicensingRules rules)
@@ -76,7 +76,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	 * @param rules
 	 *            the rules
 	 * @return the integer
-	 * @see sk.qbsw.security.model.domain.CLicense#restrictRespondents()
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#restrictRespondents()
 	 */
 	@Override
 	public Integer restrictRespondents (CLicensingRules rules)
@@ -90,7 +90,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	 * @param rules
 	 *            the rules
 	 * @return the integer
-	 * @see sk.qbsw.security.model.domain.CLicense#restrictQuestions()
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#restrictQuestions()
 	 */
 	@Override
 	public Integer restrictQuestions (CLicensingRules rules)
@@ -102,7 +102,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	 * Restrict advanced functionality.
 	 *
 	 * @return true, if successful
-	 * @see sk.qbsw.security.model.domain.CLicense#isAllowedAdvancedFunctionality()
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#isAllowedAdvancedFunctionality()
 	 */
 	@Override
 	public boolean restrictAdvancedFunctionality ()
@@ -111,7 +111,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	}
 
 	/**
-	 * @see sk.qbsw.security.model.domain.CLicense#recalculateLicensePrice(java.lang.Double)
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#recalculateLicensePrice(java.lang.Double)
 	 */
 	@Override
 	public void recalculateLicensePrice (Double dayPrice)
@@ -123,7 +123,7 @@ public class CLicenseOwner extends CLicense<CLicensingRules>
 	 * Contact to get price.
 	 *
 	 * @return true, if successful
-	 * @see sk.qbsw.security.model.domain.CLicense#contactToGetPrice()
+	 * @see sk.qbsw.security.core.core.model.domain.CLicense#contactToGetPrice()
 	 */
 	@Override
 	public boolean contactToGetPrice ()

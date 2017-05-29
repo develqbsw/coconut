@@ -17,13 +17,13 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.core.testing.mock.IMockHelper;
 import sk.qbsw.security.auth.base.service.IAuthenticationService;
-import sk.qbsw.security.dao.IUserDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.ldap.configuration.ILdapAuthenticationConfigurator;
 import sk.qbsw.security.ldap.service.ILdapProvider;
 import sk.qbsw.security.ldap.test.util.CAuthenticationTestProvider;
 import sk.qbsw.security.ldap.test.util.CDataGenerator;
 import sk.qbsw.security.management.service.IUserManagementService;
-import sk.qbsw.security.model.jmx.IAuthenticationConfigurator;
 
 /**
  * Checks Authentication service for ldap.

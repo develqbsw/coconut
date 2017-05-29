@@ -6,9 +6,9 @@ package sk.qbsw.security.management.service;
 import java.io.Serializable;
 import java.util.List;
 
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.COrganization;
 
 /**
  * The Interface IUserManagementService.

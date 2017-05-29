@@ -33,7 +33,7 @@ public abstract class AAbstractAuthenticationToken implements IAuthenticationTok
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.model.IAuthenticationToken#getCredentials()
+	 * @see sk.qbsw.security.core.core.model.IAuthenticationToken#getCredentials()
 	 */
 	@Override
 	public Object getCredentials ()
@@ -42,7 +42,7 @@ public abstract class AAbstractAuthenticationToken implements IAuthenticationTok
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.model.IAuthenticationToken#getPrincipal()
+	 * @see sk.qbsw.security.core.core.model.IAuthenticationToken#getPrincipal()
 	 */
 	@Override
 	public Object getPrincipal ()

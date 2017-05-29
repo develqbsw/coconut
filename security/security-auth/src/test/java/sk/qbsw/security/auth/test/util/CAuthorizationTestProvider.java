@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.auth.service.IAuthorizationService;
-import sk.qbsw.security.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CRole;
 
 /**
  * Provides test for authorization.

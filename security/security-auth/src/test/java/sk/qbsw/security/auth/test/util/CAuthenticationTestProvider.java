@@ -13,18 +13,18 @@ import org.springframework.stereotype.Component;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.auth.base.service.IAuthenticationService;
-import sk.qbsw.security.dao.IBlockedLoginDao;
-import sk.qbsw.security.dao.IOrganizationDao;
-import sk.qbsw.security.dao.IUserDao;
+import sk.qbsw.security.core.dao.IBlockedLoginDao;
+import sk.qbsw.security.core.dao.IOrganizationDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CBlockedLogin;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.service.ILoginBlockingService;
 import sk.qbsw.security.management.service.IUserCredentialManagementService;
 import sk.qbsw.security.management.service.IUserManagementService;
-import sk.qbsw.security.model.domain.CBlockedLogin;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.ILoginBlockingService;
 
 /**
  * Provides test for authentication.

@@ -25,7 +25,7 @@ public class COauthConfigurator extends AService implements IOauthConfigurator
 	private boolean authIpIgnored = false;
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.model.jmx.IOauthConfigurator#isAuthIpIgnored()
+	 * @see sk.qbsw.security.core.oauth.model.jmx.IOauthConfigurator#isAuthIpIgnored()
 	 */
 	@Override
 	public boolean isAuthIpIgnored ()
@@ -34,7 +34,7 @@ public class COauthConfigurator extends AService implements IOauthConfigurator
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.model.jmx.IOauthConfigurator#setAuthIpIgnored(boolean)
+	 * @see sk.qbsw.security.core.oauth.model.jmx.IOauthConfigurator#setAuthIpIgnored(boolean)
 	 */
 	@Override
 	public void setAuthIpIgnored (boolean authIpIgnored)
@@ -43,7 +43,7 @@ public class COauthConfigurator extends AService implements IOauthConfigurator
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.model.jmx.IOauthConfigurator#isIpIgnored()
+	 * @see sk.qbsw.security.core.oauth.model.jmx.IOauthConfigurator#isIpIgnored()
 	 */
 	@Override
 	public boolean isIpIgnored ()
@@ -52,7 +52,7 @@ public class COauthConfigurator extends AService implements IOauthConfigurator
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.model.jmx.IOauthConfigurator#setIpIgnored(boolean)
+	 * @see sk.qbsw.security.core.oauth.model.jmx.IOauthConfigurator#setIpIgnored(boolean)
 	 */
 	@Override
 	public void setIpIgnored (boolean ipIgnored)

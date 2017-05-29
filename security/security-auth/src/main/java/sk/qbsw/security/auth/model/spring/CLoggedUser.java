@@ -8,8 +8,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.COrganization;
 
 
 /**

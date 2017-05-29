@@ -12,16 +12,13 @@
 	<context:component-scan base-package="sk.qbsw.security" />
 	<context:component-scan base-package="sk.qbsw.core.testing.mock" />
 
-	<bean id="authenticationService"
-		class="sk.qbsw.security.ldap.service.CLdapAuthenticationService" />
-
-	<bean id="loginBlockingService"
-		class="sk.qbsw.security.service.CLoginBlockingService" />
+	<bean id="authenticationService" class="sk.qbsw.security.ldap.service.CLdapAuthenticationService" />
+	
+	<bean id="loginBlockingService"	class="sk.qbsw.security.core.service.CLoginBlockingService" />	
 	
 	<bean class="sk.qbsw.security.ldap.test.performance.task.CLdapLoginTask" id="ldapLoginTask" scope="prototype"/>
 	
-	<bean id="loginTaskExecutor"
-		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	<bean id="loginTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="60" />
 		<property name="maxPoolSize" value="60" />
 		<property name="WaitForTasksToCompleteOnShutdown" value="true" />

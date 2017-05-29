@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.oauth.model.domain.CAuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.CMasterToken;
 import sk.qbsw.security.oauth.service.IAuthenticationTokenService;
@@ -30,7 +30,7 @@ public class CAuthenticationTokenService extends ATokenService implements IAuthe
 	private static final Logger LOGGER = LoggerFactory.getLogger(CAuthenticationTokenService.class);
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IMasterTokenService#generateMasterToken(java.lang.Long, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#generateMasterToken(java.lang.Long, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional
@@ -67,7 +67,7 @@ public class CAuthenticationTokenService extends ATokenService implements IAuthe
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IAuthenticationTokenService#revokeAuthenticationToken(java.lang.Long, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.service.IAuthenticationTokenService#revokeAuthenticationToken(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	@Transactional
@@ -87,7 +87,7 @@ public class CAuthenticationTokenService extends ATokenService implements IAuthe
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IAuthenticationTokenService#getUserByAuthenticationToken(java.lang.String, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.service.IAuthenticationTokenService#getUserByAuthenticationToken(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional

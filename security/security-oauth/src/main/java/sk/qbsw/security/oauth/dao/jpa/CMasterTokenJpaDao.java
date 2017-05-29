@@ -35,7 +35,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.dao.IMasterTokenDao#findByUserAndDevice(java.lang.Long, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.dao.IMasterTokenDao#findByUserAndDevice(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	public CMasterToken findByUserAndDevice (Long userId, String deviceId) throws CBusinessException
@@ -57,7 +57,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.dao.IMasterTokenDao#findByUserAndToken(java.lang.Long, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.dao.IMasterTokenDao#findByUserAndToken(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	public CMasterToken findByUserAndToken (Long userId, String token) throws CBusinessException
@@ -79,7 +79,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.dao.IMasterTokenDao#findByUserAndTokenAndDevice(java.lang.Long, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.dao.IMasterTokenDao#findByUserAndTokenAndDevice(java.lang.Long, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public CMasterToken findByUserAndTokenAndDevice (Long userId, String token, String deviceId) throws CBusinessException
@@ -102,7 +102,7 @@ public class CMasterTokenJpaDao extends AEntityQDslDao<Long, CMasterToken> imple
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.dao.IMasterTokenDao#findByTokenAndDeviceId(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.dao.IMasterTokenDao#findByTokenAndDeviceId(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public CMasterToken findByTokenAndDeviceId (String token, String deviceId) throws CBusinessException

@@ -15,7 +15,7 @@
 	
 	<bean id="authenticationService" class="sk.qbsw.security.auth.service.CDatabaseAuthenticationService" />
 
-	<bean id="loginBlockingService" class="sk.qbsw.security.service.CLoginBlockingService" />
+	<bean id="loginBlockingService" class="sk.qbsw.security.core.service.CLoginBlockingService" />
 	
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="loginBlockingService" />

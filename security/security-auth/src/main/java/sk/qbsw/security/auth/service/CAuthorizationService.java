@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.CInvalidUserException;
-import sk.qbsw.security.dao.IRoleDao;
-import sk.qbsw.security.dao.IUnitDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.dao.IRoleDao;
+import sk.qbsw.security.core.dao.IUnitDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The database authorization service.
@@ -53,7 +53,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	private IUserDao userDao;
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.security.model.domain.CRole, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.security.core.core.model.domain.CRole, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -92,7 +92,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthorizationService#getRoleByCode(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IAuthorizationService#getRoleByCode(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)

@@ -1,7 +1,7 @@
 package sk.qbsw.security.management.service;
 
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUser;
 
 public interface IUsersValidationService
 {

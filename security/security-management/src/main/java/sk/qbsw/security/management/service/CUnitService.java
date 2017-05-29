@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.dao.IAddressDao;
-import sk.qbsw.security.dao.IUnitDao;
-import sk.qbsw.security.model.domain.CAddress;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.dao.IAddressDao;
+import sk.qbsw.security.core.dao.IUnitDao;
+import sk.qbsw.security.core.model.domain.CAddress;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * Service for unit management.
@@ -37,7 +37,7 @@ public class CUnitService extends AService implements IUnitService
 	private IAddressDao addressDao;
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUnitService#getAll()
+	 * @see sk.qbsw.security.core.core.service.IUnitService#getAll()
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -47,7 +47,7 @@ public class CUnitService extends AService implements IUnitService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUnitService#getAll(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.service.IUnitService#getAll(sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -57,7 +57,7 @@ public class CUnitService extends AService implements IUnitService
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUnitService#setAddress(sk.qbsw.security.model.domain.CUnit, sk.qbsw.security.model.domain.CAddress)
+	 * @see sk.qbsw.security.core.core.service.IUnitService#setAddress(sk.qbsw.security.core.core.model.domain.CUnit, sk.qbsw.security.core.core.model.domain.CAddress)
 	 */
 	@Override
 	@Transactional

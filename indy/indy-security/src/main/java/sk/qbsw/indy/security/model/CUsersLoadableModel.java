@@ -6,10 +6,10 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.management.service.IUserManagementService;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUser;
 
 public class CUsersLoadableModel extends LoadableDetachableModel<List<CUser>>
 {

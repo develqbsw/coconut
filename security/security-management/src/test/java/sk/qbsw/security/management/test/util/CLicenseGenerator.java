@@ -5,11 +5,11 @@ import java.util.Calendar;
 
 import org.springframework.stereotype.Component;
 
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.jmx.CLicensingRules;
+import sk.qbsw.security.core.service.ILicenseGenerator;
 import sk.qbsw.security.management.test.util.domain.CLicenseFree;
 import sk.qbsw.security.management.test.util.domain.CLicenseOwner;
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.jmx.CLicensingRules;
-import sk.qbsw.security.service.ILicenseGenerator;
 
 /**
  * License Generator.
@@ -67,7 +67,7 @@ public class CLicenseGenerator implements ILicenseGenerator
 	 * Gets the available licenses.
 	 *
 	 * @return the available licenses
-	 * @see sk.qbsw.security.service.ILicenseGenerator#getAvailableLicenses()
+	 * @see sk.qbsw.security.core.core.service.ILicenseGenerator#getAvailableLicenses()
 	 */
 	@Override
 	public ArrayList<CLicense<?>> getAvailableLicenses ()
@@ -83,7 +83,7 @@ public class CLicenseGenerator implements ILicenseGenerator
 	 * Gets the available licenses for customer.
 	 *
 	 * @return the available licenses for customer
-	 * @see sk.qbsw.security.service.ILicenseGenerator#getAvailableLicenses()
+	 * @see sk.qbsw.security.core.core.service.ILicenseGenerator#getAvailableLicenses()
 	 */
 	@Override
 	public ArrayList<CLicense<?>> getAvailableLicensesForCustomer ()

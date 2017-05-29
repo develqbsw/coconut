@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.springframework.security.core.Authentication;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The spring authentication service.

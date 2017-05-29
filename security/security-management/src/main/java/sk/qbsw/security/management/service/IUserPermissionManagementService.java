@@ -2,9 +2,9 @@ package sk.qbsw.security.management.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The Interface IUserCredentialManagementService.

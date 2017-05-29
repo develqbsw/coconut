@@ -18,12 +18,12 @@ import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.CPasswordFormatException;
-import sk.qbsw.security.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CAuthenticationParams;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.service.signature.IPasswordDigester;
+import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CAuthenticationParams;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.security.core.service.signature.IPasswordDigester;
 
 /**
  * Authentication service.
@@ -60,7 +60,7 @@ public class CUserCredentialManagementService extends AService implements IUserC
 
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -70,7 +70,7 @@ public class CUserCredentialManagementService extends AService implements IUserC
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserCredentialManagementService#changeEncryptedPassword(java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
+	 * @see sk.qbsw.security.core.core.service.IUserCredentialManagementService#changeEncryptedPassword(java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -80,7 +80,7 @@ public class CUserCredentialManagementService extends AService implements IUserC
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -90,7 +90,7 @@ public class CUserCredentialManagementService extends AService implements IUserC
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserCredentialManagementService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
+	 * @see sk.qbsw.security.core.core.service.IUserCredentialManagementService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -100,7 +100,7 @@ public class CUserCredentialManagementService extends AService implements IUserC
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUserCredentialManagementService#changeLogin(java.lang.Long, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUserCredentialManagementService#changeLogin(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = false)
@@ -113,7 +113,7 @@ public class CUserCredentialManagementService extends AService implements IUserC
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.management.service.IUserCredentialManagementService#validatePassword(java.lang.String)
+	 * @see sk.qbsw.security.core.core.management.service.IUserCredentialManagementService#validatePassword(java.lang.String)
 	 */
 	@Override
 	public void validatePassword (@CNotLogged @CNotAuditLogged String password) throws CPasswordFormatException

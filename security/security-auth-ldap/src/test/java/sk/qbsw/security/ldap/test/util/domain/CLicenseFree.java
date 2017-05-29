@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.jmx.CLicensingRules;
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.jmx.CLicensingRules;
 
 /**
  * The free licence.

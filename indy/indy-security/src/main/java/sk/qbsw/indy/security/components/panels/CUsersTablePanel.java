@@ -24,9 +24,9 @@ import org.wicketstuff.minis.behavior.mootip.MootipSettings;
 
 import sk.qbsw.indy.security.model.dataprovider.CUsersDataProvider;
 import sk.qbsw.indy.security.model.enums.EFlagEnabled;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUser;
 
 public abstract class CUsersTablePanel extends Panel
 {

@@ -13,20 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.dao.IGroupDao;
-import sk.qbsw.security.dao.IOrganizationDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CAuthenticationParams;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.filter.CUserAssociationsFilter;
-import sk.qbsw.security.model.order.COrderModel;
-import sk.qbsw.security.model.order.COrderSpecification;
-import sk.qbsw.security.model.order.EOrderSpecifier;
-import sk.qbsw.security.model.order.EUserOrderByAttributeSpecifier;
-import sk.qbsw.security.model.order.IOrderByAttributeSpecifier;
+import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
+import sk.qbsw.security.core.dao.IGroupDao;
+import sk.qbsw.security.core.dao.IOrganizationDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CAuthenticationParams;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.filter.CUserAssociationsFilter;
+import sk.qbsw.security.core.model.order.COrderModel;
+import sk.qbsw.security.core.model.order.COrderSpecification;
+import sk.qbsw.security.core.model.order.EOrderSpecifier;
+import sk.qbsw.security.core.model.order.EUserOrderByAttributeSpecifier;
+import sk.qbsw.security.core.model.order.IOrderByAttributeSpecifier;
 
 /**
  * Service for validation users.
@@ -60,7 +60,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	private IAuthenticationParamsDao authParamsDao;
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUsersValidationService#isOrganizationExists(sk.qbsw.security.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#isOrganizationExists(sk.qbsw.security.core.core.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -84,7 +84,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUsersValidationService#isUserExists(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#isUserExists(sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -112,7 +112,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUsersValidationService#leastOneAdmin(sk.qbsw.security.model.domain.CUser, sk.qbsw.security.model.domain.COrganization, java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#leastOneAdmin(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.COrganization, java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -143,7 +143,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUsersValidationService#isOrganizationExists(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#isOrganizationExists(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -161,7 +161,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUsersValidationService#isUserExists(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#isUserExists(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -191,7 +191,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUsersValidationService#isUserExistsPin(sk.qbsw.security.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#isUserExistsPin(sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = true)
@@ -220,7 +220,7 @@ public class CUsersValidationService extends AService implements IUsersValidatio
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.IUsersValidationService#isUserExistsPin(java.lang.String)
+	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#isUserExistsPin(java.lang.String)
 	 */
 	@Override
 	@Transactional (readOnly = true)

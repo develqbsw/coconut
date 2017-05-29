@@ -15,11 +15,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.management.service.IUnitService;
 import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.management.test.util.CDataGenerator;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
 
 /**
  * Checks unit service.

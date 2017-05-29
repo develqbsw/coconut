@@ -16,8 +16,8 @@ import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.security.auth.model.spring.CUserDetails;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The user detail service for token authentication.

@@ -3,8 +3,8 @@ package sk.qbsw.security.auth.base.service;
 import java.io.Serializable;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * Authentication service

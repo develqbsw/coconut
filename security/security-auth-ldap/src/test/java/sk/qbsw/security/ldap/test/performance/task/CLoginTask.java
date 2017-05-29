@@ -2,7 +2,7 @@ package sk.qbsw.security.ldap.test.performance.task;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The abstract class represents login task for test. The children of this class defines an authentication service.

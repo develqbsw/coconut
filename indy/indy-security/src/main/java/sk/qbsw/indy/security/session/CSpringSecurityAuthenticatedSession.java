@@ -7,7 +7,7 @@ import sk.qbsw.security.auth.model.CUsernamePasswordAuthenticationToken;
 import sk.qbsw.security.auth.model.CUsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.auth.model.IAuthenticationToken;
 import sk.qbsw.security.auth.model.spring.CUsernamePasswordUnitAuthentication;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * Authentication for Wicket using Spring security.

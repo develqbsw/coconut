@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.oauth.service.IAuthenticationTokenService;
 import sk.qbsw.security.oauth.test.util.CDataGenerator;
 

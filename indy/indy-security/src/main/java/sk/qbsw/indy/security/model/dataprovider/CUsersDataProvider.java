@@ -9,10 +9,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.management.service.IUserManagementService;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUser;
 
 public class CUsersDataProvider implements IDataProvider<CUser>
 {

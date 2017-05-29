@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.GenericFilterBean;
 
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.oauth.service.IAuthenticationTokenService;
 import sk.qbsw.security.oauth.service.IMasterTokenService;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;

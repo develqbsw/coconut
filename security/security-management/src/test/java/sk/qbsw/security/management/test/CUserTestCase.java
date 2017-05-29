@@ -17,25 +17,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.dao.IGroupDao;
-import sk.qbsw.security.dao.IUnitDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.core.dao.IGroupDao;
+import sk.qbsw.security.core.dao.IUnitDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CUnit;
+import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.security.core.model.order.COrderModel;
+import sk.qbsw.security.core.model.order.COrderSpecification;
+import sk.qbsw.security.core.model.order.EOrderSpecifier;
+import sk.qbsw.security.core.model.order.EUserOrderByAttributeSpecifier;
+import sk.qbsw.security.core.model.order.IOrderByAttributeSpecifier;
 import sk.qbsw.security.management.service.IOrganizationService;
 import sk.qbsw.security.management.service.IUserManagementService;
 import sk.qbsw.security.management.service.IUserPermissionManagementService;
 import sk.qbsw.security.management.test.util.CDataGenerator;
-import sk.qbsw.security.model.domain.CGroup;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CUnit;
-import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.model.domain.CXUserUnitGroup;
-import sk.qbsw.security.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.model.order.COrderModel;
-import sk.qbsw.security.model.order.COrderSpecification;
-import sk.qbsw.security.model.order.EOrderSpecifier;
-import sk.qbsw.security.model.order.EUserOrderByAttributeSpecifier;
-import sk.qbsw.security.model.order.IOrderByAttributeSpecifier;
 
 /**
  * Checks user service.

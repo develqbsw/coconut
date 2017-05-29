@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.dao.IUserDao;
+import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.oauth.dao.IAuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.IMasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.CAuthenticationToken;

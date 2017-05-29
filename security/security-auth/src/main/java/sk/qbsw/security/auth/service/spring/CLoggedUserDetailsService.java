@@ -23,12 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.auth.model.spring.CLoggedUser;
-import sk.qbsw.security.dao.IRoleDao;
-import sk.qbsw.security.dao.IUserDao;
-import sk.qbsw.security.model.domain.CLicense;
-import sk.qbsw.security.model.domain.COrganization;
-import sk.qbsw.security.model.domain.CRole;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.dao.IRoleDao;
+import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.CUser;
 
 
 /**

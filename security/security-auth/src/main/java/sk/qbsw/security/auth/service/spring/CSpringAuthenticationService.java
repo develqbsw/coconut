@@ -9,7 +9,7 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.auth.base.service.IAuthenticationService;
 import sk.qbsw.security.auth.model.spring.CUsernamePasswordUnitAuthentication;
-import sk.qbsw.security.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.CUser;
 
 /**
  * The spring authentication service uses the authentication service to authenticate user.
@@ -31,7 +31,7 @@ public class CSpringAuthenticationService extends AService implements ISpringAut
 	private IAuthenticationService authenticationService;
 	
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.ISpringAuthenticationService#login(org.springframework.security.core.Authentication)
+	 * @see sk.qbsw.security.core.core.service.ISpringAuthenticationService#login(org.springframework.security.core.Authentication)
 	 */
 	@Override
 	public CUser login (Authentication authentication) throws CSecurityException
@@ -55,7 +55,7 @@ public class CSpringAuthenticationService extends AService implements ISpringAut
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.service.ISpringAuthenticationService#supports(java.lang.Class)
+	 * @see sk.qbsw.security.core.core.service.ISpringAuthenticationService#supports(java.lang.Class)
 	 */
 	@Override
 	public boolean supports (Class<? extends Authentication> authentication)

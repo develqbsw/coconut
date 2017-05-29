@@ -6,17 +6,17 @@
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<!-- security -->
-		<class>sk.qbsw.security.model.domain.CUser</class>
-		<class>sk.qbsw.security.model.domain.CRole</class>
-		<class>sk.qbsw.security.model.domain.CGroup</class>
-		<class>sk.qbsw.security.model.domain.COrganization</class>
-		<class>sk.qbsw.security.model.domain.CUnit</class>
-		<class>sk.qbsw.security.model.domain.CAuthenticationParams</class>
-		<class>sk.qbsw.security.model.domain.CXUserUnitGroup</class>
-		<class>sk.qbsw.security.model.domain.CAddress</class>
-		<class>sk.qbsw.security.model.domain.CBlockedLogin</class>
+		<class>sk.qbsw.security.core.model.domain.CUser</class>
+		<class>sk.qbsw.security.core.model.domain.CRole</class>
+		<class>sk.qbsw.security.core.model.domain.CGroup</class>
+		<class>sk.qbsw.security.core.model.domain.COrganization</class>
+		<class>sk.qbsw.security.core.model.domain.CUnit</class>
+		<class>sk.qbsw.security.core.model.domain.CAuthenticationParams</class>
+		<class>sk.qbsw.security.core.model.domain.CXUserUnitGroup</class>
+		<class>sk.qbsw.security.core.model.domain.CAddress</class>
+		<class>sk.qbsw.security.core.model.domain.CBlockedLogin</class>
 		<!-- test -->
-		<class>sk.qbsw.security.auth.test.util.domain.CLicenseFree</class>
+		<class>sk.qbsw.security.core.auth.test.util.domain.CLicenseFree</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />

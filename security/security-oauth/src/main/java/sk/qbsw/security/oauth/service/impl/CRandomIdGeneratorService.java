@@ -38,7 +38,7 @@ public class CRandomIdGeneratorService extends AIdGeneratorService implements II
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IIdGeneratorService#getGeneratedId(java.lang.String)
+	 * @see sk.qbsw.security.core.core.oauth.service.IIdGeneratorService#getGeneratedId(java.lang.String)
 	 */
 	@Override
 	public String getGeneratedId (String s)
@@ -47,7 +47,7 @@ public class CRandomIdGeneratorService extends AIdGeneratorService implements II
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.oauth.service.IIdGeneratorService#getGeneratedId()
+	 * @see sk.qbsw.security.core.core.oauth.service.IIdGeneratorService#getGeneratedId()
 	 */
 	@Override
 	public String getGeneratedId ()
