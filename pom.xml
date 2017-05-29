@@ -196,6 +196,11 @@
 			</dependency>
 			<dependency>
 				<groupId>sk.qbsw.security</groupId>
+				<artifactId>security-authentication-base</artifactId>
+				<version>${security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.security</groupId>
 				<artifactId>security-auth</artifactId>
 				<version>${security.version}</version>
 			</dependency>

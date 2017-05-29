@@ -18,13 +18,13 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.base.exception.CInvalidUserException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
+import sk.qbsw.security.auth.base.service.IAuthenticationService;
 import sk.qbsw.security.dao.IUnitDao;
 import sk.qbsw.security.dao.IUserDao;
 import sk.qbsw.security.ldap.configuration.ILdapAuthenticationConfigurator;
 import sk.qbsw.security.model.domain.CRole;
 import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IAuthenticationService;
 
 /**
  * The LDAP authentication service.

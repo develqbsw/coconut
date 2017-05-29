@@ -3,9 +3,9 @@ package sk.qbsw.security.auth.test.performance.task;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.auth.base.service.IAuthenticationService;
 import sk.qbsw.security.auth.test.util.CDataGenerator;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IAuthenticationService;
 
 /**
  * The database login task for test.

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
+import sk.qbsw.security.auth.base.service.IAuthenticationService;
 import sk.qbsw.security.auth.model.spring.CUsernamePasswordUnitAuthentication;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IAuthenticationService;
 
 /**
  * The spring authentication service uses the authentication service to authenticate user.

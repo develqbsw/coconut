@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
+import sk.qbsw.security.auth.base.service.IAuthenticationService;
 import sk.qbsw.security.dao.IBlockedLoginDao;
 import sk.qbsw.security.dao.IOrganizationDao;
 import sk.qbsw.security.dao.IUserDao;
@@ -23,7 +24,6 @@ import sk.qbsw.security.model.domain.COrganization;
 import sk.qbsw.security.model.domain.CRole;
 import sk.qbsw.security.model.domain.CUnit;
 import sk.qbsw.security.model.domain.CUser;
-import sk.qbsw.security.service.IAuthenticationService;
 import sk.qbsw.security.service.ILoginBlockingService;
 
 /**

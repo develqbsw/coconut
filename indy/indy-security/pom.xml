@@ -28,6 +28,10 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-authentication-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-auth</artifactId>
 		</dependency>
 
