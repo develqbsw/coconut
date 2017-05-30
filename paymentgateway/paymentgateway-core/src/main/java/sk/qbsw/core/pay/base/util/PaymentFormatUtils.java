@@ -3,6 +3,9 @@
  */
 package sk.qbsw.core.pay.base.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -52,6 +55,19 @@ public class PaymentFormatUtils
 	public static String formatKS (Long ks)
 	{
 		return StringUtils.leftPad(ks.toString(), MANDATORY_DIGITS_NUM_KS, PAD_CHAR);
+	}
+	
+	/**
+	 * metoda na normalizovanie sumy pre bankove operacie. 
+	 * @param amount
+	 * @return
+	 * @author martinkovic
+	 * @version 1.15.0
+	 * @since 1.15.0 
+	 */
+	public static String normalizeAmountAndConvert (BigDecimal amount)
+	{
+		return amount.setScale(2, RoundingMode.UP).toPlainString();
 	}
 
 }

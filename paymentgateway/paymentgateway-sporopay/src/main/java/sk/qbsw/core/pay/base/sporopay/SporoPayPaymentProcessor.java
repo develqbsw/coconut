@@ -33,7 +33,6 @@ public class SporoPayPaymentProcessor extends PaymentProcessor
 	public SporoPayPaymentProcessor (SporoPayInitParams context)
 	{
 		this.context = context;
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -47,7 +46,7 @@ public class SporoPayPaymentProcessor extends PaymentProcessor
 		pay.cislo_uctu(context.getMerchantAccountNumber());
 		pay.predcislo_uctu(context.getMerchantAccountPrefix());
 		pay.kbanky(context.getMerchantBankNumber());
-		pay.suma(normalizeAmountAndConvert(payment.getAmount()));
+		pay.suma(PaymentFormatUtils.normalizeAmountAndConvert(payment.getAmount()));
 		pay.url(context.getApplicationCallbackURLForBank());
 		pay.vs(PaymentFormatUtils.formatVS(payment.getVs()));
 		pay.ss(PaymentFormatUtils.formatSS(payment.getSs()));
@@ -128,17 +127,7 @@ public class SporoPayPaymentProcessor extends PaymentProcessor
 
 	
 
-	/**
-	 * @param amount
-	 * @return
-	 * @author martinkovic
-	 * @version 1.15.0
-	 * @since 1.15.0 
-	 */
-	private String normalizeAmountAndConvert (BigDecimal amount)
-	{
-		return amount.setScale(2, RoundingMode.UP).toPlainString();
-	}
+	
 	
 	/**
 	 * generuje paymentID z VS a SS

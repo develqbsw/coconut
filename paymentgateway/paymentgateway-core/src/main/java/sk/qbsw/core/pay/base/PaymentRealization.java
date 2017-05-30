@@ -29,6 +29,14 @@ public class PaymentRealization
 	 */
 	private String bankResponse;
 	
+	public static PaymentRealization of(String payId,String urlCall,boolean isGet){
+		PaymentRealization realization = new PaymentRealization();
+		realization.setGetCall(isGet);
+		realization.setUrlToCall(urlCall);
+		realization.setPaymentId(payId);
+		return realization;
+	}
+	
 	public String getPaymentId ()
 	{
 		return paymentId;

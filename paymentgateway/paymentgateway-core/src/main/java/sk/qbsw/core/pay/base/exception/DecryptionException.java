@@ -21,6 +21,10 @@ public class DecryptionException extends RuntimeException {
 		super(e1);
 	}
 
+	public DecryptionException(String string) {
+		super(string);
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }
