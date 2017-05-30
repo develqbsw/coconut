@@ -202,7 +202,12 @@
 			</dependency>
 			<dependency>
 				<groupId>sk.qbsw.security</groupId>
-				<artifactId>security-auth</artifactId>
+				<artifactId>security-authentication</artifactId>
+				<version>${security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.security</groupId>
+				<artifactId>security-authorization</artifactId>
 				<version>${security.version}</version>
 			</dependency>
 

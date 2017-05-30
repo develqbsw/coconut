@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.auth.base.service.IAuthenticationService;
-import sk.qbsw.security.auth.model.IAuthenticationToken;
-import sk.qbsw.security.auth.model.spring.CUsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.model.IAuthenticationToken;
+import sk.qbsw.security.authentication.model.spring.CUsernamePasswordUnitAuthentication;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**

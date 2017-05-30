@@ -32,7 +32,11 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-auth</artifactId>
+			<artifactId>security-authentication</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-authorization</artifactId>
 		</dependency>
 
 		<!-- Spring -->
