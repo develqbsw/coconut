@@ -5,13 +5,11 @@ package sk.qbsw.core.pay.base.csob;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
 
-import javax.xml.bind.JAXB;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,6 +35,8 @@ import sk.qbsw.core.pay.base.csob.model.CsobFormPayRequest;
 import sk.qbsw.core.pay.base.csob.model.CsobGetCSOBResponce;
 import sk.qbsw.core.pay.base.csob.model.CsobPayRequest;
 import sk.qbsw.core.pay.base.csob.model.CsobResponseFromVOD;
+import sk.qbsw.core.pay.base.exception.ConfigurationException;
+import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.util.PaymentFormatUtils;
 
@@ -74,15 +74,15 @@ public class CsobPaymentProcessor extends PaymentProcessor
 		pay.setMerchantAccount(context.getMerchantAccountNumber());
 		pay.setMerchantBankNo(context.getMerchantBankNumber());
 		pay.setSum(normalizeAmountAndConvert(payment.getAmount()));
-		
+
 		//lebo csob nepodporuje ziadne IDcko platby a vo vysledku vracia len Variabilny sysmbol, tak musim do Variabilneho symbolu vlozit UNIX timestamp 10 miestny
 		//override VS
 		//milis is new PaymentID and Variabile symbol. 
 		long millis = new DateTime().getMillis();
-		String payId = "" + millis;
-		payId=payId.substring(1);
-		payId=payId.substring(0,10);
-		
+		String payId = Long.toString(millis);
+		payId = payId.substring(1);
+		payId = payId.substring(0, 10);
+
 		pay.setVs(payId);
 		pay.setSs(PaymentFormatUtils.formatSS(payment.getSs()));
 		pay.setKs(PaymentFormatUtils.formatKS(payment.getKs()));
@@ -91,8 +91,6 @@ public class CsobPaymentProcessor extends PaymentProcessor
 		pay.setUrlRedirect(context.getApplicationCallbackURLForBank() + "?" + PARAM_NAME_OBJ_ID + "=" + payId);
 
 		//payment ready for signing
-
-		//only for test
 
 		//compute sign1
 
@@ -153,7 +151,6 @@ public class CsobPaymentProcessor extends PaymentProcessor
 			//decode and decrypt SOAP  		
 			byte[] signedData = extractBodyData(decryptedMsgXml);
 			byte[] decodedMessageByte = CsobUtils.extractAndVerifyData(signedData, context.getPublicCSOBCert().get());
-//			byte[] decodedMessageByte = CsobUtils.extractAndVerifyData(signedData, context.getPublicVODCert().get());
 			String decodedMessage;
 			decodedMessage = new String(decodedMessageByte, "UTF-8");
 			LOGGER.error("PAYMENT CSOB - decrypted BODY DATA");
@@ -163,7 +160,6 @@ public class CsobPaymentProcessor extends PaymentProcessor
 			//get payment 
 			String payId = responce.getVs();
 			LOGGER.error("PAYMENT CSOB - payment id rec. " + payId);
-			LOGGER.error("PAYMENT CSOB - ");
 			if (payId == null)
 			{
 				throw new IllegalArgumentException("args dont contain Paymennt id in query parameter " + PARAM_NAME_OBJ_ID);
@@ -171,13 +167,15 @@ public class CsobPaymentProcessor extends PaymentProcessor
 			PaymentRealization payment = getPersistence().getPaymentById(payId);
 			if (payment == null)
 			{
+				LOGGER.error("PAYMENT CSOB - payment not found for payid=" + payId);
 				throw new IllegalAccessError("payment not found: args dont contain valid Paymennt id in query parameter " + PARAM_NAME_OBJ_ID);
 			}
+			LOGGER.error("PAYMENT CSOB - payment for payid=" + payId + " found.");
 
 			//set realization to true
 			payment.setPaymentId(payId);
 			payment.setBankResponse(decodedMessage);
-			
+		
 			//construct response to VOD
 
 			//1 is ok 
@@ -186,55 +184,48 @@ public class CsobPaymentProcessor extends PaymentProcessor
 			//with error -  status = 0  msg "konkretna chyba"
 			//this will fill error, and status
 
-			if (responce.getStatus().equals("1"))
+			LOGGER.error("PAYMENT CSOB - payment response is " + responce.toString());
+			if (responce.getStatus().equals(CsobGetCSOBResponce.STATUS_OK))
 			{
 
 				//OK payment
 				responseReturn.setStatus("1");
 				responseReturn.setErrorMessage("");
+				LOGGER.error("PAYMENT CSOB - SUCCESS");
 				getActions().handleSuccess(payment);
 			}
 			else
 			{
 
 				responseReturn.setStatus("0");
+				LOGGER.error("PAYMENT CSOB - FAIL");
 				responseReturn.setErrorMessage("Normal cancel");
 				getActions().handleCancel(payment);
 			}
 
-			StringWriter sw = new StringWriter();
-			JAXB.marshal(responseReturn, sw);
-			String resultString = sw.toString();
-			sw.close();
+			String resultString = responseReturn.toXMLString();
+			LOGGER.error("result sent ", resultString);
 
-			
-			payment.setBankResponse(resultString);
+			byte[] encryptedResultString = CsobUtils.encryptWithPublicKey(resultString.getBytes("UTF-8"), context.getPublicCSOBCert().get().getPublicKey());
+
+			payment.setBankResponse(java.util.Base64.getEncoder().encodeToString(encryptedResultString));
 			return payment;
 		}
 		catch (SAXException | SecurityException e1)
 		{
 			//security exception when cryptography falied
-			LOGGER.error("bad message ", e1);
+			LOGGER.error("cryptography falied, there is problem with xml maybe bad signature  ", e1);
 			//there is problem with xml maybe bad signature of previous phase 
-			//responseReturn.setStatus("0");
-			//responseReturn.setErrorMessage("Podozrenie na pokus o fraud");
 			//getActions().handleCancel();//handle fraud attempt 
-			////if error or success  then return object to that. 
-			//return;
-
-			throw new RuntimeException(e1);
+			throw new DecryptionException(e1);
 
 		}
 		catch (UnsupportedEncodingException e1)
 		{
 			//this should not happen .
 			//system dont recognize UTF-8
-			throw new RuntimeException(e1);
-		}
-		catch (IOException e)
-		{
-			//jaxb marshalling failed to close
-			throw new RuntimeException(e);
+			LOGGER.error("error", e1);
+			throw new ConfigurationException(e1);
 		}
 
 	}
@@ -249,7 +240,7 @@ public class CsobPaymentProcessor extends PaymentProcessor
 	 * @throws SAXException 
 	 * @since 1.15.0 
 	 */
-	private CsobGetCSOBResponce extractXmlData (String decodedMessage) throws SAXException
+	public static CsobGetCSOBResponce extractXmlData (String decodedMessage) throws SAXException
 	{
 		try
 		{
@@ -288,7 +279,7 @@ public class CsobPaymentProcessor extends PaymentProcessor
 		{
 			//something is wrong with parser initialization. 
 			//this is not problem with message
-			throw new RuntimeException(e);
+			throw new ConfigurationException(e);
 		}
 
 	}
@@ -353,14 +344,14 @@ public class CsobPaymentProcessor extends PaymentProcessor
 		}
 		catch (ParserConfigurationException | IOException | XPathExpressionException e)
 		{
-			throw new RuntimeException(e);
+			throw new ConfigurationException(e);
 		}
 
 	}
 
 	private String parsePayID (CsobPayRequest pay)
 	{
-//		return pay.getVs() + pay.getSs();
+		//		return pay.getVs() + pay.getSs();
 		return pay.getVs();
 	}
 
@@ -375,5 +366,4 @@ public class CsobPaymentProcessor extends PaymentProcessor
 	{
 		return amount.setScale(2, RoundingMode.UP).toPlainString();
 	}
-
 }

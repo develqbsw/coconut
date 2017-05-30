@@ -56,7 +56,9 @@ public class CsobUtils
 {
 	private static final String SIG_HASH = "SHA256withRSA";
 	private static final String CIPHER = "RSA/ECB/PKCS1Padding";
+	//	private static final String CIPHER = "RSA";
 	private static final String CIPHER_PROVIDER = "BC";
+	//		private static final String CIPHER = "RSA/ECB/NoPadding";
 	private static final Logger LOGGER = LoggerFactory.getLogger(CsobUtils.class);
 
 	
@@ -75,7 +77,7 @@ public class CsobUtils
 			Store certs = new JcaCertStore(certList);
 
 			CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
-			JcaSimpleSignerInfoGeneratorBuilder builder = new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").setDirectSignature(true);
+			JcaSimpleSignerInfoGeneratorBuilder builder = new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).setDirectSignature(true);
 			gen.addSignerInfoGenerator(builder.build("SHA256withRSA", pkey, cert));
 			gen.addCertificates(certs);
 
@@ -89,7 +91,7 @@ public class CsobUtils
 			return bOut.toByteArray();
 
 		}
-		catch (IOException | CMSException | CertificateEncodingException | OperatorCreationException e)
+		catch (IOException | CMSException | CertificateEncodingException | OperatorCreationException  | NullPointerException e)
 		{
 			throw new SecurityException(e);
 		}
@@ -102,8 +104,7 @@ public class CsobUtils
 
 			Security.addProvider(new BouncyCastleProvider());
 
-			CMSSignedData cms = new CMSSignedData(Base64.getDecoder().decode(data));
-			Store store = cms.getCertificates();
+			CMSSignedData cms = new CMSSignedData(data);
 			SignerInformationStore signers = cms.getSignerInfos();
 			Collection c = signers.getSigners();
 			Iterator it = c.iterator();
@@ -115,7 +116,7 @@ public class CsobUtils
 				//X509CertificateHolder certHolder = (X509CertificateHolder) certIt.next();
 				//X509Certificate cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 				X509Certificate cert = (X509Certificate) crt;
-				if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert)))
+				if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(new BouncyCastleProvider()).build(cert)))
 				{
 					LOGGER.info("CSOB SIGNATURE VERIFIED");
 					byte[] bs = (byte[]) cms.getSignedContent().getContent();

@@ -11,6 +11,8 @@ package sk.qbsw.core.pay.base.csob.model;
  */
 public class CsobGetCSOBResponce
 {
+	public static final String STATUS_OK="OK";
+
 	private String status;
 	private String splatnost;
 	private String vs;

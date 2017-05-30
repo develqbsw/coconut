@@ -15,16 +15,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement (name = "responseFromVOD")
 public class CsobResponseFromVOD
 {
-	@XmlElement (name = "Channel")
 	private String channel="CSOB_PT";
 
-	@XmlElement (name = "TransactionID")
 	private String transactionId;
 
-	@XmlElement (name = "Status")
 	private String status;
 
-	@XmlElement (name = "ErrorMessage")
 	private String errorMessage;
 
 	public String getChannel ()
@@ -32,6 +28,7 @@ public class CsobResponseFromVOD
 		return channel;
 	}
 
+	@XmlElement (name = "Channel")
 	public void setChannel (String channel)
 	{
 		this.channel = channel;
@@ -50,6 +47,7 @@ public class CsobResponseFromVOD
 	/**
 	 * @param status the status to set
 	 */
+	@XmlElement (name = "Status")
 	public void setStatus (String status)
 	{
 		this.status = status;
@@ -66,6 +64,7 @@ public class CsobResponseFromVOD
 	/**
 	 * @param errorMessage the errorMessage to set
 	 */
+	@XmlElement (name = "ErrorMessage")
 	public void setErrorMessage (String errorMessage)
 	{
 		this.errorMessage = errorMessage;
@@ -76,9 +75,20 @@ public class CsobResponseFromVOD
 		return transactionId;
 	}
 
+	@XmlElement (name = "TransactionID")
 	public void setTransactionId (String transactionId)
 	{
 		this.transactionId = transactionId;
 	}
+	
+	public String toXMLString(){
+		return "<responseFromVOD>" + 
+			"<Channel>"+channel+"</Channel>" + 
+			"<ErrorMessage>"+errorMessage+"</ErrorMessage>" + 
+			"<Status>"+status+"</Status>" + 
+			"<TransactionID>"+transactionId+"</TransactionID>" + 
+			"</responseFromVOD>";
+	}
+
 
 }
