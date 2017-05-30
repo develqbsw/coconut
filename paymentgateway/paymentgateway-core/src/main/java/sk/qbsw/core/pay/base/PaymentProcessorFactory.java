@@ -12,6 +12,7 @@ package sk.qbsw.core.pay.base;
  */
 public interface PaymentProcessorFactory
 {
+	
 	public PaymentProcessor createPaymentProcessor();
 
 }

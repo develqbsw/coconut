@@ -30,4 +30,6 @@ public interface Payment
 	Currency getCurrency ();
 
 	PaymentRealization getRealization ();
+
+	String suggestPayId();
 }

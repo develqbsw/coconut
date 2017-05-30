@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>sk.qbsw</groupId>
-    <artifactId>coconut</artifactId>
-    <version>1.18.0</version>
-  </parent>
-  <artifactId>paymentgateway</artifactId>
-  <packaging>pom</packaging>
-  <name>Payment gateway module</name>
-  <description>Modules for payment gateways of banks</description>
-  <modules>
-    <module>paymentgateway-core</module>
-    <module>paymentgateway-csob</module>
-    <module>paymentgateway-sporopay</module>
-  </modules>
-  
-  <dependencyManagement>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>sk.qbsw</groupId>
+		<artifactId>coconut</artifactId>
+		<version>1.18.0</version>
+	</parent>
+	<artifactId>paymentgateway</artifactId>
+	<packaging>pom</packaging>
+	<name>Payment gateway module</name>
+	<description>Modules for payment gateways of banks</description>
+	<modules>
+		<module>paymentgateway-core</module>
+		<module>paymentgateway-csob</module>
+		<module>paymentgateway-sporopay</module>
+	</modules>
+
+	<dependencyManagement>
 		<dependencies>
+			<!-- https://mvnrepository.com/artifact/junit/junit -->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>3.8.1</version>
-				<scope>test</scope>
+				<version>4.12</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>

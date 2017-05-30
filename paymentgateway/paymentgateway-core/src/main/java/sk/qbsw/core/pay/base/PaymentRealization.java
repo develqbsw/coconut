@@ -14,7 +14,6 @@ package sk.qbsw.core.pay.base;
 public class PaymentRealization
 {
 	private String paymentId;
-	private RealizationResponse response;
 	/**
 	 * URL to witch client should be redirected.
 	 */
@@ -26,6 +25,7 @@ public class PaymentRealization
 	
 	/**
 	 * textual representation of bank response
+	 * some banks communicate in process of creation of payment request
 	 */
 	private String bankResponse;
 	
@@ -61,12 +61,5 @@ public class PaymentRealization
 	{
 		this.bankResponse = bankResponse;
 	}
-	public RealizationResponse getResponse ()
-	{
-		return response;
-	}
-	public void setResponse (RealizationResponse response)
-	{
-		this.response = response;
-	}
+	
 }

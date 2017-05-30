@@ -3,7 +3,11 @@
  */
 package sk.qbsw.core.pay.base;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.math.BigDecimal;
+
+import org.apache.commons.lang3.Validate;
+import org.springframework.util.Assert;
 
 /** 
  * base interface for payment information, witch are used to realize payment 
@@ -42,8 +46,10 @@ public class PaymentImpl implements Payment
 	/**
 	 * @param vs the vs to set
 	 */
-	public void setVs (Long vs)
+	public void setVs ( Long vs)
 	{
+		//must be max 10 digits
+		Validate.isTrue(Long.toString(vs).length()<=10, "SS moze byt maximalne 10 znakov");
 		this.vs = vs;
 	}
 
@@ -60,6 +66,7 @@ public class PaymentImpl implements Payment
 	 */
 	public void setSs (Long ss)
 	{
+		Validate.isTrue(Long.toString(ss).length()<=10, "SS moze byt maximalne 10 znakov");
 		this.ss = ss;
 	}
 
@@ -136,7 +143,14 @@ public class PaymentImpl implements Payment
 
 	public void setKs (Long ks)
 	{
+		Validate.isTrue(Long.toString(ks).length()<=4, "ks moze byt maximalne 4 znaky");
 		this.ks = ks;
+	}
+
+	@Override
+	public String suggestPayId() {
+		
+		return ""+vs+ss+ks;
 	}
 
 }
