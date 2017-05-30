@@ -37,6 +37,6 @@
 	<!-- Mocks object for testing -->
 	<bean id="ldapProviderMock" class="sk.qbsw.core.testing.mock.CMockitoFactoryBean">
 		<constructor-arg name="classToBeMocked"
-			value="sk.qbsw.security.authentication.ldap.service.CLdapProvider" />
+			value="sk.qbsw.security.authentication.ldap.provider.CLdapProvider" />
 	</bean>
 </beans>

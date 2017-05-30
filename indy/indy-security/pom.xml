@@ -34,6 +34,10 @@
 			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-authentication</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-authorization</artifactId>
+		</dependency>
 
 		<!-- Spring -->
 		<dependency>

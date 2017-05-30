@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.service;
+package sk.qbsw.security.authorization.service;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,9 +1,9 @@
-package sk.qbsw.security.authentication.test.util;
+package sk.qbsw.security.authorization.test.util;
 
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.service.IAuthorizationService;
+import sk.qbsw.security.authorization.service.IAuthorizationService;
 import sk.qbsw.security.core.model.domain.CRole;
 
 /**

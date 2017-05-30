@@ -6,7 +6,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import sk.qbsw.security.authentication.service.IAuthorizationService;
+import sk.qbsw.security.authorization.service.IAuthorizationService;
 import sk.qbsw.security.core.model.domain.CRole;
 
 public class CRoleLoadableModel extends LoadableDetachableModel<CRole>

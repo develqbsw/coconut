@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.ldap.service;
+package sk.qbsw.security.authentication.ldap.provider;
 
 import org.apache.directory.ldap.client.api.LdapConnection;
 

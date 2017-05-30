@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.test;
+package sk.qbsw.security.authorization.test;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -12,9 +12,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.service.IAuthorizationService;
-import sk.qbsw.security.authentication.test.util.CAuthorizationTestProvider;
-import sk.qbsw.security.authentication.test.util.CDataGenerator;
+import sk.qbsw.security.authorization.service.IAuthorizationService;
+import sk.qbsw.security.authorization.test.util.CAuthorizationTestProvider;
+import sk.qbsw.security.authorization.test.util.CDataGenerator;
 
 /**
  * Checks Authorization service for database.

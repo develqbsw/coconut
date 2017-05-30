@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import sk.qbsw.security.authentication.ldap.service.CLDAPInjectionProtector;
+import sk.qbsw.security.authentication.ldap.provider.CLDAPInjectionProtector;
 
 /**
  * The Class CLdapInjectionTestCase.

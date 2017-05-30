@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.test.util;
+package sk.qbsw.security.authorization.test.util;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.authentication.test.util.domain.CLicenseFree;
+import sk.qbsw.security.authorization.test.util.domain.CLicenseFree;
 import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
 import sk.qbsw.security.core.dao.IGroupDao;
 import sk.qbsw.security.core.dao.ILicenseDao;

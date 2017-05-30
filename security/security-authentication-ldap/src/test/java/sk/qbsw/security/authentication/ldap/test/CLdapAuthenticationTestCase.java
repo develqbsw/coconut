@@ -18,7 +18,7 @@ import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.core.testing.mock.IMockHelper;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.ILdapAuthenticationConfigurator;
-import sk.qbsw.security.authentication.ldap.service.ILdapProvider;
+import sk.qbsw.security.authentication.ldap.provider.ILdapProvider;
 import sk.qbsw.security.authentication.ldap.test.util.CAuthenticationTestProvider;
 import sk.qbsw.security.authentication.ldap.test.util.CDataGenerator;
 import sk.qbsw.security.core.dao.IUserDao;

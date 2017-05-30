@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.ldap.service;
+package sk.qbsw.security.authentication.ldap.provider;
 
 import java.util.Map;
 import java.util.Set;
@@ -9,7 +9,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.authentication.ldap.service.CLdapProvider.EModificationOperation;
+import sk.qbsw.security.authentication.ldap.provider.CLdapProvider.EModificationOperation;
 
 /**
  * The ldap provider interface.

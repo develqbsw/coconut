@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.ldap.service;
+package sk.qbsw.security.authentication.ldap.provider;
 
 /**
  * LDAP injection protector
