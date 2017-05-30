@@ -16,6 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import sk.qbsw.core.pay.base.exception.ConfigurationException;
+
 /**
  * The Class SporoPayRequest.
  *
@@ -98,7 +100,7 @@ public class CsobPayRequest
 				String[] noteSplited = note.split(String.format("(?<=\\G.{%1$d})", 35));
 				if (noteSplited.length > 3)
 				{
-					throw new RuntimeException("poznamka je dlhsia ako 105 znakov. CSOB podporuje len 3x35 znakov");
+					throw new ConfigurationException("poznamka je dlhsia ako 105 znakov. CSOB podporuje len 3x35 znakov");
 				}
 				if (StringUtils.isNotBlank(noteSplited[0]))
 				{
@@ -108,13 +110,13 @@ public class CsobPayRequest
 					data.appendChild(vchPoleAV2);
 				}
 
-				if (StringUtils.isNotBlank(noteSplited[1]))
+				if (noteSplited.length > 1 && StringUtils.isNotBlank(noteSplited[1]))
 				{
 					Element vchPoleAV3 = document.createElement("vchPoleAV3");
 					vchPoleAV3.appendChild(document.createTextNode(noteSplited[1]));
 					data.appendChild(vchPoleAV3);
 				}
-				if (StringUtils.isNotBlank(noteSplited[2]))
+				if (noteSplited.length > 2 && StringUtils.isNotBlank(noteSplited[2]))
 				{
 					Element vchPoleAV4 = document.createElement("vchPoleAV4");
 					vchPoleAV4.appendChild(document.createTextNode(noteSplited[2]));

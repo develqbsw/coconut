@@ -6,6 +6,8 @@ package sk.qbsw.core.pay.base.csob.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author martinkovic
  * @version 1.15.0
@@ -84,7 +86,7 @@ public class CsobResponseFromVOD
 	public String toXMLString(){
 		return "<responseFromVOD>" + 
 			"<Channel>"+channel+"</Channel>" + 
-			"<ErrorMessage>"+errorMessage+"</ErrorMessage>" + 
+			"<ErrorMessage>"+StringUtils.defaultIfBlank(errorMessage,"")+"</ErrorMessage>" + 
 			"<Status>"+status+"</Status>" + 
 			"<TransactionID>"+transactionId+"</TransactionID>" + 
 			"</responseFromVOD>";
