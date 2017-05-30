@@ -12,11 +12,11 @@
 	<context:component-scan base-package="sk.qbsw.security" />
 	<context:component-scan base-package="sk.qbsw.core.testing.mock" />
 
-	<bean id="authenticationService" class="sk.qbsw.security.ldap.service.CLdapAuthenticationService" />
+	<bean id="authenticationService" class="sk.qbsw.security.authentication.ldap.service.CLdapAuthenticationService" />
 	
 	<bean id="loginBlockingService"	class="sk.qbsw.security.core.service.CLoginBlockingService" />	
 	
-	<bean class="sk.qbsw.security.ldap.test.performance.task.CLdapLoginTask" id="ldapLoginTask" scope="prototype"/>
+	<bean class="sk.qbsw.security.authentication.ldap.test.performance.task.CLdapLoginTask" id="ldapLoginTask" scope="prototype"/>
 	
 	<bean id="loginTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="60" />
@@ -37,6 +37,6 @@
 	<!-- Mocks object for testing -->
 	<bean id="ldapProviderMock" class="sk.qbsw.core.testing.mock.CMockitoFactoryBean">
 		<constructor-arg name="classToBeMocked"
-			value="sk.qbsw.security.ldap.service.CLdapProvider" />
+			value="sk.qbsw.security.authentication.ldap.service.CLdapProvider" />
 	</bean>
 </beans>
