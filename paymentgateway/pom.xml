@@ -15,6 +15,7 @@
 		<module>paymentgateway-csob</module>
 		<module>paymentgateway-sporopay</module>
     <module>paymentgateway-tatrapay</module>
+    <module>paymentgateway-vubeplatby</module>
   </modules>
 
 	<dependencyManagement>
