@@ -14,26 +14,8 @@
 
 	<bean id="authenticationService" class="sk.qbsw.security.authentication.ldap.service.CLdapAuthenticationService" />
 	
-	<bean id="loginBlockingService"	class="sk.qbsw.security.core.service.CLoginBlockingService" />	
-	
 	<bean class="sk.qbsw.security.authentication.ldap.test.performance.task.CLdapLoginTask" id="ldapLoginTask" scope="prototype"/>
 	
-	<bean id="loginTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="60" />
-		<property name="maxPoolSize" value="60" />
-		<property name="WaitForTasksToCompleteOnShutdown" value="true" />
-	</bean>
-	
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="loginBlockingService" />
-		<property name="targetMethod" value="init" />
-		<property name="arguments">
-			<list>
-				<value>5</value>
-			</list>
-		</property>
-	</bean>
-
 	<!-- Mocks object for testing -->
 	<bean id="ldapProviderMock" class="sk.qbsw.core.testing.mock.CMockitoFactoryBean">
 		<constructor-arg name="classToBeMocked"

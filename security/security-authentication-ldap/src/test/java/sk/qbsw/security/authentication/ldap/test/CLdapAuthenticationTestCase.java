@@ -21,9 +21,7 @@ import sk.qbsw.security.authentication.ldap.configuration.ILdapAuthenticationCon
 import sk.qbsw.security.authentication.ldap.provider.ILdapProvider;
 import sk.qbsw.security.authentication.ldap.test.util.CAuthenticationTestProvider;
 import sk.qbsw.security.authentication.ldap.test.util.CDataGenerator;
-import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.management.service.IUserManagementService;
 
 /**
  * Checks Authentication service for ldap.
@@ -59,14 +57,6 @@ public class CLdapAuthenticationTestCase
 	/** The ldap configurator. */
 	@Autowired
 	private ILdapAuthenticationConfigurator ldapConfigurator;
-
-	/** The user service. */
-	@Autowired
-	private IUserManagementService userService;
-
-	/** The user dao. */
-	@Autowired
-	private IUserDao userDao;
 
 	/** The Authentication Configurator. */
 	@Autowired

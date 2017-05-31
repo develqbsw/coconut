@@ -13,22 +13,4 @@
 	    <!-- <context:exclude-filter type="regex" expression="sk\.qbsw\.core\.security\.service\.CDatabaseAuthenticationService"/> -->
 	</context:component-scan>
 	
-	<bean id="loginBlockingService"	class="sk.qbsw.security.core.service.CLoginBlockingService" />
-	
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="loginBlockingService" />
-		<property name="targetMethod" value="init" />
-		<property name="arguments">
-			<list>
-				<value>5</value>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="loginTaskExecutor"
-		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="60" />
-		<property name="maxPoolSize" value="60" />
-		<property name="WaitForTasksToCompleteOnShutdown" value="true" />
-	</bean>
 </beans>

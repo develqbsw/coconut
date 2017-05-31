@@ -1,4 +1,4 @@
-package sk.qbsw.security.core.service;
+package sk.qbsw.security.management.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;

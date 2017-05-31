@@ -1,4 +1,4 @@
-package sk.qbsw.security.core.service;
+package sk.qbsw.security.management.service;
 
 import java.time.OffsetDateTime;
 
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
 import sk.qbsw.security.core.dao.IBlockedLoginDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CBlockedLogin;
@@ -43,10 +42,6 @@ public class CLoginBlockingService extends AService implements ILoginBlockingSer
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
-
-	/** The authentication params dao. */
-	@Autowired
-	private IAuthenticationParamsDao authenticationParamsDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#init(int)

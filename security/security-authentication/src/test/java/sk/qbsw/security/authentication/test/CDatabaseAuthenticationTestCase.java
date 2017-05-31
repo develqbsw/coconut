@@ -13,17 +13,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
-import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
 import sk.qbsw.security.authentication.test.util.CAuthenticationTestProvider;
 import sk.qbsw.security.authentication.test.util.CDataGenerator;
-import sk.qbsw.security.core.dao.IBlockedLoginDao;
 import sk.qbsw.security.core.dao.IOrganizationDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.core.service.ILoginBlockingService;
 import sk.qbsw.security.management.service.IUserCredentialManagementService;
 import sk.qbsw.security.management.service.IUserManagementService;
 
@@ -54,10 +50,6 @@ public class CDatabaseAuthenticationTestCase
 	@Qualifier ("userCredentialManagementService")
 	private IUserCredentialManagementService authenticationModifierService;
 
-	/** The login blocking service. */
-	@Autowired
-	private ILoginBlockingService loginBlockingService;
-
 	/** The authentication test provider. */
 	@Autowired
 	private CAuthenticationTestProvider authenticationTestProvider;
@@ -73,10 +65,6 @@ public class CDatabaseAuthenticationTestCase
 	/** The user dao. */
 	@Autowired
 	private IUserDao userDao;
-
-	/** The blocked login jpa dao. */
-	@Autowired
-	private IBlockedLoginDao blockedLoginJpaDao;
 
 	/** The Authentication Configurator. */
 	@Autowired
@@ -294,144 +282,6 @@ public class CDatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testIsOnline(authenticationService);
-	}
-
-	/**
-	 * Test login enabled user in disabled organization.
-	 *
-	 * @throws CSecurityException the security exception
-	 */
-	@Test (expected = CUserDisabledException.class)
-	@Transactional (transactionManager = "transactionManager")
-	public void testLoginEnabledUserDisabledOrganization () throws CSecurityException
-	{
-		initTest();
-
-		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService);
-	}
-
-	/**
-	 * Test login disabled user in disabled organization.
-	 *
-	 * @throws CSecurityException the security exception
-	 */
-	@Test (expected = CUserDisabledException.class)
-	@Transactional (transactionManager = "transactionManager")
-	public void testLoginDisabledUserDisabledOrganization () throws CSecurityException
-	{
-		initTest();
-
-		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService);
-	}
-
-	/**
-	 * Test login disabled user in enabled organization.
-	 *
-	 * @throws CSecurityException the security exception
-	 */
-	@Test (expected = CUserDisabledException.class)
-	@Transactional (transactionManager = "transactionManager")
-	public void testLoginDisabledUserEnabledOrganization () throws CSecurityException
-	{
-		initTest();
-
-		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService);
-	}
-
-	/**
-	 * Test blocked login without blocked.
-	 *
-	 * @throws CSystemException the c system exception
-	 * @throws CSecurityException the c security exception
-	 * @throws InterruptedException the interrupted exception
-	 */
-	@Test
-	@Transactional (transactionManager = "transactionManager")
-	public void testBlockedLoginWithoutBlocked () throws CSystemException, CSecurityException, InterruptedException
-	{
-		initTest();
-
-		authenticationTestProvider.testBlockedLoginWithoutBlocked(loginBlockingService, blockedLoginJpaDao);
-	}
-
-	/**
-	 * Test blocked login without blocked check ip null.
-	 *
-	 * @throws CSystemException the c system exception
-	 * @throws CSecurityException the c security exception
-	 * @throws InterruptedException the interrupted exception
-	 */
-	@Test
-	@Transactional (transactionManager = "transactionManager")
-	public void testBlockedLoginWithoutBlockedCheckIpNull () throws CSystemException, CSecurityException, InterruptedException
-	{
-		initTest();
-
-		authenticationTestProvider.testBlockedLoginWithoutBlockedCheckIpNull(loginBlockingService, blockedLoginJpaDao);
-	}
-
-	/**
-	 * Test blocked login without blocked set ip null.
-	 *
-	 * @throws CSystemException the c system exception
-	 * @throws CSecurityException the c security exception
-	 * @throws InterruptedException the interrupted exception
-	 */
-	@Test
-	@Transactional (transactionManager = "transactionManager")
-	public void testBlockedLoginWithoutBlockedSetIpNull () throws CSystemException, CSecurityException, InterruptedException
-	{
-		initTest();
-
-		authenticationTestProvider.testBlockedLoginWithoutBlockedSetIpNull(loginBlockingService, blockedLoginJpaDao);
-	}
-
-	/**
-	 * Test blocked login with blocked.
-	 *
-	 * @throws CSystemException the c system exception
-	 * @throws CSecurityException the c security exception
-	 * @throws InterruptedException the interrupted exception
-	 */
-	@Test
-	@Transactional (transactionManager = "transactionManager")
-	public void testBlockedLoginWithBlocked () throws CSystemException, CSecurityException, InterruptedException
-	{
-		initTest();
-
-		authenticationTestProvider.testBlockedLoginWithBlocked(loginBlockingService, blockedLoginJpaDao);
-	}
-
-	/**
-	 * Test blocked login with blocked check ip null.
-	 *
-	 * @throws CSystemException the c system exception
-	 * @throws CSecurityException the c security exception
-	 * @throws InterruptedException 
-	 */
-	@Test
-	@Transactional (transactionManager = "transactionManager")
-	public void testBlockedLoginWithBlockedCheckIpNull () throws CSystemException, CSecurityException, InterruptedException
-	{
-		initTest();
-
-		authenticationTestProvider.testBlockedLoginWithBlockedCheckIpNull(loginBlockingService, blockedLoginJpaDao);
-	}
-
-	/**
-	 * Test blocked login with blocked set ip null.
-	 *
-	 * @throws CSystemException the c system exception
-	 * @throws CSecurityException the c security exception
-	 * @throws InterruptedException the interrupted exception
-	 */
-	@Test
-	@Transactional (transactionManager = "transactionManager")
-	public void testBlockedLoginWithBlockedSetIpNull () throws CSystemException, CSecurityException, InterruptedException
-	{
-		initTest();
-
-		authenticationTestProvider.testBlockedLoginWithBlockedSetIpNull(loginBlockingService, blockedLoginJpaDao);
 	}
 
 	/**
