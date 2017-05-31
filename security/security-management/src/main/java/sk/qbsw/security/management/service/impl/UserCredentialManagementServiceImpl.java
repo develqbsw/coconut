@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.time.OffsetDateTime;
 import java.util.regex.Matcher;
@@ -24,6 +24,7 @@ import sk.qbsw.security.core.model.domain.CAuthenticationParams;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.core.service.signature.IPasswordDigester;
+import sk.qbsw.security.management.service.UserCredentialManagementService;
 
 /**
  * Authentication service.
@@ -35,11 +36,11 @@ import sk.qbsw.security.core.service.signature.IPasswordDigester;
  * @since 1.0.0
  */
 @Service (value = "userCredentialManagementService")
-public class CUserCredentialManagementService extends AService implements IUserCredentialManagementService
+public class UserCredentialManagementServiceImpl extends AService implements UserCredentialManagementService
 {
 
 	/** LOGGER for authentication messages logging. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CUserCredentialManagementService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserCredentialManagementServiceImpl.class);
 
 	/** The user dao. */
 	@Autowired

@@ -21,12 +21,12 @@ import sk.qbsw.security.core.model.jmx.CLicensingRules;
 @SuppressWarnings("serial")
 @Entity
 @DiscriminatorValue ("free")
-public class CLicenseFree extends CLicense<CLicensingRules>
+public class LicenseFree extends CLicense<CLicensingRules>
 {
 	/**
 	 * Instantiates a new c license free.
 	 */
-	public CLicenseFree ()
+	public LicenseFree ()
 	{
 		setType("free");
 		setKey("");

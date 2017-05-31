@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.util.List;
 
@@ -33,6 +33,8 @@ import sk.qbsw.security.core.model.order.EOrderSpecifier;
 import sk.qbsw.security.core.model.order.EOrganizationOrderByAttributeSpecifier;
 import sk.qbsw.security.core.model.order.EUserOrderByAttributeSpecifier;
 import sk.qbsw.security.core.model.order.IOrderByAttributeSpecifier;
+import sk.qbsw.security.management.service.UserCredentialManagementService;
+import sk.qbsw.security.management.service.UserManagementService;
 
 /**
  * Service for user management.
@@ -46,10 +48,10 @@ import sk.qbsw.security.core.model.order.IOrderByAttributeSpecifier;
  * @since 1.0.0
  */
 @Service ("userManagementService")
-public class CUserManagementService extends AService implements IUserManagementService
+public class UserManagementServiceImpl extends AService implements UserManagementService
 {
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CUserManagementService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementServiceImpl.class);
 
 	/** The user dao. */
 	@Autowired
@@ -69,7 +71,7 @@ public class CUserManagementService extends AService implements IUserManagementS
 
 	/** The authentication service. */
 	@Autowired
-	private IUserCredentialManagementService authenticationService;
+	private UserCredentialManagementService authenticationService;
 
 	/**
 	 * Disable user.

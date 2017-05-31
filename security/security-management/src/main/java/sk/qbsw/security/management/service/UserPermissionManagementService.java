@@ -7,7 +7,7 @@ import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
- * The Interface IUserCredentialManagementService.
+ * The Interface UserCredentialManagementService.
  * 
  * @author Dalibor Rak
  * @author farkas.roman
@@ -15,7 +15,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.18.0
  * @since 1.13.0
  */
-public interface IUserPermissionManagementService
+public interface UserPermissionManagementService
 {
 
 	/**

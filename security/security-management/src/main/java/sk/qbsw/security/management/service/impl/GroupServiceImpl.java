@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import sk.qbsw.security.core.dao.IGroupDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.management.service.GroupService;
 
 /**
  * Service for group management.
@@ -23,7 +24,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @since 1.0.0
  */
 @Service ("cGroupService")
-public class CGroupService extends AService implements IGroupService
+public class GroupServiceImpl extends AService implements GroupService
 {
 
 	/** The Constant serialVersionUID. */

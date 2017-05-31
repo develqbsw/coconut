@@ -32,8 +32,8 @@ import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
-import sk.qbsw.security.management.service.IUserManagementService;
-import sk.qbsw.security.management.test.util.domain.CLicenseFree;
+import sk.qbsw.security.management.service.UserManagementService;
+import sk.qbsw.security.management.test.util.domain.LicenseFree;
 
 /**
  * Generate data in DB for tests.
@@ -43,7 +43,7 @@ import sk.qbsw.security.management.test.util.domain.CLicenseFree;
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
-public class CDataGenerator
+public class DataGenerator
 {
 	/** The role dao. */
 	@Autowired
@@ -75,7 +75,7 @@ public class CDataGenerator
 
 	/** The user service. */
 	@Autowired
-	private IUserManagementService userService;
+	private UserManagementService userService;
 
 	/** The cross user unit group dao. */
 	@Autowired
@@ -606,7 +606,7 @@ public class CDataGenerator
 	 */
 	public CLicense<CLicensingRules> createLicense (String key, Boolean flagPayed, BigDecimal price, String taxId, Calendar validFrom, Calendar validTo)
 	{
-		CLicense<CLicensingRules> license = new CLicenseFree();
+		CLicense<CLicensingRules> license = new LicenseFree();
 		license.setKey(key);
 		license.setFlagPayed(flagPayed);
 		license.setPrice(price);

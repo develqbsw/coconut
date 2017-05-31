@@ -12,7 +12,7 @@ import sk.qbsw.security.core.model.domain.CRole;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
- * The Interface IUserManagementService.
+ * The Interface UserManagementService.
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
@@ -20,7 +20,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface IUserManagementService
+public interface UserManagementService
 {
 	/**
 	 * Enable user.

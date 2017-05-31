@@ -20,8 +20,8 @@ import sk.qbsw.security.authentication.test.util.CDataGenerator;
 import sk.qbsw.security.core.dao.IOrganizationDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.management.service.IUserCredentialManagementService;
-import sk.qbsw.security.management.service.IUserManagementService;
+import sk.qbsw.security.management.service.UserCredentialManagementService;
+import sk.qbsw.security.management.service.UserManagementService;
 
 /**
  * Checks Authentication service for database.
@@ -48,7 +48,7 @@ public class CDatabaseAuthenticationTestCase
 	/** The authentication service. */
 	@Autowired
 	@Qualifier ("userCredentialManagementService")
-	private IUserCredentialManagementService authenticationModifierService;
+	private UserCredentialManagementService authenticationModifierService;
 
 	/** The authentication test provider. */
 	@Autowired
@@ -56,7 +56,7 @@ public class CDatabaseAuthenticationTestCase
 
 	/** The user service. */
 	@Autowired
-	private IUserManagementService userService;
+	private UserManagementService userService;
 
 	/** The org service. */
 	@Autowired

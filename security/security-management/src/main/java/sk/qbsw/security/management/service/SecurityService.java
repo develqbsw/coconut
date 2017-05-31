@@ -11,13 +11,13 @@ import sk.qbsw.security.core.model.domain.CLicense;
 import sk.qbsw.security.core.model.domain.COrganization;
 
 /**
- * The Interface IUserManagementService.
+ * The Interface UserManagementService.
  *
  * @author Dalibor Rak
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface ISecurityService extends Serializable
+public interface SecurityService extends Serializable
 {
 
 	/**

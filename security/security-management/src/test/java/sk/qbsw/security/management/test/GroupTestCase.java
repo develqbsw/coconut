@@ -20,8 +20,8 @@ import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.management.service.IGroupService;
-import sk.qbsw.security.management.test.util.CDataGenerator;
+import sk.qbsw.security.management.service.GroupService;
+import sk.qbsw.security.management.test.util.DataGenerator;
 
 /**
  * Checks group service.
@@ -33,16 +33,16 @@ import sk.qbsw.security.management.test.util.CDataGenerator;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @Rollback (true)
-public class CGroupTestCase
+public class GroupTestCase
 {
 	/** The database data generator. */
 	@Autowired
-	private CDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	/** The group service. */
 	@Autowired
 	@Qualifier ("cGroupService")
-	private IGroupService groupService;
+	private GroupService groupService;
 
 	/** Unit dao. */
 	@Autowired
@@ -71,7 +71,7 @@ public class CGroupTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(CDataGenerator.FIRST_UNIT_CODE);
+		CUnit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
 		List<CGroup> groups = groupService.getByUnit(unit);
 
 		//asserts
@@ -90,17 +90,17 @@ public class CGroupTestCase
 	{
 		initTest();
 
-		CUnit unit1 = unitDao.findOneByName(CDataGenerator.SECOND_UNIT_CODE);
-		CUser user2 = userDao.findOneByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CUnit unit1 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
+		CUser user2 = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		List<CGroup> groups = groupService.getByUnitUser(unit1, user2);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
 
-		CUser user1 = userDao.findOneByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser user1 = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		groups = groupService.getByUnitUser(unit1, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 
-		CUnit unit2 = unitDao.findOneByName(CDataGenerator.SECOND_UNIT_CODE);
+		CUnit unit2 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
 		groups = groupService.getByUnitUser(unit2, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 	}
@@ -111,9 +111,9 @@ public class CGroupTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(CDataGenerator.SECOND_UNIT_CODE);
+		CUnit unit = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
 
-		List<CGroup> groups = groupService.getByCodeAndUnit(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
+		List<CGroup> groups = groupService.getByCodeAndUnit(DataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
 		Assert.assertNotNull(groups);
 		Assert.assertEquals(1, groups.size());
 	}

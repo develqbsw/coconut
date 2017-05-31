@@ -12,7 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.management.service.IUserManagementService;
+import sk.qbsw.security.management.service.UserManagementService;
 
 public class CUsersDataProvider implements IDataProvider<CUser>
 {
@@ -20,7 +20,7 @@ public class CUsersDataProvider implements IDataProvider<CUser>
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private IUserManagementService taskService;
+	private UserManagementService taskService;
 
 	/**
 	 * Stored data

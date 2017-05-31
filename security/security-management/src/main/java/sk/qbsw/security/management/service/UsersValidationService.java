@@ -3,7 +3,7 @@ package sk.qbsw.security.management.service;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CUser;
 
-public interface IUsersValidationService
+public interface UsersValidationService
 {
 
 	public abstract Boolean isOrganizationExists (COrganization organization);

@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.management.service.IUnitService;
-import sk.qbsw.security.management.service.IUserManagementService;
-import sk.qbsw.security.management.test.util.CDataGenerator;
+import sk.qbsw.security.management.service.UnitService;
+import sk.qbsw.security.management.service.UserManagementService;
+import sk.qbsw.security.management.test.util.DataGenerator;
 
 /**
  * Checks unit service.
@@ -31,20 +31,20 @@ import sk.qbsw.security.management.test.util.CDataGenerator;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @Rollback (true)
-public class CUnitTestCase
+public class UnitTestCase
 {
 	/** The database data generator. */
 	@Autowired
-	private CDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	/** The unit service. */
 	@Autowired
 	@Qualifier ("unitService")
-	private IUnitService unitService;
+	private UnitService unitService;
 
 	/** The user service. */
 	@Autowired
-	private IUserManagementService userService;
+	private UserManagementService userService;
 
 	/**
 	 * Test initialization.
@@ -84,8 +84,8 @@ public class CUnitTestCase
 	{
 		initTest();
 
-		CUser userWithDefaultUnit = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CUser userWithoutDefaultUnit = userService.getUserByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CUser userWithDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser userWithoutDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		//first user
 		List<CUnit> units = unitService.getAll(userWithDefaultUnit);

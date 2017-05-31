@@ -16,7 +16,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.6.0
  * @since 1.0.0
  */
-public interface IGroupService extends Serializable
+public interface GroupService extends Serializable
 {
 
 	/**

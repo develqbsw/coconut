@@ -5,13 +5,13 @@ import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.core.model.domain.CBlockedLogin;
 
 /**
- * The Interface ILoginBlockingService.
+ * The Interface LoginBlockingService.
  * @author Dalibor Rak
  * @author Peter Bozik
  * @version 1.12.5
  * @since 1.12.2
  */
-public interface ILoginBlockingService
+public interface LoginBlockingService
 {
 
 	/**

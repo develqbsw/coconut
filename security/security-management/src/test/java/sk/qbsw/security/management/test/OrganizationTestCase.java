@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.management.service.IOrganizationService;
-import sk.qbsw.security.management.test.util.CDataGenerator;
+import sk.qbsw.security.management.service.OrganizationService;
+import sk.qbsw.security.management.test.util.DataGenerator;
 
 /**
  * Checks organization service.
@@ -29,15 +29,15 @@ import sk.qbsw.security.management.test.util.CDataGenerator;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @Rollback (true)
-public class COrganizationTestCase
+public class OrganizationTestCase
 {
 	/** The database data generator. */
 	@Autowired
-	private CDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	/** The organization service. */
 	@Autowired
-	private IOrganizationService organizationService;
+	private OrganizationService organizationService;
 
 	/**
 	 * Test initialization.
@@ -59,7 +59,7 @@ public class COrganizationTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationService.getOrganizations(CDataGenerator.ORGANIZATION_CODE);
+		List<COrganization> organizations = organizationService.getOrganizations(DataGenerator.ORGANIZATION_CODE);
 
 		//asserts
 		assertNotNull("List of organizations is null", organizations);
@@ -71,7 +71,7 @@ public class COrganizationTestCase
 		assertNotNull("List of organizations is null", organizations);
 		Assert.assertSame(0, organizations.size());
 
-		organizations = organizationService.getOrganizations(CDataGenerator.ORGANIZATION_2_CLONE_CODE);
+		organizations = organizationService.getOrganizations(DataGenerator.ORGANIZATION_2_CLONE_CODE);
 
 		//asserts
 		assertNotNull("List of organizations is null", organizations);

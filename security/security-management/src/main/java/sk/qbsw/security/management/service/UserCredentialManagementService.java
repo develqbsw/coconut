@@ -6,13 +6,13 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.CPasswordFormatException;
 
 /**
- * The Interface IUserCredentialManagementService.
+ * The Interface UserCredentialManagementService.
  * 
  * @author Dalibor Rak
  * @version 1.13.0
  * @since 1.13.0
  */
-public interface IUserCredentialManagementService
+public interface UserCredentialManagementService
 {
 
 	/**

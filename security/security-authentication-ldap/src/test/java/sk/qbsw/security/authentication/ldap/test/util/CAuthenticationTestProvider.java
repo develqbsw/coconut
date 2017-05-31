@@ -15,7 +15,7 @@ import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CRole;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.management.service.IUserCredentialManagementService;
+import sk.qbsw.security.management.service.UserCredentialManagementService;
 
 /**
  * Provides test for authentication.
@@ -152,7 +152,7 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangePasswordExistingUser (IAuthenticationService authenticationService, IUserCredentialManagementService modifierService) throws CSecurityException
+	public void testChangePasswordExistingUser (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "change1Password3ExistingUser@";
 		modifierService.changePlainPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);

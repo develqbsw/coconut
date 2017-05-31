@@ -7,7 +7,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.management.service.IGroupService;
+import sk.qbsw.security.management.service.GroupService;
 
 public class CGroupsLoadableModel extends LoadableDetachableModel<List<CGroup>>
 {
@@ -17,7 +17,7 @@ public class CGroupsLoadableModel extends LoadableDetachableModel<List<CGroup>>
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private IGroupService groupService;
+	private GroupService groupService;
 
 	public CGroupsLoadableModel ()
 	{

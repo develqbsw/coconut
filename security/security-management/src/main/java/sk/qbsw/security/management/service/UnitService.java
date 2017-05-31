@@ -9,14 +9,14 @@ import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
- * The Interface IUnitService.
+ * The Interface UnitService.
  * 
  * @author Tomas Lauro
  * 
  * @version 1.13.0
  * @since 1.6.0
  */
-public interface IUnitService extends Serializable
+public interface UnitService extends Serializable
 {
 	/**
 	 * Gets the all units.

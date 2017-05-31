@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.util.List;
 import java.util.Set;
@@ -19,6 +19,7 @@ import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.management.service.UserPermissionManagementService;
 
 /**
  * Authentication service.
@@ -31,7 +32,7 @@ import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
  * @since 1.0.0
  */
 @Service (value = "userPermissionManagementService")
-public class CUserPermissionManagementService extends AService implements IUserPermissionManagementService
+public class UserPermissionManagementServiceImpl extends AService implements UserPermissionManagementService
 {
 
 	/** The user dao. */

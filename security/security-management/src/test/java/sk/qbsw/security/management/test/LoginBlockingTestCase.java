@@ -14,10 +14,10 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.core.dao.IBlockedLoginDao;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.management.service.ILoginBlockingService;
-import sk.qbsw.security.management.service.IUserCredentialManagementService;
-import sk.qbsw.security.management.test.util.CDataGenerator;
-import sk.qbsw.security.management.test.util.CLoginBlockingTestProvider;
+import sk.qbsw.security.management.service.LoginBlockingService;
+import sk.qbsw.security.management.service.UserCredentialManagementService;
+import sk.qbsw.security.management.test.util.DataGenerator;
+import sk.qbsw.security.management.test.util.LoginBlockingTestProvider;
 
 /**
  * Checks Authentication service for database.
@@ -30,24 +30,24 @@ import sk.qbsw.security.management.test.util.CLoginBlockingTestProvider;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @Rollback (true)
-public class CLoginBlockingTestCase
+public class LoginBlockingTestCase
 {
 	/** The database data generator. */
 	@Autowired
-	private CDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	/** The authentication service. */
 	@Autowired
 	@Qualifier ("userCredentialManagementService")
-	private IUserCredentialManagementService authenticationModifierService;
+	private UserCredentialManagementService authenticationModifierService;
 
 	/** The login blocking service. */
 	@Autowired
-	private ILoginBlockingService loginBlockingService;
+	private LoginBlockingService loginBlockingService;
 
 	/** The authentication test provider. */
 	@Autowired
-	private CLoginBlockingTestProvider authenticationTestProvider;
+	private LoginBlockingTestProvider authenticationTestProvider;
 
 	/** The blocked login jpa dao. */
 	@Autowired

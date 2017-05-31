@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.management.service.XUserUnitGroupService;
 
 /**
  * Service for CXUserUnitGroup entity operations 
@@ -21,7 +22,7 @@ import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
  * @since 1.7.0
  */
 @Service ("xUserUnitGroupService")
-public class CXUserUnitGroupService extends AService implements IXUserUnitGroupService
+public class XUserUnitGroupServiceImpl extends AService implements XUserUnitGroupService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

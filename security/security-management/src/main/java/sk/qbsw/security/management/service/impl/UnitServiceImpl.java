@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import sk.qbsw.security.core.dao.IUnitDao;
 import sk.qbsw.security.core.model.domain.CAddress;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.management.service.UnitService;
 
 /**
  * Service for unit management.
@@ -23,7 +24,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @since 1.6.0
  */
 @Service ("unitService")
-public class CUnitService extends AService implements IUnitService
+public class UnitServiceImpl extends AService implements UnitService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

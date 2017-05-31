@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import sk.qbsw.security.core.model.domain.CLicense;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 import sk.qbsw.security.core.service.ILicenseGenerator;
-import sk.qbsw.security.management.test.util.domain.CLicenseFree;
-import sk.qbsw.security.management.test.util.domain.CLicenseOwner;
+import sk.qbsw.security.management.test.util.domain.LicenseFree;
+import sk.qbsw.security.management.test.util.domain.LicenseOwner;
 
 /**
  * License Generator.
@@ -19,7 +19,7 @@ import sk.qbsw.security.management.test.util.domain.CLicenseOwner;
  * @since 1.0.0
  */
 @Component
-public class CLicenseGenerator implements ILicenseGenerator
+public class LicenseGenerator implements ILicenseGenerator
 {
 
 	/** The Constant serialVersionUID. */
@@ -34,7 +34,7 @@ public class CLicenseGenerator implements ILicenseGenerator
 	@Override
 	public CLicense<CLicensingRules> generateFreeLicence (int months)
 	{
-		CLicense<CLicensingRules> licence = new CLicenseFree();
+		CLicense<CLicensingRules> licence = new LicenseFree();
 
 		Calendar validFrom = Calendar.getInstance();
 		Calendar validTo = Calendar.getInstance();
@@ -53,7 +53,7 @@ public class CLicenseGenerator implements ILicenseGenerator
 	 */
 	public CLicense<?> generateOwnerLicence ()
 	{
-		CLicense<CLicensingRules> licence = new CLicenseOwner();
+		CLicense<CLicensingRules> licence = new LicenseOwner();
 
 		Calendar validTo = Calendar.getInstance();
 		validTo.add(Calendar.YEAR, 100);
@@ -73,8 +73,8 @@ public class CLicenseGenerator implements ILicenseGenerator
 	public ArrayList<CLicense<?>> getAvailableLicenses ()
 	{
 		ArrayList<CLicense<?>> retVal = new ArrayList<CLicense<?>>();
-		retVal.add(new CLicenseOwner());
-		retVal.add(new CLicenseFree());
+		retVal.add(new LicenseOwner());
+		retVal.add(new LicenseFree());
 
 		return retVal;
 	}
@@ -89,8 +89,8 @@ public class CLicenseGenerator implements ILicenseGenerator
 	public ArrayList<CLicense<?>> getAvailableLicensesForCustomer ()
 	{
 		ArrayList<CLicense<?>> retVal = new ArrayList<CLicense<?>>();
-		retVal.add(new CLicenseOwner());
-		retVal.add(new CLicenseFree());
+		retVal.add(new LicenseOwner());
+		retVal.add(new LicenseFree());
 
 		return retVal;
 	}

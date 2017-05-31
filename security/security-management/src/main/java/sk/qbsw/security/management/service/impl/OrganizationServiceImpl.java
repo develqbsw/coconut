@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import sk.qbsw.security.core.model.domain.CLicense;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.service.ILicenseGenerator;
+import sk.qbsw.security.management.service.OrganizationService;
 
 /**
  * Service for organization management.
@@ -27,7 +28,7 @@ import sk.qbsw.security.core.service.ILicenseGenerator;
  * @since 1.0.0
  */
 @Service("cOrganizationService")
-public class COrganizationService extends AService implements IOrganizationService
+public class OrganizationServiceImpl extends AService implements OrganizationService
 {
 
 	/** The license generator. */

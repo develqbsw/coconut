@@ -32,7 +32,7 @@ import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
-import sk.qbsw.security.management.service.IUserManagementService;
+import sk.qbsw.security.management.service.UserManagementService;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
@@ -81,7 +81,7 @@ public class DataGenerator
 
 	/** The user service. */
 	@Autowired
-	private IUserManagementService userService;
+	private UserManagementService userService;
 
 	/** The cross user unit group dao. */
 	@Autowired

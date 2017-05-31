@@ -1,4 +1,4 @@
-package sk.qbsw.security.management.service;
+package sk.qbsw.security.management.service.impl;
 
 import java.time.OffsetDateTime;
 
@@ -16,6 +16,7 @@ import sk.qbsw.security.core.dao.IBlockedLoginDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CBlockedLogin;
 import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.management.service.LoginBlockingService;
 
 /**
  * Abstract authentication service
@@ -26,11 +27,11 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.12.4
  * @since 1.12.2
  */
-public class CLoginBlockingService extends AService implements ILoginBlockingService
+public class LoginBlockingServiceImpl extends AService implements LoginBlockingService
 {
 
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLoginBlockingService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginBlockingServiceImpl.class);
 
 	/** The block login limit. */
 	private int blockLoginLimit = 5;

@@ -9,7 +9,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CRole;
 import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.management.service.IUserManagementService;
+import sk.qbsw.security.management.service.UserManagementService;
 
 public class CUsersLoadableModel extends LoadableDetachableModel<List<CUser>>
 {
@@ -19,7 +19,7 @@ public class CUsersLoadableModel extends LoadableDetachableModel<List<CUser>>
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private IUserManagementService userService;
+	private UserManagementService userService;
 
 	private COrganization organization;
 
