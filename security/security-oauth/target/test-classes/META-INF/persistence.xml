@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="persistenceContext"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<!-- security -->
+		<class>sk.qbsw.security.core.model.domain.CUser</class>
+		<class>sk.qbsw.security.core.model.domain.CRole</class>
+		<class>sk.qbsw.security.core.model.domain.CGroup</class>
+		<class>sk.qbsw.security.core.model.domain.COrganization</class>
+		<class>sk.qbsw.security.core.model.domain.CUnit</class>
+		<class>sk.qbsw.security.core.model.domain.CAuthenticationParams</class>
+		<class>sk.qbsw.security.core.model.domain.CXUserUnitGroup</class>
+		<class>sk.qbsw.security.core.model.domain.CAddress</class>
+		<class>sk.qbsw.security.core.model.domain.CBlockedLogin</class>
+		<class>sk.qbsw.security.oauth.model.domain.CAuthenticationToken</class>
+		<class>sk.qbsw.security.oauth.model.domain.CMasterToken</class>
+		
+		<!-- configuration -->
+		<class>sk.qbsw.core.configuration.model.domain.CSystemParameter</class>
+		
+		<!-- test -->
+		<class>sk.qbsw.security.oauth.test.util.domain.CLicenseFree</class>
+
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+			<property name="hibernate.bytecode.provider" value="javassist" />
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.jdbc.batch_size" value="200" />
+		</properties>
+	</persistence-unit>
+</persistence>
