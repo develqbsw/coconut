@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.model.CustomAuthenticationToken;
 import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -30,7 +30,7 @@ public class CLdapAuthenticatedWebSession extends AIndySecurityAuthenticatedWebS
 
 	/** The login service. */
 	@SpringBean (name = "ldapAuthenticationService")
-	private IAuthenticationService loginService;
+	private AuthenticationService loginService;
 
 	/**
 	 * Gets actual session.

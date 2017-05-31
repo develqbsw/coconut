@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.test.util.DataGenerator;
 import sk.qbsw.security.core.dao.IOrganizationDao;
@@ -43,7 +43,7 @@ public class DatabaseAuthenticationTestCase
 	/** The authentication service. */
 	@Autowired
 	@Qualifier ("cLoginService")
-	private IAuthenticationService authenticationService;
+	private AuthenticationService authenticationService;
 
 	/** The authentication service. */
 	@Autowired

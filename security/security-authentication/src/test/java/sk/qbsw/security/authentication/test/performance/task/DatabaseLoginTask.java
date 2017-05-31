@@ -3,7 +3,7 @@ package sk.qbsw.security.authentication.test.performance.task;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.test.util.DataGenerator;
 import sk.qbsw.security.core.model.domain.CUser;
 
@@ -25,7 +25,7 @@ class DatabaseLoginTask extends LoginTask implements Runnable
 
 	/** The authentication service. */
 	@Autowired
-	private IAuthenticationService authenticationService;
+	private AuthenticationService authenticationService;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.code.security.test.performance.task.CLoginTask#authenticate()

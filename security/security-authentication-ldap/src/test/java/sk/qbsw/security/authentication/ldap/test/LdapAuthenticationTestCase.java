@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.core.testing.mock.IMockHelper;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
 import sk.qbsw.security.authentication.ldap.test.util.AuthenticationTestProvider;
@@ -43,7 +43,7 @@ public class LdapAuthenticationTestCase
 	/** The authentication service. */
 	@Autowired
 	@Qualifier ("ldapAuthenticationService")
-	private IAuthenticationService authenticationService;
+	private AuthenticationService authenticationService;
 
 	/** The authentication test provider. */
 	@Autowired

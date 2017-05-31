@@ -17,7 +17,7 @@ import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
 import sk.qbsw.core.security.base.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.base.exception.CInvalidUserException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
 import sk.qbsw.security.core.dao.IUnitDao;
 import sk.qbsw.security.core.dao.IUserDao;
@@ -38,7 +38,7 @@ import sk.qbsw.security.core.service.signature.IPasswordDigester;
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
-public class DatabaseAuthenticationServiceImpl extends AService implements IAuthenticationService
+public class DatabaseAuthenticationServiceImpl extends AService implements AuthenticationService
 {
 
 	/** The Constant serialVersionUID. */

@@ -18,7 +18,7 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.base.exception.CInvalidUserException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LDAPInjectionProtector;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
@@ -37,7 +37,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
-public class LdapAuthenticationServiceImpl extends AService implements IAuthenticationService
+public class LdapAuthenticationServiceImpl extends AService implements AuthenticationService
 {
 
 	/** The Constant serialVersionUID. */

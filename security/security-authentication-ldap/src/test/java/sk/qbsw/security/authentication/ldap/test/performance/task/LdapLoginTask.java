@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -39,7 +39,7 @@ class LdapLoginTask extends LoginTask implements Runnable
 	/** The authentication service. */
 	@Autowired
 	@Qualifier ("ldapAuthenticationService")
-	private IAuthenticationService authenticationService;
+	private AuthenticationService authenticationService;
 
 	/** The ldap authentication configurator. */
 	@Autowired

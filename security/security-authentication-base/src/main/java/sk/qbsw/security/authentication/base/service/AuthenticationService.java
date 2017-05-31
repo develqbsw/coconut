@@ -15,7 +15,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface IAuthenticationService extends Serializable
+public interface AuthenticationService extends Serializable
 {
 
 	/**

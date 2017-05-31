@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CRole;
 import sk.qbsw.security.core.model.domain.CUnit;
@@ -33,7 +33,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnit (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
 		CUser user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
@@ -47,7 +47,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitIncorrectPassword (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitIncorrectPassword (AuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "incorrectPassword");
 	}
@@ -57,7 +57,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnit (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
 		CUser user = authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
@@ -71,7 +71,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitAndRolePositive (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitAndRolePositive (AuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
@@ -86,7 +86,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitAndRoleNegative (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitAndRoleNegative (AuthenticationService authenticationService) throws CSecurityException
 	{
 		CRole inputRole = new CRole(DataGenerator.SECOND_ROLE_CODE);
 		authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole);
@@ -97,7 +97,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnitAndRolePositive (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnitAndRolePositive (AuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE);
@@ -112,7 +112,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnitAndRoleNegative (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnitAndRoleNegative (AuthenticationService authenticationService) throws CSecurityException
 	{
 		CRole inputRole = new CRole(DataGenerator.SECOND_ROLE_CODE);
 		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole);
@@ -123,7 +123,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithDefaultUnitAndUnit (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithDefaultUnitAndUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
@@ -138,7 +138,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginWithoutDefaultUnitAndUnit (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginWithoutDefaultUnitAndUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
@@ -152,7 +152,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangePasswordExistingUser (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testChangePasswordExistingUser (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "change1Password3ExistingUser@";
 		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
@@ -168,7 +168,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginEnabledUserDisabledOrganization (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginEnabledUserDisabledOrganization (AuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(DataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION, DataGenerator.USER_ENABLED_IN_DISABLED_ORGANIZATION);
 	}
@@ -178,7 +178,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginDisabledUserDisabledOrganization (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginDisabledUserDisabledOrganization (AuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(DataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION, DataGenerator.USER_DISABLED_IN_DISABLED_ORGANIZATION);
 	}
@@ -188,7 +188,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testLoginDisabledUserEnabledOrganization (IAuthenticationService authenticationService) throws CSecurityException
+	public void testLoginDisabledUserEnabledOrganization (AuthenticationService authenticationService) throws CSecurityException
 	{
 		authenticationService.login(DataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION, DataGenerator.USER_DISABLED_IN_ENABLED_ORGANIZATION);
 	}
@@ -202,7 +202,7 @@ public class AuthenticationTestProvider
 	 * @param expectedGroupsSize The expected size of groups for user
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithRole (IAuthenticationService authenticationService, String login, String password, CRole inputRole, Set<String> expectedGroups) throws CSecurityException
+	private void testLoginWithRole (AuthenticationService authenticationService, String login, String password, CRole inputRole, Set<String> expectedGroups) throws CSecurityException
 	{
 		//define output role - found in user
 		CRole outputRole = null;
@@ -259,7 +259,7 @@ public class AuthenticationTestProvider
 	 * @param expectedGroupsSize The expected size of groups for user
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithUnit (IAuthenticationService authenticationService, String login, String password, String unit, Set<String> expectedGroups) throws CSecurityException
+	private void testLoginWithUnit (AuthenticationService authenticationService, String login, String password, String unit, Set<String> expectedGroups) throws CSecurityException
 	{
 		CUnit outputUnit = null;
 

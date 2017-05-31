@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.authentication.base.service.IAuthenticationService;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
 import sk.qbsw.security.core.model.domain.CUser;
 
@@ -26,7 +26,7 @@ public class SpringAuthenticationServiceImpl extends AService implements SpringA
 	
 	/** The authentication service. */
 	@Autowired
-	private IAuthenticationService authenticationService;
+	private AuthenticationService authenticationService;
 	
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.ISpringAuthenticationService#login(org.springframework.security.core.Authentication)
