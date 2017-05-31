@@ -15,14 +15,14 @@
 		<class>sk.qbsw.security.core.model.domain.CXUserUnitGroup</class>
 		<class>sk.qbsw.security.core.model.domain.CAddress</class>
 		<class>sk.qbsw.security.core.model.domain.CBlockedLogin</class>
-		<class>sk.qbsw.security.oauth.model.domain.CAuthenticationToken</class>
-		<class>sk.qbsw.security.oauth.model.domain.CMasterToken</class>
+		<class>sk.qbsw.security.oauth.model.domain.AuthenticationToken</class>
+		<class>sk.qbsw.security.oauth.model.domain.MasterToken</class>
 		
 		<!-- configuration -->
 		<class>sk.qbsw.core.configuration.model.domain.CSystemParameter</class>
 		
 		<!-- test -->
-		<class>sk.qbsw.security.oauth.test.util.domain.CLicenseFree</class>
+		<class>sk.qbsw.security.oauth.test.util.domain.LicenseFree</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />

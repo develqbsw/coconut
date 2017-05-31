@@ -114,7 +114,7 @@
 		<module>indy</module>
 		<module>integration</module>
 		<module>reporting</module>
-		<module>paymentgateway</module>
+		<!-- <module>paymentgateway</module> -->
 	</modules>
 
 	<distributionManagement>
