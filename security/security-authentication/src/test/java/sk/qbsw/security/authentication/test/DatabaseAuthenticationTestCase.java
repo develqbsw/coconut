@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
-import sk.qbsw.security.authentication.test.util.CAuthenticationTestProvider;
-import sk.qbsw.security.authentication.test.util.CDataGenerator;
+import sk.qbsw.security.authentication.test.util.AuthenticationTestProvider;
+import sk.qbsw.security.authentication.test.util.DataGenerator;
 import sk.qbsw.security.core.dao.IOrganizationDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
@@ -34,11 +34,11 @@ import sk.qbsw.security.management.service.UserManagementService;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @Rollback (true)
-public class CDatabaseAuthenticationTestCase
+public class DatabaseAuthenticationTestCase
 {
 	/** The database data generator. */
 	@Autowired
-	private CDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	/** The authentication service. */
 	@Autowired
@@ -52,7 +52,7 @@ public class CDatabaseAuthenticationTestCase
 
 	/** The authentication test provider. */
 	@Autowired
-	private CAuthenticationTestProvider authenticationTestProvider;
+	private AuthenticationTestProvider authenticationTestProvider;
 
 	/** The user service. */
 	@Autowired

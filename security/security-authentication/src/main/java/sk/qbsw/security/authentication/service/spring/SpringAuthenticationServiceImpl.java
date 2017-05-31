@@ -8,7 +8,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
-import sk.qbsw.security.authentication.model.spring.CUsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
@@ -21,10 +21,8 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @since 1.13.4
  */
 @Service (value = "springAuthenticationService")
-public class CSpringAuthenticationService extends AService implements ISpringAuthenticationService
+public class SpringAuthenticationServiceImpl extends AService implements SpringAuthenticationService
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 800407865927978145L;
 	
 	/** The authentication service. */
 	@Autowired
@@ -42,7 +40,7 @@ public class CSpringAuthenticationService extends AService implements ISpringAut
 			throw new CSecurityException(ECoreErrorResponse.UNSUPPORTED_AUTHENTICATION_TOKEN);
 		}
 
-		CUsernamePasswordUnitAuthentication usernamePasswordAuthentication = (CUsernamePasswordUnitAuthentication) authentication;
+		UsernamePasswordUnitAuthentication usernamePasswordAuthentication = (UsernamePasswordUnitAuthentication) authentication;
 
 		if (usernamePasswordAuthentication.getUnit() != null)
 		{
@@ -60,6 +58,6 @@ public class CSpringAuthenticationService extends AService implements ISpringAut
 	@Override
 	public boolean supports (Class<? extends Authentication> authentication)
 	{
-		return CUsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication);
+		return UsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication);
 	}
 }

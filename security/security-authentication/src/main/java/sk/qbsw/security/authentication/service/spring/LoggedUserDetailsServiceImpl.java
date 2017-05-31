@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.authentication.model.spring.CLoggedUser;
+import sk.qbsw.security.authentication.model.spring.LoggedUser;
 import sk.qbsw.security.core.dao.IRoleDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CLicense;
@@ -34,7 +34,7 @@ import sk.qbsw.security.core.model.domain.CUser;
 /**
  * Class for authentication using Spring and Hibernate with QBSW model.
  * 
- * Consider using the {@link CUserDetailsService}.
+ * Consider using the {@link UserDetailsServiceImpl}.
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
@@ -43,7 +43,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @since 1.0.0
  */
 @Service (value = "userAuthenticationService")
-public class CLoggedUserDetailsService extends AService implements UserDetailsService
+public class LoggedUserDetailsServiceImpl extends AService implements UserDetailsService
 {
 	/** The role dao. */
 	@Autowired
@@ -106,7 +106,7 @@ public class CLoggedUserDetailsService extends AService implements UserDetailsSe
 		CLicense<?> actualLicense = org.getMainLicense();
 		boolean accountNonLocked = actualLicense == null ? false : true;
 
-		CLoggedUser user = new CLoggedUser(org, actualLicense, username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+		LoggedUser user = new LoggedUser(org, actualLicense, username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		return user;
 	}
 }

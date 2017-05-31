@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.authentication.model.spring.CUserDetails;
+import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CUser;
 
@@ -26,10 +26,10 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.14.3
  * @since 1.6.0
  */
-public class CUserDetailsService extends AService implements UserDetailsService
+public class UserDetailsServiceImpl extends AService implements UserDetailsService
 {
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CUserDetailsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
 	/** The user service. */
 	@Autowired
@@ -81,7 +81,7 @@ public class CUserDetailsService extends AService implements UserDetailsService
 		user.exportRoles();
 		user.getPassword();
 
-		CUserDetails retVal = new CUserDetails();
+		CustomUserDetails retVal = new CustomUserDetails();
 		retVal.setUser(user);
 		return retVal;
 	}

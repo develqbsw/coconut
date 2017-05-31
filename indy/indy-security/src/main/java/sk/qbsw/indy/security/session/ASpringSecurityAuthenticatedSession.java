@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.model.IAuthenticationToken;
+import sk.qbsw.security.authentication.model.CustomAuthenticationToken;
 
 /**
  * Authentication for Wicket using Spring security.
@@ -61,7 +61,7 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 	 * @see sk.qbsw.indy.security.session.AAuthenticatedWebSession#authenticate(sk.qbsw.core.security.model.IAuthenticationToken)
 	 */
 	@Override
-	public boolean authenticate (IAuthenticationToken authenticationToken)
+	public boolean authenticate (CustomAuthenticationToken authenticationToken)
 	{
 		//get authentication and checks if it is supported
 		Authentication authentication = transformAuthenticationObject(authenticationToken);
@@ -162,7 +162,7 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 	 * @param authenticationToken the authentication token
 	 * @return the authentication object or null if the given token is not supported
 	 */
-	protected abstract Authentication transformAuthenticationObject (IAuthenticationToken authenticationToken);
+	protected abstract Authentication transformAuthenticationObject (CustomAuthenticationToken authenticationToken);
 
 	/**
 	 * Prepare session data from given authentication object. If the give authentication object is not supported return false.

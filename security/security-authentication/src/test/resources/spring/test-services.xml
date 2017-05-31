@@ -13,9 +13,9 @@
 	    <!-- <context:exclude-filter type="regex" expression="sk\.qbsw\.core\.security\.service\.CDatabaseAuthenticationService"/> -->
 	</context:component-scan>
 	
-	<bean id="authenticationService" class="sk.qbsw.security.authentication.service.CDatabaseAuthenticationService" />
+	<bean id="authenticationService" class="sk.qbsw.security.authentication.service.DatabaseAuthenticationServiceImpl" />
 
-	<bean id="databaseLoginTask" scope="prototype" class="sk.qbsw.security.authentication.test.performance.task.CDatabaseLoginTask" />
+	<bean id="databaseLoginTask" scope="prototype" class="sk.qbsw.security.authentication.test.performance.task.DatabaseLoginTask" />
 
 	<bean id="loginTaskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
-import sk.qbsw.security.authentication.model.IAuthenticationToken;
-import sk.qbsw.security.authentication.model.spring.CUsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.model.CustomAuthenticationToken;
+import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
@@ -71,10 +71,10 @@ public class CDBAuthenticatedWebSession extends AIndySecurityAuthenticatedWebSes
 	 * @see sk.qbsw.indy.security.session.AAuthenticatedWebSession#authenticate(sk.qbsw.core.security.model.IAuthenticationToken)
 	 */
 	@Override
-	public boolean authenticate (IAuthenticationToken authenticationToken)
+	public boolean authenticate (CustomAuthenticationToken authenticationToken)
 	{
 		//get supported token
-		CUsernamePasswordUnitAuthentication token = getAuthenticationObject(authenticationToken);
+		UsernamePasswordUnitAuthentication token = getAuthenticationObject(authenticationToken);
 		if (token == null)
 		{
 			LOGGER.error("The DB authentication session doesn't support given authentication token type");

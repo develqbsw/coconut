@@ -7,7 +7,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.request.Request;
 
-import sk.qbsw.security.authentication.model.IAuthenticationToken;
+import sk.qbsw.security.authentication.model.CustomAuthenticationToken;
 
 
 /**
@@ -54,7 +54,7 @@ public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebS
 	 * @param authenticationToken the authentication token
 	 * @return true, if successful
 	 */
-	public abstract boolean authenticate (final IAuthenticationToken authenticationToken);
+	public abstract boolean authenticate (final CustomAuthenticationToken authenticationToken);
 
 	/**
 	 * Call signOut() and remove the logon data from where ever they have been persisted (e.g.
@@ -100,7 +100,7 @@ public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebS
 	 * @param authenticationToken the authentication token
 	 * @return true, if logon was successful
 	 */
-	public final boolean signIn (final IAuthenticationToken authenticationToken)
+	public final boolean signIn (final CustomAuthenticationToken authenticationToken)
 	{
 		signedIn = authenticate(authenticationToken);
 		if (signedIn)

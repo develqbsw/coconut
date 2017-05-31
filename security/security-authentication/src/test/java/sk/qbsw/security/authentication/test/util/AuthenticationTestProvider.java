@@ -30,7 +30,7 @@ import sk.qbsw.security.management.service.UserManagementService;
  * @since 1.6.0
  */
 @Component
-public class CAuthenticationTestProvider
+public class AuthenticationTestProvider
 {
 
 	/**
@@ -40,7 +40,7 @@ public class CAuthenticationTestProvider
 	 */
 	public void testLoginWithDefaultUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		CUser user = authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -54,7 +54,7 @@ public class CAuthenticationTestProvider
 	 */
 	public void testLoginWithDefaultUnitIncorrectPassword (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "incorrectPassword");
+		authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "incorrectPassword");
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class CAuthenticationTestProvider
 	 */
 	public void testLoginWithoutDefaultUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		CUser user = authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CUser user = authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -79,11 +79,11 @@ public class CAuthenticationTestProvider
 	public void testLoginWithDefaultUnitAndRolePositive (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
-		expectedGroups.add(CDataGenerator.FIRST_GROUP_IN_UNIT_CODE);
-		expectedGroups.add(CDataGenerator.SECOND_GROUP_IN_UNIT_CODE);
-		CRole inputRole = new CRole(CDataGenerator.FIRST_ROLE_CODE);
+		expectedGroups.add(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		CRole inputRole = new CRole(DataGenerator.FIRST_ROLE_CODE);
 
-		testLoginWithRole(authenticationService, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
+		testLoginWithRole(authenticationService, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class CAuthenticationTestProvider
 	 */
 	public void testLoginWithDefaultUnitAndRoleNegative (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		CRole inputRole = new CRole(CDataGenerator.SECOND_ROLE_CODE);
-		authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole);
+		CRole inputRole = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole);
 	}
 
 	/**
@@ -105,11 +105,11 @@ public class CAuthenticationTestProvider
 	public void testLoginWithoutDefaultUnitAndRolePositive (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
-		expectedGroups.add(CDataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE);
-		expectedGroups.add(CDataGenerator.SECOND_GROUP_NOT_IN_UNIT_CODE);
-		CRole inputRole = new CRole(CDataGenerator.FIRST_ROLE_CODE);
+		expectedGroups.add(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE);
+		expectedGroups.add(DataGenerator.SECOND_GROUP_NOT_IN_UNIT_CODE);
+		CRole inputRole = new CRole(DataGenerator.FIRST_ROLE_CODE);
 
-		testLoginWithRole(authenticationService, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
+		testLoginWithRole(authenticationService, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
 	}
 
 	/**
@@ -119,8 +119,8 @@ public class CAuthenticationTestProvider
 	 */
 	public void testLoginWithoutDefaultUnitAndRoleNegative (IAuthenticationService authenticationService) throws CSecurityException
 	{
-		CRole inputRole = new CRole(CDataGenerator.SECOND_ROLE_CODE);
-		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole);
+		CRole inputRole = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole);
 	}
 
 	/**
@@ -131,11 +131,11 @@ public class CAuthenticationTestProvider
 	public void testLoginWithDefaultUnitAndUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
-		expectedGroups.add(CDataGenerator.SECOND_GROUP_IN_UNIT_CODE);
-		expectedGroups.add(CDataGenerator.THIRD_GROUP_IN_UNIT_CODE);
-		String unit = CDataGenerator.FIRST_UNIT_CODE;
+		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		expectedGroups.add(DataGenerator.THIRD_GROUP_IN_UNIT_CODE);
+		String unit = DataGenerator.FIRST_UNIT_CODE;
 
-		testLoginWithUnit(authenticationService, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, unit, expectedGroups);
+		testLoginWithUnit(authenticationService, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, unit, expectedGroups);
 	}
 
 	/**
@@ -146,10 +146,10 @@ public class CAuthenticationTestProvider
 	public void testLoginWithoutDefaultUnitAndUnit (IAuthenticationService authenticationService) throws CSecurityException
 	{
 		Set<String> expectedGroups = new HashSet<String>();
-		expectedGroups.add(CDataGenerator.SECOND_GROUP_IN_UNIT_CODE);
-		String unit = CDataGenerator.FIRST_UNIT_CODE;
+		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		String unit = DataGenerator.FIRST_UNIT_CODE;
 
-		testLoginWithUnit(authenticationService, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit, expectedGroups);
+		testLoginWithUnit(authenticationService, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit, expectedGroups);
 	}
 
 	/**
@@ -160,10 +160,10 @@ public class CAuthenticationTestProvider
 	public void testChangePasswordExistingUser (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "change1Password3ExistingUser@";
-		modifierService.changePlainPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
+		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
 
 		//test authentication
-		CUser user = authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		CUser user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -176,10 +176,10 @@ public class CAuthenticationTestProvider
 	public void testChangeEncryptedPasswordExistingUser (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		final String newPassword = "change1EncryptedPasswordExistingUser$56";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		//test authentication
-		CUser user = authenticationService.login(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		CUser user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -189,11 +189,11 @@ public class CAuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, UserManagementService userService, IUserDao userDao, IOrganizationDao orgDao, CDataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewUser (IAuthenticationService authenticationService, UserManagementService userService, IUserDao userDao, IOrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
 	{
 		//create new user and needed objects
-		CUser newUser = dataGenerator.createUser(CDataGenerator.USER_WITHOUT_PASSWORD);
-		COrganization organization = orgDao.findOneByName(CDataGenerator.ORGANIZATION_CODE);
+		CUser newUser = dataGenerator.createUser(DataGenerator.USER_WITHOUT_PASSWORD);
+		COrganization organization = orgDao.findOneByName(DataGenerator.ORGANIZATION_CODE);
 		String newPassword = "change56%PasswordNewUser";
 
 		//register user
@@ -204,7 +204,7 @@ public class CAuthenticationTestProvider
 		userDao.clear();
 
 		//test authentication
-		assertNotNull("The encrypted password change failed", authenticationService.login(CDataGenerator.USER_WITHOUT_PASSWORD, newPassword));
+		assertNotNull("The encrypted password change failed", authenticationService.login(DataGenerator.USER_WITHOUT_PASSWORD, newPassword));
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class CAuthenticationTestProvider
 	public void testChangeLogin (UserCredentialManagementService authenticationService, UserManagementService userService) throws CSecurityException
 	{
 		String newLogin = "new1Login#";
-		CUser user = userService.getUserByLogin(CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		CUser user = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
 		//change login
 		authenticationService.changeLogin(user.getId(), newLogin);
@@ -243,9 +243,9 @@ public class CAuthenticationTestProvider
 	public void testLoginInvalidFromAuthParam (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().plusHours(2), null);
+		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().plusHours(2), null);
 
-		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**
@@ -257,9 +257,9 @@ public class CAuthenticationTestProvider
 	public void testLoginInvalidToAuthParam (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, OffsetDateTime.now().minusHours(1));
+		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, OffsetDateTime.now().minusHours(1));
 
-		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**
@@ -271,9 +271,9 @@ public class CAuthenticationTestProvider
 	public void testLoginInvalidFromAndToAuthParam (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().minusHours(2), OffsetDateTime.now().minusHours(1));
+		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().minusHours(2), OffsetDateTime.now().minusHours(1));
 
-		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**
@@ -285,9 +285,9 @@ public class CAuthenticationTestProvider
 	public void testChangePasswordNullFromAndToAuthParam (IAuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, null);
+		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, null);
 
-		authenticationService.login(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**

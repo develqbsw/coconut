@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import sk.qbsw.security.authentication.test.performance.task.CLoginTask;
+import sk.qbsw.security.authentication.test.performance.task.LoginTask;
 
 /**
  * The login performance test. Measures the time of login for specified login iterations and threads count.
@@ -17,7 +17,7 @@ import sk.qbsw.security.authentication.test.performance.task.CLoginTask;
  * @version 1.11.4
  * @since 1.7.2
  */
-public class CLoginPerformanceTest
+public class LoginPerformanceTest
 {
 	/** The Constant LOGIN_COUNT. */
 	private static final int LOGIN_COUNT = 5000;
@@ -63,10 +63,10 @@ public class CLoginPerformanceTest
 	private static float testLogin (ApplicationContext context, ThreadPoolTaskExecutor taskExecutor, String loginBeanId)
 	{
 		//create login tasks
-		List<CLoginTask> loginTasks = new ArrayList<CLoginTask>();
+		List<LoginTask> loginTasks = new ArrayList<LoginTask>();
 		for (int i = 0; i < THREADS_COUNT; i++)
 		{
-			CLoginTask loginTask = (CLoginTask) context.getBean(loginBeanId);
+			LoginTask loginTask = (LoginTask) context.getBean(loginBeanId);
 			loginTask.init("Login task " + i, LOGIN_COUNT);
 			loginTasks.add(loginTask);
 		}
@@ -75,7 +75,7 @@ public class CLoginPerformanceTest
 		long start = System.currentTimeMillis();
 
 		//run task
-		for (CLoginTask loginTask : loginTasks)
+		for (LoginTask loginTask : loginTasks)
 		{
 			taskExecutor.execute(loginTask);
 		}

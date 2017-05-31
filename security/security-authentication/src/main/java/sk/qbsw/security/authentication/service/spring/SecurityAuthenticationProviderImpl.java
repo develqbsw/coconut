@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import sk.qbsw.security.authentication.model.spring.CUsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
@@ -20,7 +20,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * 
  */
 @Component ("customAuthenticationProvider")
-public class CSecurityAuthenticationProvider extends ASecurityAuthenticationProvider
+public class SecurityAuthenticationProviderImpl extends BaseSecurityAuthenticationProvider
 {
 	/* (non-Javadoc)
 	 * @see org.springframework.security.authentication.AuthenticationProvider#supports(java.lang.Class)
@@ -28,7 +28,7 @@ public class CSecurityAuthenticationProvider extends ASecurityAuthenticationProv
 	@Override
 	public boolean supports (Class<? extends Object> authentication)
 	{
-		return CUsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication);
+		return UsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication);
 	}
 
 	/* (non-Javadoc)
@@ -38,10 +38,10 @@ public class CSecurityAuthenticationProvider extends ASecurityAuthenticationProv
 	protected Authentication populateAuthentication (Authentication authentication, CUser authenticatedUser, List<GrantedAuthority> authorities)
 	{
 		//get supported authentication
-		CUsernamePasswordUnitAuthentication usernameAuthentication = (CUsernamePasswordUnitAuthentication) authentication;
+		UsernamePasswordUnitAuthentication usernameAuthentication = (UsernamePasswordUnitAuthentication) authentication;
 
 		//create fully populated authentication
-		CUsernamePasswordUnitAuthentication populatedAuthentication = new CUsernamePasswordUnitAuthentication(usernameAuthentication.getName(), usernameAuthentication.getCredentials(), authorities, usernameAuthentication.getUnit());
+		UsernamePasswordUnitAuthentication populatedAuthentication = new UsernamePasswordUnitAuthentication(usernameAuthentication.getName(), usernameAuthentication.getCredentials(), authorities, usernameAuthentication.getUnit());
 		populatedAuthentication.setDetails(authenticatedUser);
 
 		//return value

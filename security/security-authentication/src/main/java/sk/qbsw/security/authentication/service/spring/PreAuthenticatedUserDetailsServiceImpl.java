@@ -15,7 +15,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
-import sk.qbsw.security.authentication.model.spring.CUserDetails;
+import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CUser;
 
@@ -28,11 +28,11 @@ import sk.qbsw.security.core.model.domain.CUser;
  */
 @CLogged
 @Service
-public class CPreAuthenticatedUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken>
+public class PreAuthenticatedUserDetailsServiceImpl implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken>
 {
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CPreAuthenticatedUserDetailsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PreAuthenticatedUserDetailsServiceImpl.class);
 
 	/** The user service. */
 	@Autowired
@@ -65,7 +65,7 @@ public class CPreAuthenticatedUserDetailsService implements AuthenticationUserDe
 			throw new UsernameNotFoundException("The user is disabled");
 		}
 
-		CUserDetails userDetails = new CUserDetails();
+		CustomUserDetails userDetails = new CustomUserDetails();
 		userDetails.setUser(persistedUser);
 
 

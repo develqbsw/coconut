@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
-import sk.qbsw.security.authentication.test.util.CDataGenerator;
+import sk.qbsw.security.authentication.test.util.DataGenerator;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
@@ -15,13 +15,13 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.11.4
  * @since 1.7.2
  */
-class CDatabaseLoginTask extends CLoginTask implements Runnable
+class DatabaseLoginTask extends LoginTask implements Runnable
 {
 	/** The login. */
-	private final String LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	private final String LOGIN = DataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The password. */
-	private final String PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	private final String PASSWORD = DataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The authentication service. */
 	@Autowired

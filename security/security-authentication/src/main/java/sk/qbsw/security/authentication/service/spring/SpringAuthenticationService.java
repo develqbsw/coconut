@@ -1,7 +1,5 @@
 package sk.qbsw.security.authentication.service.spring;
 
-import java.io.Serializable;
-
 import org.springframework.security.core.Authentication;
 
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -15,7 +13,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.13.4
  * @since 1.13.4
  */
-public interface ISpringAuthenticationService extends Serializable
+public interface SpringAuthenticationService
 {
 	/**
 	 * Authenticates the user.

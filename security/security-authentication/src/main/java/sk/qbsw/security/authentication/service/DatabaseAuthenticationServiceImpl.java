@@ -38,14 +38,14 @@ import sk.qbsw.security.core.service.signature.IPasswordDigester;
  * @since 1.0.0
  */
 @Service (value = "cLoginService")
-public class CDatabaseAuthenticationService extends AService implements IAuthenticationService
+public class DatabaseAuthenticationServiceImpl extends AService implements IAuthenticationService
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** LOGGER for authentication messages logging. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CDatabaseAuthenticationService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseAuthenticationServiceImpl.class);
 
 	/** The user dao. */
 	@Autowired

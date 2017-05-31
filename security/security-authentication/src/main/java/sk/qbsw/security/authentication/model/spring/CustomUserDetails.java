@@ -19,7 +19,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.13.1
  * @since 1.6.0
  */
-public class CUserDetails implements UserDetails
+public class CustomUserDetails implements UserDetails
 {
 
 	/** The Constant serialVersionUID. */
