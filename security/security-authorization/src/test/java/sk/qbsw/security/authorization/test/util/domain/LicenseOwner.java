@@ -12,7 +12,7 @@ import sk.qbsw.security.core.model.domain.CLicense;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 
 /**
- * The free licence.
+ * The licence owner.
  *
  * @author Lukas Podmajersky
  * @version 1.0.0
@@ -20,17 +20,17 @@ import sk.qbsw.security.core.model.jmx.CLicensingRules;
  */
 @SuppressWarnings("serial")
 @Entity
-@DiscriminatorValue ("free")
-public class CLicenseFree extends CLicense<CLicensingRules>
+@DiscriminatorValue ("owner")
+public class LicenseOwner extends CLicense<CLicensingRules>
 {
+
 	/**
 	 * Instantiates a new c license free.
 	 */
-	public CLicenseFree ()
+	public LicenseOwner ()
 	{
-		setType("free");
+		setType("owner");
 		setKey("");
-		setPrice(BigDecimal.ZERO);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class CLicenseFree extends CLicense<CLicensingRules>
 	@Override
 	public Integer getPriority ()
 	{
-		return 1;
+		return Integer.MAX_VALUE;
 	}
 
 	/**
@@ -51,10 +51,9 @@ public class CLicenseFree extends CLicense<CLicensingRules>
 	 * @return true, if successful
 	 * @see sk.qbsw.security.core.core.model.domain.CLicense#validateLicense()
 	 */
-	@Override
 	public boolean validateLicense ()
 	{
-		return isValidForActualDate();
+		return true;
 	}
 
 	/**
@@ -68,7 +67,7 @@ public class CLicenseFree extends CLicense<CLicensingRules>
 	@Override
 	public Integer restrictExport (CLicensingRules rules)
 	{
-		return rules.getRestrictedExport();
+		return UNLIMITED;
 	}
 
 	/**
@@ -96,7 +95,7 @@ public class CLicenseFree extends CLicense<CLicensingRules>
 	@Override
 	public Integer restrictQuestions (CLicensingRules rules)
 	{
-		return rules.getRestrictedQuestions();
+		return UNLIMITED;
 	}
 
 	/**
@@ -108,7 +107,7 @@ public class CLicenseFree extends CLicense<CLicensingRules>
 	@Override
 	public boolean restrictAdvancedFunctionality ()
 	{
-		return false;
+		return true;
 	}
 
 	/**
@@ -117,7 +116,7 @@ public class CLicenseFree extends CLicense<CLicensingRules>
 	@Override
 	public void recalculateLicensePrice (Double dayPrice)
 	{
-		setPrice(new BigDecimal(0d));
+		setPrice(new BigDecimal(0d) );
 	}
 
 	/**
@@ -129,6 +128,7 @@ public class CLicenseFree extends CLicense<CLicensingRules>
 	@Override
 	public boolean contactToGetPrice ()
 	{
-		return false;
+		return true;
 	}
+
 }

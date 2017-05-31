@@ -29,7 +29,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @since 1.6.0
  */
 @Service (value = "authorizationService")
-public class CAuthorizationService extends AService implements IAuthorizationService
+public class AuthorizationServiceImpl extends AService implements AuthorizationService
 {
 
 	/** The Constant serialVersionUID. */
@@ -38,7 +38,7 @@ public class CAuthorizationService extends AService implements IAuthorizationSer
 	/**
 	 * LOGGER
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CAuthorizationService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
 	/** The role dao. */
 	@Autowired

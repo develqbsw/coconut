@@ -12,9 +12,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authorization.service.IAuthorizationService;
-import sk.qbsw.security.authorization.test.util.CAuthorizationTestProvider;
-import sk.qbsw.security.authorization.test.util.CDataGenerator;
+import sk.qbsw.security.authorization.service.AuthorizationService;
+import sk.qbsw.security.authorization.test.util.AuthorizationTestProvider;
+import sk.qbsw.security.authorization.test.util.DataGenerator;
 
 /**
  * Checks Authorization service for database.
@@ -26,20 +26,20 @@ import sk.qbsw.security.authorization.test.util.CDataGenerator;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
 @Rollback (true)
-public class CDatabaseAuthorizationTestCase
+public class DatabaseAuthorizationTestCase
 {
 	/** The database data generator. */
 	@Autowired
-	private CDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	/** The authorization service. */
 	@Autowired
 	@Qualifier ("authorizationService")
-	private IAuthorizationService authorizationService;
+	private AuthorizationService authorizationService;
 
 	/** The authorization test provider. */
 	@Autowired
-	private CAuthorizationTestProvider authorizationTestProvider;
+	private AuthorizationTestProvider authorizationTestProvider;
 
 	/**
 	 * Test initialization.

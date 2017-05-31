@@ -7,13 +7,13 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.model.domain.CRole;
 
 /**
- * The Interface IAuthorizationService.
+ * The Interface AuthorizationService.
  * 
  * @author Dalibor Rak
  * @version 1.6.0
  * @since 1.6.0
  */
-public interface IAuthorizationService extends Serializable
+public interface AuthorizationService extends Serializable
 {
 
 	/**

@@ -6,7 +6,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import sk.qbsw.security.authorization.service.IAuthorizationService;
+import sk.qbsw.security.authorization.service.AuthorizationService;
 import sk.qbsw.security.core.model.domain.CRole;
 
 public class CRoleLoadableModel extends LoadableDetachableModel<CRole>
@@ -18,7 +18,7 @@ public class CRoleLoadableModel extends LoadableDetachableModel<CRole>
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private IAuthorizationService securityService;
+	private AuthorizationService securityService;
 
 	private String roleCode;
 
