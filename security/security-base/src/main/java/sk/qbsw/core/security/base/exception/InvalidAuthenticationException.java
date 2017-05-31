@@ -11,14 +11,14 @@ import sk.qbsw.core.base.exception.CSecurityException;
  * @since 1.12.2
  */
 @SuppressWarnings ({"serial"})
-public class CInvalidAuthenticationException extends CSecurityException
+public class InvalidAuthenticationException extends CSecurityException
 {
 	/**
 	 * Instantiates a new c invalid authentication exception.
 	 *
 	 * @param message the message
 	 */
-	public CInvalidAuthenticationException (String message)
+	public InvalidAuthenticationException (String message)
 	{
 		super(message);
 	}

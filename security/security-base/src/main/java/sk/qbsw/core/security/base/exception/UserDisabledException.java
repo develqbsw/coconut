@@ -3,10 +3,10 @@ package sk.qbsw.core.security.base.exception;
 import sk.qbsw.core.base.exception.CSecurityException;
 
 @SuppressWarnings ("serial")
-public class CUserDisabledException extends CSecurityException
+public class UserDisabledException extends CSecurityException
 {
 
-	public CUserDisabledException (String message)
+	public UserDisabledException (String message)
 	{
 		super(message);
 	}

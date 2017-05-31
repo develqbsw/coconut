@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
+import sk.qbsw.core.security.base.exception.InvalidAuthenticationException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.test.util.DataGenerator;
@@ -289,7 +289,7 @@ public class DatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
-	@Test (expected = CInvalidAuthenticationException.class)
+	@Test (expected = InvalidAuthenticationException.class)
 	@Transactional (transactionManager = "transactionManager")
 	public void testLoginInvalidFromAuthParam () throws CSecurityException
 	{
@@ -303,7 +303,7 @@ public class DatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
-	@Test (expected = CInvalidAuthenticationException.class)
+	@Test (expected = InvalidAuthenticationException.class)
 	@Transactional (transactionManager = "transactionManager")
 	public void testLoginInvalidToAuthParam () throws CSecurityException
 	{
@@ -317,7 +317,7 @@ public class DatabaseAuthenticationTestCase
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
-	@Test (expected = CInvalidAuthenticationException.class)
+	@Test (expected = InvalidAuthenticationException.class)
 	@Transactional (transactionManager = "transactionManager")
 	public void testLoginInvalidFromAndToAuthParam () throws CSecurityException
 	{

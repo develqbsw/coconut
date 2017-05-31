@@ -9,14 +9,14 @@ package sk.qbsw.core.security.base.exception;
  * @since 1.12.2
  */
 @SuppressWarnings ({"serial", "deprecation"})
-public class CInvalidPasswordException extends CWrongPasswordException
+public class InvalidPasswordException extends WrongPasswordException
 {
 	/**
 	 * Instantiates a new invalid password exception.
 	 *
 	 * @param message the message
 	 */
-	public CInvalidPasswordException (String message)
+	public InvalidPasswordException (String message)
 	{
 		super(message);
 	}

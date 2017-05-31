@@ -14,7 +14,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.security.base.exception.CUserDisabledException;
+import sk.qbsw.core.security.base.exception.UserDisabledException;
 import sk.qbsw.core.testing.mock.IMockHelper;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
@@ -200,7 +200,7 @@ public class LdapAuthenticationTestCase
 	 * Test login enabled user in disabled organization.
 	 * @throws Exception 
 	 */
-	@Test (expected = CUserDisabledException.class)
+	@Test (expected = UserDisabledException.class)
 	@Transactional (transactionManager = "transactionManager")
 	public void testLoginEnabledUserDisabledOrganization () throws Exception
 	{
@@ -213,7 +213,7 @@ public class LdapAuthenticationTestCase
 	 * Test login disabled user in disabled organization.
 	 * @throws Exception 
 	 */
-	@Test (expected = CUserDisabledException.class)
+	@Test (expected = UserDisabledException.class)
 	@Transactional (transactionManager = "transactionManager")
 	public void testLoginDisabledUserDisabledOrganization () throws Exception
 	{
@@ -226,7 +226,7 @@ public class LdapAuthenticationTestCase
 	 * Test login disabled user in enabled organization.
 	 * @throws Exception 
 	 */
-	@Test (expected = CUserDisabledException.class)
+	@Test (expected = UserDisabledException.class)
 	@Transactional (transactionManager = "transactionManager")
 	public void testLoginDisabledUserEnabledOrganization () throws Exception
 	{

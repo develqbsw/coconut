@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.base.exception.CInvalidUserException;
+import sk.qbsw.core.security.base.exception.InvalidUserException;
 import sk.qbsw.security.core.dao.IRoleDao;
 import sk.qbsw.security.core.dao.IUnitDao;
 import sk.qbsw.security.core.dao.IUserDao;
@@ -87,7 +87,7 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 		catch (NoResultException nre)
 		{
 			LOGGER.error("User not found", nre);
-			throw new CInvalidUserException("User with login " + login + " not recognised");
+			throw new InvalidUserException("User with login " + login + " not recognised");
 		}
 	}
 
@@ -155,7 +155,7 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 
 		if (user == null)
 		{
-			throw new CInvalidUserException("User with login " + login + " not recognised");
+			throw new InvalidUserException("User with login " + login + " not recognised");
 		}
 		return user;
 

@@ -13,10 +13,10 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.base.exception.CInvalidAuthenticationException;
-import sk.qbsw.core.security.base.exception.CInvalidPasswordException;
-import sk.qbsw.core.security.base.exception.CInvalidUserException;
-import sk.qbsw.core.security.base.exception.CUserDisabledException;
+import sk.qbsw.core.security.base.exception.InvalidAuthenticationException;
+import sk.qbsw.core.security.base.exception.InvalidPasswordException;
+import sk.qbsw.core.security.base.exception.InvalidUserException;
+import sk.qbsw.core.security.base.exception.UserDisabledException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
 import sk.qbsw.security.core.dao.IUnitDao;
@@ -68,13 +68,13 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 *
 	 * @param authenticationParams the authentication parameters of user
 	 * @param passwordToCheck the password to check
-	 * @throws CInvalidPasswordException the c wrong password exception
+	 * @throws InvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws CInvalidPasswordException
+	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws InvalidPasswordException
 	{
 		if (authenticationParams.getPassword() == null || !authenticationParams.getPassword().equals(passwordToCheck))
 		{
-			throw new CInvalidPasswordException("Plain password doesn't match");
+			throw new InvalidPasswordException("Plain password doesn't match");
 		}
 	}
 
@@ -84,13 +84,13 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @param authenticationParams the authentication parameters of user
 	 * @param login the login
 	 * @param passwordToCheck the password to check
-	 * @throws CInvalidPasswordException the c wrong password exception
+	 * @throws InvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String login, String passwordToCheck) throws CInvalidPasswordException
+	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String login, String passwordToCheck) throws InvalidPasswordException
 	{
 		if (authenticationParams.getPasswordDigest() == null || !digester.checkPassword(login, passwordToCheck, authenticationParams.getPasswordDigest()))
 		{
-			throw new CInvalidPasswordException("Password dogest doesn't match");
+			throw new InvalidPasswordException("Password dogest doesn't match");
 		}
 	}
 
@@ -175,12 +175,12 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @param password the password
 	 * @param unit the unit - the unit is optional parameter
 	 * @return the user
-	 * @throws CUserDisabledException the user is disabled
-	 * @throws CInvalidAuthenticationException the user has invalid authentication params
-	 * @throws CInvalidUserException the user with given login not found
-	 * @throws CInvalidPasswordException the invalid password
+	 * @throws UserDisabledException the user is disabled
+	 * @throws InvalidAuthenticationException the user has invalid authentication params
+	 * @throws InvalidUserException the user with given login not found
+	 * @throws InvalidPasswordException the invalid password
 	 */
-	private CUser loginWithUnit (String login, String password, CUnit unit) throws CUserDisabledException, CInvalidAuthenticationException, CInvalidUserException, CInvalidPasswordException
+	private CUser loginWithUnit (String login, String password, CUnit unit) throws UserDisabledException, InvalidAuthenticationException, InvalidUserException, InvalidPasswordException
 	{
 		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
 
@@ -198,7 +198,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 
 		if (user == null)
 		{
-			throw new CInvalidUserException("User not recognised");
+			throw new InvalidUserException("User not recognised");
 		}
 		else
 		{
@@ -212,7 +212,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 				LOGGER.debug("The authentication params of user with login {} are invalid", user.getLogin());
 				LOGGER.error("Valid authentication params not found", ex);
 
-				throw new CInvalidAuthenticationException("Authentication params are invalid");
+				throw new InvalidAuthenticationException("Authentication params are invalid");
 			}
 
 			EAuthenticationType authenticationType = userAuthParams.getAuthenticationType();
@@ -225,13 +225,13 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 					authenticateByPassword(userAuthParams, password);
 					break;
 				default:
-					throw new CInvalidPasswordException("Authentication method wrong");
+					throw new InvalidPasswordException("Authentication method wrong");
 			}
 
 			// check if user is disabled
 			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
 			{
-				throw new CUserDisabledException("");
+				throw new UserDisabledException("");
 			}
 		}
 

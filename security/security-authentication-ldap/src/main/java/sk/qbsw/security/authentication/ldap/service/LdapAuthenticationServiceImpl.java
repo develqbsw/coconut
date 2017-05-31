@@ -15,9 +15,9 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.base.exception.CInvalidPasswordException;
-import sk.qbsw.core.security.base.exception.CInvalidUserException;
-import sk.qbsw.core.security.base.exception.CUserDisabledException;
+import sk.qbsw.core.security.base.exception.InvalidPasswordException;
+import sk.qbsw.core.security.base.exception.InvalidUserException;
+import sk.qbsw.core.security.base.exception.UserDisabledException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LDAPInjectionProtector;
@@ -177,7 +177,7 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 			// check if user is disabled
 			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
 			{
-				throw new CUserDisabledException("");
+				throw new UserDisabledException("");
 			}
 
 			// authenticate user in ldap
@@ -187,12 +187,12 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 			}
 			else
 			{
-				throw new CInvalidPasswordException("Password in ldap for user " + login + " doesn't match");
+				throw new InvalidPasswordException("Password in ldap for user " + login + " doesn't match");
 			}
 		}
 		else
 		{
-			throw new CInvalidUserException("The user with login " + login + " not found");
+			throw new InvalidUserException("The user with login " + login + " not found");
 		}
 	}
 

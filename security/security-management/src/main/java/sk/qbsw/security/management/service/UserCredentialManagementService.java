@@ -3,7 +3,7 @@ package sk.qbsw.security.management.service;
 import java.time.OffsetDateTime;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.security.base.exception.CPasswordFormatException;
+import sk.qbsw.core.security.base.exception.PasswordFormatException;
 
 /**
  * The Interface UserCredentialManagementService.
@@ -70,7 +70,7 @@ public interface UserCredentialManagementService
 	 * Validate password format.
 	 *
 	 * @param password the password
-	 * @throws CPasswordFormatException the password format exception
+	 * @throws PasswordFormatException the password format exception
 	 */
-	public void validatePassword (String password) throws CPasswordFormatException;
+	public void validatePassword (String password) throws PasswordFormatException;
 }

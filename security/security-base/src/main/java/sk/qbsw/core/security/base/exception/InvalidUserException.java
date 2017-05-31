@@ -10,14 +10,14 @@ import sk.qbsw.core.base.exception.CSecurityException;
  * @since 1.7.0
  */
 @SuppressWarnings ("serial")
-public class CInvalidUserException extends CSecurityException
+public class InvalidUserException extends CSecurityException
 {
 	/**
 	 * Instantiates a new invalid user exception.
 	 *
 	 * @param message the message
 	 */
-	public CInvalidUserException (String message)
+	public InvalidUserException (String message)
 	{
 		super(message);
 	}

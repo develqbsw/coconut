@@ -17,7 +17,7 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.base.exception.CPasswordFormatException;
+import sk.qbsw.core.security.base.exception.PasswordFormatException;
 import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CAuthenticationParams;
@@ -117,7 +117,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	 * @see sk.qbsw.security.core.core.management.service.IUserCredentialManagementService#validatePassword(java.lang.String)
 	 */
 	@Override
-	public void validatePassword (@CNotLogged @CNotAuditLogged String password) throws CPasswordFormatException
+	public void validatePassword (@CNotLogged @CNotAuditLogged String password) throws PasswordFormatException
 	{
 		if (authenticationConfigurator.getPasswordPattern() != null)
 		{
@@ -125,7 +125,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 
 			if (matcher.matches() == false)
 			{
-				throw new CPasswordFormatException("Incorrect password format");
+				throw new PasswordFormatException("Incorrect password format");
 			}
 		}
 	}
