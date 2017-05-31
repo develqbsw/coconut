@@ -21,13 +21,13 @@ import sk.qbsw.security.core.model.jmx.CLicensingRules;
 @SuppressWarnings ("serial")
 @Entity
 @DiscriminatorValue ("owner")
-public class CLicenseOwner extends CLicense<CLicensingRules>
+public class LicenseOwner extends CLicense<CLicensingRules>
 {
 
 	/**
 	 * Instantiates a new c license free.
 	 */
-	public CLicenseOwner ()
+	public LicenseOwner ()
 	{
 		setType("owner");
 		setKey("");

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
-import sk.qbsw.security.authentication.ldap.configuration.ILdapAuthenticationConfigurator;
-import sk.qbsw.security.authentication.ldap.test.util.CDataGenerator;
+import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
+import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
@@ -19,22 +19,22 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.11.4
  * @since 1.7.2
  */
-class CLdapLoginTask extends CLoginTask implements Runnable
+class LdapLoginTask extends LoginTask implements Runnable
 {
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapLoginTask.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LdapLoginTask.class);
 
 	/** The login 1. */
-	private static final String FIRST_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	private static final String FIRST_LOGIN = DataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The login 2. */
-	private static final String SECOND_LOGIN = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
+	private static final String SECOND_LOGIN = DataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
 
 	/** The password 1. */
-	private static final String FIRST_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
+	private static final String FIRST_PASSWORD = DataGenerator.USER_WITH_DEFAULT_UNIT_CODE;
 
 	/** The password 2. */
-	private static final String SECOND_PASSWORD = CDataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
+	private static final String SECOND_PASSWORD = DataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP;
 
 	/** The authentication service. */
 	@Autowired
@@ -43,7 +43,7 @@ class CLdapLoginTask extends CLoginTask implements Runnable
 
 	/** The ldap authentication configurator. */
 	@Autowired
-	private ILdapAuthenticationConfigurator ldapAuthenticationConfigurator;
+	private LdapAuthenticationConfigurator ldapAuthenticationConfigurator;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.code.security.test.performance.task.CLoginTask#authenticate()

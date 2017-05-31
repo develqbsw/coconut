@@ -9,13 +9,13 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  * @version 1.13.0
  * @since 1.10.6
  */
-class CLdapConnection
+class LdapConnectionWrapper
 {
 	/** The connection. */
 	private LdapConnection connection;
 
 	/** The type. */
-	private ELdapConnectionType type;
+	private LdapConnectionType type;
 
 	/**
 	 * Gets the connection.
@@ -42,7 +42,7 @@ class CLdapConnection
 	 *
 	 * @return the type
 	 */
-	public ELdapConnectionType getType ()
+	public LdapConnectionType getType ()
 	{
 		return type;
 	}
@@ -52,7 +52,7 @@ class CLdapConnection
 	 *
 	 * @param type the new type
 	 */
-	public void setType (ELdapConnectionType type)
+	public void setType (LdapConnectionType type)
 	{
 		this.type = type;
 	}

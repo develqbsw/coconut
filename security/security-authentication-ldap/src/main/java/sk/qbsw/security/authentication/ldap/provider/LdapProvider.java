@@ -9,7 +9,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.authentication.ldap.provider.CLdapProvider.EModificationOperation;
+import sk.qbsw.security.authentication.ldap.provider.LdapProviderImpl.EModificationOperation;
 
 /**
  * The ldap provider interface.
@@ -19,7 +19,7 @@ import sk.qbsw.security.authentication.ldap.provider.CLdapProvider.EModification
  * @version 1.11.10
  * @since 1.11.10
  */
-public interface ILdapProvider
+public interface LdapProvider
 {
 	/**
 	 * Gets the single result from LDAP server.

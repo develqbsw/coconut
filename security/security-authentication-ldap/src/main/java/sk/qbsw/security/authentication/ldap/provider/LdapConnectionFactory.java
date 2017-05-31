@@ -9,7 +9,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  * @version 1.13.0
  * @since 1.13.0
  */
-interface ILdapConnectionFactory
+interface LdapConnectionFactory
 {
 	/**
 	 * Initialize the factory.
@@ -27,7 +27,7 @@ interface ILdapConnectionFactory
 	 * @return the connection
 	 * @throws LdapException the ldap exception
 	 */
-	CLdapConnection getConnection () throws LdapException;
+	LdapConnectionWrapper getConnection () throws LdapException;
 
 	/**
 	 * Release the connection.
@@ -35,7 +35,7 @@ interface ILdapConnectionFactory
 	 * @param connection the connection
 	 * @throws LdapException the ldap exception
 	 */
-	void releaseConnection (CLdapConnection connection) throws LdapException;
+	void releaseConnection (LdapConnectionWrapper connection) throws LdapException;
 
 	/**
 	 * Gets the one time connection.
@@ -43,7 +43,7 @@ interface ILdapConnectionFactory
 	 * @return the one time connection
 	 * @throws LdapException the ldap exception
 	 */
-	CLdapConnection getOneTimeConnection () throws LdapException;
+	LdapConnectionWrapper getOneTimeConnection () throws LdapException;
 
 	/**
 	 * Release one time connection.
@@ -51,5 +51,5 @@ interface ILdapConnectionFactory
 	 * @param connection the connection
 	 * @throws LdapException the ldap exception
 	 */
-	void releaseOneTimeConnection (CLdapConnection connection) throws LdapException;
+	void releaseOneTimeConnection (LdapConnectionWrapper connection) throws LdapException;
 }

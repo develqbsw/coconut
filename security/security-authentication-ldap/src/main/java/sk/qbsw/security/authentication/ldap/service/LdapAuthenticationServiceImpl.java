@@ -19,9 +19,9 @@ import sk.qbsw.core.security.base.exception.CInvalidPasswordException;
 import sk.qbsw.core.security.base.exception.CInvalidUserException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
-import sk.qbsw.security.authentication.ldap.configuration.ILdapAuthenticationConfigurator;
-import sk.qbsw.security.authentication.ldap.provider.CLDAPInjectionProtector;
-import sk.qbsw.security.authentication.ldap.provider.ILdapProvider;
+import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
+import sk.qbsw.security.authentication.ldap.provider.LDAPInjectionProtector;
+import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
 import sk.qbsw.security.core.dao.IUnitDao;
 import sk.qbsw.security.core.dao.IUserDao;
 import sk.qbsw.security.core.model.domain.CRole;
@@ -37,18 +37,18 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @since 1.6.0
  */
 @Service (value = "ldapAuthenticationService")
-public class CLdapAuthenticationService extends AService implements IAuthenticationService
+public class LdapAuthenticationServiceImpl extends AService implements IAuthenticationService
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapAuthenticationService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LdapAuthenticationServiceImpl.class);
 
 	/** The data. */
 	@Autowired
-	private transient ILdapAuthenticationConfigurator data;
+	private transient LdapAuthenticationConfigurator data;
 
 	/** The unit dao. */
 	@Autowired
@@ -60,7 +60,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 
 	/** The ldap provider. */
 	@Autowired
-	private transient ILdapProvider ldapProvider;
+	private transient LdapProvider ldapProvider;
 
 	/*
 	 * (non-Javadoc)
@@ -215,7 +215,7 @@ public class CLdapAuthenticationService extends AService implements IAuthenticat
 			{
 				try
 				{
-					String escapedLogin = CLDAPInjectionProtector.escapeDN(login);
+					String escapedLogin = LDAPInjectionProtector.escapeDN(login);
 					LOGGER.debug("LDAP escaped login:" + escapedLogin);
 
 					// authenticate

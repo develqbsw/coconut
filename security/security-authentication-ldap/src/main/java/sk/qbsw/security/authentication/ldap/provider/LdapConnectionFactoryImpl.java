@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.authentication.ldap.configuration.ILdapAuthenticationConfigurator;
+import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 
 /**
  * The factory for LDAP connection.
@@ -22,14 +22,14 @@ import sk.qbsw.security.authentication.ldap.configuration.ILdapAuthenticationCon
  * @since 1.13.0
  */
 @Component ("ldapConnectionFactory")
-class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
+class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactory
 {
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapConnectionFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LdapConnectionFactoryImpl.class);
 
 	/** The configuration data. */
 	@Autowired
-	private ILdapAuthenticationConfigurator configurationData;
+	private LdapAuthenticationConfigurator configurationData;
 
 	/** The primary server connection pool. */
 	private LdapConnectionPool primaryServerConnectionPool = null;
@@ -95,7 +95,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#getConnection()
 	 */
 	@Override
-	public CLdapConnection getConnection () throws LdapException
+	public LdapConnectionWrapper getConnection () throws LdapException
 	{
 		LdapConnection connection = null;
 
@@ -115,9 +115,9 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		{
 			LOGGER.debug("Primary ldap connection borrowed.");
 
-			CLdapConnection connectionModel = new CLdapConnection();
+			LdapConnectionWrapper connectionModel = new LdapConnectionWrapper();
 			connectionModel.setConnection(connection);
-			connectionModel.setType(ELdapConnectionType.PRIMARY);
+			connectionModel.setType(LdapConnectionType.PRIMARY);
 
 			return connectionModel;
 		}
@@ -130,9 +130,9 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 			connection = secondaryServerConnectionPool.getConnection();
 			LOGGER.debug("Get connection - the number of active connections in secondary pool is {}", secondaryServerConnectionPool.getNumActive());
 
-			CLdapConnection connectionModel = new CLdapConnection();
+			LdapConnectionWrapper connectionModel = new LdapConnectionWrapper();
 			connectionModel.setConnection(connection);
-			connectionModel.setType(ELdapConnectionType.SECONDARY);
+			connectionModel.setType(LdapConnectionType.SECONDARY);
 
 			return connectionModel;
 		}
@@ -142,9 +142,9 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#releaseConnection(sk.qbsw.core.security.service.ldap.CLdapConnectionModel)
 	 */
 	@Override
-	public void releaseConnection (CLdapConnection connection) throws LdapException
+	public void releaseConnection (LdapConnectionWrapper connection) throws LdapException
 	{
-		if (connection != null && connection.getType().equals(ELdapConnectionType.PRIMARY))
+		if (connection != null && connection.getType().equals(LdapConnectionType.PRIMARY))
 		{
 			primaryServerConnectionPool.releaseConnection(connection.getConnection());
 			connection.setConnection(null);
@@ -152,7 +152,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 
 			LOGGER.debug("Primary ldap connection released.");
 		}
-		else if (connection != null && connection.getType().equals(ELdapConnectionType.SECONDARY))
+		else if (connection != null && connection.getType().equals(LdapConnectionType.SECONDARY))
 		{
 			secondaryServerConnectionPool.releaseConnection(connection.getConnection());
 			connection.setConnection(null);
@@ -166,7 +166,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#getOneTimeConnection()
 	 */
 	@Override
-	public CLdapConnection getOneTimeConnection () throws LdapException
+	public LdapConnectionWrapper getOneTimeConnection () throws LdapException
 	{
 		LdapConnection connection = null;
 		LdapConnection primaryServerPoolConnection = null;
@@ -205,9 +205,9 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 		}
 
 		//create connection model
-		CLdapConnection connectionModel = new CLdapConnection();
+		LdapConnectionWrapper connectionModel = new LdapConnectionWrapper();
 		connectionModel.setConnection(connection);
-		connectionModel.setType(ELdapConnectionType.ONE_TIME);
+		connectionModel.setType(LdapConnectionType.ONE_TIME);
 
 		return connectionModel;
 	}
@@ -216,7 +216,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#releaseOneTimeConnection(sk.qbsw.core.security.service.ldap.CLdapConnectionModel)
 	 */
 	@Override
-	public void releaseOneTimeConnection (CLdapConnection connection) throws LdapException
+	public void releaseOneTimeConnection (LdapConnectionWrapper connection) throws LdapException
 	{
 		try
 		{
@@ -238,7 +238,7 @@ class CLdapConnectionFactory extends AService implements ILdapConnectionFactory
 	}
 
 	/**
-	 * Creates a new CLdapConnection object.
+	 * Creates a new LdapConnectionWrapper object.
 	 *
 	 * @param serverName the server name
 	 * @param serverPort the server port

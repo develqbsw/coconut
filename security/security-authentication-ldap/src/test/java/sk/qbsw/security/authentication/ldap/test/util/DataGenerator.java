@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.authentication.ldap.test.util.domain.CLicenseFree;
+import sk.qbsw.security.authentication.ldap.test.util.domain.LicenseFree;
 import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
 import sk.qbsw.security.core.dao.IGroupDao;
 import sk.qbsw.security.core.dao.ILicenseDao;
@@ -43,7 +43,7 @@ import sk.qbsw.security.management.service.UserManagementService;
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
-public class CDataGenerator
+public class DataGenerator
 {
 	/** The role dao. */
 	@Autowired
@@ -606,7 +606,7 @@ public class CDataGenerator
 	 */
 	public CLicense<CLicensingRules> createLicense (String key, Boolean flagPayed, BigDecimal price, String taxId, Calendar validFrom, Calendar validTo)
 	{
-		CLicense<CLicensingRules> license = new CLicenseFree();
+		CLicense<CLicensingRules> license = new LicenseFree();
 		license.setKey(key);
 		license.setFlagPayed(flagPayed);
 		license.setPrice(price);

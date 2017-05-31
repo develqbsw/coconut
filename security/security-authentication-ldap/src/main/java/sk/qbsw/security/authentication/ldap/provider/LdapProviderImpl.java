@@ -36,14 +36,14 @@ import sk.qbsw.core.base.service.AService;
  * @since 1.6.0
  */
 @Component ("ldapProvider")
-public class CLdapProvider extends AService implements ILdapProvider
+public class LdapProviderImpl extends AService implements LdapProvider
 {
 	/** The logger. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLdapProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LdapProviderImpl.class);
 
 	/** The ldap connection factory. */
 	@Autowired
-	private ILdapConnectionFactory ldapConnectionFactory;
+	private LdapConnectionFactory ldapConnectionFactory;
 
 	/**
 	 * Initialize the connections to LDAP server. Must be called before every connect to server.
@@ -109,7 +109,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 
 		Set<Entry> entries = new HashSet<>();
 		EntryCursor cursor = null;
-		CLdapConnection connection = null;
+		LdapConnectionWrapper connection = null;
 
 		try
 		{
@@ -151,7 +151,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		modification.setAttribute(attribute);
 		modification.setOperation(modificationOperation.getOperation());
 
-		CLdapConnection connection = null;
+		LdapConnectionWrapper connection = null;
 		try
 		{
 			//modify
@@ -182,7 +182,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 			entry.add(attribute.getKey(), attribute.getValue());
 		}
 
-		CLdapConnection connection = null;
+		LdapConnectionWrapper connection = null;
 		try
 		{
 			//add
@@ -204,7 +204,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		//init the connection
 		init();
 
-		CLdapConnection connection = null;
+		LdapConnectionWrapper connection = null;
 		try
 		{
 			//remove
@@ -226,7 +226,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 		//init the connection
 		init();
 
-		CLdapConnection connection = null;
+		LdapConnectionWrapper connection = null;
 		try
 		{
 			//exists
@@ -247,7 +247,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 	{
 		//init the connection
 		init();
-		CLdapConnection connection = null;
+		LdapConnectionWrapper connection = null;
 
 		try
 		{
@@ -279,7 +279,7 @@ public class CLdapProvider extends AService implements ILdapProvider
 	@Override
 	public boolean isConnected ()
 	{
-		CLdapConnection connection = null;
+		LdapConnectionWrapper connection = null;
 
 		try
 		{

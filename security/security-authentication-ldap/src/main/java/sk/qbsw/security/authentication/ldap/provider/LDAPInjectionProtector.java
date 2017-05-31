@@ -7,7 +7,7 @@ package sk.qbsw.security.authentication.ldap.provider;
  * @version 1.12.3
  * @since 1.12.3
  */
-public class CLDAPInjectionProtector {
+public class LDAPInjectionProtector {
 
 	/**
 	 * Escape dn.

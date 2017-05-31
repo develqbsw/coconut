@@ -12,13 +12,13 @@
 	<context:component-scan base-package="sk.qbsw.security" />
 	<context:component-scan base-package="sk.qbsw.core.testing.mock" />
 
-	<bean id="authenticationService" class="sk.qbsw.security.authentication.ldap.service.CLdapAuthenticationService" />
+	<bean id="authenticationService" class="sk.qbsw.security.authentication.ldap.service.LdapAuthenticationServiceImpl" />
 	
-	<bean class="sk.qbsw.security.authentication.ldap.test.performance.task.CLdapLoginTask" id="ldapLoginTask" scope="prototype"/>
+	<bean class="sk.qbsw.security.authentication.ldap.test.performance.task.LdapLoginTask" id="ldapLoginTask" scope="prototype"/>
 	
 	<!-- Mocks object for testing -->
 	<bean id="ldapProviderMock" class="sk.qbsw.core.testing.mock.CMockitoFactoryBean">
 		<constructor-arg name="classToBeMocked"
-			value="sk.qbsw.security.authentication.ldap.provider.CLdapProvider" />
+			value="sk.qbsw.security.authentication.ldap.provider.LdapProviderImpl" />
 	</bean>
 </beans>

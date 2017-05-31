@@ -12,7 +12,7 @@ import sk.qbsw.security.core.model.domain.CUser;
  * @version 1.7.2
  * @since 1.7.2
  */
-public abstract class CLoginTask implements Runnable
+public abstract class LoginTask implements Runnable
 {
 	/** The name of task. */
 	private String name;

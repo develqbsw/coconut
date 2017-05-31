@@ -1,7 +1,7 @@
 package sk.qbsw.security.authentication.ldap.configuration;
 
 /**
- * The Interface ILdapAuthenticationConfigurator.
+ * The Interface LdapAuthenticationConfigurator.
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
@@ -9,7 +9,7 @@ package sk.qbsw.security.authentication.ldap.configuration;
  * @version 1.13.0
  * @since 1.6.0
  */
-public interface ILdapAuthenticationConfigurator
+public interface LdapAuthenticationConfigurator
 {
 	/**
 	 * Gets the server name.

@@ -7,7 +7,7 @@ package sk.qbsw.security.authentication.ldap.provider;
  * @version 1.13.0
  * @since 1.13.0
  */
-enum ELdapConnectionType
+enum LdapConnectionType
 {
 	/** The primary connection. */
 	PRIMARY,

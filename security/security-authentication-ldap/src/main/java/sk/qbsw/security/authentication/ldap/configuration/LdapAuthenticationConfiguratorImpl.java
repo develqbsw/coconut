@@ -10,7 +10,7 @@ import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 
 /**
- * The Class CLdapAuthenticationConfigurator.
+ * The Class LdapAuthenticationConfiguratorImpl.
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
@@ -20,7 +20,7 @@ import sk.qbsw.core.base.service.AService;
  */
 @Service ("ldapAuthenticationConfigurator")
 @ManagedResource (objectName = "sk.qbsw.core.security:name=ldapAuthenticationConfigurator", description = "LDAP authentication details")
-public class CLdapAuthenticationConfigurator extends AService implements ILdapAuthenticationConfigurator
+public class LdapAuthenticationConfiguratorImpl extends AService implements LdapAuthenticationConfigurator
 {
 	/** The ldap server name. */
 	private String serverName;
@@ -70,7 +70,7 @@ public class CLdapAuthenticationConfigurator extends AService implements ILdapAu
 	/**
 	 * Instantiates a new c ldap authentication configurator.
 	 */
-	public CLdapAuthenticationConfigurator ()
+	public LdapAuthenticationConfiguratorImpl ()
 	{
 	}
 

@@ -17,10 +17,10 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.CUserDisabledException;
 import sk.qbsw.core.testing.mock.IMockHelper;
 import sk.qbsw.security.authentication.base.service.IAuthenticationService;
-import sk.qbsw.security.authentication.ldap.configuration.ILdapAuthenticationConfigurator;
-import sk.qbsw.security.authentication.ldap.provider.ILdapProvider;
-import sk.qbsw.security.authentication.ldap.test.util.CAuthenticationTestProvider;
-import sk.qbsw.security.authentication.ldap.test.util.CDataGenerator;
+import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
+import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
+import sk.qbsw.security.authentication.ldap.test.util.AuthenticationTestProvider;
+import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 
 /**
@@ -34,11 +34,11 @@ import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-ldap-context.xml"})
 @Rollback (true)
-public class CLdapAuthenticationTestCase
+public class LdapAuthenticationTestCase
 {
 	/** The database data generator. */
 	@Autowired
-	private CDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	/** The authentication service. */
 	@Autowired
@@ -47,16 +47,16 @@ public class CLdapAuthenticationTestCase
 
 	/** The authentication test provider. */
 	@Autowired
-	private CAuthenticationTestProvider authenticationTestProvider;
+	private AuthenticationTestProvider authenticationTestProvider;
 
 	/** The ldap provider. */
 	@Autowired
 	@Qualifier ("ldapProviderMock")
-	private ILdapProvider ldapProvider;
+	private LdapProvider ldapProvider;
 
 	/** The ldap configurator. */
 	@Autowired
-	private ILdapAuthenticationConfigurator ldapConfigurator;
+	private LdapAuthenticationConfigurator ldapConfigurator;
 
 	/** The Authentication Configurator. */
 	@Autowired
