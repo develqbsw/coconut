@@ -1,9 +1,9 @@
 package sk.qbsw.security.core.model.filter;
 
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The user associations filter.
@@ -16,26 +16,26 @@ import sk.qbsw.security.core.model.domain.CUser;
 public class CUserAssociationsFilter
 {
 	/** The organization. */
-	private COrganization organization;
+	private Organization organization;
 
 	/** The enabled. */
 	private Boolean enabled;
 
 	/** The group. */
-	private CGroup group;
+	private Group group;
 
 	/** The role. */
-	private CRole role;
+	private Role role;
 
 	/** The excluded user. */
-	private CUser excludedUser;
+	private User excludedUser;
 
 	/**
 	 * Gets the organization.
 	 *
 	 * @return the organization
 	 */
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return organization;
 	}
@@ -45,7 +45,7 @@ public class CUserAssociationsFilter
 	 *
 	 * @param organization the new organization
 	 */
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}
@@ -75,7 +75,7 @@ public class CUserAssociationsFilter
 	 *
 	 * @return the group
 	 */
-	public CGroup getGroup ()
+	public Group getGroup ()
 	{
 		return group;
 	}
@@ -85,7 +85,7 @@ public class CUserAssociationsFilter
 	 *
 	 * @param group the new group
 	 */
-	public void setGroup (CGroup group)
+	public void setGroup (Group group)
 	{
 		this.group = group;
 	}
@@ -95,7 +95,7 @@ public class CUserAssociationsFilter
 	 *
 	 * @return the role
 	 */
-	public CRole getRole ()
+	public Role getRole ()
 	{
 		return role;
 	}
@@ -105,7 +105,7 @@ public class CUserAssociationsFilter
 	 *
 	 * @param role the new role
 	 */
-	public void setRole (CRole role)
+	public void setRole (Role role)
 	{
 		this.role = role;
 	}
@@ -115,7 +115,7 @@ public class CUserAssociationsFilter
 	 *
 	 * @return the excluded user
 	 */
-	public CUser getExcludedUser ()
+	public User getExcludedUser ()
 	{
 		return excludedUser;
 	}
@@ -125,7 +125,7 @@ public class CUserAssociationsFilter
 	 *
 	 * @param excludedUser the new excluded user
 	 */
-	public void setExcludedUser (CUser excludedUser)
+	public void setExcludedUser (User excludedUser)
 	{
 		this.excludedUser = excludedUser;
 	}

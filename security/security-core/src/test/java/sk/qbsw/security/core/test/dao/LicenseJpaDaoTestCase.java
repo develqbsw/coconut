@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.security.core.dao.LicenseDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.model.domain.CLicense;
-import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.License;
+import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
@@ -53,9 +53,9 @@ public class LicenseJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationDao.findByName(DataGenerator.ORGANIZATION_CODE);
+		List<Organization> organizations = organizationDao.findByName(DataGenerator.ORGANIZATION_CODE);
 
-		List<CLicense<?>> licenses = licenseDao.findByOrganizationId(organizations.get(0).getId());
+		List<License<?>> licenses = licenseDao.findByOrganizationId(organizations.get(0).getId());
 
 		//asserts
 		assertNotNull("No licenses found", licenses);
@@ -71,9 +71,9 @@ public class LicenseJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationDao.findByName(DataGenerator.ORGANIZATION_DISABLED_CODE);
+		List<Organization> organizations = organizationDao.findByName(DataGenerator.ORGANIZATION_DISABLED_CODE);
 
-		List<CLicense<?>> licenses = licenseDao.findByOrganizationId(organizations.get(0).getId());
+		List<License<?>> licenses = licenseDao.findByOrganizationId(organizations.get(0).getId());
 
 		//asserts
 		assertNotNull("No licenses found", licenses);

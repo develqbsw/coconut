@@ -6,10 +6,10 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import sk.qbsw.security.core.model.domain.CGroup;
+import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.management.service.GroupService;
 
-public class CGroupsLoadableModel extends LoadableDetachableModel<List<CGroup>>
+public class CGroupsLoadableModel extends LoadableDetachableModel<List<Group>>
 {
 	/**
 	 * 
@@ -26,9 +26,9 @@ public class CGroupsLoadableModel extends LoadableDetachableModel<List<CGroup>>
 	}
 
 	@Override
-	protected List<CGroup> load ()
+	protected List<Group> load ()
 	{
-		List<CGroup> groups = groupService.getAll();
+		List<Group> groups = groupService.getAll();
 		return groups;
 	}
 }

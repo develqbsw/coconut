@@ -5,9 +5,9 @@ package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.13.0
  * @since 1.0.0
  */
-public interface GroupDao extends IEntityDao<Long, CGroup>
+public interface GroupDao extends IEntityDao<Long, Group>
 {
 	/** The I d_ or g_ admin. */
 	public static Long ID_ORG_ADMIN = 2l;
@@ -35,7 +35,7 @@ public interface GroupDao extends IEntityDao<Long, CGroup>
 	 * @param flagSystem the flag system (mandatory)
 	 * @return the list
 	 */
-	List<CGroup> findByFlagSystem (boolean flagSystem);
+	List<Group> findByFlagSystem (boolean flagSystem);
 
 	/**
 	 * Find groups by code ordered by code asc.
@@ -44,7 +44,7 @@ public interface GroupDao extends IEntityDao<Long, CGroup>
 	 * @return the list
 	 * @deprecated the code is unique, use {@link GroupDao#findOneByCode(String)}
 	 */
-	List<CGroup> findByCode (String code);
+	List<Group> findByCode (String code);
 
 	/**
 	 * Find group by code.
@@ -53,7 +53,7 @@ public interface GroupDao extends IEntityDao<Long, CGroup>
 	 * @return the group with defined code
 	 * @throws CSecurityException the code is missing
 	 */
-	CGroup findOneByCode (String code) throws CSecurityException;
+	Group findOneByCode (String code) throws CSecurityException;
 
 	/**
 	 * Find groups by code and unit - if the unit is null the only group with empty units list is returned. The roles and units for group are fetched.
@@ -64,7 +64,7 @@ public interface GroupDao extends IEntityDao<Long, CGroup>
 	 * @throws CSecurityException the code is missing
 	 * @deprecated the code is unique
 	 */
-	List<CGroup> findByCodeAndUnit (String code, CUnit unit) throws CSecurityException;
+	List<Group> findByCodeAndUnit (String code, Unit unit) throws CSecurityException;
 
 	/**
 	 * Find group by code and unit - if the unit is null the only group with empty units list is returned. The roles and units for group are fetched.
@@ -74,7 +74,7 @@ public interface GroupDao extends IEntityDao<Long, CGroup>
 	 * @return the group
 	 * @throws CSecurityException the code is missing
 	 */
-	CGroup findOneByCodeAndUnit (String code, CUnit unit) throws CSecurityException;
+	Group findOneByCodeAndUnit (String code, Unit unit) throws CSecurityException;
 
 	/**
 	 * Find groups by unit.
@@ -82,7 +82,7 @@ public interface GroupDao extends IEntityDao<Long, CGroup>
 	 * @param unit the unit of group (optional)
 	 * @return the list of groups
 	 */
-	List<CGroup> findByUnit (CUnit unit);
+	List<Group> findByUnit (Unit unit);
 
 	/**
 	 * find groups by unit and user (if not null).
@@ -91,5 +91,5 @@ public interface GroupDao extends IEntityDao<Long, CGroup>
 	 * @param user the user (optional)
 	 * @return the list
 	 */
-	List<CGroup> findByUnitAndUser (CUnit unit, CUser user);
+	List<Group> findByUnitAndUser (Unit unit, User user);
 }

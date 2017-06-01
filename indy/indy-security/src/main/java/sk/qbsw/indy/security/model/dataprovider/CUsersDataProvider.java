@@ -9,12 +9,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.UserManagementService;
 
-public class CUsersDataProvider implements IDataProvider<CUser>
+public class CUsersDataProvider implements IDataProvider<User>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -25,13 +25,13 @@ public class CUsersDataProvider implements IDataProvider<CUser>
 	/**
 	 * Stored data
 	 */
-	private List<CUser> users;
+	private List<User> users;
 
-	private CGroup group;
-	private COrganization organization;
+	private Group group;
+	private Organization organization;
 	private Boolean enabled;
 
-	public CUsersDataProvider (CGroup group, Boolean enabled, COrganization organization)
+	public CUsersDataProvider (Group group, Boolean enabled, Organization organization)
 	{
 		super();
 		Injector.get().inject(this);
@@ -48,15 +48,15 @@ public class CUsersDataProvider implements IDataProvider<CUser>
 	}
 
 	@Override
-	public Iterator<? extends CUser> iterator(long first, long count)
+	public Iterator<? extends User> iterator(long first, long count)
 	{
 		return this.users.iterator();
 	}
 
 	@Override
-	public IModel<CUser> model (CUser request)
+	public IModel<User> model (User request)
 	{
-		return new Model<CUser>(request);
+		return new Model<User>(request);
 	}
 
 	@Override
@@ -67,22 +67,22 @@ public class CUsersDataProvider implements IDataProvider<CUser>
 		return this.users.size();
 	}
 
-	public CGroup getGroup ()
+	public Group getGroup ()
 	{
 		return group;
 	}
 
-	public void setGroup (CGroup group)
+	public void setGroup (Group group)
 	{
 		this.group = group;
 	}
 
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return organization;
 	}
 
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}

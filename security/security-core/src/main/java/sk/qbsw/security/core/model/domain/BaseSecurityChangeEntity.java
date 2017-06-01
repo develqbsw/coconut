@@ -28,7 +28,7 @@ import sk.qbsw.core.persistence.model.domain.AEntity;
  * @since 1.8.0
  */
 @MappedSuperclass
-public abstract class ASecurityChangeEntity<T>extends AEntity<T> implements Serializable
+public abstract class BaseSecurityChangeEntity<T>extends AEntity<T> implements Serializable
 {
 
 	/** The Constant serialVersionUID. */
@@ -42,7 +42,7 @@ public abstract class ASecurityChangeEntity<T>extends AEntity<T> implements Seri
 	/** The user who changed the entity last time. */
 	@OneToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_changed_by")
-	private CUser changedBy;
+	private User changedBy;
 
 	/** The operation id. */
 	@Column (name = "c_operation_id")
@@ -51,7 +51,7 @@ public abstract class ASecurityChangeEntity<T>extends AEntity<T> implements Seri
 	/**
 	 * Instantiates a new a security change entity.
 	 */
-	public ASecurityChangeEntity ()
+	public BaseSecurityChangeEntity ()
 	{
 		super();
 	}
@@ -107,7 +107,7 @@ public abstract class ASecurityChangeEntity<T>extends AEntity<T> implements Seri
 	 *
 	 * @return the changed by
 	 */
-	public CUser getChangedBy ()
+	public User getChangedBy ()
 	{
 		return changedBy;
 	}
@@ -117,7 +117,7 @@ public abstract class ASecurityChangeEntity<T>extends AEntity<T> implements Seri
 	 *
 	 * @param changedBy the new changed by
 	 */
-	public void setChangedBy (CUser changedBy)
+	public void setChangedBy (User changedBy)
 	{
 		this.changedBy = changedBy;
 	}

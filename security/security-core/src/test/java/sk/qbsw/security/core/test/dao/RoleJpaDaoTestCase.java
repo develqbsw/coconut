@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.dao.RoleDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
@@ -59,8 +59,8 @@ public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
-		List<CRole> roles = roleDao.findByUser(user);
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		List<Role> roles = roleDao.findByUser(user);
 
 		//asserts
 		assertNotNull("No roles found", roles);
@@ -95,7 +95,7 @@ public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CRole role = roleDao.findOneByCode(DataGenerator.SECOND_ROLE_CODE);
+		Role role = roleDao.findOneByCode(DataGenerator.SECOND_ROLE_CODE);
 
 		//asserts
 		assertNotNull("No roles found", role);

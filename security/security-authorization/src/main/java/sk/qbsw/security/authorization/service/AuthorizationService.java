@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.Role;
 
 /**
  * The Interface AuthorizationService.
@@ -23,14 +23,14 @@ public interface AuthorizationService extends Serializable
 	 * @param unit the user organization unit - optional
 	 * @param category the category of groups - optional
 	 */
-	public void checkAccessRights(String login, CRole role, String unit, String category) throws CSecurityException;
+	public void checkAccessRights(String login, Role role, String unit, String category) throws CSecurityException;
 
 	/**
 	 * Finds role by code.
 	 *
 	 * @param code the code
-	 * @return {@link CRole}
+	 * @return {@link Role}
 	 */
-	public List<CRole> getRoleByCode(String code);
+	public List<Role> getRoleByCode(String code);
 
 }

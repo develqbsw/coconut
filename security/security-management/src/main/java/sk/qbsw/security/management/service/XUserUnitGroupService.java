@@ -3,13 +3,13 @@ package sk.qbsw.security.management.service;
 import java.io.Serializable;
 import java.util.List;
 
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.UserUnitGroup;
 
 /**
- * Service for CXUserUnitGroup entity operations 
+ * Service for UserUnitGroup entity operations 
  * 
  * @author farkas.roman
  * @version 1.7.0
@@ -24,7 +24,7 @@ public interface XUserUnitGroupService extends Serializable
 	 * 
 	 * @param xuug
 	 */
-	void save (CXUserUnitGroup xuug);
+	void save (UserUnitGroup xuug);
 
 	/**
 	 * Gets all by filter
@@ -34,7 +34,7 @@ public interface XUserUnitGroupService extends Serializable
 	 * @param group - optional
 	 * @return
 	 */
-	List<CXUserUnitGroup> getAll (CUser user, CUnit unit, CGroup group);
+	List<UserUnitGroup> getAll (User user, Unit unit, Group group);
 
 	/**
 	 * Gets all by user
@@ -42,19 +42,19 @@ public interface XUserUnitGroupService extends Serializable
 	 * @param user
 	 * @return
 	 */
-	List<CXUserUnitGroup> getAllByUser (CUser user);
+	List<UserUnitGroup> getAllByUser (User user);
 
 	/**
 	 * Saves all entities in list
 	 * 
 	 * @param xuugList
 	 */
-	void saveAll (List<CXUserUnitGroup> xuugList);
+	void saveAll (List<UserUnitGroup> xuugList);
 
 	/**
 	 * Removes entity
 	 * 
 	 * @param xuug
 	 */
-	void remove (CXUserUnitGroup xuug);
+	void remove (UserUnitGroup xuug);
 }

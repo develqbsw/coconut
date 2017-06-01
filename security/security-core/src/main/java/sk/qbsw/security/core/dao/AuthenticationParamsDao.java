@@ -4,7 +4,7 @@
 package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
-import sk.qbsw.security.core.model.domain.CAuthenticationParams;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -17,7 +17,7 @@ import javax.persistence.NonUniqueResultException;
  * @version 1.13.0
  * @since 1.6.0
  */
-public interface AuthenticationParamsDao extends IEntityDao<Long, CAuthenticationParams>
+public interface AuthenticationParamsDao extends IEntityDao<Long, AuthenticationParams>
 {
 	/**
 	 * Find by user id.
@@ -28,7 +28,7 @@ public interface AuthenticationParamsDao extends IEntityDao<Long, CAuthenticatio
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
-	CAuthenticationParams findOneByUserId (Long userId) throws NonUniqueResultException, NoResultException;
+	AuthenticationParams findOneByUserId (Long userId) throws NonUniqueResultException, NoResultException;
 
 	/**
 	 * Find only valid authentication params by user id.
@@ -39,5 +39,5 @@ public interface AuthenticationParamsDao extends IEntityDao<Long, CAuthenticatio
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
-	CAuthenticationParams findOneValidByUserId (Long userId) throws NonUniqueResultException, NoResultException;
+	AuthenticationParams findOneValidByUserId (Long userId) throws NonUniqueResultException, NoResultException;
 }

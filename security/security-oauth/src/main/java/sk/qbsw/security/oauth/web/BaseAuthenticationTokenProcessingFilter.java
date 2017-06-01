@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.GenericFilterBean;
 
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;
@@ -80,7 +80,7 @@ public abstract class BaseAuthenticationTokenProcessingFilter extends GenericFil
 
 		if (!StringUtils.isEmpty(token) && !StringUtils.isEmpty(deviceId))
 		{
-			CUser user = getUser(token, deviceId, ip);
+			User user = getUser(token, deviceId, ip);
 
 			final PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(user, token, null);
 			authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
@@ -109,12 +109,12 @@ public abstract class BaseAuthenticationTokenProcessingFilter extends GenericFil
 	 * @param deviceId the ip
 	 * @return the string
 	 */
-	private CUser getUser (String token, String deviceId, String ip)
+	private User getUser (String token, String deviceId, String ip)
 	{
 		try
 		{
-			CUser userBymasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip);
-			CUser userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip);
+			User userBymasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip);
+			User userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip);
 
 			if (userBymasterToken != null)
 			{

@@ -24,9 +24,9 @@ import org.wicketstuff.minis.behavior.mootip.MootipSettings;
 
 import sk.qbsw.indy.security.model.dataprovider.CUsersDataProvider;
 import sk.qbsw.indy.security.model.enums.EFlagEnabled;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.User;
 
 public abstract class CUsersTablePanel extends Panel
 {
@@ -38,48 +38,48 @@ public abstract class CUsersTablePanel extends Panel
 
 
 	@SuppressWarnings ({"rawtypes", "unchecked"})
-	public CUsersTablePanel (String id, CGroup group, Boolean enabled, COrganization organization)
+	public CUsersTablePanel (String id, Group group, Boolean enabled, Organization organization)
 	{
 		super(id);
 
 		List<IColumn<?, ?>> columns = new ArrayList<IColumn<?, ?>>();
 
-		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.name", null), "name"));
-		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.surname", null), "surname"));
-		columns.add(new PropertyColumn<CUser, String>(new StringResourceModel("header.login", null), "login"));
-		columns.add(new AbstractColumn<CUser, String>(new StringResourceModel("header.role", null))
+		columns.add(new PropertyColumn<User, String>(new StringResourceModel("header.name", null), "name"));
+		columns.add(new PropertyColumn<User, String>(new StringResourceModel("header.surname", null), "surname"));
+		columns.add(new PropertyColumn<User, String>(new StringResourceModel("header.login", null), "login"));
+		columns.add(new AbstractColumn<User, String>(new StringResourceModel("header.role", null))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void populateItem (Item<ICellPopulator<CUser>> cellItem, String componentId, IModel<CUser> model)
+			public void populateItem (Item<ICellPopulator<User>> cellItem, String componentId, IModel<User> model)
 			{
-				CUser user = model.getObject();
+				User user = model.getObject();
 				String groupLabel = "group." + user.getGroups().iterator().next().getCode().toLowerCase();
 				cellItem.add(new Label(componentId, new StringResourceModel(groupLabel, null)));
 			}
 		});
 
-		columns.add(new AbstractColumn<CUser, Boolean>(new StringResourceModel("header.enabled", null))
+		columns.add(new AbstractColumn<User, Boolean>(new StringResourceModel("header.enabled", null))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void populateItem (Item<ICellPopulator<CUser>> cellItem, String componentId, IModel<CUser> model)
+			public void populateItem (Item<ICellPopulator<User>> cellItem, String componentId, IModel<User> model)
 			{
-				CUser user = model.getObject();
+				User user = model.getObject();
 				cellItem.add(new Label(componentId, new StringResourceModel(EFlagEnabled.parse(user.getFlagEnabled()).getLabel(), null)));
 			}
 		});
 
-		columns.add(new AbstractColumn<CUser, String>(new StringResourceModel("header.operations", null))
+		columns.add(new AbstractColumn<User, String>(new StringResourceModel("header.operations", null))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void populateItem (Item<ICellPopulator<CUser>> cellItem, String componentId, IModel<CUser> model)
+			public void populateItem (Item<ICellPopulator<User>> cellItem, String componentId, IModel<User> model)
 			{
-				CUser user = model.getObject();
+				User user = model.getObject();
 				cellItem.add(new OperationPanel(componentId, user));
 
 
@@ -100,7 +100,7 @@ public abstract class CUsersTablePanel extends Panel
 		private Image detailImage;
 		private Image passwdImage;
 
-		public OperationPanel (String id, final CUser user)
+		public OperationPanel (String id, final User user)
 		{
 			super(id);
 
@@ -146,7 +146,7 @@ public abstract class CUsersTablePanel extends Panel
 
 	}
 
-	public void setForGroup (CGroup forGroup)
+	public void setForGroup (Group forGroup)
 	{
 		dataProvider.setGroup(forGroup);
 	}
@@ -156,8 +156,8 @@ public abstract class CUsersTablePanel extends Panel
 		dataProvider.setEnabled(enabled);
 	}
 
-	protected abstract void navigateToEditPage (CUser user);
+	protected abstract void navigateToEditPage (User user);
 
-	protected abstract void navigateToPasswordPage (CUser user);
+	protected abstract void navigateToPasswordPage (User user);
 
 }

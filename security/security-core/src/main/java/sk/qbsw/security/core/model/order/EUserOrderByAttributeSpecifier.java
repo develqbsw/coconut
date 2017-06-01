@@ -4,7 +4,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.model.domain.QCUser;
+import sk.qbsw.security.core.model.domain.QUser;
 
 /**
  * The user order by attribute specifier.
@@ -45,7 +45,7 @@ public enum EUserOrderByAttributeSpecifier implements IOrderByAttributeSpecifier
 
 	public OrderSpecifier<?> getOrderSpecifier (EOrderSpecifier orderSpecifier)
 	{
-		QCUser qUser = QCUser.cUser;
+		QUser qUser = QUser.user;
 		ComparableExpressionBase<?> comparableExpression = null;
 
 		switch (this)

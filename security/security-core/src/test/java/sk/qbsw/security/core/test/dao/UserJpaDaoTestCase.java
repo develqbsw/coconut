@@ -18,9 +18,9 @@ import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.core.dao.RoleDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.model.filter.CUserAssociationsFilter;
 import sk.qbsw.security.core.model.filter.CUserDetailFilter;
 import sk.qbsw.security.core.model.order.COrderModel;
@@ -81,8 +81,8 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUser testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CUser user = userDao.findById(testUser.getId());
+		User testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		User user = userDao.findById(testUser.getId());
 
 		//asserts
 		assertNotNull("No user found", user);
@@ -113,7 +113,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
 		//asserts
 		assertNotNull("No user found", user);
@@ -132,7 +132,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		//asserts
 		assertNotNull("No user found", user);
@@ -181,8 +181,8 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
-		CUser user = userDao.findOneByLoginAndUnit(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, unit);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		User user = userDao.findOneByLoginAndUnit(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, unit);
 
 		//asserts
 		assertNotNull("No user found", user);
@@ -201,8 +201,8 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
-		CUser user = userDao.findOneByLoginAndUnit(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		User user = userDao.findOneByLoginAndUnit(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit);
 
 		//asserts
 		assertNotNull("No user found", user);
@@ -221,7 +221,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
 		userDao.findOneByLoginAndUnit(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit);
 	}
 
@@ -237,7 +237,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 		userDao.findOneByLoginAndUnit("No result", unit);
 	}
 
@@ -253,7 +253,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 		userDao.findOneByLoginAndUnit(null, unit);
 	}
 
@@ -269,7 +269,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CUser> users = userDao.findByPinCode("1111");
+		List<User> users = userDao.findByPinCode("1111");
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -289,7 +289,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CUser> users = userDao.findByPinCode("1234");
+		List<User> users = userDao.findByPinCode("1234");
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -335,7 +335,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CUser> users = userDao.findAll();
+		List<User> users = userDao.findAll();
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -349,7 +349,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	@Transactional (transactionManager = "transactionManager")
 	public void testFindAllPositiveNoData ()
 	{
-		List<CUser> users = userDao.findAll();
+		List<User> users = userDao.findAll();
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -373,11 +373,11 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		//unit and group
-		CUnit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
-		CGroup group = groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
+		Group group = groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
 
 
-		List<CUser> users = userDao.findByUnitAndGroup(unit, group, orderModel);
+		List<User> users = userDao.findByUnitAndGroup(unit, group, orderModel);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -401,7 +401,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		//unit and group
-		CGroup group = groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		Group group = groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
 
 
 		userDao.findByUnitAndGroup(null, group, orderModel);
@@ -424,10 +424,10 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.EMAIL, EOrderSpecifier.ASC));
 
 		//unit and group
-		CUnit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
 
 
-		List<CUser> users = userDao.findByUnitAndGroup(unit, null, orderModel);
+		List<User> users = userDao.findByUnitAndGroup(unit, null, orderModel);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -488,7 +488,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.EMAIL, EOrderSpecifier.ASC));
 
-		List<CUser> users = userDao.findByUserDetailFilter(filter, orderModel);
+		List<User> users = userDao.findByUserDetailFilter(filter, orderModel);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -522,7 +522,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.EMAIL, EOrderSpecifier.ASC));
 
-		List<CUser> users = userDao.findByUserDetailFilter(filter, orderModel);
+		List<User> users = userDao.findByUserDetailFilter(filter, orderModel);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -554,7 +554,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.EMAIL, EOrderSpecifier.ASC));
 
-		List<CUser> users = userDao.findByUserDetailFilter(filter, orderModel);
+		List<User> users = userDao.findByUserDetailFilter(filter, orderModel);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -577,7 +577,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.EMAIL, EOrderSpecifier.ASC));
 
-		List<CUser> users = userDao.findByUserDetailFilter(null, null);
+		List<User> users = userDao.findByUserDetailFilter(null, null);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -608,7 +608,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.EMAIL, EOrderSpecifier.ASC));
 
-		List<CUser> users = userDao.findByUserAssociationsFilter(filter, orderModel);
+		List<User> users = userDao.findByUserAssociationsFilter(filter, orderModel);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -638,7 +638,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.EMAIL, EOrderSpecifier.ASC));
 
-		List<CUser> users = userDao.findByUserAssociationsFilter(filter, orderModel);
+		List<User> users = userDao.findByUserAssociationsFilter(filter, orderModel);
 
 		//asserts
 		assertNotNull("No users found", users);
@@ -657,7 +657,7 @@ public class UserJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CUser> users = userDao.findByUserAssociationsFilter(null, null);
+		List<User> users = userDao.findByUserAssociationsFilter(null, null);
 
 		//asserts
 		assertNotNull("No users found", users);

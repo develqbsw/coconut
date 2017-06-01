@@ -19,12 +19,12 @@ import sk.qbsw.security.core.dao.AddressDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CAddress;
-import sk.qbsw.security.core.model.domain.CAuthenticationParams;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Address;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.model.filter.CUserAssociationsFilter;
 import sk.qbsw.security.core.model.filter.CUserDetailFilter;
 import sk.qbsw.security.core.model.order.COrderModel;
@@ -77,13 +77,13 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 * Disable user.
 	 *
 	 * @param user the user
-	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#disableUser(sk.qbsw.security.core.core.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#disableUser(sk.qbsw.security.core.User.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void disableUser (CUser user)
+	public void disableUser (User user)
 	{
-		CUser toModify = userDao.findById(user.getId());
+		User toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
 		userDao.update(toModify);
 	}
@@ -92,13 +92,13 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 * Enable user.
 	 *
 	 * @param user the user
-	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#enableUser(sk.qbsw.security.core.core.model.domain.CUser)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#enableUser(sk.qbsw.security.core.User.model.domain.CUser)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void enableUser (CUser user)
+	public void enableUser (User user)
 	{
-		CUser toModify = userDao.findById(user.getId());
+		User toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
 		userDao.update(toModify);
 	}
@@ -108,7 +108,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser get (Long id)
+	public User get (Long id)
 	{
 		return userDao.findById(id);
 	}
@@ -118,11 +118,11 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 *
 	 * @param organization the organization
 	 * @return the all users
-	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#getAllUsers(sk.qbsw.security.core.core.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#getAllUsers(sk.qbsw.security.core.Organization.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getAllUsers (COrganization organization)
+	public List<User> getAllUsers (Organization organization)
 	{
 		CUserAssociationsFilter filter = new CUserAssociationsFilter();
 		filter.setOrganization(organization);
@@ -138,7 +138,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user)
+	public List<User> getOtherActiveUsers (Organization organization, Group group, User user)
 	{
 		CUserAssociationsFilter filter = new CUserAssociationsFilter();
 		filter.setOrganization(organization);
@@ -157,7 +157,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser getUserByLogin (String login) throws CSecurityException
+	public User getUserByLogin (String login) throws CSecurityException
 	{
 		return userDao.findOneByLogin(login);
 	}
@@ -167,7 +167,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser getUserForModification (Long id)
+	public User getUserForModification (Long id)
 	{
 		return userDao.findForModification(id);
 	}
@@ -177,7 +177,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers ()
+	public List<User> getUsers ()
 	{
 		return userDao.findAll();
 	}
@@ -187,7 +187,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers (COrganization organization, Boolean enabled)
+	public List<User> getUsers (Organization organization, Boolean enabled)
 	{
 		CUserAssociationsFilter filter = new CUserAssociationsFilter();
 		filter.setOrganization(organization);
@@ -204,7 +204,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group)
+	public List<User> getUsersOrderByOrganization (Organization organization, Boolean enabled, Group group)
 	{
 		CUserAssociationsFilter filter = new CUserAssociationsFilter();
 		filter.setOrganization(organization);
@@ -223,7 +223,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group)
+	public List<User> getUsers (Organization organization, Boolean enabled, Group group)
 	{
 		CUserAssociationsFilter filter = new CUserAssociationsFilter();
 		filter.setOrganization(organization);
@@ -241,7 +241,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers (COrganization organization, CRole role)
+	public List<User> getUsers (Organization organization, Role role)
 	{
 		if (role != null)
 		{
@@ -271,7 +271,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled)
+	public List<User> getUsers (String name, String surname, String login, Boolean enabled)
 	{
 		CUserDetailFilter filter = new CUserDetailFilter();
 		filter.setName(name);
@@ -290,7 +290,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, COrganization organization)
+	public List<User> getUsers (String name, String surname, String login, Boolean enabled, Organization organization)
 	{
 		CUserDetailFilter filter = new CUserDetailFilter();
 		filter.setName(name);
@@ -310,7 +310,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
+	public List<User> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
 	{
 		CUserDetailFilter filter = new CUserDetailFilter();
 		filter.setName(name);
@@ -330,7 +330,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUser> getUsers (String email)
+	public List<User> getUsers (String email)
 	{
 		CUserDetailFilter filter = new CUserDetailFilter();
 		filter.setEmail(email);
@@ -346,7 +346,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void registerNewUser (CUser user, @CNotLogged @CNotAuditLogged String password, COrganization organization) throws CSecurityException
+	public void registerNewUser (User user, @CNotLogged @CNotAuditLogged String password, Organization organization) throws CSecurityException
 	{
 		//register new user with empty password
 		registerNewUser(user, organization);
@@ -365,7 +365,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException
+	public void registerNewUser (User user, Organization organization) throws CSecurityException
 	{
 		try
 		{
@@ -383,7 +383,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 			throw new CSecurityException(ECoreErrorResponse.USER_NOT_ALL_PARAMETERS);
 		}
 
-		COrganization redOrg;
+		Organization redOrg;
 		try
 		{
 			redOrg = organizationDao.findById(organization.getId());
@@ -398,7 +398,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 		userDao.update(user);
 
 		//create and save empty authentication params
-		CAuthenticationParams authParams = new CAuthenticationParams();
+		AuthenticationParams authParams = new AuthenticationParams();
 		authParams.setUser(user);
 		authParams.setPassword(null);
 		authParams.setPasswordDigest(null);
@@ -411,7 +411,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void updateUser (CUser user)
+	public void updateUser (User user)
 	{
 		userDao.update(user);
 	}
@@ -421,7 +421,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional
-	public void setAddress (CUser user, CAddress address)
+	public void setAddress (User user, Address address)
 	{
 		//set address to user
 		user.setAddress(address);

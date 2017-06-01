@@ -2,9 +2,9 @@ package sk.qbsw.security.management.service;
 
 import java.util.List;
 
-import sk.qbsw.security.core.model.domain.CAddress;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Address;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The service for a organizations.
@@ -23,14 +23,14 @@ public interface OrganizationService
 	 *
 	 * @param org the org
 	 */
-	public void disableOrganization(COrganization org);
+	public void disableOrganization(Organization org);
 
 	/**
 	 * Enable organization.
 	 *
 	 * @param org the org
 	 */
-	public void enableOrganization(COrganization org);
+	public void enableOrganization(Organization org);
 
 	/**
 	 * Find by name and return NULL if organization not exist - NOT exeption.
@@ -42,7 +42,7 @@ public interface OrganizationService
 	 * @deprecated the organization name is no longer unique
 	 */
 	@Deprecated
-	public abstract COrganization getOrganizationByGPS(Float longitude, Float latitude);
+	public abstract Organization getOrganizationByGPS(Float longitude, Float latitude);
 	
 	/**
 	 * Gets the organization by name.
@@ -50,7 +50,7 @@ public interface OrganizationService
 	 * @param name the name
 	 * @return the organizations by name
 	 */
-	public abstract List<COrganization> getOrganizationByName (String name);
+	public abstract List<Organization> getOrganizationByName (String name);
 
 	/**
 	 * Find organization by id.
@@ -58,7 +58,7 @@ public interface OrganizationService
 	 * @param id id of organization
 	 * @return organization
 	 */
-	public abstract COrganization getOrganizationById(Long id);
+	public abstract Organization getOrganizationById(Long id);
 
 	/**
 	 * Find by name and return NULL if organization not exist - NOT exeption.
@@ -66,21 +66,21 @@ public interface OrganizationService
 	 * @param name the name
 	 * @return organization or null if organization not exist
 	 */
-	public abstract COrganization getOrganizationByNameNull(String name);
+	public abstract Organization getOrganizationByNameNull(String name);
 
 	/**
 	 * Find all organizations.
 	 *
 	 * @return list of organizations
 	 */
-	public abstract List<COrganization> getOrganizations();
+	public abstract List<Organization> getOrganizations();
 
 	/**
 	 * Find all organizations by name.
 	 *
 	 * @return list of organizations or empty list if there is no such organization
 	 */
-	public abstract List<COrganization> getOrganizations(String name);
+	public abstract List<Organization> getOrganizations(String name);
 
 	/**
 	 * Register new organization and admin user with "ADMINISTRATOR" group
@@ -89,7 +89,7 @@ public interface OrganizationService
 	 * @param organization the organization
 	 * @param user the user
 	 */
-	public abstract void registerNewOrganization(COrganization organization, CUser user);
+	public abstract void registerNewOrganization(Organization organization, User user);
 
 	/**
 	 * Register new organization and admin user with selected group.
@@ -98,7 +98,7 @@ public interface OrganizationService
 	 * @param user the user
 	 * @param group the group
 	 */
-	public abstract void registerNewOrganization(COrganization organization, CUser user, String group);
+	public abstract void registerNewOrganization(Organization organization, User user, String group);
 
 	/**
 	 * Register organization.
@@ -106,7 +106,7 @@ public interface OrganizationService
 	 * @param org the org
 	 * @param manager the manager
 	 */
-	public void registerOrganization(COrganization org, CUser manager);
+	public void registerOrganization(Organization org, User manager);
 
 	/**
 	 * Add or update organization address.
@@ -114,12 +114,12 @@ public interface OrganizationService
 	 * @param organization organization for which is address updated
 	 * @param address address which is added or updated for organization
 	 */
-	public void setAddress(COrganization organization, CAddress address);
+	public void setAddress(Organization organization, Address address);
 
 	/**
 	 * Update organization.
 	 *
 	 * @param organization the organization
 	 */
-	public abstract void updateOrganization(COrganization organization);
+	public abstract void updateOrganization(Organization organization);
 }

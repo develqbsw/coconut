@@ -32,7 +32,7 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_auth_params", schema = "sec")
-public class CAuthenticationParams extends ASecurityChangeEntity<Long>
+public class AuthenticationParams extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	/** The user. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_user", nullable = false)
-	private CUser user;
+	private User user;
 
 	/** The password type. */
 	@Column (name = "c_password_type", nullable = false)
@@ -82,7 +82,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	/**
 	 * Instantiates a authentication params.
 	 */
-	public CAuthenticationParams ()
+	public AuthenticationParams ()
 	{
 	}
 
@@ -175,7 +175,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the user
 	 */
-	public CUser getUser ()
+	public User getUser ()
 	{
 		return user;
 	}
@@ -185,7 +185,7 @@ public class CAuthenticationParams extends ASecurityChangeEntity<Long>
 	 *
 	 * @param user the new user
 	 */
-	public void setUser (CUser user)
+	public void setUser (User user)
 	{
 		this.user = user;
 	}

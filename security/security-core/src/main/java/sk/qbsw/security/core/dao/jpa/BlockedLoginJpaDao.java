@@ -9,8 +9,8 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.security.core.dao.BlockedLoginDao;
-import sk.qbsw.security.core.model.domain.CBlockedLogin;
-import sk.qbsw.security.core.model.domain.QCBlockedLogin;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
+import sk.qbsw.security.core.model.domain.QBlockedLogin;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -24,14 +24,14 @@ import java.time.OffsetDateTime;
  * @since 1.12.2
  */
 @Repository (value = "blockedLoginJpaDao")
-public class BlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> implements BlockedLoginDao
+public class BlockedLoginJpaDao extends AEntityQDslDao<Long, BlockedLogin> implements BlockedLoginDao
 {
 	/**
 	 * Instantiates a new authentication black list jpa dao.
 	 */
 	public BlockedLoginJpaDao ()
 	{
-		super(QCBlockedLogin.cBlockedLogin, Long.class);
+		super(QBlockedLogin.blockedLogin, Long.class);
 	}
 
 	/*
@@ -39,7 +39,7 @@ public class BlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> impl
 	 * @see sk.qbsw.security.core.core.dao.IBlockedLoginDao#findOneByLoginAndIp(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSecurityException, NonUniqueResultException, NoResultException
+	public BlockedLogin findOneByLoginAndIp (String login, String ip) throws CSecurityException, NonUniqueResultException, NoResultException
 	{
 		// checks mandatory params
 		if (login == null)
@@ -47,7 +47,7 @@ public class BlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> impl
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QCBlockedLogin qBlockedLogin = QCBlockedLogin.cBlockedLogin;
+		QBlockedLogin qBlockedLogin = QBlockedLogin.blockedLogin;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -62,7 +62,7 @@ public class BlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> impl
 		}
 
 		// create query
-		JPAQuery<CBlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
+		JPAQuery<BlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
@@ -78,7 +78,7 @@ public class BlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> impl
 			throw new CSystemException("The mandatory parameter not found");
 		}
 
-		QCBlockedLogin qBlockedLogin = QCBlockedLogin.cBlockedLogin;
+		QBlockedLogin qBlockedLogin = QBlockedLogin.blockedLogin;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -91,7 +91,7 @@ public class BlockedLoginJpaDao extends AEntityQDslDao<Long, CBlockedLogin> impl
 		}
 
 		// create query
-		JPAQuery<CBlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
+		JPAQuery<BlockedLogin> query = queryFactory.selectFrom(qBlockedLogin).where(builder);
 		return query.fetchCount();
 	}
 }

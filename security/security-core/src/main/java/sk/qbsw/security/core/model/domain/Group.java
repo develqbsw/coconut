@@ -22,7 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * The Class CGroup.
+ * The Class Group.
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
@@ -31,7 +31,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table (name = "t_group", schema = "sec")
-public class CGroup extends ASecurityChangeEntity<Long>
+public class Group extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -55,27 +55,27 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	@Column (name = "c_category", nullable = true)
 	private String category;
 
-	//bi-directional many-to-many association to CRole
+	//bi-directional many-to-many association to Role
 	/** The roles. */
 	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
-	private Set<CRole> roles;
+	private Set<Role> roles;
 
-	//bi-directional many-to-many association to CUser
+	//bi-directional many-to-many association to User
 	/** Cross entity to user and unit. */
 	@OneToMany (mappedBy = "group", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private Set<CXUserUnitGroup> xUserUnitGroups;
+	private Set<UserUnitGroup> xUserUnitGroups;
 
-	//bi-directional many-to-many association to CUnit
+	//bi-directional many-to-many association to Unit
 	/** The units. */
 	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
-	private Set<CUnit> units;
+	private Set<Unit> units;
 
-	//bi-directional many-to-many association to CGroup
+	//bi-directional many-to-many association to Group
 	//this association excludes group in other words if user have one group then can't have groups which are associated with this group through this association
 	/** Excluded groups. */
 	@ManyToMany (fetch = FetchType.LAZY)
 	@JoinTable (schema = "sec", name = "t_x_group_group", joinColumns = {@JoinColumn (name = "fk_group")}, inverseJoinColumns = {@JoinColumn (name = "fk_excluded_group")})
-	private Set<CGroup> excludedGroups;
+	private Set<Group> excludedGroups;
 	
 	/** Categories separator. */
 	@Transient
@@ -84,9 +84,9 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	/**
 	 * Instantiates a new c group.
 	 */
-	public CGroup ()
+	public Group ()
 	{
-		xUserUnitGroups = new HashSet<CXUserUnitGroup>();
+		xUserUnitGroups = new HashSet<UserUnitGroup>();
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 * @param roleToCheck the role to check
 	 * @return true, if successful
 	 */
-	public boolean hasRole (CRole roleToCheck)
+	public boolean hasRole (Role roleToCheck)
 	{
 
 		if (roleToCheck == null)
@@ -108,7 +108,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 			return false;
 		}
 
-		for (CRole role : roles)
+		for (Role role : roles)
 		{
 			if (role.getCode().equals(roleToCheck.getCode()))
 			{
@@ -125,7 +125,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 * @param unitToCheck the unit to check
 	 * @return true, if successful
 	 */
-	public boolean hasUnit (CUnit unitToCheck)
+	public boolean hasUnit (Unit unitToCheck)
 	{
 		if (unitToCheck == null)
 		{
@@ -137,7 +137,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 			return false;
 		}
 
-		for (CUnit unit : units)
+		for (Unit unit : units)
 		{
 			if (unit.getName().equals(unitToCheck.getName()))
 			{
@@ -155,7 +155,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 * @param role the role
 	 * @return true / false
 	 */
-	public boolean hasCategory (String category, CRole role)
+	public boolean hasCategory (String category, Role role)
 	{
 		if (this.category != null && hasRole(role) == true)
 		{
@@ -207,7 +207,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the roles
 	 */
-	public Set<CRole> getRoles ()
+	public Set<Role> getRoles ()
 	{
 		return this.roles;
 	}
@@ -217,11 +217,11 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the users
 	 */
-	public Set<CUser> getUsers ()
+	public Set<User> getUsers ()
 	{
-		HashSet<CUser> users = new HashSet<CUser>();
+		HashSet<User> users = new HashSet<User>();
 
-		for (CXUserUnitGroup xuug : xUserUnitGroups)
+		for (UserUnitGroup xuug : xUserUnitGroups)
 		{
 			users.add(xuug.getUser());
 		}
@@ -232,9 +232,9 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 * bind users with this group
 	 * @param users
 	 */
-	public void setUsers (Set<CUser> users)
+	public void setUsers (Set<User> users)
 	{
-		for (CUser user : users)
+		for (User user : users)
 		{
 			addUser(user);
 		}
@@ -245,9 +245,9 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 * 
 	 * @param user
 	 */
-	public void addUser (CUser user)
+	public void addUser (User user)
 	{
-		CXUserUnitGroup xuug = new CXUserUnitGroup();
+		UserUnitGroup xuug = new UserUnitGroup();
 		xuug.setGroup(this);
 		xuug.setUser(user);
 		xUserUnitGroups.add(xuug);
@@ -298,7 +298,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @param roles the new roles
 	 */
-	public void setRoles (Set<CRole> roles)
+	public void setRoles (Set<Role> roles)
 	{
 		this.roles = roles;
 	}
@@ -308,7 +308,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the units
 	 */
-	public Set<CUnit> getUnits ()
+	public Set<Unit> getUnits ()
 	{
 		return units;
 	}
@@ -318,7 +318,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @param units the new units
 	 */
-	public void setUnits (Set<CUnit> units)
+	public void setUnits (Set<Unit> units)
 	{
 		this.units = units;
 	}
@@ -326,7 +326,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	/**
 	 * @return the excludedGroups
 	 */
-	public Set<CGroup> getExcludedGroups ()
+	public Set<Group> getExcludedGroups ()
 	{
 		return excludedGroups;
 	}
@@ -334,7 +334,7 @@ public class CGroup extends ASecurityChangeEntity<Long>
 	/**
 	 * @param excludedGroups the excludedGroups to set
 	 */
-	public void setExcludedGroups (Set<CGroup> excludedGroups)
+	public void setExcludedGroups (Set<Group> excludedGroups)
 	{
 		this.excludedGroups = excludedGroups;
 	}
@@ -358,12 +358,12 @@ public class CGroup extends ASecurityChangeEntity<Long>
 			return true;
 		}
 
-		if ( (object instanceof CGroup) == false)
+		if ( (object instanceof Group) == false)
 		{
 			return false;
 		}
 
-		CGroup group = (CGroup) object;
+		Group group = (Group) object;
 		return ((getId() != null && getId().equals(group.getId())) || (getId() == null && group.getId() == null))
 			&& ((getCode() != null && getCode().equals(group.getCode())) || (getCode() == null && group.getCode() == null))
 			&& ((getCategory() != null && getCategory().equals(group.getCategory())) || (getCategory() == null && group.getCategory() == null));

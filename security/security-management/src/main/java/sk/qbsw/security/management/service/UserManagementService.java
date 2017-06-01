@@ -5,11 +5,11 @@ import java.util.List;
 import javax.persistence.NoResultException;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.CAddress;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Address;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The Interface UserManagementService.
@@ -27,14 +27,14 @@ public interface UserManagementService
 	 *
 	 * @param user the user
 	 */
-	public void enableUser (CUser user);
+	public void enableUser (User user);
 
 	/**
 	 * Disable user.
 	 *
 	 * @param user the user
 	 */
-	public void disableUser (CUser user);
+	public void disableUser (User user);
 
 	/**
 	 * Gets the.
@@ -42,7 +42,7 @@ public interface UserManagementService
 	 * @param id the id
 	 * @return the c user
 	 */
-	public abstract CUser get (Long id);
+	public abstract User get (Long id);
 
 	/**
 	 * Gets the all users.
@@ -50,7 +50,7 @@ public interface UserManagementService
 	 * @param organization the organization (mandatory)
 	 * @return the all users
 	 */
-	public List<CUser> getAllUsers (COrganization organization);
+	public List<User> getAllUsers (Organization organization);
 
 	/**
 	 * Get users without user with incoming parameters.
@@ -60,7 +60,7 @@ public interface UserManagementService
 	 * @param user - user without are users returned (mandatory)
 	 * @return list of users
 	 */
-	public abstract List<CUser> getOtherActiveUsers (COrganization organization, CGroup group, CUser user);
+	public abstract List<User> getOtherActiveUsers (Organization organization, Group group, User user);
 
 	/**
 	 * Gets the user by login.
@@ -71,7 +71,7 @@ public interface UserManagementService
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException the login is null
 	 */
-	public CUser getUserByLogin (String login) throws NoResultException, CSecurityException;
+	public User getUserByLogin (String login) throws NoResultException, CSecurityException;
 
 	/**
 	 * Gets the user for modification.
@@ -79,14 +79,14 @@ public interface UserManagementService
 	 * @param id the pk id
 	 * @return the user for modification
 	 */
-	public CUser getUserForModification (Long id);
+	public User getUserForModification (Long id);
 
 	/**
 	 * Gets all users.
 	 *
 	 * @return the users
 	 */
-	public List<CUser> getUsers ();
+	public List<User> getUsers ();
 
 	/**
 	 * Gets all users.
@@ -95,7 +95,7 @@ public interface UserManagementService
 	 * @param enabled the enabled (mandatory)
 	 * @return the users
 	 */
-	public List<CUser> getUsers (COrganization organization, Boolean enabled);
+	public List<User> getUsers (Organization organization, Boolean enabled);
 
 	/**
 	 * Gets the users.
@@ -105,7 +105,7 @@ public interface UserManagementService
 	 * @param group the group (optional)
 	 * @return the users
 	 */
-	public List<CUser> getUsers (COrganization organization, Boolean enabled, CGroup group);
+	public List<User> getUsers (Organization organization, Boolean enabled, Group group);
 
 	/**
 	 * Gets the users.
@@ -114,7 +114,7 @@ public interface UserManagementService
 	 * @param role the role (mandatory)
 	 * @return the users
 	 */
-	public List<CUser> getUsers (COrganization organization, CRole role);
+	public List<User> getUsers (Organization organization, Role role);
 
 	/**
 	 * Gets the users.
@@ -125,7 +125,7 @@ public interface UserManagementService
 	 * @param enabled the enabled (optional)
 	 * @return the users
 	 */
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled);
+	public List<User> getUsers (String name, String surname, String login, Boolean enabled);
 
 	/**
 	 * Gets the users.
@@ -137,7 +137,7 @@ public interface UserManagementService
 	 * @param organization the organization
 	 * @return the users
 	 */
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, COrganization organization);
+	public List<User> getUsers (String name, String surname, String login, Boolean enabled, Organization organization);
 
 	/**
 	 * Gets the users.
@@ -149,7 +149,7 @@ public interface UserManagementService
 	 * @param groupCodePrefix the group code prefix (optional)
 	 * @return the users
 	 */
-	public List<CUser> getUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix);
+	public List<User> getUsers (String name, String surname, String login, Boolean enabled, String groupCodePrefix);
 
 	/**
 	 * Gets the users.
@@ -157,7 +157,7 @@ public interface UserManagementService
 	 * @param email the email (mandatory)
 	 * @return the users
 	 */
-	public List<CUser> getUsers (String email);
+	public List<User> getUsers (String email);
 
 	/**
 	 * Gets the users order by organization.
@@ -167,7 +167,7 @@ public interface UserManagementService
 	 * @param group the group (optional)
 	 * @return the users order by organization
 	 */
-	public List<CUser> getUsersOrderByOrganization (COrganization organization, Boolean enabled, CGroup group);
+	public List<User> getUsersOrderByOrganization (Organization organization, Boolean enabled, Group group);
 
 	/**
 	 * Register new user.
@@ -177,7 +177,7 @@ public interface UserManagementService
 	 * @param organization the organization
 	 * @throws CSecurityException if user with such login already exists
 	 */
-	public void registerNewUser (CUser user, String password, COrganization organization) throws CSecurityException;
+	public void registerNewUser (User user, String password, Organization organization) throws CSecurityException;
 
 	/**
 	 * Register new user without password - usually used with LDAP authentication because the user can't change the password in domain.
@@ -186,14 +186,14 @@ public interface UserManagementService
 	 * @param organization the organization
 	 * @throws CSecurityException if user with such login already exists
 	 */
-	public void registerNewUser (CUser user, COrganization organization) throws CSecurityException;
+	public void registerNewUser (User user, Organization organization) throws CSecurityException;
 
 	/**
 	 * Update user.
 	 *
 	 * @param user the user
 	 */
-	public void updateUser (CUser user);
+	public void updateUser (User user);
 
 	/**
 	 * Add or update user address
@@ -201,7 +201,7 @@ public interface UserManagementService
 	 * @param user user for which is address updated
 	 * @param address address which is added or updated for user
 	 */
-	public void setAddress (CUser user, CAddress address);
+	public void setAddress (User user, Address address);
 
 
 	/**

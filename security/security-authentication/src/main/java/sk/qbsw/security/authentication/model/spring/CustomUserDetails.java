@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * User details for spring Security.
@@ -26,7 +26,7 @@ public class CustomUserDetails implements UserDetails
 	private static final long serialVersionUID = 1L;
 
 	/** The user. */
-	private CUser user;
+	private User user;
 
 	/*
 	 * (non-Javadoc)
@@ -134,7 +134,7 @@ public class CustomUserDetails implements UserDetails
 	 *
 	 * @return the user
 	 */
-	public CUser getUser ()
+	public User getUser ()
 	{
 		return user;
 	}
@@ -144,7 +144,7 @@ public class CustomUserDetails implements UserDetails
 	 *
 	 * @param user the new user
 	 */
-	public void setUser (CUser user)
+	public void setUser (User user)
 	{
 		this.user = user;
 	}

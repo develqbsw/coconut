@@ -6,9 +6,9 @@ package sk.qbsw.security.management.service;
 import java.io.Serializable;
 import java.util.List;
 
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CLicense;
-import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.License;
+import sk.qbsw.security.core.model.domain.Organization;
 
 /**
  * The Interface UserManagementService.
@@ -25,35 +25,35 @@ public interface SecurityService extends Serializable
 	 *
 	 * @param license the license
 	 */
-	public void addLicense(CLicense<?> license);
+	public void addLicense(License<?> license);
 
 	/**
 	 * Delete license.
 	 *
 	 * @param license the license
 	 */
-	public void deleteLicense(CLicense<?> license);
+	public void deleteLicense(License<?> license);
 
 	/**
 	 * Gets the availabel licenses.
 	 *
 	 * @return the availabel licenses
 	 */
-	public List<CLicense<?>> getAvailabelLicenses();
+	public List<License<?>> getAvailabelLicenses();
 
 	/**
 	 * Gets the availabel licenses for customer.
 	 *
 	 * @return the availabel licenses for customer
 	 */
-	public List<CLicense<?>> getAvailabelLicensesForCustomer();
+	public List<License<?>> getAvailabelLicensesForCustomer();
 
 	/**
 	 * Gets the available groups.
 	 *
 	 * @return the available groups
 	 */
-	public List<CGroup> getAvailableGroups();
+	public List<Group> getAvailableGroups();
 
 	/**
 	 * Gets the organization licenses.
@@ -61,7 +61,7 @@ public interface SecurityService extends Serializable
 	 * @param org the org
 	 * @return the organization licenses
 	 */
-	public List<CLicense<?>> getOrganizationLicenses(COrganization org);
+	public List<License<?>> getOrganizationLicenses(Organization org);
 
 	/**
 	 * Checks if is login free.
@@ -78,12 +78,12 @@ public interface SecurityService extends Serializable
 	 * @param license the license
 	 * @param payed the payed
 	 */
-	public void matchLicensePayment(CLicense<?> license, Boolean payed);
+	public void matchLicensePayment(License<?> license, Boolean payed);
 
 	/**
 	 * Update license.
 	 *
 	 * @param license the license
 	 */
-	public void updateLicense(CLicense<?> license);
+	public void updateLicense(License<?> license);
 }

@@ -15,7 +15,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * Service for getting user details
@@ -48,7 +48,7 @@ public class UserDetailsServiceImpl extends AService implements UserDetailsServi
 	@Transactional (readOnly = true)
 	public UserDetails loadUserByUsername (String username)
 	{
-		CUser user;
+		User user;
 
 		try
 		{
@@ -74,7 +74,7 @@ public class UserDetailsServiceImpl extends AService implements UserDetailsServi
 	 * @param user
 	 * @return
 	 */
-	protected UserDetails constructUserDetails (CUser user)
+	protected UserDetails constructUserDetails (User user)
 	{
 		//lazy load of special params
 		//they will be needed

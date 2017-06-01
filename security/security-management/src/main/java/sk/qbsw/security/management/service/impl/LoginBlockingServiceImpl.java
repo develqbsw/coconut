@@ -14,8 +14,8 @@ import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.BlockedLoginDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CBlockedLogin;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.LoginBlockingService;
 
 /**
@@ -86,7 +86,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 
 		//get data from DB - if the user with login does not exist throw an exception
 		getUserByLogin(login, errorMessage);
-		CBlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
+		BlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
 		if (blockedLogin == null)
 		{
 			blockedLogin = createBlockedLogin(login, ip);
@@ -105,7 +105,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 		//define error message
 		String errorMessage = "The invalid login counter cannot be increased";
 
-		CBlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
+		BlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
 		if (blockedLogin == null)
 		{
 			blockedLogin = createBlockedLogin(login, ip);
@@ -126,7 +126,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 
 		//get data from DB - if the user with login does not exist throw an exception
 		getUserByLogin(login, errorMessage);
-		CBlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
+		BlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
 
 		resetInvalidLoginCounterInner(blockedLogin);
 	}
@@ -142,13 +142,13 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 		String errorMessage = "The login counter cannot be reset";
 
 		//get data from DB - if the user with login does not exist throw an exception
-		CBlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
+		BlockedLogin blockedLogin = getBlockedLogin(login, ip, errorMessage);
 
 		//remove blocked login
 		resetInvalidLoginCounterInner(blockedLogin);
 	}
 
-	private void resetInvalidLoginCounterInner (CBlockedLogin blockedLogin)
+	private void resetInvalidLoginCounterInner (BlockedLogin blockedLogin)
 	{
 		if (blockedLogin != null)
 		{
@@ -179,7 +179,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 	 * @throws CSecurityException throws if user doesn't exists
 	 * @throws CSystemException throws if there is any other error
 	 */
-	private CUser getUserByLogin (String login, String errorMessage) throws CSecurityException
+	private User getUserByLogin (String login, String errorMessage) throws CSecurityException
 	{
 		try
 		{
@@ -206,7 +206,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 	 * @return the auth black list record or a null if there is no such record
 	 * @throws CSystemException throws if there is any other error
 	 */
-	private CBlockedLogin getBlockedLogin (String login, String ip, String errorMessage) throws CSystemException
+	private BlockedLogin getBlockedLogin (String login, String ip, String errorMessage) throws CSystemException
 	{
 		try
 		{
@@ -231,9 +231,9 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 	 * @param ip the ip
 	 * @return the auth blacklist record
 	 */
-	private CBlockedLogin createBlockedLogin (String login, String ip)
+	private BlockedLogin createBlockedLogin (String login, String ip)
 	{
-		CBlockedLogin blacklistRecord = new CBlockedLogin();
+		BlockedLogin blacklistRecord = new BlockedLogin();
 		blacklistRecord.setLogin(login);
 		blacklistRecord.setIp(ip);
 
@@ -264,9 +264,9 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 
 	@Transactional (readOnly = true)
 	@Override
-	public CBlockedLogin findBlockedLogin (String login, String ip) throws CSystemException
+	public BlockedLogin findBlockedLogin (String login, String ip) throws CSystemException
 	{
-		CBlockedLogin result = null;
+		BlockedLogin result = null;
 		try
 		{
 			result = blockedLoginJpaDao.findOneByLoginAndIp(login, ip);
@@ -280,9 +280,9 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 
 	@Override
 	@Transactional (readOnly = false)
-	public CBlockedLogin increaseInvalidLoginCounter (CBlockedLogin blockedLogin, String login, String ip) throws CSecurityException
+	public BlockedLogin increaseInvalidLoginCounter (BlockedLogin blockedLogin, String login, String ip) throws CSecurityException
 	{
-		CBlockedLogin block = blockedLogin;
+		BlockedLogin block = blockedLogin;
 		if (block == null)
 		{
 			block = createBlockedLogin(login, ip);
@@ -291,7 +291,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 		return block;
 	}
 
-	private void increaseInvalidLoginCounterInner (CBlockedLogin blockedLogin)
+	private void increaseInvalidLoginCounterInner (BlockedLogin blockedLogin)
 	{
 
 
@@ -307,7 +307,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 
 	@Transactional (readOnly = false)
 	@Override
-	public void resetInvalidLoginCounter (CBlockedLogin blockedLogin) throws CSecurityException
+	public void resetInvalidLoginCounter (BlockedLogin blockedLogin) throws CSecurityException
 	{
 		resetInvalidLoginCounterInner(blockedLogin);
 

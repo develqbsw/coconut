@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.oauth.test.util.DataGenerator;
 
@@ -52,7 +52,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.SECOND_USER);
+		User user = userDao.findOneByLogin(DataGenerator.SECOND_USER);
 		String token = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
 
 		Assert.assertNotNull(token);
@@ -97,7 +97,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		String token = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
 
 		Assert.assertNotNull(token);
@@ -115,7 +115,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		masterTokenService.revokeMasterToken(user.getId(), DataGenerator.MASTER_TOKEN);
 	}
 
@@ -130,7 +130,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		masterTokenService.revokeMasterToken(user.getId(), "123456789");
 	}
 
@@ -146,7 +146,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		CUser user = masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		User user = masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
 
 		Assert.assertNotNull(user);
 	}

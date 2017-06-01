@@ -33,7 +33,7 @@ import com.google.gson.annotations.Expose;
 
 
 /**
- * The Class COrganization.
+ * The Class Organization.
  *
  * @author Dalibor Rak
  * @author Michal Lacko
@@ -47,7 +47,7 @@ import com.google.gson.annotations.Expose;
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("organization")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
-public class COrganization extends ASecurityChangeEntity<Long>
+public class Organization extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -82,7 +82,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	//@Cascade ({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
 	@OrderBy (value = "id")
-	private Set<CLicense<?>> licences;
+	private Set<License<?>> licences;
 
 	/** The name. */
 	@Expose
@@ -95,24 +95,24 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	@Column (name = "c_code")
 	private String code;
 
-	//bi-directional many-to-one association to CUser
+	//bi-directional many-to-one association to User
 	/** The users. */
 	@OneToMany (mappedBy = "organization", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	//@Cascade ({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
-	private List<CUser> users;
+	private List<User> users;
 
 	/** Organization address */
 	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumn (name = "fk_address", nullable = true)
-	private CAddress address;
+	private Address address;
 
 	/**
 	 * Instantiates a new c organization.
 	 */
-	public COrganization ()
+	public Organization ()
 	{
-		this.licences = new HashSet<CLicense<?>>();
-		this.users = new ArrayList<CUser>();
+		this.licences = new HashSet<License<?>>();
+		this.users = new ArrayList<User>();
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @param id the pk id
 	 */
-	public COrganization (Long id)
+	public Organization (Long id)
 	{
 		this.id = id;
 	}
@@ -130,7 +130,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @param licence the licence
 	 */
-	public void addLicence (CLicense<?> licence)
+	public void addLicence (License<?> licence)
 	{
 		this.licences.add(licence);
 	}
@@ -140,7 +140,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @param user the user
 	 */
-	public void addUser (CUser user)
+	public void addUser (User user)
 	{
 		this.users.add(user);
 	}
@@ -170,7 +170,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the licences
 	 */
-	public Set<CLicense<?>> getLicences ()
+	public Set<License<?>> getLicences ()
 	{
 		return this.licences;
 	}
@@ -208,7 +208,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the users
 	 */
-	public List<CUser> getUsers ()
+	public List<User> getUsers ()
 	{
 		return this.users;
 	}
@@ -238,7 +238,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @param licences the new licences
 	 */
-	public void setLicences (Set<CLicense<?>> licences)
+	public void setLicences (Set<License<?>> licences)
 	{
 		this.licences = licences;
 	}
@@ -268,7 +268,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @param users the new users
 	 */
-	public void setUsers (List<CUser> users)
+	public void setUsers (List<User> users)
 	{
 		this.users = users;
 	}
@@ -318,11 +318,11 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the main license
 	 */
-	public CLicense<?> getMainLicense ()
+	public License<?> getMainLicense ()
 	{
 		// the most valuable license
-		CLicense<?> actualLicense = null;
-		for (CLicense<?> license : getLicences())
+		License<?> actualLicense = null;
+		for (License<?> license : getLicences())
 		{
 			if (license != null && license.validateLicense())
 			{
@@ -345,7 +345,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	/**
 	 * @return the address
 	 */
-	public CAddress getAddress ()
+	public Address getAddress ()
 	{
 		return address;
 	}
@@ -353,7 +353,7 @@ public class COrganization extends ASecurityChangeEntity<Long>
 	/**
 	 * @param address the address to set
 	 */
-	public void setAddress (CAddress address)
+	public void setAddress (Address address)
 	{
 		this.address = address;
 	}

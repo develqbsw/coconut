@@ -24,7 +24,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import sk.qbsw.core.persistence.model.domain.AEntity;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * Security token held for authentication.
@@ -77,7 +77,7 @@ public abstract class SecurityToken extends AEntity<Long> implements Serializabl
 	/** The user. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_user", nullable = false)
-	private CUser user;
+	private User user;
 
 	/**
 	 * On create - set create date and last access date.
@@ -222,7 +222,7 @@ public abstract class SecurityToken extends AEntity<Long> implements Serializabl
 	 *
 	 * @return the user
 	 */
-	public CUser getUser ()
+	public User getUser ()
 	{
 		return user;
 	}
@@ -232,7 +232,7 @@ public abstract class SecurityToken extends AEntity<Long> implements Serializabl
 	 *
 	 * @param user the new user
 	 */
-	public void setUser (CUser user)
+	public void setUser (User user)
 	{
 		this.user = user;
 	}

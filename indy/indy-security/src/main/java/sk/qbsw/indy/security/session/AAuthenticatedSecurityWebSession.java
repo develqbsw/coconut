@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * Abstract session class to create new session objects base on wicket web sessio.
@@ -24,10 +24,10 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	private static final long serialVersionUID = 1L;
 
 	/** The organization. */
-	private COrganization organization;
+	private Organization organization;
 
 	/** The logged user. */
-	private CUser user;
+	private User user;
 
 	/** The organization unit. */
 	private String unit;
@@ -100,7 +100,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	 *
 	 * @return the organization
 	 */
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return organization;
 	}
@@ -110,7 +110,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	 *
 	 * @param organization the new organization
 	 */
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}
@@ -120,7 +120,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	 *
 	 * @return the user
 	 */
-	public CUser getUser ()
+	public User getUser ()
 	{
 		return user;
 	}
@@ -130,7 +130,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	 *
 	 * @param user the new user
 	 */
-	protected void setUser (CUser user)
+	protected void setUser (User user)
 	{
 		this.user = user;
 	}

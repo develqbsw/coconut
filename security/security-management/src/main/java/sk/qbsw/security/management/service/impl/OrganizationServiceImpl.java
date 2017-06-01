@@ -11,10 +11,10 @@ import sk.qbsw.security.core.dao.AddressDao;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CAddress;
-import sk.qbsw.security.core.model.domain.CLicense;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Address;
+import sk.qbsw.security.core.model.domain.License;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.service.LicenseGenerator;
 import sk.qbsw.security.management.service.OrganizationService;
 
@@ -56,7 +56,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional
-	public void registerNewOrganization(COrganization organization, CUser user, String group)
+	public void registerNewOrganization(Organization organization, User user, String group)
 	{
 		organization.setFlagEnabled(true);
 		organizationDao.update(organization);
@@ -71,7 +71,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional
-	public void registerNewOrganization(COrganization organization, CUser user)
+	public void registerNewOrganization(Organization organization, User user)
 	{
 		organization.setFlagEnabled(true);
 		organizationDao.update(organization);
@@ -88,7 +88,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	@Deprecated
 	@Override
 	@Transactional(readOnly = true)
-	public COrganization getOrganizationByNameNull(String name)
+	public Organization getOrganizationByNameNull(String name)
 	{
 		return organizationDao.findOneByName(name);
 	}
@@ -98,7 +98,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<COrganization> getOrganizationByName (String name)
+	public List<Organization> getOrganizationByName (String name)
 	{
 		return organizationDao.findByName(name);
 	}
@@ -110,7 +110,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	@Override
 	@Deprecated
 	@Transactional(readOnly = true)
-	public COrganization getOrganizationByGPS(Float longitude, Float latitude)
+	public Organization getOrganizationByGPS(Float longitude, Float latitude)
 	{
 		return organizationDao.findById(2L);
 	}
@@ -120,7 +120,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<COrganization> getOrganizations()
+	public List<Organization> getOrganizations()
 	{
 		return organizationDao.findAll();
 	}
@@ -129,13 +129,13 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 * Disable organization.
 	 *
 	 * @param org the org
-	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#disableOrganization(sk.qbsw.security.core.core.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#disableOrganization(sk.qbsw.security.core.Organization.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)
-	public void disableOrganization(COrganization org)
+	public void disableOrganization(Organization org)
 	{
-		COrganization toModify = organizationDao.findById(org.getId());
+		Organization toModify = organizationDao.findById(org.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
 		organizationDao.update(toModify);
 	}
@@ -144,13 +144,13 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 * Enable organization.
 	 *
 	 * @param org the org
-	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#enableOrganization(sk.qbsw.security.core.core.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#enableOrganization(sk.qbsw.security.core.Organization.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)
-	public void enableOrganization(COrganization org)
+	public void enableOrganization(Organization org)
 	{
-		COrganization toModify = organizationDao.findById(org.getId());
+		Organization toModify = organizationDao.findById(org.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
 		organizationDao.update(toModify);
 	}
@@ -160,7 +160,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<COrganization> getOrganizations(String name)
+	public List<Organization> getOrganizations(String name)
 	{
 		return organizationDao.findByName(name);
 	}
@@ -170,7 +170,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional
-	public void updateOrganization(COrganization organization)
+	public void updateOrganization(Organization organization)
 	{
 		organizationDao.update(organization);
 	}
@@ -180,7 +180,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public COrganization getOrganizationById(Long id)
+	public Organization getOrganizationById(Long id)
 	{
 		return organizationDao.findById(id);
 	}
@@ -190,7 +190,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional
-	public void setAddress(COrganization organization, CAddress address)
+	public void setAddress(Organization organization, Address address)
 	{
 		//set address to unit
 		organization.setAddress(address);
@@ -206,17 +206,17 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 *
 	 * @param org the org
 	 * @param manager the manager
-	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#registerOrganization(sk.qbsw.security.core.core.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.core.management.service.ISecurityService#registerOrganization(sk.qbsw.security.core.Organization.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional(readOnly = false)
-	public void registerOrganization(COrganization org, CUser manager)
+	public void registerOrganization(Organization org, User manager)
 	{
 		// modify organization
 		org.setFlagEnabled(Boolean.TRUE);
 
 		// create license
-		CLicense<?> license = licenseGenerator.generateFreeLicence(1);
+		License<?> license = licenseGenerator.generateFreeLicence(1);
 		license.setOrganization(org);
 		org.addLicence(license);
 

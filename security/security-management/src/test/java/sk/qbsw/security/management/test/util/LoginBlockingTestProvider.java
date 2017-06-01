@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.core.dao.BlockedLoginDao;
-import sk.qbsw.security.core.model.domain.CBlockedLogin;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
 import sk.qbsw.security.management.service.LoginBlockingService;
 
 /**
@@ -50,8 +50,8 @@ public class LoginBlockingTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
@@ -98,8 +98,8 @@ public class LoginBlockingTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
@@ -144,8 +144,8 @@ public class LoginBlockingTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
@@ -196,8 +196,8 @@ public class LoginBlockingTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
@@ -248,8 +248,8 @@ public class LoginBlockingTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
@@ -299,8 +299,8 @@ public class LoginBlockingTestProvider
 		//flush 
 		blockedLoginJpaDao.flush();
 
-		CBlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		CBlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);

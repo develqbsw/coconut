@@ -3,7 +3,7 @@ package sk.qbsw.security.authentication.service.spring;
 import org.springframework.security.core.Authentication;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The spring authentication service.
@@ -22,7 +22,7 @@ public interface SpringAuthenticationService
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	CUser login (Authentication authentication) throws CSecurityException;
+	User login (Authentication authentication) throws CSecurityException;
 
 	/**
 	 * Checks if the authentication service supports give authentication token.

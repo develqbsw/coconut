@@ -27,7 +27,7 @@ import com.google.gson.annotations.Expose;
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("address")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
-public class CAddress extends ASecurityChangeEntity<Long>
+public class Address extends BaseSecurityChangeEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */

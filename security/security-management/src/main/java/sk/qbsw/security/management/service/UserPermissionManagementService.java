@@ -2,9 +2,9 @@ package sk.qbsw.security.management.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The Interface UserCredentialManagementService.
@@ -45,7 +45,7 @@ public interface UserPermissionManagementService
 	 * @param unit the unit (optional)
 	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the unsetting failed
 	 */
-	public void unsetUserFromGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException;
+	public void unsetUserFromGroup (User user, Group group, Unit unit) throws CSecurityException;
 
 	/**
 	 * Unset user from group. The user and group must be attached objects.
@@ -54,7 +54,7 @@ public interface UserPermissionManagementService
 	 * @param group the group (mandatory)
 	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the unsetting failed
 	 */
-	public void unsetUserFromGroup (CUser user, CGroup group) throws CSecurityException;
+	public void unsetUserFromGroup (User user, Group group) throws CSecurityException;
 
 	/**
 	 * Set user to group in specified unit. The user, group and unit are loaded from persistence manager.
@@ -88,7 +88,7 @@ public interface UserPermissionManagementService
 	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
 	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
 	 */
-	public void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CBusinessException;
+	public void setUserToGroup (User user, Group group, Unit unit) throws CBusinessException;
 
 	/**
 	 * Set user to group. The user and group must be attached objects.
@@ -98,6 +98,6 @@ public interface UserPermissionManagementService
 	 * @throws CSecurityException the security exception occurs if the input parameters are incorrect or the setting failed
 	 * @throws CBusinessException the exception is thrown if the group cannot be set to user
 	 */
-	public void setUserToGroup (CUser user, CGroup group) throws CBusinessException;
+	public void setUserToGroup (User user, Group group) throws CBusinessException;
 
 }

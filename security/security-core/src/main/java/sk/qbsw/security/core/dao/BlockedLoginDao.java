@@ -3,7 +3,7 @@ package sk.qbsw.security.core.dao;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
-import sk.qbsw.security.core.model.domain.CBlockedLogin;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -16,7 +16,7 @@ import javax.persistence.NonUniqueResultException;
  * @version 1.13.0
  * @since 1.12.2
  */
-public interface BlockedLoginDao extends IEntityDao<Long, CBlockedLogin>
+public interface BlockedLoginDao extends IEntityDao<Long, BlockedLogin>
 {
 	/**
 	 * Find the blocked login by login and ip.
@@ -29,7 +29,7 @@ public interface BlockedLoginDao extends IEntityDao<Long, CBlockedLogin>
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
 	 */
-	CBlockedLogin findOneByLoginAndIp (String login, String ip) throws CSecurityException, NonUniqueResultException, NoResultException;
+	BlockedLogin findOneByLoginAndIp (String login, String ip) throws CSecurityException, NonUniqueResultException, NoResultException;
 
 	/**
 	 * Count currently blocked by login and ip.

@@ -7,9 +7,9 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import sk.qbsw.security.authorization.service.AuthorizationService;
-import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.Role;
 
-public class CRoleLoadableModel extends LoadableDetachableModel<CRole>
+public class CRoleLoadableModel extends LoadableDetachableModel<Role>
 {
 
 	/**
@@ -32,9 +32,9 @@ public class CRoleLoadableModel extends LoadableDetachableModel<CRole>
 	}
 
 	@Override
-	protected CRole load()
+	protected Role load()
 	{
-		List<CRole> roles = securityService.getRoleByCode(roleCode);
+		List<Role> roles = securityService.getRoleByCode(roleCode);
 
 		return roles.get(0);
 	}

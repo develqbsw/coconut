@@ -4,7 +4,7 @@
 package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
-import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.License;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public interface LicenseDao extends IEntityDao<Long, CLicense<?>>
+public interface LicenseDao extends IEntityDao<Long, License<?>>
 {
 	/**
 	 * Find by organization id.
@@ -23,6 +23,6 @@ public interface LicenseDao extends IEntityDao<Long, CLicense<?>>
 	 * @param orgId the org id (mandatory)
 	 * @return the list
 	 */
-	List<CLicense<?>> findByOrganizationId (Long orgId);
+	List<License<?>> findByOrganizationId (Long orgId);
 
 }

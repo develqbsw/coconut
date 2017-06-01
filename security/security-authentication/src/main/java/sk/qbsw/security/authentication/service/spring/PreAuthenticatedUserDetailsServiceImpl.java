@@ -17,7 +17,7 @@ import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The user detail service for token authentication.
@@ -50,10 +50,10 @@ public class PreAuthenticatedUserDetailsServiceImpl implements AuthenticationUse
 			throw new UsernameNotFoundException("The user not found");
 		}
 
-		CUser persistedUser;
+		User persistedUser;
 		try
 		{
-			persistedUser = userDao.findOneByLogin( ((CUser) token.getPrincipal()).getLogin());
+			persistedUser = userDao.findOneByLogin( ((User) token.getPrincipal()).getLogin());
 		}
 		catch (NoResultException | CSecurityException ex)
 		{

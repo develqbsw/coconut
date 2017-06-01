@@ -6,12 +6,12 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.UserManagementService;
 
-public class CUsersLoadableModel extends LoadableDetachableModel<List<CUser>>
+public class CUsersLoadableModel extends LoadableDetachableModel<List<User>>
 {
 	/**
 	 * 
@@ -21,11 +21,11 @@ public class CUsersLoadableModel extends LoadableDetachableModel<List<CUser>>
 	@SpringBean
 	private UserManagementService userService;
 
-	private COrganization organization;
+	private Organization organization;
 
-private CRole role;
+private Role role;
 
-	public CUsersLoadableModel (COrganization organization, CRole role)
+	public CUsersLoadableModel (Organization organization, Role role)
 	{
 		super();
 
@@ -36,9 +36,9 @@ private CRole role;
 	}
 
 	@Override
-	protected List<CUser> load ()
+	protected List<User> load ()
 	{
-		List<CUser> users;
+		List<User> users;
 
 		if (this.organization == null)
 		{

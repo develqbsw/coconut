@@ -24,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name = "t_x_group_user", schema = "sec")
-public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
+public class UserUnitGroup extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -39,22 +39,22 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 	/** The user. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_user", nullable = false)
-	private CUser user;
+	private User user;
 
 	/** The unit. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_unit", nullable = true)
-	private CUnit unit;
+	private Unit unit;
 
 	/** The group. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_group", nullable = false)
-	private CGroup group;
+	private Group group;
 
 	/**
 	 * Instantiates a new c group.
 	 */
-	public CXUserUnitGroup ()
+	public UserUnitGroup ()
 	{
 	}
 
@@ -82,7 +82,7 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the user
 	 */
-	public CUser getUser ()
+	public User getUser ()
 	{
 		return user;
 	}
@@ -92,7 +92,7 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @param user the user to set
 	 */
-	public void setUser (CUser user)
+	public void setUser (User user)
 	{
 		this.user = user;
 	}
@@ -102,7 +102,7 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the unit
 	 */
-	public CUnit getUnit ()
+	public Unit getUnit ()
 	{
 		return unit;
 	}
@@ -112,7 +112,7 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @param unit the unit to set
 	 */
-	public void setUnit (CUnit unit)
+	public void setUnit (Unit unit)
 	{
 		this.unit = unit;
 	}
@@ -122,7 +122,7 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the group
 	 */
-	public CGroup getGroup ()
+	public Group getGroup ()
 	{
 		return group;
 	}
@@ -132,7 +132,7 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 	 *
 	 * @param group the group to set
 	 */
-	public void setGroup (CGroup group)
+	public void setGroup (Group group)
 	{
 		this.group = group;
 	}
@@ -148,12 +148,12 @@ public class CXUserUnitGroup extends ASecurityChangeEntity<Long>
 			return true;
 		}
 
-		if ( (obj instanceof CXUserUnitGroup) == false)
+		if ( (obj instanceof UserUnitGroup) == false)
 		{
 			return false;
 		}
 
-		CXUserUnitGroup userGroupUnitRecord = (CXUserUnitGroup) obj;
+		UserUnitGroup userGroupUnitRecord = (UserUnitGroup) obj;
 		return ((getId() != null && getId().equals(userGroupUnitRecord.getId())) || (getId() == null && userGroupUnitRecord.getId() == null))
 			&& ((getUser() != null && getUser().equals(userGroupUnitRecord.getUser())) || (getUser() == null && userGroupUnitRecord.getUser() == null))
 			&& ((getUnit() != null && getUnit().equals(userGroupUnitRecord.getUnit())) || (getUnit() == null && userGroupUnitRecord.getUnit() == null))

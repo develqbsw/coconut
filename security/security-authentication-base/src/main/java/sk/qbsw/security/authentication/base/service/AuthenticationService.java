@@ -3,8 +3,8 @@ package sk.qbsw.security.authentication.base.service;
 import java.io.Serializable;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * Authentication service
@@ -24,7 +24,7 @@ public interface AuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return
 	 */
-	public CUser login(String login, String password) throws CSecurityException;
+	public User login(String login, String password) throws CSecurityException;
 
 	/**
 	 * Authenticates the user.
@@ -35,7 +35,7 @@ public interface AuthenticationService extends Serializable
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	public CUser login(String login, String password, String unit) throws CSecurityException;
+	public User login(String login, String password, String unit) throws CSecurityException;
 
 	/** Find by login and role user must have login and role
 	 * @param login - login of the user
@@ -43,7 +43,7 @@ public interface AuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return user if user have login and role null otherwise
 	 */
-	public CUser login(String login, String password, CRole role) throws CSecurityException;
+	public User login(String login, String password, Role role) throws CSecurityException;
 
 	/**
 	 * Authenticates the user with his role
@@ -52,7 +52,7 @@ public interface AuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return
 	 */
-	public boolean canLogin(String login, String password, CRole role);
+	public boolean canLogin(String login, String password, Role role);
 
 	/**
 	 * Checks if the authentication service is online.

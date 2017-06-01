@@ -21,10 +21,10 @@ import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CAuthenticationParams;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.model.domain.EAuthenticationType;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
 
@@ -70,7 +70,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @param passwordToCheck the password to check
 	 * @throws InvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPassword (CAuthenticationParams authenticationParams, String passwordToCheck) throws InvalidPasswordException
+	private void authenticateByPassword (AuthenticationParams authenticationParams, String passwordToCheck) throws InvalidPasswordException
 	{
 		if (authenticationParams.getPassword() == null || !authenticationParams.getPassword().equals(passwordToCheck))
 		{
@@ -86,7 +86,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @param passwordToCheck the password to check
 	 * @throws InvalidPasswordException the c wrong password exception
 	 */
-	private void authenticateByPasswordDigest (CAuthenticationParams authenticationParams, String login, String passwordToCheck) throws InvalidPasswordException
+	private void authenticateByPasswordDigest (AuthenticationParams authenticationParams, String login, String passwordToCheck) throws InvalidPasswordException
 	{
 		if (authenticationParams.getPasswordDigest() == null || !digester.checkPassword(login, passwordToCheck, authenticationParams.getPasswordDigest()))
 		{
@@ -98,7 +98,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.security.core.core.model.domain.CRole)
 	 */
 	@Transactional (readOnly = true)
-	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
+	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, Role role)
 	{
 		try
 		{
@@ -115,7 +115,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @see sk.qbsw.winnetou.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String)
 	 */
 	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	public User login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginWithUnit(login, password, null);
 	}
@@ -124,9 +124,9 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.security.core.core.model.domain.CRole)
 	 */
 	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
+	public User login (String login, @CNotLogged @CNotAuditLogged String password, Role role) throws CSecurityException
 	{
-		CUser user = loginWithUnit(login, password, null);
+		User user = loginWithUnit(login, password, null);
 
 		if (!user.hasRole(role))
 		{
@@ -141,10 +141,10 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	public User login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		//checks if the unit exists
-		CUnit localUnit = null;
+		Unit localUnit = null;
 		try
 		{
 			localUnit = unitDao.findOneByName(unit);
@@ -156,7 +156,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 		}
 
 		//find user
-		CUser user = loginWithUnit(login, password, localUnit);
+		User user = loginWithUnit(login, password, localUnit);
 
 		if (user.isInUnit(localUnit))
 		{
@@ -180,11 +180,11 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @throws InvalidUserException the user with given login not found
 	 * @throws InvalidPasswordException the invalid password
 	 */
-	private CUser loginWithUnit (String login, String password, CUnit unit) throws UserDisabledException, InvalidAuthenticationException, InvalidUserException, InvalidPasswordException
+	private User loginWithUnit (String login, String password, Unit unit) throws UserDisabledException, InvalidAuthenticationException, InvalidUserException, InvalidPasswordException
 	{
 		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
 
-		CUser user;
+		User user;
 
 		try
 		{
@@ -202,7 +202,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 		}
 		else
 		{
-			CAuthenticationParams userAuthParams = null;
+			AuthenticationParams userAuthParams = null;
 			try
 			{
 				userAuthParams = authenticationParamsDao.findOneValidByUserId(user.getId());

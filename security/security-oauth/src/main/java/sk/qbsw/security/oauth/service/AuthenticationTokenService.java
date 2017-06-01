@@ -1,7 +1,7 @@
 package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The authentication token service.
@@ -43,5 +43,5 @@ public interface AuthenticationTokenService
 	 * @return the user by authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	CUser getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip) throws CBusinessException;
+	User getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip) throws CBusinessException;
 }

@@ -28,7 +28,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 /**
- * The Class CUnit.
+ * The Class Unit.
  * 
  * @author Tomas Lauro
  * @version 1.9.1
@@ -39,7 +39,7 @@ import com.google.gson.annotations.Expose;
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("unit")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
-public class CUnit extends ASecurityChangeEntity<Long>
+public class Unit extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -59,28 +59,28 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_organization", nullable = false)
 	@Expose
-	private COrganization organization;
+	private Organization organization;
 
-	// bi-directional many-to-many association to CUnit
+	// bi-directional many-to-many association to Unit
 	/** The units. */
 	@ManyToMany (fetch = FetchType.LAZY)
 	@JoinTable (schema = "sec", name = "t_x_group_unit", joinColumns = {@JoinColumn (name = "fk_unit")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
-	private Set<CGroup> groups;
+	private Set<Group> groups;
 
 	// bi-directional many-to-many association to cross entity to group and unit
 	/** Set of cross entities. */
 	@OneToMany (mappedBy = "unit", fetch = FetchType.LAZY)
-	private Set<CXUserUnitGroup> xUserUnitGroups;
+	private Set<UserUnitGroup> xUserUnitGroups;
 
 	/** User address */
 	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumn (name = "fk_address", nullable = true)
-	private CAddress address;
+	private Address address;
 
 	/**
 	 * Instantiates a new unit.
 	 */
-	public CUnit ()
+	public Unit ()
 	{
 	}
 
@@ -132,7 +132,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return the organization
 	 */
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return organization;
 	}
@@ -143,7 +143,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	 * @param organization
 	 *            the new organization
 	 */
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}
@@ -153,7 +153,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return the groups
 	 */
-	public Set<CGroup> getGroups ()
+	public Set<Group> getGroups ()
 	{
 		return groups;
 	}
@@ -164,7 +164,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	 * @param groups
 	 *            the new groups
 	 */
-	public void setGroups (Set<CGroup> groups)
+	public void setGroups (Set<Group> groups)
 	{
 		this.groups = groups;
 	}
@@ -172,7 +172,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	/**
 	 * @return the address
 	 */
-	public CAddress getAddress ()
+	public Address getAddress ()
 	{
 		return address;
 	}
@@ -181,7 +181,7 @@ public class CUnit extends ASecurityChangeEntity<Long>
 	 * @param address
 	 *            the address to set
 	 */
-	public void setAddress (CAddress address)
+	public void setAddress (Address address)
 	{
 		this.address = address;
 	}
@@ -197,12 +197,12 @@ public class CUnit extends ASecurityChangeEntity<Long>
 			return true;
 		}
 
-		if ( (object instanceof CUnit) == false)
+		if ( (object instanceof Unit) == false)
 		{
 			return false;
 		}
 
-		CUnit unit = (CUnit) object;
+		Unit unit = (Unit) object;
 		return ( (getId() != null && getId().equals(unit.getId())) || (getId() == null && unit.getId() == null)) && ( (getName() != null && getName().equals(unit.getName())) || (getName() == null && unit.getName() == null));
 	}
 

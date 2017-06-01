@@ -4,7 +4,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.model.domain.QCOrganization;
+import sk.qbsw.security.core.model.domain.QOrganization;
 
 /**
  * The organization order by attribute specifier.
@@ -42,7 +42,7 @@ public enum EOrganizationOrderByAttributeSpecifier implements IOrderByAttributeS
 	 */
 	public OrderSpecifier<?> getOrderSpecifier (EOrderSpecifier orderSpecifier)
 	{
-		QCOrganization qOrganization = QCOrganization.cOrganization;
+		QOrganization qOrganization = QOrganization.organization;
 		ComparableExpressionBase<?> comparableExpression = null;
 
 		switch (this)

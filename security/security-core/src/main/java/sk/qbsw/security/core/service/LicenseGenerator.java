@@ -6,7 +6,7 @@ package sk.qbsw.security.core.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.License;
 
 /**
  * The Interface LicenseGenerator.
@@ -23,7 +23,7 @@ public interface LicenseGenerator extends Serializable
 	 *
 	 * @return the available licenses
 	 */
-	public abstract ArrayList<CLicense<?>> getAvailableLicenses ();
+	public abstract ArrayList<License<?>> getAvailableLicenses ();
 
 	/**
 	 * Generate free licence.
@@ -31,13 +31,13 @@ public interface LicenseGenerator extends Serializable
 	 * @param months the months
 	 * @return the c license
 	 */
-	public CLicense<?> generateFreeLicence (int months);
+	public License<?> generateFreeLicence (int months);
 
 	/**
 	 * Gets the available licenses for customer.
 	 *
 	 * @return the available licenses for customer
 	 */
-	public ArrayList<CLicense<?>> getAvailableLicensesForCustomer ();
+	public ArrayList<License<?>> getAvailableLicensesForCustomer ();
 
 }

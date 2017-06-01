@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.License;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 
 /**
@@ -22,7 +22,7 @@ import sk.qbsw.security.core.model.jmx.CLicensingRules;
 @SuppressWarnings ("serial")
 @Entity
 @DiscriminatorValue ("free")
-public class LicenseFree extends CLicense<CLicensingRules>
+public class LicenseFree extends License<CLicensingRules>
 {
 	/**
 	 * Instantiates a new c license free.
@@ -38,7 +38,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	 * Gets the priority.
 	 *
 	 * @return the priority
-	 * @see sk.qbsw.core.security.model.domain.CLicense#getPriority()
+	 * @see sk.qbsw.core.security.model.domain.License#getPriority()
 	 */
 	@Override
 	public Integer getPriority ()
@@ -50,7 +50,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	 * Validate license.
 	 *
 	 * @return true, if successful
-	 * @see sk.qbsw.core.security.model.domain.CLicense#validateLicense()
+	 * @see sk.qbsw.core.security.model.domain.License#validateLicense()
 	 */
 	@Override
 	public boolean validateLicense ()
@@ -64,7 +64,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	 * @param rules
 	 *            the rules
 	 * @return the integer
-	 * @see sk.qbsw.core.security.model.domain.CLicense#restrictExport()
+	 * @see sk.qbsw.core.security.model.domain.License#restrictExport()
 	 */
 	@Override
 	public Integer restrictExport (CLicensingRules rules)
@@ -78,7 +78,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	 * @param rules
 	 *            the rules
 	 * @return the integer
-	 * @see sk.qbsw.core.security.model.domain.CLicense#restrictRespondents()
+	 * @see sk.qbsw.core.security.model.domain.License#restrictRespondents()
 	 */
 	@Override
 	public Integer restrictRespondents (CLicensingRules rules)
@@ -92,7 +92,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	 * @param rules
 	 *            the rules
 	 * @return the integer
-	 * @see sk.qbsw.core.security.model.domain.CLicense#restrictQuestions()
+	 * @see sk.qbsw.core.security.model.domain.License#restrictQuestions()
 	 */
 	@Override
 	public Integer restrictQuestions (CLicensingRules rules)
@@ -104,7 +104,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	 * Restrict advanced functionality.
 	 *
 	 * @return true, if successful
-	 * @see sk.qbsw.core.security.model.domain.CLicense#isAllowedAdvancedFunctionality()
+	 * @see sk.qbsw.core.security.model.domain.License#isAllowedAdvancedFunctionality()
 	 */
 	@Override
 	public boolean restrictAdvancedFunctionality ()
@@ -113,7 +113,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	}
 
 	/**
-	 * @see sk.qbsw.core.security.model.domain.CLicense#recalculateLicensePrice(java.lang.Double)
+	 * @see sk.qbsw.core.security.model.domain.License#recalculateLicensePrice(java.lang.Double)
 	 */
 	@Override
 	public void recalculateLicensePrice (Double dayPrice)
@@ -125,7 +125,7 @@ public class LicenseFree extends CLicense<CLicensingRules>
 	 * Contact to get price.
 	 *
 	 * @return true, if successful
-	 * @see sk.qbsw.core.security.model.domain.CLicense#contactToGetPrice()
+	 * @see sk.qbsw.core.security.model.domain.License#contactToGetPrice()
 	 */
 	@Override
 	public boolean contactToGetPrice ()

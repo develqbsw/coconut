@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 
@@ -38,7 +38,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	public String generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException
 	{
 		MasterToken token = masterTokenDao.findByUserAndDevice(userId, deviceId);
-		CUser user;
+		User user;
 		try
 		{
 			user = userDao.findById(userId);
@@ -91,7 +91,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	 */
 	@Override
 	@Transactional
-	public CUser getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException
+	public User getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException
 	{
 		MasterToken persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);
 

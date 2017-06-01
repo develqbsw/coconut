@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
@@ -46,7 +46,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationDao.findByName(DataGenerator.ORGANIZATION_CODE);
+		List<Organization> organizations = organizationDao.findByName(DataGenerator.ORGANIZATION_CODE);
 
 		//asserts
 		assertNotNull("No organizations found", organizations);
@@ -62,7 +62,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationDao.findByName(null);
+		List<Organization> organizations = organizationDao.findByName(null);
 
 		//asserts
 		assertNotNull("No organizations found", organizations);
@@ -78,7 +78,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationDao.findByName("not found");
+		List<Organization> organizations = organizationDao.findByName("not found");
 
 		//asserts
 		assertNotNull("No organizations found", organizations);
@@ -94,7 +94,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationDao.findAll();
+		List<Organization> organizations = organizationDao.findAll();
 
 		//asserts
 		assertNotNull("No organizations found", organizations);
@@ -110,7 +110,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		//without init to database
 
-		List<COrganization> organizations = organizationDao.findAll();
+		List<Organization> organizations = organizationDao.findAll();
 
 		//asserts
 		assertNotNull("No organizations found", organizations);

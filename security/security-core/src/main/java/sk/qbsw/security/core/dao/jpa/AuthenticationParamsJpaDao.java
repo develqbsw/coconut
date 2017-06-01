@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
-import sk.qbsw.security.core.model.domain.CAuthenticationParams;
-import sk.qbsw.security.core.model.domain.QCAuthenticationParams;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
+import sk.qbsw.security.core.model.domain.QAuthenticationParams;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -24,14 +24,14 @@ import java.time.OffsetDateTime;
  * @since 1.6.0
  */
 @Repository (value = "authenticationParamsDao")
-public class AuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthenticationParams> implements AuthenticationParamsDao
+public class AuthenticationParamsJpaDao extends AEntityQDslDao<Long, AuthenticationParams> implements AuthenticationParamsDao
 {
 	/**
 	 * Instantiates a new authentication params role jpa dao.
 	 */
 	public AuthenticationParamsJpaDao ()
 	{
-		super(QCAuthenticationParams.cAuthenticationParams, Long.class);
+		super(QAuthenticationParams.authenticationParams, Long.class);
 	}
 
 	/*
@@ -39,12 +39,12 @@ public class AuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthentica
 	 * @see sk.qbsw.security.core.core.dao.IAuthenticationParamsDao#findOneByUserId(java.lang.Long)
 	 */
 	@Override
-	public CAuthenticationParams findOneByUserId (Long userId) throws NonUniqueResultException, NoResultException
+	public AuthenticationParams findOneByUserId (Long userId) throws NonUniqueResultException, NoResultException
 	{
-		QCAuthenticationParams qAuthParams = QCAuthenticationParams.cAuthenticationParams;
+		QAuthenticationParams qAuthParams = QAuthenticationParams.authenticationParams;
 
 		// create query
-		JPAQuery<CAuthenticationParams> query = queryFactory.selectFrom(qAuthParams).distinct().where(qAuthParams.user.id.eq(userId));
+		JPAQuery<AuthenticationParams> query = queryFactory.selectFrom(qAuthParams).distinct().where(qAuthParams.user.id.eq(userId));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
@@ -53,9 +53,9 @@ public class AuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthentica
 	 * @see sk.qbsw.security.core.core.dao.IAuthenticationParamsDao#findValidByUserId(java.lang.Long)
 	 */
 	@Override
-	public CAuthenticationParams findOneValidByUserId (Long userId) throws NonUniqueResultException, NoResultException
+	public AuthenticationParams findOneValidByUserId (Long userId) throws NonUniqueResultException, NoResultException
 	{
-		QCAuthenticationParams qAuthParams = QCAuthenticationParams.cAuthenticationParams;
+		QAuthenticationParams qAuthParams = QAuthenticationParams.authenticationParams;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -64,7 +64,7 @@ public class AuthenticationParamsJpaDao extends AEntityQDslDao<Long, CAuthentica
 		builder.and(qAuthParams.validTo.isNull().orAllOf(qAuthParams.validTo.isNotNull(), qAuthParams.validTo.goe(OffsetDateTime.now())));
 
 		// create query
-		JPAQuery<CAuthenticationParams> query = queryFactory.selectFrom(qAuthParams).distinct().where(builder);
+		JPAQuery<AuthenticationParams> query = queryFactory.selectFrom(qAuthParams).distinct().where(builder);
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 }

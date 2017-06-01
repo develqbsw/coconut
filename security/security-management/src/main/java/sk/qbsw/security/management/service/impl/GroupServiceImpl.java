@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.GroupDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.GroupService;
 
 /**
@@ -43,7 +43,7 @@ public class GroupServiceImpl extends AService implements GroupService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CGroup read (Long id)
+	public Group read (Long id)
 	{
 		return groupDao.findById(id);
 	}
@@ -52,7 +52,7 @@ public class GroupServiceImpl extends AService implements GroupService
 	 * @see sk.qbsw.security.core.core.service.IGroupService#getAll()
 	 */
 	@Transactional (readOnly = true)
-	public List<CGroup> getAll ()
+	public List<Group> getAll ()
 	{
 		return groupDao.findAll();
 	}
@@ -61,7 +61,7 @@ public class GroupServiceImpl extends AService implements GroupService
 	 * @see sk.qbsw.security.core.core.service.IGroupService#getByCode(java.lang.String)
 	 */
 	@Transactional (readOnly = true)
-	public List<CGroup> getByCode (String code)
+	public List<Group> getByCode (String code)
 	{
 		return groupDao.findByCode(code);
 	}
@@ -70,7 +70,7 @@ public class GroupServiceImpl extends AService implements GroupService
 	 * @see sk.qbsw.security.core.core.service.IGroupService#getByUnit(sk.qbsw.security.core.core.model.domain.CUnit)
 	 */
 	@Override
-	public List<CGroup> getByUnit (CUnit unit)
+	public List<Group> getByUnit (Unit unit)
 	{
 		return groupDao.findByUnit(unit);
 	}
@@ -79,7 +79,7 @@ public class GroupServiceImpl extends AService implements GroupService
 	 * @see sk.qbsw.security.core.core.service.IGroupService#getByUnitUser(sk.qbsw.security.core.core.model.domain.CUnit, sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
-	public List<CGroup> getByUnitUser (CUnit unit, CUser user)
+	public List<Group> getByUnitUser (Unit unit, User user)
 	{
 		return groupDao.findByUnitAndUser(unit, user);
 	}
@@ -88,7 +88,7 @@ public class GroupServiceImpl extends AService implements GroupService
 	 * @see sk.qbsw.security.core.core.service.IGroupService#getByCodeAndUnit(java.lang.String, sk.qbsw.security.core.core.model.domain.CUnit)
 	 */
 	@Override
-	public List<CGroup> getByCodeAndUnit (String code, CUnit unit) throws CSecurityException
+	public List<Group> getByCodeAndUnit (String code, Unit unit) throws CSecurityException
 	{
 		return groupDao.findByCodeAndUnit(code, unit);
 	}

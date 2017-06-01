@@ -8,8 +8,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Repository;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.QCOrganization;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.QOrganization;
 
 import java.util.List;
 
@@ -22,14 +22,14 @@ import java.util.List;
  * @since 1.0.0
  */
 @Repository (value = "orgDao")
-public class OrganizationJpaDao extends AEntityQDslDao<Long, COrganization> implements OrganizationDao
+public class OrganizationJpaDao extends AEntityQDslDao<Long, Organization> implements OrganizationDao
 {
 	/**
 	 * Instantiates a new organization jpa dao.
 	 */
 	public OrganizationJpaDao ()
 	{
-		super(QCOrganization.cOrganization, Long.class);
+		super(QOrganization.organization, Long.class);
 	}
 
 	/*
@@ -37,9 +37,9 @@ public class OrganizationJpaDao extends AEntityQDslDao<Long, COrganization> impl
 	 * @see sk.qbsw.security.core.core.dao.IOrganizationDao#findByName(java.lang.String)
 	 */
 	@Override
-	public List<COrganization> findByName (String name)
+	public List<Organization> findByName (String name)
 	{
-		QCOrganization qOrganization = QCOrganization.cOrganization;
+		QOrganization qOrganization = QOrganization.organization;
 
 		BooleanBuilder builder = new BooleanBuilder();
 		if (name != null)
@@ -52,7 +52,7 @@ public class OrganizationJpaDao extends AEntityQDslDao<Long, COrganization> impl
 		}
 
 		// create query
-		JPAQuery<COrganization> query = queryFactory.selectFrom(qOrganization).where(builder);
+		JPAQuery<Organization> query = queryFactory.selectFrom(qOrganization).where(builder);
 		return query.fetch();
 	}
 
@@ -63,12 +63,12 @@ public class OrganizationJpaDao extends AEntityQDslDao<Long, COrganization> impl
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
 	 */
 	@Override
-	public List<COrganization> findAll ()
+	public List<Organization> findAll ()
 	{
-		QCOrganization qOrganization = QCOrganization.cOrganization;
+		QOrganization qOrganization = QOrganization.organization;
 
 		// create query
-		JPAQuery<COrganization> query = queryFactory.selectFrom(qOrganization).orderBy(qOrganization.name.asc());
+		JPAQuery<Organization> query = queryFactory.selectFrom(qOrganization).orderBy(qOrganization.name.asc());
 		return query.fetch();
 	}
 
@@ -78,13 +78,13 @@ public class OrganizationJpaDao extends AEntityQDslDao<Long, COrganization> impl
 	 */
 	@Deprecated
 	@Override
-	public COrganization findOneByName (String name)
+	public Organization findOneByName (String name)
 	{
-		QCOrganization qOrganization = QCOrganization.cOrganization;
+		QOrganization qOrganization = QOrganization.organization;
 
 		// create query
-		JPAQuery<COrganization> query = queryFactory.selectFrom(qOrganization).where(qOrganization.name.eq(name));
-		List<COrganization> organizations = query.fetch();
+		JPAQuery<Organization> query = queryFactory.selectFrom(qOrganization).where(qOrganization.name.eq(name));
+		List<Organization> organizations = query.fetch();
 
 		if (organizations.isEmpty())
 		{

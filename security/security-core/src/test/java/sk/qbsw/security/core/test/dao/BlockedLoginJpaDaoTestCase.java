@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.core.dao.BlockedLoginDao;
-import sk.qbsw.security.core.model.domain.CBlockedLogin;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
@@ -56,7 +56,7 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CBlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
 
 		//asserts
 		assertNotNull("No blocked login found", blockedLogin);
@@ -76,7 +76,7 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CBlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, null);
+		BlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, null);
 
 		//asserts
 		assertNotNull("No blocked login found", blockedLogin);
@@ -183,16 +183,16 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		super.initTest();
 
-		CBlockedLogin blockedLogin = dataGenerator.createBlockedLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE, 1, null, null);
+		BlockedLogin blockedLogin = dataGenerator.createBlockedLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE, 1, null, null);
 		blockedLoginDao.update(blockedLogin);
 
-		CBlockedLogin blockedLoginWithoutIp = dataGenerator.createBlockedLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, null, 1, null, null);
+		BlockedLogin blockedLoginWithoutIp = dataGenerator.createBlockedLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, null, 1, null, null);
 		blockedLoginDao.update(blockedLoginWithoutIp);
 
-		CBlockedLogin blockedLoginWithDatesOne = dataGenerator.createBlockedLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
+		BlockedLogin blockedLoginWithDatesOne = dataGenerator.createBlockedLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
 		blockedLoginDao.update(blockedLoginWithDatesOne);
 
-		CBlockedLogin blockedLoginWithDatesTwo = dataGenerator.createBlockedLogin(DataGenerator.USER_WITHOUT_PASSWORD, null, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
+		BlockedLogin blockedLoginWithDatesTwo = dataGenerator.createBlockedLogin(DataGenerator.USER_WITHOUT_PASSWORD, null, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
 		blockedLoginDao.update(blockedLoginWithDatesTwo);
 
 		blockedLoginDao.flush();

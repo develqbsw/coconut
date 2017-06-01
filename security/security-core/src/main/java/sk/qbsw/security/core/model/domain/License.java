@@ -35,7 +35,7 @@ import javax.persistence.Transient;
 @Table (name = "t_licence", schema = "sec")
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class CLicense<T>extends ASecurityChangeEntity<Long>
+public abstract class License<T>extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 6005150237733706948L;
@@ -55,11 +55,11 @@ public abstract class CLicense<T>extends ASecurityChangeEntity<Long>
 	@Column (name = "c_key")
 	private String key;
 
-	//bi-directional many-to-one association to COrganization
+	//bi-directional many-to-one association to Organization
 	/** The organization. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_organization")
-	private COrganization organization;
+	private Organization organization;
 
 	/** The pk id. */
 	@Id
@@ -87,7 +87,7 @@ public abstract class CLicense<T>extends ASecurityChangeEntity<Long>
 	/**
 	 * Instantiates a new c licence.
 	 */
-	public CLicense ()
+	public License ()
 	{
 		flagPayed = false;
 	}
@@ -159,7 +159,7 @@ public abstract class CLicense<T>extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the organization
 	 */
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return this.organization;
 	}
@@ -259,7 +259,7 @@ public abstract class CLicense<T>extends ASecurityChangeEntity<Long>
 	 *
 	 * @param organization the new organization
 	 */
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}

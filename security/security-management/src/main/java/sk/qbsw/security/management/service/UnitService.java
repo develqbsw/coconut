@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.CAddress;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Address;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The Interface UnitService.
@@ -23,7 +23,7 @@ public interface UnitService extends Serializable
 	 *
 	 * @return the all units
 	 */
-	public List<CUnit> getAll ();
+	public List<Unit> getAll ();
 
 	/**
 	 * Gets the all units by user.
@@ -32,7 +32,7 @@ public interface UnitService extends Serializable
 	 * @return the all units
 	 * @throws CSecurityException throws if the user is null
 	 */
-	public List<CUnit> getAll (CUser user) throws CSecurityException;
+	public List<Unit> getAll (User user) throws CSecurityException;
 
 
 	/**
@@ -41,5 +41,5 @@ public interface UnitService extends Serializable
 	 * @param unit unit for which is address updated
 	 * @param address address which is added or updated for unit
 	 */
-	public void setAddress (CUnit unit, CAddress address);
+	public void setAddress (Unit unit, Address address);
 }

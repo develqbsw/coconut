@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.UnitService;
 import sk.qbsw.security.management.service.UserManagementService;
 import sk.qbsw.security.management.test.util.DataGenerator;
@@ -66,7 +66,7 @@ public class UnitTestCase
 	{
 		initTest();
 
-		List<CUnit> units = unitService.getAll();
+		List<Unit> units = unitService.getAll();
 
 		//asserts
 		assertNotNull("List of units is null", units);
@@ -84,11 +84,11 @@ public class UnitTestCase
 	{
 		initTest();
 
-		CUser userWithDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CUser userWithoutDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		User userWithDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		User userWithoutDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		//first user
-		List<CUnit> units = unitService.getAll(userWithDefaultUnit);
+		List<Unit> units = unitService.getAll(userWithDefaultUnit);
 
 		//asserts
 		assertNotNull("List of units is null", units);

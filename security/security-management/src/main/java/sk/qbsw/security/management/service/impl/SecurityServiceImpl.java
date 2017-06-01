@@ -20,10 +20,10 @@ import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.LicenseDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CLicense;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.License;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 import sk.qbsw.security.core.service.LicenseGenerator;
 import sk.qbsw.security.management.service.SecurityService;
@@ -84,11 +84,11 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 * Adds the license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#addLicense(sk.qbsw.security.core.core.model.domain.CLicense)
+	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#addLicense(sk.qbsw.security.core.core.model.domain.License)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void addLicense (CLicense<?> license)
+	public void addLicense (License<?> license)
 	{
 		license.recalculateLicensePrice(rules.getDayPricing());
 		licenseDao.update(license);
@@ -98,13 +98,13 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 * Delete license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#deleteLicense(sk.qbsw.security.core.core.model.domain.CLicense)
+	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#deleteLicense(sk.qbsw.security.core.core.model.domain.License)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void deleteLicense (CLicense<?> license)
+	public void deleteLicense (License<?> license)
 	{
-		CLicense<?> toModify = licenseDao.findById(license.getId());
+		License<?> toModify = licenseDao.findById(license.getId());
 		licenseDao.remove(toModify);
 	}
 
@@ -113,7 +113,7 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CLicense<?>> getAvailabelLicenses ()
+	public List<License<?>> getAvailabelLicenses ()
 	{
 		return licenseGenerator.getAvailableLicenses();
 	}
@@ -123,7 +123,7 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CLicense<?>> getAvailabelLicensesForCustomer ()
+	public List<License<?>> getAvailabelLicensesForCustomer ()
 	{
 		return licenseGenerator.getAvailableLicensesForCustomer();
 	}
@@ -136,7 +136,7 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public List<CGroup> getAvailableGroups ()
+	public List<Group> getAvailableGroups ()
 	{
 		return groupDao.findByFlagSystem(Boolean.FALSE);
 	}
@@ -146,13 +146,13 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 *
 	 * @param org the org
 	 * @return the organization licenses
-	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#getOrganizationLicenses(sk.qbsw.security.core.core.model.domain.COrganization)
+	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#getOrganizationLicenses(sk.qbsw.security.core.Organization.model.domain.COrganization)
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CLicense<?>> getOrganizationLicenses (COrganization org)
+	public List<License<?>> getOrganizationLicenses (Organization org)
 	{
-		COrganization organization = orgDao.findById(org.getId());
+		Organization organization = orgDao.findById(org.getId());
 		return new ArrayList<>(organization.getLicences());
 	}
 
@@ -168,7 +168,7 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	@Transactional (readOnly = true)
 	public boolean isLoginFree (String login, Long id)
 	{
-		CUser user;
+		User user;
 
 		try
 		{
@@ -194,13 +194,13 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 *
 	 * @param license the license
 	 * @param payed the payed
-	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#matchLicensePayment(sk.qbsw.security.core.core.model.domain.CLicense, java.lang.Boolean)
+	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#matchLicensePayment(sk.qbsw.security.core.core.model.domain.License, java.lang.Boolean)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void matchLicensePayment (CLicense<?> license, Boolean payed)
+	public void matchLicensePayment (License<?> license, Boolean payed)
 	{
-		CLicense<?> toModify = licenseDao.findById(license.getId());
+		License<?> toModify = licenseDao.findById(license.getId());
 		toModify.setFlagPayed(payed);
 		licenseDao.update(toModify);
 	}
@@ -209,11 +209,11 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	 * Update license.
 	 *
 	 * @param license the license
-	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#updateLicense(sk.qbsw.security.core.core.model.domain.CLicense)
+	 * @see sk.qbsw.security.core.SecurityService.management.service.ISecurityService#updateLicense(sk.qbsw.security.core.core.model.domain.License)
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void updateLicense (CLicense<?> license)
+	public void updateLicense (License<?> license)
 	{
 		licenseDao.update(license);
 	}

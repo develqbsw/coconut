@@ -8,14 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.UserUnitGroupDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.UserUnitGroup;
 import sk.qbsw.security.management.service.XUserUnitGroupService;
 
 /**
- * Service for CXUserUnitGroup entity operations 
+ * Service for UserUnitGroup entity operations 
  *
  * @author farkas.roman
  * @version 1.7.0
@@ -33,30 +33,30 @@ public class XUserUnitGroupServiceImpl extends AService implements XUserUnitGrou
 
 	@Override
 	@Transactional (readOnly = true)
-	public List<CXUserUnitGroup> getAll (CUser user, CUnit unit, CGroup group)
+	public List<UserUnitGroup> getAll (User user, Unit unit, Group group)
 	{
 		return xuugDao.findByUserAndUnitAndGroup(user, unit, group);
 	}
 
 	@Override
 	@Transactional (readOnly = true)
-	public List<CXUserUnitGroup> getAllByUser (CUser user)
+	public List<UserUnitGroup> getAllByUser (User user)
 	{
 		return getAll(user, null, null);
 	}
 
 	@Override
 	@Transactional
-	public void save (CXUserUnitGroup xuug)
+	public void save (UserUnitGroup xuug)
 	{
 		xuugDao.update(xuug);
 	}
 
 	@Override
 	@Transactional
-	public void saveAll (List<CXUserUnitGroup> xuugList)
+	public void saveAll (List<UserUnitGroup> xuugList)
 	{
-		for (CXUserUnitGroup xuug : xuugList)
+		for (UserUnitGroup xuug : xuugList)
 		{
 			xuugDao.update(xuug);
 		}
@@ -64,7 +64,7 @@ public class XUserUnitGroupServiceImpl extends AService implements XUserUnitGrou
 
 	@Override
 	@Transactional
-	public void remove (CXUserUnitGroup xuug)
+	public void remove (UserUnitGroup xuug)
 	{
 		if(xuug == null || xuug.getId() == null)
 		{

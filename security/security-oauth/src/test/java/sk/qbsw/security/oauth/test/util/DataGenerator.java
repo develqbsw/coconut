@@ -21,16 +21,16 @@ import sk.qbsw.security.core.dao.RoleDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.dao.UserUnitGroupDao;
-import sk.qbsw.security.core.model.domain.CAddress;
-import sk.qbsw.security.core.model.domain.CAuthenticationParams;
-import sk.qbsw.security.core.model.domain.CBlockedLogin;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CLicense;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.model.domain.Address;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.License;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.UserUnitGroup;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 import sk.qbsw.security.management.service.UserManagementService;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
@@ -139,27 +139,27 @@ public class DataGenerator
 	{
 		/** Create data. */
 		//organization
-		COrganization organization = createOrganization(ORGANIZATION_CODE);
+		Organization organization = createOrganization(ORGANIZATION_CODE);
 
 		//roles
-		CRole firstRole = createRole(FIRST_ROLE_CODE);
+		Role firstRole = createRole(FIRST_ROLE_CODE);
 
 		//groups
-		CGroup firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, true);
+		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, true);
 
 		//units
-		CUnit defaultUnit = createUnit(DEFAULT_UNIT_CODE);
+		Unit defaultUnit = createUnit(DEFAULT_UNIT_CODE);
 
 		//authentication params
-		CAuthenticationParams firstUserAuthenticationParams = createAuthenticationParams(FIRST_USER, "1111", null, null);
-		CAuthenticationParams secondUserAuthenticationParams = createAuthenticationParams(SECOND_USER, "1111", null, null);
+		AuthenticationParams firstUserAuthenticationParams = createAuthenticationParams(FIRST_USER, "1111", null, null);
+		AuthenticationParams secondUserAuthenticationParams = createAuthenticationParams(SECOND_USER, "1111", null, null);
 
 		//users
-		CUser firstUser = createUser(FIRST_USER);
-		CUser secondUser = createUser(SECOND_USER);
+		User firstUser = createUser(FIRST_USER);
+		User secondUser = createUser(SECOND_USER);
 
 		//license
-		CLicense<CLicensingRules> licenseOne = createLicense(LICENSE_KEY_ONE, true, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
+		License<CLicensingRules> licenseOne = createLicense(LICENSE_KEY_ONE, true, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
 
 		//tokens
 		AuthenticationToken authenticationToken = createAuthenticationToken(AUTHENTICATION_TOKEN, OffsetDateTime.now(), OffsetDateTime.now().plusHours(1), DEVICE_ID, TEST_IP_ONE);
@@ -170,11 +170,11 @@ public class DataGenerator
 		defaultUnit.setOrganization(organization);
 
 		//group <-> unit
-		Set<CGroup> groupsForDefaultUnit = new HashSet<CGroup>();
+		Set<Group> groupsForDefaultUnit = new HashSet<Group>();
 		groupsForDefaultUnit.add(firstGroupInUnit);
 
 		//group <-> role
-		Set<CGroup> groupsForFirstRole = new HashSet<CGroup>();
+		Set<Group> groupsForFirstRole = new HashSet<Group>();
 		groupsForFirstRole.add(firstGroupInUnit);
 
 		firstRole.setGroups(groupsForFirstRole);
@@ -255,9 +255,9 @@ public class DataGenerator
 	 * @throws CSecurityException the c security exception
 	 * @throws CBusinessException the c business exception
 	 */
-	private void setUserToGroup (CUser user, CGroup group, CUnit unit) throws CSecurityException, CBusinessException
+	private void setUserToGroup (User user, Group group, Unit unit) throws CSecurityException, CBusinessException
 	{
-		CXUserUnitGroup userUnitGroupRecord = new CXUserUnitGroup();
+		UserUnitGroup userUnitGroupRecord = new UserUnitGroup();
 		userUnitGroupRecord.setUser(user);
 		userUnitGroupRecord.setGroup(group);
 		userUnitGroupRecord.setUnit(unit);
@@ -270,7 +270,7 @@ public class DataGenerator
 	 * @param code the code
 	 * @return the c organization
 	 */
-	public COrganization createOrganization (String code)
+	public Organization createOrganization (String code)
 	{
 		return createOrganization(code, true);
 	}
@@ -282,9 +282,9 @@ public class DataGenerator
 	 * @param enabled the enabled
 	 * @return the c organization
 	 */
-	public COrganization createOrganization (String code, boolean enabled)
+	public Organization createOrganization (String code, boolean enabled)
 	{
-		COrganization organization = new COrganization();
+		Organization organization = new Organization();
 		organization.setCode(code);
 		organization.setName(code);
 		organization.setEmail(code + "@qbsw.sk");
@@ -300,9 +300,9 @@ public class DataGenerator
 	 *
 	 * @return the c address
 	 */
-	public CAddress createAddress ()
+	public Address createAddress ()
 	{
-		CAddress address = new CAddress();
+		Address address = new Address();
 		address.setCity("Bratislava");
 		//		address.setHouseNumber("123456789");
 		address.setState("Slovakia");
@@ -317,9 +317,9 @@ public class DataGenerator
 	 * @param code the code
 	 * @return the c role
 	 */
-	public CRole createRole (String code)
+	public Role createRole (String code)
 	{
-		CRole role = new CRole();
+		Role role = new Role();
 		role.setCode(code);
 
 		return role;
@@ -333,9 +333,9 @@ public class DataGenerator
 	 * @param flagSystem the flag system
 	 * @return the c group
 	 */
-	public CGroup createGroup (String code, String category, Boolean flagSystem)
+	public Group createGroup (String code, String category, Boolean flagSystem)
 	{
-		CGroup group = new CGroup();
+		Group group = new Group();
 		group.setCode(code);
 		group.setCategory(category);
 		group.setFlagSystem(flagSystem);
@@ -349,9 +349,9 @@ public class DataGenerator
 	 * @param code the code
 	 * @return the c unit
 	 */
-	public CUnit createUnit (String code)
+	public Unit createUnit (String code)
 	{
-		CUnit unit = new CUnit();
+		Unit unit = new Unit();
 		unit.setName(code);
 		unit.setAddress(createAddress());
 
@@ -364,7 +364,7 @@ public class DataGenerator
 	 * @param code the code
 	 * @return the c user
 	 */
-	public CUser createUser (String code)
+	public User createUser (String code)
 	{
 		return createUser(code, true);
 	}
@@ -376,9 +376,9 @@ public class DataGenerator
 	 * @param enabled the enabled
 	 * @return the c user
 	 */
-	public CUser createUser (String code, boolean enabled)
+	public User createUser (String code, boolean enabled)
 	{
-		CUser user = new CUser();
+		User user = new User();
 		user.setLogin(code);
 		user.setName(code);
 		user.setSurname(code);
@@ -396,7 +396,7 @@ public class DataGenerator
 	 * @param pin the pin
 	 * @return the c authentication params
 	 */
-	public CAuthenticationParams createAuthenticationParams (String code, String pin)
+	public AuthenticationParams createAuthenticationParams (String code, String pin)
 	{
 		return createAuthenticationParams(code, pin, null, null);
 	}
@@ -410,9 +410,9 @@ public class DataGenerator
 	 * @param validTo the valid to
 	 * @return the c authentication params
 	 */
-	public CAuthenticationParams createAuthenticationParams (String code, String pin, OffsetDateTime validFrom, OffsetDateTime validTo)
+	public AuthenticationParams createAuthenticationParams (String code, String pin, OffsetDateTime validFrom, OffsetDateTime validTo)
 	{
-		CAuthenticationParams userAuthParams = new CAuthenticationParams();
+		AuthenticationParams userAuthParams = new AuthenticationParams();
 		userAuthParams.setPassword(code);
 		userAuthParams.setPin(pin);
 		userAuthParams.setValidFrom(validFrom);
@@ -427,7 +427,7 @@ public class DataGenerator
 	 * @param code the code
 	 * @return the c authentication params
 	 */
-	public CAuthenticationParams createAuthenticationParams (String code)
+	public AuthenticationParams createAuthenticationParams (String code)
 	{
 		return createAuthenticationParams(code, null, null, null);
 	}
@@ -440,7 +440,7 @@ public class DataGenerator
 	 * @param validTo the valid to
 	 * @return the c authentication params
 	 */
-	public CAuthenticationParams createAuthenticationParams (String code, OffsetDateTime validFrom, OffsetDateTime validTo)
+	public AuthenticationParams createAuthenticationParams (String code, OffsetDateTime validFrom, OffsetDateTime validTo)
 	{
 		return createAuthenticationParams(code, null, validFrom, validTo);
 	}
@@ -455,9 +455,9 @@ public class DataGenerator
 	 * @param blockedTo the blocked to
 	 * @return the c blocked login
 	 */
-	public CBlockedLogin createBlockedLogin (String login, String ip, int invalidLoginCount, OffsetDateTime blockedFrom, OffsetDateTime blockedTo)
+	public BlockedLogin createBlockedLogin (String login, String ip, int invalidLoginCount, OffsetDateTime blockedFrom, OffsetDateTime blockedTo)
 	{
-		CBlockedLogin blockedLogin = new CBlockedLogin();
+		BlockedLogin blockedLogin = new BlockedLogin();
 		blockedLogin.setLogin(login);
 		blockedLogin.setIp(ip);
 		blockedLogin.setInvalidLoginCount(invalidLoginCount);
@@ -478,9 +478,9 @@ public class DataGenerator
 	 * @param validTo the valid to
 	 * @return the c license
 	 */
-	public CLicense<CLicensingRules> createLicense (String key, Boolean flagPayed, BigDecimal price, String taxId, Calendar validFrom, Calendar validTo)
+	public License<CLicensingRules> createLicense (String key, Boolean flagPayed, BigDecimal price, String taxId, Calendar validFrom, Calendar validTo)
 	{
-		CLicense<CLicensingRules> license = new LicenseFree();
+		License<CLicensingRules> license = new LicenseFree();
 		license.setKey(key);
 		license.setFlagPayed(flagPayed);
 		license.setPrice(price);

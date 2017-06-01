@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CAuthenticationParams;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
@@ -58,8 +58,8 @@ public class CAuthenticationParamsJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
-		CAuthenticationParams authenticationParams = authenticationParamsDao.findOneByUserId(user.getId());
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		AuthenticationParams authenticationParams = authenticationParamsDao.findOneByUserId(user.getId());
 
 		//asserts
 		assertNotNull("No authentication params found", authenticationParams);
@@ -92,8 +92,8 @@ public class CAuthenticationParamsJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
-		CAuthenticationParams authenticationParams = authenticationParamsDao.findOneValidByUserId(user.getId());
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
+		AuthenticationParams authenticationParams = authenticationParamsDao.findOneValidByUserId(user.getId());
 
 		//asserts
 		assertNotNull("No authentication params found", authenticationParams);

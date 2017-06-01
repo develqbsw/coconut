@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
@@ -41,7 +41,7 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 		checkMasterToken(persistedMasterToken, ip);
 
 		AuthenticationToken authenticationToken = authenticationTokenDao.findByUserAndDevice(userId, deviceId);
-		CUser user = userDao.findById(userId);
+		User user = userDao.findById(userId);
 
 		//performs checks
 		if (authenticationToken != null)
@@ -91,7 +91,7 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 	 */
 	@Override
 	@Transactional
-	public CUser getUserByAuthenticationToken (String token, String deviceId, String ip) throws CBusinessException
+	public User getUserByAuthenticationToken (String token, String deviceId, String ip) throws CBusinessException
 	{
 		AuthenticationToken persistedToken = authenticationTokenDao.findByTokenAndDeviceId(token, deviceId);
 

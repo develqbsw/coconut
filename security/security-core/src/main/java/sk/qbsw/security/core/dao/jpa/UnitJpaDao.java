@@ -10,10 +10,10 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.QCUnit;
-import sk.qbsw.security.core.model.domain.QCUser;
-import sk.qbsw.security.core.model.domain.QCXUserUnitGroup;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.QUnit;
+import sk.qbsw.security.core.model.domain.QUser;
+import sk.qbsw.security.core.model.domain.QUserUnitGroup;
 
 import javax.persistence.NoResultException;
 import java.util.List;
@@ -26,14 +26,14 @@ import java.util.List;
  * @since 1.6.0
  */
 @Repository (value = "unitDao")
-public class UnitJpaDao extends AEntityQDslDao<Long, CUnit> implements UnitDao
+public class UnitJpaDao extends AEntityQDslDao<Long, Unit> implements UnitDao
 {
 	/**
 	 * Instantiates a new unit jpa dao.
 	 */
 	public UnitJpaDao ()
 	{
-		super(QCUnit.cUnit, Long.class);
+		super(QUnit.unit, Long.class);
 	}
 
 	/*
@@ -41,17 +41,17 @@ public class UnitJpaDao extends AEntityQDslDao<Long, CUnit> implements UnitDao
 	 * @see sk.qbsw.security.core.core.dao.IUnitDao#findOneByName(java.lang.String)
 	 */
 	@Override
-	public CUnit findOneByName (String name) throws NoResultException, CSecurityException
+	public Unit findOneByName (String name) throws NoResultException, CSecurityException
 	{
 		if (name == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QCUnit qUnit = QCUnit.cUnit;
+		QUnit qUnit = QUnit.unit;
 
 		// create query
-		JPAQuery<CUnit> query = queryFactory.selectFrom(qUnit).distinct().leftJoin(qUnit.groups).fetchJoin().leftJoin(qUnit.organization).fetchJoin().where(qUnit.name.eq(name));
+		JPAQuery<Unit> query = queryFactory.selectFrom(qUnit).distinct().leftJoin(qUnit.groups).fetchJoin().leftJoin(qUnit.organization).fetchJoin().where(qUnit.name.eq(name));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
@@ -60,19 +60,19 @@ public class UnitJpaDao extends AEntityQDslDao<Long, CUnit> implements UnitDao
 	 * @see sk.qbsw.security.core.core.dao.IUnitDao#findByUserId(java.lang.Long)
 	 */
 	@Override
-	public List<CUnit> findByUserId (Long userId) throws CSecurityException
+	public List<Unit> findByUserId (Long userId) throws CSecurityException
 	{
 		if (userId == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QCUnit qUnit = QCUnit.cUnit;
-		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
-		QCUser qUser = QCUser.cUser;
+		QUnit qUnit = QUnit.unit;
+		QUserUnitGroup qUserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QUser qUser = QUser.user;
 
 		// create query
-		JPAQuery<CUnit> query = queryFactory.selectFrom(qUnit).distinct().join(qUnit.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.id.eq(userId)).orderBy(qUnit.name.asc());
+		JPAQuery<Unit> query = queryFactory.selectFrom(qUnit).distinct().join(qUnit.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.id.eq(userId)).orderBy(qUnit.name.asc());
 		return query.fetch();
 	}
 }

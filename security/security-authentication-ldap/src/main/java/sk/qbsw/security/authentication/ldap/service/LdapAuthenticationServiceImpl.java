@@ -24,9 +24,9 @@ import sk.qbsw.security.authentication.ldap.provider.LDAPInjectionProtector;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The LDAP authentication service.
@@ -69,7 +69,7 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, CRole role)
+	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, Role role)
 	{
 		try
 		{
@@ -89,7 +89,7 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	public User login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginUser(login, password, null);
 	}
@@ -101,9 +101,9 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, CRole role) throws CSecurityException
+	public User login (String login, @CNotLogged @CNotAuditLogged String password, Role role) throws CSecurityException
 	{
-		CUser user = loginUser(login, password, null);
+		User user = loginUser(login, password, null);
 
 		// checks if the user has the role
 		if (!user.hasRole(role))
@@ -121,10 +121,10 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public CUser login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	public User login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
-		CUnit databaseUnit = null;
-		CUser user = null;
+		Unit databaseUnit = null;
+		User user = null;
 
 		try
 		{
@@ -156,11 +156,11 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	private CUser loginUser (String login, String password, CUnit unit) throws CSecurityException
+	private User loginUser (String login, String password, Unit unit) throws CSecurityException
 	{
 		// gets user from ldap - all information in this object are now from
 		// ldap
-		CUser user;
+		User user;
 
 		try
 		{

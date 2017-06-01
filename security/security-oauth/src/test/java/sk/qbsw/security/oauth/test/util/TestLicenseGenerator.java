@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import org.springframework.stereotype.Component;
 
-import sk.qbsw.security.core.model.domain.CLicense;
+import sk.qbsw.security.core.model.domain.License;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 import sk.qbsw.security.core.service.LicenseGenerator;
 import sk.qbsw.security.oauth.test.util.domain.LicenseFree;
@@ -31,9 +31,9 @@ public class TestLicenseGenerator implements LicenseGenerator
 	 * @return the c license
 	 */
 	@Override
-	public CLicense<CLicensingRules> generateFreeLicence (int months)
+	public License<CLicensingRules> generateFreeLicence (int months)
 	{
-		CLicense<CLicensingRules> licence = new LicenseFree();
+		License<CLicensingRules> licence = new LicenseFree();
 
 		Calendar validFrom = Calendar.getInstance();
 		Calendar validTo = Calendar.getInstance();
@@ -50,9 +50,9 @@ public class TestLicenseGenerator implements LicenseGenerator
 	 *
 	 * @return the c licence
 	 */
-	public CLicense<?> generateOwnerLicence ()
+	public License<?> generateOwnerLicence ()
 	{
-		CLicense<CLicensingRules> licence = new LicenseFree();
+		License<CLicensingRules> licence = new LicenseFree();
 
 		Calendar validTo = Calendar.getInstance();
 		validTo.add(Calendar.YEAR, 100);
@@ -69,9 +69,9 @@ public class TestLicenseGenerator implements LicenseGenerator
 	 * @see sk.qbsw.core.security.LicenseGenerator.ILicenseGenerator#getAvailableLicenses()
 	 */
 	@Override
-	public ArrayList<CLicense<?>> getAvailableLicenses ()
+	public ArrayList<License<?>> getAvailableLicenses ()
 	{
-		ArrayList<CLicense<?>> retVal = new ArrayList<CLicense<?>>();
+		ArrayList<License<?>> retVal = new ArrayList<License<?>>();
 		retVal.add(new LicenseFree());
 		retVal.add(new LicenseFree());
 
@@ -85,9 +85,9 @@ public class TestLicenseGenerator implements LicenseGenerator
 	 * @see sk.qbsw.core.security.LicenseGenerator.ILicenseGenerator#getAvailableLicenses()
 	 */
 	@Override
-	public ArrayList<CLicense<?>> getAvailableLicensesForCustomer ()
+	public ArrayList<License<?>> getAvailableLicensesForCustomer ()
 	{
-		ArrayList<CLicense<?>> retVal = new ArrayList<CLicense<?>>();
+		ArrayList<License<?>> retVal = new ArrayList<License<?>>();
 		retVal.add(new LicenseFree());
 		retVal.add(new LicenseFree());
 

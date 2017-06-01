@@ -16,9 +16,9 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
@@ -63,7 +63,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CGroup> groups = groupDao.findByFlagSystem(true);
+		List<Group> groups = groupDao.findByFlagSystem(true);
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -79,7 +79,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CGroup> groups = groupDao.findByFlagSystem(false);
+		List<Group> groups = groupDao.findByFlagSystem(false);
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -95,7 +95,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CGroup> groups = groupDao.findAll();
+		List<Group> groups = groupDao.findAll();
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -113,7 +113,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CGroup group = groupDao.findOneByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		Group group = groupDao.findOneByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
 		//asserts
 		assertNotNull("No groups found", group);
@@ -160,9 +160,9 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		//get unit
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		CGroup group = groupDao.findOneByCodeAndUnit(DataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
+		Group group = groupDao.findOneByCodeAndUnit(DataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
 
 		//asserts
 		assertNotNull("No groups found", group);
@@ -180,7 +180,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CGroup group = groupDao.findOneByCodeAndUnit(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE, null);
+		Group group = groupDao.findOneByCodeAndUnit(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE, null);
 
 		//asserts
 		assertNotNull("No groups found", group);
@@ -227,9 +227,9 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		//get unit
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<CGroup> groups = groupDao.findByUnit(unit);
+		List<Group> groups = groupDao.findByUnit(unit);
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -247,7 +247,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CGroup> groups = groupDao.findByUnit(null);
+		List<Group> groups = groupDao.findByUnit(null);
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -266,10 +266,10 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		//get unit
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
-		List<CGroup> groups = groupDao.findByUnitAndUser(unit, user);
+		List<Group> groups = groupDao.findByUnitAndUser(unit, user);
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -288,9 +288,9 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		//get unit
-		CUnit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<CGroup> groups = groupDao.findByUnitAndUser(unit, null);
+		List<Group> groups = groupDao.findByUnitAndUser(unit, null);
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -309,9 +309,9 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		//get unit
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
-		List<CGroup> groups = groupDao.findByUnitAndUser(null, user);
+		List<Group> groups = groupDao.findByUnitAndUser(null, user);
 
 		//asserts
 		assertNotNull("No groups found", groups);
@@ -329,7 +329,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CGroup> groups = groupDao.findByUnitAndUser(null, null);
+		List<Group> groups = groupDao.findByUnitAndUser(null, null);
 
 		//asserts
 		assertNotNull("No groups found", groups);

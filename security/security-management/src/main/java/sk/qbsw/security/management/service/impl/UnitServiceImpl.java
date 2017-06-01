@@ -10,9 +10,9 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.AddressDao;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.model.domain.CAddress;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Address;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.UnitService;
 
 /**
@@ -42,7 +42,7 @@ public class UnitServiceImpl extends AService implements UnitService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUnit> getAll ()
+	public List<Unit> getAll ()
 	{
 		return unitDao.findAll();
 	}
@@ -52,7 +52,7 @@ public class UnitServiceImpl extends AService implements UnitService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CUnit> getAll (CUser user) throws CSecurityException
+	public List<Unit> getAll (User user) throws CSecurityException
 	{
 		return unitDao.findByUserId(user.getId());
 	}
@@ -62,7 +62,7 @@ public class UnitServiceImpl extends AService implements UnitService
 	 */
 	@Override
 	@Transactional
-	public void setAddress (CUnit unit, CAddress address)
+	public void setAddress (Unit unit, Address address)
 	{
 		//set address to unit
 		unit.setAddress(address);

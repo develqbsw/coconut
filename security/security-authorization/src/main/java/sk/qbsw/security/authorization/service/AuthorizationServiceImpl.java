@@ -16,9 +16,9 @@ import sk.qbsw.core.security.base.exception.InvalidUserException;
 import sk.qbsw.security.core.dao.RoleDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The database authorization service.
@@ -57,10 +57,10 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public void checkAccessRights (String login, CRole role, String unit, String category) throws CSecurityException
+	public void checkAccessRights (String login, Role role, String unit, String category) throws CSecurityException
 	{
-		CUnit localUnit = getUnitByName(unit);
-		CUser user;
+		Unit localUnit = getUnitByName(unit);
+		User user;
 		try
 		{
 			user = getUserByLoginAndUnit(login, localUnit);
@@ -96,7 +96,7 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<CRole> getRoleByCode (String code)
+	public List<Role> getRoleByCode (String code)
 	{
 
 		return roleDao.findByCode(code);
@@ -109,7 +109,7 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 	 * @return the unit by name
 	 * @throws CSecurityException the security exception
 	 */
-	private CUnit getUnitByName (String unitName) throws CSecurityException
+	private Unit getUnitByName (String unitName) throws CSecurityException
 	{
 		if (unitName != null)
 		{
@@ -139,9 +139,9 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException the login is null
 	 */
-	private CUser getUserByLoginAndUnit (String login, CUnit unit) throws CSecurityException
+	private User getUserByLoginAndUnit (String login, Unit unit) throws CSecurityException
 	{
-		CUser user;
+		User user;
 
 		if (unit == null)
 		{

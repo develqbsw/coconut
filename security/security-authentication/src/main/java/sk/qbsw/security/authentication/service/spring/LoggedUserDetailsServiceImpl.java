@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,10 +24,10 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.model.spring.LoggedUser;
 import sk.qbsw.security.core.dao.RoleDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CLicense;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.License;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.User;
 
 
 /**
@@ -67,7 +66,7 @@ public class LoggedUserDetailsServiceImpl extends AService implements UserDetail
 	{
 		try
 		{
-			CUser user = userDao.findOneByLogin(username);
+			User user = userDao.findOneByLogin(username);
 
 			return buildUserFromEntity(user);
 		}
@@ -84,7 +83,7 @@ public class LoggedUserDetailsServiceImpl extends AService implements UserDetail
 	 * @return the user
 	 * @throws CSecurityException throws if the entity is null
 	 */
-	private User buildUserFromEntity (CUser entity) throws CSecurityException
+	private org.springframework.security.core.userdetails.User buildUserFromEntity (User entity) throws CSecurityException
 	{
 		String username = entity.getLogin();
 		String password = entity.getPassword();
@@ -93,17 +92,17 @@ public class LoggedUserDetailsServiceImpl extends AService implements UserDetail
 
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-		for (CRole role : roleDao.findByUser(entity))
+		for (Role role : roleDao.findByUser(entity))
 		{
 			authorities.add(new SimpleGrantedAuthority(role.getCode()));
 		}
 
 		// validity of organization
-		COrganization org = entity.getOrganization();
+		Organization org = entity.getOrganization();
 		boolean credentialsNonExpired = org.getFlagEnabled();
 
 		// check existence of at least one licence
-		CLicense<?> actualLicense = org.getMainLicense();
+		License<?> actualLicense = org.getMainLicense();
 		boolean accountNonLocked = actualLicense == null ? false : true;
 
 		LoggedUser user = new LoggedUser(org, actualLicense, username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);

@@ -25,14 +25,14 @@ import java.util.List;
  * @since 1.0.0
  */
 @Repository (value = "roleDao")
-public class RoleJpaDao extends AEntityQDslDao<Long, CRole> implements RoleDao
+public class RoleJpaDao extends AEntityQDslDao<Long, Role> implements RoleDao
 {
 	/**
 	 * Instantiates a new role jpa dao.
 	 */
 	public RoleJpaDao ()
 	{
-		super(QCRole.cRole, Long.class);
+		super(QRole.role, Long.class);
 	}
 
 	/*
@@ -40,20 +40,20 @@ public class RoleJpaDao extends AEntityQDslDao<Long, CRole> implements RoleDao
 	 * @see sk.qbsw.security.core.core.dao.IRoleDao#findByUser(sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
-	public List<CRole> findByUser (CUser user) throws CSecurityException
+	public List<Role> findByUser (User user) throws CSecurityException
 	{
 		if (user == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QCRole qRole = QCRole.cRole;
-		QCGroup qGroup = QCGroup.cGroup;
-		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
-		QCUser qUser = QCUser.cUser;
+		QRole qRole = QRole.role;
+		QGroup qGroup = QGroup.group;
+		QUserUnitGroup qUserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QUser qUser = QUser.user;
 
 		// create query
-		JPAQuery<CRole> query = queryFactory.selectFrom(qRole).distinct().join(qRole.groups, qGroup).join(qGroup.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.eq(user));
+		JPAQuery<Role> query = queryFactory.selectFrom(qRole).distinct().join(qRole.groups, qGroup).join(qGroup.xUserUnitGroups, qUserUnitGroup).join(qUserUnitGroup.user, qUser).where(qUser.eq(user));
 		return query.fetch();
 	}
 
@@ -63,12 +63,12 @@ public class RoleJpaDao extends AEntityQDslDao<Long, CRole> implements RoleDao
 	 */
 	@Deprecated
 	@Override
-	public List<CRole> findByCode (String code)
+	public List<Role> findByCode (String code)
 	{
-		QCRole qRole = QCRole.cRole;
+		QRole qRole = QRole.role;
 
 		// create query
-		JPAQuery<CRole> query = queryFactory.selectFrom(qRole).where(qRole.code.eq(code));
+		JPAQuery<Role> query = queryFactory.selectFrom(qRole).where(qRole.code.eq(code));
 		return query.fetch();
 	}
 
@@ -77,17 +77,17 @@ public class RoleJpaDao extends AEntityQDslDao<Long, CRole> implements RoleDao
 	 * @see sk.qbsw.security.core.core.dao.IRoleDao#findOneByCode(java.lang.String)
 	 */
 	@Override
-	public CRole findOneByCode (String code) throws NonUniqueResultException, NoResultException, CSecurityException
+	public Role findOneByCode (String code) throws NonUniqueResultException, NoResultException, CSecurityException
 	{
 		if (code == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QCRole qRole = QCRole.cRole;
+		QRole qRole = QRole.role;
 
 		// create query
-		JPAQuery<CRole> query = queryFactory.selectFrom(qRole).where(qRole.code.eq(code));
+		JPAQuery<Role> query = queryFactory.selectFrom(qRole).where(qRole.code.eq(code));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 }

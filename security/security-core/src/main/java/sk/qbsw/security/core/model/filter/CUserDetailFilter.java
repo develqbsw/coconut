@@ -1,6 +1,6 @@
 package sk.qbsw.security.core.model.filter;
 
-import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.Organization;
 
 /**
  * User details filter.
@@ -31,7 +31,7 @@ public class CUserDetailFilter
 	private String groupCodePrefix;
 
 	/** The organization. */
-	private COrganization organization;
+	private Organization organization;
 
 	/**
 	 * Gets the name.
@@ -158,7 +158,7 @@ public class CUserDetailFilter
 	 *
 	 * @return the organization
 	 */
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return organization;
 	}
@@ -168,7 +168,7 @@ public class CUserDetailFilter
 	 *
 	 * @param organization the new organization
 	 */
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}

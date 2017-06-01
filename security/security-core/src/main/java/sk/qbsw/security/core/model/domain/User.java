@@ -36,7 +36,7 @@ import com.google.gson.annotations.Expose;
 import sk.qbsw.core.base.exception.CSystemException;
 
 /**
- * The Class CUser.
+ * The Class User.
  * 
  * @author Dalibor Rak
  * @author Tomas Lauro
@@ -51,7 +51,7 @@ import sk.qbsw.core.base.exception.CSystemException;
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("user")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
-public class CUser extends ASecurityChangeEntity<Long>
+public class User extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -98,28 +98,28 @@ public class CUser extends ASecurityChangeEntity<Long>
 	@Column (name = "c_working_position")
 	private String workingPosition;
 
-	// bi-directional many-to-one association to COrganization
+	// bi-directional many-to-one association to Organization
 	/** The organization. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_organization", nullable = false)
 	@Expose
-	private COrganization organization;
+	private Organization organization;
 
 	// bi-directional many-to-many association to cross entity to group and unit
 	/** set of cross entities. */
 	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY)
 	@Filter (name = "userDefaultUnitFilter", condition = "( (fk_unit = (select us.fk_default_unit from sec.t_user us where us.pk_id = fk_user)) or ( (select us.fk_default_unit from sec.t_user us where us.pk_id = fk_user) is null and fk_unit is null) )")
-	private Set<CXUserUnitGroup> xUserUnitGroups;
+	private Set<UserUnitGroup> xUserUnitGroups;
 
 	/** The default user's unit. */
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "fk_default_unit", nullable = true)
 	@Expose
-	private CUnit defaultUnit;
+	private Unit defaultUnit;
 
 	/** The authentication params. */
 	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY)
-	private List<CAuthenticationParams> authenticationParams;
+	private List<AuthenticationParams> authenticationParams;
 
 	/** The user type. */
 	@Column (name = "c_type", nullable = true)
@@ -129,14 +129,14 @@ public class CUser extends ASecurityChangeEntity<Long>
 	/**  User address. */
 	@ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumn (name = "fk_address", nullable = true)
-	private CAddress address;
+	private Address address;
 
 	/**
 	 * Instantiates a new c user.
 	 */
-	public CUser ()
+	public User ()
 	{
-		xUserUnitGroups = new HashSet<CXUserUnitGroup>();
+		xUserUnitGroups = new HashSet<UserUnitGroup>();
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return the organization
 	 */
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return this.organization;
 	}
@@ -297,7 +297,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * @param organization
 	 *            the new organization
 	 */
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}
@@ -310,11 +310,11 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return the groups
 	 */
-	public Set<CGroup> getGroups ()
+	public Set<Group> getGroups ()
 	{
-		Set<CGroup> groups = new HashSet<CGroup>();
+		Set<Group> groups = new HashSet<Group>();
 
-		for (CXUserUnitGroup xuug : xUserUnitGroups)
+		for (UserUnitGroup xuug : xUserUnitGroups)
 		{
 			groups.add(xuug.getGroup());
 		}
@@ -327,14 +327,14 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @param unit the unit
 	 * @return the groups in unit
-	 * @deprecated misunderstanding of concept. use {@link CGroupService#getByUnitUser(CUnit, CUser)}}.
+	 * @deprecated misunderstanding of concept. use {@link CGroupService#getByUnitUser(Unit, User)}}.
 	 */
 	@Deprecated
-	public Set<CGroup> getGroupsInUnit (CUnit unit)
+	public Set<Group> getGroupsInUnit (Unit unit)
 	{
-		Set<CGroup> groups = new HashSet<CGroup>();
+		Set<Group> groups = new HashSet<Group>();
 
-		for (CXUserUnitGroup xuug : xUserUnitGroups)
+		for (UserUnitGroup xuug : xUserUnitGroups)
 		{
 			if (xuug.getUnit().getName().equals(unit.getName()))
 			{
@@ -349,12 +349,12 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * Adds the group.
 	 *
 	 * @param grp the grp
-	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(User, Group)}
 	 */
 	@Deprecated
-	public void addGroup (CGroup grp)
+	public void addGroup (Group grp)
 	{
-		CXUserUnitGroup xuug = new CXUserUnitGroup();
+		UserUnitGroup xuug = new UserUnitGroup();
 		xuug.setGroup(grp);
 		xuug.setUser(this);
 		xUserUnitGroups.add(xuug);
@@ -365,12 +365,12 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @param grp the grp
 	 * @param unt unit
-	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup, CUnit)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(User, Group, Unit)}
 	 */
 	@Deprecated
-	public void addGroupUnit (CGroup grp, CUnit unt)
+	public void addGroupUnit (Group grp, Unit unt)
 	{
-		CXUserUnitGroup xuug = new CXUserUnitGroup();
+		UserUnitGroup xuug = new UserUnitGroup();
 		xuug.setGroup(grp);
 		xuug.setUnit(unt);
 		xuug.setUser(this);
@@ -381,12 +381,12 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * bind groups with this user.
 	 *
 	 * @param groups the new groups
-	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(User, Group)}
 	 */
 	@Deprecated
-	public void setGroups (Set<CGroup> groups)
+	public void setGroups (Set<Group> groups)
 	{
-		for (CGroup group : groups)
+		for (Group group : groups)
 		{
 			addGroup(group);
 		}
@@ -397,12 +397,12 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @param groups the groups
 	 * @param unit the unit
-	 * @deprecated use {@link CUserManagementService#setUserToGroup(CUser, CGroup)}
+	 * @deprecated use {@link CUserManagementService#setUserToGroup(User, Group)}
 	 */
 	@Deprecated
-	public void setGroupsUnit (Set<CGroup> groups, CUnit unit)
+	public void setGroupsUnit (Set<Group> groups, Unit unit)
 	{
-		for (CGroup group : groups)
+		for (Group group : groups)
 		{
 			addGroupUnit(group, unit);
 		}
@@ -413,7 +413,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * 
 	 * @param group the new main group
 	 */
-	public void setMainGroup (CGroup group)
+	public void setMainGroup (Group group)
 	{
 		xUserUnitGroups.clear();
 		addGroup(group);
@@ -424,7 +424,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return the main group
 	 */
-	public CGroup getMainGroup ()
+	public Group getMainGroup ()
 	{
 		return xUserUnitGroups.iterator().next().getGroup();
 	}
@@ -495,7 +495,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return the default unit
 	 */
-	public CUnit getDefaultUnit ()
+	public Unit getDefaultUnit ()
 	{
 		return defaultUnit;
 	}
@@ -506,7 +506,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * @param defaultUnit
 	 *            the new default unit
 	 */
-	public void setDefaultUnit (CUnit defaultUnit)
+	public void setDefaultUnit (Unit defaultUnit)
 	{
 		this.defaultUnit = defaultUnit;
 	}
@@ -516,7 +516,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * 
 	 * @return the authentication params
 	 */
-	private CAuthenticationParams getAuthenticationParams ()
+	private AuthenticationParams getAuthenticationParams ()
 	{
 		if (authenticationParams.size() == 1)
 		{
@@ -564,9 +564,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *            needed role
 	 * @return true / false
 	 */
-	public boolean hasRole (CRole role)
+	public boolean hasRole (Role role)
 	{
-		for (CGroup group : getGroups())
+		for (Group group : getGroups())
 		{
 			if (group.hasRole(role))
 			{
@@ -586,12 +586,12 @@ public class CUser extends ASecurityChangeEntity<Long>
 	{
 		List<String> retVal = new ArrayList<String>();
 
-		for (CGroup group : getGroups())
+		for (Group group : getGroups())
 		{
-			Set<CRole> roles = group.getRoles();
-			for (CRole cRole : roles)
+			Set<Role> roles = group.getRoles();
+			for (Role role : roles)
 			{
-				retVal.add(cRole.getCode());
+				retVal.add(role.getCode());
 			}
 		}
 
@@ -605,9 +605,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *            the unit
 	 * @return true / false
 	 */
-	public boolean isInUnit (CUnit unit)
+	public boolean isInUnit (Unit unit)
 	{
-		for (CGroup group : getGroups())
+		for (Group group : getGroups())
 		{
 			if (group.hasUnit(unit))
 			{
@@ -625,9 +625,9 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 * @param role the role
 	 * @return true / false
 	 */
-	public boolean hasCategory (String category, CRole role)
+	public boolean hasCategory (String category, Role role)
 	{
-		for (CGroup group : getGroups())
+		for (Group group : getGroups())
 		{
 			if (group.hasCategory(category, role) == true)
 			{
@@ -643,7 +643,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the xUserUnitGroups
 	 */
-	public Set<CXUserUnitGroup> getxUserUnitGroups ()
+	public Set<UserUnitGroup> getxUserUnitGroups ()
 	{
 		return xUserUnitGroups;
 	}
@@ -653,7 +653,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @param xUserUnitGroups            the xUserUnitGroups to set
 	 */
-	public void setxUserUnitGroups (Set<CXUserUnitGroup> xUserUnitGroups)
+	public void setxUserUnitGroups (Set<UserUnitGroup> xUserUnitGroups)
 	{
 		this.xUserUnitGroups = xUserUnitGroups;
 	}
@@ -663,7 +663,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the address
 	 */
-	public CAddress getAddress ()
+	public Address getAddress ()
 	{
 		return address;
 	}
@@ -673,7 +673,7 @@ public class CUser extends ASecurityChangeEntity<Long>
 	 *
 	 * @param address            the address to set
 	 */
-	public void setAddress (CAddress address)
+	public void setAddress (Address address)
 	{
 		this.address = address;
 	}
@@ -709,12 +709,12 @@ public class CUser extends ASecurityChangeEntity<Long>
 			return true;
 		}
 
-		if ( (object instanceof CUser) == false)
+		if ( (object instanceof User) == false)
 		{
 			return false;
 		}
 
-		CUser user = (CUser) object;
+		User user = (User) object;
 		return ( (getId() != null && getId().equals(user.getId())) || (getId() == null && user.getId() == null)) && ( (getLogin() != null && getLogin().equals(user.getLogin())) || (getLogin() == null && user.getLogin() == null)) && ( (getName() != null && getName().equals(user.getName())) || (getName() == null && user.getName() == null)) && ( (getSurname() != null && getSurname().equals(user.getSurname())) || (getSurname() == null && user.getSurname() == null)) && ( (getEmail() != null && getEmail().equals(user.getEmail())) || (getEmail() == null && user.getEmail() == null));
 	}
 

@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
@@ -58,7 +58,7 @@ public class UnitJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUnit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
+		Unit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
 
 		//asserts
 		assertNotNull("No unit found", unit);
@@ -104,9 +104,9 @@ public class UnitJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		User user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
-		List<CUnit> units = unitDao.findByUserId(user.getId());
+		List<Unit> units = unitDao.findByUserId(user.getId());
 
 		//asserts
 		assertNotNull("No units found", units);
@@ -124,7 +124,7 @@ public class UnitJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<CUnit> units = unitDao.findByUserId(89238947289347l);
+		List<Unit> units = unitDao.findByUserId(89238947289347l);
 
 		//asserts
 		assertNotNull("No units found", units);

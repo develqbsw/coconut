@@ -2,7 +2,7 @@ package sk.qbsw.security.management.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.model.domain.CBlockedLogin;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
 
 /**
  * The Interface LoginBlockingService.
@@ -32,11 +32,11 @@ public interface LoginBlockingService
 	 * @param blockedLogin
 	 * @param login the login
 	 * @param ip the ip
-	 * @return updated or inserted {@link CBlockedLogin}
+	 * @return updated or inserted {@link BlockedLogin}
 	 * @throws CSystemException
 	 * @throws CSecurityException
 	 */
-	public abstract CBlockedLogin increaseInvalidLoginCounter (CBlockedLogin blockedLogin,String login,String ip) throws CSystemException, CSecurityException;
+	public abstract BlockedLogin increaseInvalidLoginCounter (BlockedLogin blockedLogin,String login,String ip) throws CSystemException, CSecurityException;
 
 	/**
 	 * Increase invalid login counter.
@@ -75,7 +75,7 @@ public interface LoginBlockingService
 	 * @throws CSystemException
 	 * @throws CSecurityException
 	 */
-	public abstract void resetInvalidLoginCounter (CBlockedLogin blockedLogin) throws CSystemException, CSecurityException;
+	public abstract void resetInvalidLoginCounter (BlockedLogin blockedLogin) throws CSystemException, CSecurityException;
 
 	/**
 	 * Reset invalid login counter. The user parameter on input is not checked and should be obtained before calling this method. Login is not checked for valid user
@@ -102,9 +102,9 @@ public interface LoginBlockingService
 	 * finds blocked login by login and ip
 	 * @param login
 	 * @param ip
-	 * @return {@link CBlockedLogin} or null if entity does not exist
+	 * @return {@link BlockedLogin} or null if entity does not exist
 	 * @throws CSystemException
 	 */
-	public abstract CBlockedLogin findBlockedLogin (String login, String ip) throws CSystemException;
+	public abstract BlockedLogin findBlockedLogin (String login, String ip) throws CSystemException;
 
 }

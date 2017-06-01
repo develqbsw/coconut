@@ -20,8 +20,8 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.PasswordFormatException;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.CAuthenticationParams;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
@@ -107,7 +107,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	@Transactional (readOnly = false)
 	public void changeLogin (Long userId, String login)
 	{
-		CUser user = userDao.findById(userId);
+		User user = userDao.findById(userId);
 		user.setLogin(login);
 
 		userDao.update(user);
@@ -144,7 +144,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	 */
 	private void changePassword (String login, String password, String email, OffsetDateTime validFrom, OffsetDateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
 	{
-		CUser user = null;
+		User user = null;
 
 		//validate password, if not valid throw an exception
 		validatePassword(password);
@@ -166,7 +166,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		}
 
 		//set auth params
-		CAuthenticationParams authParams = null;
+		AuthenticationParams authParams = null;
 		try
 		{
 			authParams = authenticationParamsDao.findOneByUserId(user.getId());
@@ -176,7 +176,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 			LOGGER.error("Authentication params not found", ex);
 
 			//create new because user has no auth params
-			authParams = new CAuthenticationParams();
+			authParams = new AuthenticationParams();
 			authParams.setUser(user);
 		}
 

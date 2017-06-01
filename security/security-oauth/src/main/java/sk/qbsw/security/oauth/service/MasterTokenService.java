@@ -1,7 +1,7 @@
 package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The master token service.
@@ -40,5 +40,5 @@ public interface MasterTokenService
 	 * @return the user by master token
 	 * @throws CBusinessException the c business exception
 	 */
-	CUser getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException;
+	User getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException;
 }

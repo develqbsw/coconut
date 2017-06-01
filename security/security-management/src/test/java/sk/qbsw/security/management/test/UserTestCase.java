@@ -21,11 +21,11 @@ import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.dao.UserUnitGroupDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.COrganization;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.UserUnitGroup;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.core.model.order.COrderModel;
 import sk.qbsw.security.core.model.order.COrderSpecification;
@@ -105,15 +105,15 @@ public class UserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_CODE).get(0);
+		Organization organization = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_CODE).get(0);
 
-		CUser user = new CUser();
+		User user = new User();
 		user.setLogin(DataGenerator.USER_CREATED);
 		user.setName(DataGenerator.USER_CREATED);
 
 		userManagementService.registerNewUser(user, DataGenerator.USER_CREATED, organization);
 
-		CUser queryUser = userManagementService.getUserByLogin(DataGenerator.USER_CREATED);
+		User queryUser = userManagementService.getUserByLogin(DataGenerator.USER_CREATED);
 
 		//asserts
 		assertNotNull("User has not been created", queryUser);
@@ -130,15 +130,15 @@ public class UserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_CODE).get(0);
+		Organization organization = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_CODE).get(0);
 
-		CUser user = new CUser();
+		User user = new User();
 		user.setLogin(DataGenerator.USER_CREATED);
 		user.setName(DataGenerator.USER_CREATED);
 
 		userManagementService.registerNewUser(user, organization);
 
-		CUser queryUser = userManagementService.getUserByLogin(DataGenerator.USER_CREATED);
+		User queryUser = userManagementService.getUserByLogin(DataGenerator.USER_CREATED);
 
 		//asserts
 		assertNotNull("User has not been created", queryUser);
@@ -155,7 +155,7 @@ public class UserTestCase
 	{
 		initTest();
 
-		List<CUser> users = userManagementService.getUsers();
+		List<User> users = userManagementService.getUsers();
 
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", users);
@@ -176,7 +176,7 @@ public class UserTestCase
 	{
 		initTest();
 
-		List<CUser> users = userManagementService.getUsersOrderByOrganization(null, null, null);
+		List<User> users = userManagementService.getUsersOrderByOrganization(null, null, null);
 
 		//asserts
 		assertNotNull("Get all users order by organization failed: list of users is null", users);
@@ -196,8 +196,8 @@ public class UserTestCase
 	{
 		initTest();
 
-		List<CUser> usersInGroupInUnit = userManagementService.getUsers(null, null, null, null, DataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
-		List<CUser> usersInGroupNotInUnit = userManagementService.getUsers(null, null, null, null, DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE.substring(0, 20));
+		List<User> usersInGroupInUnit = userManagementService.getUsers(null, null, null, null, DataGenerator.SECOND_GROUP_IN_UNIT_CODE.substring(0, 12));
+		List<User> usersInGroupNotInUnit = userManagementService.getUsers(null, null, null, null, DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE.substring(0, 20));
 
 		//asserts
 		assertNotNull("Get all users failed: list of users is null", usersInGroupInUnit);
@@ -217,9 +217,9 @@ public class UserTestCase
 	{
 		initTest();
 
-		List<CGroup> groups = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		List<Group> groups = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
-		List<CUser> users = userManagementService.getUsers(null, null, groups.get(0));
+		List<User> users = userManagementService.getUsers(null, null, groups.get(0));
 
 		//asserts
 		assertNotNull("Get all users by group failed: list of users is null", users);
@@ -237,9 +237,9 @@ public class UserTestCase
 	{
 		initTest();
 
-		List<CGroup> groups = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		List<Group> groups = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
-		List<CUser> users = userManagementService.getUsersOrderByOrganization(null, null, groups.get(0));
+		List<User> users = userManagementService.getUsersOrderByOrganization(null, null, groups.get(0));
 
 		//asserts
 		assertNotNull("Get all users by group failed: list of users is null", users);
@@ -257,8 +257,8 @@ public class UserTestCase
 	{
 		initTest();
 
-		CUser userByLogin = userManagementService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CUser userById = userManagementService.get(userByLogin.getId());
+		User userByLogin = userManagementService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		User userById = userManagementService.get(userByLogin.getId());
 
 		//asserts
 		assertNotNull("Get user by id failed: cannot find user with login " + userByLogin.getLogin(), userByLogin);
@@ -276,19 +276,19 @@ public class UserTestCase
 		initTest();
 
 		//preparation
-		CUnit firstUnit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
+		Unit firstUnit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
 
-		List<CGroup> firstGroupInUnit = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		List<Group> firstGroupInUnit = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 		Assert.assertTrue("The group firstGroupInUnit not found", firstGroupInUnit.size() > 0);
 
-		List<CGroup> thirdGroupInUnit = groupDao.findByCode(DataGenerator.THIRD_GROUP_IN_UNIT_CODE);
+		List<Group> thirdGroupInUnit = groupDao.findByCode(DataGenerator.THIRD_GROUP_IN_UNIT_CODE);
 		Assert.assertTrue("The group thirdGroupInUnit not found", firstGroupInUnit.size() > 0);
 
 		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<EUserOrderByAttributeSpecifier>();
 		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
 
 		//tests
-		List<CUser> users = userDao.findByUnitAndGroup(firstUnit, firstGroupInUnit.get(0), orderModel);
+		List<User> users = userDao.findByUnitAndGroup(firstUnit, firstGroupInUnit.get(0), orderModel);
 		Assert.assertEquals("The expected count of users with firstGroupInUnit is 0 ", users.size(), 0);
 
 		users = userDao.findByUnitAndGroup(firstUnit, thirdGroupInUnit.get(0), orderModel);
@@ -307,7 +307,7 @@ public class UserTestCase
 		initTest();
 
 		String email = DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk";
-		List<CUser> users = userManagementService.getUsers(email);
+		List<User> users = userManagementService.getUsers(email);
 
 		//asserts
 		assertNotNull("Get user by email failed: cannot find user with email " + email, users);
@@ -328,9 +328,9 @@ public class UserTestCase
 	{
 		initTest();
 
-		COrganization organization = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_CODE).get(0);
-		COrganization organization2 = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_2_CODE).get(0);
-		List<CUser> users = userManagementService.getUsers(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization);
+		Organization organization = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_CODE).get(0);
+		Organization organization2 = orgService.getOrganizationByName(DataGenerator.ORGANIZATION_2_CODE).get(0);
+		List<User> users = userManagementService.getUsers(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null, null, true, organization);
 
 		//asserts
 		assertNotNull("Get user by name and organization failed: cannot find users", users);
@@ -355,14 +355,14 @@ public class UserTestCase
 		initTest();
 
 		//test data
-		CUser testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CGroup testGroup = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		User testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Group testGroup = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
+		Unit testUnit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
 		//unset group
 		userPermissionManagementService.unsetUserFromGroup(testUser, testGroup, testUnit);
 
-		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
+		List<UserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
 		//asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
@@ -381,14 +381,14 @@ public class UserTestCase
 		initTest();
 
 		//test data
-		CUser testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CGroup testGroup = groupDao.findByCode(DataGenerator.THIRD_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		User testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Group testGroup = groupDao.findByCode(DataGenerator.THIRD_GROUP_IN_UNIT_CODE).get(0);
+		Unit testUnit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
 		userPermissionManagementService.setUserToGroup(testUser, testGroup, testUnit);
 
-		List<CXUserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
+		List<UserUnitGroup> result = crossUserUnitGroupDao.findByUserAndUnitAndGroup(testUser, testUnit, testGroup);
 
 		//asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
@@ -407,9 +407,9 @@ public class UserTestCase
 		initTest();
 
 		//test data
-		CUser testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		CGroup testGroup = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
-		CUnit testUnit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
+		User testUser = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Group testGroup = groupDao.findByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE).get(0);
+		Unit testUnit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
 		//set group
 		userPermissionManagementService.setUserToGroup(testUser, testGroup, testUnit);
@@ -426,7 +426,7 @@ public class UserTestCase
 	{
 		initTest();
 
-		List<CUser> users = userDao.findByPinCode("1111");
+		List<User> users = userDao.findByPinCode("1111");
 
 		//asserts
 		assertNotNull(users);
@@ -438,14 +438,14 @@ public class UserTestCase
 	 *
 	 * @param user the user
 	 */
-	private void checksGetAllUsersList (List<CUser> users)
+	private void checksGetAllUsersList (List<User> users)
 	{
 		boolean userWithDefaulUnitCodePresent = false;
 		boolean userWithoutDefaulUnitCodePresent = false;
 		boolean userWithDefaulUnitCodeNoGroupPresent = false;
 		boolean userWithoutDefaulUnitCodeNoGroupPresent = false;
 
-		for (CUser user : users)
+		for (User user : users)
 		{
 			//checks if all test users are in list
 			if (user.getLogin().equals(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE))
@@ -481,12 +481,12 @@ public class UserTestCase
 	 *
 	 * @param user the user
 	 */
-	private void checksUserHasCorrectGroups (CUser user)
+	private void checksUserHasCorrectGroups (User user)
 	{
 		if (user.getLogin().equals(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE))
 		{
 			Assert.assertEquals("Get all users failed: the expected count of users group is 2 ", user.getGroups().size(), 2);
-			for (CGroup group : user.getGroups())
+			for (Group group : user.getGroups())
 			{
 				Assert.assertTrue("Get all users failed: the user with login " + user.getLogin() + " has unexpected group with code " + group.getCode(), group.getCode().equals(DataGenerator.FIRST_GROUP_IN_UNIT_CODE) || group.getCode().equals(DataGenerator.SECOND_GROUP_IN_UNIT_CODE));
 			}
@@ -494,7 +494,7 @@ public class UserTestCase
 		else if (user.getLogin().equals(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE))
 		{
 			Assert.assertEquals("Get all users failed: the expected count of users group is 2 ", user.getGroups().size(), 2);
-			for (CGroup group : user.getGroups())
+			for (Group group : user.getGroups())
 			{
 				Assert.assertTrue("Get all users failed: the user with login " + user.getLogin() + " has unexpected group with code " + group.getCode(), group.getCode().equals(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE) || group.getCode().equals(DataGenerator.SECOND_GROUP_NOT_IN_UNIT_CODE));
 			}

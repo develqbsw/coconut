@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CRole;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 
 /**
@@ -35,7 +35,7 @@ public class AuthenticationTestProvider
 	 */
 	public void testLoginWithDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		CUser user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -59,7 +59,7 @@ public class AuthenticationTestProvider
 	 */
 	public void testLoginWithoutDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		CUser user = authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		User user = authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -76,7 +76,7 @@ public class AuthenticationTestProvider
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
-		CRole inputRole = new CRole(DataGenerator.FIRST_ROLE_CODE);
+		Role inputRole = new Role(DataGenerator.FIRST_ROLE_CODE);
 
 		testLoginWithRole(authenticationService, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
 	}
@@ -88,7 +88,7 @@ public class AuthenticationTestProvider
 	 */
 	public void testLoginWithDefaultUnitAndRoleNegative (AuthenticationService authenticationService) throws CSecurityException
 	{
-		CRole inputRole = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role inputRole = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole);
 	}
 
@@ -102,7 +102,7 @@ public class AuthenticationTestProvider
 		Set<String> expectedGroups = new HashSet<String>();
 		expectedGroups.add(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE);
 		expectedGroups.add(DataGenerator.SECOND_GROUP_NOT_IN_UNIT_CODE);
-		CRole inputRole = new CRole(DataGenerator.FIRST_ROLE_CODE);
+		Role inputRole = new Role(DataGenerator.FIRST_ROLE_CODE);
 
 		testLoginWithRole(authenticationService, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
 	}
@@ -114,7 +114,7 @@ public class AuthenticationTestProvider
 	 */
 	public void testLoginWithoutDefaultUnitAndRoleNegative (AuthenticationService authenticationService) throws CSecurityException
 	{
-		CRole inputRole = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role inputRole = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole);
 	}
 
@@ -158,7 +158,7 @@ public class AuthenticationTestProvider
 		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
 
 		//test authentication
-		CUser user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -202,22 +202,22 @@ public class AuthenticationTestProvider
 	 * @param expectedGroupsSize The expected size of groups for user
 	 * @throws CSecurityException the security exception
 	 */
-	private void testLoginWithRole (AuthenticationService authenticationService, String login, String password, CRole inputRole, Set<String> expectedGroups) throws CSecurityException
+	private void testLoginWithRole (AuthenticationService authenticationService, String login, String password, Role inputRole, Set<String> expectedGroups) throws CSecurityException
 	{
 		//define output role - found in user
-		CRole outputRole = null;
+		Role outputRole = null;
 
 		//login user
-		CUser user = authenticationService.login(login, password, inputRole);
+		User user = authenticationService.login(login, password, inputRole);
 		assertNotNull("Authentication with login, password and role failed: user is null", user);
 		assertNotNull("Authentication with login, password and role failed: user groups is null", user.getGroups());
 		Assert.assertEquals("Authentication with login, password and role failed: number of user groups is not " + expectedGroups.size(), user.getGroups().size(), expectedGroups.size());
 
 		//checks if user has input role
-		Iterator<CGroup> groupIterator = user.getGroups().iterator();
+		Iterator<Group> groupIterator = user.getGroups().iterator();
 		while (groupIterator.hasNext())
 		{
-			CGroup group = (CGroup) groupIterator.next();
+			Group group = (Group) groupIterator.next();
 			assertNotNull("Authentication with login, password and role failed: user roles in group " + group.getCode() + " is null", group.getRoles());
 
 			//check groups
@@ -226,10 +226,10 @@ public class AuthenticationTestProvider
 				Assert.fail("Authentication with login, password and role failed: unexpected group with code " + group.getCode());
 			}
 
-			Iterator<CRole> roleIterator = group.getRoles().iterator();
+			Iterator<Role> roleIterator = group.getRoles().iterator();
 			while (roleIterator.hasNext())
 			{
-				CRole tempOutputRole = (CRole) roleIterator.next();
+				Role tempOutputRole = (Role) roleIterator.next();
 				if (tempOutputRole.getCode().equals(inputRole.getCode()))
 				{
 					outputRole = tempOutputRole;
@@ -261,19 +261,19 @@ public class AuthenticationTestProvider
 	 */
 	private void testLoginWithUnit (AuthenticationService authenticationService, String login, String password, String unit, Set<String> expectedGroups) throws CSecurityException
 	{
-		CUnit outputUnit = null;
+		Unit outputUnit = null;
 
 		//login user
-		CUser user = authenticationService.login(login, password, unit);
+		User user = authenticationService.login(login, password, unit);
 		assertNotNull("Authentication with login, password and unit failed: user is null", user);
 		assertNotNull("Authentication with login, password and unit failed: user groups is null", user.getGroups());
 		Assert.assertEquals("Authentication with login, password and unit failed: number of user groups is not " + expectedGroups.size(), user.getGroups().size(), expectedGroups.size());
 
 		//checks if user has input role
-		Iterator<CGroup> groupIterator = user.getGroups().iterator();
+		Iterator<Group> groupIterator = user.getGroups().iterator();
 		while (groupIterator.hasNext())
 		{
-			CGroup group = (CGroup) groupIterator.next();
+			Group group = (Group) groupIterator.next();
 			assertNotNull("Authentication with login, password and unit failed: units in group " + group.getCode() + " is null", group.getUnits());
 
 			//check groups
@@ -283,10 +283,10 @@ public class AuthenticationTestProvider
 			}
 
 			//checks units
-			Iterator<CUnit> unitsIterator = group.getUnits().iterator();
+			Iterator<Unit> unitsIterator = group.getUnits().iterator();
 			while (unitsIterator.hasNext())
 			{
-				CUnit tempOutputUnit = (CUnit) unitsIterator.next();
+				Unit tempOutputUnit = (Unit) unitsIterator.next();
 				if (tempOutputUnit.getName().equals(unit))
 				{
 					outputUnit = tempOutputUnit;

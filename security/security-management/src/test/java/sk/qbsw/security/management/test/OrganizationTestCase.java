@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.management.service.OrganizationService;
 import sk.qbsw.security.management.test.util.DataGenerator;
 
@@ -59,7 +59,7 @@ public class OrganizationTestCase
 	{
 		initTest();
 
-		List<COrganization> organizations = organizationService.getOrganizations(DataGenerator.ORGANIZATION_CODE);
+		List<Organization> organizations = organizationService.getOrganizations(DataGenerator.ORGANIZATION_CODE);
 
 		//asserts
 		assertNotNull("List of organizations is null", organizations);

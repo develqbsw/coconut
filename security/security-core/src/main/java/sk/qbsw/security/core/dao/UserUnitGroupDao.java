@@ -1,10 +1,10 @@
 package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
-import sk.qbsw.security.core.model.domain.CGroup;
-import sk.qbsw.security.core.model.domain.CUnit;
-import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.core.model.domain.CXUserUnitGroup;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.UserUnitGroup;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.13.0
  * @since 1.7.0
  */
-public interface UserUnitGroupDao extends IEntityDao<Long, CXUserUnitGroup>
+public interface UserUnitGroupDao extends IEntityDao<Long, UserUnitGroup>
 {
 	/**
 	 * Find by user and unit and group.
@@ -26,5 +26,5 @@ public interface UserUnitGroupDao extends IEntityDao<Long, CXUserUnitGroup>
 	 * @param group the group (optional)
 	 * @return the list of records
 	 */
-	List<CXUserUnitGroup> findByUserAndUnitAndGroup (CUser user, CUnit unit, CGroup group);
+	List<UserUnitGroup> findByUserAndUnitAndGroup (User user, Unit unit, Group group);
 }

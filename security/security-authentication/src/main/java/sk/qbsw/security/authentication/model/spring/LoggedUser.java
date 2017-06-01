@@ -8,8 +8,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import sk.qbsw.security.core.model.domain.CLicense;
-import sk.qbsw.security.core.model.domain.COrganization;
+import sk.qbsw.security.core.model.domain.License;
+import sk.qbsw.security.core.model.domain.Organization;
 
 
 /**
@@ -24,10 +24,10 @@ public class LoggedUser extends User
 {
 
 	/** The organization. */
-	private COrganization organization;
+	private Organization organization;
 
 	/** The actual valid license. */
-	private CLicense<?> actualValidLicense;
+	private License<?> actualValidLicense;
 
 	/**
 	 * Instantiates a new c logged user.
@@ -42,7 +42,7 @@ public class LoggedUser extends User
 	 * @param accountNonLocked the account non locked
 	 * @param authorities the authorities
 	 */
-	public LoggedUser (COrganization organization, CLicense<?> actualValidLicense, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities)
+	public LoggedUser (Organization organization, License<?> actualValidLicense, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities)
 	{
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.organization = organization;
@@ -54,7 +54,7 @@ public class LoggedUser extends User
 	 *
 	 * @return the organization
 	 */
-	public COrganization getOrganization ()
+	public Organization getOrganization ()
 	{
 		return organization;
 	}
@@ -64,7 +64,7 @@ public class LoggedUser extends User
 	 *
 	 * @param organization the new organization
 	 */
-	public void setOrganization (COrganization organization)
+	public void setOrganization (Organization organization)
 	{
 		this.organization = organization;
 	}
@@ -74,7 +74,7 @@ public class LoggedUser extends User
 	 *
 	 * @return the actual valid license
 	 */
-	public CLicense<?> getActualValidLicense ()
+	public License<?> getActualValidLicense ()
 	{
 		return actualValidLicense;
 	}
@@ -84,7 +84,7 @@ public class LoggedUser extends User
 	 *
 	 * @param actualValidLicense the new actual valid license
 	 */
-	public void setActualValidLicense (CLicense<?> actualValidLicense)
+	public void setActualValidLicense (License<?> actualValidLicense)
 	{
 		this.actualValidLicense = actualValidLicense;
 	}

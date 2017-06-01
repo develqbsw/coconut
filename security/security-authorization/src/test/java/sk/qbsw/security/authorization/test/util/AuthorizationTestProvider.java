@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authorization.service.AuthorizationService;
-import sk.qbsw.security.core.model.domain.CRole;
+import sk.qbsw.security.core.model.domain.Role;
 
 /**
  * Provides test for authorization.
@@ -23,7 +23,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithDefaultUnitPositive (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.FIRST_ROLE_CODE);
+		Role role = new Role(DataGenerator.FIRST_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, null, null);
 	}
 
@@ -34,7 +34,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithDefaultUnitNegative (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role role = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, null, null);
 	}
 
@@ -45,7 +45,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithUnitPositive (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role role = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, DataGenerator.FIRST_UNIT_CODE, null);
 	}
 
@@ -56,7 +56,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithUnitNegative (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role role = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, DataGenerator.DEFAULT_UNIT_CODE, null);
 	}
 
@@ -67,7 +67,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithCategoryPositive (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.FIRST_ROLE_CODE);
+		Role role = new Role(DataGenerator.FIRST_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, null, DataGenerator.FIRST_CATEGORY_CODE);
 	}
 
@@ -78,7 +78,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithCategoryNegative (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role role = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, null, DataGenerator.FIRST_CATEGORY_CODE);
 	}
 
@@ -89,7 +89,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithUnitAndCategoryPositive (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role role = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, DataGenerator.SECOND_UNIT_CODE, DataGenerator.SECOND_CATEGORY_CODE);
 	}
 
@@ -100,7 +100,7 @@ public class AuthorizationTestProvider
 	 */
 	public void testAuthorizationWithUnitAndCategoryNegative (AuthorizationService authorizationService) throws CSecurityException
 	{
-		CRole role = new CRole(DataGenerator.SECOND_ROLE_CODE);
+		Role role = new Role(DataGenerator.SECOND_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, role, DataGenerator.SECOND_UNIT_CODE, DataGenerator.FIRST_CATEGORY_CODE);
 	}
 }

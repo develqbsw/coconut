@@ -18,14 +18,14 @@ import java.util.List;
  * @since 1.7.0
  */
 @Repository (value = "xUserUnitGroupDao")
-public class UserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup> implements UserUnitGroupDao
+public class UserUnitGroupJpaDao extends AEntityQDslDao<Long, UserUnitGroup> implements UserUnitGroupDao
 {
 	/**
 	 * Instantiates a new x user unit group dao.
 	 */
 	public UserUnitGroupJpaDao ()
 	{
-		super(QCXUserUnitGroup.cXUserUnitGroup, Long.class);
+		super(QUserUnitGroup.userUnitGroup, Long.class);
 	}
 
 	/*
@@ -33,12 +33,12 @@ public class UserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup> i
 	 * @see sk.qbsw.security.core.core.dao.IXUserUnitGroupDao#findByUserAndUnitAndGroup(sk.qbsw.security.core.core.model.domain.CUser, sk.qbsw.security.core.core.model.domain.CUnit, sk.qbsw.security.core.core.model.domain.CGroup)
 	 */
 	@Override
-	public List<CXUserUnitGroup> findByUserAndUnitAndGroup (CUser user, CUnit unit, CGroup group)
+	public List<UserUnitGroup> findByUserAndUnitAndGroup (User user, Unit unit, Group group)
 	{
-		QCXUserUnitGroup qUserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
-		QCUser qUser = QCUser.cUser;
-		QCUnit qUnit = QCUnit.cUnit;
-		QCGroup qGroup = QCGroup.cGroup;
+		QUserUnitGroup qUserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QUser qUser = QUser.user;
+		QUnit qUnit = QUnit.unit;
+		QGroup qGroup = QGroup.group;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -56,7 +56,7 @@ public class UserUnitGroupJpaDao extends AEntityQDslDao<Long, CXUserUnitGroup> i
 		}
 
 		// create query
-		JPAQuery<CXUserUnitGroup> query = queryFactory.selectFrom(qUserUnitGroup).distinct().leftJoin(qUserUnitGroup.user, qUser).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().where(builder);
+		JPAQuery<UserUnitGroup> query = queryFactory.selectFrom(qUserUnitGroup).distinct().leftJoin(qUserUnitGroup.user, qUser).fetchJoin().leftJoin(qUserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qUserUnitGroup.group, qGroup).fetchJoin().where(builder);
 		return query.fetch();
 	}
 }

@@ -27,7 +27,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Repository (value = "groupDao")
-public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDao
+public class GroupJpaDao extends AEntityQDslDao<Long, Group> implements GroupDao
 {
 	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GroupJpaDao.class);
@@ -37,7 +37,7 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 */
 	public GroupJpaDao ()
 	{
-		super(QCGroup.cGroup, Long.class);
+		super(QGroup.group, Long.class);
 	}
 
 	/*
@@ -45,12 +45,12 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 * @see sk.qbsw.security.core.core.dao.IGroupDao#findByFlagSystem(boolean)
 	 */
 	@Override
-	public List<CGroup> findByFlagSystem (boolean flagSystem)
+	public List<Group> findByFlagSystem (boolean flagSystem)
 	{
-		QCGroup qGroup = QCGroup.cGroup;
+		QGroup qGroup = QGroup.group;
 
 		// create query
-		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.flagSystem.eq(flagSystem)).orderBy(qGroup.code.asc());
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).where(qGroup.flagSystem.eq(flagSystem)).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
@@ -59,12 +59,12 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 * @see sk.qbsw.core.persistence.dao.jpa.AEntityJpaDao#findAll()
 	 */
 	@Override
-	public List<CGroup> findAll ()
+	public List<Group> findAll ()
 	{
-		QCGroup qGroup = QCGroup.cGroup;
+		QGroup qGroup = QGroup.group;
 
 		// create query
-		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).orderBy(qGroup.code.asc());
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
@@ -76,12 +76,12 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 */
 	@Override
 	@Deprecated
-	public List<CGroup> findByCode (String code)
+	public List<Group> findByCode (String code)
 	{
-		QCGroup qGroup = QCGroup.cGroup;
+		QGroup qGroup = QGroup.group;
 
 		// create query
-		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code)).orderBy(qGroup.code.asc());
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code)).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
@@ -90,17 +90,17 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 * @see sk.qbsw.security.core.core.dao.IGroupDao#findOneByCode(java.lang.String)
 	 */
 	@Override
-	public CGroup findOneByCode (String code) throws CSecurityException
+	public Group findOneByCode (String code) throws CSecurityException
 	{
 		if (code == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QCGroup qGroup = QCGroup.cGroup;
+		QGroup qGroup = QGroup.group;
 
 		// create query
-		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code));
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).where(qGroup.code.eq(code));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
@@ -108,17 +108,17 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 * (non-Javadoc)
 	 * 
 	 * @deprecated
-	 * @see sk.qbsw.security.core.GroupDao.dao.IGroupDao#findByCodeAndUnit(java.lang.String, sk.qbsw.security.core.core.model.domain.CUnit)
+	 * @see sk.qbsw.security.core.GroupDao.dao.IGroupDao#findByCodeAndUnit(java.lang.String, sk.qbsw.security.core.Unit.model.domain.CUnit)
 	 */
 	@Override
 	@Deprecated
-	public List<CGroup> findByCodeAndUnit (String code, CUnit unit) throws CSecurityException
+	public List<Group> findByCodeAndUnit (String code, Unit unit) throws CSecurityException
 	{
-		List<CGroup> groups = new ArrayList<>();
+		List<Group> groups = new ArrayList<>();
 
 		try
 		{
-			CGroup group = findOneByCodeAndUnit(code, unit);
+			Group group = findOneByCodeAndUnit(code, unit);
 
 			groups.add(group);
 			return groups;
@@ -136,14 +136,14 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 * @see sk.qbsw.security.core.core.dao.IGroupDao#findOneByCodeAndUnit(java.lang.String, sk.qbsw.security.core.core.model.domain.CUnit)
 	 */
 	@Override
-	public CGroup findOneByCodeAndUnit (String code, CUnit unit) throws CSecurityException, NoResultException, NonUniqueResultException
+	public Group findOneByCodeAndUnit (String code, Unit unit) throws CSecurityException, NoResultException, NonUniqueResultException
 	{
 		if (code == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QCGroup qGroup = QCGroup.cGroup;
+		QGroup qGroup = QGroup.group;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -158,7 +158,7 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 		}
 
 		// create query
-		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.roles).fetchJoin().leftJoin(qGroup.units).fetchJoin().where(builder);
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.roles).fetchJoin().leftJoin(qGroup.units).fetchJoin().where(builder);
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
 	}
 
@@ -167,10 +167,10 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 * @see sk.qbsw.security.core.core.dao.IGroupDao#findByUnit(sk.qbsw.security.core.core.model.domain.CUnit)
 	 */
 	@Override
-	public List<CGroup> findByUnit (CUnit unit)
+	public List<Group> findByUnit (Unit unit)
 	{
-		QCGroup qGroup = QCGroup.cGroup;
-		QCUnit qUnit = QCUnit.cUnit;
+		QGroup qGroup = QGroup.group;
+		QUnit qUnit = QUnit.unit;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -180,7 +180,7 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 		}
 
 		// create query
-		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.units, qUnit).fetchJoin().where(builder).orderBy(qGroup.code.asc());
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.units, qUnit).fetchJoin().where(builder).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 
@@ -189,12 +189,12 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 	 * @see sk.qbsw.security.core.core.dao.IGroupDao#findByUnitAndUser(sk.qbsw.security.core.core.model.domain.CUnit, sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
-	public List<CGroup> findByUnitAndUser (CUnit unit, CUser user)
+	public List<Group> findByUnitAndUser (Unit unit, User user)
 	{
-		QCGroup qGroup = QCGroup.cGroup;
-		QCXUserUnitGroup qXuserUnitGroup = QCXUserUnitGroup.cXUserUnitGroup;
-		QCUnit qUnit = QCUnit.cUnit;
-		QCUser qUser = QCUser.cUser;
+		QGroup qGroup = QGroup.group;
+		QUserUnitGroup qXuserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QUnit qUnit = QUnit.unit;
+		QUser qUser = QUser.user;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -208,7 +208,7 @@ public class GroupJpaDao extends AEntityQDslDao<Long, CGroup> implements GroupDa
 		}
 
 		// create query
-		JPAQuery<CGroup> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.xUserUnitGroups, qXuserUnitGroup).fetchJoin().leftJoin(qXuserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qXuserUnitGroup.user, qUser).fetchJoin().where(builder).orderBy(qGroup.code.asc());
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.xUserUnitGroups, qXuserUnitGroup).fetchJoin().leftJoin(qXuserUnitGroup.unit, qUnit).fetchJoin().leftJoin(qXuserUnitGroup.user, qUser).fetchJoin().where(builder).orderBy(qGroup.code.asc());
 		return query.fetch();
 	}
 }

@@ -25,7 +25,7 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table (name = "t_blocked_login", schema = "sec", uniqueConstraints = @UniqueConstraint (columnNames = {"c_login", "c_ip"}))
-public class CBlockedLogin extends ASecurityChangeEntity<Long>
+public class BlockedLogin extends BaseSecurityChangeEntity<Long>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1021948002972398081L;

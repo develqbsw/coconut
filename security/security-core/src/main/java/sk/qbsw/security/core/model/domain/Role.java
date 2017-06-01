@@ -18,7 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * The Class CRole.
+ * The Class Role.
  *
  * @author Dalibor Rak
  * @version 1.2.1
@@ -26,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name = "t_role", schema = "sec")
-public class CRole extends ASecurityChangeEntity<Long>
+public class Role extends BaseSecurityChangeEntity<Long>
 {
 
 	/** The Constant serialVersionUID. */
@@ -43,16 +43,16 @@ public class CRole extends ASecurityChangeEntity<Long>
 	@Column (name = "c_code", unique = true)
 	private String code;
 
-	//bi-directional many-to-many association to CGroup
+	//bi-directional many-to-many association to Group
 	/** The groups. */
 	@ManyToMany (fetch = FetchType.LAZY)
 	@JoinTable (schema = "sec", name = "t_x_group_role", joinColumns = {@JoinColumn (name = "fk_role")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
-	private Set<CGroup> groups;
+	private Set<Group> groups;
 
 	/**
 	 * Instantiates a new c role.
 	 */
-	public CRole ()
+	public Role ()
 	{
 	}
 
@@ -61,7 +61,7 @@ public class CRole extends ASecurityChangeEntity<Long>
 	 *
 	 * @param code the code
 	 */
-	public CRole (String code)
+	public Role (String code)
 	{
 		this.setCode(code);
 	}
@@ -91,7 +91,7 @@ public class CRole extends ASecurityChangeEntity<Long>
 	 *
 	 * @return the groups
 	 */
-	public Set<CGroup> getGroups ()
+	public Set<Group> getGroups ()
 	{
 		return this.groups;
 	}
@@ -101,7 +101,7 @@ public class CRole extends ASecurityChangeEntity<Long>
 	 *
 	 * @param groups the new groups
 	 */
-	public void setGroups (Set<CGroup> groups)
+	public void setGroups (Set<Group> groups)
 	{
 		this.groups = groups;
 	}
