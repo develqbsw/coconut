@@ -15,7 +15,7 @@ import sk.qbsw.security.core.model.domain.UserUnitGroup;
  * @version 1.7.0
  * @since 1.7.0
  */
-public interface XUserUnitGroupService extends Serializable
+public interface UserUnitGroupService extends Serializable
 {
 
 	

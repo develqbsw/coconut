@@ -12,7 +12,7 @@ import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
 import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.model.domain.UserUnitGroup;
-import sk.qbsw.security.management.service.XUserUnitGroupService;
+import sk.qbsw.security.management.service.UserUnitGroupService;
 
 /**
  * Service for UserUnitGroup entity operations 
@@ -22,7 +22,7 @@ import sk.qbsw.security.management.service.XUserUnitGroupService;
  * @since 1.7.0
  */
 @Service ("xUserUnitGroupService")
-public class XUserUnitGroupServiceImpl extends AService implements XUserUnitGroupService
+public class UserUnitGroupServiceImpl extends AService implements UserUnitGroupService
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
