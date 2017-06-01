@@ -16,7 +16,7 @@
 		<class>sk.qbsw.security.core.model.domain.CAddress</class>
 		<class>sk.qbsw.security.core.model.domain.CBlockedLogin</class>
 		<!-- test -->
-		<class>sk.qbsw.security.core.test.util.domain.CLicenseFree</class>
+		<class>sk.qbsw.security.core.test.util.domain.LicenseFree</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />

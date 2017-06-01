@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.dao.IUnitDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -46,10 +46,10 @@ public class GroupTestCase
 
 	/** Unit dao. */
 	@Autowired
-	private IUnitDao unitDao;
+	private UnitDao unitDao;
 
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/**
 	 * Test initialization.

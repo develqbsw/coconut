@@ -16,7 +16,7 @@ import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
@@ -36,7 +36,7 @@ public class PreAuthenticatedUserDetailsServiceImpl implements AuthenticationUse
 
 	/** The user service. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.AuthenticationUserDetailsService#loadUserDetails(org.springframework.security.core.Authentication)

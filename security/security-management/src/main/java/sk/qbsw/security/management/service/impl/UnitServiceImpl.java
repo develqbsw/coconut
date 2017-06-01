@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IAddressDao;
-import sk.qbsw.security.core.dao.IUnitDao;
+import sk.qbsw.security.core.dao.AddressDao;
+import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.model.domain.CAddress;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -31,11 +31,11 @@ public class UnitServiceImpl extends AService implements UnitService
 
 	/** The unit dao. */
 	@Autowired
-	private IUnitDao unitDao;
+	private UnitDao unitDao;
 
 	/** The unit dao. */
 	@Autowired
-	private IAddressDao addressDao;
+	private AddressDao addressDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IUnitService#getAll()

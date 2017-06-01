@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IBlockedLoginDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.BlockedLoginDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CBlockedLogin;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.management.service.LoginBlockingService;
@@ -38,11 +38,11 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 
 	/** The blocked login jpa dao. */
 	@Autowired
-	private IBlockedLoginDao blockedLoginJpaDao;
+	private BlockedLoginDao blockedLoginJpaDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#init(int)

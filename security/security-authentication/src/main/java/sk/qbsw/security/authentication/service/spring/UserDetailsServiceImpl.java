@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CUser;
 
 /**
@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl extends AService implements UserDetailsServi
 
 	/** The user service. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	@PostConstruct
 	private void postCondtruct ()

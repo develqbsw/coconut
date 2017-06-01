@@ -13,14 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.core.dao.IGroupDao;
-import sk.qbsw.security.core.dao.ILicenseDao;
-import sk.qbsw.security.core.dao.IOrganizationDao;
-import sk.qbsw.security.core.dao.IRoleDao;
-import sk.qbsw.security.core.dao.IUnitDao;
-import sk.qbsw.security.core.dao.IUserDao;
-import sk.qbsw.security.core.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.dao.GroupDao;
+import sk.qbsw.security.core.dao.LicenseDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.RoleDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.UserUnitGroupDao;
 import sk.qbsw.security.core.model.domain.CAddress;
 import sk.qbsw.security.core.model.domain.CAuthenticationParams;
 import sk.qbsw.security.core.model.domain.CBlockedLogin;
@@ -53,31 +53,31 @@ public class DataGenerator
 {
 	/** The role dao. */
 	@Autowired
-	private IRoleDao roleDao;
+	private RoleDao roleDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The org dao. */
 	@Autowired
-	private IOrganizationDao orgDao;
+	private OrganizationDao orgDao;
 
 	/** The unit dao. */
 	@Autowired
-	private IUnitDao unitDao;
+	private UnitDao unitDao;
 
 	/** The group dao. */
 	@Autowired
-	private IGroupDao groupDao;
+	private GroupDao groupDao;
 
 	/** The authentication params dao. */
 	@Autowired
-	private IAuthenticationParamsDao authenticationParamsDao;
+	private AuthenticationParamsDao authenticationParamsDao;
 
 	/** The license dao. */
 	@Autowired
-	private ILicenseDao licenseDao;
+	private LicenseDao licenseDao;
 
 	/** The user service. */
 	@Autowired
@@ -85,7 +85,7 @@ public class DataGenerator
 
 	/** The cross user unit group dao. */
 	@Autowired
-	private IXUserUnitGroupDao crossUserUnitGroupDao;
+	private UserUnitGroupDao crossUserUnitGroupDao;
 
 	/** The master token dao. */
 	@Autowired

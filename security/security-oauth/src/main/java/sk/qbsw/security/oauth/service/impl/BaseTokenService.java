@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
@@ -49,7 +49,7 @@ abstract class BaseTokenService
 
 	/** The user dao. */
 	@Autowired
-	protected IUserDao userDao;
+	protected UserDao userDao;
 
 	/** The configurator. */
 	@Autowired

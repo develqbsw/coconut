@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IGroupDao;
+import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -32,7 +32,7 @@ public class GroupServiceImpl extends AService implements GroupService
 
 	/** The group dao. */
 	@Autowired
-	private IGroupDao groupDao;
+	private GroupDao groupDao;
 
 	/**
 	 * Gets the role group.

@@ -22,8 +22,8 @@ import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LDAPInjectionProtector;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
-import sk.qbsw.security.core.dao.IUnitDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CRole;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -52,11 +52,11 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 
 	/** The unit dao. */
 	@Autowired
-	private IUnitDao unitDao;
+	private UnitDao unitDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The ldap provider. */
 	@Autowired

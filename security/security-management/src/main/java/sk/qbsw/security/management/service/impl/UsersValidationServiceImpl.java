@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.core.dao.IGroupDao;
-import sk.qbsw.security.core.dao.IOrganizationDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.dao.GroupDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CAuthenticationParams;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.COrganization;
@@ -46,19 +46,19 @@ public class UsersValidationServiceImpl extends AService implements UsersValidat
 
 	/** The organization dao. */
 	@Autowired
-	private IOrganizationDao organizationDao;
+	private OrganizationDao organizationDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The group dao. */
 	@Autowired
-	private IGroupDao groupDao;
+	private GroupDao groupDao;
 
 	/** The auth params dao. */
 	@Autowired
-	private IAuthenticationParamsDao authParamsDao;
+	private AuthenticationParamsDao authParamsDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IUsersValidationService#isOrganizationExists(sk.qbsw.security.core.core.model.domain.COrganization)

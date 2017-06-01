@@ -18,15 +18,15 @@ import sk.qbsw.core.security.base.exception.InvalidPasswordException;
 import sk.qbsw.core.security.base.exception.InvalidUserException;
 import sk.qbsw.core.security.base.exception.UserDisabledException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.core.dao.IUnitDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CAuthenticationParams;
 import sk.qbsw.security.core.model.domain.CRole;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.domain.EAuthenticationType;
-import sk.qbsw.security.core.service.signature.IPasswordDigester;
+import sk.qbsw.security.core.service.signature.PasswordDigester;
 
 /**
  * Authentication service.
@@ -49,19 +49,19 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The unit dao. */
 	@Autowired
-	private IUnitDao unitDao;
+	private UnitDao unitDao;
 
 	/** The authentication params dao. */
 	@Autowired
-	private IAuthenticationParamsDao authenticationParamsDao;
+	private AuthenticationParamsDao authenticationParamsDao;
 
 	/** Password digester *. */
 	@Autowired
-	private transient IPasswordDigester digester;
+	private transient PasswordDigester digester;
 
 	/**
 	 * Authenticate by digest.

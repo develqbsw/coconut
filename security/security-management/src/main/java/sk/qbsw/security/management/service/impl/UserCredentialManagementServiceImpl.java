@@ -18,12 +18,12 @@ import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.PasswordFormatException;
-import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CAuthenticationParams;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.core.service.signature.IPasswordDigester;
+import sk.qbsw.security.core.service.signature.PasswordDigester;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 
 /**
@@ -44,15 +44,15 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The authentication params dao. */
 	@Autowired
-	private IAuthenticationParamsDao authenticationParamsDao;
+	private AuthenticationParamsDao authenticationParamsDao;
 
 	/** Password digester *. */
 	@Autowired
-	private IPasswordDigester digester;
+	private PasswordDigester digester;
 
 	/** The Authentication Configurator. */
 	@Autowired

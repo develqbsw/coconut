@@ -16,16 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IGroupDao;
-import sk.qbsw.security.core.dao.ILicenseDao;
-import sk.qbsw.security.core.dao.IOrganizationDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.GroupDao;
+import sk.qbsw.security.core.dao.LicenseDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CLicense;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CUser;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
-import sk.qbsw.security.core.service.ILicenseGenerator;
+import sk.qbsw.security.core.service.LicenseGenerator;
 import sk.qbsw.security.management.service.SecurityService;
 
 /**
@@ -40,7 +40,7 @@ public class SecurityServiceImpl extends AService implements SecurityService
 {
 	/** The license generator. */
 	@Autowired
-	private ILicenseGenerator licenseGenerator;
+	private LicenseGenerator licenseGenerator;
 
 	/**
 	 * 
@@ -52,19 +52,19 @@ public class SecurityServiceImpl extends AService implements SecurityService
 
 	/** The group dao. */
 	@Autowired
-	private IGroupDao groupDao;
+	private GroupDao groupDao;
 
 	/** License dao*. */
 	@Autowired
-	private ILicenseDao licenseDao;
+	private LicenseDao licenseDao;
 
 	/** The org dao. */
 	@Autowired
-	private IOrganizationDao orgDao;
+	private OrganizationDao orgDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The rules. */
 	@Autowired

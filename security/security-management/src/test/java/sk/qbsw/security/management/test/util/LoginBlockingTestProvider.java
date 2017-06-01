@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.dao.IBlockedLoginDao;
+import sk.qbsw.security.core.dao.BlockedLoginDao;
 import sk.qbsw.security.core.model.domain.CBlockedLogin;
 import sk.qbsw.security.management.service.LoginBlockingService;
 
@@ -29,7 +29,7 @@ public class LoginBlockingTestProvider
 	 * @throws CSecurityException the c security exception
 	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithoutBlocked (LoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
+	public void testBlockedLoginWithoutBlocked (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
@@ -77,7 +77,7 @@ public class LoginBlockingTestProvider
 	 * @throws CSecurityException the c security exception
 	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithoutBlockedCheckIpNull (LoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
+	public void testBlockedLoginWithoutBlockedCheckIpNull (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
@@ -123,7 +123,7 @@ public class LoginBlockingTestProvider
 	 * @throws CSecurityException the c security exception
 	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithoutBlockedSetIpNull (LoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
+	public void testBlockedLoginWithoutBlockedSetIpNull (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
@@ -170,7 +170,7 @@ public class LoginBlockingTestProvider
 	 * @throws CSecurityException the c security exception
 	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithBlocked (LoginBlockingService loginBlockingService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
+	public void testBlockedLoginWithBlocked (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
 		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
@@ -222,7 +222,7 @@ public class LoginBlockingTestProvider
 	 * @throws CSecurityException the c security exception
 	 * @throws InterruptedException 
 	 */
-	public void testBlockedLoginWithBlockedCheckIpNull (LoginBlockingService blockingLoginService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
+	public void testBlockedLoginWithBlockedCheckIpNull (LoginBlockingService blockingLoginService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
 		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
@@ -273,7 +273,7 @@ public class LoginBlockingTestProvider
 	 * @throws CSecurityException the c security exception
 	 * @throws InterruptedException the interrupted exception
 	 */
-	public void testBlockedLoginWithBlockedSetIpNull (LoginBlockingService blockingLoginService, IBlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
+	public void testBlockedLoginWithBlockedSetIpNull (LoginBlockingService blockingLoginService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
 		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
 		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);

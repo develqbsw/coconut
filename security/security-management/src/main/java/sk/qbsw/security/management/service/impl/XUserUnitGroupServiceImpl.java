@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.core.dao.UserUnitGroupDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -29,7 +29,7 @@ public class XUserUnitGroupServiceImpl extends AService implements XUserUnitGrou
 
 	/** The XUserUnitGroup dao. */
 	@Autowired
-	private IXUserUnitGroupDao xuugDao;
+	private UserUnitGroupDao xuugDao;
 
 	@Override
 	@Transactional (readOnly = true)

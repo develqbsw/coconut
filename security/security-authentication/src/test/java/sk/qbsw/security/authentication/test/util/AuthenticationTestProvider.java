@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.core.dao.IOrganizationDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CRole;
@@ -189,7 +189,7 @@ public class AuthenticationTestProvider
 	 *
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser (AuthenticationService authenticationService, UserManagementService userService, IUserDao userDao, IOrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewUser (AuthenticationService authenticationService, UserManagementService userService, UserDao userDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
 	{
 		//create new user and needed objects
 		CUser newUser = dataGenerator.createUser(DataGenerator.USER_WITHOUT_PASSWORD);

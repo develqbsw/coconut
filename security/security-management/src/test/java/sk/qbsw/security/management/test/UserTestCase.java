@@ -17,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.dao.IGroupDao;
-import sk.qbsw.security.core.dao.IUnitDao;
-import sk.qbsw.security.core.dao.IUserDao;
-import sk.qbsw.security.core.dao.IXUserUnitGroupDao;
+import sk.qbsw.security.core.dao.GroupDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.UserUnitGroupDao;
 import sk.qbsw.security.core.model.domain.CGroup;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CUnit;
@@ -64,21 +64,21 @@ public class UserTestCase
 	private UserPermissionManagementService userPermissionManagementService;
 
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The group dao. */
 	@Autowired
-	private IGroupDao groupDao;
+	private GroupDao groupDao;
 
 	@Autowired
 	private OrganizationService orgService;
 
 	@Autowired
-	private IUnitDao unitDao;
+	private UnitDao unitDao;
 
 	/** The cross user unit group dao. */
 	@Autowired
-	private IXUserUnitGroupDao crossUserUnitGroupDao;
+	private UserUnitGroupDao crossUserUnitGroupDao;
 
 	/** The Authentication Configurator. */
 	@Autowired

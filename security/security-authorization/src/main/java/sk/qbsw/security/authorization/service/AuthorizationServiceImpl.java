@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.InvalidUserException;
-import sk.qbsw.security.core.dao.IRoleDao;
-import sk.qbsw.security.core.dao.IUnitDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.RoleDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CRole;
 import sk.qbsw.security.core.model.domain.CUnit;
 import sk.qbsw.security.core.model.domain.CUser;
@@ -42,15 +42,15 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 
 	/** The role dao. */
 	@Autowired
-	private IRoleDao roleDao;
+	private RoleDao roleDao;
 
 	/** The unit dao. */
 	@Autowired
-	private IUnitDao unitDao;
+	private UnitDao unitDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.security.core.core.model.domain.CRole, java.lang.String, java.lang.String)

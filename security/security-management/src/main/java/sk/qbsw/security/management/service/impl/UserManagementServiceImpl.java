@@ -15,10 +15,10 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IAddressDao;
-import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.core.dao.IOrganizationDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.AddressDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CAddress;
 import sk.qbsw.security.core.model.domain.CAuthenticationParams;
 import sk.qbsw.security.core.model.domain.CGroup;
@@ -55,19 +55,19 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The organization dao. */
 	@Autowired
-	private IOrganizationDao organizationDao;
+	private OrganizationDao organizationDao;
 
 	/** The authentication params dao. */
 	@Autowired
-	private IAuthenticationParamsDao authenticationParamsDao;
+	private AuthenticationParamsDao authenticationParamsDao;
 
 	/**  The address dao. */
 	@Autowired
-	private IAddressDao addressDao;
+	private AddressDao addressDao;
 
 	/** The authentication service. */
 	@Autowired

@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.model.spring.LoggedUser;
-import sk.qbsw.security.core.dao.IRoleDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.RoleDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CLicense;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CRole;
@@ -47,11 +47,11 @@ public class LoggedUserDetailsServiceImpl extends AService implements UserDetail
 {
 	/** The role dao. */
 	@Autowired
-	private IRoleDao roleDao;
+	private RoleDao roleDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/**
 	 * Load user by username.

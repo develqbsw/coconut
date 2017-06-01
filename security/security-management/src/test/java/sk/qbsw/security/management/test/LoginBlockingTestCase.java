@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.dao.IBlockedLoginDao;
+import sk.qbsw.security.core.dao.BlockedLoginDao;
 import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.management.service.LoginBlockingService;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
@@ -51,7 +51,7 @@ public class LoginBlockingTestCase
 
 	/** The blocked login jpa dao. */
 	@Autowired
-	private IBlockedLoginDao blockedLoginJpaDao;
+	private BlockedLoginDao blockedLoginJpaDao;
 
 	/** The Authentication Configurator. */
 	@Autowired

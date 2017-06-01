@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.dao.IAuthenticationParamsDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CAuthenticationParams;
 import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.core.test.util.CDataGenerator;
+import sk.qbsw.security.core.test.util.DataGenerator;
 
 /**
  * Checks authentication params jpa dao.
@@ -25,15 +25,15 @@ import sk.qbsw.security.core.test.util.CDataGenerator;
  * @version 1.13.0
  * @since 1.13.0
  */
-public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
+public class CAuthenticationParamsJpaDaoTestCase extends BaseDatabaseTestCase
 {
 	/** The role jpa dao. */
 	@Autowired
-	private IAuthenticationParamsDao authenticationParamsDao;
+	private AuthenticationParamsDao authenticationParamsDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/**
 	 * Test initialization.
@@ -58,12 +58,12 @@ public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 		CAuthenticationParams authenticationParams = authenticationParamsDao.findOneByUserId(user.getId());
 
 		//asserts
 		assertNotNull("No authentication params found", authenticationParams);
-		Assert.assertEquals("Returns invalid role", CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, authenticationParams.getPassword());
+		Assert.assertEquals("Returns invalid role", DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, authenticationParams.getPassword());
 	}
 
 	/**
@@ -92,11 +92,11 @@ public class CAuthenticationParamsJpaDaoTestCase extends ADatabaseTestCase
 	{
 		initTest();
 
-		CUser user = userDao.findOneByLogin(CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
+		CUser user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
 		CAuthenticationParams authenticationParams = authenticationParamsDao.findOneValidByUserId(user.getId());
 
 		//asserts
 		assertNotNull("No authentication params found", authenticationParams);
-		Assert.assertEquals("Returns invalid role", CDataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP, authenticationParams.getPassword());
+		Assert.assertEquals("Returns invalid role", DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP, authenticationParams.getPassword());
 	}
 }

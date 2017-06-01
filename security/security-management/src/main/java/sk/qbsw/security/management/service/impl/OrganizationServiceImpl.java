@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.core.dao.IAddressDao;
-import sk.qbsw.security.core.dao.IGroupDao;
-import sk.qbsw.security.core.dao.IOrganizationDao;
-import sk.qbsw.security.core.dao.IUserDao;
+import sk.qbsw.security.core.dao.AddressDao;
+import sk.qbsw.security.core.dao.GroupDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.CAddress;
 import sk.qbsw.security.core.model.domain.CLicense;
 import sk.qbsw.security.core.model.domain.COrganization;
 import sk.qbsw.security.core.model.domain.CUser;
-import sk.qbsw.security.core.service.ILicenseGenerator;
+import sk.qbsw.security.core.service.LicenseGenerator;
 import sk.qbsw.security.management.service.OrganizationService;
 
 /**
@@ -33,23 +33,23 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 
 	/** The license generator. */
 	@Autowired
-	private ILicenseGenerator licenseGenerator;
+	private LicenseGenerator licenseGenerator;
 
 	/** The organization dao. */
 	@Autowired
-	private IOrganizationDao organizationDao;
+	private OrganizationDao organizationDao;
 
 	/** The user dao. */
 	@Autowired
-	private IUserDao userDao;
+	private UserDao userDao;
 
 	/** The group dao. */
 	@Autowired
-	private IGroupDao groupDao;
+	private GroupDao groupDao;
 
 	/** The address dao. */
 	@Autowired
-	private IAddressDao addressDao;
+	private AddressDao addressDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IOrganizationService#registerNewOrganization(sk.qbsw.security.core.core.model.domain.COrganization, sk.qbsw.security.core.core.model.domain.CUser, java.lang.String)
@@ -224,7 +224,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 		manager.setFlagEnabled(Boolean.TRUE);
 		manager.setName(org.getName());
 		manager.setSurname("");
-		manager.setMainGroup(groupDao.findById(IGroupDao.ID_ORG_ADMIN));
+		manager.setMainGroup(groupDao.findById(GroupDao.ID_ORG_ADMIN));
 		manager.setOrganization(org);
 		org.addUser(manager);
 
