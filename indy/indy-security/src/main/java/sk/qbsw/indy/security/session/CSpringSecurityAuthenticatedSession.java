@@ -3,10 +3,10 @@ package sk.qbsw.indy.security.session;
 import org.apache.wicket.request.Request;
 import org.springframework.security.core.Authentication;
 
-import sk.qbsw.security.authentication.model.CustomUsernamePasswordAuthenticationToken;
-import sk.qbsw.security.authentication.model.CustomUsernamePasswordUnitAuthenticationToken;
-import sk.qbsw.security.authentication.model.CustomAuthenticationToken;
-import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.model.UsernamePasswordAuthenticationSecurityToken;
+import sk.qbsw.security.authentication.model.UsernamePasswordUnitAuthenticationSecurityToken;
+import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
+import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.core.model.domain.User;
 
 /**
@@ -47,16 +47,16 @@ public class CSpringSecurityAuthenticatedSession extends ASpringSecurityAuthenti
 	 * @see sk.qbsw.indy.security.session.ASpringSecurityAuthenticatedSession#getAuthenticationObject(sk.qbsw.core.security.model.IAuthenticationToken)
 	 */
 	@Override
-	protected Authentication transformAuthenticationObject (CustomAuthenticationToken authenticationToken)
+	protected Authentication transformAuthenticationObject (AuthenticationSecurityToken authenticationToken)
 	{
-		//first of all compare the CustomUsernamePasswordUnitAuthenticationToken because it has parent CustomUsernamePasswordAuthenticationToken
-		if (CustomUsernamePasswordUnitAuthenticationToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
+		//first of all compare the UsernamePasswordUnitAuthenticationSecurityToken because it has parent UsernamePasswordAuthenticationSecurityToken
+		if (UsernamePasswordUnitAuthenticationSecurityToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
 		{
-			return new UsernamePasswordUnitAuthentication((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), ((CustomUsernamePasswordUnitAuthenticationToken) authenticationToken).getUnit());
+			return new UsernamePasswordUnitAuthenticationToken((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), ((UsernamePasswordUnitAuthenticationSecurityToken) authenticationToken).getUnit());
 		}
-		else if (CustomUsernamePasswordAuthenticationToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
+		else if (UsernamePasswordAuthenticationSecurityToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
 		{
-			return new UsernamePasswordUnitAuthentication((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), null);
+			return new UsernamePasswordUnitAuthenticationToken((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), null);
 		}
 		else
 		{
@@ -70,9 +70,9 @@ public class CSpringSecurityAuthenticatedSession extends ASpringSecurityAuthenti
 	@Override
 	protected boolean prepareSessionData (Authentication authentication)
 	{
-		if (UsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication.getClass()) == true)
+		if (UsernamePasswordUnitAuthenticationToken.class.isAssignableFrom(authentication.getClass()) == true)
 		{
-			UsernamePasswordUnitAuthentication token = (UsernamePasswordUnitAuthentication) authentication;
+			UsernamePasswordUnitAuthenticationToken token = (UsernamePasswordUnitAuthenticationToken) authentication;
 
 			User user = (User) token.getDetails();
 			String unit = token.getUnit();

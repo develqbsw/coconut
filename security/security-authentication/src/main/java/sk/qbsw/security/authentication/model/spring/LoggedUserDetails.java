@@ -13,14 +13,14 @@ import sk.qbsw.security.core.model.domain.Organization;
 
 
 /**
- * The Class LoggedUser.
+ * The Class LoggedUserDetails.
  *
  * @author Dalibor Rak
  * @version 1.0
  * @since 1.0
  */
 @SuppressWarnings ("serial")
-public class LoggedUser extends User
+public class LoggedUserDetails extends User
 {
 
 	/** The organization. */
@@ -42,7 +42,7 @@ public class LoggedUser extends User
 	 * @param accountNonLocked the account non locked
 	 * @param authorities the authorities
 	 */
-	public LoggedUser (Organization organization, License<?> actualValidLicense, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities)
+	public LoggedUserDetails (Organization organization, License<?> actualValidLicense, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities)
 	{
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.organization = organization;

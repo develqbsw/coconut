@@ -2,10 +2,10 @@ package sk.qbsw.indy.security.session;
 
 import org.apache.wicket.request.Request;
 
-import sk.qbsw.security.authentication.model.CustomUsernamePasswordAuthenticationToken;
-import sk.qbsw.security.authentication.model.CustomUsernamePasswordUnitAuthenticationToken;
-import sk.qbsw.security.authentication.model.CustomAuthenticationToken;
-import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.model.UsernamePasswordAuthenticationSecurityToken;
+import sk.qbsw.security.authentication.model.UsernamePasswordUnitAuthenticationSecurityToken;
+import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
+import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
 
 /**
  * Authentication for Wicket using Spring security.
@@ -45,16 +45,16 @@ public abstract class AIndySecurityAuthenticatedWebSession extends AAuthenticate
 	 * @param authenticationToken the authentication token
 	 * @return the authentication object or null
 	 */
-	protected UsernamePasswordUnitAuthentication getAuthenticationObject (CustomAuthenticationToken authenticationToken)
+	protected UsernamePasswordUnitAuthenticationToken getAuthenticationObject (AuthenticationSecurityToken authenticationToken)
 	{
-		//first of all compare the CustomUsernamePasswordUnitAuthenticationToken because it has parent CustomUsernamePasswordAuthenticationToken
-		if (CustomUsernamePasswordUnitAuthenticationToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
+		//first of all compare the UsernamePasswordUnitAuthenticationSecurityToken because it has parent UsernamePasswordAuthenticationSecurityToken
+		if (UsernamePasswordUnitAuthenticationSecurityToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
 		{
-			return new UsernamePasswordUnitAuthentication((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), ((CustomUsernamePasswordUnitAuthenticationToken) authenticationToken).getUnit());
+			return new UsernamePasswordUnitAuthenticationToken((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), ((UsernamePasswordUnitAuthenticationSecurityToken) authenticationToken).getUnit());
 		}
-		else if (CustomUsernamePasswordAuthenticationToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
+		else if (UsernamePasswordAuthenticationSecurityToken.class.isAssignableFrom(authenticationToken.getClass()) == true)
 		{
-			return new UsernamePasswordUnitAuthentication((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), null);
+			return new UsernamePasswordUnitAuthenticationToken((String) authenticationToken.getPrincipal(), (String) authenticationToken.getCredentials(), null);
 		}
 		else
 		{

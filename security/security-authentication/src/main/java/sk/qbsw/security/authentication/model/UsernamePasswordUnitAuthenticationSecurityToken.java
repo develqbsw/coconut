@@ -8,7 +8,7 @@ package sk.qbsw.security.authentication.model;
  * @version 1.13.4
  * @since 1.13.4
  */
-public class CustomUsernamePasswordUnitAuthenticationToken extends CustomUsernamePasswordAuthenticationToken
+public class UsernamePasswordUnitAuthenticationSecurityToken extends UsernamePasswordAuthenticationSecurityToken
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -996252602003786662L;
@@ -23,7 +23,7 @@ public class CustomUsernamePasswordUnitAuthenticationToken extends CustomUsernam
 	 * @param password the credentials
 	 * @param unit the unit
 	 */
-	public CustomUsernamePasswordUnitAuthenticationToken (String username, String password, String unit)
+	public UsernamePasswordUnitAuthenticationSecurityToken (String username, String password, String unit)
 	{
 		super(username, password);
 		this.unit = unit;

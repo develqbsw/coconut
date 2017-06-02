@@ -9,7 +9,7 @@ package sk.qbsw.security.authentication.model;
  * @version 1.13.4
  * @since 1.13.4
  */
-public abstract class CustomAbstractAuthenticationToken implements CustomAuthenticationToken
+public abstract class BaseAuthenticationSecurityToken implements AuthenticationSecurityToken
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8386599362496103338L;
@@ -26,7 +26,7 @@ public abstract class CustomAbstractAuthenticationToken implements CustomAuthent
 	 * @param principal the principal
 	 * @param credentials the credentials
 	 */
-	public CustomAbstractAuthenticationToken (Object principal, Object credentials)
+	public BaseAuthenticationSecurityToken (Object principal, Object credentials)
 	{
 		this.principal = principal;
 		this.credentials = credentials;

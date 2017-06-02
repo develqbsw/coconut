@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @version 1.13.4
  * @since 1.13.4
  */
-public interface CustomAuthenticationToken extends Serializable
+public interface AuthenticationSecurityToken extends Serializable
 {
 	/**
 	 * Gets the credentials.

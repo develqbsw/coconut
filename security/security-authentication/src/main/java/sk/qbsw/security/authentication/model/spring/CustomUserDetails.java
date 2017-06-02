@@ -21,25 +21,15 @@ import sk.qbsw.security.core.model.domain.User;
  */
 public class CustomUserDetails implements UserDetails
 {
-
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The user. */
 	private User user;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.security.core.userdetails.UserDetails#getAuthorities
-	 * ()
-	 */
 	@Override
 	public Collection<GrantedAuthority> getAuthorities ()
 	{
 		List<String> roles = user.exportRoles();
-		List<GrantedAuthority> retVal = new ArrayList<GrantedAuthority>();
+		List<GrantedAuthority> retVal = new ArrayList<>();
 		for (String role : roles)
 		{
 			retVal.add(new SimpleGrantedAuthority(role));
@@ -48,74 +38,36 @@ public class CustomUserDetails implements UserDetails
 		return retVal;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.security.core.userdetails.UserDetails#getPassword()
-	 */
 	@Override
 	public String getPassword ()
 	{
 		return user.getPasswordDigest();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.security.core.userdetails.UserDetails#getUsername()
-	 */
 	@Override
 	public String getUsername ()
 	{
 		return user.getLogin();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.security.core.userdetails.UserDetails#isAccountNonExpired
-	 * ()
-	 */
 	@Override
 	public boolean isAccountNonExpired ()
 	{
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.security.core.userdetails.UserDetails#isAccountNonLocked
-	 * ()
-	 */
 	@Override
 	public boolean isAccountNonLocked ()
 	{
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.security.core.userdetails.UserDetails#
-	 * isCredentialsNonExpired()
-	 */
 	@Override
 	public boolean isCredentialsNonExpired ()
 	{
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.security.core.userdetails.UserDetails#isEnabled()
-	 */
 	@Override
 	public boolean isEnabled ()
 	{

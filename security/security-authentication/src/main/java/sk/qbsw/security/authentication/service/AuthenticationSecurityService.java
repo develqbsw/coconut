@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.service.spring;
+package sk.qbsw.security.authentication.service;
 
 import org.springframework.security.core.Authentication;
 
@@ -13,7 +13,7 @@ import sk.qbsw.security.core.model.domain.User;
  * @version 1.13.4
  * @since 1.13.4
  */
-public interface SpringAuthenticationService
+public interface AuthenticationSecurityService
 {
 	/**
 	 * Authenticates the user.

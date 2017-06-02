@@ -1,9 +1,8 @@
-package sk.qbsw.security.authentication.service.spring;
+package sk.qbsw.security.authentication.provider;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -15,6 +14,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
+import sk.qbsw.security.authentication.service.AuthenticationSecurityService;
 import sk.qbsw.security.core.model.domain.User;
 
 /**
@@ -27,23 +27,24 @@ import sk.qbsw.security.core.model.domain.User;
  * @since 1.6.0
  * 
  */
-public abstract class BaseSecurityAuthenticationProvider extends AService implements AuthenticationProvider
+public abstract class BaseAuthenticationProvider extends AService implements AuthenticationProvider
 {
-	/** The spring authentication service. */
-	private SpringAuthenticationService springAuthenticationService;
+	private AuthenticationSecurityService authenticationSecurityService;
+	
+	public BaseAuthenticationProvider (AuthenticationSecurityService authenticationSecurityService)
+	{
+		this.authenticationSecurityService = authenticationSecurityService;
+	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.security.authentication.AuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
-	 */
 	@Override
 	public Authentication authenticate (@CNotLogged @CNotAuditLogged Authentication authentication) throws AuthenticationException
 	{
 		Authentication retVal = null;
 		try
 		{
-			if (this.supports(authentication.getClass()) == true && springAuthenticationService.supports(authentication.getClass()) == true)
+			if (this.supports(authentication.getClass()) && authenticationSecurityService.supports(authentication.getClass()))
 			{
-				User authenticatedUser = springAuthenticationService.login(authentication);
+				User authenticatedUser = authenticationSecurityService.login(authentication);
 				retVal = populateAuthentication(authentication, authenticatedUser, transformUserRolesToAuthorities(authenticatedUser.exportRoles()));
 			}
 		}
@@ -73,23 +74,12 @@ public abstract class BaseSecurityAuthenticationProvider extends AService implem
 	 */
 	private List<GrantedAuthority> transformUserRolesToAuthorities (List<String> userRoles)
 	{
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		List<GrantedAuthority> authorities = new ArrayList<>();
 		for (String role : userRoles)
 		{
 			authorities.add(new SimpleGrantedAuthority(role));
 		}
 
 		return authorities;
-	}
-
-	/**
-	 * Sets the spring authentication service.
-	 *
-	 * @param springAuthenticationService the new spring authentication service
-	 */
-	@Autowired
-	public void setSpringAuthenticationService (SpringAuthenticationService springAuthenticationService)
-	{
-		this.springAuthenticationService = springAuthenticationService;
 	}
 }

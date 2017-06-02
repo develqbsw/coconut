@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.service.spring;
+package sk.qbsw.security.authentication.service;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.NoResultException;
@@ -26,10 +26,10 @@ import sk.qbsw.security.core.model.domain.User;
  * @version 1.14.3
  * @since 1.6.0
  */
-public class UserDetailsServiceImpl extends AService implements UserDetailsService
+public class CustomUserDetailsService extends AService implements UserDetailsService
 {
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
 	/** The user service. */
 	@Autowired

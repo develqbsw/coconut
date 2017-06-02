@@ -1,14 +1,12 @@
-package sk.qbsw.security.authentication.service.spring;
+package sk.qbsw.security.authentication.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.core.model.domain.User;
 
 /**
@@ -20,17 +18,15 @@ import sk.qbsw.security.core.model.domain.User;
  * @version 1.13.4
  * @since 1.13.4
  */
-@Service (value = "springAuthenticationService")
-public class SpringAuthenticationServiceImpl extends AService implements SpringAuthenticationService
+public class UsernamePasswordUnitAuthenticationSecurityService extends AService implements AuthenticationSecurityService
 {
-	
-	/** The authentication service. */
-	@Autowired
 	private AuthenticationService authenticationService;
 	
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.ISpringAuthenticationService#login(org.springframework.security.core.Authentication)
-	 */
+	public UsernamePasswordUnitAuthenticationSecurityService (AuthenticationService authenticationService)
+	{
+		this.authenticationService = authenticationService;
+	}
+	
 	@Override
 	public User login (Authentication authentication) throws CSecurityException
 	{
@@ -40,7 +36,7 @@ public class SpringAuthenticationServiceImpl extends AService implements SpringA
 			throw new CSecurityException(ECoreErrorResponse.UNSUPPORTED_AUTHENTICATION_TOKEN);
 		}
 
-		UsernamePasswordUnitAuthentication usernamePasswordAuthentication = (UsernamePasswordUnitAuthentication) authentication;
+		UsernamePasswordUnitAuthenticationToken usernamePasswordAuthentication = (UsernamePasswordUnitAuthenticationToken) authentication;
 
 		if (usernamePasswordAuthentication.getUnit() != null)
 		{
@@ -52,12 +48,9 @@ public class SpringAuthenticationServiceImpl extends AService implements SpringA
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.ISpringAuthenticationService#supports(java.lang.Class)
-	 */
 	@Override
 	public boolean supports (Class<? extends Authentication> authentication)
 	{
-		return UsernamePasswordUnitAuthentication.class.isAssignableFrom(authentication);
+		return UsernamePasswordUnitAuthenticationToken.class.isAssignableFrom(authentication);
 	}
 }

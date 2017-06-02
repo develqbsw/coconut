@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.authentication.model.CustomAuthenticationToken;
-import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthentication;
+import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
+import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.core.model.domain.User;
 
 /**
@@ -70,10 +70,10 @@ public class CLdapAuthenticatedWebSession extends AIndySecurityAuthenticatedWebS
 	 * @see sk.qbsw.indy.security.session.AAuthenticatedWebSession#authenticate(sk.qbsw.core.security.model.IAuthenticationToken)
 	 */
 	@Override
-	public boolean authenticate (CustomAuthenticationToken authenticationToken)
+	public boolean authenticate (AuthenticationSecurityToken authenticationToken)
 	{
 		//get supported token
-		UsernamePasswordUnitAuthentication token = getAuthenticationObject(authenticationToken);
+		UsernamePasswordUnitAuthenticationToken token = getAuthenticationObject(authenticationToken);
 
 		//checks if there is a supported token
 		if (token == null)
