@@ -21,9 +21,15 @@ public enum ECoreErrorResponse implements IErrorResponse
 
 	/** The pin wrong. */
 	PIN_WRONG ("9003", "error.wrongpin"),
-
+	
 	/** The unsupported authentication token. */
 	UNSUPPORTED_AUTHENTICATION_TOKEN ("9004", "error.unsupportedauthenticationtoken"),
+
+	ILLEGAL_STATE ("9005", "error.illegalstate"),
+	
+	ILLEGAL_ARGUMENT ("9006", "error.illegalargument"),
+	
+	INVALID_DATA ("9007", "error.invaliddata"),
 
 	// BUSINESS
 	/** The user already exists. */

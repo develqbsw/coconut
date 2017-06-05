@@ -23,6 +23,7 @@
 		<core.version>${project.version}</core.version>
 		<et.version>${project.version}</et.version>
 		<security.version>${project.version}</security.version>
+		<integration.version>${project.version}</integration.version>
 
 		<!-- Java -->
 		<java.version>1.8</java.version>
@@ -31,7 +32,7 @@
 
 		<!-- Spring -->
 		<spring.version>4.3.2.RELEASE</spring.version>
-		<spring.security.version>4.1.2.RELEASE</spring.security.version>
+		<spring.security.version>4.1.3.RELEASE</spring.security.version>
 		<spring.ws.version>2.3.0.RELEASE</spring.ws.version>
 		<xws-security.version>1.3.1</xws-security.version>
 		<spring.support.version>2.0.8</spring.support.version>
@@ -104,6 +105,9 @@
 
 		<!-- Testing -->
 		<tempusfugit.version>1.1</tempusfugit.version>
+		
+		<!-- orika -->
+		<orika.version>1.4.6</orika.version>
 	</properties>
 
 	<modules>
@@ -173,6 +177,11 @@
 				<artifactId>core-api</artifactId>
 				<version>${core.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.core</groupId>
+				<artifactId>core-image</artifactId>
+				<version>${core.version}</version>
+			</dependency>
 
 			<!-- QBSW security -->
 			<dependency>
@@ -210,6 +219,16 @@
 				<artifactId>security-authorization</artifactId>
 				<version>${security.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.security</groupId>
+				<artifactId>security-api-authentication-client</artifactId>
+				<version>${security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.security</groupId>
+				<artifactId>security-oauth</artifactId>
+				<version>${security.version}</version>
+			</dependency>
 
 			<!-- QBSW indy -->
 			<dependency>
@@ -218,7 +237,7 @@
 				<version>${indy.version}</version>
 			</dependency>
 
-			<!-- et -->
+			<!-- QBSW et -->
 			<dependency>
 				<groupId>sk.qbsw.et</groupId>
 				<artifactId>et-browser-client</artifactId>
@@ -228,6 +247,18 @@
 				<groupId>sk.qbsw.et</groupId>
 				<artifactId>et-browser-core</artifactId>
 				<version>${et.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>sk.qbsw.et</groupId>
+				<artifactId>et-browser-api</artifactId>
+				<version>${et.version}</version>
+			</dependency>
+			
+			<!-- QBSW integration -->
+			<dependency>
+				<groupId>sk.qbsw.integration</groupId>
+				<artifactId>integration-mailchimp-client</artifactId>
+				<version>${integration.version}</version>
 			</dependency>
 
 			<!-- security -->
@@ -256,6 +287,11 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
 
@@ -375,6 +411,28 @@
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ws</groupId>
+				<artifactId>spring-ws-security</artifactId>
+				<version>${spring.ws.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-support</artifactId>
+				<version>${spring.support.version}</version>
+			</dependency>
+			
+			<!-- spring security -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
 				<version>${spring.security.version}</version>
@@ -385,21 +443,11 @@
 				<version>${spring.security.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework.ws</groupId>
-				<artifactId>spring-ws-security</artifactId>
-				<version>${spring.ws.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-support</artifactId>
-				<version>${spring.support.version}</version>
-			</dependency>
-
+			
 			<!-- wicket -->
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
@@ -544,6 +592,13 @@
 				<groupId>com.querydsl</groupId>
 				<artifactId>querydsl-sql-spring</artifactId>
 				<version>${querydsl.version}</version>
+			</dependency>
+			
+			<!-- orika -->
+			<dependency>
+				<groupId>ma.glasnost.orika</groupId>
+				<artifactId>orika-core</artifactId>
+				<version>${orika.version}</version>
 			</dependency>
 
 			<!-- quartz -->
