@@ -1,4 +1,4 @@
-package sk.qbsw.security.api.authentication.exception;
+package sk.qbsw.security.integration.authentication.exception;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.IErrorResponse;

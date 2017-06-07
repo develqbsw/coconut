@@ -1,4 +1,4 @@
-package sk.qbsw.security.api.authentication.controller;
+package sk.qbsw.security.integration.authentication.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -22,9 +22,9 @@ import sk.qbsw.security.api.authentication.client.model.request.AuthenticationRe
 import sk.qbsw.security.api.authentication.client.model.request.InvalidateRequest;
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponse;
 import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponse;
-import sk.qbsw.security.api.authentication.mapping.SecurityMapper;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.integration.authentication.mapping.SecurityMapper;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;

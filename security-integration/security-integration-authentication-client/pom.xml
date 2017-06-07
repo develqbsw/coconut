@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>security-api-authentication-client</artifactId>
-	<name>Security Api Authentication Client</name>
+	<artifactId>security-integration-authentication-client</artifactId>
+	<name>Security Integration Authentication Client</name>
 	<packaging>jar</packaging>
 
 	<organization>
@@ -11,13 +11,13 @@
 	</organization>
 
 	<parent>
-		<groupId>sk.qbsw.security</groupId>
-		<artifactId>security-top</artifactId>
+		<groupId>sk.qbsw.security.integration</groupId>
+		<artifactId>security-integration-top</artifactId>
 		<version>1.18.0</version>
 	</parent>
 
 	<dependencies>
-		<!-- QBSW -->
+		<!-- QBSW core -->
 		<dependency>
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-base</artifactId>
@@ -27,28 +27,16 @@
 			<artifactId>core-api</artifactId>
 		</dependency>
 		
-		<!-- validation api -->
+		<!-- QBSW security-integration -->
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-		</dependency>
-
-		<!-- jackson -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
+			<groupId>sk.qbsw.security.integration</groupId>
+			<artifactId>security-integration-authentication-model</artifactId>
 		</dependency>
 
 		<!-- apache -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-		</dependency>
-
-		<!-- swagger -->
-		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-annotations</artifactId>
 		</dependency>
 		
 	</dependencies>

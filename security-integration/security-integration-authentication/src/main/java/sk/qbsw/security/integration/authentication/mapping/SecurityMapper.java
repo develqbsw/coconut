@@ -1,4 +1,4 @@
-package sk.qbsw.security.api.authentication.mapping;
+package sk.qbsw.security.integration.authentication.mapping;
 
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponse;
 import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponse;

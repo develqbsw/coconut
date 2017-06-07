@@ -1,4 +1,4 @@
-package sk.qbsw.security.api.authentication.mapping;
+package sk.qbsw.security.integration.authentication.mapping.orika;
 
 import javax.annotation.PostConstruct;
 
@@ -11,6 +11,8 @@ import sk.qbsw.security.api.authentication.client.model.UserData;
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponse;
 import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponse;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.integration.authentication.mapping.BaseMapper;
+import sk.qbsw.security.integration.authentication.mapping.SecurityMapper;
 
 /**
  * The security orika mapper.
@@ -44,7 +46,7 @@ public class SecurityOrikaMapper extends BaseMapper implements SecurityMapper
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.api.authentication.mapping.SecurityMapper#mapToAuthenticationResponse(java.lang.String, java.lang.String, sk.qbsw.security.core.model.domain.User)
+	 * @see sk.qbsw.security.integration.authentication.test.authentication.mapping.SecurityMapper#mapToAuthenticationResponse(java.lang.String, java.lang.String, sk.qbsw.security.core.model.domain.User)
 	 */
 	@Override
 	public AuthenticationResponse mapToAuthenticationResponse (String masterToken, String authenticationToken, User user)
@@ -56,7 +58,7 @@ public class SecurityOrikaMapper extends BaseMapper implements SecurityMapper
 	}
 
 	/* (non-Javadoc)
-	 * @see sk.qbsw.security.api.authentication.mapping.SecurityMapper#mapToReauthenticationResponse(java.lang.String)
+	 * @see sk.qbsw.security.integration.authentication.test.authentication.mapping.SecurityMapper#mapToReauthenticationResponse(java.lang.String)
 	 */
 	@Override
 	public ReauthenticationResponse mapToReauthenticationResponse (String authenticationToken)

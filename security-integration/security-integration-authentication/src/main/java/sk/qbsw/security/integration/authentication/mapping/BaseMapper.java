@@ -1,4 +1,4 @@
-package sk.qbsw.security.api.authentication.mapping;
+package sk.qbsw.security.integration.authentication.mapping;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>security-api-authentication</artifactId>
-	<name>Security Api Authentication</name>
+	<artifactId>security-integration-authentication</artifactId>
+	<name>Security Integration Authentication</name>
 	<packaging>jar</packaging>
 
 	<organization>
@@ -11,8 +11,8 @@
 	</organization>
 
 	<parent>
-		<groupId>sk.qbsw.security</groupId>
-		<artifactId>security-top</artifactId>
+		<groupId>sk.qbsw.security.integration</groupId>
+		<artifactId>security-integration-top</artifactId>
 		<version>1.18.0</version>
 	</parent>
 
@@ -45,8 +45,8 @@
 			<artifactId>security-oauth</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-api-authentication-client</artifactId>
+			<groupId>sk.qbsw.security.integration</groupId>
+			<artifactId>security-integration-authentication-model</artifactId>
 		</dependency>
 		
 		<!-- QBSW et -->

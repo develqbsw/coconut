@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                               http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>sk.qbsw.security.integration</groupId>
+	<artifactId>security-integration-top</artifactId>
+	<name>Security Integration Project</name>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>sk.qbsw</groupId>
+		<artifactId>coconut</artifactId>
+		<version>1.18.0</version>
+	</parent>
+
+	<modules>
+		<module>security-integration-authentication-model</module>
+		<module>security-integration-authentication-client</module>
+		<module>security-integration-authentication</module>
+	</modules>
+</project>

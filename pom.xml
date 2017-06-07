@@ -24,7 +24,8 @@
 		<et.version>${project.version}</et.version>
 		<security.version>${project.version}</security.version>
 		<integration.version>${project.version}</integration.version>
-
+		<security.integration.version>${project.version}</security.integration.version>
+		
 		<!-- Java -->
 		<java.version>1.8</java.version>
 		<javaee.version>7.0</javaee.version>
@@ -113,6 +114,7 @@
 	<modules>
 		<module>core</module>
 		<module>security</module>
+		<module>security-integration</module>
 		<module>et</module>
 		<module>geolocation</module>
 		<module>indy</module>
@@ -221,13 +223,15 @@
 			</dependency>
 			<dependency>
 				<groupId>sk.qbsw.security</groupId>
-				<artifactId>security-api-authentication-client</artifactId>
-				<version>${security.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>sk.qbsw.security</groupId>
 				<artifactId>security-oauth</artifactId>
 				<version>${security.version}</version>
+			</dependency>
+
+			<!-- QBSW security integration -->
+			<dependency>
+				<groupId>sk.qbsw.security.integration</groupId>
+				<artifactId>security-integration-authentication-model</artifactId>
+				<version>${security.integration.version}</version>
 			</dependency>
 
 			<!-- QBSW indy -->
