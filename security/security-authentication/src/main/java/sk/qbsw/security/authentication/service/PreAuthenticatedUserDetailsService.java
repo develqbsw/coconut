@@ -1,13 +1,11 @@
 package sk.qbsw.security.authentication.service;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-
+import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
@@ -15,6 +13,8 @@ import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
 import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.User;
+
+import javax.persistence.NoResultException;
 
 /**
  * The user detail service for token authentication.
@@ -34,6 +34,7 @@ public class PreAuthenticatedUserDetailsService implements AuthenticationUserDet
 	 * @see org.springframework.security.core.userdetails.AuthenticationUserDetailsService#loadUserDetails(org.springframework.security.core.Authentication)
 	 */
 	@Override
+	@Transactional
 	public UserDetails loadUserDetails (@CNotLogged @CNotAuditLogged PreAuthenticatedAuthenticationToken token)
 	{
 		//checks if there is a user
