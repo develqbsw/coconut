@@ -16,6 +16,7 @@
 		<module>paymentgateway-sporopay</module>
     <module>paymentgateway-tatrapay</module>
     <module>paymentgateway-vubeplatby</module>
+    <module>paymentgateway-vubecard</module>
   </modules>
 
 	<dependencyManagement>
