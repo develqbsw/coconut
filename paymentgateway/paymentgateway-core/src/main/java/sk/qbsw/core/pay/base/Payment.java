@@ -23,6 +23,7 @@ public interface Payment
 
 	Long getKs ();
 
+
 	String getRemittanceInformation ();
 
 	BigDecimal getAmount ();
@@ -32,4 +33,6 @@ public interface Payment
 	PaymentRealization getRealization ();
 
 	String suggestPayId();
+
+	String getDescription ();
 }

@@ -14,6 +14,8 @@ package sk.qbsw.core.pay.base;
 public class PaymentRealization
 {
 	private String paymentId;
+
+	private String gatePayId;
 	/**
 	 * URL to witch client should be redirected.
 	 */
@@ -69,5 +71,16 @@ public class PaymentRealization
 	{
 		this.bankResponse = bankResponse;
 	}
+
+	public String getGatePayId ()
+	{
+		return gatePayId;
+	}
+
+	public void setGatePayId (String gatePayId)
+	{
+		this.gatePayId = gatePayId;
+	}
+
 	
 }

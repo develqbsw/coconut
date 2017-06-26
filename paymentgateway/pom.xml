@@ -18,6 +18,7 @@
     <module>paymentgateway-vubeplatby</module>
     <module>paymentgateway-vubecard</module>
     <module>paymentgateway-gopay</module>
+    <module>paymentgateway-paypal</module>
   </modules>
 
 	<dependencyManagement>

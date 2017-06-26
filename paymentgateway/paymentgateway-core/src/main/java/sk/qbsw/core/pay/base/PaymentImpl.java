@@ -35,6 +35,7 @@ public class PaymentImpl implements Payment
 
 	PaymentRealization realization;
 
+	private String description;
 	/**
 	 * @return the vs
 	 */
@@ -151,6 +152,16 @@ public class PaymentImpl implements Payment
 	public String suggestPayId() {
 		
 		return ""+vs+ss+ks;
+	}
+
+	public String getDescription ()
+	{
+		return description;
+	}
+
+	public void setDescription (String description)
+	{
+		this.description = description;
 	}
 
 }
