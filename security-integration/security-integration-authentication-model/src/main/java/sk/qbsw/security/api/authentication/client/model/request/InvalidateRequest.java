@@ -1,18 +1,18 @@
 package sk.qbsw.security.api.authentication.client.model.request;
 
-import javax.validation.constraints.NotNull;
-
 import io.swagger.annotations.ApiModelProperty;
-import sk.qbsw.core.api.model.request.BaseRequest;
+import sk.qbsw.core.client.model.request.BaseRequestBody;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * The Invalidate request.
  *
  * @author Tomas Lauro
  * @version 1.18.0
- * @since   1.18.0
+ * @since 1.18.0
  */
-public class InvalidateRequest extends BaseRequest
+public class InvalidateRequest extends BaseRequestBody
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -4789897540369584317L;

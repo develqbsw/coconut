@@ -1,19 +1,18 @@
 package sk.qbsw.security.api.authentication.client.model;
 
-import javax.validation.constraints.NotNull;
-
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import sk.qbsw.core.client.model.BaseClientEntity;
 
-import io.swagger.annotations.ApiModelProperty;
-import sk.qbsw.core.api.model.BaseClientEntity;
+import javax.validation.constraints.NotNull;
 
 /**
  * The authentication data.
  *
  * @author Tomas Lauro
  * @version 1.18.0
- * @since   1.18.0
+ * @since 1.18.0
  */
 public class AuthenticationData extends BaseClientEntity
 {
@@ -35,7 +34,7 @@ public class AuthenticationData extends BaseClientEntity
 	 */
 	public AuthenticationData ()
 	{
-		//default
+		// default
 	}
 
 	/**
@@ -118,7 +117,8 @@ public class AuthenticationData extends BaseClientEntity
 		this.authenticationToken = authenticationToken;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -140,7 +140,8 @@ public class AuthenticationData extends BaseClientEntity
 		return new EqualsBuilder().append(masterToken, castOther.masterToken).append(authenticationToken, castOther.authenticationToken).isEquals();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

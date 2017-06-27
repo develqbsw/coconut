@@ -1,21 +1,13 @@
 package sk.qbsw.security.integration.authentication.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import sk.qbsw.core.api.model.response.EmptyResponse;
+import org.springframework.web.bind.annotation.*;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.core.client.model.response.EmptyResponseBody;
 import sk.qbsw.security.api.authentication.client.configuration.AuthenticationApiConfiguration;
 import sk.qbsw.security.api.authentication.client.configuration.AuthenticationPathConfiguration;
 import sk.qbsw.security.api.authentication.client.model.request.AuthenticationRequest;
@@ -28,6 +20,9 @@ import sk.qbsw.security.integration.authentication.mapping.SecurityMapper;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 /**
  * The security controller.
@@ -80,11 +75,11 @@ public class AuthenticationController
 			throw new CSecurityException(ECoreErrorResponse.USER_NOT_FOUND);
 		}
 
-		//generate tokens
+		// generate tokens
 		String masterToken = masterTokenService.generateMasterToken(user.getId(), deviceId, ip);
 		String authenticationToken = authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip);
 
-		//create response
+		// create response
 		return securityMapper.mapToAuthenticationResponse(masterToken, authenticationToken, user);
 	}
 
@@ -110,7 +105,7 @@ public class AuthenticationController
 
 		String authenticationToken = authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip);
 
-		//set response
+		// set response
 		return securityMapper.mapToReauthenticationResponse(authenticationToken);
 	}
 
@@ -124,7 +119,7 @@ public class AuthenticationController
 	 * @throws CBusinessException the c business exception
 	 */
 	@RequestMapping (value = AuthenticationPathConfiguration.INVALIDATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public EmptyResponse invalidate (HttpServletRequest httpRequest, @NotNull @RequestBody (required = true) InvalidateRequest request, @NotNull @RequestHeader (value = AuthenticationApiConfiguration.DEVICE_ID_REQUEST_HEADER, required = true) String deviceId) throws CBusinessException
+	public EmptyResponseBody invalidate (HttpServletRequest httpRequest, @NotNull @RequestBody (required = true) InvalidateRequest request, @NotNull @RequestHeader (value = AuthenticationApiConfiguration.DEVICE_ID_REQUEST_HEADER, required = true) String deviceId) throws CBusinessException
 	{
 		String ip = ipAddressRetriever.getClientIpAddress(httpRequest);
 		User user = masterTokenService.getUserByMasterToken(request.getMasterToken(), deviceId, ip);
@@ -137,6 +132,6 @@ public class AuthenticationController
 		masterTokenService.revokeMasterToken(user.getId(), request.getMasterToken());
 		authenticationTokenService.revokeAuthenticationToken(user.getId(), request.getAuthenticationToken());
 
-		return EmptyResponse.create();
+		return EmptyResponseBody.build();
 	}
 }

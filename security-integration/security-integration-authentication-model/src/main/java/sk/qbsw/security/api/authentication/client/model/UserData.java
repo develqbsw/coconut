@@ -1,22 +1,20 @@
 package sk.qbsw.security.api.authentication.client.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import sk.qbsw.core.client.model.BaseClientEntity;
 
-import io.swagger.annotations.ApiModelProperty;
-import sk.qbsw.core.api.model.BaseClientEntity;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The user data.
  *
- * @author  Tomas Lauro
+ * @author Tomas Lauro
  * @version 1.18.0
- * @since   1.18.0
+ * @since 1.18.0
  */
 public class UserData extends BaseClientEntity
 {
@@ -217,7 +215,8 @@ public class UserData extends BaseClientEntity
 		this.roles = roles;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -239,7 +238,8 @@ public class UserData extends BaseClientEntity
 		return new EqualsBuilder().append(id, castOther.id).append(name, castOther.name).append(surname, castOther.surname).append(email, castOther.email).append(roles, castOther.roles).isEquals();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

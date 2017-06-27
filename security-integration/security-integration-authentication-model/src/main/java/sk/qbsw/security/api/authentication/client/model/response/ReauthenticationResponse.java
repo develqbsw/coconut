@@ -1,20 +1,18 @@
 package sk.qbsw.security.api.authentication.client.model.response;
 
-import javax.validation.constraints.NotNull;
-
 import io.swagger.annotations.ApiModelProperty;
-import sk.qbsw.core.api.model.response.BaseResponse;
+import sk.qbsw.core.client.model.response.BaseResponseBody;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * The reauthentication response.
  * 
  * @author Tomas Lauro
- * 
  * @version 1.0.0
  * @since 1.0.0
- * 
  */
-public class ReauthenticationResponse extends BaseResponse
+public class ReauthenticationResponse extends BaseResponseBody
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 9094797792039380937L;
@@ -29,7 +27,7 @@ public class ReauthenticationResponse extends BaseResponse
 	 */
 	public ReauthenticationResponse ()
 	{
-		//default
+		// default
 	}
 
 	/**

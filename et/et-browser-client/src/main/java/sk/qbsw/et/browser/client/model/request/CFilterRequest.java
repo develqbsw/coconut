@@ -1,11 +1,11 @@
 package sk.qbsw.et.browser.client.model.request;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import sk.qbsw.core.api.model.request.ARequest;
+import sk.qbsw.core.client.model.request.BaseRequestBody;
 import sk.qbsw.et.browser.client.model.IFilterable;
 import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * The filter request.
@@ -18,7 +18,7 @@ import sk.qbsw.et.browser.client.model.filter.CFilterCriteriaTransferObject;
  * @version 1.16.0
  * @since 1.16.0
  */
-public class CFilterRequest<F extends IFilterable>extends ARequest
+public class CFilterRequest<F extends IFilterable>extends BaseRequestBody
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2184850074033502510L;
