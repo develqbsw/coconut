@@ -18,6 +18,7 @@
 		<module>core-paypal</module>
 		<module>core-persistence</module>
 		<module>core-configuration</module>
+		<module>core-client-model</module>
 		<module>core-api</module>
 		<module>core-mapping</module>
 		<module>core-logging</module>
