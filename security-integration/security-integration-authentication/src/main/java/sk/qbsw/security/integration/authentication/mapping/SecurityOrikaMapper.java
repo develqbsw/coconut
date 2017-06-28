@@ -42,6 +42,14 @@ public class SecurityOrikaMapper extends BaseMapper implements SecurityMapper
 			.register(); //
 		mapperFactory.classMap(User.class, CSAccountData.class) //
 			.byDefault() //
+			.customize(new CustomMapper<User, CSAccountData>()
+			{
+				@Override
+				public void mapAtoB (User a, CSAccountData b, MappingContext context)
+				{
+					b.setRoles(a.exportRoles());
+				}
+			}) //
 			.register();
 	}
 
