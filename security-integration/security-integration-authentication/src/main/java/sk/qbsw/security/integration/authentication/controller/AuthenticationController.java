@@ -38,7 +38,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping (value = "${custom}" + AuthenticationPaths.BASE_PATH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@RequestMapping (value = AuthenticationPaths.BASE_PATH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class AuthenticationController
 {
 	private final AuthenticationService authenticationService;
