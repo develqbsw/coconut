@@ -4,23 +4,30 @@
 package sk.qbsw.core.pay.base.sporopay;
 
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
 
 import com.paypal.api.payments.Agreement;
 import com.paypal.api.payments.Amount;
+import com.paypal.api.payments.Currency;
 import com.paypal.api.payments.Item;
 import com.paypal.api.payments.ItemList;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.MerchantPreferences;
 import com.paypal.api.payments.Patch;
 import com.paypal.api.payments.Payer;
+import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.PaymentDefinition;
 import com.paypal.api.payments.PaymentExecution;
 import com.paypal.api.payments.Plan;
@@ -32,12 +39,15 @@ import com.paypal.base.rest.JSONFormatter;
 import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
 
-import sk.qbsw.core.pay.base.Payment;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.exception.ConfigurationException;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.exception.InvalidRequestException;
+import sk.qbsw.core.pay.base.payment.request.OneTimePaymentAmount;
+import sk.qbsw.core.pay.base.payment.request.ReccuringPaymentAmount;
+import sk.qbsw.core.pay.base.payment.request.ReccuringPeriod;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 
@@ -50,6 +60,12 @@ import sk.qbsw.core.pay.base.response.BankResponse;
 public class PayPalPaymentProcessor extends PaymentProcessor
 {
 
+
+
+	private static final int HOURS_TO_DEFFER_PAYMENT = 1;
+
+	private static final String PAYMENT_MODE_RECCURRING = "reccuring";
+	private static final String PAYMENT_MODE_ONE_TIME = "onetime";
 
 	private PayPalInitParams ctx;
 
@@ -65,63 +81,72 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (Payment payment)
+	public PaymentRealization createPayment (PaymentRequest payment)
 	{
 		PaymentRealization payments = new PaymentRealization();
-		String payid = payment.suggestPayId();
+		String payid = payment.getIdentification().getPaymentId();
 		payments.setPaymentId(payid);
 
-		//		if (!priceSummary.isRecurring())
-		//		{
-		List<Transaction> transactions = new ArrayList<>();
 
-		createTransaction(transactions, payment);
 
-		try
+		if (payment.getAmount() instanceof OneTimePaymentAmount)
 		{
-			APIContext context = getContext(ctx.getApiKey().get(), ctx.getApiSecret().get());
+			List<Transaction> transactions = new ArrayList<>();
 
-			com.paypal.api.payments.Payment createPayment = createPayment(context, transactions, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=confirm&payment=" + payid, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=deny&payment=" + payid);
-			payments.setUrlToCall(fetchApprovalUrl(createPayment.getLinks()).getHref());
-			payments.setGetCall(true);
+			createTransaction(transactions, payment);
+
+			try
+			{
+				APIContext context = getContext(ctx.getApiKey().get(), ctx.getApiSecret().get());
+
+				com.paypal.api.payments.Payment createPayment = createPayment(context, transactions, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=confirm&mode=" + PAYMENT_MODE_ONE_TIME + "&payment=" + payid, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=deny&mode=" + PAYMENT_MODE_ONE_TIME + "&payment=" + payid);
+				payments.setUrlToCall(fetchApprovalUrl(createPayment.getLinks()).getHref());
+				payments.setGetCall(true);
+
+
+			}
+			catch (PayPalRESTException e)
+			{
+				throw new ConfigurationException(e);
+			}
 
 		}
-		catch (PayPalRESTException e)
+		else
 		{
-			throw new ConfigurationException(e);
-		}
+			ReccuringPaymentAmount amount = (ReccuringPaymentAmount) payment.getAmount();
 
-		//		}
-		//		else
-		//		{
-		//			payments.setMode(EPaymentMode.RECURRING);
-		//			List<PaymentDefinition> defs = new ArrayList<>();
-		//
-		//			for (CPriceItem item : priceSummary.getPriceItems())
-		//			{
-		//				//one sub transaction per item
-		//				createPayDef(defs, item, priceSummary);
-		//			}
-		//
-		//			Plan plan;
-		//			try
-		//			{
-		//				APIContext context = paypalService.getContext(getPayParam("PAYPAL.api.key"), keyProvider.getBase64String(storeAlias));
-		//				plan = paypalService.createPaymentPlan(context, defs, appUrl + "/confirmPayment/paypal?op=confirm&mode=" + EPaymentMode.RECURRING + "&payment=" + payid, appUrl + "/confirmPayment/paypal?op=deny&mode=" + EPaymentMode.RECURRING + "&payment=" + payid, priceSummary.getName(), priceSummary.getName());
-		//				plan = paypalService.activatePaymentPlan(context, plan);
-		//				Agreement agreement = paypalService.createBillingAgreement(context, plan, priceSummary.getName(), priceSummary.getName());
-		//				payments.setRedirectUrl(paypalService.fetchApprovalUrl(agreement.getLinks()).getHref());
-		//				payments.setPayId(plan.getId());
-		//				payments.setToken(agreement.getToken());
-		//
-		//			}
-		//			catch (PayPalRESTException | MalformedURLException | UnsupportedEncodingException e)
-		//			{
-		//				payments.setState(EPaymentState.CREATED_ERROR);
-		//				LOGGER.error("error in payments", e);
-		//				throw new CBusinessException(EErrorResponse.PAYMENT_ERROR);
-		//			}
-		//		}
+			List<PaymentDefinition> defs = new ArrayList<>();
+
+
+			//List<PaymentInfoItem> items = payment.getInfo().getItems();
+
+			//only one item for payment
+
+			//one sub transaction per item
+			defs.add(createPayDef(payment, amount));
+
+			Plan plan;
+			try
+			{
+				APIContext context = getContext(ctx.getApiKey().get(), ctx.getApiSecret().get());
+
+
+
+				plan = createPaymentPlan(context, defs, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=confirm&mode=" + PAYMENT_MODE_RECCURRING + "&payment=" + payid, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=deny&mode=" + PAYMENT_MODE_RECCURRING + "&payment=" + payid, payment.getInfo().getNote(), payment.getInfo().getNote());
+				plan = activatePaymentPlan(context, plan);
+				Agreement agreement = createBillingAgreement(context, plan, payment.getInfo().getNote(), payment.getInfo().getNote());
+				payments.setUrlToCall(fetchApprovalUrl(agreement.getLinks()).getHref());
+				//				payments.setGatePayId(plan.getId());
+				payments.setGatePayId(agreement.getToken());//use token as ID because it can be identified by 
+				//TOKEN ???
+				//payments.setToken(agreement.getToken());
+
+			}
+			catch (PayPalRESTException | MalformedURLException | UnsupportedEncodingException e)
+			{
+				throw new ConfigurationException(e);
+			}
+		}
 		getPersistence().update(payments);
 
 		return payments;
@@ -140,10 +165,10 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 		String operation = response.get("op");
 		String mode = response.get("mode");
 
-//		if (EPaymentMode.ONETIME.toString().equals(mode))
-//		{
-		PaymentRealization payments = getPersistence().getPaymentById(myPaymentId);
-		
+		if (PAYMENT_MODE_ONE_TIME.equals(mode))
+		{
+			PaymentRealization payments = getPersistence().getPaymentById(myPaymentId);
+
 			//protection for DOS attacks
 			if (payments == null)
 			{
@@ -178,8 +203,13 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				try
 				{
 					APIContext context = getContext(ctx.getApiKey().get(), ctx.getApiSecret().get());
-					
+
 					com.paypal.api.payments.Payment executedPayment = executePayment(context, payerId, paymentId);
+
+					
+					if  (isSimplePaymentApproved(executedPayment.getState())){
+						
+					};
 					acceptPayment(payments, executedPayment);
 					getActions().handleSuccess(payments);
 
@@ -187,7 +217,7 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				}
 				catch (PayPalRESTException e)
 				{
-					
+
 					getActions().handleCancel(payments);
 
 				}
@@ -195,38 +225,45 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 			payments.setBankResponse(JSONFormatter.toJSON(payment));
 			getPersistence().update(payments);
 			return payments;
-//		}
-//		else
-//		{
-//			//			recurrent 
-//			// returning 
-//			String token = response.get("token");
-//			CPayments payments = paymentDao.findByToken(token, EPaymentType.PAYPAL);
-//			if (payments == null)
-//			{
-//				throw new CBusinessException(EErrorResponse.NOT_FOUND);
-//			}
-//
-//			try
-//			{
-//				APIContext context = paypalService.getContext(getPayParam("PAYPAL.api.key"), keyProvider.getBase64String(storeAlias));
-//
-//				paypalService.executeAgreement(context, token);
-//				//TODO ako ziskat transaction id????
-//				acceptPayment(payments, null);
-//				return new CPaymentProcessResponse(payments.getId());
-//
-//			}
-//			catch (PayPalRESTException e)
-//			{
-//				LOGGER.error("Recurring payment failed", e);
-//				cancelPayment(payments);
-//				return new CPaymentProcessResponse(payments.getId());
-//
-//			}
-//		}
+		}
+		else
+		{
+			//			recurrent 
+			// returning 
+			String token = response.get("token");
 
-		
+			try
+			{
+				APIContext context = getContext(ctx.getApiKey().get(), ctx.getApiSecret().get());
+
+				Agreement agreement = executeAgreement(context, token);
+
+				//payment is searched by EC token, but in this phase it is used, and inactive, and after executin adreement. aggrement have its own ID. so we can change payment ID to this new ID
+				PaymentRealization realization = getPersistence().getPaymentById(token);
+				if (realization == null)
+				{
+					throw new IllegalArgumentException("payment not found");
+				}
+				String newPayId = agreement.getId();
+				getPersistence().idChange(token, newPayId);
+				realization.setGatePayId(newPayId);
+
+				getActions().handleSuccess(realization);
+				//acceptPayment(payments, null);
+				getPersistence().update(realization);
+				return realization;
+
+			}
+			catch (PayPalRESTException e)
+			{
+				getActions().handleCancel();
+				//cancelPayment(payments);
+				throw new ConfigurationException(e);
+
+			}
+		}
+
+
 	}
 
 
@@ -355,19 +392,19 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 		return Plan.get(apiContext, plan.getId());
 	}
 
-//	public Agreement createBillingAgreement (APIContext apiContext, Plan plan, String name, String desc) throws MalformedURLException, UnsupportedEncodingException, PayPalRESTException
-//	{
-//		Payer payer = new Payer();
-//		payer.setPaymentMethod("paypal");
-//		Plan pl = new Plan();
-//		pl.setId(plan.getId());
-//
-//		Agreement agreement = new Agreement(name, desc, new DateTime(DateTimeZone.UTC).plusHours(HOURS_TO_DEFFER_PAYMENT).toString(DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")) + "Z", payer, pl);
-//		return agreement.create(apiContext);
-//
-//		//		return Plan.get(apiContext, plan.getId());
-//
-//	}
+	public Agreement createBillingAgreement (APIContext apiContext, Plan plan, String name, String desc) throws MalformedURLException, UnsupportedEncodingException, PayPalRESTException
+	{
+		Payer payer = new Payer();
+		payer.setPaymentMethod("paypal");
+		Plan pl = new Plan();
+		pl.setId(plan.getId());
+
+		Agreement agreement = new Agreement(name, desc, new DateTime(DateTimeZone.UTC).plusHours(HOURS_TO_DEFFER_PAYMENT).toString(DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")) + "Z", payer, pl);
+		return agreement.create(apiContext);
+
+		//		return Plan.get(apiContext, plan.getId());
+
+	}
 
 	public com.paypal.api.payments.Payment getPayment (APIContext apiContext, String paymentId) throws PayPalRESTException
 	{
@@ -382,7 +419,7 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 	}
 
 	private APIContext context = null;
-	
+
 	public APIContext getContext (String id, String secret) throws PayPalRESTException
 	{
 		APIContext apiContext = getNewDefaultContext(id, secret);
@@ -400,31 +437,39 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 	}
 
 
-//	private void createPayDef (List<PaymentDefinition> paydefs, CPriceItem item, CPriceSummary priceSummary)
-//	{
-//		if (item.getPrice().compareTo(BigDecimal.ZERO) != 0)
-//		{
-//			Currency curr = new Currency();
-//			curr.setCurrency(item.getCurrency().toString());
-//			curr.setValue(amountToString(item.getPrice())); // TODO: ma tu byt cena a nazov itemu?
-//
-//			PaymentDefinition planSpec = new PaymentDefinition(item.getName(), "REGULAR", "1", getPayParam("PAYPAL.period"), priceSummary.getRecurringCount().toString(), curr);
-//			paydefs.add(planSpec);
-//		}
-//	}
-
-	private void createTransaction (List<Transaction> transactions, Payment priceSummary)
+	private PaymentDefinition createPayDef (PaymentRequest payment, ReccuringPaymentAmount paymentAmount)
 	{
-		if (priceSummary.getAmount().compareTo(BigDecimal.ZERO) != 0)
+
+		if (paymentAmount.getAmount().compareTo(BigDecimal.ZERO) != 0)
+		{
+
+			Currency curr = new Currency();
+			curr.setCurrency(paymentAmount.getCurrency().toString());
+			curr.setValue(amountToString(paymentAmount.getAmount())); // TODO: ma tu byt cena a nazov itemu?
+
+			return new PaymentDefinition(payment.getInfo().getNote(), "REGULAR", Integer.toString(paymentAmount.getRecurrencePeriod()), paypalPeriodString(paymentAmount.getPeriod()), Integer.toString(paymentAmount.getReccuringCount()), curr);
+
+		}
+		throw new InvalidRequestException("sum of payment must not be null");
+	}
+
+	private String paypalPeriodString (ReccuringPeriod period)
+	{
+		return period.toString();
+	}
+
+	private void createTransaction (List<Transaction> transactions, PaymentRequest priceSummary)
+	{
+		if (priceSummary.getAmount().totalAmount().compareTo(BigDecimal.ZERO) != 0)
 		{
 			Transaction transaction = new Transaction();
 			transaction.setItemList(new ItemList().setItems(new ArrayList<Item>()));
 
-			transaction.setDescription(priceSummary.getDescription());
+			transaction.setDescription(priceSummary.getInfo().getNote());
 
 			Amount amount = new Amount();
-			amount.setCurrency(priceSummary.getCurrency().toString());
-			amount.setTotal(amountToString(priceSummary.getAmount()));
+			amount.setCurrency(priceSummary.getAmount().getCurrency().toString());
+			amount.setTotal(amountToString(priceSummary.getAmount().totalAmount()));
 
 			//				Details details=new Details();
 			//				details.setSubtotal(amountToString(item.getAmount()));
@@ -433,9 +478,9 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 			transaction.setAmount(amount);
 
 			Item paypalItem = new Item();
-			paypalItem.setCurrency(priceSummary.getCurrency().toString());
-			paypalItem.setName(priceSummary.getDescription());
-			paypalItem.setPrice(amountToString(priceSummary.getAmount()));
+			paypalItem.setCurrency(priceSummary.getAmount().getCurrency().toString());
+			paypalItem.setName(priceSummary.getInfo().getNote());
+			paypalItem.setPrice(amountToString(priceSummary.getAmount().totalAmount()));
 			//			paypalItem.setQuantity(StringUtils.trimToEmpty(Integer.toString(variant.getQty())));
 			paypalItem.setQuantity("1");
 			transaction.getItemList().getItems().add(paypalItem);
@@ -469,50 +514,50 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 		}
 
 	}
-	
-//	private EPaymentState mapState (String state)
-//	{
-//		switch (state.toLowerCase())
-//		{
-//			case "active":
-//				return EPaymentState.APPROVED;
-//			case "pending":
-//				return EPaymentState.CREATED;
-//			case "expired":
-//				return EPaymentState.CANCELED;
-//			case "suspend":
-//				return EPaymentState.CREATED;
-//			case "reactivate":
-//				return EPaymentState.APPROVED;
-//			case "cancel":
-//				return EPaymentState.CANCELED;
-//
-//		}
-//		return null;
-//	}
-//
-//	private EPaymentState mapState (Payment payment)
-//	{
-//		switch (payment.getState().toLowerCase())
-//		{
-//			case "created":
-//				return EPaymentState.CREATED;
-//			case "approved":
-//				return EPaymentState.APPROVED;
-//			case "failed":
-//				return EPaymentState.CANCELED;
-//			case "canceled":
-//				return EPaymentState.CANCELED;
-//			case "expired":
-//				return EPaymentState.CANCELED;
-//			case "pending":
-//				return EPaymentState.CREATED;
-//			case "in_progress":
-//				return EPaymentState.CREATED;
-//
-//		}
-//		return null;
-//	}
+
+	private boolean isSimplePaymentApproved (String state)
+	{
+		switch (state.toLowerCase())
+		{
+			case "active":
+				return true;
+			case "pending":
+				return false;
+			case "expired":
+				return false;
+			case "suspend":
+				return false;
+			case "reactivate":
+				return true;
+			case "cancel":
+				return false;
+
+		}
+		return false;
+	}
+
+	private boolean isRecurringPaymentApproved (Payment payment)
+	{
+		switch (payment.getState().toLowerCase())
+		{
+			case "created":
+				return false;
+			case "approved":
+				return true;
+			case "failed":
+				return false;
+			case "canceled":
+				return false;
+			case "expired":
+				return false;
+			case "pending":
+				return false;
+			case "in_progress":
+				return false;
+
+		}
+		return false;
+	}
 
 
 }

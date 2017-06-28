@@ -26,7 +26,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import sk.qbsw.core.pay.base.Payment;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
 import sk.qbsw.core.pay.base.csob.model.CsobBankResponse;
@@ -37,6 +37,7 @@ import sk.qbsw.core.pay.base.csob.model.CsobPayRequest;
 import sk.qbsw.core.pay.base.csob.model.CsobResponseFromVOD;
 import sk.qbsw.core.pay.base.exception.ConfigurationException;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
+import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.util.PaymentFormatUtils;
 
@@ -65,15 +66,17 @@ public class CsobPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (Payment payment)
+	public PaymentRealization createPayment (PaymentRequest payment)
 	{
+		failOnRecurring(payment);
+		SlovakPaymentIdentification slovakInfo = getSlovakInfo(payment);
 
 		PaymentRealization payments = new PaymentRealization();
 		CsobPayRequest pay = new CsobPayRequest();
 		pay.setMerchantId(context.getMerchantId());
 		pay.setMerchantAccount(context.getMerchantAccountNumber());
 		pay.setMerchantBankNo(context.getMerchantBankNumber());
-		pay.setSum(normalizeAmountAndConvert(payment.getAmount()));
+		pay.setSum(normalizeAmountAndConvert(payment.getAmount().totalAmount()));
 
 		//lebo csob nepodporuje ziadne IDcko platby a vo vysledku vracia len Variabilny sysmbol, tak musim do Variabilneho symbolu vlozit UNIX timestamp 10 miestny
 		//override VS
@@ -83,10 +86,12 @@ public class CsobPaymentProcessor extends PaymentProcessor
 		payId = payId.substring(1);
 		payId = payId.substring(0, 10);
 
+		getPersistence().idChange(payment.getIdentification().getPaymentId(), payId);//process payment ID change 
+		
 		pay.setVs(payId);
-		pay.setSs(PaymentFormatUtils.formatSS(payment.getSs()));
-		pay.setKs(PaymentFormatUtils.formatKS(payment.getKs()));
-		pay.setNote(payment.getRemittanceInformation());
+		pay.setSs(slovakInfo.getSs());
+		pay.setKs(slovakInfo.getKs());
+		pay.setNote(payment.getInfo().getNote());
 		payments.setPaymentId(payId);
 		pay.setUrlRedirect(context.getApplicationCallbackURLForBank() + "?" + PARAM_NAME_OBJ_ID + "=" + payId);
 
@@ -146,6 +151,7 @@ public class CsobPaymentProcessor extends PaymentProcessor
 			String transactionId;
 			transactionId = extractTransactionId(decryptedMsgXml);
 			responseReturn.setTransactionId(transactionId);//set tid to response object
+			
 			LOGGER.error("PAYMENT CSOB - transactionId " + transactionId);
 
 			//decode and decrypt SOAP  		
@@ -165,6 +171,8 @@ public class CsobPaymentProcessor extends PaymentProcessor
 				throw new IllegalArgumentException("args dont contain Paymennt id in query parameter " + PARAM_NAME_OBJ_ID);
 			}
 			PaymentRealization payment = getPersistence().getPaymentById(payId);
+
+			getPersistence().idChange(payId, transactionId);//process payment ID change - transaction is unique ID from CSOB
 			if (payment == null)
 			{
 				LOGGER.error("PAYMENT CSOB - payment not found for payid=" + payId);
@@ -175,7 +183,7 @@ public class CsobPaymentProcessor extends PaymentProcessor
 			//set realization to true
 			payment.setPaymentId(payId);
 			payment.setBankResponse(decodedMessage);
-		
+
 			//construct response to VOD
 
 			//1 is ok 

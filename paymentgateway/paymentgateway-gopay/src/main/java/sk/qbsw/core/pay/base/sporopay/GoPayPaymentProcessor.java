@@ -21,7 +21,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import sk.qbsw.core.pay.base.Payment;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
@@ -62,9 +62,9 @@ public class GoPayPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (Payment payment)
+	public PaymentRealization createPayment (PaymentRequest payment)
 	{ 
-		String payid = payment.suggestPayId();
+		String payid = payment.getIdentification().getPaymentId();
 
 		HttpHeaders params = getOauthHeaders(context.getApiKey().get(), context.getApiSecret().get());
 
@@ -78,12 +78,12 @@ public class GoPayPaymentProcessor extends PaymentProcessor
 		});
 		request.setPayer(payer);
 		request.setTarget(new CGopayTarget(context.getMerchantId()));
-		request.setAmount(payment.getAmount().scaleByPowerOfTen(2).longValue());
+		request.setAmount(payment.getAmount().totalAmount().scaleByPowerOfTen(2).longValue());
 		request.setCurrency("EUR");
 		request.setOrder_number(payid);
 		request.setOrder_description("");
 		List<CGopayItem> items = new ArrayList<>();
-		items.add(new CGopayItem("", payment.getAmount().scaleByPowerOfTen(2).longValue()));
+		items.add(new CGopayItem("", payment.getAmount().totalAmount().scaleByPowerOfTen(2).longValue()));
 		request.setItems(items);
 		//		if (priceSummary.isRecurring())
 		//		{

@@ -5,6 +5,10 @@ package sk.qbsw.core.pay.base;
 
 import java.math.BigDecimal;
 
+import sk.qbsw.core.pay.base.payment.request.PaymentAmount;
+import sk.qbsw.core.pay.base.payment.request.PaymentIdentification;
+import sk.qbsw.core.pay.base.payment.request.PaymentInfo;
+
 /** 
  * base interface for payment information, witch are used to realize payment 
  * toto sluzi ako 
@@ -15,24 +19,10 @@ import java.math.BigDecimal;
  * @since 1.15.0 
  *
  */
-public interface Payment
+public interface PaymentRequest
 {
-	Long getVs ();
+	PaymentIdentification getIdentification();
+	PaymentAmount getAmount();
+	PaymentInfo getInfo();
 
-	Long getSs ();
-
-	Long getKs ();
-
-
-	String getRemittanceInformation ();
-
-	BigDecimal getAmount ();
-
-	Currency getCurrency ();
-
-	PaymentRealization getRealization ();
-
-	String suggestPayId();
-
-	String getDescription ();
 }

@@ -34,6 +34,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import static junit.framework.Assert.*;
+
+import sk.qbsw.core.pay.base.PaymentRequestImpl;
+import sk.qbsw.core.pay.base.PaymentProcessor;
+import sk.qbsw.core.pay.base.PaymentProcessorFactory;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.csob.model.CsobGetCSOBResponce;
 import sk.qbsw.core.pay.base.csob.model.CsobPayRequest;
 import sk.qbsw.core.pay.base.csob.model.CsobResponseFromVOD;
@@ -479,6 +484,23 @@ public class CsobPaymentProcessorTest {
 		//will fail
 		pay.createCompleteXML();
 
+	}
+
+	@Test
+	public void testPaymentCreate() {
+		PaymentProcessorFactory factory = getFactory();
+		PaymentProcessor paymentProcessor = factory.createPaymentProcessor();
+		PaymentRequest req=new PaymentRequestImpl();
+		paymentProcessor.createPayment(req);
+		
+		
+	}
+	
+	
+
+	private PaymentProcessorFactory getFactory ()
+	{
+		return new CsobPaymentProcessorFactoryImpl(null);
 	}
 	
 	

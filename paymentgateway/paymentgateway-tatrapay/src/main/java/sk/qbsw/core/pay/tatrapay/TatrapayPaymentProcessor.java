@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import sk.qbsw.core.pay.base.Payment;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
 import sk.qbsw.core.pay.base.exception.ConfigurationException;
@@ -28,8 +28,10 @@ public class TatrapayPaymentProcessor extends PaymentProcessor
 	}
 
 	@Override
-	public PaymentRealization createPayment (Payment payment)
+	public PaymentRealization createPayment (PaymentRequest payment)
 	{
+		failOnRecurring(payment);
+		
 		CTBPayRequest pay = new CTBPayRequest();
 		pay.currency().guiLang("sk");
 		pay.redirectTimeout(false);
@@ -37,10 +39,8 @@ public class TatrapayPaymentProcessor extends PaymentProcessor
 		pay.redirectURL(context.getApplicationCallbackURLForBank());
 		pay.reminderEmail(context.getNotifyEmail());
 		pay.merchantId(context.getMerchantId());
-		pay.vs(PaymentFormatUtils.formatVS(payment.getVs()));
-		pay.ss(PaymentFormatUtils.formatSS(payment.getSs()));
-		pay.ks(PaymentFormatUtils.formatKS(payment.getKs()));
-		pay.amount(payment.getAmount());
+		pay.reference(payment.getIdentification().getPaymentId());
+		pay.amount(payment.getAmount().totalAmount());
 		// compute hmac
 		String hmac = pay.computeHMAC(context.getPasswordDelegate().get());
 		pay.hmac(hmac);
@@ -54,6 +54,8 @@ public class TatrapayPaymentProcessor extends PaymentProcessor
 
 		return realization;
 	}
+
+	
 
 	@Override
 	public PaymentRealization handleBankPaymentResponse (AbstractBankResponse resp)

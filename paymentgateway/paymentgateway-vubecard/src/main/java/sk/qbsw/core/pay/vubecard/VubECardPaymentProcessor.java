@@ -4,7 +4,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 
-import sk.qbsw.core.pay.base.Payment;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
@@ -32,18 +32,18 @@ public class VubECardPaymentProcessor extends PaymentProcessor
 
 
 	@Override
-	public PaymentRealization createPayment (Payment payment)
+	public PaymentRealization createPayment (PaymentRequest payment)
 	{
 		CVubCardRequest pay = new CVubCardRequest();
 
 		pay.clientid(context.getMerchantId());
 
-		pay.amount(payment.getAmount().toPlainString());
+		pay.amount(payment.getAmount().totalAmount().toPlainString());
 
 		pay.okUrl(context.getCallbackOkUrl() + "?op=confirm");
 		pay.failUrl(context.getCallbackFailUrl() + "?op=deny");
 
-		String payId2 = payment.suggestPayId();
+		String payId2 = payment.getIdentification().getPaymentId();
 		pay.rnd(makeSalt());
 		pay.oid(payId2);
 

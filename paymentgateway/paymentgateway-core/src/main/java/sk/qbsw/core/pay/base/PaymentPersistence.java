@@ -34,4 +34,11 @@ public interface PaymentPersistence
 	 */
 	void update (PaymentRealization payment);
 
+	/**
+	 * sometimes payment gates want to change payment IDs for various reasons. this method will inform you about this change
+	 * @param oldPaymentId
+	 * @param newPaymentId
+	 */
+	void idChange(String oldPaymentId,String newPaymentId);
+
 }

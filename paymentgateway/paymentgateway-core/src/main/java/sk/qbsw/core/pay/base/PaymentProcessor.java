@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import sk.qbsw.core.pay.base.payment.request.ReccuringPaymentAmount;
+import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 
@@ -34,9 +36,9 @@ public abstract class PaymentProcessor
 	 * @version 1.15.0
 	 * @since 1.15.0
 	 */
-	public abstract PaymentRealization createPayment(Payment payment);
-	
-	
+	public abstract PaymentRealization createPayment (PaymentRequest payment);
+
+
 	/**
 	 * spracuje volanie z banky. oznaci platbu ako uspesnu/neuspesnu. 
 	 * @param response
@@ -45,9 +47,9 @@ public abstract class PaymentProcessor
 	 * @return 
 	 * @since 1.15.0
 	 */
-	public abstract PaymentRealization handleBankPaymentResponse(AbstractBankResponse response);
-	
-	
+	public abstract PaymentRealization handleBankPaymentResponse (AbstractBankResponse response);
+
+
 	protected String makePaymentURL (BankResponse pay, String url)
 	{
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
@@ -91,5 +93,31 @@ public abstract class PaymentProcessor
 	{
 		this.persistence = persistence;
 	}
-	
+
+	public void failOnRecurring (PaymentRequest payment)
+	{
+		if (payment != null && payment.getAmount() != null && payment.getAmount() instanceof ReccuringPaymentAmount)
+		{
+			throw new IllegalStateException("Reccurring payments not supported in this payment processor");
+		}
+
+	}
+
+	/**
+	 * returns slovak Identification object , else throw error
+	 * @param payment
+	 * @return
+	 */
+	public SlovakPaymentIdentification getSlovakInfo (PaymentRequest payment)
+	{
+		if (payment != null && payment.getIdentification() != null && ! (payment.getIdentification() instanceof SlovakPaymentIdentification))
+		{
+			throw new IllegalStateException("non slovak payment symbols not supported in this payment processor");
+		} else {
+			return (SlovakPaymentIdentification) payment.getIdentification();
+			
+		}
+
+	}
+
 }

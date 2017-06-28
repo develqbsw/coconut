@@ -9,10 +9,13 @@ import org.junit.Test;
 
 import sk.qbsw.core.pay.base.Currency;
 import sk.qbsw.core.pay.base.PaymentActions;
-import sk.qbsw.core.pay.base.PaymentImpl;
 import sk.qbsw.core.pay.base.PaymentPersistence;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequestImpl;
+import sk.qbsw.core.pay.base.payment.request.OneTimePaymentAmount;
+import sk.qbsw.core.pay.base.payment.request.PaymentInfoImpl;
+import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
 import sk.qbsw.core.pay.dummy.DummyInitParams;
 import sk.qbsw.core.pay.dummy.DummyPaymentProcessorFactory;
 import sk.qbsw.core.pay.dummy.DummyResponse;
@@ -30,13 +33,12 @@ public class PaymentProcessorTest {
 		DummyPaymentProcessorFactory factory = new DummyPaymentProcessorFactory(initparams);
 		PaymentProcessor processor = factory.createPaymentProcessor();
 
-		PaymentImpl payment = new PaymentImpl();
-		payment.setAmount(new BigDecimal("10"));
-		payment.setCurrency(Currency.EUR);
-		payment.setRemittanceInformation("ref123");
-		payment.setKs(300L);
-		payment.setVs(1234567890L);
-		payment.setSs(1234567890L);
+		PaymentRequestImpl payment = new PaymentRequestImpl();
+		SlovakPaymentIdentification identification = new SlovakPaymentIdentification(1234567890L, 1234567890L, 300L);
+		OneTimePaymentAmount amount=new OneTimePaymentAmount(new BigDecimal("10"),Currency.EUR);
+		payment.setAmount(amount);
+		payment.setIdentification(identification);
+		payment.setInfo(new PaymentInfoImpl("note"));
 
 		//realizacia sa ulozi do DB. 
 		PaymentRealization realization = processor.createPayment(payment);
@@ -96,6 +98,13 @@ public class PaymentProcessorTest {
 				realization.setGetCall(true);
 				realization.setUrlToCall("\\");
 				return realization;
+			}
+
+			@Override
+			public void idChange (String oldPaymentId, String newPaymentId)
+			{
+				// TODO Auto-generated method stub
+				
 			}
 		};
 		processor.setPersistence(persistence);

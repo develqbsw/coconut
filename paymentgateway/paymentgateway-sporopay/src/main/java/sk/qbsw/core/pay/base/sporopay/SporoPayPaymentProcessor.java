@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.InvalidParameterException;
 
-import sk.qbsw.core.pay.base.Payment;
+import sk.qbsw.core.pay.base.PaymentRequest;
+import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
@@ -39,19 +40,27 @@ public class SporoPayPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (Payment payment)
+	public PaymentRealization createPayment (PaymentRequest payment)
 	{
+		failOnRecurring(payment);
+		SlovakPaymentIdentification slovakInfo = getSlovakInfo(payment);
+
 		PaymentRealization payments = new PaymentRealization();
 		SporoPayRequest pay = new SporoPayRequest();
 		pay.cislo_uctu(context.getMerchantAccountNumber());
 		pay.predcislo_uctu(context.getMerchantAccountPrefix());
 		pay.kbanky(context.getMerchantBankNumber());
-		pay.suma(PaymentFormatUtils.normalizeAmountAndConvert(payment.getAmount()));
+		pay.suma(PaymentFormatUtils.normalizeAmountAndConvert(payment.getAmount().totalAmount()));
 		pay.url(context.getApplicationCallbackURLForBank());
-		pay.vs(PaymentFormatUtils.formatVS(payment.getVs()));
-		pay.ss(PaymentFormatUtils.formatSS(payment.getSs()));
+		pay.vs(slovakInfo.getVs());
+		pay.ss(slovakInfo.getSs());
 		pay.mena("EUR");
-		payments.setPaymentId(parsePayID(pay));
+		String parsePayID = parsePayID(pay);
+
+		getPersistence().idChange(slovakInfo.getPaymentId(), parsePayID);
+
+		payments.setPaymentId(parsePayID);
+		//nemozem vlozit do ID, lebo je tam obmedzenie na IOD
 		pay.param(payments.getPaymentId());
 		//compute sign1
 		String sign1 = pay.computeSign1(context.getPasswordDelegate().get());
@@ -72,7 +81,7 @@ public class SporoPayPaymentProcessor extends PaymentProcessor
 	@Override
 	public PaymentRealization handleBankPaymentResponse (AbstractBankResponse resp)
 	{
-		SporoPayResponse response = new SporoPayResponse(((BankResponse)resp).getParams());
+		SporoPayResponse response = new SporoPayResponse( ((BankResponse) resp).getParams());
 
 		if (response.wasError())
 		{
@@ -125,10 +134,8 @@ public class SporoPayPaymentProcessor extends PaymentProcessor
 		return payment;
 	}
 
-	
 
-	
-	
+
 	/**
 	 * generuje paymentID z VS a SS
 	 * @param pay

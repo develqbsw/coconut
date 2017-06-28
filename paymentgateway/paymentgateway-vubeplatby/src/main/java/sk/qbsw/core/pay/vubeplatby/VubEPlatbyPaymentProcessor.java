@@ -1,10 +1,14 @@
 package sk.qbsw.core.pay.vubeplatby;
 
-import sk.qbsw.core.pay.base.Payment;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.exception.InvalidRequestException;
+import sk.qbsw.core.pay.base.payment.request.OneTimePaymentAmount;
+import sk.qbsw.core.pay.base.payment.request.PaymentAmount;
+import sk.qbsw.core.pay.base.payment.request.PaymentIdentification;
+import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 import sk.qbsw.core.pay.base.util.PaymentFormatUtils;
@@ -22,15 +26,19 @@ public class VubEPlatbyPaymentProcessor extends PaymentProcessor
 	}
 
 	@Override
-	public PaymentRealization createPayment (Payment payment)
+	public PaymentRealization createPayment (PaymentRequest payment)
 	{
+		failOnRecurring(payment);
+		SlovakPaymentIdentification identification = getSlovakInfo(payment);
+		
 		CVubPayRequest pay = new CVubPayRequest();
-
+		
 		pay.merchantId(context.getMerchantId());
-		pay.amount(payment.getAmount());
-		pay.vs(PaymentFormatUtils.formatVS(payment.getVs()));
-		pay.ss(PaymentFormatUtils.formatSS(payment.getSs()));
-		pay.ks(PaymentFormatUtils.formatKS(payment.getKs()));
+		pay.amount(payment.getAmount().totalAmount());
+		pay.vs(identification.getVs());
+		pay.ss(identification.getSs());
+		pay.ks(identification.getKs());
+		pay.description(payment.getInfo().getNote());
 
 		pay.redirectURL(context.getApplicationCallbackURLForBank());
 		pay.reminderEmail(context.getNotifyEmail());
