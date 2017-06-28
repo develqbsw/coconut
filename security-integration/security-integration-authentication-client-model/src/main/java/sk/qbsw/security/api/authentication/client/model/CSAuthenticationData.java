@@ -14,71 +14,40 @@ import javax.validation.constraints.NotNull;
  * @version 1.18.0
  * @since 1.18.0
  */
-public class AuthenticationData extends BaseClientEntity
+public class CSAuthenticationData extends BaseClientEntity
 {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 3587158519832722672L;
 
-	/** The master token. */
 	@ApiModelProperty (required = true, value = "The master token")
 	@NotNull
 	private String masterToken;
 
-	/** The authentication token. */
 	@ApiModelProperty (required = true, value = "The authentication token")
 	@NotNull
 	private String authenticationToken;
 
-	/**
-	 * Instantiates a new ICS authentication data.
-	 */
-	public AuthenticationData ()
+	public CSAuthenticationData ()
 	{
-		// default
+	}
+
+	private CSAuthenticationData (Builder builder)
+	{
+		setMasterToken(builder.masterToken);
+		setAuthenticationToken(builder.authenticationToken);
 	}
 
 	/**
-	 * Creates the.
+	 * New builder builder.
 	 *
-	 * @param masterToken the master token
-	 * @param authenticationToken the authentication token
-	 * @return the ICS authentication data
+	 * @return the builder
 	 */
-	public static AuthenticationData create (String masterToken, String authenticationToken)
+	public static Builder newBuilder ()
 	{
-		AuthenticationData data = new AuthenticationData();
-		data.setMasterToken(masterToken);
-		data.setAuthenticationToken(authenticationToken);
-
-		return data;
+		return new Builder();
 	}
 
 	/**
-	 * Master token.
-	 *
-	 * @param masterToken the master token
-	 * @return the ICS authentication data
-	 */
-	public AuthenticationData masterToken (String masterToken)
-	{
-		this.masterToken = masterToken;
-		return this;
-	}
-
-	/**
-	 * Authentication token.
-	 *
-	 * @param authenticationToken the authentication token
-	 * @return the ICS authentication data
-	 */
-	public AuthenticationData authenticationToken (String authenticationToken)
-	{
-		this.authenticationToken = authenticationToken;
-		return this;
-	}
-
-	/**
-	 * Gets the master token.
+	 * Gets master token.
 	 *
 	 * @return the master token
 	 */
@@ -88,9 +57,9 @@ public class AuthenticationData extends BaseClientEntity
 	}
 
 	/**
-	 * Sets the master token.
+	 * Sets master token.
 	 *
-	 * @param masterToken the new master token
+	 * @param masterToken the master token
 	 */
 	public void setMasterToken (String masterToken)
 	{
@@ -98,7 +67,7 @@ public class AuthenticationData extends BaseClientEntity
 	}
 
 	/**
-	 * Gets the authentication token.
+	 * Gets authentication token.
 	 *
 	 * @return the authentication token
 	 */
@@ -108,19 +77,15 @@ public class AuthenticationData extends BaseClientEntity
 	}
 
 	/**
-	 * Sets the authentication token.
+	 * Sets authentication token.
 	 *
-	 * @param authenticationToken the new authentication token
+	 * @param authenticationToken the authentication token
 	 */
 	public void setAuthenticationToken (String authenticationToken)
 	{
 		this.authenticationToken = authenticationToken;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals (final Object other)
 	{
@@ -136,17 +101,40 @@ public class AuthenticationData extends BaseClientEntity
 		{
 			return false;
 		}
-		AuthenticationData castOther = (AuthenticationData) other;
+		CSAuthenticationData castOther = (CSAuthenticationData) other;
 		return new EqualsBuilder().append(masterToken, castOther.masterToken).append(authenticationToken, castOther.authenticationToken).isEquals();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode ()
 	{
 		return new HashCodeBuilder(-1779125485, 1569105867).append(masterToken).append(authenticationToken).toHashCode();
+	}
+
+	public static final class Builder
+	{
+		private String masterToken;
+		private String authenticationToken;
+
+		private Builder ()
+		{
+		}
+
+		public Builder masterToken (String val)
+		{
+			masterToken = val;
+			return this;
+		}
+
+		public Builder authenticationToken (String val)
+		{
+			authenticationToken = val;
+			return this;
+		}
+
+		public CSAuthenticationData build ()
+		{
+			return new CSAuthenticationData(this);
+		}
 	}
 }

@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import sk.qbsw.core.client.model.BaseClientEntity;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,107 +15,52 @@ import java.util.List;
  * @version 1.18.0
  * @since 1.18.0
  */
-public class UserData extends BaseClientEntity
+public class CSUserData extends BaseClientEntity
 {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7790958331261348835L;
 
-	/** The id. */
 	@ApiModelProperty (required = true, value = "The user id")
 	@NotNull
 	private Long id;
 
-	/** The name. */
-	@ApiModelProperty (required = false, value = "The user name")
+	@ApiModelProperty (value = "The user name")
 	private String name;
 
-	/** The surname. */
-	@ApiModelProperty (required = false, value = "The user surname")
+	@ApiModelProperty (value = "The user surname")
 	private String surname;
 
-	/** The email. */
-	@ApiModelProperty (required = false, value = "The user email")
+	@ApiModelProperty (value = "The user email")
 	private String email;
 
-	/** The roles. */
 	@ApiModelProperty (required = true, value = "The user roles")
 	@NotNull
-	private List<String> roles = new ArrayList<>();
+	private List<String> roles;
 
-	/**
-	 * Id.
-	 *
-	 * @param id the id
-	 * @return the ICS user data
-	 */
-	public UserData id (Long id)
+	public CSUserData ()
 	{
-		this.id = id;
-		return this;
+	}
+
+	private CSUserData (Builder builder)
+	{
+		setId(builder.id);
+		setName(builder.name);
+		setSurname(builder.surname);
+		setEmail(builder.email);
+		setRoles(builder.roles);
 	}
 
 	/**
-	 * Name.
+	 * New builder builder.
 	 *
-	 * @param name the name
-	 * @return the ICS user data
+	 * @return the builder
 	 */
-	public UserData name (String name)
+	public static Builder newBuilder ()
 	{
-		this.name = name;
-		return this;
+		return new Builder();
 	}
 
 	/**
-	 * Surname.
-	 *
-	 * @param surname the surname
-	 * @return the ICS user data
-	 */
-	public UserData surname (String surname)
-	{
-		this.surname = surname;
-		return this;
-	}
-
-	/**
-	 * Email.
-	 *
-	 * @param email the email
-	 * @return the ICS user data
-	 */
-	public UserData email (String email)
-	{
-		this.email = email;
-		return this;
-	}
-
-	/**
-	 * Roles.
-	 *
-	 * @param roles the roles
-	 * @return the ICS user data
-	 */
-	public UserData roles (List<String> roles)
-	{
-		this.roles = roles;
-		return this;
-	}
-
-	/**
-	 * Adds the roles item.
-	 *
-	 * @param rolesItem the roles item
-	 * @return the ICS user data
-	 */
-	public UserData addRolesItem (String rolesItem)
-	{
-		this.roles.add(rolesItem);
-		return this;
-	}
-
-	/**
-	 * Gets the id.
+	 * Gets id.
 	 *
 	 * @return the id
 	 */
@@ -126,9 +70,9 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Sets the id.
+	 * Sets id.
 	 *
-	 * @param id the new id
+	 * @param id the id
 	 */
 	public void setId (Long id)
 	{
@@ -136,7 +80,7 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Gets the name.
+	 * Gets name.
 	 *
 	 * @return the name
 	 */
@@ -146,9 +90,9 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Sets the name.
+	 * Sets name.
 	 *
-	 * @param name the new name
+	 * @param name the name
 	 */
 	public void setName (String name)
 	{
@@ -156,7 +100,7 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Gets the surname.
+	 * Gets surname.
 	 *
 	 * @return the surname
 	 */
@@ -166,9 +110,9 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Sets the surname.
+	 * Sets surname.
 	 *
-	 * @param surname the new surname
+	 * @param surname the surname
 	 */
 	public void setSurname (String surname)
 	{
@@ -176,7 +120,7 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Gets the email.
+	 * Gets email.
 	 *
 	 * @return the email
 	 */
@@ -186,9 +130,9 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Sets the email.
+	 * Sets email.
 	 *
-	 * @param email the new email
+	 * @param email the email
 	 */
 	public void setEmail (String email)
 	{
@@ -196,7 +140,7 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Gets the roles.
+	 * Gets roles.
 	 *
 	 * @return the roles
 	 */
@@ -206,19 +150,15 @@ public class UserData extends BaseClientEntity
 	}
 
 	/**
-	 * Sets the roles.
+	 * Sets roles.
 	 *
-	 * @param roles the new roles
+	 * @param roles the roles
 	 */
 	public void setRoles (List<String> roles)
 	{
 		this.roles = roles;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals (final Object other)
 	{
@@ -234,17 +174,61 @@ public class UserData extends BaseClientEntity
 		{
 			return false;
 		}
-		UserData castOther = (UserData) other;
+		CSUserData castOther = (CSUserData) other;
 		return new EqualsBuilder().append(id, castOther.id).append(name, castOther.name).append(surname, castOther.surname).append(email, castOther.email).append(roles, castOther.roles).isEquals();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode ()
 	{
 		return new HashCodeBuilder(-784399939, 542211991).append(id).append(name).append(surname).append(email).append(roles).toHashCode();
+	}
+
+	public static final class Builder
+	{
+		private Long id;
+		private String name;
+		private String surname;
+		private String email;
+		private List<String> roles;
+
+		private Builder ()
+		{
+		}
+
+		public Builder id (Long val)
+		{
+			id = val;
+			return this;
+		}
+
+		public Builder name (String val)
+		{
+			name = val;
+			return this;
+		}
+
+		public Builder surname (String val)
+		{
+			surname = val;
+			return this;
+		}
+
+		public Builder email (String val)
+		{
+			email = val;
+			return this;
+		}
+
+		public Builder roles (List<String> val)
+		{
+			roles = val;
+			return this;
+		}
+
+		public CSUserData build ()
+		{
+			return new CSUserData(this);
+		}
 	}
 }

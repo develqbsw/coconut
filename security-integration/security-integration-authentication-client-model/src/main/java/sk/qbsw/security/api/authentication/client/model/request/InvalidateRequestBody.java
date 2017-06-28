@@ -1,6 +1,8 @@
 package sk.qbsw.security.api.authentication.client.model.request;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import sk.qbsw.core.client.model.request.BaseRequestBody;
 
 import javax.validation.constraints.NotNull;
@@ -12,44 +14,17 @@ import javax.validation.constraints.NotNull;
  * @version 1.18.0
  * @since 1.18.0
  */
-public class InvalidateRequest extends BaseRequestBody
+public class InvalidateRequestBody extends BaseRequestBody
 {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -4789897540369584317L;
 
-	/** The master token. */
 	@ApiModelProperty (required = true, value = "The master token")
 	@NotNull
 	private String masterToken;
 
-	/** The authentication token. */
 	@ApiModelProperty (required = true, value = "The authentication token")
 	@NotNull
 	private String authenticationToken;
-
-	/**
-	 * Master token.
-	 *
-	 * @param masterToken the master token
-	 * @return the invalidate request
-	 */
-	public InvalidateRequest masterToken (String masterToken)
-	{
-		this.masterToken = masterToken;
-		return this;
-	}
-
-	/**
-	 * Authentication token.
-	 *
-	 * @param authenticationToken the authentication token
-	 * @return the invalidate request
-	 */
-	public InvalidateRequest authenticationToken (String authenticationToken)
-	{
-		this.authenticationToken = authenticationToken;
-		return this;
-	}
 
 	/**
 	 * Gets the master token.
@@ -89,5 +64,23 @@ public class InvalidateRequest extends BaseRequestBody
 	public void setAuthenticationToken (String authenticationToken)
 	{
 		this.authenticationToken = authenticationToken;
+	}
+
+	@Override
+	public boolean equals (Object o)
+	{
+		if (this == o) return true;
+
+		if (o == null || getClass() != o.getClass()) return false;
+
+		InvalidateRequestBody that = (InvalidateRequestBody) o;
+
+		return new EqualsBuilder().append(masterToken, that.masterToken).append(authenticationToken, that.authenticationToken).isEquals();
+	}
+
+	@Override
+	public int hashCode ()
+	{
+		return new HashCodeBuilder(17, 37).append(masterToken).append(authenticationToken).toHashCode();
 	}
 }

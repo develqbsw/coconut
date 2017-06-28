@@ -1,6 +1,8 @@
 package sk.qbsw.security.api.authentication.client.model.request;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import sk.qbsw.core.client.model.request.BaseRequestBody;
 
 import javax.validation.constraints.NotNull;
@@ -12,44 +14,17 @@ import javax.validation.constraints.NotNull;
  * @version 1.18.0
  * @since 1.18.0
  */
-public class AuthenticationRequest extends BaseRequestBody
+public class AuthenticationRequestBody extends BaseRequestBody
 {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8124532358965918386L;
 
-	/** The email. */
 	@ApiModelProperty (required = true, value = "The login")
 	@NotNull
 	private String login;
 
-	/** The password. */
 	@ApiModelProperty (required = true, value = "The password")
 	@NotNull
 	private String password;
-
-	/**
-	 * Login.
-	 *
-	 * @param login the login
-	 * @return the authentication request
-	 */
-	public AuthenticationRequest login (String login)
-	{
-		this.login = login;
-		return this;
-	}
-
-	/**
-	 * Password.
-	 *
-	 * @param password the password
-	 * @return the authentication request
-	 */
-	public AuthenticationRequest password (String password)
-	{
-		this.password = password;
-		return this;
-	}
 
 	/**
 	 * Gets the login.
@@ -89,5 +64,23 @@ public class AuthenticationRequest extends BaseRequestBody
 	public void setPassword (String password)
 	{
 		this.password = password;
+	}
+
+	@Override
+	public boolean equals (Object o)
+	{
+		if (this == o) return true;
+
+		if (o == null || getClass() != o.getClass()) return false;
+
+		AuthenticationRequestBody that = (AuthenticationRequestBody) o;
+
+		return new EqualsBuilder().append(login, that.login).append(password, that.password).isEquals();
+	}
+
+	@Override
+	public int hashCode ()
+	{
+		return new HashCodeBuilder(17, 37).append(login).append(password).toHashCode();
 	}
 }
