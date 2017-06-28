@@ -4,15 +4,16 @@ import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.exception.ConfigurationException;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.exception.InvalidRequestException;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
-import sk.qbsw.core.pay.base.util.PaymentFormatUtils;
 import sk.qbsw.core.pay.tatrapay.model.CTBPayRequest;
 import sk.qbsw.core.pay.tatrapay.model.CTBPayResponse;
 
@@ -28,7 +29,7 @@ public class TatrapayPaymentProcessor extends PaymentProcessor
 	}
 
 	@Override
-	public PaymentRealization createPayment (PaymentRequest payment)
+	public PaymentReciept createPayment (PaymentRequest payment)
 	{
 		failOnRecurring(payment);
 		
@@ -50,7 +51,7 @@ public class TatrapayPaymentProcessor extends PaymentProcessor
 		String makePaymentURL = makePaymentURL(pay, context.getTatrapayGateURL());
 
 		// is get.
-		PaymentRealization realization = PaymentRealization.of(payId, makePaymentURL, true);
+		PaymentRecieptImpl realization = new PaymentRecieptImpl(payId, makePaymentURL, true);
 
 		return realization;
 	}

@@ -1,18 +1,17 @@
 package sk.qbsw.core.pay.dummy;
 
-import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 
 public class DummyPaymentProcessor extends PaymentProcessor {
 
 	@Override
-	public PaymentRealization createPayment(PaymentRequest payment) {
-		PaymentRealization paymentRealization = new PaymentRealization();
-		paymentRealization.setPaymentId(payment.getIdentification().getPaymentId());
-		paymentRealization.setGetCall(true);
-		paymentRealization.setUrlToCall("\\");// no change
+	public PaymentReciept createPayment(PaymentRequest payment) {
+		PaymentReciept paymentRealization = new PaymentRecieptImpl(payment.getIdentification().getPaymentId(),"\\",true);
 		return paymentRealization;
 	}
 

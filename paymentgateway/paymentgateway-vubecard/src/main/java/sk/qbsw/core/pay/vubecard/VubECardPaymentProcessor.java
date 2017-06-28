@@ -2,13 +2,14 @@ package sk.qbsw.core.pay.vubecard;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.joda.time.DateTime;
 
-import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.exception.InvalidRequestException;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 import sk.qbsw.core.pay.vubecard.model.CVubCardRequest;
@@ -32,7 +33,7 @@ public class VubECardPaymentProcessor extends PaymentProcessor
 
 
 	@Override
-	public PaymentRealization createPayment (PaymentRequest payment)
+	public PaymentReciept createPayment (PaymentRequest payment)
 	{
 		CVubCardRequest pay = new CVubCardRequest();
 
@@ -68,7 +69,7 @@ public class VubECardPaymentProcessor extends PaymentProcessor
 
 		//pl. brana podporuje reccurence , ale nemame zatial implementovane 
 
-		return PaymentRealization.of(payId2, url, true);
+		return new PaymentRecieptImpl(payId2, url, true);
 
 	}
 

@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import sk.qbsw.core.pay.base.payment.request.ReccuringPaymentAmount;
 import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 
@@ -29,14 +30,17 @@ public abstract class PaymentProcessor
 	private PaymentActions actions;
 
 	/**
-	 * vyskladá objekt ktorý obsahuje vsetky údaje potrebne pre platbonu branu. 
-	 * @param payment
+	 * vyskladá objekt ktorý obsahuje vsetky údaje potrebne pre platbonu branu.
+	 * Vrati payment ID a redirect na pl. branu. 
+	 * Payment ID môže byť vyskladané z requestu, alebo si Pl. brana môže vygenerovať sama.  
+	 * 
+	 * @param request
 	 * @return
 	 * @author martinkovic
 	 * @version 1.15.0
 	 * @since 1.15.0
 	 */
-	public abstract PaymentRealization createPayment (PaymentRequest payment);
+	public abstract PaymentReciept createPayment (PaymentRequest request);
 
 
 	/**

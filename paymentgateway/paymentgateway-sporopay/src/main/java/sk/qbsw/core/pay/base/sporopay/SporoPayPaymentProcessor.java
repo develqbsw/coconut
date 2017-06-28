@@ -3,14 +3,14 @@
  */
 package sk.qbsw.core.pay.base.sporopay;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.security.InvalidParameterException;
 
-import sk.qbsw.core.pay.base.PaymentRequest;
-import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
+import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 import sk.qbsw.core.pay.base.sporopay.model.SporoPayRequest;
@@ -40,12 +40,12 @@ public class SporoPayPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (PaymentRequest payment)
+	public PaymentReciept  createPayment (PaymentRequest payment)
 	{
 		failOnRecurring(payment);
 		SlovakPaymentIdentification slovakInfo = getSlovakInfo(payment);
 
-		PaymentRealization payments = new PaymentRealization();
+		PaymentRecieptImpl payments = new PaymentRecieptImpl();
 		SporoPayRequest pay = new SporoPayRequest();
 		pay.cislo_uctu(context.getMerchantAccountNumber());
 		pay.predcislo_uctu(context.getMerchantAccountPrefix());

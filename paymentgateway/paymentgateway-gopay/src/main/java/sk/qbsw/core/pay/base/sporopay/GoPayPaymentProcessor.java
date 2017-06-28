@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
-import org.joda.time.DateTime;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,11 +20,13 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.exception.InvalidRequestException;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 import sk.qbsw.dockie.core.gopay.model.CGopayCallback;
@@ -62,7 +63,7 @@ public class GoPayPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (PaymentRequest payment)
+	public PaymentReciept createPayment (PaymentRequest payment)
 	{ 
 		String payid = payment.getIdentification().getPaymentId();
 
@@ -105,10 +106,7 @@ public class GoPayPaymentProcessor extends PaymentProcessor
 
 		response.getGw_url();
 
-		PaymentRealization payments = new PaymentRealization();
-		payments.setPaymentId(idpaymentGopay);
-		payments.setUrlToCall(response.getGw_url());
-		payments.setGetCall(true);
+		PaymentReciept payments = new PaymentRecieptImpl(idpaymentGopay,response.getGw_url(),true);
 
 		return payments;
 	}

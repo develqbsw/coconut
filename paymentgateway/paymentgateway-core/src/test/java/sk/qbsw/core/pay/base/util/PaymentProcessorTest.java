@@ -16,6 +16,7 @@ import sk.qbsw.core.pay.base.PaymentRequestImpl;
 import sk.qbsw.core.pay.base.payment.request.OneTimePaymentAmount;
 import sk.qbsw.core.pay.base.payment.request.PaymentInfoImpl;
 import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
 import sk.qbsw.core.pay.dummy.DummyInitParams;
 import sk.qbsw.core.pay.dummy.DummyPaymentProcessorFactory;
 import sk.qbsw.core.pay.dummy.DummyResponse;
@@ -41,7 +42,7 @@ public class PaymentProcessorTest {
 		payment.setInfo(new PaymentInfoImpl("note"));
 
 		//realizacia sa ulozi do DB. 
-		PaymentRealization realization = processor.createPayment(payment);
+		PaymentReciept realization = processor.createPayment(payment);
 
 		String id = realization.getPaymentId();
 		String url = realization.getUrlToCall();
@@ -95,8 +96,6 @@ public class PaymentProcessorTest {
 			public PaymentRealization getPaymentById(String id) {
 				PaymentRealization realization = new PaymentRealization();
 				realization.setPaymentId(id);
-				realization.setGetCall(true);
-				realization.setUrlToCall("\\");
 				return realization;
 			}
 
@@ -114,9 +113,7 @@ public class PaymentProcessorTest {
 		PaymentRealization realization = processor.handleBankPaymentResponse(resp);
 
 		String id = realization.getPaymentId();
-		String url = realization.getUrlToCall();
 		assertEquals("12345678901234567890300", id);
-		assertEquals("\\", url);
 		assertEquals("Dummy processed", realization.getBankResponse());
 
 	}

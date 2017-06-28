@@ -48,6 +48,8 @@ import sk.qbsw.core.pay.base.exception.InvalidRequestException;
 import sk.qbsw.core.pay.base.payment.request.OneTimePaymentAmount;
 import sk.qbsw.core.pay.base.payment.request.ReccuringPaymentAmount;
 import sk.qbsw.core.pay.base.payment.request.ReccuringPeriod;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
 
@@ -81,9 +83,9 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (PaymentRequest payment)
+	public PaymentReciept createPayment (PaymentRequest payment)
 	{
-		PaymentRealization payments = new PaymentRealization();
+		PaymentRecieptImpl payments = new PaymentRecieptImpl();
 		String payid = payment.getIdentification().getPaymentId();
 		payments.setPaymentId(payid);
 
@@ -102,6 +104,7 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				com.paypal.api.payments.Payment createPayment = createPayment(context, transactions, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=confirm&mode=" + PAYMENT_MODE_ONE_TIME + "&payment=" + payid, ctx.getApplicationCallbackURLForBank() + "/confirmPayment/paypal?op=deny&mode=" + PAYMENT_MODE_ONE_TIME + "&payment=" + payid);
 				payments.setUrlToCall(fetchApprovalUrl(createPayment.getLinks()).getHref());
 				payments.setGetCall(true);
+				payments.setPaymentId(createPayment.getId());
 
 
 			}
@@ -137,7 +140,7 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				Agreement agreement = createBillingAgreement(context, plan, payment.getInfo().getNote(), payment.getInfo().getNote());
 				payments.setUrlToCall(fetchApprovalUrl(agreement.getLinks()).getHref());
 				//				payments.setGatePayId(plan.getId());
-				payments.setGatePayId(agreement.getToken());//use token as ID because it can be identified by 
+				payments.setPaymentId(agreement.getToken());//use token as ID because it can be identified by 
 				//TOKEN ???
 				//payments.setToken(agreement.getToken());
 
@@ -147,8 +150,6 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				throw new ConfigurationException(e);
 			}
 		}
-		getPersistence().update(payments);
-
 		return payments;
 
 	}
@@ -239,6 +240,7 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				Agreement agreement = executeAgreement(context, token);
 
 				//payment is searched by EC token, but in this phase it is used, and inactive, and after executin adreement. aggrement have its own ID. so we can change payment ID to this new ID
+				//token bol ulozeny do PaymentID
 				PaymentRealization realization = getPersistence().getPaymentById(token);
 				if (realization == null)
 				{
@@ -246,7 +248,7 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				}
 				String newPayId = agreement.getId();
 				getPersistence().idChange(token, newPayId);
-				realization.setGatePayId(newPayId);
+				realization.setPaymentId(newPayId);
 
 				getActions().handleSuccess(realization);
 				//acceptPayment(payments, null);
@@ -508,7 +510,8 @@ public class PayPalPaymentProcessor extends PaymentProcessor
 				RelatedResources r = transaction.getRelatedResources().get(0);
 				if (r.getSale() != null)
 				{
-					payments.setGatePayId(r.getSale().getId());
+					getPersistence().idChange(payments.getPaymentId(), r.getSale().getId());
+					payments.setPaymentId(r.getSale().getId());
 				}
 			}
 		}

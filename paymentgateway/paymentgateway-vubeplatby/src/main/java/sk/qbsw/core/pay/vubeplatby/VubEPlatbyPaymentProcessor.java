@@ -1,17 +1,14 @@
 package sk.qbsw.core.pay.vubeplatby;
 
-import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.exception.InvalidRequestException;
-import sk.qbsw.core.pay.base.payment.request.OneTimePaymentAmount;
-import sk.qbsw.core.pay.base.payment.request.PaymentAmount;
-import sk.qbsw.core.pay.base.payment.request.PaymentIdentification;
 import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
 import sk.qbsw.core.pay.base.response.BankResponse;
-import sk.qbsw.core.pay.base.util.PaymentFormatUtils;
 import sk.qbsw.core.pay.vubeplatby.model.CVubPayRequest;
 import sk.qbsw.core.pay.vubeplatby.model.CVubPayResponse;
 
@@ -26,7 +23,7 @@ public class VubEPlatbyPaymentProcessor extends PaymentProcessor
 	}
 
 	@Override
-	public PaymentRealization createPayment (PaymentRequest payment)
+	public PaymentRecieptImpl createPayment (PaymentRequest payment)
 	{
 		failOnRecurring(payment);
 		SlovakPaymentIdentification identification = getSlovakInfo(payment);
@@ -54,7 +51,7 @@ public class VubEPlatbyPaymentProcessor extends PaymentProcessor
 
 		//pl. brana podporuje reccurence , ale nemame zatial implementovane 
 
-		return PaymentRealization.of(payId, url, true);
+		return new PaymentRecieptImpl(payId, url, true);
 	}
 
 	@Override

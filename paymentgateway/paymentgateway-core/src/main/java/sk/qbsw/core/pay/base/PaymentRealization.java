@@ -14,16 +14,6 @@ package sk.qbsw.core.pay.base;
 public class PaymentRealization
 {
 	private String paymentId;
-
-	private String gatePayId;
-	/**
-	 * URL to witch client should be redirected.
-	 */
-	private String urlToCall;
-	
-	//if true then the urlToCall contains GET Call
-	//alese then the urlToCall contains POST Call
-	private boolean isGetCall;
 	
 	/**
 	 * textual representation of bank response
@@ -31,10 +21,8 @@ public class PaymentRealization
 	 */
 	private String bankResponse;
 	
-	public static PaymentRealization of(String payId,String urlCall,boolean isGet){
+	public static PaymentRealization of(String payId){
 		PaymentRealization realization = new PaymentRealization();
-		realization.setGetCall(isGet);
-		realization.setUrlToCall(urlCall);
 		realization.setPaymentId(payId);
 		return realization;
 	}
@@ -47,22 +35,7 @@ public class PaymentRealization
 	{
 		this.paymentId = paymentId;
 	}
-	public boolean isGetCall ()
-	{
-		return isGetCall;
-	}
-	public void setGetCall (boolean isGetCall)
-	{
-		this.isGetCall = isGetCall;
-	}
-	public String getUrlToCall ()
-	{
-		return urlToCall;
-	}
-	public void setUrlToCall (String urlToCall)
-	{
-		this.urlToCall = urlToCall;
-	}
+	
 	public String getBankResponse ()
 	{
 		return bankResponse;
@@ -70,16 +43,6 @@ public class PaymentRealization
 	public void setBankResponse (String bankResponse)
 	{
 		this.bankResponse = bankResponse;
-	}
-
-	public String getGatePayId ()
-	{
-		return gatePayId;
-	}
-
-	public void setGatePayId (String gatePayId)
-	{
-		this.gatePayId = gatePayId;
 	}
 
 	

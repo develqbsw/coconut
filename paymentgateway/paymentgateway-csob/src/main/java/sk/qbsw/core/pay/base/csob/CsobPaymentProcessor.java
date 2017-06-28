@@ -26,9 +26,9 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.PaymentProcessor;
 import sk.qbsw.core.pay.base.PaymentRealization;
+import sk.qbsw.core.pay.base.PaymentRequest;
 import sk.qbsw.core.pay.base.csob.model.CsobBankResponse;
 import sk.qbsw.core.pay.base.csob.model.CsobEnvelope;
 import sk.qbsw.core.pay.base.csob.model.CsobFormPayRequest;
@@ -38,8 +38,9 @@ import sk.qbsw.core.pay.base.csob.model.CsobResponseFromVOD;
 import sk.qbsw.core.pay.base.exception.ConfigurationException;
 import sk.qbsw.core.pay.base.exception.DecryptionException;
 import sk.qbsw.core.pay.base.payment.request.SlovakPaymentIdentification;
+import sk.qbsw.core.pay.base.reciept.PaymentReciept;
+import sk.qbsw.core.pay.base.reciept.PaymentRecieptImpl;
 import sk.qbsw.core.pay.base.response.AbstractBankResponse;
-import sk.qbsw.core.pay.base.util.PaymentFormatUtils;
 
 /**
  * @author martinkovic
@@ -66,12 +67,11 @@ public class CsobPaymentProcessor extends PaymentProcessor
 	 * @see sk.qbsw.dockie.core.payment.paymentProcessor.PaymentProcessor#createPayment(sk.qbsw.dockie.core.payment.paymentProcessor.Payment)
 	 */
 	@Override
-	public PaymentRealization createPayment (PaymentRequest payment)
+	public PaymentReciept createPayment (PaymentRequest payment)
 	{
 		failOnRecurring(payment);
 		SlovakPaymentIdentification slovakInfo = getSlovakInfo(payment);
 
-		PaymentRealization payments = new PaymentRealization();
 		CsobPayRequest pay = new CsobPayRequest();
 		pay.setMerchantId(context.getMerchantId());
 		pay.setMerchantAccount(context.getMerchantAccountNumber());
@@ -92,7 +92,6 @@ public class CsobPaymentProcessor extends PaymentProcessor
 		pay.setSs(slovakInfo.getSs());
 		pay.setKs(slovakInfo.getKs());
 		pay.setNote(payment.getInfo().getNote());
-		payments.setPaymentId(payId);
 		pay.setUrlRedirect(context.getApplicationCallbackURLForBank() + "?" + PARAM_NAME_OBJ_ID + "=" + payId);
 
 		//payment ready for signing
@@ -115,11 +114,10 @@ public class CsobPaymentProcessor extends PaymentProcessor
 		CsobFormPayRequest payReq = new CsobFormPayRequest();
 		String base64String = Base64.encodeBase64String(encryptedEnvelope);
 		payReq.zprava("<zprava ofce=\"3111X\">" + base64String + "</zprava>");
-		payments.setUrlToCall(makePaymentURL(payReq, context.getCsobGateURL()));
+		String paymentURL = makePaymentURL(payReq, context.getCsobGateURL());
 
 		//it is POST CALL
-		payments.setGetCall(false);
-
+		PaymentReciept payments = new PaymentRecieptImpl(payId,paymentURL,false);
 		return payments;
 	}
 
