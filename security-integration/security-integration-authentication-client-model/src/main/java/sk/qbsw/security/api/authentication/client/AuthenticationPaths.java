@@ -16,7 +16,7 @@ public class AuthenticationPaths implements Serializable
 	/**
 	 * The constant BASE_PATH.
 	 */
-	public static final String BASE_PATH = "/security";
+	public static final String BASE_PATH = "${coconut.security.path.base}" + "/security";
 
 	/**
 	 * The constant AUTHENTICATE.
