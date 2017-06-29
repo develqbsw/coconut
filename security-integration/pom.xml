@@ -15,6 +15,7 @@
 	<modules>
 		<module>security-integration-authentication-client-model</module>
 		<module>security-integration-authentication-client</module>
+		<module>security-integration-authentication-web</module>
 		<module>security-integration-authentication</module>
 	</modules>
 </project>

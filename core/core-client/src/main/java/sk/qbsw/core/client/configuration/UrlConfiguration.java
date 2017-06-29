@@ -22,4 +22,12 @@ public interface UrlConfiguration
 	Integer getProxyPort ();
 
 	boolean isUntrustedSslConnectionAllowed ();
+
+	default String buildUrl (String apiPath)
+	{
+		return new StringBuilder() //
+			.append(getScheme()).append("://").append(getHostName()).append(":").append(getPort()) //
+			.append(getPath() + apiPath) //
+			.toString();
+	}
 }
