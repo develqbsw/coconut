@@ -20,6 +20,7 @@ import sk.qbsw.security.api.authentication.client.model.response.AuthenticationR
 import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponseBody;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.integration.authentication.exception.AccessDeniedException;
 import sk.qbsw.security.integration.authentication.exception.AuthenticationApiException;
 import sk.qbsw.security.integration.authentication.mapping.SecurityMapper;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
@@ -176,13 +177,13 @@ public class AuthenticationController
 			}
 			else
 			{
-				return null;
+				throw new AccessDeniedException("The exception in token verification process", ECoreErrorResponse.ACCESS_DENIED);
 			}
 		}
 		catch (Exception e)
 		{
 			LOGGER.error("The exception in token verification process");
-			throw new AuthenticationApiException("The exception in token verification process", e);
+			throw new AuthenticationApiException("The exception in token verification process", e, ECoreErrorResponse.ACCESS_DENIED);
 		}
 	}
 }
