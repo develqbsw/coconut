@@ -80,7 +80,7 @@ public class AuthenticationController
 	 * @return the authentication response
 	 * @throws CBusinessException the c business exception
 	 */
-	@RequestMapping (value = AuthenticationPaths.AUTHENTICATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@RequestMapping (value = AuthenticationPaths.SECURITY_AUTHENTICATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public AuthenticationResponseBody authenticate (HttpServletRequest httpRequest, @NotNull @Validated @RequestBody AuthenticationRequestBody request, @NotNull @RequestHeader (value = AuthenticationHeaders.DEVICE_ID_REQUEST_HEADER) String deviceId) throws CBusinessException
 	{
 		String ip = ipAddressRetriever.getClientIpAddress(httpRequest);
@@ -108,7 +108,7 @@ public class AuthenticationController
 	 * @return the reauthentication response
 	 * @throws CBusinessException the c business exception
 	 */
-	@RequestMapping (value = AuthenticationPaths.REAUTHENTICATE, method = RequestMethod.POST)
+	@RequestMapping (value = AuthenticationPaths.SECURITY_REAUTHENTICATE, method = RequestMethod.POST)
 	public ReauthenticationResponseBody reauthenticate (HttpServletRequest httpRequest, @NotNull @RequestHeader (value = AuthenticationHeaders.DEVICE_ID_REQUEST_HEADER) String deviceId, @NotNull @RequestHeader (value = AuthenticationHeaders.TOKEN_REQUEST_HEADER) String masterToken) throws CBusinessException
 	{
 		String ip = ipAddressRetriever.getClientIpAddress(httpRequest);
@@ -134,7 +134,7 @@ public class AuthenticationController
 	 * @return the empty response
 	 * @throws CBusinessException the c business exception
 	 */
-	@RequestMapping (value = AuthenticationPaths.INVALIDATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@RequestMapping (value = AuthenticationPaths.SECURITY_INVALIDATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public EmptyResponseBody invalidate (HttpServletRequest httpRequest, @NotNull @RequestBody InvalidateRequestBody request, @NotNull @RequestHeader (value = AuthenticationHeaders.DEVICE_ID_REQUEST_HEADER) String deviceId) throws CBusinessException
 	{
 		String ip = ipAddressRetriever.getClientIpAddress(httpRequest);
@@ -158,7 +158,7 @@ public class AuthenticationController
 	 * @return the cs account data
 	 * @throws CBusinessException the c business exception
 	 */
-	@RequestMapping (value = AuthenticationPaths.VERIFY, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@RequestMapping (value = AuthenticationPaths.SECURITY_VERIFY, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public CSAccountData verify (@NotNull @Validated @RequestBody VerifyRequestBody request) throws CBusinessException
 	{
 		try

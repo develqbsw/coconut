@@ -16,27 +16,27 @@ public class AuthenticationPaths implements Serializable
 	/**
 	 * The constant BASE_PATH.
 	 */
-	public static final String BASE_PATH = "${coconut.security.path.base}" + "/security";
+	public static final String BASE_PATH = "${coconut.security.path.base}";
 
 	/**
-	 * The constant AUTHENTICATE.
+	 * The constant SECURITY_AUTHENTICATE.
 	 */
-	public static final String AUTHENTICATE = "/authenticate";
+	public static final String SECURITY_AUTHENTICATE = "/security/authenticate";
 
 	/**
-	 * The constant REAUTHENTICATE.
+	 * The constant SECURITY_REAUTHENTICATE.
 	 */
-	public static final String REAUTHENTICATE = "/reauthenticate";
+	public static final String SECURITY_REAUTHENTICATE = "/security/reauthenticate";
 
 	/**
-	 * The constant INVALIDATE.
+	 * The constant SECURITY_INVALIDATE.
 	 */
-	public static final String INVALIDATE = "/invalidate";
+	public static final String SECURITY_INVALIDATE = "/security/invalidate";
 
 	/**
-	 * The constant VERIFY.
+	 * The constant SECURITY_VERIFY.
 	 */
-	public static final String VERIFY = "/verify";
+	public static final String SECURITY_VERIFY = "/security/verify";
 
 	private AuthenticationPaths ()
 	{

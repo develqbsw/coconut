@@ -4,8 +4,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails;
 import sk.qbsw.security.api.authentication.client.model.CSAccountData;
 import sk.qbsw.security.api.authentication.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.integration.authentication.client.AuthenticationClient;
@@ -38,8 +38,9 @@ public abstract class BaseWebServiceTokenProcessingFilter extends BaseTokenProce
 	{
 		CSAccountData accountData = authenticationClient.verify(VerifyRequestBody.newBuilder().token(token).deviceId(deviceId).ip(ip).build());
 
-		final PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(accountData, token, convertRolesToAuthorities(accountData.getRoles()));
-		preAuthenticatedAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		Collection<GrantedAuthority> grantedAuthorities = convertRolesToAuthorities(accountData.getRoles());
+		final PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(accountData, token, grantedAuthorities);
+		preAuthenticatedAuthenticationToken.setDetails(new PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails(request, grantedAuthorities));
 
 		return preAuthenticatedAuthenticationToken;
 	}
