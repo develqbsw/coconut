@@ -20,6 +20,26 @@ public class ErrorResponseBody extends BaseResponseBody
 	private String message;
 
 	/**
+	 * Gets code variable name.
+	 *
+	 * @return the code variable name
+	 */
+	public static String getCodeVariableName ()
+	{
+		return "code";
+	}
+
+	/**
+	 * Gets message variable name.
+	 *
+	 * @return the message variable name
+	 */
+	public static String getMessageVariableName ()
+	{
+		return "message";
+	}
+
+	/**
 	 * Gets code.
 	 *
 	 * @return the code

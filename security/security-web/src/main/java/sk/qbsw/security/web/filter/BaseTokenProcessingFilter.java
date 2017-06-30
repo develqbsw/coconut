@@ -67,13 +67,25 @@ public abstract class BaseTokenProcessingFilter extends GenericFilterBean
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
-			catch (final AuthenticationException e)
+			catch (final Exception e)
 			{
-				LOGGER.error("AuthenticationException was thrown when processing request with security token " + token + ". Combination was resolved to user.", e);
+				handleExceptions(e, token, deviceId);
 			}
 		}
 
 		chain.doFilter(request, response);
+	}
+
+	/**
+	 * Handle exceptions.
+	 *
+	 * @param e the e
+	 * @param token the token
+	 * @param deviceId the device id
+	 */
+	protected void handleExceptions (Exception e, String token, String deviceId)
+	{
+		LOGGER.error("Exception was thrown when processing request with security token {} and deviceId {}. Combination was not resolved to user.", token, deviceId, e);
 	}
 
 	/**
