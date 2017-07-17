@@ -88,7 +88,7 @@ public class OAuthPreAuthenticatedUserDetailsService implements AuthenticationUs
 			.ip(ip) //
 			.build();
 
-		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), null, convertRolesToAuthorities(accountData.getRoles()), organization, oAuthData);
+		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), organization, oAuthData);
 	}
 
 	/**
