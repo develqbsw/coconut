@@ -223,6 +223,11 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security</groupId>
+                <artifactId>security-authentication-spring</artifactId>
+                <version>${security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security</groupId>
                 <artifactId>security-authentication</artifactId>
                 <version>${security.version}</version>
             </dependency>

@@ -1,8 +1,6 @@
 package sk.qbsw.security.api.authentication.client.model;
 
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -31,6 +29,13 @@ public class CSAccountData implements Serializable
 	@NotNull
 	private List<String> roles;
 
+	@ApiModelProperty (required = true, value = "The organization")
+	@NotNull
+	private CSSimplifiedOrganization organization;
+
+	/**
+	 * Instantiates a new Cs account data.
+	 */
 	public CSAccountData ()
 	{
 	}
@@ -40,6 +45,7 @@ public class CSAccountData implements Serializable
 		setId(builder.id);
 		setLogin(builder.login);
 		setRoles(builder.roles);
+		setOrganization(builder.organization);
 	}
 
 	/**
@@ -112,52 +118,94 @@ public class CSAccountData implements Serializable
 		this.roles = roles;
 	}
 
-	@Override
-	public boolean equals (Object o)
+	/**
+	 * Gets organization.
+	 *
+	 * @return the organization
+	 */
+	public CSSimplifiedOrganization getOrganization ()
 	{
-		if (this == o) return true;
-
-		if (o == null || getClass() != o.getClass()) return false;
-
-		CSAccountData that = (CSAccountData) o;
-
-		return new EqualsBuilder().append(id, that.id).append(login, that.login).append(roles, that.roles).isEquals();
+		return organization;
 	}
 
-	@Override
-	public int hashCode ()
+	/**
+	 * Sets organization.
+	 *
+	 * @param organization the organization
+	 */
+	public void setOrganization (CSSimplifiedOrganization organization)
 	{
-		return new HashCodeBuilder(17, 37).append(id).append(login).append(roles).toHashCode();
+		this.organization = organization;
 	}
 
+
+	/**
+	 * The type Builder.
+	 */
 	public static final class Builder
 	{
 		private Long id;
 		private String login;
 		private List<String> roles;
+		private CSSimplifiedOrganization organization;
 
 		private Builder ()
 		{
 		}
 
+		/**
+		 * Id builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder id (Long val)
 		{
 			id = val;
 			return this;
 		}
 
+		/**
+		 * Login builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder login (String val)
 		{
 			login = val;
 			return this;
 		}
 
+		/**
+		 * Roles builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder roles (List<String> val)
 		{
 			roles = val;
 			return this;
 		}
 
+		/**
+		 * Organization builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
+		public Builder organization (CSSimplifiedOrganization val)
+		{
+			organization = val;
+			return this;
+		}
+
+		/**
+		 * Build cs account data.
+		 *
+		 * @return the cs account data
+		 */
 		public CSAccountData build ()
 		{
 			return new CSAccountData(this);

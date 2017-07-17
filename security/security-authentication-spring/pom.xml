@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>security-integration-authentication-web</artifactId>
-    <name>Security Integration Authentication Web</name>
+    <artifactId>security-authentication-spring</artifactId>
+    <name>Security Authentication Spring</name>
     <packaging>jar</packaging>
 
     <organization>
@@ -11,70 +11,35 @@
     </organization>
 
     <parent>
-        <groupId>sk.qbsw.security.integration</groupId>
-        <artifactId>security-integration-top</artifactId>
+        <groupId>sk.qbsw.security</groupId>
+        <artifactId>security-top</artifactId>
         <version>1.18.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
-        <!-- qbsw -->
-        <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-authentication-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.integration</groupId>
-            <artifactId>security-integration-authentication-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.integration</groupId>
-            <artifactId>security-integration-authentication-client-model</artifactId>
-        </dependency>
-
         <!-- spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
 
-        <!-- servlet api -->
+        <!-- validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <!-- servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
+
     <build>
         <resources>
             <resource>
