@@ -84,6 +84,7 @@ public class OAuthPreAuthenticatedUserDetailsService implements AuthenticationUs
 			.build();
 
 		OAuthData oAuthData = OAuthData.newBuilder() //
+			.token((String) token.getPrincipal()) //
 			.deviceId(deviceId) //
 			.ip(ip) //
 			.build();
