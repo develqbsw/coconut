@@ -25,7 +25,7 @@ public abstract class BaseWebServiceTokenProcessingFilter extends BaseTokenProce
 	@Override
 	public Authentication createAuthenticationToken (String token, String deviceId, String ip, HttpServletRequest request)
 	{
-		final PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(token, null);
+		final PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(token, deviceId);
 		preAuthenticatedAuthenticationToken.setDetails(new OAuthPreAuthenticatedWebAuthenticationDetails(request, deviceId, ip));
 
 		return preAuthenticatedAuthenticationToken;
