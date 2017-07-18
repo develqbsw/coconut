@@ -7,7 +7,9 @@ import com.querydsl.core.BooleanBuilder;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.security.core.model.domain.QGroup;
 import sk.qbsw.security.core.model.domain.QUser;
+import sk.qbsw.security.core.model.domain.QUserUnitGroup;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.QAuthenticationToken;
@@ -39,7 +41,6 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 		}
 
 		QAuthenticationToken qAuthenticationToken = QAuthenticationToken.authenticationToken;
-		QUser qUser = QUser.user;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -48,8 +49,7 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.user, qUser).fetchJoin() //
-			.leftJoin(qUser.organization) //
+			.leftJoin(qAuthenticationToken.user).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
@@ -62,7 +62,6 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 		}
 
 		QAuthenticationToken qAuthenticationToken = QAuthenticationToken.authenticationToken;
-		QUser qUser = QUser.user;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -71,8 +70,7 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.user, qUser).fetchJoin() //
-			.leftJoin(qUser.organization) //
+			.leftJoin(qAuthenticationToken.user).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
@@ -86,6 +84,8 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 
 		QAuthenticationToken qAuthenticationToken = QAuthenticationToken.authenticationToken;
 		QUser qUser = QUser.user;
+		QUserUnitGroup qUserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QGroup qGroup = QGroup.group;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -95,7 +95,10 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
 			.leftJoin(qAuthenticationToken.user, qUser).fetchJoin() //
-			.leftJoin(qUser.organization) //
+			.leftJoin(qUser.organization).fetchJoin() //
+			.leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin() //
+			.leftJoin(qUserUnitGroup.group, qGroup).fetchJoin() //
+			.leftJoin(qGroup.roles).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 

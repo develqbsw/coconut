@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.18.0
  * @version 1.18.0
  */
-public class OAuthPreAuthenticatedWebAuthenticationDetails extends WebAuthenticationDetails
+public class OAuthWebAuthenticationDetails extends WebAuthenticationDetails
 {
 	private final String deviceId;
 
@@ -27,7 +27,7 @@ public class OAuthPreAuthenticatedWebAuthenticationDetails extends WebAuthentica
 	 * @param deviceId the device id
 	 * @param ip the ip
 	 */
-	public OAuthPreAuthenticatedWebAuthenticationDetails (HttpServletRequest request, String deviceId, String ip)
+	public OAuthWebAuthenticationDetails (HttpServletRequest request, String deviceId, String ip)
 	{
 		super(request);
 		this.deviceId = deviceId;

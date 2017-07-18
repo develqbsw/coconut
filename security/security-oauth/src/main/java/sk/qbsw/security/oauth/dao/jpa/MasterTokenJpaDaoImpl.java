@@ -7,7 +7,9 @@ import com.querydsl.core.BooleanBuilder;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.security.core.model.domain.QGroup;
 import sk.qbsw.security.core.model.domain.QUser;
+import sk.qbsw.security.core.model.domain.QUserUnitGroup;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.model.domain.QMasterToken;
@@ -58,7 +60,6 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 		}
 
 		QMasterToken qMasterToken = QMasterToken.masterToken;
-		QUser qUser = QUser.user;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -67,8 +68,7 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.user, qUser).fetchJoin() //
-			.leftJoin(qUser.organization).fetchJoin() //
+			.leftJoin(qMasterToken.user).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
@@ -81,7 +81,6 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 		}
 
 		QMasterToken qMasterToken = QMasterToken.masterToken;
-		QUser qUser = QUser.user;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -91,8 +90,7 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.user, qUser).fetchJoin() //
-			.leftJoin(qUser.organization).fetchJoin() //
+			.leftJoin(qMasterToken.user).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
@@ -106,6 +104,8 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 
 		QMasterToken qMasterToken = QMasterToken.masterToken;
 		QUser qUser = QUser.user;
+		QUserUnitGroup qUserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QGroup qGroup = QGroup.group;
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
@@ -116,6 +116,9 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 		return queryFactory.selectFrom(qMasterToken) //
 			.leftJoin(qMasterToken.user, qUser).fetchJoin() //
 			.leftJoin(qUser.organization).fetchJoin() //
+			.leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin() //
+			.leftJoin(qUserUnitGroup.group, qGroup).fetchJoin() //
+			.leftJoin(qGroup.roles).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
