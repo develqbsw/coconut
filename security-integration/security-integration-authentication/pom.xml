@@ -46,7 +46,7 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security.integration</groupId>
-			<artifactId>security-integration-authentication-model</artifactId>
+			<artifactId>security-integration-authentication-client-model</artifactId>
 		</dependency>
 		
 		<!-- QBSW et -->

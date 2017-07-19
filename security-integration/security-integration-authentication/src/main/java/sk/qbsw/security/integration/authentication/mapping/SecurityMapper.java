@@ -1,16 +1,16 @@
 package sk.qbsw.security.integration.authentication.mapping;
 
-import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponse;
-import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponse;
+import sk.qbsw.security.api.authentication.client.model.CSAccountData;
+import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponseBody;
+import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponseBody;
 import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The security mapper.
- * 
- * @author Tomas Lauro
  *
- * @version 1.0.0
- * @since 1.0.0
+ * @author Tomas Lauro
+ * @version 1.18.0
+ * @since 1.18.0
  */
 public interface SecurityMapper
 {
@@ -22,7 +22,7 @@ public interface SecurityMapper
 	 * @param user the user
 	 * @return the authentication response
 	 */
-	AuthenticationResponse mapToAuthenticationResponse (String masterToken, String authenticationToken, User user);
+	AuthenticationResponseBody mapToAuthenticationResponse (String masterToken, String authenticationToken, User user);
 
 	/**
 	 * Map to reauthentication response.
@@ -30,5 +30,13 @@ public interface SecurityMapper
 	 * @param authenticationToken the authentication token
 	 * @return the reauthentication response
 	 */
-	ReauthenticationResponse mapToReauthenticationResponse (String authenticationToken);
+	ReauthenticationResponseBody mapToReauthenticationResponse (String authenticationToken);
+
+	/**
+	 * Map user to cs account data cs account data.
+	 *
+	 * @param user the user
+	 * @return the cs account data
+	 */
+	CSAccountData mapUserToCSAccountData (User user);
 }

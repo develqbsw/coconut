@@ -1,64 +1,76 @@
 package sk.qbsw.security.integration.authentication.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import sk.qbsw.core.api.model.response.EmptyResponse;
+import org.springframework.web.bind.annotation.*;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.api.authentication.client.configuration.AuthenticationApiConfiguration;
-import sk.qbsw.security.api.authentication.client.configuration.AuthenticationPathConfiguration;
-import sk.qbsw.security.api.authentication.client.model.request.AuthenticationRequest;
-import sk.qbsw.security.api.authentication.client.model.request.InvalidateRequest;
-import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponse;
-import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponse;
+import sk.qbsw.core.client.model.response.EmptyResponseBody;
+import sk.qbsw.security.api.authentication.client.AuthenticationHeaders;
+import sk.qbsw.security.api.authentication.client.AuthenticationPaths;
+import sk.qbsw.security.api.authentication.client.model.CSAccountData;
+import sk.qbsw.security.api.authentication.client.model.request.AuthenticationRequestBody;
+import sk.qbsw.security.api.authentication.client.model.request.InvalidateRequestBody;
+import sk.qbsw.security.api.authentication.client.model.request.VerifyRequestBody;
+import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponseBody;
+import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponseBody;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.integration.authentication.exception.AccessDeniedException;
+import sk.qbsw.security.integration.authentication.exception.AuthenticationApiException;
 import sk.qbsw.security.integration.authentication.mapping.SecurityMapper;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+
 /**
  * The security controller.
- * 
+ *
  * @author Tomas Lauro
  * @author Roman Farkaš
  * @version 1.0.0
  * @since 1.0.0
  */
 @RestController
-@RequestMapping (produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@RequestMapping (value = AuthenticationPaths.BASE_PATH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class AuthenticationController
 {
-	/** The auth service. */
-	@Autowired
-	private AuthenticationService authenticationService;
+	private final AuthenticationService authenticationService;
 
-	/** The master token service. */
-	@Autowired
-	private MasterTokenService masterTokenService;
+	private final MasterTokenService masterTokenService;
 
-	/** The authentication token service. */
-	@Autowired
-	private AuthenticationTokenService authenticationTokenService;
+	private final AuthenticationTokenService authenticationTokenService;
 
-	/** The security mapper. */
-	@Autowired
-	private SecurityMapper securityMapper;
+	private final SecurityMapper securityMapper;
 
-	/** The ip address retriever. */
-	private CHttpClientAddressRetriever ipAddressRetriever = new CHttpClientAddressRetriever();
+	private final CHttpClientAddressRetriever ipAddressRetriever;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
+
+	/**
+	 * Instantiates a new Authentication controller.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param masterTokenService the master token service
+	 * @param authenticationTokenService the authentication token service
+	 * @param securityMapper the security mapper
+	 */
+	@Autowired
+	public AuthenticationController (AuthenticationService authenticationService, MasterTokenService masterTokenService, AuthenticationTokenService authenticationTokenService, SecurityMapper securityMapper)
+	{
+		this.authenticationService = authenticationService;
+		this.masterTokenService = masterTokenService;
+		this.authenticationTokenService = authenticationTokenService;
+		this.securityMapper = securityMapper;
+		this.ipAddressRetriever = new CHttpClientAddressRetriever();
+	}
 
 	/**
 	 * Authenticate.
@@ -69,8 +81,8 @@ public class AuthenticationController
 	 * @return the authentication response
 	 * @throws CBusinessException the c business exception
 	 */
-	@RequestMapping (value = AuthenticationPathConfiguration.AUTHENTICATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public AuthenticationResponse authenticate (HttpServletRequest httpRequest, @NotNull @Validated @RequestBody (required = true) AuthenticationRequest request, @NotNull @RequestHeader (value = AuthenticationApiConfiguration.DEVICE_ID_REQUEST_HEADER, required = true) String deviceId) throws CBusinessException
+	@RequestMapping (value = AuthenticationPaths.SECURITY_AUTHENTICATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public AuthenticationResponseBody authenticate (HttpServletRequest httpRequest, @NotNull @Validated @RequestBody AuthenticationRequestBody request, @NotNull @RequestHeader (value = AuthenticationHeaders.DEVICE_ID_REQUEST_HEADER) String deviceId) throws CBusinessException
 	{
 		String ip = ipAddressRetriever.getClientIpAddress(httpRequest);
 		User user = authenticationService.login(request.getLogin(), request.getPassword());
@@ -80,11 +92,11 @@ public class AuthenticationController
 			throw new CSecurityException(ECoreErrorResponse.USER_NOT_FOUND);
 		}
 
-		//generate tokens
+		// generate tokens
 		String masterToken = masterTokenService.generateMasterToken(user.getId(), deviceId, ip);
 		String authenticationToken = authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip);
 
-		//create response
+		// create response
 		return securityMapper.mapToAuthenticationResponse(masterToken, authenticationToken, user);
 	}
 
@@ -97,8 +109,8 @@ public class AuthenticationController
 	 * @return the reauthentication response
 	 * @throws CBusinessException the c business exception
 	 */
-	@RequestMapping (value = AuthenticationPathConfiguration.REAUTHENTICATE, method = RequestMethod.POST)
-	public ReauthenticationResponse reauthenticate (HttpServletRequest httpRequest, @NotNull @RequestHeader (value = AuthenticationApiConfiguration.DEVICE_ID_REQUEST_HEADER, required = true) String deviceId, @NotNull @RequestHeader (value = AuthenticationApiConfiguration.TOKEN_REQUEST_HEADER, required = true) String masterToken) throws CBusinessException
+	@RequestMapping (value = AuthenticationPaths.SECURITY_REAUTHENTICATE, method = RequestMethod.POST)
+	public ReauthenticationResponseBody reauthenticate (HttpServletRequest httpRequest, @NotNull @RequestHeader (value = AuthenticationHeaders.DEVICE_ID_REQUEST_HEADER) String deviceId, @NotNull @RequestHeader (value = AuthenticationHeaders.TOKEN_REQUEST_HEADER) String masterToken) throws CBusinessException
 	{
 		String ip = ipAddressRetriever.getClientIpAddress(httpRequest);
 		User user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip);
@@ -110,7 +122,7 @@ public class AuthenticationController
 
 		String authenticationToken = authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip);
 
-		//set response
+		// set response
 		return securityMapper.mapToReauthenticationResponse(authenticationToken);
 	}
 
@@ -123,8 +135,8 @@ public class AuthenticationController
 	 * @return the empty response
 	 * @throws CBusinessException the c business exception
 	 */
-	@RequestMapping (value = AuthenticationPathConfiguration.INVALIDATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public EmptyResponse invalidate (HttpServletRequest httpRequest, @NotNull @RequestBody (required = true) InvalidateRequest request, @NotNull @RequestHeader (value = AuthenticationApiConfiguration.DEVICE_ID_REQUEST_HEADER, required = true) String deviceId) throws CBusinessException
+	@RequestMapping (value = AuthenticationPaths.SECURITY_INVALIDATE, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public EmptyResponseBody invalidate (HttpServletRequest httpRequest, @NotNull @RequestBody InvalidateRequestBody request, @NotNull @RequestHeader (value = AuthenticationHeaders.DEVICE_ID_REQUEST_HEADER) String deviceId) throws CBusinessException
 	{
 		String ip = ipAddressRetriever.getClientIpAddress(httpRequest);
 		User user = masterTokenService.getUserByMasterToken(request.getMasterToken(), deviceId, ip);
@@ -137,6 +149,41 @@ public class AuthenticationController
 		masterTokenService.revokeMasterToken(user.getId(), request.getMasterToken());
 		authenticationTokenService.revokeAuthenticationToken(user.getId(), request.getAuthenticationToken());
 
-		return EmptyResponse.create();
+		return EmptyResponseBody.build();
+	}
+
+	/**
+	 * Verify account data.
+	 *
+	 * @param request the request
+	 * @return the cs account data
+	 * @throws CBusinessException the c business exception
+	 */
+	@RequestMapping (value = AuthenticationPaths.SECURITY_VERIFY, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public CSAccountData verify (@NotNull @Validated @RequestBody VerifyRequestBody request) throws CBusinessException
+	{
+		try
+		{
+			User userByMasterToken = masterTokenService.getUserByMasterToken(request.getToken(), request.getDeviceId(), request.getDeviceId());
+			User userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(request.getToken(), request.getDeviceId(), request.getIp());
+
+			if (userByMasterToken != null)
+			{
+				return securityMapper.mapUserToCSAccountData(userByMasterToken);
+			}
+			else if (userByAuthenticationToken != null)
+			{
+				return securityMapper.mapUserToCSAccountData(userByAuthenticationToken);
+			}
+			else
+			{
+				throw new AccessDeniedException("The exception in token verification process", ECoreErrorResponse.ACCESS_DENIED);
+			}
+		}
+		catch (Exception e)
+		{
+			LOGGER.error("The exception in token verification process");
+			throw new AuthenticationApiException("The exception in token verification process", e, ECoreErrorResponse.ACCESS_DENIED);
+		}
 	}
 }

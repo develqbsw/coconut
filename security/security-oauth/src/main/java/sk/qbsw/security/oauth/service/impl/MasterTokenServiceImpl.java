@@ -3,18 +3,17 @@
  */
 package sk.qbsw.security.oauth.service.impl;
 
-import javax.persistence.NoResultException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.MasterTokenService;
+
+import javax.persistence.NoResultException;
 
 /**
  * The master token service.
@@ -98,6 +97,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 		if (persistedToken != null)
 		{
 			checkMasterToken(persistedToken, ip);
+			persistedToken.getUser().exportRoles();
 			return persistedToken.getUser();
 		}
 		else
