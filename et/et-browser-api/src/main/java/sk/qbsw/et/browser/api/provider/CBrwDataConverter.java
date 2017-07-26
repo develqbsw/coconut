@@ -2,7 +2,6 @@ package sk.qbsw.et.browser.api.provider;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -237,8 +236,8 @@ public class CBrwDataConverter implements IBrwDataConverter
 		if (value instanceof OffsetDateTime)
 		{
 			OffsetDateTime valueDT = (OffsetDateTime) value;
-			LocalDateTime start = valueDT.toLocalDate().atStartOfDay();
-			LocalDateTime end = start.plusDays(1).minusSeconds(1);
+			OffsetDateTime start = OffsetDateTime.of(valueDT.toLocalDate().atStartOfDay(), ((OffsetDateTime) value).getOffset());
+			OffsetDateTime end = start.plusDays(1).minusSeconds(1);
 			return ((ComparableExpression) expression).goe(start).and( ((ComparableExpression) expression).loe(end));
 		}
 		else
