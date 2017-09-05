@@ -3,17 +3,18 @@
  */
 package sk.qbsw.security.oauth.service.impl;
 
+import javax.persistence.NoResultException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.MasterTokenService;
-
-import javax.persistence.NoResultException;
 
 /**
  * The master token service.
@@ -28,6 +29,19 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 {
 	/** The log. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(MasterTokenServiceImpl.class);
+
+
+	/**
+	 * Gets the new specific instance of master token.
+	 * When using custom master token, override this method 
+	 * and return instance of custom implementation.
+	 *
+	 * @return the new instance, default new MasterToken()
+	 */
+	protected MasterToken getNewInstance ()
+	{
+		return new MasterToken();
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#generateMasterToken(java.lang.Long, java.lang.String, java.lang.String)
@@ -55,7 +69,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 			masterTokenDao.remove(token);
 		}
 
-		MasterToken newToken = new MasterToken();
+		MasterToken newToken = getNewInstance();
 		newToken.setDeviceId(deviceId);
 		newToken.setIp(ip);
 		newToken.setToken(idGeneratorService.getGeneratedId());
