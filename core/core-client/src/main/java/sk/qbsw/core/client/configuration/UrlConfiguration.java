@@ -17,17 +17,18 @@ public interface UrlConfiguration
 
 	String getPath ();
 
-	String getProxyHostName ();
-
-	Integer getProxyPort ();
-
-	boolean isUntrustedSslConnectionAllowed ();
-
 	default String buildUrl (String apiPath)
 	{
-		return new StringBuilder() //
-			.append(getScheme()).append("://").append(getHostName()).append(":").append(getPort()) //
-			.append(getPath() + apiPath) //
-			.toString();
+		StringBuilder urlBuilder = new StringBuilder();
+
+		urlBuilder.append(getScheme()).append("://").append(getHostName()); // base URL
+		if (getPort() != null)
+		{
+			urlBuilder.append(":").append(getPort()); // add port
+		}
+
+		urlBuilder.append(getPath() + apiPath); // add api path
+
+		return urlBuilder.toString();
 	}
 }

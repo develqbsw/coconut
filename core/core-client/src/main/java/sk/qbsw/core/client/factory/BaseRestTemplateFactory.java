@@ -16,7 +16,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-import sk.qbsw.core.client.configuration.UrlConfiguration;
+import sk.qbsw.core.client.configuration.ConnectionConfiguration;
 
 import javax.net.ssl.SSLContext;
 import java.security.KeyManagementException;
@@ -37,12 +37,12 @@ public abstract class BaseRestTemplateFactory implements FactoryBean<RestTemplat
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseRestTemplateFactory.class);
 
-	private final UrlConfiguration configuration;
+	private final ConnectionConfiguration configuration;
 
 	private RestTemplate restTemplate;
 
 	@Autowired
-	public BaseRestTemplateFactory (UrlConfiguration configuration)
+	public BaseRestTemplateFactory (ConnectionConfiguration configuration)
 	{
 		this.configuration = configuration;
 	}
@@ -68,12 +68,6 @@ public abstract class BaseRestTemplateFactory implements FactoryBean<RestTemplat
 	@Override
 	public void afterPropertiesSet ()
 	{
-		// checks the configuration parameters
-		if (configuration.getHostName() == null || configuration.getPort() == null)
-		{
-			LOGGER.error("Client - the hostName or port are missing");
-		}
-
 		// create client builder
 		HttpClientBuilder clientBuilder = HttpClientBuilder.create();
 		if (configuration.getProxyHostName() != null && configuration.getProxyPort() != null)
