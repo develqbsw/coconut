@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The public client side account data.
@@ -33,6 +35,9 @@ public class CSAccountData implements Serializable
 	@NotNull
 	private CSSimplifiedOrganization organization;
 
+	@ApiModelProperty (value = "The additional custom user information")
+	private Map<String, Object> additionalInformation = new HashMap<>();
+
 	/**
 	 * Instantiates a new Cs account data.
 	 */
@@ -46,6 +51,7 @@ public class CSAccountData implements Serializable
 		setLogin(builder.login);
 		setRoles(builder.roles);
 		setOrganization(builder.organization);
+		setAdditionalInformation(builder.additionalInformation);
 	}
 
 	/**
@@ -138,6 +144,26 @@ public class CSAccountData implements Serializable
 		this.organization = organization;
 	}
 
+	/**
+	 * Gets additional information.
+	 *
+	 * @return the additional information
+	 */
+	public Map<String, Object> getAdditionalInformation ()
+	{
+		return additionalInformation;
+	}
+
+	/**
+	 * Sets additional information.
+	 *
+	 * @param additionalInformation the additional information
+	 */
+	public void setAdditionalInformation (Map<String, Object> additionalInformation)
+	{
+		this.additionalInformation = additionalInformation;
+	}
+
 
 	/**
 	 * The type Builder.
@@ -148,6 +174,7 @@ public class CSAccountData implements Serializable
 		private String login;
 		private List<String> roles;
 		private CSSimplifiedOrganization organization;
+		private Map<String, Object> additionalInformation;
 
 		private Builder ()
 		{
@@ -198,6 +225,18 @@ public class CSAccountData implements Serializable
 		public Builder organization (CSSimplifiedOrganization val)
 		{
 			organization = val;
+			return this;
+		}
+
+		/**
+		 * Additional information builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
+		public Builder additionalInformation (Map<String, Object> val)
+		{
+			additionalInformation = val;
 			return this;
 		}
 

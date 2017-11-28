@@ -253,6 +253,11 @@
                 <artifactId>security-integration-authentication-client</artifactId>
                 <version>${security.integration.version}</version>
             </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.integration</groupId>
+                <artifactId>security-integration-authentication-core</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
 
             <!-- QBSW indy -->
             <dependency>

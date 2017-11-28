@@ -1,20 +1,18 @@
-package sk.qbsw.security.integration.authentication.exception;
+package sk.qbsw.security.integration.authentication.core.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.IErrorResponse;
 
 /**
- * The access denied exception.
+ * The Authentication API exception.
  *
  * @author Tomas Lauro
  * @version 1.0.0
  * @since 1.0.0
  */
-@ResponseStatus (HttpStatus.UNAUTHORIZED)
-public class AccessDeniedException extends CBusinessException
+public class AuthenticationException extends CBusinessException
 {
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 8296023494797223407L;
 
 	/**
@@ -22,7 +20,7 @@ public class AccessDeniedException extends CBusinessException
 	 *
 	 * @param message the message
 	 */
-	public AccessDeniedException (String message)
+	public AuthenticationException (String message)
 	{
 		super(message);
 	}
@@ -32,7 +30,7 @@ public class AccessDeniedException extends CBusinessException
 	 *
 	 * @param error the error
 	 */
-	public AccessDeniedException (IErrorResponse error)
+	public AuthenticationException (IErrorResponse error)
 	{
 		super(error);
 	}
@@ -43,7 +41,7 @@ public class AccessDeniedException extends CBusinessException
 	 * @param message the message
 	 * @param cause the cause
 	 */
-	public AccessDeniedException (String message, Throwable cause)
+	public AuthenticationException (String message, Throwable cause)
 	{
 		super(message, cause);
 	}
@@ -54,7 +52,7 @@ public class AccessDeniedException extends CBusinessException
 	 * @param message the message
 	 * @param error the error
 	 */
-	public AccessDeniedException (String message, IErrorResponse error)
+	public AuthenticationException (String message, IErrorResponse error)
 	{
 		super(message, error);
 	}
@@ -66,7 +64,7 @@ public class AccessDeniedException extends CBusinessException
 	 * @param cause the cause
 	 * @param error the error
 	 */
-	public AccessDeniedException (String message, Throwable cause, IErrorResponse error)
+	public AuthenticationException (String message, Throwable cause, IErrorResponse error)
 	{
 		super(message, cause, error);
 	}

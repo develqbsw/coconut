@@ -6,6 +6,7 @@ import sk.qbsw.security.authentication.spring.model.Organization;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * User details for spring Security.
@@ -35,6 +36,23 @@ public class OAuthLoggedUser extends LoggedUser
 	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData)
 	{
 		super(id, username, password, authorities, organization);
+		this.oauthData = oauthData;
+	}
+
+	/**
+	 * Instantiates a new O auth logged user.
+	 *
+	 * @param id the id
+	 * @param username the username
+	 * @param password the password
+	 * @param authorities the authorities
+	 * @param organization the organization
+	 * @param oauthData the oauth data
+	 * @param additionalInformation the additional information
+	 */
+	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData, Map<String, Object> additionalInformation)
+	{
+		super(id, username, password, authorities, organization, additionalInformation);
 		this.oauthData = oauthData;
 	}
 

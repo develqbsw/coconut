@@ -1,19 +1,17 @@
-package sk.qbsw.security.integration.authentication.exception;
+package sk.qbsw.security.integration.authentication.core.exception;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.IErrorResponse;
 
 /**
- * The Authentication API exception.
+ * The access denied exception.
  *
  * @author Tomas Lauro
- *
  * @version 1.0.0
  * @since 1.0.0
  */
-public class AuthenticationApiException extends CBusinessException
+public class AccessDeniedException extends CBusinessException
 {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 8296023494797223407L;
 
 	/**
@@ -21,7 +19,7 @@ public class AuthenticationApiException extends CBusinessException
 	 *
 	 * @param message the message
 	 */
-	public AuthenticationApiException (String message)
+	public AccessDeniedException (String message)
 	{
 		super(message);
 	}
@@ -31,7 +29,7 @@ public class AuthenticationApiException extends CBusinessException
 	 *
 	 * @param error the error
 	 */
-	public AuthenticationApiException (IErrorResponse error)
+	public AccessDeniedException (IErrorResponse error)
 	{
 		super(error);
 	}
@@ -42,7 +40,7 @@ public class AuthenticationApiException extends CBusinessException
 	 * @param message the message
 	 * @param cause the cause
 	 */
-	public AuthenticationApiException (String message, Throwable cause)
+	public AccessDeniedException (String message, Throwable cause)
 	{
 		super(message, cause);
 	}
@@ -53,7 +51,7 @@ public class AuthenticationApiException extends CBusinessException
 	 * @param message the message
 	 * @param error the error
 	 */
-	public AuthenticationApiException (String message, IErrorResponse error)
+	public AccessDeniedException (String message, IErrorResponse error)
 	{
 		super(message, error);
 	}
@@ -65,7 +63,7 @@ public class AuthenticationApiException extends CBusinessException
 	 * @param cause the cause
 	 * @param error the error
 	 */
-	public AuthenticationApiException (String message, Throwable cause, IErrorResponse error)
+	public AccessDeniedException (String message, Throwable cause, IErrorResponse error)
 	{
 		super(message, cause, error);
 	}

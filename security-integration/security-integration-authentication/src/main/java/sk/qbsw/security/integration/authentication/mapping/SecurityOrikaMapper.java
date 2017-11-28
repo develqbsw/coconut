@@ -9,6 +9,8 @@ import sk.qbsw.security.api.authentication.client.model.CSUserData;
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponseBody;
 import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponseBody;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.integration.authentication.core.model.AuthenticationData;
+import sk.qbsw.security.integration.authentication.core.model.VerificationData;
 
 import javax.annotation.PostConstruct;
 
@@ -54,12 +56,12 @@ public class SecurityOrikaMapper extends BaseMapper implements SecurityMapper
 	}
 
 	@Override
-	public AuthenticationResponseBody mapToAuthenticationResponse (String masterToken, String authenticationToken, User user)
+	public AuthenticationResponseBody mapToAuthenticationResponse (AuthenticationData authenticationData)
 	{
-		CSAuthenticationData authenticationData = CSAuthenticationData.newBuilder().masterToken(masterToken).authenticationToken(authenticationToken).build();
-		CSUserData userData = mapperFactory.getMapperFacade().map(user, CSUserData.class);
+		CSAuthenticationData clientAuthenticationData = CSAuthenticationData.newBuilder().masterToken(authenticationData.getMasterToken()).authenticationToken(authenticationData.getAuthenticationToken()).build();
+		CSUserData clientUserData = mapperFactory.getMapperFacade().map(authenticationData.getUser(), CSUserData.class);
 
-		return AuthenticationResponseBody.newBuilder().authenticationData(authenticationData).userData(userData).build();
+		return AuthenticationResponseBody.newBuilder().authenticationData(clientAuthenticationData).userData(clientUserData).build();
 	}
 
 	@Override
@@ -69,8 +71,11 @@ public class SecurityOrikaMapper extends BaseMapper implements SecurityMapper
 	}
 
 	@Override
-	public CSAccountData mapUserToCSAccountData (User user)
+	public CSAccountData mapUserToCSAccountData (VerificationData verificationData)
 	{
-		return mapperFactory.getMapperFacade().map(user, CSAccountData.class);
+		CSAccountData accountData = mapperFactory.getMapperFacade().map(verificationData.getUser(), CSAccountData.class);
+		accountData.setAdditionalInformation(verificationData.getAdditionalInformation());
+
+		return accountData;
 	}
 }

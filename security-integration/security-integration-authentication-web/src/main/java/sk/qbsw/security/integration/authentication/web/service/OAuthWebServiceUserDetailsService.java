@@ -56,7 +56,7 @@ public class OAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsServi
 			.ip(ip) //
 			.build();
 
-		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), organization, oAuthData);
+		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), organization, oAuthData, accountData.getAdditionalInformation());
 	}
 
 	private CSAccountData findUserData (String token, String deviceId, String ip)
