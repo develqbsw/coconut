@@ -3,6 +3,8 @@ package sk.qbsw.security.integration.authentication.core.model;
 import sk.qbsw.security.core.model.domain.User;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The authentication data.
@@ -19,6 +21,8 @@ public class AuthenticationData implements Serializable
 
 	private User user;
 
+	private Map<String, Object> additionalInformation = new HashMap<>();
+
 	/**
 	 * Instantiates a new Authentication data.
 	 */
@@ -32,12 +36,14 @@ public class AuthenticationData implements Serializable
 	 * @param masterToken the master token
 	 * @param authenticationToken the authentication token
 	 * @param user the user
+	 * @param additionalInformation the additional information
 	 */
-	public AuthenticationData (String masterToken, String authenticationToken, User user)
+	public AuthenticationData (String masterToken, String authenticationToken, User user, Map<String, Object> additionalInformation)
 	{
 		this.masterToken = masterToken;
 		this.authenticationToken = authenticationToken;
 		this.user = user;
+		this.additionalInformation = additionalInformation;
 	}
 
 	/**
@@ -98,5 +104,25 @@ public class AuthenticationData implements Serializable
 	public void setUser (User user)
 	{
 		this.user = user;
+	}
+
+	/**
+	 * Gets additional information.
+	 *
+	 * @return the additional information
+	 */
+	public Map<String, Object> getAdditionalInformation ()
+	{
+		return additionalInformation;
+	}
+
+	/**
+	 * Sets additional information.
+	 *
+	 * @param additionalInformation the additional information
+	 */
+	public void setAdditionalInformation (Map<String, Object> additionalInformation)
+	{
+		this.additionalInformation = additionalInformation;
 	}
 }

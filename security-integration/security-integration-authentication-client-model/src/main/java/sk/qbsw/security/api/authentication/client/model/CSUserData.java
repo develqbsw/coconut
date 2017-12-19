@@ -6,7 +6,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import sk.qbsw.core.client.model.BaseClientEntity;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The user data.
@@ -36,6 +38,16 @@ public class CSUserData extends BaseClientEntity
 	@NotNull
 	private List<String> roles;
 
+	@ApiModelProperty (required = true, value = "The organization")
+	@NotNull
+	private CSSimplifiedOrganization organization;
+
+	@ApiModelProperty (value = "The additional custom user information")
+	private Map<String, Object> additionalInformation = new HashMap<>();
+
+	/**
+	 * Instantiates a new Cs user data.
+	 */
 	public CSUserData ()
 	{
 	}
@@ -47,6 +59,8 @@ public class CSUserData extends BaseClientEntity
 		setSurname(builder.surname);
 		setEmail(builder.email);
 		setRoles(builder.roles);
+		setOrganization(builder.organization);
+		setAdditionalInformation(builder.additionalInformation);
 	}
 
 	/**
@@ -159,6 +173,46 @@ public class CSUserData extends BaseClientEntity
 		this.roles = roles;
 	}
 
+	/**
+	 * Gets organization.
+	 *
+	 * @return the organization
+	 */
+	public CSSimplifiedOrganization getOrganization ()
+	{
+		return organization;
+	}
+
+	/**
+	 * Sets organization.
+	 *
+	 * @param organization the organization
+	 */
+	public void setOrganization (CSSimplifiedOrganization organization)
+	{
+		this.organization = organization;
+	}
+
+	/**
+	 * Gets additional information.
+	 *
+	 * @return the additional information
+	 */
+	public Map<String, Object> getAdditionalInformation ()
+	{
+		return additionalInformation;
+	}
+
+	/**
+	 * Sets additional information.
+	 *
+	 * @param additionalInformation the additional information
+	 */
+	public void setAdditionalInformation (Map<String, Object> additionalInformation)
+	{
+		this.additionalInformation = additionalInformation;
+	}
+
 	@Override
 	public boolean equals (final Object other)
 	{
@@ -184,6 +238,9 @@ public class CSUserData extends BaseClientEntity
 		return new HashCodeBuilder(-784399939, 542211991).append(id).append(name).append(surname).append(email).append(roles).toHashCode();
 	}
 
+	/**
+	 * The type Builder.
+	 */
 	public static final class Builder
 	{
 		private Long id;
@@ -191,41 +248,102 @@ public class CSUserData extends BaseClientEntity
 		private String surname;
 		private String email;
 		private List<String> roles;
+		private CSSimplifiedOrganization organization;
+		private Map<String, Object> additionalInformation;
 
 		private Builder ()
 		{
 		}
 
+		/**
+		 * Id builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder id (Long val)
 		{
 			id = val;
 			return this;
 		}
 
+		/**
+		 * Name builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder name (String val)
 		{
 			name = val;
 			return this;
 		}
 
+		/**
+		 * Surname builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder surname (String val)
 		{
 			surname = val;
 			return this;
 		}
 
+		/**
+		 * Email builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder email (String val)
 		{
 			email = val;
 			return this;
 		}
 
+		/**
+		 * Roles builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
 		public Builder roles (List<String> val)
 		{
 			roles = val;
 			return this;
 		}
 
+		/**
+		 * Organization builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
+		public Builder organization (CSSimplifiedOrganization val)
+		{
+			organization = val;
+			return this;
+		}
+
+		/**
+		 * Additional information builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
+		public Builder additionalInformation (Map<String, Object> val)
+		{
+			additionalInformation = val;
+			return this;
+		}
+
+		/**
+		 * Build cs user data.
+		 *
+		 * @return the cs user data
+		 */
 		public CSUserData build ()
 		{
 			return new CSUserData(this);

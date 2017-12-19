@@ -60,6 +60,7 @@ public class SecurityOrikaMapper extends BaseMapper implements SecurityMapper
 	{
 		CSAuthenticationData clientAuthenticationData = CSAuthenticationData.newBuilder().masterToken(authenticationData.getMasterToken()).authenticationToken(authenticationData.getAuthenticationToken()).build();
 		CSUserData clientUserData = mapperFactory.getMapperFacade().map(authenticationData.getUser(), CSUserData.class);
+		clientUserData.setAdditionalInformation(authenticationData.getAdditionalInformation());
 
 		return AuthenticationResponseBody.newBuilder().authenticationData(clientAuthenticationData).userData(clientUserData).build();
 	}

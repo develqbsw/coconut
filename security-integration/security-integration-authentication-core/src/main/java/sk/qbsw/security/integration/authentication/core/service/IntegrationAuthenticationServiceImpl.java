@@ -69,7 +69,7 @@ public class IntegrationAuthenticationServiceImpl implements IntegrationAuthenti
 		String authenticationToken = authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip);
 
 		// create response
-		return new AuthenticationData(masterToken, authenticationToken, user);
+		return new AuthenticationData(masterToken, authenticationToken, user, createAdditionalInformation(user.getId()));
 	}
 
 	@Override
