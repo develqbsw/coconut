@@ -30,7 +30,7 @@ public interface UnitDao extends IEntityDao<Long, Unit>
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException throws if the name is null
 	 */
-	Unit findOneByName (String name) throws NoResultException, CSecurityException;
+	Unit findOneByName (String name) throws CSecurityException;
 
 	/**
 	 * Find all units by user id.
