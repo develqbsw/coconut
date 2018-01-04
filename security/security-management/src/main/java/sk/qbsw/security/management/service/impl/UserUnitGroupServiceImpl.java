@@ -74,8 +74,7 @@ public class UserUnitGroupServiceImpl extends AService implements UserUnitGroupS
             throw new IllegalArgumentException("input object to remove cannot be null and must have id");
         }
 
-        xuug = xuugDao.findById(xuug.getId());
-
-        xuugDao.remove(xuug);
+        UserUnitGroup toDelete = xuugDao.findById(xuug.getId());
+        xuugDao.remove(toDelete);
     }
 }
