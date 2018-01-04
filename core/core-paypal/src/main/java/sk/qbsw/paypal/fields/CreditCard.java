@@ -19,13 +19,13 @@ import sk.qbsw.paypal.util.Validator;
  */
 public final class CreditCard implements RequestFields
 {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Type of credit card
-	 * 
+	 *
 	 * For UK, only Maestro, Solo, MasterCard, Discover, and Visa are
 	 * allowable. For Canada, only MasterCard and Visa are allowable; Interac
 	 * debit cards are not supported.
@@ -41,12 +41,22 @@ public final class CreditCard implements RequestFields
 	{
 
 		/** The VISA. */
-		VISA ("Visa"), /** The MASTE r_ card. */
- MASTER_CARD ("MasterCard"), /** The DISCOVER. */
- DISCOVER ("Discover"), /** The AMEX. */
- AMEX ("Amex"), /** The MAESTRO. */
- MAESTRO ("Maestro"), /** The SOLO. */
- SOLO ("Solo");
+		VISA ("Visa"),
+
+        /** The MASTER card. */
+        MASTER_CARD ("MasterCard"),
+
+        /** The DISCOVER. */
+        DISCOVER ("Discover"),
+
+        /** The AMEX. */
+        AMEX ("Amex"),
+
+        /** The MAESTRO. */
+        MAESTRO ("Maestro"),
+
+        /** The SOLO. */
+        SOLO ("Solo");
 
 		/** The value. */
 		private String value;
@@ -92,7 +102,7 @@ public final class CreditCard implements RequestFields
 	 * credit card type.
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public CreditCard (CreditCardType cardType, String cardNumber) throws IllegalArgumentException
+	public CreditCard (CreditCardType cardType, String cardNumber)
 	{
 
 		if (!Validator.isValidLuhn(cardNumber))
@@ -100,7 +110,7 @@ public final class CreditCard implements RequestFields
 			throw new IllegalArgumentException("Card number - " + cardNumber + " is not valid.");
 		}
 
-		nvpRequest = new HashMap<String, String>();
+		nvpRequest = new HashMap<>();
 
 		nvpRequest.put("CREDITCARDTYPE", cardType.getValue());
 		nvpRequest.put("ACCT", cardNumber);
@@ -131,17 +141,14 @@ public final class CreditCard implements RequestFields
 	 * transaction has been completed.
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public void setCVV2 (int cvv2) throws IllegalArgumentException
+	public void setCVV2 (int cvv2)
 	{
 
 		String cardType = nvpRequest.get("CREDITCARDTYPE");
 		int numberLength = String.valueOf(cvv2).length();
 
-		if (cardType.equals("Amex") && numberLength != 4)
-		{
-			throw new IllegalArgumentException("Please provide correct cvv2");
-		}
-		else if (numberLength != 3)
+		// amex cvv2 is 4 digits long, for others 3 digits
+		if ((CreditCardType.AMEX.getValue().equals(cardType) && numberLength != 4) || (numberLength != 3))
 		{
 			throw new IllegalArgumentException("Please provide correct cvv2");
 		}
@@ -168,7 +175,7 @@ public final class CreditCard implements RequestFields
 	 * length: two numeric digits maximum.
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public void setIssueNumber (int issueNumber) throws IllegalArgumentException
+	public void setIssueNumber (int issueNumber)
 	{
 
 		int numberLength = String.valueOf(issueNumber).length();
@@ -181,15 +188,15 @@ public final class CreditCard implements RequestFields
 		nvpRequest.put("ISSUENUMBER", String.valueOf(issueNumber));
 	}
 
-	/** 
+	/**
 	 * @see sk.qbsw.paypal.fields.RequestFields#getNVPRequest()
 	 */
 	public Map<String, String> getNVPRequest ()
 	{
-		return new HashMap<String, String>(nvpRequest);
+		return new HashMap<>(nvpRequest);
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

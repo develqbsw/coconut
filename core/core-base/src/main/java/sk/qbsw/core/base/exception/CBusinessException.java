@@ -18,7 +18,7 @@ public class CBusinessException extends Exception
 {
 
 	/** The error. */
-	private IErrorResponse error;
+	private final IErrorResponse error;
 
 	/**
 	 * Instantiates a new c business exception.

@@ -31,16 +31,19 @@ public class CAuditLoggingAspect extends AAuditLoggingAspect
 	@Pointcut (value = "execution(* *(..))")
 	public void anyMethod ()
 	{
+		//nothing to do
 	}
 
 	@Pointcut ("@within(sk.qbsw.core.base.logging.annotation.CAuditLogged)")
 	public void loggedClass ()
 	{
+		//nothing to do
 	}
 	
 	@Pointcut ("@within(sk.qbsw.core.base.logging.annotation.CNotAuditLogged)")
 	public void notLoggedClass ()
 	{
+		//nothing to do
 	}
 
 	/**

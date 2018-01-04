@@ -11,6 +11,13 @@ package sk.qbsw.indy.base.converter;
 public class CGpsConverter
 {
 	/**
+	 * Not allowed to construct object
+	 */
+	private CGpsConverter(){
+
+	}
+
+	/**
 	 * Convert from degrees, minutes, seconds to decimal degrees
 	 * 
 	 * @param degrees

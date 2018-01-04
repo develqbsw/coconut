@@ -71,7 +71,7 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 	 */
 	public CCoordinatesGeocodeXmlParser (String toParse)
 	{
-		this.geocodeCoordinates = new ArrayList<CGeocodeCoordinates>();
+		this.geocodeCoordinates = new ArrayList<>();
 		this.toParse = toParse;
 		this.resultType = false;
 		this.shortName = false;
@@ -120,6 +120,7 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 	/* (non-Javadoc)
 	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
+	@Override
 	public void startElement (String uri, String localName, String qName, Attributes attributes) throws SAXException
 	{
 		//reset
@@ -142,6 +143,7 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 	/* (non-Javadoc)
 	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
 	 */
+	@Override
 	public void characters (char[] ch, int start, int length) throws SAXException
 	{
 		tmpVal = new String(ch, start, length);
@@ -150,6 +152,7 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 	/* (non-Javadoc)
 	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void endElement (String uri, String localName, String qName) throws SAXException
 	{
 
@@ -200,11 +203,11 @@ public class CCoordinatesGeocodeXmlParser extends DefaultHandler implements Seri
 		}
 		else if (qName.equalsIgnoreCase("lat"))
 		{
-			tmpLocation.setLat(Double.valueOf(tmpVal).doubleValue());
+			tmpLocation.setLat(Double.parseDouble(tmpVal));
 		}
 		else if (qName.equalsIgnoreCase("lng"))
 		{
-			tmpLocation.setLng(Double.valueOf(tmpVal).doubleValue());
+			tmpLocation.setLng(Double.parseDouble(tmpVal));
 		}
 	}
 }

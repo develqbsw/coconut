@@ -64,16 +64,16 @@ public final class PayPal implements Serializable
 		BETA_SANDBOX ("beta-sandbox.");
 
 		/** string represnetation of the environment/part of the url. */
-		private final String environment;
+		private final String code;
 
 		/**
 		 * Instantiates a new environment.
 		 *
 		 * @param environment the environment
 		 */
-		private Environment (String environment)
+		Environment (String environment)
 		{
-			this.environment = environment;
+			this.code = environment;
 		}
 
 		/**
@@ -84,14 +84,8 @@ public final class PayPal implements Serializable
 		 */
 		public String getEnvironmentPartUrl ()
 		{
-			return environment;
+			return code;
 		}
-	}
-
-	/* same for all constructors */
-	{
-		transport = new HttpsPost();
-		transport.setProxy(false, "", 0);
 	}
 
 	/**
@@ -117,6 +111,10 @@ public final class PayPal implements Serializable
 		this.profile = profile;
 		this.environment = environment;
 		this.apiSignature = true;
+
+		/* same for all constructors */
+		this.transport = new HttpsPost();
+		this.transport.setProxy(false, "", 0);
 	}
 
 	/**
@@ -129,10 +127,14 @@ public final class PayPal implements Serializable
 	 */
 	public PayPal (Profile profile, Environment environment, boolean apiSignature)
 	{
-
 		this.profile = profile;
 		this.environment = environment;
 		this.apiSignature = apiSignature;
+
+		/* same for all constructors */
+		this.transport = new HttpsPost();
+		this.transport.setProxy(false, "", 0);
+
 	}
 
 	/**
@@ -144,7 +146,7 @@ public final class PayPal implements Serializable
 	public void setResponse (Request request)
 	{
 
-		StringBuffer nvpString = new StringBuffer();
+		StringBuilder nvpString = new StringBuilder();
 		/* character encoding for the nvp string */
 		String encoding = "UTF-8";
 
@@ -172,7 +174,7 @@ public final class PayPal implements Serializable
 		}
 
 		/* create end point url */
-		StringBuffer endpointUrl = new StringBuffer();
+		StringBuilder endpointUrl = new StringBuilder();
 		if (apiSignature)
 		{
 			endpointUrl.append("https://api-3t.");

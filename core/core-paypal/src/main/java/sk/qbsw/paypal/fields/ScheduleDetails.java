@@ -34,15 +34,15 @@ public final class ScheduleDetails implements RequestFields
 	 * alphanumeric characters
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public ScheduleDetails (String description) throws IllegalArgumentException
+	public ScheduleDetails (String description)
 	{
 
 		if (description.length() > 127)
 		{
-			throw new IllegalArgumentException("Description cannot be longer " + "than 127 characters");
+			throw new IllegalArgumentException("Description cannot be longer than 127 characters");
 		}
 
-		nvpRequest = new HashMap<String, String>();
+		nvpRequest = new HashMap<>();
 		nvpRequest.put("DESC", description);
 	}
 
@@ -71,7 +71,7 @@ public final class ScheduleDetails implements RequestFields
 	public void setAutoBillAmount (boolean autoBill)
 	{
 
-		String value = (autoBill) ? "AddToNextBilling" : "NoAutoBill";
+		String value = autoBill ? "AddToNextBilling" : "NoAutoBill";
 		nvpRequest.put("AUTOBILLAMT", value);
 	}
 
@@ -80,7 +80,7 @@ public final class ScheduleDetails implements RequestFields
 	 */
 	public Map<String, String> getNVPRequest ()
 	{
-		return new HashMap<String, String>(nvpRequest);
+		return new HashMap<>(nvpRequest);
 	}
 
 	/** 

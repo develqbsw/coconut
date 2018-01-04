@@ -30,6 +30,7 @@ public class CAPIMethodCallLogger
 	@Pointcut ("execution(* *(String, ..)) && args(request, *)")
 	public void request (String request)
 	{
+		// nothing to do
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class CAPIMethodCallLogger
 	 */
 	private <T>void log (Class<T> loggerName, String log)
 	{
-		if (logging == true)
+		if (this.logging)
 		{
 			LoggerFactory.getLogger(loggerName).debug(log);
 		}

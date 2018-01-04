@@ -43,9 +43,7 @@ public class CDateChoiceRenderer extends ChoiceRenderer<Calendar>
 	public Object getDisplayValue (Calendar calendar)
 	{
 		Date d = calendar.getTime();
-		String dateYear = (year) ? " " + calendar.get(Calendar.YEAR) : "";
-		String dateString = new SimpleDateFormat("MMMM", session.getLocale()).format(d) + dateYear;
-
-		return dateString;
+		String dateYear = year ? " " + calendar.get(Calendar.YEAR) : "";
+		return  new SimpleDateFormat("MMMM", session.getLocale()).format(d) + dateYear;
 	}
 }

@@ -56,6 +56,7 @@ public abstract class CAJAXPreparedDownload extends AAJAXDownload implements Ser
 	 * @param target the target
 	 * @see sk.qbsw.indy.base.behaviour.eprieskum.web.behaviour.AAJAXDownload#initiate(org.apache.wicket.ajax.AjaxRequestTarget)
 	 */
+	@Override
 	public void initiate (AjaxRequestTarget target)
 	{
 		try

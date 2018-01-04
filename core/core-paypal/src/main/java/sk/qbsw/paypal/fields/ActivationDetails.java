@@ -29,7 +29,7 @@ public final class ActivationDetails implements RequestFields
 	 */
 	public ActivationDetails ()
 	{
-		nvpRequest = new HashMap<String, String>();
+		nvpRequest = new HashMap<>();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public final class ActivationDetails implements RequestFields
 	 * @param amount the new initial amount
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public void setInitialAmount (String amount) throws IllegalArgumentException
+	public void setInitialAmount (String amount)
 	{
 
 		if (!Validator.isValidAmount(amount))

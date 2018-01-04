@@ -8,6 +8,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
  * @deprecated - use {@link sk.qbsw.core.security.base.exception.InvalidPasswordException}
  */
 @SuppressWarnings ("serial")
+@Deprecated
 public class WrongPasswordException extends CSecurityException
 {
 	public WrongPasswordException (String message)
