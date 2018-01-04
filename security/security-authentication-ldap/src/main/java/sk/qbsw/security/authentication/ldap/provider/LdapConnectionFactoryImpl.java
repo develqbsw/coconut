@@ -136,7 +136,7 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 
 			return connectionModel;
 		}
-	} 
+	}
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#releaseConnection(sk.qbsw.core.security.service.ldap.CLdapConnectionModel)
@@ -186,14 +186,14 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 			//checks if the connection to primary server is active or not
 			if (primaryServerPoolConnection != null && primaryServerPoolConnection.isConnected())
 			{
-				connection = new LdapNetworkConnection(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getUseSslFlag());
+				connection = getLdapConnection(configurationData.getServerName(), configurationData.getServerPort());
 
 				CConnectionCounter.increase();
 				LOGGER.debug("One time connection to primary server created. Connections count is {}", CConnectionCounter.value());
 			}
 			else
 			{
-				connection = new LdapNetworkConnection(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort(), configurationData.getUseSslFlag());
+				connection = getLdapConnection(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort());
 
 				CConnectionCounter.increase();
 				LOGGER.debug("One time connection to secondary server created. Connections count is {}", CConnectionCounter.value());
@@ -210,6 +210,11 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 		connectionModel.setType(LdapConnectionType.ONE_TIME);
 
 		return connectionModel;
+	}
+
+	private LdapConnection getLdapConnection(String serverName, int serverPort)
+	{
+		return new LdapNetworkConnection(serverName, serverPort, configurationData.getUseSslFlag());
 	}
 
 	/* (non-Javadoc)
@@ -298,7 +303,7 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 }
 
 /**
- * Connection counter 
+ * Connection counter
  * @author Dalibor Rak
  *
  */
@@ -314,7 +319,7 @@ class CConnectionCounter
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public static void increase ()
 	{
@@ -322,7 +327,7 @@ class CConnectionCounter
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public static void decrease ()
 	{
