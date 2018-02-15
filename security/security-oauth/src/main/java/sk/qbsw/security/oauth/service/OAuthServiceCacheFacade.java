@@ -1,18 +1,18 @@
-package sk.qbsw.security.integration.authentication.core.service;
+package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.integration.authentication.core.model.AuthenticationData;
-import sk.qbsw.security.integration.authentication.core.model.VerificationData;
+import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
 
 /**
- * The integration authentication service.
+ * The oauth service facade for caching.
  *
  * @author Tomas Lauro
- * @author Roman Farkaš
- * @version 1.0.0
- * @since 1.0.0
+ * @version 1.18.2
+ * @since 1.18.1
  */
-public interface IntegrationAuthenticationService
+public interface OAuthServiceCacheFacade
 {
 	/**
 	 * Authenticate authentication data.
@@ -35,7 +35,7 @@ public interface IntegrationAuthenticationService
 	 * @return the string
 	 * @throws CBusinessException the c business exception
 	 */
-	String reauthenticate (String masterToken, String deviceId, String ip) throws CBusinessException;
+	GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip) throws CBusinessException;
 
 	/**
 	 * Invalidate.

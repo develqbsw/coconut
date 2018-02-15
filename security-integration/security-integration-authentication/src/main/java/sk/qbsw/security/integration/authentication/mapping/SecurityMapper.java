@@ -1,16 +1,17 @@
 package sk.qbsw.security.integration.authentication.mapping;
 
-import sk.qbsw.security.api.authentication.client.model.CSAccountData;
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponseBody;
 import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponseBody;
-import sk.qbsw.security.integration.authentication.core.model.AuthenticationData;
-import sk.qbsw.security.integration.authentication.core.model.VerificationData;
+import sk.qbsw.security.api.authentication.client.model.response.VerificationResponseBody;
+import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
 
 /**
  * The security mapper.
  *
  * @author Tomas Lauro
- * @version 1.18.0
+ * @version 1.18.2
  * @since 1.18.0
  */
 public interface SecurityMapper
@@ -26,10 +27,10 @@ public interface SecurityMapper
 	/**
 	 * Map to reauthentication response.
 	 *
-	 * @param authenticationToken the authentication token
+	 * @param authenticationTokenData the authentication token data
 	 * @return the reauthentication response
 	 */
-	ReauthenticationResponseBody mapToReauthenticationResponse (String authenticationToken);
+	ReauthenticationResponseBody mapToReauthenticationResponse (GeneratedTokenData authenticationTokenData);
 
 	/**
 	 * Map user to cs account data cs account data.
@@ -37,5 +38,5 @@ public interface SecurityMapper
 	 * @param verificationData the verification data
 	 * @return the cs account data
 	 */
-	CSAccountData mapUserToCSAccountData (VerificationData verificationData);
+	VerificationResponseBody mapToVerificationResponse (VerificationData verificationData);
 }

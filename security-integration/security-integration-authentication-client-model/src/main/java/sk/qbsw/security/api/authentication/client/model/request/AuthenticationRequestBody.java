@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * The authentication request.
  *
  * @author Tomas Lauro
- * @version 1.18.0
+ * @version 1.18.2
  * @since 1.18.0
  */
 public class AuthenticationRequestBody extends BaseRequestBody
@@ -25,6 +25,10 @@ public class AuthenticationRequestBody extends BaseRequestBody
 	@ApiModelProperty (required = true, value = "The password")
 	@NotNull
 	private String password;
+
+	@ApiModelProperty (required = true, value = "The device id")
+	@NotNull
+	private String deviceId;
 
 	/**
 	 * Gets the login.
@@ -66,6 +70,26 @@ public class AuthenticationRequestBody extends BaseRequestBody
 		this.password = password;
 	}
 
+	/**
+	 * Gets device id.
+	 *
+	 * @return the device id
+	 */
+	public String getDeviceId ()
+	{
+		return deviceId;
+	}
+
+	/**
+	 * Sets device id.
+	 *
+	 * @param deviceId the device id
+	 */
+	public void setDeviceId (String deviceId)
+	{
+		this.deviceId = deviceId;
+	}
+
 	@Override
 	public boolean equals (Object o)
 	{
@@ -75,12 +99,12 @@ public class AuthenticationRequestBody extends BaseRequestBody
 
 		AuthenticationRequestBody that = (AuthenticationRequestBody) o;
 
-		return new EqualsBuilder().append(login, that.login).append(password, that.password).isEquals();
+		return new EqualsBuilder().append(login, that.login).append(password, that.password).append(deviceId, that.deviceId).isEquals();
 	}
 
 	@Override
 	public int hashCode ()
 	{
-		return new HashCodeBuilder(17, 37).append(login).append(password).toHashCode();
+		return new HashCodeBuilder(17, 37).append(login).append(password).append(deviceId).toHashCode();
 	}
 }

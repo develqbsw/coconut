@@ -2,12 +2,11 @@ package sk.qbsw.security.integration.authentication.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.integration.authentication.core.service.IntegrationAuthenticationService;
-import sk.qbsw.security.integration.authentication.core.service.IntegrationAuthenticationServiceImpl;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
+import sk.qbsw.security.oauth.service.OAuthService;
+import sk.qbsw.security.oauth.service.impl.OAuthServiceImpl;
 
 /**
  * The integration authentication configuration.
@@ -40,13 +39,13 @@ public class IntegrationAuthenticationConfiguration
 	}
 
 	/**
-	 * Integration authentication service integration authentication service.
+	 * O auth service o auth service.
 	 *
-	 * @return the integration authentication service
+	 * @return the o auth service
 	 */
 	@Bean
-	public IntegrationAuthenticationService integrationAuthenticationService ()
+	public OAuthService oAuthService ()
 	{
-		return new IntegrationAuthenticationServiceImpl(authenticationService, masterTokenService, authenticationTokenService);
+		return new OAuthServiceImpl(masterTokenService, authenticationTokenService, authenticationService);
 	}
 }

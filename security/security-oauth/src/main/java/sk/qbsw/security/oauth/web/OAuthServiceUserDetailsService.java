@@ -3,14 +3,17 @@
  */
 package sk.qbsw.security.oauth.web;
 
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import sk.qbsw.security.authentication.spring.model.Organization;
 import sk.qbsw.security.authentication.spring.preauth.OAuthWebAuthenticationDetails;
 import sk.qbsw.security.authentication.spring.preauth.model.OAuthData;
 import sk.qbsw.security.authentication.spring.preauth.model.OAuthLoggedUser;
 import sk.qbsw.security.authentication.spring.preauth.service.BaseOAuthUserDetailsService;
 import sk.qbsw.security.oauth.model.AccountData;
+import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.OAuthService;
 
 /**
@@ -40,7 +43,7 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 		String deviceId = ((OAuthWebAuthenticationDetails) token.getDetails()).getDeviceId();
 		String ip = ((OAuthWebAuthenticationDetails) token.getDetails()).getIp();
 
-		AccountData accountData = oauthService.getUserByOAuthToken((String) token.getPrincipal(), deviceId, ip);
+		AccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
 
 		Organization organization = Organization.newBuilder() //
 			.id(accountData.getUser().getOrganization().getId()) //
@@ -55,5 +58,18 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 			.build();
 
 		return new OAuthLoggedUser(accountData.getUser().getId(), accountData.getUser().getLogin(), "N/A", convertRolesToAuthorities(accountData.getUser().exportRoles()), organization, oAuthData, accountData.getAdditionalInformation());
+	}
+
+	private VerificationData verify (String token, String deviceId, String ip)
+	{
+		try
+		{
+			return oauthService.verify(token, deviceId, ip);
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error("Error by fetching user with user token {} and device id {} not found", token, deviceId, ex);
+			throw new AuthenticationServiceException("Error by fetching user with user token " + token + " and device id " + deviceId + " not found", ex);
+		}
 	}
 }

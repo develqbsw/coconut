@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.oauth.test.util.DataGenerator;
 
@@ -20,7 +21,6 @@ import sk.qbsw.security.oauth.test.util.DataGenerator;
  * The master token service test case.
  *
  * @autor Tomas Lauro
- *
  * @version 1.13.1
  * @since 1.13.1
  */
@@ -53,9 +53,9 @@ public class MasterTokenTestCase
 		initTest();
 
 		User user = userDao.findOneByLogin(DataGenerator.SECOND_USER);
-		String token = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		GeneratedTokenData tokenData = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
 
-		Assert.assertNotNull(token);
+		Assert.assertNotNull(tokenData);
 	}
 
 	/**
@@ -98,10 +98,12 @@ public class MasterTokenTestCase
 		initTest();
 
 		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
-		String token = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		GeneratedTokenData tokenData = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
 
-		Assert.assertNotNull(token);
-		Assert.assertTrue(token.equals(DataGenerator.MASTER_TOKEN) == false);
+		Assert.assertNotNull(tokenData);
+		Assert.assertNotNull(tokenData.getGeneratedToken());
+		Assert.assertNotNull(tokenData.getInvalidatedToken());
+		Assert.assertTrue(tokenData.getGeneratedToken().equals(DataGenerator.MASTER_TOKEN) == false);
 	}
 
 	/**

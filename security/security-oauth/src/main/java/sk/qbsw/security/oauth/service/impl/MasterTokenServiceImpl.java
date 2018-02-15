@@ -3,38 +3,33 @@
  */
 package sk.qbsw.security.oauth.service.impl;
 
-import javax.persistence.NoResultException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.MasterTokenService;
+
+import javax.persistence.NoResultException;
 
 /**
  * The master token service.
  *
  * @author Tomas Lauro
- * 
- * @version 1.13.1
+ * @version 1.18.2
  * @since 1.13.1
  */
 @Service ("masterTokenService")
 public class MasterTokenServiceImpl extends BaseTokenService implements MasterTokenService
 {
-	/** The log. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(MasterTokenServiceImpl.class);
 
-
 	/**
-	 * Gets the new specific instance of master token.
-	 * When using custom master token, override this method 
-	 * and return instance of custom implementation.
+	 * Gets the new specific instance of master token. When using custom master token, override this method and return instance of custom implementation.
 	 *
 	 * @return the new instance, default new MasterToken()
 	 */
@@ -43,12 +38,9 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 		return new MasterToken();
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#generateMasterToken(java.lang.Long, java.lang.String, java.lang.String)
-	 */
 	@Override
-	@Transactional
-	public String generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException
+	@Transactional (rollbackFor = CBusinessException.class)
+	public GeneratedTokenData generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException
 	{
 		MasterToken token = masterTokenDao.findByUserAndDevice(userId, deviceId);
 		User user;
@@ -63,7 +55,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 			throw new CBusinessException(ECoreErrorResponse.USER_NOT_FOUND);
 		}
 
-		//performs checks
+		// performs checks
 		if (token != null)
 		{
 			masterTokenDao.remove(token);
@@ -75,21 +67,18 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 		newToken.setToken(idGeneratorService.getGeneratedId());
 		newToken.setUser(user);
 
-		//save to database and return token
-		return masterTokenDao.update(newToken).getToken();
+		// save to database and return token
+		return new GeneratedTokenData(masterTokenDao.update(newToken).getToken(), token != null ? token.getToken() : null);
 
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#revokeMasterToken(java.lang.Long, java.lang.String)
-	 */
 	@Override
-	@Transactional
+	@Transactional (rollbackFor = CBusinessException.class)
 	public void revokeMasterToken (Long userId, String masterToken) throws CBusinessException
 	{
 		MasterToken token = masterTokenDao.findByUserAndToken(userId, masterToken);
 
-		//performs checks
+		// performs checks
 		if (token == null)
 		{
 			LOGGER.error("The token {} not found", masterToken);
@@ -99,11 +88,8 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 		masterTokenDao.remove(token);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.oauth.service.IMasterTokenService#getUserByMasterToken(java.lang.String, java.lang.String)
-	 */
 	@Override
-	@Transactional
+	@Transactional (rollbackFor = CBusinessException.class)
 	public User getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException
 	{
 		MasterToken persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);

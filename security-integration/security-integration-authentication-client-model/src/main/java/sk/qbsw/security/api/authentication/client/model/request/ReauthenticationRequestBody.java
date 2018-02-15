@@ -8,30 +8,26 @@ import sk.qbsw.core.client.model.request.BaseRequestBody;
 import javax.validation.constraints.NotNull;
 
 /**
- * The Invalidate request.
+ * The reauthentication request.
  *
  * @author Tomas Lauro
- * @version 1.18.0
- * @since 1.18.0
+ * @version 1.18.2
+ * @since 1.18.2
  */
-public class InvalidateRequestBody extends BaseRequestBody
+public class ReauthenticationRequestBody extends BaseRequestBody
 {
-	private static final long serialVersionUID = -4789897540369584317L;
+	private static final long serialVersionUID = 7750372943261168607L;
 
 	@ApiModelProperty (required = true, value = "The master token")
 	@NotNull
 	private String masterToken;
-
-	@ApiModelProperty (required = true, value = "The authentication token")
-	@NotNull
-	private String authenticationToken;
 
 	@ApiModelProperty (required = true, value = "The device id")
 	@NotNull
 	private String deviceId;
 
 	/**
-	 * Gets the master token.
+	 * Gets master token.
 	 *
 	 * @return the master token
 	 */
@@ -41,33 +37,13 @@ public class InvalidateRequestBody extends BaseRequestBody
 	}
 
 	/**
-	 * Sets the master token.
+	 * Sets master token.
 	 *
-	 * @param masterToken the new master token
+	 * @param masterToken the master token
 	 */
 	public void setMasterToken (String masterToken)
 	{
 		this.masterToken = masterToken;
-	}
-
-	/**
-	 * Gets the authentication token.
-	 *
-	 * @return the authentication token
-	 */
-	public String getAuthenticationToken ()
-	{
-		return authenticationToken;
-	}
-
-	/**
-	 * Sets the authentication token.
-	 *
-	 * @param authenticationToken the new authentication token
-	 */
-	public void setAuthenticationToken (String authenticationToken)
-	{
-		this.authenticationToken = authenticationToken;
 	}
 
 	/**
@@ -97,14 +73,14 @@ public class InvalidateRequestBody extends BaseRequestBody
 
 		if (o == null || getClass() != o.getClass()) return false;
 
-		InvalidateRequestBody that = (InvalidateRequestBody) o;
+		ReauthenticationRequestBody that = (ReauthenticationRequestBody) o;
 
-		return new EqualsBuilder().append(masterToken, that.masterToken).append(authenticationToken, that.authenticationToken).append(deviceId, that.deviceId).isEquals();
+		return new EqualsBuilder().append(masterToken, that.masterToken).append(deviceId, that.deviceId).isEquals();
 	}
 
 	@Override
 	public int hashCode ()
 	{
-		return new HashCodeBuilder(17, 37).append(masterToken).append(authenticationToken).append(deviceId).toHashCode();
+		return new HashCodeBuilder(17, 37).append(masterToken).append(deviceId).toHashCode();
 	}
 }

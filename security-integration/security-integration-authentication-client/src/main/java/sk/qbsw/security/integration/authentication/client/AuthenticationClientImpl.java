@@ -1,12 +1,15 @@
 package sk.qbsw.security.integration.authentication.client;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.client.RestTemplate;
+
 import sk.qbsw.core.client.configuration.UrlConfiguration;
 import sk.qbsw.security.api.authentication.client.AuthenticationPaths;
-import sk.qbsw.security.api.authentication.client.model.CSAccountData;
+import sk.qbsw.security.api.authentication.client.OAuthIntegrationCacheNames;
 import sk.qbsw.security.api.authentication.client.model.request.AuthenticationRequestBody;
 import sk.qbsw.security.api.authentication.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponseBody;
+import sk.qbsw.security.api.authentication.client.model.response.VerificationResponseBody;
 
 /**
  * The authentication client.
@@ -35,14 +38,15 @@ public class AuthenticationClientImpl implements AuthenticationClient
 	}
 
 	@Override
-	public CSAccountData verify (VerifyRequestBody requestBody)
-	{
-		return authenticationRestTemplate.postForObject(configuration.buildUrl(AuthenticationPaths.SECURITY_VERIFY), requestBody, CSAccountData.class);
-	}
-
-	@Override
 	public AuthenticationResponseBody authenticate (AuthenticationRequestBody requestBody)
 	{
 		return authenticationRestTemplate.postForObject(configuration.buildUrl(AuthenticationPaths.SECURITY_AUTHENTICATE), requestBody, AuthenticationResponseBody.class);
+	}
+
+	@Override
+	@Cacheable (value = {OAuthIntegrationCacheNames.SEC_OAUTH_TOKEN_CACHE_NAME}, key = "{#requestBody.token, #requestBody.deviceId, #requestBody.ip}")
+	public VerificationResponseBody verify (VerifyRequestBody requestBody)
+	{
+		return authenticationRestTemplate.postForObject(configuration.buildUrl(AuthenticationPaths.SECURITY_VERIFY), requestBody, VerificationResponseBody.class);
 	}
 }

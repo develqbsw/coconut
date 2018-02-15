@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import sk.qbsw.core.client.model.response.BaseResponseBody;
+import sk.qbsw.security.api.authentication.client.model.CSGeneratedTokenData;
 
 import javax.validation.constraints.NotNull;
 
@@ -18,9 +19,9 @@ public class ReauthenticationResponseBody extends BaseResponseBody
 {
 	private static final long serialVersionUID = 9094797792039380937L;
 
-	@ApiModelProperty (required = true, value = "The authentication token")
+	@ApiModelProperty (required = true, value = "The authentication token data")
 	@NotNull
-	private String authenticationToken;
+	private CSGeneratedTokenData authenticationTokenData;
 
 	/**
 	 * Instantiates a new Reauthentication response.
@@ -29,39 +30,34 @@ public class ReauthenticationResponseBody extends BaseResponseBody
 	{
 	}
 
-	private ReauthenticationResponseBody (Builder builder)
+	/**
+	 * Instantiates a new Reauthentication response body.
+	 *
+	 * @param authenticationTokenData the authentication token data
+	 */
+	public ReauthenticationResponseBody (CSGeneratedTokenData authenticationTokenData)
 	{
-		setAuthenticationToken(builder.authenticationToken);
+		this.authenticationTokenData = authenticationTokenData;
 	}
 
 	/**
-	 * New builder builder.
+	 * Gets authentication token data.
 	 *
-	 * @return the builder
+	 * @return the authentication token data
 	 */
-	public static Builder newBuilder ()
+	public CSGeneratedTokenData getAuthenticationTokenData ()
 	{
-		return new Builder();
+		return authenticationTokenData;
 	}
 
 	/**
-	 * Gets the authentication token.
+	 * Sets authentication token data.
 	 *
-	 * @return the authentication token
+	 * @param authenticationTokenData the authentication token data
 	 */
-	public String getAuthenticationToken ()
+	public void setAuthenticationTokenData (CSGeneratedTokenData authenticationTokenData)
 	{
-		return authenticationToken;
-	}
-
-	/**
-	 * Sets the authentication token.
-	 *
-	 * @param authenticationToken the new authentication token
-	 */
-	public void setAuthenticationToken (String authenticationToken)
-	{
-		this.authenticationToken = authenticationToken;
+		this.authenticationTokenData = authenticationTokenData;
 	}
 
 	@Override
@@ -73,32 +69,12 @@ public class ReauthenticationResponseBody extends BaseResponseBody
 
 		ReauthenticationResponseBody that = (ReauthenticationResponseBody) o;
 
-		return new EqualsBuilder().append(authenticationToken, that.authenticationToken).isEquals();
+		return new EqualsBuilder().append(authenticationTokenData, that.authenticationTokenData).isEquals();
 	}
 
 	@Override
 	public int hashCode ()
 	{
-		return new HashCodeBuilder(17, 37).append(authenticationToken).toHashCode();
-	}
-
-	public static final class Builder
-	{
-		private String authenticationToken;
-
-		private Builder ()
-		{
-		}
-
-		public Builder authenticationToken (String val)
-		{
-			authenticationToken = val;
-			return this;
-		}
-
-		public ReauthenticationResponseBody build ()
-		{
-			return new ReauthenticationResponseBody(this);
-		}
+		return new HashCodeBuilder(17, 37).append(authenticationTokenData).toHashCode();
 	}
 }

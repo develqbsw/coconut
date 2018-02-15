@@ -23,11 +23,13 @@
             <artifactId>core-base</artifactId>
         </dependency>
 
-        <!-- QBSW integration -->
+        <!-- QBSW security -->
         <dependency>
-            <groupId>sk.qbsw.security.integration</groupId>
-            <artifactId>security-integration-authentication-core</artifactId>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-oauth</artifactId>
         </dependency>
+
+        <!-- QBSW integration -->
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-integration-authentication-client-model</artifactId>

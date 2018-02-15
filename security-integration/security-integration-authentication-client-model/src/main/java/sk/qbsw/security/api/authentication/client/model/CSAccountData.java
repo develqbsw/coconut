@@ -1,31 +1,36 @@
 package sk.qbsw.security.api.authentication.client.model;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import sk.qbsw.core.client.model.BaseClientEntity;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * The public client side account data.
+ * The account data.
  *
- * @author Jana Branisova
- * @version 1.18.0
+ * @author Tomas Lauro
+ * @version 1.18.2
  * @since 1.18.0
  */
-public class CSAccountData implements Serializable
+public class CSAccountData extends BaseClientEntity
 {
-	private static final long serialVersionUID = 5194693663926536012L;
+	private static final long serialVersionUID = 7790958331261348835L;
 
-	@ApiModelProperty (required = true, value = "The identifier")
+	@ApiModelProperty (required = true, value = "The user id")
 	@NotNull
 	private Long id;
 
 	@ApiModelProperty (required = true, value = "The login")
 	@NotNull
 	private String login;
+
+	@ApiModelProperty (value = "The user email")
+	private String email;
 
 	@ApiModelProperty (required = true, value = "The user roles")
 	@NotNull
@@ -39,7 +44,7 @@ public class CSAccountData implements Serializable
 	private Map<String, Object> additionalInformation = new HashMap<>();
 
 	/**
-	 * Instantiates a new Cs account data.
+	 * Instantiates a new Cs user data.
 	 */
 	public CSAccountData ()
 	{
@@ -48,7 +53,7 @@ public class CSAccountData implements Serializable
 	private CSAccountData (Builder builder)
 	{
 		setId(builder.id);
-		setLogin(builder.login);
+		setEmail(builder.email);
 		setRoles(builder.roles);
 		setOrganization(builder.organization);
 		setAdditionalInformation(builder.additionalInformation);
@@ -102,6 +107,26 @@ public class CSAccountData implements Serializable
 	public void setLogin (String login)
 	{
 		this.login = login;
+	}
+
+	/**
+	 * Gets email.
+	 *
+	 * @return the email
+	 */
+	public String getEmail ()
+	{
+		return email;
+	}
+
+	/**
+	 * Sets email.
+	 *
+	 * @param email the email
+	 */
+	public void setEmail (String email)
+	{
+		this.email = email;
 	}
 
 	/**
@@ -164,6 +189,30 @@ public class CSAccountData implements Serializable
 		this.additionalInformation = additionalInformation;
 	}
 
+	@Override
+	public boolean equals (final Object other)
+	{
+		if (this == other)
+		{
+			return true;
+		}
+		if (other == null)
+		{
+			return false;
+		}
+		if (!getClass().equals(other.getClass()))
+		{
+			return false;
+		}
+		CSAccountData castOther = (CSAccountData) other;
+		return new EqualsBuilder().append(id, castOther.id).append(login, castOther.login).append(email, castOther.email).append(roles, castOther.roles).isEquals();
+	}
+
+	@Override
+	public int hashCode ()
+	{
+		return new HashCodeBuilder(-784399939, 542211991).append(id).append(login).append(email).append(roles).toHashCode();
+	}
 
 	/**
 	 * The type Builder.
@@ -172,6 +221,7 @@ public class CSAccountData implements Serializable
 	{
 		private Long id;
 		private String login;
+		private String email;
 		private List<String> roles;
 		private CSSimplifiedOrganization organization;
 		private Map<String, Object> additionalInformation;
@@ -201,6 +251,18 @@ public class CSAccountData implements Serializable
 		public Builder login (String val)
 		{
 			login = val;
+			return this;
+		}
+
+		/**
+		 * Email builder.
+		 *
+		 * @param val the val
+		 * @return the builder
+		 */
+		public Builder email (String val)
+		{
+			email = val;
 			return this;
 		}
 
@@ -241,9 +303,9 @@ public class CSAccountData implements Serializable
 		}
 
 		/**
-		 * Build cs account data.
+		 * Build cs user data.
 		 *
-		 * @return the cs account data
+		 * @return the cs user data
 		 */
 		public CSAccountData build ()
 		{

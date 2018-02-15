@@ -4,8 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import sk.qbsw.core.client.model.response.BaseResponseBody;
-import sk.qbsw.security.api.authentication.client.model.CSAuthenticationData;
-import sk.qbsw.security.api.authentication.client.model.CSUserData;
+import sk.qbsw.security.api.authentication.client.model.CSGeneratedTokenData;
+import sk.qbsw.security.api.authentication.client.model.CSAccountData;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,79 +13,104 @@ import javax.validation.constraints.NotNull;
  * The authentication response.
  *
  * @author Tomas Lauro
- * @version 1.18.0
+ * @version 1.18.2
  * @since 1.18.0
  */
 public class AuthenticationResponseBody extends BaseResponseBody
 {
 	private static final long serialVersionUID = 7533946963382197126L;
 
-	@ApiModelProperty (required = true, value = "The authentication data")
+	@ApiModelProperty (required = true, value = "The master token data")
 	@NotNull
-	private CSAuthenticationData authenticationData;
+	private CSGeneratedTokenData masterTokenData;
 
-	@ApiModelProperty (required = true, value = "The user data")
+	@ApiModelProperty (required = true, value = "The authentication token data")
 	@NotNull
-	private CSUserData userData;
+	private CSGeneratedTokenData authenticationTokenData;
 
+	@ApiModelProperty (required = true, value = "The account data")
+	@NotNull
+	private CSAccountData accountData;
+
+	/**
+	 * Instantiates a new Authentication response body.
+	 */
 	public AuthenticationResponseBody ()
 	{
 	}
 
-	private AuthenticationResponseBody (Builder builder)
+	/**
+	 * Instantiates a new Authentication response body.
+	 *
+	 * @param masterTokenData the master token data
+	 * @param authenticationTokenData the authentication token data
+	 * @param accountData the account data
+	 */
+	public AuthenticationResponseBody (CSGeneratedTokenData masterTokenData, CSGeneratedTokenData authenticationTokenData, CSAccountData accountData)
 	{
-		setAuthenticationData(builder.authenticationData);
-		setUserData(builder.userData);
+		this.masterTokenData = masterTokenData;
+		this.authenticationTokenData = authenticationTokenData;
+		this.accountData = accountData;
 	}
 
 	/**
-	 * New builder builder.
+	 * Gets master token data.
 	 *
-	 * @return the builder
+	 * @return the master token data
 	 */
-	public static Builder newBuilder ()
+	public CSGeneratedTokenData getMasterTokenData ()
 	{
-		return new Builder();
+		return masterTokenData;
 	}
 
 	/**
-	 * Gets the authentication data.
+	 * Sets master token data.
 	 *
-	 * @return the authentication data
+	 * @param masterTokenData the master token data
 	 */
-	public CSAuthenticationData getAuthenticationData ()
+	public void setMasterTokenData (CSGeneratedTokenData masterTokenData)
 	{
-		return authenticationData;
+		this.masterTokenData = masterTokenData;
 	}
 
 	/**
-	 * Sets the authentication data.
+	 * Gets authentication token data.
 	 *
-	 * @param authenticationData the new authentication data
+	 * @return the authentication token data
 	 */
-	public void setAuthenticationData (CSAuthenticationData authenticationData)
+	public CSGeneratedTokenData getAuthenticationTokenData ()
 	{
-		this.authenticationData = authenticationData;
+		return authenticationTokenData;
 	}
 
 	/**
-	 * Gets the user data.
+	 * Sets authentication token data.
 	 *
-	 * @return the user data
+	 * @param authenticationTokenData the authentication token data
 	 */
-	public CSUserData getUserData ()
+	public void setAuthenticationTokenData (CSGeneratedTokenData authenticationTokenData)
 	{
-		return userData;
+		this.authenticationTokenData = authenticationTokenData;
 	}
 
 	/**
-	 * Sets the user data.
+	 * Gets account data.
 	 *
-	 * @param userData the new user data
+	 * @return the account data
 	 */
-	public void setUserData (CSUserData userData)
+	public CSAccountData getAccountData ()
 	{
-		this.userData = userData;
+		return accountData;
+	}
+
+	/**
+	 * Sets account data.
+	 *
+	 * @param accountData the account data
+	 */
+	public void setAccountData (CSAccountData accountData)
+	{
+		this.accountData = accountData;
 	}
 
 	@Override
@@ -97,39 +122,12 @@ public class AuthenticationResponseBody extends BaseResponseBody
 
 		AuthenticationResponseBody that = (AuthenticationResponseBody) o;
 
-		return new EqualsBuilder().append(authenticationData, that.authenticationData).append(userData, that.userData).isEquals();
+		return new EqualsBuilder().append(masterTokenData, that.masterTokenData).append(authenticationTokenData, that.authenticationTokenData).append(accountData, that.accountData).isEquals();
 	}
 
 	@Override
 	public int hashCode ()
 	{
-		return new HashCodeBuilder(16656587, 46548987).append(authenticationData).append(userData).toHashCode();
-	}
-
-	public static final class Builder
-	{
-		private CSAuthenticationData authenticationData;
-		private CSUserData userData;
-
-		private Builder ()
-		{
-		}
-
-		public Builder authenticationData (CSAuthenticationData val)
-		{
-			authenticationData = val;
-			return this;
-		}
-
-		public Builder userData (CSUserData val)
-		{
-			userData = val;
-			return this;
-		}
-
-		public AuthenticationResponseBody build ()
-		{
-			return new AuthenticationResponseBody(this);
-		}
+		return new HashCodeBuilder(16656587, 46548987).append(masterTokenData).append(authenticationTokenData).append(accountData).toHashCode();
 	}
 }

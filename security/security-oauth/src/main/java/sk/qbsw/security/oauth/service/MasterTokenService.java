@@ -2,13 +2,13 @@ package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
 
 /**
  * The master token service.
  *
  * @author Tomas Lauro
- * 
- * @version 1.13.1
+ * @version 1.18.2
  * @since 1.13.1
  */
 public interface MasterTokenService
@@ -21,7 +21,7 @@ public interface MasterTokenService
 	 * @param ip the ip
 	 * @return the generated master token
 	 */
-	String generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException;
+	GeneratedTokenData generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException;
 
 	/**
 	 * Revoke master token.
