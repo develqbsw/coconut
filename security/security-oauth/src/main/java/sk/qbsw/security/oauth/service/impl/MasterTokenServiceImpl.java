@@ -5,16 +5,21 @@ package sk.qbsw.security.oauth.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
+import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
+import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
+import sk.qbsw.security.oauth.service.IdGeneratorService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 
 /**
  * The master token service.
@@ -23,19 +28,22 @@ import javax.persistence.NoResultException;
  * @version 1.18.2
  * @since 1.13.1
  */
-@Service ("masterTokenService")
 public class MasterTokenServiceImpl extends BaseTokenService implements MasterTokenService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MasterTokenServiceImpl.class);
 
 	/**
-	 * Gets the new specific instance of master token. When using custom master token, override this method and return instance of custom implementation.
+	 * Instantiates a new Base token service.
 	 *
-	 * @return the new instance, default new MasterToken()
+	 * @param masterTokenDao the master token dao
+	 * @param authenticationTokenDao the authentication token dao
+	 * @param userDao the user dao
+	 * @param idGeneratorService the id generator service
+	 * @param validationConfiguration the validation configuration
 	 */
-	protected MasterToken getNewInstance ()
+	public MasterTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
 	{
-		return new MasterToken();
+		super(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Override
@@ -61,7 +69,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 			masterTokenDao.remove(token);
 		}
 
-		MasterToken newToken = getNewInstance();
+		MasterToken newToken = new MasterToken();
 		newToken.setDeviceId(deviceId);
 		newToken.setIp(ip);
 		newToken.setToken(idGeneratorService.getGeneratedId());
@@ -104,5 +112,30 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 		{
 			return null;
 		}
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
+	public List<MasterToken> findExpiredMasterTokens ()
+	{
+		Integer changeLimit = null;
+		Integer expireLimit = null;
+
+		if (validationConfiguration.getMasterTokenExpireLimit() != null && validationConfiguration.getMasterTokenExpireLimit() > 0)
+		{
+			expireLimit = validationConfiguration.getMasterTokenExpireLimit();
+		}
+		if (validationConfiguration.getMasterTokenChangeLimit() != null && validationConfiguration.getMasterTokenChangeLimit() > 0)
+		{
+			changeLimit = validationConfiguration.getMasterTokenChangeLimit();
+		}
+
+		return masterTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+	}
+
+	@Override
+	public Long removeMasterTokens (List<Long> ids)
+	{
+		return masterTokenDao.removeByIds(ids);
 	}
 }

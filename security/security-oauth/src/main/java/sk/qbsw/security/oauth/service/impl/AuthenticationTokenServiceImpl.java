@@ -5,16 +5,21 @@ package sk.qbsw.security.oauth.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
+import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
+import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.service.IdGeneratorService;
+
+import java.util.List;
 
 /**
  * The authentication token service.
@@ -23,10 +28,23 @@ import sk.qbsw.security.oauth.service.AuthenticationTokenService;
  * @version 1.18.2
  * @since 1.13.1
  */
-@Service ("authenticationTokenService")
 public class AuthenticationTokenServiceImpl extends BaseTokenService implements AuthenticationTokenService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationTokenServiceImpl.class);
+
+	/**
+	 * Instantiates a new Base token service.
+	 *
+	 * @param masterTokenDao the master token dao
+	 * @param authenticationTokenDao the authentication token dao
+	 * @param userDao the user dao
+	 * @param idGeneratorService the id generator service
+	 * @param validationConfiguration the validation configuration
+	 */
+	public AuthenticationTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	{
+		super(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
+	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
@@ -94,5 +112,30 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 		{
 			return null;
 		}
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
+	public List<AuthenticationToken> findExpiredAuthenticationTokens ()
+	{
+		Integer changeLimit = null;
+		Integer expireLimit = null;
+
+		if (validationConfiguration.getAuthenticationTokenExpireLimit() != null && validationConfiguration.getAuthenticationTokenExpireLimit() > 0)
+		{
+			expireLimit = validationConfiguration.getAuthenticationTokenExpireLimit();
+		}
+		if (validationConfiguration.getAuthenticationTokenChangeLimit() != null && validationConfiguration.getAuthenticationTokenChangeLimit() > 0)
+		{
+			changeLimit = validationConfiguration.getAuthenticationTokenChangeLimit();
+		}
+
+		return authenticationTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+	}
+
+	@Override
+	public Long removeAuthenticationTokens (List<Long> ids)
+	{
+		return authenticationTokenDao.removeByIds(ids);
 	}
 }

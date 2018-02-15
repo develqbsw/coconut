@@ -2,8 +2,11 @@ package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.ExpiredTokenData;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.VerificationData;
+
+import java.util.List;
 
 /**
  * The oauth service.
@@ -58,4 +61,11 @@ public interface OAuthService
 	 * @throws CBusinessException the c business exception
 	 */
 	VerificationData verify (String token, String deviceId, String ip) throws CBusinessException;
+
+	/**
+	 * Remove expired tokens list.
+	 *
+	 * @return the list
+	 */
+	List<ExpiredTokenData> removeExpiredTokens ();
 }

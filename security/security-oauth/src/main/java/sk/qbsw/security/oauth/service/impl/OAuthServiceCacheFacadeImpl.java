@@ -4,12 +4,12 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.oauth.model.AuthenticationData;
-import sk.qbsw.security.oauth.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.model.OAuthCacheNames;
-import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.model.*;
 import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.oauth.service.OAuthServiceCacheFacade;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The oauth service cache facade implementation.
@@ -22,6 +22,11 @@ public class OAuthServiceCacheFacadeImpl implements OAuthServiceCacheFacade
 {
 	private final OAuthService oAuthService;
 
+	/**
+	 * Instantiates a new O auth service cache facade.
+	 *
+	 * @param oAuthService the o auth service
+	 */
 	public OAuthServiceCacheFacadeImpl (OAuthService oAuthService)
 	{
 		this.oAuthService = oAuthService;
@@ -81,7 +86,33 @@ public class OAuthServiceCacheFacadeImpl implements OAuthServiceCacheFacade
 		return oAuthService.verify(token, deviceId, ip);
 	}
 
-	protected void evictCache (String authenticationToken, String deviceId, String ip)
+	@Override
+	public List<ExpiredTokenData> removeExpiredTokens ()
+	{
+		List<ExpiredTokenData> expiredTokens = oAuthService.removeExpiredTokens();
+		evictCache(expiredTokens);
+
+		return expiredTokens;
+	}
+
+	@Override
+	@CacheEvict (value = {OAuthCacheNames.SEC_OAUTH_TOKEN_CACHE_NAME}, key = "{#expiredToken.token, #expiredToken.deviceId, #expiredToken.ip}")
+	public void removeExpiredTokenFromCache (ExpiredTokenData expiredToken)
+	{
+		// left empty intentionally
+	}
+
+	private void evictCache (String token, String deviceId, String ip)
+	{
+		evictCache(Collections.singletonList(new ExpiredTokenData(token, deviceId, ip)));
+	}
+
+	/**
+	 * Evict cache.
+	 *
+	 * @param expiredTokens the expired tokens
+	 */
+	protected void evictCache (List<ExpiredTokenData> expiredTokens)
 	{
 		// override to evict cache
 	}

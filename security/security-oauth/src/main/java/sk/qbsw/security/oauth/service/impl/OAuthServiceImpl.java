@@ -11,12 +11,17 @@ import sk.qbsw.core.security.base.exception.AuthenticationException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.model.*;
+import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
+import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.oauth.service.OAuthService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The oauth service implementation.
@@ -117,6 +122,30 @@ public class OAuthServiceImpl implements OAuthService
 			LOGGER.error("The exception in token verification process");
 			throw new AuthenticationException("The exception in token verification process", e, ECoreErrorResponse.ACCESS_DENIED);
 		}
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
+	public List<ExpiredTokenData> removeExpiredTokens ()
+	{
+		List<MasterToken> expiredMasterTokens = masterTokenService.findExpiredMasterTokens();
+		List<AuthenticationToken> expiredAuthenticationTokens = authenticationTokenService.findExpiredAuthenticationTokens();
+
+		List<ExpiredTokenData> expiredTokenData = convertToExpiredTokenData(expiredMasterTokens, expiredAuthenticationTokens);
+
+		masterTokenService.removeMasterTokens(expiredMasterTokens.stream().map(MasterToken::getId).collect(Collectors.toList()));
+		authenticationTokenService.removeAuthenticationTokens(expiredAuthenticationTokens.stream().map(AuthenticationToken::getId).collect(Collectors.toList()));
+
+		return expiredTokenData;
+	}
+
+	private List<ExpiredTokenData> convertToExpiredTokenData (List<MasterToken> expiredMasterTokens, List<AuthenticationToken> expiredAuthenticationTokens)
+	{
+		List<ExpiredTokenData> expiredTokensData = new ArrayList<>();
+		expiredTokensData.addAll(expiredMasterTokens.stream().map(t -> new ExpiredTokenData(t.getToken(), t.getDeviceId(), t.getIp())).collect(Collectors.toList()));
+		expiredTokensData.addAll(expiredAuthenticationTokens.stream().map(t -> new ExpiredTokenData(t.getToken(), t.getDeviceId(), t.getIp())).collect(Collectors.toList()));
+
+		return expiredTokensData;
 	}
 
 	protected Map<String, Object> createAdditionalInformation (Long userId)

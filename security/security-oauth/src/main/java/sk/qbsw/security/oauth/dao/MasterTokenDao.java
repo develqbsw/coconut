@@ -7,11 +7,12 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.persistence.dao.ICrudDao;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 
+import java.util.List;
+
 /**
  * The master token dao.
  *
  * @author Tomas Lauro
- * 
  * @version 1.13.1
  * @since 1.13.1
  */
@@ -57,4 +58,21 @@ public interface MasterTokenDao extends ICrudDao<Long, MasterToken>
 	 * @throws CBusinessException the c business exception
 	 */
 	MasterToken findByTokenAndDeviceId (String token, String deviceId) throws CBusinessException;
+
+	/**
+	 * Find by expire limit or change limit list.
+	 *
+	 * @param expireLimit the expire limit
+	 * @param changeLimit the change limit
+	 * @return the list
+	 */
+	List<MasterToken> findByExpireLimitOrChangeLimit (Integer expireLimit, Integer changeLimit);
+
+	/**
+	 * Remove by ids long.
+	 *
+	 * @param ids the ids
+	 * @return the long
+	 */
+	Long removeByIds (List<Long> ids);
 }

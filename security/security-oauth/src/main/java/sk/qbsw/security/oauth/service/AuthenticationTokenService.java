@@ -3,6 +3,9 @@ package sk.qbsw.security.oauth.service;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
+
+import java.util.List;
 
 /**
  * The authentication token service.
@@ -44,4 +47,19 @@ public interface AuthenticationTokenService
 	 * @throws CBusinessException the c business exception
 	 */
 	User getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip) throws CBusinessException;
+
+	/**
+	 * Find expired authentication tokens list.
+	 *
+	 * @return the list
+	 */
+	List<AuthenticationToken> findExpiredAuthenticationTokens ();
+
+	/**
+	 * Remove authentication tokens long.
+	 *
+	 * @param ids the ids
+	 * @return the long
+	 */
+	Long removeAuthenticationTokens (List<Long> ids);
 }

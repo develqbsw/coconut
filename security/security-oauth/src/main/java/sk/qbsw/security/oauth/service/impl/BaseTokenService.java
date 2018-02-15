@@ -5,16 +5,15 @@ package sk.qbsw.security.oauth.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.IdGeneratorService;
-import sk.qbsw.security.oauth.service.TokenValidationService;
 
 /**
  * The token service.
@@ -28,24 +27,33 @@ abstract class BaseTokenService
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseTokenService.class);
 
-	@Autowired
-	protected TokenValidationService tokenValidationService;
+	final MasterTokenDao masterTokenDao;
 
-	/** The id generator service. */
-	@Autowired
-	protected IdGeneratorService idGeneratorService;
+	final AuthenticationTokenDao authenticationTokenDao;
 
-	/** The master token dao. */
-	@Autowired
-	protected MasterTokenDao masterTokenDao;
+	final UserDao userDao;
 
-	/** The authentication token dao. */
-	@Autowired
-	protected AuthenticationTokenDao authenticationTokenDao;
+	final IdGeneratorService idGeneratorService;
 
-	/** The user dao. */
-	@Autowired
-	protected UserDao userDao;
+	final OAuthValidationConfiguration validationConfiguration;
+
+	/**
+	 * Instantiates a new Base token service.
+	 *
+	 * @param masterTokenDao the master token dao
+	 * @param authenticationTokenDao the authentication token dao
+	 * @param userDao the user dao
+	 * @param idGeneratorService the id generator service
+	 * @param validationConfiguration the validation configuration
+	 */
+	BaseTokenService (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	{
+		this.masterTokenDao = masterTokenDao;
+		this.authenticationTokenDao = authenticationTokenDao;
+		this.userDao = userDao;
+		this.idGeneratorService = idGeneratorService;
+		this.validationConfiguration = validationConfiguration;
+	}
 
 	/**
 	 * Check master token.
@@ -54,11 +62,11 @@ abstract class BaseTokenService
 	 * @param ip the ip
 	 * @throws CBusinessException the c business exception
 	 */
-	protected void checkMasterToken (MasterToken masterToken, String ip) throws CBusinessException
+	void checkMasterToken (MasterToken masterToken, String ip) throws CBusinessException
 	{
 		if (masterToken != null)
 		{
-			if (!tokenValidationService.isMasterTokenIpValid(masterToken, ip) || tokenValidationService.isMasterTokenExpired(masterToken))
+			if (!isMasterTokenIpValid(masterToken, ip))
 			{
 				masterTokenDao.remove(masterToken);
 				throw new CBusinessException(ECoreErrorResponse.MASTER_TOKEN_INVALIDATED);
@@ -71,6 +79,20 @@ abstract class BaseTokenService
 		}
 	}
 
+	private boolean isMasterTokenIpValid (MasterToken token, String ip)
+	{
+		if (!validationConfiguration.isMasterTokenIpIgnored())
+		{
+			if ( (token.getIp() != null && !token.getIp().equals(ip)) || (token.getIp() == null && ip != null))
+			{
+				LOGGER.warn("The master token {} for user {} and device {} deleted because of invalid ip", token.getToken(), token.getUser().getLogin(), token.getDeviceId());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Check authentication token.
 	 *
@@ -78,11 +100,11 @@ abstract class BaseTokenService
 	 * @param ip the ip
 	 * @throws CBusinessException the c business exception
 	 */
-	protected void checkAuthenticationToken (AuthenticationToken authenticationToken, String ip) throws CBusinessException
+	void checkAuthenticationToken (AuthenticationToken authenticationToken, String ip) throws CBusinessException
 	{
 		if (authenticationToken != null)
 		{
-			if (!tokenValidationService.isAuthenticationTokenIpValid(authenticationToken, ip) || tokenValidationService.isAuthenticationTokenExpired(authenticationToken))
+			if (!isAuthenticationTokenIpValid(authenticationToken, ip))
 			{
 				authenticationTokenDao.remove(authenticationToken);
 				throw new CBusinessException(ECoreErrorResponse.AUTHENTICATION_TOKEN_INVALIDATED);
@@ -93,5 +115,19 @@ abstract class BaseTokenService
 			LOGGER.error("The authentication token not found");
 			throw new CBusinessException(ECoreErrorResponse.AUTHENTICATION_TOKEN_NOT_FOUND);
 		}
+	}
+
+	private boolean isAuthenticationTokenIpValid (AuthenticationToken token, String ip)
+	{
+		if (!validationConfiguration.isAuthenticationTokenIpIgnored())
+		{
+			if ( (token.getIp() != null && !token.getIp().equals(ip)) || (token.getIp() == null && ip != null))
+			{
+				LOGGER.warn("The authentication token {} for user {} and device {} deleted because of invalid ip", token.getToken(), token.getUser().getLogin(), token.getDeviceId());
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
