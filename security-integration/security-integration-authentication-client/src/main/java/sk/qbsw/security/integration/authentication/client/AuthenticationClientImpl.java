@@ -1,11 +1,13 @@
 package sk.qbsw.security.integration.authentication.client;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.client.RestTemplate;
 
 import sk.qbsw.core.client.configuration.UrlConfiguration;
 import sk.qbsw.security.api.authentication.client.AuthenticationPaths;
 import sk.qbsw.security.api.authentication.client.OAuthIntegrationCacheNames;
+import sk.qbsw.security.api.authentication.client.model.CSExpiredTokenData;
 import sk.qbsw.security.api.authentication.client.model.request.AuthenticationRequestBody;
 import sk.qbsw.security.api.authentication.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponseBody;
@@ -48,5 +50,12 @@ public class AuthenticationClientImpl implements AuthenticationClient
 	public VerificationResponseBody verify (VerifyRequestBody requestBody)
 	{
 		return authenticationRestTemplate.postForObject(configuration.buildUrl(AuthenticationPaths.SECURITY_VERIFY), requestBody, VerificationResponseBody.class);
+	}
+
+	@Override
+	@CacheEvict (value = {OAuthIntegrationCacheNames.SEC_OAUTH_TOKEN_CACHE_NAME}, key = "{#expiredToken.token, #expiredToken.deviceId, #expiredToken.ip}")
+	public void removeExpiredToken (CSExpiredTokenData expiredToken)
+	{
+		// intentionally empty
 	}
 }

@@ -1,5 +1,6 @@
 package sk.qbsw.security.integration.authentication.client;
 
+import sk.qbsw.security.api.authentication.client.model.CSExpiredTokenData;
 import sk.qbsw.security.api.authentication.client.model.request.AuthenticationRequestBody;
 import sk.qbsw.security.api.authentication.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.api.authentication.client.model.response.AuthenticationResponseBody;
@@ -30,4 +31,11 @@ public interface AuthenticationClient
 	 * @return the verification response body
 	 */
 	VerificationResponseBody verify (VerifyRequestBody requestBody);
+
+	/**
+	 * Remove expired token from cache.
+	 *
+	 * @param expiredToken the expired token
+	 */
+	void removeExpiredToken (CSExpiredTokenData expiredToken);
 }
