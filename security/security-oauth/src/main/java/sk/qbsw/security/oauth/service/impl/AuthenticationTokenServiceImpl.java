@@ -19,6 +19,7 @@ import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.IdGeneratorService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -130,7 +131,14 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 			changeLimit = validationConfiguration.getAuthenticationTokenChangeLimit();
 		}
 
-		return authenticationTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+		if (expireLimit != null || changeLimit != null)
+		{
+			return authenticationTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+		}
+		else
+		{
+			return new ArrayList<>();
+		}
 	}
 
 	@Override

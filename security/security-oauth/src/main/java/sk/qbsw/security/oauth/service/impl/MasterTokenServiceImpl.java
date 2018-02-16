@@ -19,6 +19,7 @@ import sk.qbsw.security.oauth.service.IdGeneratorService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -130,7 +131,14 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 			changeLimit = validationConfiguration.getMasterTokenChangeLimit();
 		}
 
-		return masterTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+		if (expireLimit != null || changeLimit != null)
+		{
+			return masterTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+		}
+		else
+		{
+			return new ArrayList<>();
+		}
 	}
 
 	@Override

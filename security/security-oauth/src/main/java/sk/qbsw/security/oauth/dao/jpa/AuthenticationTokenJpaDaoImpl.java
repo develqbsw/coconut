@@ -126,7 +126,7 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 		}
 
 		// create query
-		return queryFactory.selectFrom(qAuthenticationToken).fetch();
+		return queryFactory.selectFrom(qAuthenticationToken).where(builder).fetch();
 	}
 
 	@Override
