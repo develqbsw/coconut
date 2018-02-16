@@ -13,14 +13,8 @@
     <context:component-scan base-package="sk.qbsw.security"/>
     <context:component-scan base-package="sk.qbsw.core.configuration"/>
 
-    <bean id="systemParameterService" class="sk.qbsw.core.configuration.service.CSystemParameterService"/>
     <bean id="userDao" class="sk.qbsw.security.core.dao.jpa.UserJpaDao"/>
-
-    <bean id="authValidationConfiguration"
-          class="sk.qbsw.security.oauth.test.configuration.OAuthValidationTestConfigurationImpl">
-        <constructor-arg ref="systemParameterService"/>
-    </bean>
-
+    <bean id="authValidationConfiguration" class="sk.qbsw.security.oauth.test.configuration.OAuthValidationTestConfigurationImpl" />
     <bean id="masterTokenDao" class="sk.qbsw.security.oauth.dao.jpa.MasterTokenJpaDaoImpl"/>
     <bean id="authenticationTokenDao" class="sk.qbsw.security.oauth.dao.jpa.AuthenticationTokenJpaDaoImpl"/>
     <bean id="idGeneratorService" class="sk.qbsw.security.oauth.service.impl.RandomIdGeneratorServiceImpl"/>

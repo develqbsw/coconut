@@ -138,11 +138,11 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 		BooleanBuilder builder = new BooleanBuilder();
 		if (expireLimit != null)
 		{
-			builder.or(qMasterToken.lastAccessDate.after(OffsetDateTime.now().minusHours(expireLimit)));
+			builder.or(qMasterToken.lastAccessDate.before(OffsetDateTime.now().minusHours(expireLimit)));
 		}
 		if (changeLimit != null)
 		{
-			builder.or(qMasterToken.createDate.after(OffsetDateTime.now().minusHours(changeLimit)));
+			builder.or(qMasterToken.createDate.before(OffsetDateTime.now().minusHours(changeLimit)));
 		}
 
 		// create query

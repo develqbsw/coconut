@@ -134,6 +134,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	}
 
 	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Long removeMasterTokens (List<Long> ids)
 	{
 		return masterTokenDao.removeByIds(ids);

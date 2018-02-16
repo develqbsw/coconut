@@ -134,6 +134,7 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 	}
 
 	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Long removeAuthenticationTokens (List<Long> ids)
 	{
 		return authenticationTokenDao.removeByIds(ids);

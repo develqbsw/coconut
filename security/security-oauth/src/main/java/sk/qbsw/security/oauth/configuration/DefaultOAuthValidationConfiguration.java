@@ -1,25 +1,20 @@
 package sk.qbsw.security.oauth.configuration;
 
 import ESystemParameters.ECoreSystemParameter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import sk.qbsw.core.configuration.model.domain.CSystemParameter;
 import sk.qbsw.core.configuration.service.ISystemParameterService;
 
 import javax.annotation.PostConstruct;
 
 /**
- * The oauth validation configuration.
+ * The default oauth validation configuration.
  *
  * @author Tomas Lauro
  * @version 1.18.2
  * @since 1.18.2
  */
-public class OAuthValidationConfigurationImpl implements OAuthValidationConfiguration
+public class DefaultOAuthValidationConfiguration implements OAuthValidationConfiguration
 {
-	/** The log. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(OAuthValidationConfigurationImpl.class);
-
 	private final ISystemParameterService systemParameterService;
 
 	private boolean masterTokenIpIgnored;
@@ -38,7 +33,7 @@ public class OAuthValidationConfigurationImpl implements OAuthValidationConfigur
 	/** The authentication token change limit. */
 	private Integer authenticationTokenChangeLimit;
 
-	public OAuthValidationConfigurationImpl (ISystemParameterService systemParameterService)
+	public DefaultOAuthValidationConfiguration (ISystemParameterService systemParameterService)
 	{
 		this.systemParameterService = systemParameterService;
 	}

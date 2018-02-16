@@ -1,36 +1,13 @@
 package sk.qbsw.security.oauth.test.util;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.dao.AuthenticationParamsDao;
-import sk.qbsw.security.core.dao.GroupDao;
-import sk.qbsw.security.core.dao.LicenseDao;
-import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.RoleDao;
-import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.dao.UserUnitGroupDao;
-import sk.qbsw.security.core.model.domain.Address;
-import sk.qbsw.security.core.model.domain.AuthenticationParams;
-import sk.qbsw.security.core.model.domain.BlockedLogin;
-import sk.qbsw.security.core.model.domain.Group;
-import sk.qbsw.security.core.model.domain.License;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.domain.UserUnitGroup;
+import sk.qbsw.security.core.dao.*;
+import sk.qbsw.security.core.model.domain.*;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 import sk.qbsw.security.management.service.UserManagementService;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
@@ -39,14 +16,18 @@ import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.test.util.domain.LicenseFree;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Generate data in DB for tests.
  *
  * @autor Tomas Lauro
- * 
  * @version 1.13.1
  * @since 1.13.1
- * 
  */
 @Component (value = "oauthDataGenerator")
 public class DataGenerator
@@ -128,6 +109,10 @@ public class DataGenerator
 	/** The Constant AUTHENTICATION_TOKEN. */
 	public static final String AUTHENTICATION_TOKEN = "unit_test_authentication_token";
 
+	public static final String EXPIRE_LIMIT_AUTHENTICATION_TOKEN = "unit_test_expire_limit_authentication_token";
+
+	public static final String CHANGE_LIMIT_AUTHENTICATION_TOKEN = "unit_test_change_limit_authentication_token";
+
 	/** The Constant DEVICE_ID. */
 	public static final String DEVICE_ID = "unit_test_device_id";
 
@@ -138,67 +123,71 @@ public class DataGenerator
 	public void generateDatabaseDataForDatabaseTests ()
 	{
 		/** Create data. */
-		//organization
+		// organization
 		Organization organization = createOrganization(ORGANIZATION_CODE);
 
-		//roles
+		// roles
 		Role firstRole = createRole(FIRST_ROLE_CODE);
 
-		//groups
+		// groups
 		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, true);
 
-		//units
+		// units
 		Unit defaultUnit = createUnit(DEFAULT_UNIT_CODE);
 
-		//authentication params
+		// authentication params
 		AuthenticationParams firstUserAuthenticationParams = createAuthenticationParams(FIRST_USER, "1111", null, null);
 		AuthenticationParams secondUserAuthenticationParams = createAuthenticationParams(SECOND_USER, "1111", null, null);
 
-		//users
+		// users
 		User firstUser = createUser(FIRST_USER);
 		User secondUser = createUser(SECOND_USER);
 
-		//license
+		// license
 		License<CLicensingRules> licenseOne = createLicense(LICENSE_KEY_ONE, true, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
 
-		//tokens
-		AuthenticationToken authenticationToken = createAuthenticationToken(AUTHENTICATION_TOKEN, OffsetDateTime.now(), OffsetDateTime.now().plusHours(1), DEVICE_ID, TEST_IP_ONE);
+		// tokens
+		AuthenticationToken authenticationToken = createAuthenticationToken(AUTHENTICATION_TOKEN, OffsetDateTime.now(), OffsetDateTime.now().minusMinutes(30), DEVICE_ID, TEST_IP_ONE);
+		AuthenticationToken authenticationTokenExpireLimit = createAuthenticationToken(EXPIRE_LIMIT_AUTHENTICATION_TOKEN, OffsetDateTime.now().minusHours(2), OffsetDateTime.now().minusHours(1).minusMinutes(30), DEVICE_ID, TEST_IP_ONE);
+		AuthenticationToken authenticationTokenChangeLimit = createAuthenticationToken(CHANGE_LIMIT_AUTHENTICATION_TOKEN, OffsetDateTime.now().minusHours(4), OffsetDateTime.now(), DEVICE_ID, TEST_IP_ONE);
 		MasterToken masterToken = createMasterToken(MASTER_TOKEN, OffsetDateTime.now(), OffsetDateTime.now().plusHours(1), DEVICE_ID, TEST_IP_ONE);
 
 		/** Create connections. */
-		//unit -> organization
+		// unit -> organization
 		defaultUnit.setOrganization(organization);
 
-		//group <-> unit
-		Set<Group> groupsForDefaultUnit = new HashSet<Group>();
+		// group <-> unit
+		Set<Group> groupsForDefaultUnit = new HashSet<>();
 		groupsForDefaultUnit.add(firstGroupInUnit);
 
-		//group <-> role
-		Set<Group> groupsForFirstRole = new HashSet<Group>();
+		// group <-> role
+		Set<Group> groupsForFirstRole = new HashSet<>();
 		groupsForFirstRole.add(firstGroupInUnit);
 
 		firstRole.setGroups(groupsForFirstRole);
 
-		//user -> organization
+		// user -> organization
 		firstUser.setOrganization(organization);
 		secondUser.setOrganization(organization);
 
-		//user -> defaultUnit
+		// user -> defaultUnit
 		firstUser.setDefaultUnit(defaultUnit);
 		secondUser.setDefaultUnit(defaultUnit);
 
-		//user -> authenticationParams
+		// user -> authenticationParams
 		firstUserAuthenticationParams.setUser(firstUser);
 		secondUserAuthenticationParams.setUser(secondUser);
 
-		//license -> organization
+		// license -> organization
 		licenseOne.setOrganization(organization);
 
-		//token -> user
+		// token -> user
 		masterToken.setUser(firstUser);
 		authenticationToken.setUser(firstUser);
+		authenticationTokenExpireLimit.setUser(firstUser);
+		authenticationTokenChangeLimit.setUser(firstUser);
 
-		//save data to DB
+		// save data to DB
 		orgDao.update(organization);
 		roleDao.update(firstRole);
 		firstGroupInUnit = groupDao.update(firstGroupInUnit);
@@ -210,10 +199,12 @@ public class DataGenerator
 		licenseDao.update(licenseOne);
 		masterTokenDao.update(masterToken);
 		authenticationTokenDao.update(authenticationToken);
+		authenticationTokenDao.update(authenticationTokenExpireLimit);
+		authenticationTokenDao.update(authenticationTokenChangeLimit);
 
-		//group <-> user
-		//       |
-		//	unit
+		// group <-> user
+		// |
+		// unit
 		try
 		{
 			setUserToGroup(firstUser, firstGroupInUnit, defaultUnit);
@@ -224,7 +215,7 @@ public class DataGenerator
 			throw new CSystemException("The data generator failed", e);
 		}
 
-		//flush data to hibernate cache
+		// flush data to hibernate cache
 		orgDao.flush();
 		roleDao.flush();
 		groupDao.flush();
@@ -234,7 +225,7 @@ public class DataGenerator
 		licenseDao.flush();
 		masterTokenDao.flush();
 		authenticationTokenDao.flush();
-		//clear cache
+		// clear cache
 		orgDao.clear();
 		roleDao.clear();
 		groupDao.clear();
@@ -304,9 +295,9 @@ public class DataGenerator
 	{
 		Address address = new Address();
 		address.setCity("Bratislava");
-		//		address.setHouseNumber("123456789");
+		// address.setHouseNumber("123456789");
 		address.setState("Slovakia");
-		//		address.setStreet("Prievozska");
+		// address.setStreet("Prievozska");
 		address.setZipCode("97101");
 		return address;
 	}

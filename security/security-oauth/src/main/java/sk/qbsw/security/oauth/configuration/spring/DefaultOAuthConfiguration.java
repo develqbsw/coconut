@@ -1,10 +1,11 @@
-package sk.qbsw.security.oauth.configuration;
+package sk.qbsw.security.oauth.configuration.spring;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import sk.qbsw.core.configuration.service.ISystemParameterService;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
+import sk.qbsw.security.oauth.configuration.DefaultOAuthValidationConfiguration;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.dao.jpa.AuthenticationTokenJpaDaoImpl;
@@ -13,27 +14,18 @@ import sk.qbsw.security.oauth.service.*;
 import sk.qbsw.security.oauth.service.impl.*;
 
 /**
- * The OAuth validation configuration.
+ * The default OAuth configuration.
  *
  * @author Tomas Lauro
  * @version 1.18.2
  * @since 1.18.2
  */
-public class OAuthConfiguration
+public class DefaultOAuthConfiguration
 {
-	@Autowired
-	private UserDao userDao;
-
-	@Autowired
-	private AuthenticationService authenticationService;
-
-	@Autowired
-	private ISystemParameterService systemParameterService;
-
 	@Bean
 	public OAuthValidationConfiguration oAuthValidationConfiguration (ISystemParameterService systemParameterService)
 	{
-		return new OAuthValidationConfigurationImpl(systemParameterService);
+		return new DefaultOAuthValidationConfiguration(systemParameterService);
 	}
 
 	@Bean

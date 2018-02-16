@@ -118,15 +118,15 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 		BooleanBuilder builder = new BooleanBuilder();
 		if (expireLimit != null)
 		{
-			builder.or(qAuthenticationToken.lastAccessDate.after(OffsetDateTime.now().minusHours(expireLimit)));
+			builder.or(qAuthenticationToken.lastAccessDate.before(OffsetDateTime.now().minusHours(expireLimit)));
 		}
 		if (changeLimit != null)
 		{
-			builder.or(qAuthenticationToken.createDate.after(OffsetDateTime.now().minusHours(changeLimit)));
+			builder.or(qAuthenticationToken.createDate.before(OffsetDateTime.now().minusHours(changeLimit)));
 		}
 
 		// create query
-		return queryFactory.selectFrom(qAuthenticationToken).where(builder).fetch();
+		return queryFactory.selectFrom(qAuthenticationToken).fetch();
 	}
 
 	@Override
