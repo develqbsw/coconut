@@ -13,6 +13,7 @@ import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
+import sk.qbsw.security.oauth.model.domain.SecurityToken;
 import sk.qbsw.security.oauth.service.IdGeneratorService;
 
 /**
@@ -27,14 +28,29 @@ abstract class BaseTokenService
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseTokenService.class);
 
+	/**
+	 * The Master token dao.
+	 */
 	final MasterTokenDao masterTokenDao;
 
+	/**
+	 * The Authentication token dao.
+	 */
 	final AuthenticationTokenDao authenticationTokenDao;
 
+	/**
+	 * The User dao.
+	 */
 	final UserDao userDao;
 
+	/**
+	 * The Id generator service.
+	 */
 	final IdGeneratorService idGeneratorService;
 
+	/**
+	 * The Validation configuration.
+	 */
 	final OAuthValidationConfiguration validationConfiguration;
 
 	/**
@@ -60,13 +76,14 @@ abstract class BaseTokenService
 	 *
 	 * @param masterToken the master token
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @throws CBusinessException the c business exception
 	 */
-	void checkMasterToken (MasterToken masterToken, String ip) throws CBusinessException
+	void checkMasterToken (MasterToken masterToken, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		if (masterToken != null)
 		{
-			if (!isMasterTokenIpValid(masterToken, ip))
+			if (!isIpIgnored && !isTokenIpValid(masterToken, ip))
 			{
 				masterTokenDao.remove(masterToken);
 				throw new CBusinessException(ECoreErrorResponse.MASTER_TOKEN_INVALIDATED);
@@ -79,32 +96,19 @@ abstract class BaseTokenService
 		}
 	}
 
-	private boolean isMasterTokenIpValid (MasterToken token, String ip)
-	{
-		if (!validationConfiguration.isMasterTokenIpIgnored())
-		{
-			if ( (token.getIp() != null && !token.getIp().equals(ip)) || (token.getIp() == null && ip != null))
-			{
-				LOGGER.warn("The master token {} for user {} and device {} deleted because of invalid ip", token.getToken(), token.getUser().getLogin(), token.getDeviceId());
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 	/**
 	 * Check authentication token.
 	 *
 	 * @param authenticationToken the authentication token
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @throws CBusinessException the c business exception
 	 */
-	void checkAuthenticationToken (AuthenticationToken authenticationToken, String ip) throws CBusinessException
+	void checkAuthenticationToken (AuthenticationToken authenticationToken, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		if (authenticationToken != null)
 		{
-			if (!isAuthenticationTokenIpValid(authenticationToken, ip))
+			if (!isIpIgnored && !isTokenIpValid(authenticationToken, ip))
 			{
 				authenticationTokenDao.remove(authenticationToken);
 				throw new CBusinessException(ECoreErrorResponse.AUTHENTICATION_TOKEN_INVALIDATED);
@@ -117,17 +121,16 @@ abstract class BaseTokenService
 		}
 	}
 
-	private boolean isAuthenticationTokenIpValid (AuthenticationToken token, String ip)
+	private boolean isTokenIpValid (SecurityToken token, String ip)
 	{
-		if (!validationConfiguration.isAuthenticationTokenIpIgnored())
+		if ( (token.getIp() != null && !token.getIp().equals(ip)) || (token.getIp() == null && ip != null))
 		{
-			if ( (token.getIp() != null && !token.getIp().equals(ip)) || (token.getIp() == null && ip != null))
-			{
-				LOGGER.warn("The authentication token {} for user {} and device {} deleted because of invalid ip", token.getToken(), token.getUser().getLogin(), token.getDeviceId());
-				return false;
-			}
+			LOGGER.warn("The token {} for user {} and device {} deleted because of invalid ip", token.getToken(), token.getUser().getLogin(), token.getDeviceId());
+			return false;
 		}
-
-		return true;
+		else
+		{
+			return true;
+		}
 	}
 }

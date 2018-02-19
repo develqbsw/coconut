@@ -49,7 +49,7 @@ public class OAuthServiceImpl implements OAuthService
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public AuthenticationData authenticate (String login, String password, String deviceId, String ip) throws CBusinessException
+	public AuthenticationData authenticate (String login, String password, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		User user = authenticationService.login(login, password);
 
@@ -60,7 +60,7 @@ public class OAuthServiceImpl implements OAuthService
 
 		// generate tokens
 		GeneratedTokenData masterTokenData = masterTokenService.generateMasterToken(user.getId(), deviceId, ip);
-		GeneratedTokenData authenticationTokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), masterTokenData.getGeneratedToken(), deviceId, ip);
+		GeneratedTokenData authenticationTokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), masterTokenData.getGeneratedToken(), deviceId, ip, isIpIgnored);
 
 		// create response
 		return new AuthenticationData(masterTokenData, authenticationTokenData, user, createAdditionalInformation(user.getId()));
@@ -68,23 +68,23 @@ public class OAuthServiceImpl implements OAuthService
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip) throws CBusinessException
+	public GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		User user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip);
+		User user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
 		if (user == null)
 		{
 			throw new CSecurityException(ECoreErrorResponse.USER_NOT_FOUND);
 		}
 
-		return authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip);
+		return authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip, isIpIgnored);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public void invalidate (String masterToken, String authenticationToken, String deviceId, String ip) throws CBusinessException
+	public void invalidate (String masterToken, String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		User user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip);
+		User user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
 		if (user == null)
 		{
@@ -97,12 +97,12 @@ public class OAuthServiceImpl implements OAuthService
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public VerificationData verify (String token, String deviceId, String ip) throws CBusinessException
+	public VerificationData verify (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		try
 		{
-			User userByMasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip);
-			User userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip);
+			User userByMasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip, isIpIgnored);
+			User userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip, isIpIgnored);
 
 			if (userByMasterToken != null)
 			{

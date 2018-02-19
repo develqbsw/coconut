@@ -29,6 +29,8 @@ import sk.qbsw.security.oauth.test.util.DataGenerator;
 @Rollback (true)
 public class AuthenticationTokenTestCase
 {
+	private static final boolean IP_IGNORED = false;
+
 	/** The user dao. */
 	@Autowired
 	private UserDao userDao;
@@ -53,7 +55,7 @@ public class AuthenticationTokenTestCase
 		initTest();
 
 		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
-		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(tokenData);
 		Assert.assertNotNull(tokenData.getGeneratedToken());
@@ -70,7 +72,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		authenticationTokenService.generateAuthenticationToken(null, null, null, null);
+		authenticationTokenService.generateAuthenticationToken(null, null, null, null, IP_IGNORED);
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		authenticationTokenService.generateAuthenticationToken(123461321467L, DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		authenticationTokenService.generateAuthenticationToken(123461321467L, DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class AuthenticationTokenTestCase
 		initTest();
 
 		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
-		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(tokenData);
 		Assert.assertNotNull(tokenData.getGeneratedToken());
@@ -119,7 +121,7 @@ public class AuthenticationTokenTestCase
 		initTest();
 
 		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
-		authenticationTokenService.generateAuthenticationToken(user.getId(), "123456", DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		authenticationTokenService.generateAuthenticationToken(user.getId(), "123456", DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 	}
 
 	/**
@@ -134,7 +136,7 @@ public class AuthenticationTokenTestCase
 		initTest();
 
 		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
-		authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, "123456");
+		authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, "123456", IP_IGNORED);
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		User user = authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(user);
 	}
@@ -196,7 +198,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, "123");
+		authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, "123", IP_IGNORED);
 	}
 
 	/**
@@ -211,7 +213,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, null);
+		authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, null, IP_IGNORED);
 	}
 
 	/**

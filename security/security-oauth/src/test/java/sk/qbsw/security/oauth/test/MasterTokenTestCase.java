@@ -29,6 +29,8 @@ import sk.qbsw.security.oauth.test.util.DataGenerator;
 @Rollback (true)
 public class MasterTokenTestCase
 {
+	private static final boolean IP_IGNORED = false;
+
 	/** The user dao. */
 	@Autowired
 	private UserDao userDao;
@@ -148,7 +150,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		User user = masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
+		User user = masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(user);
 	}
@@ -165,7 +167,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, "123");
+		masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, "123", IP_IGNORED);
 	}
 
 	/**
@@ -180,7 +182,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, null);
+		masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, null, IP_IGNORED);
 	}
 
 	/**

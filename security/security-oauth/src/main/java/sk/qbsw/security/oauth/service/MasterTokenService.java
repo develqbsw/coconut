@@ -42,10 +42,11 @@ public interface MasterTokenService
 	 * @param token the token
 	 * @param deviceId the device id
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @return the user by master token
 	 * @throws CBusinessException the c business exception
 	 */
-	User getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException;
+	User getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Find expired master tokens list.

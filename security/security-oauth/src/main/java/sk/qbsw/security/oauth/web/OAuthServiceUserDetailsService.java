@@ -6,7 +6,6 @@ package sk.qbsw.security.oauth.web;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import sk.qbsw.security.authentication.spring.model.Organization;
 import sk.qbsw.security.authentication.spring.preauth.OAuthWebAuthenticationDetails;
 import sk.qbsw.security.authentication.spring.preauth.model.OAuthData;
@@ -14,7 +13,7 @@ import sk.qbsw.security.authentication.spring.preauth.model.OAuthLoggedUser;
 import sk.qbsw.security.authentication.spring.preauth.service.BaseOAuthUserDetailsService;
 import sk.qbsw.security.oauth.model.AccountData;
 import sk.qbsw.security.oauth.model.VerificationData;
-import sk.qbsw.security.oauth.service.OAuthService;
+import sk.qbsw.security.oauth.service.OAuthServiceFacade;
 
 /**
  * The oauth pre authenticated user details service.
@@ -25,14 +24,14 @@ import sk.qbsw.security.oauth.service.OAuthService;
  */
 public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 {
-	private final OAuthService oauthService;
+	private final OAuthServiceFacade oauthService;
 
 	/**
 	 * Instantiates a new O auth service user details service.
 	 *
 	 * @param oauthService the oauth service
 	 */
-	public OAuthServiceUserDetailsService (OAuthService oauthService)
+	public OAuthServiceUserDetailsService (OAuthServiceFacade oauthService)
 	{
 		super();
 		this.oauthService = oauthService;

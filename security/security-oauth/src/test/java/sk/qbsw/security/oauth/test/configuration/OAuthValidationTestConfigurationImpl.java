@@ -13,10 +13,6 @@ import javax.annotation.PostConstruct;
  */
 public class OAuthValidationTestConfigurationImpl implements OAuthValidationConfiguration
 {
-	private boolean masterTokenIpIgnored;
-
-	private boolean authenticationTokenIpIgnored;
-
 	/** The master token expire limit in hours. */
 	private Integer masterTokenExpireLimit;
 
@@ -32,24 +28,10 @@ public class OAuthValidationTestConfigurationImpl implements OAuthValidationConf
 	@PostConstruct
 	public void initProperties ()
 	{
-		masterTokenIpIgnored = false;
-		authenticationTokenIpIgnored = false;
 		masterTokenExpireLimit = 1;
 		masterTokenChangeLimit = 3;
 		authenticationTokenExpireLimit = 1;
 		authenticationTokenChangeLimit = 3;
-	}
-
-	@Override
-	public boolean isMasterTokenIpIgnored ()
-	{
-		return masterTokenIpIgnored;
-	}
-
-	@Override
-	public boolean isAuthenticationTokenIpIgnored ()
-	{
-		return authenticationTokenIpIgnored;
 	}
 
 	@Override

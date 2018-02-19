@@ -23,10 +23,11 @@ public interface AuthenticationTokenService
 	 * @param masterToken the master token
 	 * @param deviceId the device id
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @return the generated authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	GeneratedTokenData generateAuthenticationToken (Long userId, String masterToken, String deviceId, String ip) throws CBusinessException;
+	GeneratedTokenData generateAuthenticationToken (Long userId, String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Revoke authentication token.
@@ -43,10 +44,11 @@ public interface AuthenticationTokenService
 	 * @param authenticationToken the authentication token
 	 * @param deviceId the device id
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @return the user by authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	User getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip) throws CBusinessException;
+	User getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Find expired authentication tokens list.

@@ -6,9 +6,8 @@ import org.springframework.cache.annotation.Caching;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.oauth.model.*;
 import sk.qbsw.security.oauth.service.OAuthService;
-import sk.qbsw.security.oauth.service.OAuthServiceCacheFacade;
+import sk.qbsw.security.oauth.service.OAuthServiceFacade;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,18 +17,11 @@ import java.util.List;
  * @version 1.18.2
  * @since 1.18.2
  */
-public class OAuthServiceCacheFacadeImpl implements OAuthServiceCacheFacade
+public class OAuthServiceIpValidatedCacheFacadeImpl extends BaseOAuthServiceCacheFacade implements OAuthServiceFacade
 {
-	private final OAuthService oAuthService;
-
-	/**
-	 * Instantiates a new O auth service cache facade.
-	 *
-	 * @param oAuthService the o auth service
-	 */
-	public OAuthServiceCacheFacadeImpl (OAuthService oAuthService)
+	public OAuthServiceIpValidatedCacheFacadeImpl (OAuthService oAuthService)
 	{
-		this.oAuthService = oAuthService;
+		super(oAuthService);
 	}
 
 	@Override
@@ -39,17 +31,7 @@ public class OAuthServiceCacheFacadeImpl implements OAuthServiceCacheFacade
 	})
 	public AuthenticationData authenticate (String login, String password, String deviceId, String ip) throws CBusinessException
 	{
-		AuthenticationData authenticationData = oAuthService.authenticate(login, password, deviceId, ip);
-		if (authenticationData.getMasterTokenData().getInvalidatedToken() != null)
-		{
-			evictCache(authenticationData.getMasterTokenData().getInvalidatedToken(), deviceId, ip);
-		}
-		if (authenticationData.getAuthenticationTokenData().getInvalidatedToken() != null)
-		{
-			evictCache(authenticationData.getAuthenticationTokenData().getInvalidatedToken(), deviceId, ip);
-		}
-
-		return authenticationData;
+		return baseAuthenticate(login, password, deviceId, ip);
 	}
 
 	@Override
@@ -58,13 +40,7 @@ public class OAuthServiceCacheFacadeImpl implements OAuthServiceCacheFacade
 	})
 	public GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip) throws CBusinessException
 	{
-		GeneratedTokenData generationResult = oAuthService.reauthenticate(masterToken, deviceId, ip);
-		if (generationResult.getInvalidatedToken() != null)
-		{
-			evictCache(generationResult.getInvalidatedToken(), deviceId, ip);
-		}
-
-		return generationResult;
+		return baseReauthenticate(masterToken, deviceId, ip);
 	}
 
 	@Override
@@ -74,46 +50,26 @@ public class OAuthServiceCacheFacadeImpl implements OAuthServiceCacheFacade
 	})
 	public void invalidate (String masterToken, String authenticationToken, String deviceId, String ip) throws CBusinessException
 	{
-		oAuthService.invalidate(masterToken, authenticationToken, deviceId, ip);
-		evictCache(masterToken, deviceId, ip);
-		evictCache(authenticationToken, deviceId, ip);
+		invalidate(masterToken, authenticationToken, deviceId, ip);
 	}
 
 	@Override
 	@Cacheable (value = {OAuthCacheNames.SEC_OAUTH_TOKEN_CACHE_NAME}, key = "{#token, #deviceId, #ip}")
 	public VerificationData verify (String token, String deviceId, String ip) throws CBusinessException
 	{
-		return oAuthService.verify(token, deviceId, ip);
+		return baseVerify(token, deviceId, ip);
 	}
 
 	@Override
 	public List<ExpiredTokenData> removeExpiredTokens ()
 	{
-		List<ExpiredTokenData> expiredTokens = oAuthService.removeExpiredTokens();
-		evictCache(expiredTokens);
-
-		return expiredTokens;
+		return baseRemoveExpiredTokens();
 	}
 
 	@Override
 	@CacheEvict (value = {OAuthCacheNames.SEC_OAUTH_TOKEN_CACHE_NAME}, key = "{#expiredToken.token, #expiredToken.deviceId, #expiredToken.ip}")
-	public void removeExpiredTokenFromCache (ExpiredTokenData expiredToken)
+	public ExpiredTokenData removeExpiredToken (ExpiredTokenData expiredToken)
 	{
-		// left empty intentionally
-	}
-
-	private void evictCache (String token, String deviceId, String ip)
-	{
-		evictCache(Collections.singletonList(new ExpiredTokenData(token, deviceId, ip)));
-	}
-
-	/**
-	 * Evict cache.
-	 *
-	 * @param expiredTokens the expired tokens
-	 */
-	protected void evictCache (List<ExpiredTokenData> expiredTokens)
-	{
-		// override to evict cache
+		return removeExpiredToken(expiredToken);
 	}
 }

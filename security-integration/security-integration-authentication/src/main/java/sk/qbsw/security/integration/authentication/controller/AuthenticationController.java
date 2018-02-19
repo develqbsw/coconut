@@ -18,7 +18,7 @@ import sk.qbsw.security.api.authentication.client.model.response.AuthenticationR
 import sk.qbsw.security.api.authentication.client.model.response.ReauthenticationResponseBody;
 import sk.qbsw.security.api.authentication.client.model.response.VerificationResponseBody;
 import sk.qbsw.security.integration.authentication.mapping.SecurityMapper;
-import sk.qbsw.security.oauth.service.OAuthServiceCacheFacade;
+import sk.qbsw.security.oauth.service.OAuthServiceFacade;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +36,7 @@ import javax.validation.constraints.NotNull;
 @RequestMapping (value = AuthenticationPaths.BASE_PATH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class AuthenticationController
 {
-	private final OAuthServiceCacheFacade oAuthService;
+	private final OAuthServiceFacade oAuthService;
 
 	private final SecurityMapper securityMapper;
 
@@ -49,7 +49,7 @@ public class AuthenticationController
 	 * @param securityMapper the security mapper
 	 */
 	@Autowired
-	public AuthenticationController (OAuthServiceCacheFacade oAuthService, SecurityMapper securityMapper)
+	public AuthenticationController (OAuthServiceFacade oAuthService, SecurityMapper securityMapper)
 	{
 		this.oAuthService = oAuthService;
 		this.securityMapper = securityMapper;

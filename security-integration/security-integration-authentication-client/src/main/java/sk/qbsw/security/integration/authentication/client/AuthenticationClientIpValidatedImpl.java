@@ -21,7 +21,7 @@ import sk.qbsw.security.api.authentication.client.model.response.VerificationRes
  * @version 1.18.0
  * @since 1.18.0
  */
-public class AuthenticationClientImpl implements AuthenticationClient
+public class AuthenticationClientIpValidatedImpl implements AuthenticationClient
 {
 	private final RestTemplate authenticationRestTemplate;
 
@@ -33,7 +33,7 @@ public class AuthenticationClientImpl implements AuthenticationClient
 	 * @param authenticationRestTemplate the authentication rest template
 	 * @param configuration the configuration
 	 */
-	public AuthenticationClientImpl (RestTemplate authenticationRestTemplate, UrlConfiguration configuration)
+	public AuthenticationClientIpValidatedImpl (RestTemplate authenticationRestTemplate, UrlConfiguration configuration)
 	{
 		this.authenticationRestTemplate = authenticationRestTemplate;
 		this.configuration = configuration;

@@ -10,20 +10,6 @@ package sk.qbsw.security.oauth.configuration;
 public interface OAuthValidationConfiguration
 {
 	/**
-	 * Is master token ip ignored boolean.
-	 *
-	 * @return the boolean
-	 */
-	boolean isMasterTokenIpIgnored ();
-
-	/**
-	 * Is authentication token ip ignored boolean.
-	 *
-	 * @return the boolean
-	 */
-	boolean isAuthenticationTokenIpIgnored ();
-
-	/**
 	 * The master token expire limit in hours. @return the master token expire limit
 	 *
 	 * @return the master token expire limit

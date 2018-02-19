@@ -17,10 +17,6 @@ public class DefaultOAuthValidationConfiguration implements OAuthValidationConfi
 {
 	private final ISystemParameterService systemParameterService;
 
-	private boolean masterTokenIpIgnored;
-
-	private boolean authenticationTokenIpIgnored;
-
 	/** The master token expire limit in hours. */
 	private Integer masterTokenExpireLimit;
 
@@ -41,9 +37,6 @@ public class DefaultOAuthValidationConfiguration implements OAuthValidationConfi
 	@PostConstruct
 	public void initProperties ()
 	{
-		masterTokenIpIgnored = true;
-		authenticationTokenIpIgnored = true;
-
 		CSystemParameter masterTokenExpireLimitParam = systemParameterService.findByName(ECoreSystemParameter.MASTER_TOKEN_EXPIRE_LIMIT.getParameterName());
 		if (masterTokenExpireLimitParam == null || masterTokenExpireLimitParam.getIntegerValue() == null || masterTokenExpireLimitParam.getIntegerValue() < 1)
 		{
@@ -83,18 +76,6 @@ public class DefaultOAuthValidationConfiguration implements OAuthValidationConfi
 		{
 			authenticationTokenChangeLimit = authenticationTokenChangeLimitParam.getIntegerValue();
 		}
-	}
-
-	@Override
-	public boolean isMasterTokenIpIgnored ()
-	{
-		return masterTokenIpIgnored;
-	}
-
-	@Override
-	public boolean isAuthenticationTokenIpIgnored ()
-	{
-		return authenticationTokenIpIgnored;
 	}
 
 	@Override

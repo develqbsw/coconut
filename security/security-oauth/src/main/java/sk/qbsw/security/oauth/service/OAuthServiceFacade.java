@@ -9,13 +9,13 @@ import sk.qbsw.security.oauth.model.VerificationData;
 import java.util.List;
 
 /**
- * The oauth service facade for caching.
+ * The oauth service facade.
  *
  * @author Tomas Lauro
  * @version 1.18.2
- * @since 1.18.1
+ * @since 1.18.2
  */
-public interface OAuthServiceCacheFacade
+public interface OAuthServiceFacade
 {
 	/**
 	 * Authenticate authentication data.
@@ -70,9 +70,10 @@ public interface OAuthServiceCacheFacade
 	List<ExpiredTokenData> removeExpiredTokens ();
 
 	/**
-	 * Remove expired token from cache.
+	 * Remove expired token expired token data.
 	 *
 	 * @param expiredToken the expired token
+	 * @return the expired token data
 	 */
-	void removeExpiredTokenFromCache (ExpiredTokenData expiredToken);
+	ExpiredTokenData removeExpiredToken (ExpiredTokenData expiredToken);
 }

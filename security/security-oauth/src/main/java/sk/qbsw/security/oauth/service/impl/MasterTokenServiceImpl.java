@@ -99,13 +99,13 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public User getUserByMasterToken (String token, String deviceId, String ip) throws CBusinessException
+	public User getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		MasterToken persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);
 
 		if (persistedToken != null)
 		{
-			checkMasterToken(persistedToken, ip);
+			checkMasterToken(persistedToken, ip, isIpIgnored);
 			persistedToken.getUser().exportRoles();
 			return persistedToken.getUser();
 		}

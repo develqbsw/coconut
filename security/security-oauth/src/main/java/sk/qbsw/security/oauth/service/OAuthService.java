@@ -24,10 +24,11 @@ public interface OAuthService
 	 * @param password the password
 	 * @param deviceId the device id
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @return the authentication data
 	 * @throws CBusinessException the c business exception
 	 */
-	AuthenticationData authenticate (String login, String password, String deviceId, String ip) throws CBusinessException;
+	AuthenticationData authenticate (String login, String password, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Reauthenticate string.
@@ -35,10 +36,11 @@ public interface OAuthService
 	 * @param masterToken the master token
 	 * @param deviceId the device id
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @return the string
 	 * @throws CBusinessException the c business exception
 	 */
-	GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip) throws CBusinessException;
+	GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Invalidate.
@@ -47,9 +49,10 @@ public interface OAuthService
 	 * @param authenticationToken the authentication token
 	 * @param deviceId the device id
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @throws CBusinessException the c business exception
 	 */
-	void invalidate (String masterToken, String authenticationToken, String deviceId, String ip) throws CBusinessException;
+	void invalidate (String masterToken, String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Verify verification data.
@@ -57,10 +60,11 @@ public interface OAuthService
 	 * @param token the token
 	 * @param deviceId the device id
 	 * @param ip the ip
+	 * @param isIpIgnored the is ip ignored
 	 * @return the verification data
 	 * @throws CBusinessException the c business exception
 	 */
-	VerificationData verify (String token, String deviceId, String ip) throws CBusinessException;
+	VerificationData verify (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Remove expired tokens list.

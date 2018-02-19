@@ -49,11 +49,11 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public GeneratedTokenData generateAuthenticationToken (Long userId, String masterToken, String deviceId, String ip) throws CBusinessException
+	public GeneratedTokenData generateAuthenticationToken (Long userId, String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		// get master token and check it
 		MasterToken persistedMasterToken = masterTokenDao.findByUserAndTokenAndDevice(userId, masterToken, deviceId);
-		checkMasterToken(persistedMasterToken, ip);
+		checkMasterToken(persistedMasterToken, ip, isIpIgnored);
 
 		AuthenticationToken authenticationToken = authenticationTokenDao.findByUserAndDevice(userId, deviceId);
 		User user = userDao.findById(userId);
@@ -100,13 +100,13 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public User getUserByAuthenticationToken (String token, String deviceId, String ip) throws CBusinessException
+	public User getUserByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		AuthenticationToken persistedToken = authenticationTokenDao.findByTokenAndDeviceId(token, deviceId);
 
 		if (persistedToken != null)
 		{
-			checkAuthenticationToken(persistedToken, ip);
+			checkAuthenticationToken(persistedToken, ip, isIpIgnored);
 			return persistedToken.getUser();
 		}
 		else
