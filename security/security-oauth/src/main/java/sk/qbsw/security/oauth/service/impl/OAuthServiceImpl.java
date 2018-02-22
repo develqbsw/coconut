@@ -63,7 +63,7 @@ public class OAuthServiceImpl implements OAuthService
 		GeneratedTokenData authenticationTokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), masterTokenData.getGeneratedToken(), deviceId, ip, isIpIgnored);
 
 		// create response
-		return new AuthenticationData(masterTokenData, authenticationTokenData, user, createAdditionalInformation(user.getId()));
+		return new AuthenticationData(masterTokenData, authenticationTokenData, AccountData.build(user, createAdditionalInformation(user.getId())));
 	}
 
 	@Override
@@ -106,11 +106,11 @@ public class OAuthServiceImpl implements OAuthService
 
 			if (userByMasterToken != null)
 			{
-				return new VerificationData(userByMasterToken, createAdditionalInformation(userByMasterToken.getId()), VerificationTypes.MASTER_TOKEN_VERIFICATION);
+				return new VerificationData(AccountData.build(userByMasterToken, createAdditionalInformation(userByMasterToken.getId())), VerificationTypes.MASTER_TOKEN_VERIFICATION);
 			}
 			else if (userByAuthenticationToken != null)
 			{
-				return new VerificationData(userByAuthenticationToken, createAdditionalInformation(userByAuthenticationToken.getId()), VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
+				return new VerificationData(AccountData.build(userByAuthenticationToken, createAdditionalInformation(userByAuthenticationToken.getId())), VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
 			}
 			else
 			{

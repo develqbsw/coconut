@@ -1,10 +1,7 @@
 package sk.qbsw.security.oauth.model;
 
-import sk.qbsw.security.core.model.domain.User;
-
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * The verification data.
@@ -37,19 +34,6 @@ public class VerificationData implements Serializable
 	public VerificationData (AccountData accountData, VerificationTypes verificationType)
 	{
 		this.accountData = accountData;
-		this.verificationType = verificationType;
-	}
-
-	/**
-	 * Instantiates a new Verification data.
-	 *
-	 * @param user the user
-	 * @param additionalInformation the additional information
-	 * @param verificationType the verification type
-	 */
-	public VerificationData (User user, Map<String, Object> additionalInformation, VerificationTypes verificationType)
-	{
-		this.accountData = new AccountData(user, additionalInformation);
 		this.verificationType = verificationType;
 	}
 

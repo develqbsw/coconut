@@ -1,10 +1,7 @@
 package sk.qbsw.security.oauth.model;
 
-import sk.qbsw.security.core.model.domain.User;
-
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * The authentication data.
@@ -43,21 +40,6 @@ public class AuthenticationData implements Serializable
 		this.masterTokenData = masterTokenData;
 		this.authenticationTokenData = authenticationTokenData;
 		this.accountData = accountData;
-	}
-
-	/**
-	 * Instantiates a new Authentication data.
-	 *
-	 * @param masterTokenData the master token data
-	 * @param authenticationTokenData the authentication token data
-	 * @param user the user
-	 * @param additionalInformation the additional information
-	 */
-	public AuthenticationData (GeneratedTokenData masterTokenData, GeneratedTokenData authenticationTokenData, User user, Map<String, Object> additionalInformation)
-	{
-		this.masterTokenData = masterTokenData;
-		this.authenticationTokenData = authenticationTokenData;
-		this.accountData = new AccountData(user, additionalInformation);
 	}
 
 	/**

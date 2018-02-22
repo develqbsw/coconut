@@ -45,9 +45,9 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 		AccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
 
 		Organization organization = Organization.newBuilder() //
-			.id(accountData.getUser().getOrganization().getId()) //
-			.name(accountData.getUser().getOrganization().getName()) //
-			.code(accountData.getUser().getOrganization().getCode()) //
+			.id(accountData.getOrganization().getId()) //
+			.name(accountData.getOrganization().getName()) //
+			.code(accountData.getOrganization().getCode()) //
 			.build();
 
 		OAuthData oAuthData = OAuthData.newBuilder() //
@@ -56,7 +56,7 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 			.ip(ip) //
 			.build();
 
-		return new OAuthLoggedUser(accountData.getUser().getId(), accountData.getUser().getLogin(), "N/A", convertRolesToAuthorities(accountData.getUser().exportRoles()), organization, oAuthData, accountData.getAdditionalInformation());
+		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), organization, oAuthData, accountData.getAdditionalInformation());
 	}
 
 	private VerificationData verify (String token, String deviceId, String ip)
