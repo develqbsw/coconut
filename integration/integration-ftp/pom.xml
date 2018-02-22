@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>sk.qbsw.integration</groupId>
 		<artifactId>integration-top</artifactId>
-		<version>1.18.3-SNAPSHOT</version>
+		<version>1.18.3</version>
 	</parent>
 
 	<dependencies>
