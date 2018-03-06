@@ -1,17 +1,11 @@
 package sk.qbsw.security.management.service.impl;
 
-import java.time.OffsetDateTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.persistence.NoResultException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
@@ -26,85 +20,162 @@ import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 
+import javax.persistence.NoResultException;
+import java.time.OffsetDateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Authentication service.
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * 
- * @version 1.18.0
+ * @version 1.18.4
  * @since 1.0.0
  */
 @Service (value = "userCredentialManagementService")
 public class UserCredentialManagementServiceImpl extends AService implements UserCredentialManagementService
 {
-
-	/** LOGGER for authentication messages logging. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserCredentialManagementServiceImpl.class);
 
-	/** The user dao. */
 	@Autowired
 	private UserDao userDao;
 
-	/** The authentication params dao. */
 	@Autowired
 	private AuthenticationParamsDao authenticationParamsDao;
 
-	/** Password digester *. */
 	@Autowired
 	private PasswordDigester digester;
 
-	/** The Authentication Configurator. */
 	@Autowired
 	private IAuthenticationConfigurator authenticationConfigurator;
 
-
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#changeEncryptedPassword(java.lang.String, java.lang.String)
-	 */
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
-		changePassword(login, password, null, null, null, true, false);
+		validatePassword(password);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		setAuthParamsDigestedPassword(authParams, user.getLogin(), password);
+
+		authenticationParamsDao.update(authParams);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IUserCredentialManagementService#changeEncryptedPassword(java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
-	 */
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional (rollbackFor = CBusinessException.class)
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String plainCurrentPassword, @CNotLogged @CNotAuditLogged String newPassword) throws CSecurityException
+	{
+		validatePassword(newPassword);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		validateDigestedCurrentPassword(user.getLogin(), plainCurrentPassword, authParams.getPasswordDigest());
+		setAuthParamsDigestedPassword(authParams, user.getLogin(), newPassword);
+
+		authenticationParamsDao.update(authParams);
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String password, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
 	{
-		changePassword(login, password, null, validFrom, validTo, true, true);
+		validatePassword(password);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		setAuthParamsDigestedPassword(authParams, user.getLogin(), password);
+		setAuthParamsValidity(authParams, validFrom, validTo);
+
+		authenticationParamsDao.update(authParams);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String)
-	 */
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional (rollbackFor = CBusinessException.class)
+	public void changeEncryptedPassword (String login, @CNotLogged @CNotAuditLogged String plainCurrentPassword, @CNotLogged @CNotAuditLogged String newPassword, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
+	{
+		validatePassword(newPassword);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		validateDigestedCurrentPassword(user.getLogin(), plainCurrentPassword, authParams.getPasswordDigest());
+		setAuthParamsDigestedPassword(authParams, user.getLogin(), newPassword);
+		setAuthParamsValidity(authParams, validFrom, validTo);
+
+		authenticationParamsDao.update(authParams);
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
-		changePassword(login, password, email, null, null, true, false);
+		validatePassword(password);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		validateMail(email, user.getEmail());
+		setAuthParamsPlainPassword(authParams, password);
+
+		authenticationParamsDao.update(authParams);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IUserCredentialManagementService#changePlainPassword(java.lang.String, java.lang.String, java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)
-	 */
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional (rollbackFor = CBusinessException.class)
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String plainCurrentPassword, @CNotLogged @CNotAuditLogged String newPassword) throws CSecurityException
+	{
+		validatePassword(newPassword);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		validateMail(email, user.getEmail());
+		validatePlainCurrentPassword(plainCurrentPassword, authParams.getPassword());
+		setAuthParamsPlainPassword(authParams, newPassword);
+
+		authenticationParamsDao.update(authParams);
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String password, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
 	{
-		changePassword(login, password, email, validFrom, validTo, true, true);
+		validatePassword(password);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		validateMail(email, user.getEmail());
+		setAuthParamsPlainPassword(authParams, password);
+		setAuthParamsValidity(authParams, validFrom, validTo);
+
+		authenticationParamsDao.update(authParams);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IUserCredentialManagementService#changeLogin(java.lang.Long, java.lang.String)
-	 */
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional (rollbackFor = CBusinessException.class)
+	public void changePlainPassword (String login, String email, @CNotLogged @CNotAuditLogged String plainCurrentPassword, @CNotLogged @CNotAuditLogged String newPassword, OffsetDateTime validFrom, OffsetDateTime validTo) throws CSecurityException
+	{
+		validatePassword(newPassword);
+
+		User user = findUser(login);
+		AuthenticationParams authParams = findOrCreateAuthParams(user);
+
+		validateMail(email, user.getEmail());
+		validatePlainCurrentPassword(plainCurrentPassword, authParams.getPassword());
+		setAuthParamsPlainPassword(authParams, newPassword);
+		setAuthParamsValidity(authParams, validFrom, validTo);
+
+		authenticationParamsDao.update(authParams);
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public void changeLogin (Long userId, String login)
 	{
 		User user = userDao.findById(userId);
@@ -113,9 +184,6 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		userDao.update(user);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.management.service.IUserCredentialManagementService#validatePassword(java.lang.String)
-	 */
 	@Override
 	public void validatePassword (@CNotLogged @CNotAuditLogged String password) throws PasswordFormatException
 	{
@@ -123,80 +191,82 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		{
 			Matcher matcher = Pattern.compile(authenticationConfigurator.getPasswordPattern()).matcher(password);
 
-			if (matcher.matches() == false)
+			if (!matcher.matches())
 			{
 				throw new PasswordFormatException("Incorrect password format");
 			}
 		}
 	}
 
-	/**
-	 * Change password.
-	 *
-	 * @param login the login
-	 * @param password the password
-	 * @param email the email
-	 * @param validFrom the valid from
-	 * @param validTo the valid to
-	 * @param encrypt the encrypt
-	 * @param setValidityDate flag indicates the valid dates are going to be overridden
-	 * @throws CSecurityException the c security exception
-	 */
-	private void changePassword (String login, String password, String email, OffsetDateTime validFrom, OffsetDateTime validTo, boolean encrypt, boolean setValidityDate) throws CSecurityException
+	private User findUser (String login) throws CSecurityException
 	{
-		User user = null;
-
-		//validate password, if not valid throw an exception
-		validatePassword(password);
-
 		try
 		{
-			user = userDao.findOneByLogin(login);
+			return userDao.findOneByLogin(login);
 		}
 		catch (NoResultException ex)
 		{
 			LOGGER.error("Login not found", ex);
 			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
 		}
+	}
 
-		//checks email if enctypt flag is false
-		if (!encrypt && email != null && user.getEmail() != null && !email.equals(user.getEmail()))
-		{
-			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
-		}
-
-		//set auth params
-		AuthenticationParams authParams = null;
+	private AuthenticationParams findOrCreateAuthParams (User user)
+	{
 		try
 		{
-			authParams = authenticationParamsDao.findOneByUserId(user.getId());
+			return authenticationParamsDao.findOneByUserId(user.getId());
 		}
 		catch (NoResultException ex)
 		{
-			LOGGER.error("Authentication params not found", ex);
-
-			//create new because user has no auth params
-			authParams = new AuthenticationParams();
+			// create new one
+			AuthenticationParams authParams = new AuthenticationParams();
 			authParams.setUser(user);
-		}
 
-		if (setValidityDate)
-		{
-			authParams.setValidFrom(validFrom);
-			authParams.setValidTo(validTo);
+			return authParams;
 		}
+	}
 
-		if (encrypt)
-		{
-			authParams.setPasswordDigest(digester.generateDigest(login, password));
-			authParams.setPassword(null);
-		}
-		else
-		{
-			authParams.setPassword(password);
-			authParams.setPasswordDigest(null);
-		}
+	private void setAuthParamsDigestedPassword (AuthenticationParams authParams, String login, String password)
+	{
+		authParams.setPasswordDigest(digester.generateDigest(login, password));
+		authParams.setPassword(null);
+	}
 
-		authenticationParamsDao.update(authParams);
+	private void setAuthParamsPlainPassword (AuthenticationParams authParams, String password)
+	{
+		authParams.setPasswordDigest(null);
+		authParams.setPassword(password);
+	}
+
+	private void setAuthParamsValidity (AuthenticationParams authParams, OffsetDateTime validFrom, OffsetDateTime validTo)
+	{
+		authParams.setValidFrom(validFrom != null ? validFrom : OffsetDateTime.now());
+		authParams.setValidTo(validTo);
+	}
+
+	private void validateMail (String inputMail, String currentMail) throws CSecurityException
+	{
+		// checks email
+		if (inputMail != null && currentMail != null && !inputMail.equals(currentMail))
+		{
+			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
+		}
+	}
+
+	private void validateDigestedCurrentPassword (String login, @CNotLogged @CNotAuditLogged String plainCurrentPasswordInput, @CNotLogged @CNotAuditLogged String digestedCurrentPassword) throws CSecurityException
+	{
+		if (digestedCurrentPassword != null && !digester.checkPassword(login, plainCurrentPasswordInput, digestedCurrentPassword))
+		{
+			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
+		}
+	}
+
+	private void validatePlainCurrentPassword (@CNotLogged @CNotAuditLogged String plainCurrentPasswordInput, @CNotLogged @CNotAuditLogged String plainCurrentPassword) throws CSecurityException
+	{
+		if (plainCurrentPassword != null && !plainCurrentPassword.equals(plainCurrentPasswordInput))
+		{
+			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
+		}
 	}
 }

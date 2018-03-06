@@ -1,7 +1,5 @@
 package sk.qbsw.security.authentication.test;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +9,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.InvalidAuthenticationException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
@@ -23,12 +20,13 @@ import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 import sk.qbsw.security.management.service.UserManagementService;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Checks Authentication service for database.
  *
- * @autor Tomas Lauro
- * 
- * @version 1.15.0
+ * @author Tomas Lauro
+ * @version 1.18.4
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -229,6 +227,34 @@ public class DatabaseAuthenticationTestCase
 	}
 
 	/**
+	 * Test change password with password validation existing user.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangePasswordWithPasswordValidationExistingUser () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangePasswordWithPasswordValidationExistingUser(authenticationService, authenticationModifierService);
+	}
+
+	/**
+	 * Test change password with password validation existing user fail.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test (expected = CSecurityException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangePasswordWithPasswordValidationExistingUserFail () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangePasswordWithPasswordValidationExistingUserFail(authenticationService, authenticationModifierService);
+	}
+
+	/**
 	 * Test change encrypted password.
 	 *
 	 * @throws CSecurityException the security exception
@@ -240,6 +266,34 @@ public class DatabaseAuthenticationTestCase
 		initTest();
 
 		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService, authenticationModifierService);
+	}
+
+	/**
+	 * Test change encrypted password with password validation existing user.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangeEncryptedPasswordWithPasswordValidationExistingUser () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeEncryptedPasswordWithPasswordValidationExistingUser(authenticationService, authenticationModifierService);
+	}
+
+	/**
+	 * Test change encrypted password with password validation existing user fail.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test (expected = CSecurityException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testChangeEncryptedPasswordWithPasswordValidationExistingUserFail () throws CSecurityException
+	{
+		initTest();
+
+		authenticationTestProvider.testChangeEncryptedPasswordWithPasswordValidationExistingUserFail(authenticationService, authenticationModifierService);
 	}
 
 	/**
