@@ -73,7 +73,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		User user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
-		validateDigestedCurrentPassword(user.getLogin(), plainCurrentPassword, authParams.getPasswordDigest());
+		validateCurrentPassword(user.getLogin(), plainCurrentPassword, authParams);
 		setAuthParamsDigestedPassword(authParams, user.getLogin(), newPassword);
 
 		authenticationParamsDao.update(authParams);
@@ -103,7 +103,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		User user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
-		validateDigestedCurrentPassword(user.getLogin(), plainCurrentPassword, authParams.getPasswordDigest());
+		validateCurrentPassword(user.getLogin(), plainCurrentPassword, authParams);
 		setAuthParamsDigestedPassword(authParams, user.getLogin(), newPassword);
 		setAuthParamsValidity(authParams, validFrom, validTo);
 
@@ -135,7 +135,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateMail(email, user.getEmail());
-		validatePlainCurrentPassword(plainCurrentPassword, authParams.getPassword());
+		validateCurrentPassword(login, plainCurrentPassword, authParams);
 		setAuthParamsPlainPassword(authParams, newPassword);
 
 		authenticationParamsDao.update(authParams);
@@ -167,7 +167,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateMail(email, user.getEmail());
-		validatePlainCurrentPassword(plainCurrentPassword, authParams.getPassword());
+		validateCurrentPassword(login, plainCurrentPassword, authParams);
 		setAuthParamsPlainPassword(authParams, newPassword);
 		setAuthParamsValidity(authParams, validFrom, validTo);
 
@@ -251,6 +251,18 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		if (inputMail != null && currentMail != null && !inputMail.equals(currentMail))
 		{
 			throw new CSecurityException(ECoreErrorResponse.PASSWORD_CHANGE_DENIED);
+		}
+	}
+
+	private void validateCurrentPassword (String login, @CNotLogged @CNotAuditLogged String plainCurrentPasswordInput, AuthenticationParams authParams) throws CSecurityException
+	{
+		if (authParams.getPassword() != null)
+		{
+			validatePlainCurrentPassword(plainCurrentPasswordInput, authParams.getPassword());
+		}
+		else if (authParams.getPasswordDigest() != null)
+		{
+			validateDigestedCurrentPassword(login, plainCurrentPasswordInput, authParams.getPasswordDigest());
 		}
 	}
 
