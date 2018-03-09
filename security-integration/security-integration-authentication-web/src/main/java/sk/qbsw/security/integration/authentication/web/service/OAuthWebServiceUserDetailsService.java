@@ -10,7 +10,7 @@ import sk.qbsw.security.api.authentication.client.model.CSAccountData;
 import sk.qbsw.security.api.authentication.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.api.authentication.client.model.response.VerificationResponseBody;
 import sk.qbsw.security.authentication.spring.model.Organization;
-import sk.qbsw.security.authentication.spring.preauth.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.authentication.spring.preauth.model.OAuthWebAuthenticationDetails;
 import sk.qbsw.security.authentication.spring.preauth.model.OAuthData;
 import sk.qbsw.security.authentication.spring.preauth.model.OAuthLoggedUser;
 import sk.qbsw.security.authentication.spring.preauth.service.BaseOAuthUserDetailsService;

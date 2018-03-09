@@ -3,7 +3,7 @@ package sk.qbsw.security.web.filter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import sk.qbsw.security.authentication.spring.preauth.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.authentication.spring.preauth.model.OAuthWebAuthenticationDetails;
 
 import javax.servlet.http.HttpServletRequest;
 

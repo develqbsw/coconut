@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import sk.qbsw.security.authentication.spring.model.Organization;
-import sk.qbsw.security.authentication.spring.preauth.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.authentication.spring.preauth.model.OAuthWebAuthenticationDetails;
 import sk.qbsw.security.authentication.spring.preauth.model.OAuthData;
 import sk.qbsw.security.authentication.spring.preauth.model.OAuthLoggedUser;
 import sk.qbsw.security.authentication.spring.preauth.service.BaseOAuthUserDetailsService;
