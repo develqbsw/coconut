@@ -4,16 +4,13 @@ package sk.qbsw.security.authentication.model;
  * The username, password and unit authentication token.
  * 
  * @author Tomas Lauro
- * 
  * @version 1.13.4
  * @since 1.13.4
  */
 public class UsernamePasswordUnitAuthenticationSecurityToken extends UsernamePasswordAuthenticationSecurityToken
 {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -996252602003786662L;
 
-	/** The unit. */
 	private String unit;
 
 	/**
