@@ -13,7 +13,7 @@
     <parent>
         <groupId>sk.qbsw.core</groupId>
         <artifactId>core-top</artifactId>
-        <version>1.18.4-SNAPSHOT</version>
+        <version>1.18.4</version>
     </parent>
 
     <dependencies>
