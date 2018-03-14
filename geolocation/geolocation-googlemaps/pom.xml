@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>sk.qbsw.geolocation</groupId>
 		<artifactId>geolocation-top</artifactId>
-		<version>1.18.5</version>
+		<version>1.18.6-SNAPSHOT</version>
 	</parent>
 	
 	<dependencies>

@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>sk.qbsw</groupId>
 		<artifactId>coconut</artifactId>
-		<version>1.18.5</version>
+		<version>1.18.6-SNAPSHOT</version>
 	</parent>
 
 	<modules>
