@@ -13,7 +13,7 @@
     <parent>
         <groupId>sk.qbsw.security</groupId>
         <artifactId>security-top</artifactId>
-        <version>1.18.5-SNAPSHOT</version>
+        <version>1.18.5</version>
     </parent>
 
     <dependencies>
