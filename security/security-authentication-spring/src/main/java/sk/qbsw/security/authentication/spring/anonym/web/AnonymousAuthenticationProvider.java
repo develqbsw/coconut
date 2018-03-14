@@ -11,7 +11,7 @@ import sk.qbsw.security.authentication.spring.model.SecurityUserDetails;
  * The anonymous authentication provider.
  *
  * @author Tomas Lauro
- * @version 1.18.4
+ * @version 1.18.5
  * @since 1.18.4
  */
 public class AnonymousAuthenticationProvider extends org.springframework.security.authentication.AnonymousAuthenticationProvider
@@ -40,7 +40,7 @@ public class AnonymousAuthenticationProvider extends org.springframework.securit
 
 		SecurityUserDetails userDetails = userDetailsService.loadUserDetails((AnonymousAuthenticationToken) authentication);
 
-		AnonymousAuthenticationToken result = new AnonymousAuthenticationToken(DEFAULT_KEY, userDetails, userDetails.getAuthorities());
+		AnonymousAuthenticationToken result = new AnonymousAuthenticationToken(DEFAULT_KEY, userDetails, userDetails.getAuthorities(), true);
 		result.setDetails(authentication.getDetails());
 
 		return result;

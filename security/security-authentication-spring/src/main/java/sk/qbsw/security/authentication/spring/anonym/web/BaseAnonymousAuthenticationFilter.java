@@ -20,7 +20,7 @@ import java.io.IOException;
  * The base anonymous authentication filter.
  *
  * @author Tomas Lauro
- * @version 1.18.4
+ * @version 1.18.5
  * @since 1.18.4
  */
 public abstract class BaseAnonymousAuthenticationFilter extends AnonymousAuthenticationFilter
@@ -77,7 +77,7 @@ public abstract class BaseAnonymousAuthenticationFilter extends AnonymousAuthent
 	@Override
 	protected Authentication createAuthentication (HttpServletRequest request)
 	{
-		AnonymousAuthenticationToken auth = new AnonymousAuthenticationToken(DEFAULT_KEY, super.getPrincipal());
+		AnonymousAuthenticationToken auth = new AnonymousAuthenticationToken(DEFAULT_KEY, super.getPrincipal(), AuthorityUtils.createAuthorityList(DEFAULT_ROLE), false);
 		auth.setDetails(authenticationDetailsSource.buildDetails(request));
 
 		return auth;
