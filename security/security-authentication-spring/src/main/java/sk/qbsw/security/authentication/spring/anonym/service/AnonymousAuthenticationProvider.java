@@ -1,10 +1,10 @@
-package sk.qbsw.security.authentication.spring.anonym.web;
+package sk.qbsw.security.authentication.spring.anonym.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import sk.qbsw.security.authentication.spring.anonym.model.AnonymousAuthenticationToken;
-import sk.qbsw.security.authentication.spring.anonym.service.SecurityUserDetailsService;
+import sk.qbsw.security.authentication.spring.service.SecurityUserDetailsService;
 import sk.qbsw.security.authentication.spring.model.SecurityUserDetails;
 
 /**

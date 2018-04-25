@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.spring.anonym.service;
+package sk.qbsw.security.authentication.spring.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

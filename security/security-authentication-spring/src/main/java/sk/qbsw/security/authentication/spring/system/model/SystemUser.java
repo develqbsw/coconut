@@ -1,4 +1,4 @@
-package sk.qbsw.security.authentication.spring.anonym.model;
+package sk.qbsw.security.authentication.spring.system.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import sk.qbsw.security.authentication.spring.model.Organization;
@@ -8,37 +8,37 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * The anonymous user.
+ * The system user.
  *
  * @author Tomas Lauro
  * @version 1.18.6
  * @since 1.18.6
  */
-public class AnonymousUser extends SecurityUserDetailsBase
+public class SystemUser extends SecurityUserDetailsBase
 {
-	private static final long serialVersionUID = 2240342035990714647L;
+	private static final long serialVersionUID = -2868791358159661224L;
 
 	/**
-	 * Instantiates a new Anonymous user.
+	 * Instantiates a new System user.
 	 *
 	 * @param id the id
 	 * @param organization the organization
 	 * @param authorities the authorities
 	 */
-	public AnonymousUser (Long id, Organization organization, Collection<? extends GrantedAuthority> authorities)
+	public SystemUser (Long id, Organization organization, Collection<? extends GrantedAuthority> authorities)
 	{
 		super(id, organization, authorities);
 	}
 
 	/**
-	 * Instantiates a new Anonymous user.
+	 * Instantiates a new System user.
 	 *
 	 * @param id the id
 	 * @param organization the organization
 	 * @param additionalInformation the additional information
 	 * @param authorities the authorities
 	 */
-	public AnonymousUser (Long id, Organization organization, Map<String, Object> additionalInformation, Collection<? extends GrantedAuthority> authorities)
+	public SystemUser (Long id, Organization organization, Map<String, Object> additionalInformation, Collection<? extends GrantedAuthority> authorities)
 	{
 		super(id, organization, additionalInformation, authorities);
 	}
