@@ -16,17 +16,17 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.AuthenticationParams;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.filter.CUserAssociationsFilter;
-import sk.qbsw.security.core.model.order.COrderModel;
-import sk.qbsw.security.core.model.order.COrderSpecification;
-import sk.qbsw.security.core.model.order.EOrderSpecifier;
-import sk.qbsw.security.core.model.order.EUserOrderByAttributeSpecifier;
-import sk.qbsw.security.core.model.order.IOrderByAttributeSpecifier;
+import sk.qbsw.security.core.model.filter.AccountAssociationsFilter;
+import sk.qbsw.security.core.model.order.OrderModel;
+import sk.qbsw.security.core.model.order.OrderSpecification;
+import sk.qbsw.security.core.model.order.OrderSpecifiers;
+import sk.qbsw.security.core.model.order.UserOrderByAttributeSpecifiers;
+import sk.qbsw.security.core.model.order.OrderByAttributeSpecifier;
 import sk.qbsw.security.management.service.UsersValidationService;
 
 /**
@@ -50,7 +50,7 @@ public class UsersValidationServiceImpl extends AService implements UsersValidat
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The group dao. */
 	@Autowired
@@ -89,10 +89,10 @@ public class UsersValidationServiceImpl extends AService implements UsersValidat
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public Boolean isUserExists (User user)
+	public Boolean isUserExists (Account user)
 	{
 		Boolean exists = false;
-		User userOld;
+		Account userOld;
 
 		try
 		{
@@ -117,23 +117,23 @@ public class UsersValidationServiceImpl extends AService implements UsersValidat
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public Boolean leastOneAdmin (User user, Organization organization, String group)
+	public Boolean leastOneAdmin (Account user, Organization organization, String group)
 	{
 
 		Boolean leastOneAdmin = false;
 
 		Group adminGroup = groupDao.findByCode(group).get(0);
 
-		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		AccountAssociationsFilter filter = new AccountAssociationsFilter();
 		filter.setOrganization(organization);
 		filter.setGroup(adminGroup);
 		filter.setExcludedUser(user);
 		filter.setEnabled(true);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
-		List<User> users = userDao.findByUserAssociationsFilter(filter, orderModel);
+		List<Account> users = userDao.findByUserAssociationsFilter(filter, orderModel);
 
 		if (users.isEmpty() && (!user.getGroups().iterator().next().getCode().equals(adminGroup.getCode()) || !user.getFlagEnabled()))
 		{
@@ -171,7 +171,7 @@ public class UsersValidationServiceImpl extends AService implements UsersValidat
 
 		Boolean exists = false;
 
-		User userOld;
+		Account userOld;
 
 		try
 		{
@@ -196,14 +196,14 @@ public class UsersValidationServiceImpl extends AService implements UsersValidat
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public Boolean isUserExistsPin (User userOld)
+	public Boolean isUserExistsPin (Account userOld)
 	{
 		Boolean exists = false;
 		AuthenticationParams oldUserAuthParams = authParamsDao.findOneByUserId(userOld.getId());
 
 		try
 		{
-			List<User> users = userDao.findByPinCode(oldUserAuthParams.getPin());
+			List<Account> users = userDao.findByPinCode(oldUserAuthParams.getPin());
 
 			//if the users is not empty - any user has assigned given pin
 			if (users != null && !users.isEmpty())
@@ -231,7 +231,7 @@ public class UsersValidationServiceImpl extends AService implements UsersValidat
 
 		try
 		{
-			List<User> users = userDao.findByPinCode(pin);
+			List<Account> users = userDao.findByPinCode(pin);
 
 			if (users != null && !users.isEmpty())
 			{

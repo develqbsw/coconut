@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 
 import sk.qbsw.core.configuration.service.ISystemParameterService;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.oauth.configuration.DefaultOAuthValidationConfiguration;
 import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
@@ -48,13 +48,13 @@ public abstract class BaseOAuthConfiguration
 	}
 
 	@Bean
-	public MasterTokenService masterTokenService (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	public MasterTokenService masterTokenService (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
 	{
 		return new MasterTokenServiceImpl(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Bean
-	public AuthenticationTokenService authenticationTokenService (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	public AuthenticationTokenService authenticationTokenService (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
 	{
 		return new AuthenticationTokenServiceImpl(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
 	}

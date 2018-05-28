@@ -3,6 +3,7 @@ package sk.qbsw.core.persistence.model.domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 /**
  * Base entity implementation.
@@ -11,7 +12,7 @@ import javax.persistence.MappedSuperclass;
  */
 @Access (AccessType.FIELD)
 @MappedSuperclass
-public abstract class AEntity<P> implements IEntity<P>
+public abstract class AEntity<P> implements IEntity<P>, Serializable
 {
 	/**
 	 * Instantiates a new a entity.

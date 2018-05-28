@@ -1,103 +1,75 @@
-/*
- * Developed by QBSW a.s.
- */
 package sk.qbsw.security.core.model.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+import sk.qbsw.core.base.configuration.DatabaseSchemas;
+import sk.qbsw.core.persistence.model.domain.AEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 /**
- * The Class Group.
+ * The group.
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.9.1
+ * @version 1.19.0
  * @since 1.0.0
  */
 @Entity
-@Table (name = "t_group", schema = "sec")
-public class Group extends BaseSecurityChangeEntity<Long>
+@Table (name = "t_group", schema = DatabaseSchemas.SECURITY, //
+	uniqueConstraints = @UniqueConstraint (name = "uc_group_code", columnNames = {"c_code"}))
+@Getter
+@Setter
+public class Group extends AEntity<Long>
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7160613084349492550L;
 
-	/** The pk id. */
+	private static final String CATEGORIES_SEPARATOR = ";";
+
 	@Id
-	@SequenceGenerator (name = "t_group_pkid_generator", sequenceName = "sec.t_group_pk_id_seq")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_group_pkid_generator")
+	@NotNull
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "groupSequenceGenerator")
+	@SequenceGenerator (name = "groupSequenceGenerator", sequenceName = DatabaseSchemas.SECURITY + ".s_group")
 	@Column (name = "pk_id")
 	private Long id;
 
-	/** The code. */
-	@Column (name = "c_code", unique = true)
+	@NotNull
+	@Column (name = "c_code")
 	private String code;
 
-	/** The flag system. */
-	@Column (name = "c_flag_system")
-	private Boolean flagSystem;
+	@NotNull
+	@Column (name = "c_type")
+	@Enumerated (EnumType.STRING)
+	private GroupTypes type = GroupTypes.STANDARD;
 
-	/** The category. */
-	@Column (name = "c_category", nullable = true)
+	@Column (name = "c_category")
 	private String category;
 
-	//bi-directional many-to-many association to Role
-	/** The roles. */
 	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<Role> roles;
 
-	//bi-directional many-to-many association to User
-	/** Cross entity to user and unit. */
 	@OneToMany (mappedBy = "group", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private Set<UserUnitGroup> xUserUnitGroups;
+	private Set<AccountUnitGroup> accountUnitGroups = new HashSet<>();
 
-	//bi-directional many-to-many association to Unit
-	/** The units. */
 	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<Unit> units;
 
-	//bi-directional many-to-many association to Group
-	//this association excludes group in other words if user have one group then can't have groups which are associated with this group through this association
-	/** Excluded groups. */
+	// this association excludes group in other words if user have one group then can't have groups which are associated with this group through this association
 	@ManyToMany (fetch = FetchType.LAZY)
-	@JoinTable (schema = "sec", name = "t_x_group_group", joinColumns = {@JoinColumn (name = "fk_group")}, inverseJoinColumns = {@JoinColumn (name = "fk_excluded_group")})
+	@JoinTable (schema = DatabaseSchemas.SECURITY, name = "t_x_group_group", joinColumns = {@JoinColumn (name = "fk_group")}, inverseJoinColumns = {@JoinColumn (name = "fk_excluded_group")})
 	private Set<Group> excludedGroups;
-	
-	/** Categories separator. */
-	@Transient
-	private final String CATEGORIES_SEPARATOR = ";";
 
 	/**
-	 * Instantiates a new c group.
-	 */
-	public Group ()
-	{
-		xUserUnitGroups = new HashSet<UserUnitGroup>();
-	}
-
-	/**
-	 * Checks for role.
+	 * Has role boolean.
 	 *
 	 * @param roleToCheck the role to check
-	 * @return true, if successful
+	 * @return the boolean
 	 */
 	public boolean hasRole (Role roleToCheck)
 	{
-
 		if (roleToCheck == null)
 		{
 			return true;
@@ -108,22 +80,14 @@ public class Group extends BaseSecurityChangeEntity<Long>
 			return false;
 		}
 
-		for (Role role : roles)
-		{
-			if (role.getCode().equals(roleToCheck.getCode()))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return roles.stream().anyMatch(r -> r.getCode().equals(roleToCheck.getCode()));
 	}
 
 	/**
-	 * Checks for unit.
+	 * Has unit boolean.
 	 *
 	 * @param unitToCheck the unit to check
-	 * @return true, if successful
+	 * @return the boolean
 	 */
 	public boolean hasUnit (Unit unitToCheck)
 	{
@@ -137,32 +101,24 @@ public class Group extends BaseSecurityChangeEntity<Long>
 			return false;
 		}
 
-		for (Unit unit : units)
-		{
-			if (unit.getName().equals(unitToCheck.getName()))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return units.stream().anyMatch(u -> u.getName().equals(unitToCheck.getName()));
 	}
 
 	/**
-	 * Checks if the group has a category and a role at same time.
+	 * Has category boolean.
 	 *
-	 * @param category the needed category
+	 * @param category the category
 	 * @param role the role
-	 * @return true / false
+	 * @return the boolean
 	 */
 	public boolean hasCategory (String category, Role role)
 	{
-		if (this.category != null && hasRole(role) == true)
+		if (this.category != null && hasRole(role))
 		{
 			String[] categories = this.category.split(CATEGORIES_SEPARATOR);
 			for (String cat : categories)
 			{
-				if (cat.equals(category) == true)
+				if (cat.equals(category))
 				{
 					return true;
 				}
@@ -173,221 +129,44 @@ public class Group extends BaseSecurityChangeEntity<Long>
 	}
 
 	/**
-	 * Gets the category.
+	 * Gets accounts.
 	 *
-	 * @return the category
+	 * @return the accounts
 	 */
-	public String getCategory ()
+	public Set<Account> getAccounts ()
 	{
-		return category;
-	}
+		HashSet<Account> accounts = new HashSet<>();
 
-	/**
-	 * Gets the code.
-	 *
-	 * @return the code
-	 */
-	public String getCode ()
-	{
-		return this.code;
-	}
-
-	/**
-	 * Gets the flag system.
-	 *
-	 * @return the flag system
-	 */
-	public Boolean getFlagSystem ()
-	{
-		return flagSystem;
-	}
-
-	/**
-	 * Gets the roles.
-	 *
-	 * @return the roles
-	 */
-	public Set<Role> getRoles ()
-	{
-		return this.roles;
-	}
-
-	/**
-	 * Gets the users.
-	 *
-	 * @return the users
-	 */
-	public Set<User> getUsers ()
-	{
-		HashSet<User> users = new HashSet<User>();
-
-		for (UserUnitGroup xuug : xUserUnitGroups)
+		for (AccountUnitGroup xuug : accountUnitGroups)
 		{
-			users.add(xuug.getUser());
+			accounts.add(xuug.getAccount());
 		}
-		return users;
+		return accounts;
 	}
 
 	/**
-	 * bind users with this group
-	 * @param users
+	 * Sets accounts.
+	 *
+	 * @param accounts the accounts
 	 */
-	public void setUsers (Set<User> users)
+	public void setAccounts (Set<Account> accounts)
 	{
-		for (User user : users)
+		for (Account account : accounts)
 		{
-			addUser(user);
+			addAccount(account);
 		}
 	}
 
 	/**
-	 * Adds the user.
-	 * 
-	 * @param user
+	 * Add account.
+	 *
+	 * @param account the account
 	 */
-	public void addUser (User user)
+	public void addAccount (Account account)
 	{
-		UserUnitGroup xuug = new UserUnitGroup();
+		AccountUnitGroup xuug = new AccountUnitGroup();
 		xuug.setGroup(this);
-		xuug.setUser(user);
-		xUserUnitGroups.add(xuug);
-	}
-
-	/**
-	 * Sets the category.
-	 *
-	 * @param category the category to set
-	 */
-	public void setCategory (String category)
-	{
-		this.category = category;
-	}
-
-	/**
-	 * Sets the code.
-	 *
-	 * @param code the new code
-	 */
-	public void setCode (String code)
-	{
-		this.code = code;
-	}
-
-	/**
-	 * Sets the flag system.
-	 *
-	 * @param flagSystem the new flag system
-	 */
-	public void setFlagSystem (Boolean flagSystem)
-	{
-		this.flagSystem = flagSystem;
-	}
-
-	/**
-	 * Sets the pk id.
-	 *
-	 * @param id the new pk id
-	 */
-	public void setId (Long id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * Sets the roles.
-	 *
-	 * @param roles the new roles
-	 */
-	public void setRoles (Set<Role> roles)
-	{
-		this.roles = roles;
-	}
-
-	/**
-	 * Gets the units.
-	 *
-	 * @return the units
-	 */
-	public Set<Unit> getUnits ()
-	{
-		return units;
-	}
-
-	/**
-	 * Sets the units.
-	 *
-	 * @param units the new units
-	 */
-	public void setUnits (Set<Unit> units)
-	{
-		this.units = units;
-	}
-
-	/**
-	 * @return the excludedGroups
-	 */
-	public Set<Group> getExcludedGroups ()
-	{
-		return excludedGroups;
-	}
-
-	/**
-	 * @param excludedGroups the excludedGroups to set
-	 */
-	public void setExcludedGroups (Set<Group> excludedGroups)
-	{
-		this.excludedGroups = excludedGroups;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public Long getId ()
-	{
-		return this.id;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals (Object object)
-	{
-		if (object == this)
-		{
-			return true;
-		}
-
-		if ( (object instanceof Group) == false)
-		{
-			return false;
-		}
-
-		Group group = (Group) object;
-		return ((getId() != null && getId().equals(group.getId())) || (getId() == null && group.getId() == null))
-			&& ((getCode() != null && getCode().equals(group.getCode())) || (getCode() == null && group.getCode() == null))
-			&& ((getCategory() != null && getCategory().equals(group.getCategory())) || (getCategory() == null && group.getCategory() == null));
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode ()
-	{
-		int result = 17;
-		if (getId() != null)
-		{
-			result = 31 * result + getId().hashCode();
-		}
-		if (getCode() != null)
-		{
-			result = 31 * result + getCode().hashCode();
-		}
-		if (getCategory() != null)
-		{
-			result = 31 * result + getCategory().hashCode();
-		}
-		return result;
+		xuug.setAccount(account);
+		accountUnitGroups.add(xuug);
 	}
 }

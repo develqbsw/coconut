@@ -15,8 +15,8 @@ import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.test.util.DataGenerator;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.configuration.SecurityCoreConfigurator;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 import sk.qbsw.security.management.service.UserManagementService;
 
@@ -62,11 +62,11 @@ public class DatabaseAuthenticationTestCase
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The Authentication Configurator. */
 	@Autowired
-	private IAuthenticationConfigurator authenticationConfigurator;
+	private SecurityCoreConfigurator securityCoreConfigurator;
 
 	/**
 	 * Inits the test case.
@@ -74,7 +74,7 @@ public class DatabaseAuthenticationTestCase
 	@Before
 	public void initTestCase ()
 	{
-		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
+		securityCoreConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 
@@ -48,7 +48,7 @@ public interface AuthenticationTokenService
 	 * @return the user by authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	User getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
+	Account getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Find expired authentication tokens list.

@@ -4,7 +4,7 @@ import java.util.List;
 
 import sk.qbsw.security.core.model.domain.Address;
 import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * The service for a organizations.
@@ -89,7 +89,7 @@ public interface OrganizationService
 	 * @param organization the organization
 	 * @param user the user
 	 */
-	public abstract void registerNewOrganization(Organization organization, User user);
+	public abstract void registerNewOrganization(Organization organization, Account user);
 
 	/**
 	 * Register new organization and admin user with selected group.
@@ -98,7 +98,7 @@ public interface OrganizationService
 	 * @param user the user
 	 * @param group the group
 	 */
-	public abstract void registerNewOrganization(Organization organization, User user, String group);
+	public abstract void registerNewOrganization(Organization organization, Account user, String group);
 
 	/**
 	 * Register organization.
@@ -106,7 +106,7 @@ public interface OrganizationService
 	 * @param org the org
 	 * @param manager the manager
 	 */
-	public void registerOrganization(Organization org, User manager);
+	public void registerOrganization(Organization org, Account manager);
 
 	/**
 	 * Add or update organization address.

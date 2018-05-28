@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Address;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
 
 /**
  * The Interface UnitService.
@@ -32,7 +32,7 @@ public interface UnitService extends Serializable
 	 * @return the all units
 	 * @throws CSecurityException throws if the user is null
 	 */
-	public List<Unit> getAll (User user) throws CSecurityException;
+	public List<Unit> getAll (Account user) throws CSecurityException;
 
 
 	/**

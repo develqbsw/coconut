@@ -1,95 +1,66 @@
-/**
- * 
- */
 package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.GroupTypes;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
 
 import java.util.List;
 
 /**
- * The Interface GroupDao.
+ * The group dao.
  *
  * @author rosenberg
  * @author lacko
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.0.0
  */
 public interface GroupDao extends IEntityDao<Long, Group>
 {
-	/** The I d_ or g_ admin. */
-	public static Long ID_ORG_ADMIN = 2l;
-
-	/** The I d_ sy s_ admin. */
-	public static Long ID_SYS_ADMIN = 1l;
-
 	/**
-	 * Find by flag system.
+	 * Find by type list.
 	 *
-	 * @param flagSystem the flag system (mandatory)
+	 * @param type the type
 	 * @return the list
 	 */
-	List<Group> findByFlagSystem (boolean flagSystem);
+	List<Group> findByType (GroupTypes type);
 
 	/**
-	 * Find groups by code ordered by code asc.
+	 * Find one by code group.
 	 *
-	 * @param code the code (mandatory)
-	 * @return the list
-	 * @deprecated the code is unique, use {@link GroupDao#findOneByCode(String)}
-	 */
-	List<Group> findByCode (String code);
-
-	/**
-	 * Find group by code.
-	 *
-	 * @param code the code (mandatory)
-	 * @return the group with defined code
-	 * @throws CSecurityException the code is missing
+	 * @param code the code
+	 * @return the group
+	 * @throws CSecurityException the c security exception
 	 */
 	Group findOneByCode (String code) throws CSecurityException;
 
 	/**
-	 * Find groups by code and unit - if the unit is null the only group with empty units list is returned. The roles and units for group are fetched.
+	 * Find one by code and unit group.
 	 *
-	 * @param code the code of requested group (mandatory)
-	 * @param unit the unit of group (optional)
-	 * @return the list of groups
-	 * @throws CSecurityException the code is missing
-	 * @deprecated the code is unique
-	 */
-	List<Group> findByCodeAndUnit (String code, Unit unit) throws CSecurityException;
-
-	/**
-	 * Find group by code and unit - if the unit is null the only group with empty units list is returned. The roles and units for group are fetched.
-	 *
-	 * @param code the code of requested group (mandatory)
-	 * @param unit the unit of group (optional)
+	 * @param code the code
+	 * @param unit the unit
 	 * @return the group
-	 * @throws CSecurityException the code is missing
+	 * @throws CSecurityException the c security exception
 	 */
 	Group findOneByCodeAndUnit (String code, Unit unit) throws CSecurityException;
 
 	/**
-	 * Find groups by unit.
+	 * Find by unit list.
 	 *
-	 * @param unit the unit of group (optional)
-	 * @return the list of groups
+	 * @param unit the unit
+	 * @return the list
 	 */
 	List<Group> findByUnit (Unit unit);
 
 	/**
-	 * find groups by unit and user (if not null).
+	 * Find by unit and user list.
 	 *
-	 * @param unit the unit (optional)
-	 * @param user the user (optional)
+	 * @param unit the unit
+	 * @param account the account
 	 * @return the list
 	 */
-	List<Group> findByUnitAndUser (Unit unit, User user);
+	List<Group> findByUnitAndAccount (Unit unit, Account account);
 }

@@ -13,12 +13,9 @@ import org.springframework.stereotype.Component;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.Group;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.*;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 import sk.qbsw.security.management.service.UserManagementService;
 
@@ -40,7 +37,7 @@ public class AuthenticationTestProvider
 	 */
 	public void testLoginWithDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Account user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -66,7 +63,7 @@ public class AuthenticationTestProvider
 	 */
 	public void testLoginWithoutDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		User user = authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		Account user = authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		assertNotNull("Authentication with login and password failed: user is null", user);
 		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
@@ -173,7 +170,7 @@ public class AuthenticationTestProvider
 		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -191,7 +188,7 @@ public class AuthenticationTestProvider
 		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -209,7 +206,7 @@ public class AuthenticationTestProvider
 		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", "fail", newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -227,7 +224,7 @@ public class AuthenticationTestProvider
 		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -250,7 +247,7 @@ public class AuthenticationTestProvider
 		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newTemporaryPassword, newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -273,7 +270,7 @@ public class AuthenticationTestProvider
 		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "fail", newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		assertNotNull("The plain text password change failed", user);
 	}
@@ -288,10 +285,10 @@ public class AuthenticationTestProvider
 	 * @param dataGenerator the data generator
 	 * @throws CSecurityException the security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser (AuthenticationService authenticationService, UserManagementService userService, UserDao userDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewUser (AuthenticationService authenticationService, UserManagementService userService, AccountDao userDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
 	{
 		// create new user and needed objects
-		User newUser = dataGenerator.createUser(DataGenerator.USER_WITHOUT_PASSWORD);
+		Account newUser = dataGenerator.createUser(DataGenerator.USER_WITHOUT_PASSWORD);
 		Organization organization = orgDao.findOneByName(DataGenerator.ORGANIZATION_CODE);
 		String newPassword = "change56%PasswordNewUser";
 
@@ -316,13 +313,13 @@ public class AuthenticationTestProvider
 	public void testChangeLogin (UserCredentialManagementService authenticationService, UserManagementService userService) throws CSecurityException
 	{
 		String newLogin = "new1Login#";
-		User user = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Account user = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 
 		// change login
 		authenticationService.changeLogin(user.getId(), newLogin);
 
 		// test new and old login
-		User userWithNewLogin = userService.getUserByLogin(newLogin);
+		Account userWithNewLogin = userService.getUserByLogin(newLogin);
 		Assert.assertEquals("There login change failed", user.getId(), userWithNewLogin.getId());
 	}
 
@@ -411,7 +408,7 @@ public class AuthenticationTestProvider
 		Role outputRole = null;
 
 		// login user
-		User user = authenticationService.login(login, password, inputRole);
+		Account user = authenticationService.login(login, password, inputRole);
 		assertNotNull("Authentication with login, password and role failed: user is null", user);
 		assertNotNull("Authentication with login, password and role failed: user groups is null", user.getGroups());
 		Assert.assertEquals("Authentication with login, password and role failed: number of user groups is not " + expectedGroups.size(), user.getGroups().size(), expectedGroups.size());
@@ -467,7 +464,7 @@ public class AuthenticationTestProvider
 		Unit outputUnit = null;
 
 		// login user
-		User user = authenticationService.login(login, password, unit);
+		Account user = authenticationService.login(login, password, unit);
 		assertNotNull("Authentication with login, password and unit failed: user is null", user);
 		assertNotNull("Authentication with login, password and unit failed: user groups is null", user.getGroups());
 		Assert.assertEquals("Authentication with login, password and unit failed: number of user groups is not " + expectedGroups.size(), user.getGroups().size(), expectedGroups.size());

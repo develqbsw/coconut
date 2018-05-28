@@ -1,56 +1,41 @@
-/**
- * 
- */
 package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import java.util.List;
 
 /**
- * The Interface RoleDao.
+ * The role dao.
  *
  * @author rosenberg
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.0.0
  */
 public interface RoleDao extends IEntityDao<Long, Role>
 {
-	
 	/**
-	 * Find all by user.
+	 * Find by account list.
 	 *
-	 * @param user the user (mandatory)
+	 * @param account the user
 	 * @return the list
-	 * @throws CSecurityException throws if the user is null
+	 * @throws CSecurityException the c security exception
 	 */
-	List<Role> findByUser (User user) throws CSecurityException;
+	List<Role> findByAccount (Account account) throws CSecurityException;
 
 	/**
-	 * Find by code.
+	 * Find one by code role.
 	 *
 	 * @param code the code
-	 * @return the list
-	 * 
-	 * @deprecated the code is unique
-	 */
-	List<Role> findByCode (String code);
-
-	/**
-	 * Find one by code - if there is no result or no unique result throws an exception.
-	 *
-	 * @param code the code (mandatory)
 	 * @return the role
-	 * @throws NonUniqueResultException there is no unique result
-	 * @throws NoResultException there is no result
-	 * @throws CSecurityException The code is null
+	 * @throws NonUniqueResultException the non unique result exception
+	 * @throws NoResultException the no result exception
+	 * @throws CSecurityException the c security exception
 	 */
 	Role findOneByCode (String code) throws NonUniqueResultException, NoResultException, CSecurityException;
 }

@@ -18,21 +18,18 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.AddressDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.*;
 import sk.qbsw.security.core.model.domain.Address;
-import sk.qbsw.security.core.model.domain.AuthenticationParams;
-import sk.qbsw.security.core.model.domain.Group;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.filter.CUserAssociationsFilter;
-import sk.qbsw.security.core.model.filter.CUserDetailFilter;
-import sk.qbsw.security.core.model.order.COrderModel;
-import sk.qbsw.security.core.model.order.COrderSpecification;
-import sk.qbsw.security.core.model.order.EOrderSpecifier;
-import sk.qbsw.security.core.model.order.EOrganizationOrderByAttributeSpecifier;
-import sk.qbsw.security.core.model.order.EUserOrderByAttributeSpecifier;
-import sk.qbsw.security.core.model.order.IOrderByAttributeSpecifier;
+import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.model.filter.AccountAssociationsFilter;
+import sk.qbsw.security.core.model.filter.AccountDetailFilter;
+import sk.qbsw.security.core.model.order.OrderModel;
+import sk.qbsw.security.core.model.order.OrderSpecification;
+import sk.qbsw.security.core.model.order.OrderSpecifiers;
+import sk.qbsw.security.core.model.order.OrganizationOrderByAttributeSpecifiers;
+import sk.qbsw.security.core.model.order.UserOrderByAttributeSpecifiers;
+import sk.qbsw.security.core.model.order.OrderByAttributeSpecifier;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 import sk.qbsw.security.management.service.UserManagementService;
 
@@ -55,7 +52,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The organization dao. */
 	@Autowired
@@ -81,9 +78,9 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void disableUser (User user)
+	public void disableUser (Account user)
 	{
-		User toModify = userDao.findById(user.getId());
+		Account toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.FALSE);
 		userDao.update(toModify);
 	}
@@ -96,9 +93,9 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void enableUser (User user)
+	public void enableUser (Account user)
 	{
-		User toModify = userDao.findById(user.getId());
+		Account toModify = userDao.findById(user.getId());
 		toModify.setFlagEnabled(Boolean.TRUE);
 		userDao.update(toModify);
 	}
@@ -108,7 +105,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public User get (Long id)
+	public Account get (Long id)
 	{
 		return userDao.findById(id);
 	}
@@ -122,13 +119,13 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getAllUsers (Organization organization)
+	public List<Account> getAllUsers (Organization organization)
 	{
-		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		AccountAssociationsFilter filter = new AccountAssociationsFilter();
 		filter.setOrganization(organization);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
@@ -138,16 +135,16 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getOtherActiveUsers (Organization organization, Group group, User user)
+	public List<Account> getOtherActiveUsers (Organization organization, Group group, Account user)
 	{
-		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		AccountAssociationsFilter filter = new AccountAssociationsFilter();
 		filter.setOrganization(organization);
 		filter.setGroup(group);
 		filter.setExcludedUser(user);
 		filter.setEnabled(true);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
@@ -157,7 +154,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public User getUserByLogin (String login) throws CSecurityException
+	public Account getUserByLogin (String login) throws CSecurityException
 	{
 		return userDao.findOneByLogin(login);
 	}
@@ -167,7 +164,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public User getUserForModification (Long id)
+	public Account getUserForModification (Long id)
 	{
 		return userDao.findForModification(id);
 	}
@@ -177,7 +174,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers ()
+	public List<Account> getUsers ()
 	{
 		return userDao.findAll();
 	}
@@ -187,14 +184,14 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers (Organization organization, Boolean enabled)
+	public List<Account> getUsers (Organization organization, Boolean enabled)
 	{
-		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		AccountAssociationsFilter filter = new AccountAssociationsFilter();
 		filter.setOrganization(organization);
 		filter.setEnabled(enabled);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
@@ -204,16 +201,16 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsersOrderByOrganization (Organization organization, Boolean enabled, Group group)
+	public List<Account> getUsersOrderByOrganization (Organization organization, Boolean enabled, Group group)
 	{
-		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		AccountAssociationsFilter filter = new AccountAssociationsFilter();
 		filter.setOrganization(organization);
 		filter.setEnabled(enabled);
 		filter.setGroup(group);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EOrganizationOrderByAttributeSpecifier.NAME, EOrderSpecifier.ASC));
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(OrganizationOrderByAttributeSpecifiers.NAME, OrderSpecifiers.ASC));
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
@@ -223,15 +220,15 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers (Organization organization, Boolean enabled, Group group)
+	public List<Account> getUsers (Organization organization, Boolean enabled, Group group)
 	{
-		CUserAssociationsFilter filter = new CUserAssociationsFilter();
+		AccountAssociationsFilter filter = new AccountAssociationsFilter();
 		filter.setOrganization(organization);
 		filter.setEnabled(enabled);
 		filter.setGroup(group);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserAssociationsFilter(filter, orderModel);
 	}
@@ -241,26 +238,26 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers (Organization organization, Role role)
+	public List<Account> getUsers (Organization organization, Role role)
 	{
 		if (role != null)
 		{
-			CUserAssociationsFilter filter = new CUserAssociationsFilter();
+			AccountAssociationsFilter filter = new AccountAssociationsFilter();
 			filter.setOrganization(organization);
 			filter.setRole(role);
 
-			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-			orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+			OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+			orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 			return userDao.findByUserAssociationsFilter(filter, orderModel);
 		}
 		else
 		{
-			CUserAssociationsFilter filter = new CUserAssociationsFilter();
+			AccountAssociationsFilter filter = new AccountAssociationsFilter();
 			filter.setOrganization(organization);
 
-			COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-			orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+			OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+			orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 			return userDao.findByUserAssociationsFilter(filter, orderModel);
 		}
@@ -271,16 +268,16 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers (String name, String surname, String login, Boolean enabled)
+	public List<Account> getUsers (String name, String surname, String login, Boolean enabled)
 	{
-		CUserDetailFilter filter = new CUserDetailFilter();
+		AccountDetailFilter filter = new AccountDetailFilter();
 		filter.setName(name);
 		filter.setSurname(surname);
 		filter.setLogin(login);
 		filter.setEnabled(enabled);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
@@ -290,17 +287,17 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers (String name, String surname, String login, Boolean enabled, Organization organization)
+	public List<Account> getUsers (String name, String surname, String login, Boolean enabled, Organization organization)
 	{
-		CUserDetailFilter filter = new CUserDetailFilter();
+		AccountDetailFilter filter = new AccountDetailFilter();
 		filter.setName(name);
 		filter.setSurname(surname);
 		filter.setLogin(login);
 		filter.setEnabled(enabled);
 		filter.setOrganization(organization);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
@@ -310,17 +307,17 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
+	public List<Account> getUsers (String name, String surname, String login, Boolean enabled, String groupPrefix)
 	{
-		CUserDetailFilter filter = new CUserDetailFilter();
+		AccountDetailFilter filter = new AccountDetailFilter();
 		filter.setName(name);
 		filter.setSurname(surname);
 		filter.setLogin(login);
 		filter.setEnabled(enabled);
 		filter.setGroupCodePrefix(groupPrefix);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
@@ -330,13 +327,13 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<User> getUsers (String email)
+	public List<Account> getUsers (String email)
 	{
-		CUserDetailFilter filter = new CUserDetailFilter();
+		AccountDetailFilter filter = new AccountDetailFilter();
 		filter.setEmail(email);
 
-		COrderModel<EUserOrderByAttributeSpecifier> orderModel = new COrderModel<>();
-		orderModel.getOrderSpecification().add(new COrderSpecification<IOrderByAttributeSpecifier>(EUserOrderByAttributeSpecifier.LOGIN, EOrderSpecifier.ASC));
+		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<OrderByAttributeSpecifier>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return userDao.findByUserDetailFilter(filter, orderModel);
 	}
@@ -346,7 +343,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void registerNewUser (User user, @CNotLogged @CNotAuditLogged String password, Organization organization) throws CSecurityException
+	public void registerNewUser (Account user, @CNotLogged @CNotAuditLogged String password, Organization organization) throws CSecurityException
 	{
 		//register new user with empty password
 		registerNewUser(user, organization);
@@ -365,7 +362,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void registerNewUser (User user, Organization organization) throws CSecurityException
+	public void registerNewUser (Account user, Organization organization) throws CSecurityException
 	{
 		try
 		{
@@ -411,7 +408,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional (readOnly = false)
-	public void updateUser (User user)
+	public void updateUser (Account user)
 	{
 		userDao.update(user);
 	}
@@ -421,7 +418,7 @@ public class UserManagementServiceImpl extends AService implements UserManagemen
 	 */
 	@Override
 	@Transactional
-	public void setAddress (User user, Address address)
+	public void setAddress (Account user, Address address)
 	{
 		//set address to user
 		user.setAddress(address);

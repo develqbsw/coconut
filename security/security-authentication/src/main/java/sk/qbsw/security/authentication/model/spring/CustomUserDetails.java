@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * User details for spring Security.
@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetails
 {
 	private static final long serialVersionUID = 1L;
 
-	private User user;
+	private Account user;
 
 	@Override
 	public Collection<GrantedAuthority> getAuthorities ()
@@ -86,7 +86,7 @@ public class CustomUserDetails implements UserDetails
 	 *
 	 * @return the user
 	 */
-	public User getUser ()
+	public Account getUser ()
 	{
 		return user;
 	}
@@ -96,7 +96,7 @@ public class CustomUserDetails implements UserDetails
 	 *
 	 * @param user the new user
 	 */
-	public void setUser (User user)
+	public void setUser (Account user)
 	{
 		this.user = user;
 	}

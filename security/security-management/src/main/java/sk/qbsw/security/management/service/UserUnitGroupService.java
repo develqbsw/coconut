@@ -3,10 +3,10 @@ package sk.qbsw.security.management.service;
 import java.io.Serializable;
 import java.util.List;
 
+import sk.qbsw.security.core.model.domain.AccountUnitGroup;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.domain.UserUnitGroup;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * Service for UserUnitGroup entity operations 
@@ -24,7 +24,7 @@ public interface UserUnitGroupService extends Serializable
 	 * 
 	 * @param xuug
 	 */
-	void save (UserUnitGroup xuug);
+	void save (AccountUnitGroup xuug);
 
 	/**
 	 * Gets all by filter
@@ -34,7 +34,7 @@ public interface UserUnitGroupService extends Serializable
 	 * @param group - optional
 	 * @return
 	 */
-	List<UserUnitGroup> getAll (User user, Unit unit, Group group);
+	List<AccountUnitGroup> getAll (Account user, Unit unit, Group group);
 
 	/**
 	 * Gets all by user
@@ -42,19 +42,19 @@ public interface UserUnitGroupService extends Serializable
 	 * @param user
 	 * @return
 	 */
-	List<UserUnitGroup> getAllByUser (User user);
+	List<AccountUnitGroup> getAllByUser (Account user);
 
 	/**
 	 * Saves all entities in list
 	 * 
 	 * @param xuugList
 	 */
-	void saveAll (List<UserUnitGroup> xuugList);
+	void saveAll (List<AccountUnitGroup> xuugList);
 
 	/**
 	 * Removes entity
 	 * 
 	 * @param xuug
 	 */
-	void remove (UserUnitGroup xuug);
+	void remove (AccountUnitGroup xuug);
 }

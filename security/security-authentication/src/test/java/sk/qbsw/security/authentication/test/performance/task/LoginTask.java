@@ -2,7 +2,7 @@ package sk.qbsw.security.authentication.test.performance.task;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * The abstract class represents login task for test. The children of this class defines an authentication service.
@@ -39,7 +39,7 @@ public abstract class LoginTask implements Runnable
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	protected abstract User authenticate () throws CSecurityException;
+	protected abstract Account authenticate () throws CSecurityException;
 
 	/**
 	 * Inits the resources.

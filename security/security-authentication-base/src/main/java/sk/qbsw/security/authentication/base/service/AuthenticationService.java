@@ -2,7 +2,7 @@ package sk.qbsw.security.authentication.base.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 import java.io.Serializable;
 
@@ -23,7 +23,7 @@ public interface AuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return
 	 */
-	User login (String login, String password) throws CSecurityException;
+	Account login (String login, String password) throws CSecurityException;
 
 	/**
 	 * Authenticates the user.
@@ -34,7 +34,7 @@ public interface AuthenticationService extends Serializable
 	 * @return the c user
 	 * @throws CSecurityException the c security exception
 	 */
-	User login (String login, String password, String unit) throws CSecurityException;
+	Account login (String login, String password, String unit) throws CSecurityException;
 
 	/**
 	 * Find by login and role user must have login and role
@@ -44,7 +44,7 @@ public interface AuthenticationService extends Serializable
 	 * @param password password of the user
 	 * @return user if user have login and role null otherwise
 	 */
-	User login (String login, String password, Role role) throws CSecurityException;
+	Account login (String login, String password, Role role) throws CSecurityException;
 
 	/**
 	 * Authenticates the user with his role

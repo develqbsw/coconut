@@ -7,7 +7,7 @@ import sk.qbsw.security.authentication.model.UsernamePasswordAuthenticationSecur
 import sk.qbsw.security.authentication.model.UsernamePasswordUnitAuthenticationSecurityToken;
 import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
 import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * Authentication for Wicket using Spring security.
@@ -74,7 +74,7 @@ public class CSpringSecurityAuthenticatedSession extends ASpringSecurityAuthenti
 		{
 			UsernamePasswordUnitAuthenticationToken token = (UsernamePasswordUnitAuthenticationToken) authentication;
 
-			User user = (User) token.getDetails();
+			Account user = (Account) token.getDetails();
 			String unit = token.getUnit();
 
 			super.setUser(user);

@@ -9,7 +9,7 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.security.base.exception.AccessDeniedException;
 import sk.qbsw.core.security.base.exception.AuthenticationException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.model.*;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
@@ -51,7 +51,7 @@ public class OAuthServiceImpl implements OAuthService
 	@Transactional (rollbackFor = CBusinessException.class)
 	public AuthenticationData authenticate (String login, String password, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		User user = authenticationService.login(login, password);
+		Account user = authenticationService.login(login, password);
 
 		if (user == null)
 		{
@@ -70,7 +70,7 @@ public class OAuthServiceImpl implements OAuthService
 	@Transactional (rollbackFor = CBusinessException.class)
 	public GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		User user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
+		Account user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
 		if (user == null)
 		{
@@ -84,7 +84,7 @@ public class OAuthServiceImpl implements OAuthService
 	@Transactional (rollbackFor = CBusinessException.class)
 	public void invalidate (String masterToken, String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		User user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
+		Account user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
 		if (user == null)
 		{
@@ -101,8 +101,8 @@ public class OAuthServiceImpl implements OAuthService
 	{
 		try
 		{
-			User userByMasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip, isIpIgnored);
-			User userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip, isIpIgnored);
+			Account userByMasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip, isIpIgnored);
+			Account userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip, isIpIgnored);
 
 			if (userByMasterToken != null)
 			{

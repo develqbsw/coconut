@@ -1,6 +1,3 @@
-/*
- * Developed by QBSW a.s.
- */
 package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.persistence.dao.IEntityDao;
@@ -10,34 +7,31 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
 /**
- * The Interface AuthenticationParamsDao.
+ * The authentication params dao.
  *
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.6.0
  */
 public interface AuthenticationParamsDao extends IEntityDao<Long, AuthenticationParams>
 {
 	/**
-	 * Find by user id.
+	 * Find one by account id authentication params.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @return the authentication params
-	 * 
-	 * @throws NonUniqueResultException there is no unique result
-	 * @throws NoResultException there is no result
+	 * @throws NonUniqueResultException the non unique result exception
+	 * @throws NoResultException the no result exception
 	 */
-	AuthenticationParams findOneByUserId (Long userId) throws NonUniqueResultException, NoResultException;
+	AuthenticationParams findOneByAccountId (Long accountId) throws NonUniqueResultException, NoResultException;
 
 	/**
-	 * Find only valid authentication params by user id.
+	 * Find one valid by account id authentication params.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @return the authentication params
-	 * 
-	 * @throws NonUniqueResultException there is no unique result
-	 * @throws NoResultException there is no result
+	 * @throws NonUniqueResultException the non unique result exception
+	 * @throws NoResultException the no result exception
 	 */
-	AuthenticationParams findOneValidByUserId (Long userId) throws NonUniqueResultException, NoResultException;
+	AuthenticationParams findOneValidByAccountId (Long accountId) throws NonUniqueResultException, NoResultException;
 }

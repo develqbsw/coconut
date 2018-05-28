@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
@@ -42,7 +42,7 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public AuthenticationTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	public AuthenticationTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
 	{
 		super(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
 	}
@@ -56,7 +56,7 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 		checkMasterToken(persistedMasterToken, ip, isIpIgnored);
 
 		AuthenticationToken authenticationToken = authenticationTokenDao.findByUserAndDevice(userId, deviceId);
-		User user = userDao.findById(userId);
+		Account user = userDao.findById(userId);
 
 		// performs checks
 		if (authenticationToken != null)
@@ -100,7 +100,7 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public User getUserByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	public Account getUserByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		AuthenticationToken persistedToken = authenticationTokenDao.findByTokenAndDeviceId(token, deviceId);
 

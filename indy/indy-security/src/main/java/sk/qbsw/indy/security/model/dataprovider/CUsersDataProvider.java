@@ -9,12 +9,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.UserManagementService;
 
-public class CUsersDataProvider implements IDataProvider<User>
+public class CUsersDataProvider implements IDataProvider<Account>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public class CUsersDataProvider implements IDataProvider<User>
 	/**
 	 * Stored data
 	 */
-	private List<User> users;
+	private List<Account> users;
 
 	private Group group;
 	private Organization organization;
@@ -48,15 +48,15 @@ public class CUsersDataProvider implements IDataProvider<User>
 	}
 
 	@Override
-	public Iterator<? extends User> iterator(long first, long count)
+	public Iterator<? extends Account> iterator(long first, long count)
 	{
 		return this.users.iterator();
 	}
 
 	@Override
-	public IModel<User> model (User request)
+	public IModel<Account> model (Account request)
 	{
-		return new Model<User>(request);
+		return new Model<Account>(request);
 	}
 
 	@Override

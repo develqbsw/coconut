@@ -11,7 +11,7 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.management.service.GroupService;
 
 /**
@@ -79,7 +79,7 @@ public class GroupServiceImpl extends AService implements GroupService
 	 * @see sk.qbsw.security.core.core.service.IGroupService#getByUnitUser(sk.qbsw.security.core.core.model.domain.CUnit, sk.qbsw.security.core.core.model.domain.CUser)
 	 */
 	@Override
-	public List<Group> getByUnitUser (Unit unit, User user)
+	public List<Group> getByUnitUser (Unit unit, Account user)
 	{
 		return groupDao.findByUnitAndUser(unit, user);
 	}

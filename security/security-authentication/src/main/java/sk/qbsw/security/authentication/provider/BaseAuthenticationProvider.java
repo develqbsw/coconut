@@ -15,7 +15,7 @@ import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.service.AuthenticationSecurityService;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * Abstract provider for spring security.
@@ -44,7 +44,7 @@ public abstract class BaseAuthenticationProvider extends AService implements Aut
 		{
 			if (this.supports(authentication.getClass()) && authenticationSecurityService.supports(authentication.getClass()))
 			{
-				User authenticatedUser = authenticationSecurityService.login(authentication);
+				Account authenticatedUser = authenticationSecurityService.login(authentication);
 				retVal = populateAuthentication(authentication, authenticatedUser, transformUserRolesToAuthorities(authenticatedUser.exportRoles()));
 			}
 		}
@@ -64,7 +64,7 @@ public abstract class BaseAuthenticationProvider extends AService implements Aut
 	 * @param authorities the authorities list of authorities
 	 * @return the fully populated authentication token 
 	 */
-	protected abstract Authentication populateAuthentication (@CNotLogged @CNotAuditLogged Authentication authentication, @CNotLogged @CNotAuditLogged User authenticatedUser, @CNotLogged @CNotAuditLogged List<GrantedAuthority> authorities);
+	protected abstract Authentication populateAuthentication (@CNotLogged @CNotAuditLogged Authentication authentication, @CNotLogged @CNotAuditLogged Account authenticatedUser, @CNotLogged @CNotAuditLogged List<GrantedAuthority> authorities);
 
 	/**
 	 * Transform user roles to spring authorities.

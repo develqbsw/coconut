@@ -7,7 +7,7 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * The spring authentication service uses the authentication service to authenticate user.
@@ -28,7 +28,7 @@ public class UsernamePasswordUnitAuthenticationSecurityService extends AService 
 	}
 	
 	@Override
-	public User login (Authentication authentication) throws CSecurityException
+	public Account login (Authentication authentication) throws CSecurityException
 	{
 		//checks token support
 		if (authentication == null || this.supports(authentication.getClass()) == false)

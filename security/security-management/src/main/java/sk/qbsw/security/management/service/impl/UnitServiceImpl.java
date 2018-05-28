@@ -12,7 +12,7 @@ import sk.qbsw.security.core.dao.AddressDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.model.domain.Address;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.management.service.UnitService;
 
 /**
@@ -52,7 +52,7 @@ public class UnitServiceImpl extends AService implements UnitService
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public List<Unit> getAll (User user) throws CSecurityException
+	public List<Unit> getAll (Account user) throws CSecurityException
 	{
 		return unitDao.findByUserId(user.getId());
 	}

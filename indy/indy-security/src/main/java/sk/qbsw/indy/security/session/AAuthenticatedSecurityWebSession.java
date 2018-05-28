@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.User;
 
 /**
  * Abstract session class to create new session objects base on wicket web sessio.
@@ -27,7 +27,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	private Organization organization;
 
 	/** The logged user. */
-	private User user;
+	private Account user;
 
 	/** The organization unit. */
 	private String unit;
@@ -120,7 +120,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	 *
 	 * @return the user
 	 */
-	public User getUser ()
+	public Account getUser ()
 	{
 		return user;
 	}
@@ -130,7 +130,7 @@ public abstract class AAuthenticatedSecurityWebSession extends AAuthenticatedWeb
 	 *
 	 * @param user the new user
 	 */
-	protected void setUser (User user)
+	protected void setUser (Account user)
 	{
 		this.user = user;
 	}

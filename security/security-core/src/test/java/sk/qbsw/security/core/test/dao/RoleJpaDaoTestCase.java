@@ -1,31 +1,29 @@
 package sk.qbsw.security.core.test.dao;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.RoleDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.test.util.DataGenerator;
+
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Checks role dao.
  *
  * @version 1.13.0
  * @since 1.13.0
- * @autor Tomas Lauro
+ * @author Tomas Lauro
  */
 public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 {
@@ -33,9 +31,9 @@ public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 	@Autowired
 	private RoleDao roleDao;
 
-	/** The user dao. */
+	/** The account dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao accountDao;
 
 	/**
 	 * Test initialization.
@@ -45,41 +43,41 @@ public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		super.testInitialization();
 		assertNotNull("Could not find role dao", roleDao);
-		assertNotNull("Could not find user dao", userDao);
+		assertNotNull("Could not find account dao", accountDao);
 	}
 
 	/**
-	 * Test find by user positive.
+	 * Test find by account positive.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserPositive () throws CSecurityException
+	public void testFindByAccountPositive () throws CSecurityException
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
-		List<Role> roles = roleDao.findByUser(user);
+		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE);
+		List<Role> roles = roleDao.findByAccount(account);
 
-		//asserts
+		// asserts
 		assertNotNull("No roles found", roles);
 		Assert.assertEquals("Returns invalid roles count", 1, roles.size());
 		Assert.assertEquals("Returns invalid role", DataGenerator.FIRST_ROLE_CODE, roles.get(0).getCode());
 	}
 
 	/**
-	 * Test find by user negative no user.
+	 * Test find by account negative no account.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserNegativeNoUser () throws CSecurityException
+	public void testFindByAccountNegativeNoUser () throws CSecurityException
 	{
 		initTest();
 
-		roleDao.findByUser(null);
+		roleDao.findByAccount(null);
 	}
 
 	/**
@@ -97,7 +95,7 @@ public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 
 		Role role = roleDao.findOneByCode(DataGenerator.SECOND_ROLE_CODE);
 
-		//asserts
+		// asserts
 		assertNotNull("No roles found", role);
 		Assert.assertEquals("Returns invalid role", DataGenerator.SECOND_ROLE_CODE, role.getCode());
 	}

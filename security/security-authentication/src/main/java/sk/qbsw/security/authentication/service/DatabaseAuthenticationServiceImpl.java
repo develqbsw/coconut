@@ -1,14 +1,10 @@
 package sk.qbsw.security.authentication.service;
 
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
@@ -20,13 +16,12 @@ import sk.qbsw.core.security.base.exception.UserDisabledException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.AuthenticationParams;
-import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.domain.EAuthenticationType;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.*;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
+
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 
 /**
  * Authentication service.
@@ -49,7 +44,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The unit dao. */
 	@Autowired
@@ -115,7 +110,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @see sk.qbsw.winnetou.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String)
 	 */
 	@Transactional (readOnly = true)
-	public User login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
+	public Account login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginWithUnit(login, password, null);
 	}
@@ -124,9 +119,9 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.security.core.core.model.domain.CRole)
 	 */
 	@Transactional (readOnly = true)
-	public User login (String login, @CNotLogged @CNotAuditLogged String password, Role role) throws CSecurityException
+	public Account login (String login, @CNotLogged @CNotAuditLogged String password, Role role) throws CSecurityException
 	{
-		User user = loginWithUnit(login, password, null);
+		Account user = loginWithUnit(login, password, null);
 
 		if (!user.hasRole(role))
 		{
@@ -141,7 +136,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 */
 	@Override
 	@Transactional (readOnly = true)
-	public User login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
+	public Account login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		//checks if the unit exists
 		Unit localUnit = null;
@@ -156,7 +151,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 		}
 
 		//find user
-		User user = loginWithUnit(login, password, localUnit);
+		Account user = loginWithUnit(login, password, localUnit);
 
 		if (user.isInUnit(localUnit))
 		{
@@ -180,11 +175,11 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @throws InvalidUserException the user with given login not found
 	 * @throws InvalidPasswordException the invalid password
 	 */
-	private User loginWithUnit (String login, String password, Unit unit) throws UserDisabledException, InvalidAuthenticationException, InvalidUserException, InvalidPasswordException
+	private Account loginWithUnit (String login, String password, Unit unit) throws UserDisabledException, InvalidAuthenticationException, InvalidUserException, InvalidPasswordException
 	{
 		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
 
-		User user;
+		Account user;
 
 		try
 		{
@@ -215,7 +210,7 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 				throw new InvalidAuthenticationException("Authentication params are invalid");
 			}
 
-			EAuthenticationType authenticationType = userAuthParams.getAuthenticationType();
+			AuthenticationTypes authenticationType = userAuthParams.getAuthenticationType();
 			switch (authenticationType)
 			{
 				case BY_PASSWORD_DIGEST:

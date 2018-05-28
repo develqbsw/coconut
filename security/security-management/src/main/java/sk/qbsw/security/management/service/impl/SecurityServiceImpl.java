@@ -19,11 +19,11 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.LicenseDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.License;
 import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 import sk.qbsw.security.core.service.LicenseGenerator;
 import sk.qbsw.security.management.service.SecurityService;
@@ -64,7 +64,7 @@ public class SecurityServiceImpl extends AService implements SecurityService
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The rules. */
 	@Autowired
@@ -168,7 +168,7 @@ public class SecurityServiceImpl extends AService implements SecurityService
 	@Transactional (readOnly = true)
 	public boolean isLoginFree (String login, Long id)
 	{
-		User user;
+		Account user;
 
 		try
 		{

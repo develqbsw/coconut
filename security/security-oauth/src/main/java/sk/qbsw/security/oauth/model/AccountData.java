@@ -1,6 +1,6 @@
 package sk.qbsw.security.oauth.model;
 
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -41,7 +41,7 @@ public class AccountData implements Serializable
 	 * @param additionalInformation the additional information
 	 * @return the account data
 	 */
-	public static AccountData build (User user, Map<String, Object> additionalInformation)
+	public static AccountData build (Account user, Map<String, Object> additionalInformation)
 	{
 		OrganizationData organizationData = new OrganizationData(user.getOrganization().getId(), user.getOrganization().getName(), user.getOrganization().getCode());
 		if (additionalInformation != null)

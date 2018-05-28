@@ -21,7 +21,7 @@ import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConf
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
 import sk.qbsw.security.authentication.ldap.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;
-import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.security.core.configuration.SecurityCoreConfigurator;
 
 /**
  * Checks Authentication service for ldap.
@@ -60,7 +60,7 @@ public class LdapAuthenticationTestCase
 
 	/** The Authentication Configurator. */
 	@Autowired
-	private IAuthenticationConfigurator authenticationConfigurator;
+	private SecurityCoreConfigurator securityCoreConfigurator;
 
 	/** The mock helper. */
 	@Autowired
@@ -79,7 +79,7 @@ public class LdapAuthenticationTestCase
 		ldapConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
 		ldapConfigurator.setUserObjectClass("inetOrgPerson");
 		ldapConfigurator.setUserOrganizationId((long) 1);
-		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
+		securityCoreConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
 	}
 
 	/**

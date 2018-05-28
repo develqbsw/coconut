@@ -8,10 +8,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.management.service.UserManagementService;
 
-public class CUsersLoadableModel extends LoadableDetachableModel<List<User>>
+public class CUsersLoadableModel extends LoadableDetachableModel<List<Account>>
 {
 	/**
 	 * 
@@ -36,9 +36,9 @@ private Role role;
 	}
 
 	@Override
-	protected List<User> load ()
+	protected List<Account> load ()
 	{
-		List<User> users;
+		List<Account> users;
 
 		if (this.organization == null)
 		{

@@ -20,18 +20,12 @@ import sk.qbsw.security.core.dao.LicenseDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.core.dao.RoleDao;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.dao.UserUnitGroupDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.AccountUnitGroupDao;
+import sk.qbsw.security.core.model.domain.*;
 import sk.qbsw.security.core.model.domain.Address;
-import sk.qbsw.security.core.model.domain.AuthenticationParams;
-import sk.qbsw.security.core.model.domain.BlockedLogin;
-import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.License;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.domain.UserUnitGroup;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.jmx.CLicensingRules;
 
 /**
@@ -50,7 +44,7 @@ public class DataGenerator
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The org dao. */
 	@Autowired
@@ -74,7 +68,7 @@ public class DataGenerator
 
 	/** The cross user unit group dao. */
 	@Autowired
-	private UserUnitGroupDao crossUserUnitGroupDao;
+	private AccountUnitGroupDao crossUserUnitGroupDao;
 
 	/** The Constant ORGANIZATION_CODE. */
 	public static final String ORGANIZATION_CODE = "unit_test_organization";
@@ -124,31 +118,31 @@ public class DataGenerator
 	/** The Constant SECOND_UNIT_CODE. */
 	public static final String SECOND_UNIT_CODE = "unit_test_unit_2";
 
-	/** The Constant USER_CREATED. */
+	/** The Constant ACCOUNT_CREATED. */
 	public static final String USER_CREATED = "unit_test_user_created";
 
-	/** The Constant USER_WITH_DEFAULT_UNIT_CODE. */
+	/** The Constant ACCOUNT_WITH_DEFAULT_UNIT_CODE. */
 	public static final String USER_WITH_DEFAULT_UNIT_CODE = "unit_test_user_with_default_unit";
 
-	/** The Constant USER_WITHOUT_DEFAULT_UNIT_CODE. */
+	/** The Constant ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE. */
 	public static final String USER_WITHOUT_DEFAULT_UNIT_CODE = "unit_test_user_without_default_unit";
 
-	/** The Constant USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP. */
+	/** The Constant ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP. */
 	public static final String USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP = "unit_test_user_with_default_unit_no_group";
 
-	/** The Constant USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP. */
+	/** The Constant ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP. */
 	public static final String USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP = "unit_test_user_without_default_unit_no_group";
 
-	/** The Constant USER_WITHOUT_PASSWORD. */
+	/** The Constant ACCOUNT_WITHOUT_PASSWORD. */
 	public static final String USER_WITHOUT_PASSWORD = "unit_test_user_without_password";
 
-	/** The Constant USER_ENABLED_IN_DISABLED_ORGANIZATION. */
+	/** The Constant ACCOUNT_ENABLED_IN_DISABLED_ORGANIZATION. */
 	public static final String USER_ENABLED_IN_DISABLED_ORGANIZATION = "unit_test_user_enabled_in_disabled_organization";
 
-	/** The Constant USER_DISABLED_IN_DISABLED_ORGANIZATION. */
+	/** The Constant ACCOUNT_DISABLED_IN_DISABLED_ORGANIZATION. */
 	public static final String USER_DISABLED_IN_DISABLED_ORGANIZATION = "unit_test_user_disabled_in_disabled_organization";
 
-	/** The Constant USER_DISABLED_IN_ENABLED_ORGANIZATION. */
+	/** The Constant ACCOUNT_DISABLED_IN_ENABLED_ORGANIZATION. */
 	public static final String USER_DISABLED_IN_ENABLED_ORGANIZATION = "unit_test_user_disabled_in_enabled_organization";
 
 	/** The Constant TEST_IP_ONE. */
@@ -203,13 +197,13 @@ public class DataGenerator
 		AuthenticationParams authenticationParamDisabledInEnabledOrganization = createAuthenticationParams(USER_DISABLED_IN_ENABLED_ORGANIZATION);
 
 		//users
-		User userWithDefaultUnit = createUser(USER_WITH_DEFAULT_UNIT_CODE);
-		User userWithoutDefaultUnit = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE);
-		User userWithDefaultUnitNoGroup = createUser(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
-		User userWithoutDefaultUnitNoGroup = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
-		User userEnabledInDisabledOrganization = createUser(USER_ENABLED_IN_DISABLED_ORGANIZATION);
-		User userDisabledInDisabledOrganization = createUser(USER_DISABLED_IN_DISABLED_ORGANIZATION, false);
-		User userDisabledInEnabledOrganization = createUser(USER_DISABLED_IN_ENABLED_ORGANIZATION, false);
+		Account userWithDefaultUnit = createUser(USER_WITH_DEFAULT_UNIT_CODE);
+		Account userWithoutDefaultUnit = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE);
+		Account userWithDefaultUnitNoGroup = createUser(USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
+		Account userWithoutDefaultUnitNoGroup = createUser(USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
+		Account userEnabledInDisabledOrganization = createUser(USER_ENABLED_IN_DISABLED_ORGANIZATION);
+		Account userDisabledInDisabledOrganization = createUser(USER_DISABLED_IN_DISABLED_ORGANIZATION, false);
+		Account userDisabledInEnabledOrganization = createUser(USER_DISABLED_IN_ENABLED_ORGANIZATION, false);
 
 		//license
 		License<CLicensingRules> licenseOne = createLicense(LICENSE_KEY_ONE, true, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
@@ -376,9 +370,9 @@ public class DataGenerator
 	 * @throws CSecurityException the c security exception
 	 * @throws CBusinessException the c business exception
 	 */
-	private void setUserToGroup (User user, Group group, Unit unit) throws CSecurityException, CBusinessException
+	private void setUserToGroup (Account user, Group group, Unit unit) throws CSecurityException, CBusinessException
 	{
-		UserUnitGroup userUnitGroupRecord = new UserUnitGroup();
+		AccountUnitGroup userUnitGroupRecord = new AccountUnitGroup();
 		userUnitGroupRecord.setUser(user);
 		userUnitGroupRecord.setGroup(group);
 		userUnitGroupRecord.setUnit(unit);
@@ -485,7 +479,7 @@ public class DataGenerator
 	 * @param code the code
 	 * @return the c user
 	 */
-	public User createUser (String code)
+	public Account createUser (String code)
 	{
 		return createUser(code, true);
 	}
@@ -497,9 +491,9 @@ public class DataGenerator
 	 * @param enabled the enabled
 	 * @return the c user
 	 */
-	public User createUser (String code, boolean enabled)
+	public Account createUser (String code, boolean enabled)
 	{
-		User user = new User();
+		Account user = new Account();
 		user.setLogin(code);
 		user.setName(code);
 		user.setSurname(code);

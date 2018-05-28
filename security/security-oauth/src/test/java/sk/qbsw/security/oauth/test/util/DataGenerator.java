@@ -38,7 +38,7 @@ public class DataGenerator
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The org dao. */
 	@Autowired
@@ -66,7 +66,7 @@ public class DataGenerator
 
 	/** The cross user unit group dao. */
 	@Autowired
-	private UserUnitGroupDao crossUserUnitGroupDao;
+	private AccountUnitGroupDao crossUserUnitGroupDao;
 
 	/** The master token dao. */
 	@Autowired
@@ -140,8 +140,8 @@ public class DataGenerator
 		AuthenticationParams secondUserAuthenticationParams = createAuthenticationParams(SECOND_USER, "1111", null, null);
 
 		// users
-		User firstUser = createUser(FIRST_USER);
-		User secondUser = createUser(SECOND_USER);
+		Account firstUser = createUser(FIRST_USER);
+		Account secondUser = createUser(SECOND_USER);
 
 		// license
 		License<CLicensingRules> licenseOne = createLicense(LICENSE_KEY_ONE, true, BigDecimal.ONE, "tax id one", Calendar.getInstance(), Calendar.getInstance());
@@ -246,9 +246,9 @@ public class DataGenerator
 	 * @throws CSecurityException the c security exception
 	 * @throws CBusinessException the c business exception
 	 */
-	private void setUserToGroup (User user, Group group, Unit unit) throws CSecurityException, CBusinessException
+	private void setUserToGroup (Account user, Group group, Unit unit) throws CSecurityException, CBusinessException
 	{
-		UserUnitGroup userUnitGroupRecord = new UserUnitGroup();
+		AccountUnitGroup userUnitGroupRecord = new AccountUnitGroup();
 		userUnitGroupRecord.setUser(user);
 		userUnitGroupRecord.setGroup(group);
 		userUnitGroupRecord.setUnit(unit);
@@ -355,7 +355,7 @@ public class DataGenerator
 	 * @param code the code
 	 * @return the c user
 	 */
-	public User createUser (String code)
+	public Account createUser (String code)
 	{
 		return createUser(code, true);
 	}
@@ -367,9 +367,9 @@ public class DataGenerator
 	 * @param enabled the enabled
 	 * @return the c user
 	 */
-	public User createUser (String code, boolean enabled)
+	public Account createUser (String code, boolean enabled)
 	{
-		User user = new User();
+		Account user = new Account();
 		user.setLogin(code);
 		user.setName(code);
 		user.setSurname(code);

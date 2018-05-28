@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
 
 /**
  * Service for groups management.
@@ -57,7 +57,7 @@ public interface GroupService extends Serializable
 	 * @param user
 	 * @return
 	 */
-	List<Group> getByUnitUser (Unit unit, User user);
+	List<Group> getByUnitUser (Unit unit, Account user);
 
 	/**
 	 * Gets the by code and unit.

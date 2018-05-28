@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.core.dao.BlockedLoginDao;
-import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.security.core.configuration.SecurityCoreConfigurator;
 import sk.qbsw.security.management.service.LoginBlockingService;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 import sk.qbsw.security.management.test.util.DataGenerator;
@@ -55,7 +55,7 @@ public class LoginBlockingTestCase
 
 	/** The Authentication Configurator. */
 	@Autowired
-	private IAuthenticationConfigurator authenticationConfigurator;
+	private SecurityCoreConfigurator securityCoreConfigurator;
 
 	/**
 	 * Inits the test case.
@@ -63,7 +63,7 @@ public class LoginBlockingTestCase
 	@Before
 	public void initTestCase ()
 	{
-		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
+		securityCoreConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
 	}
 
 	/**

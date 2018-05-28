@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
@@ -41,7 +41,7 @@ abstract class BaseTokenService
 	/**
 	 * The User dao.
 	 */
-	final UserDao userDao;
+	final AccountDao userDao;
 
 	/**
 	 * The Id generator service.
@@ -62,7 +62,7 @@ abstract class BaseTokenService
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	BaseTokenService (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	BaseTokenService (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
 	{
 		this.masterTokenDao = masterTokenDao;
 		this.authenticationTokenDao = authenticationTokenDao;

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.test.util.DataGenerator;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * The database login task for test.
@@ -31,7 +31,7 @@ class DatabaseLoginTask extends LoginTask implements Runnable
 	 * @see sk.qbsw.code.security.test.performance.task.CLoginTask#authenticate()
 	 */
 	@Override
-	protected User authenticate () throws CSecurityException
+	protected Account authenticate () throws CSecurityException
 	{
 		return authenticationService.login(LOGIN, PASSWORD);
 	}

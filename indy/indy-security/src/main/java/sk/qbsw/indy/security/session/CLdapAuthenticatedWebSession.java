@@ -10,7 +10,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
 import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * Session of the logged LDAP user.
@@ -85,7 +85,7 @@ public class CLdapAuthenticatedWebSession extends AIndySecurityAuthenticatedWebS
 
 		try
 		{
-			User user = null;
+			Account user = null;
 
 			if (token.getUnit() != null)
 			{

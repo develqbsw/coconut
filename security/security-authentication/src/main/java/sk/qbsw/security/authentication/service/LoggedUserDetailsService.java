@@ -23,11 +23,11 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.model.spring.LoggedUserDetails;
 import sk.qbsw.security.core.dao.RoleDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.License;
 import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.User;
 
 
 /**
@@ -50,7 +50,7 @@ public class LoggedUserDetailsService extends AService implements UserDetailsSer
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/**
 	 * Load user by username.
@@ -66,7 +66,7 @@ public class LoggedUserDetailsService extends AService implements UserDetailsSer
 	{
 		try
 		{
-			User user = userDao.findOneByLogin(username);
+			Account user = userDao.findOneByLogin(username);
 
 			return buildUserFromEntity(user);
 		}
@@ -83,7 +83,7 @@ public class LoggedUserDetailsService extends AService implements UserDetailsSer
 	 * @return the user
 	 * @throws CSecurityException throws if the entity is null
 	 */
-	private org.springframework.security.core.userdetails.User buildUserFromEntity (User entity) throws CSecurityException
+	private org.springframework.security.core.userdetails.User buildUserFromEntity (Account entity) throws CSecurityException
 	{
 		String username = entity.getLogin();
 		String password = entity.getPassword();

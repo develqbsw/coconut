@@ -9,7 +9,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * The database login task for test.
@@ -49,7 +49,7 @@ class LdapLoginTask extends LoginTask implements Runnable
 	 * @see sk.qbsw.code.security.test.performance.task.CLoginTask#authenticate()
 	 */
 	@Override
-	protected User authenticate () throws CSecurityException
+	protected Account authenticate () throws CSecurityException
 	{
 		if (Math.random() > 0.5)
 		{

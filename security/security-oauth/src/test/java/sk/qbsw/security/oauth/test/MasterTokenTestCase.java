@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.oauth.test.util.DataGenerator;
@@ -33,7 +33,7 @@ public class MasterTokenTestCase
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The master token service. */
 	@Autowired
@@ -54,7 +54,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.SECOND_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.SECOND_USER);
 		GeneratedTokenData tokenData = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
 
 		Assert.assertNotNull(tokenData);
@@ -99,7 +99,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		GeneratedTokenData tokenData = masterTokenService.generateMasterToken(user.getId(), DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE);
 
 		Assert.assertNotNull(tokenData);
@@ -119,7 +119,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		masterTokenService.revokeMasterToken(user.getId(), DataGenerator.MASTER_TOKEN);
 	}
 
@@ -134,7 +134,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		masterTokenService.revokeMasterToken(user.getId(), "123456789");
 	}
 
@@ -150,7 +150,7 @@ public class MasterTokenTestCase
 	{
 		initTest();
 
-		User user = masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
+		Account user = masterTokenService.getUserByMasterToken(DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(user);
 	}

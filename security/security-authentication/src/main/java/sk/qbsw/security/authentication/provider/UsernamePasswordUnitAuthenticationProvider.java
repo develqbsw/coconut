@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.authentication.service.AuthenticationSecurityService;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * Provider for spring security.
@@ -33,7 +33,7 @@ public class UsernamePasswordUnitAuthenticationProvider extends BaseAuthenticati
 	}
 
 	@Override
-	protected Authentication populateAuthentication (Authentication authentication, User authenticatedUser, List<GrantedAuthority> authorities)
+	protected Authentication populateAuthentication (Authentication authentication, Account authenticatedUser, List<GrantedAuthority> authorities)
 	{
 		//get supported authentication
 		UsernamePasswordUnitAuthenticationToken usernameAuthentication = (UsernamePasswordUnitAuthenticationToken) authentication;

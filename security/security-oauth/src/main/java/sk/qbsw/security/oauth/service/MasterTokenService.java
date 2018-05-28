@@ -1,7 +1,7 @@
 package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 
@@ -46,7 +46,7 @@ public interface MasterTokenService
 	 * @return the user by master token
 	 * @throws CBusinessException the c business exception
 	 */
-	User getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
+	Account getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Find expired master tokens list.

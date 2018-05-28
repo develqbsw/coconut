@@ -9,8 +9,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-	<context:component-scan base-package="sk.qbsw.security">
+	<bean class="sk.qbsw.security.core.configuration.SecurityCoreConfiguration"/>
+
+	<context:component-scan base-package="sk.qbsw.security.core">
 	    <!-- <context:exclude-filter type="regex" expression="sk\.qbsw\.core\.security\.service\.CDatabaseAuthenticationService"/> -->
 	</context:component-scan>
-	
+
 </beans>

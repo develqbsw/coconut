@@ -13,12 +13,12 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.dao.UserUnitGroupDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.AccountUnitGroupDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.domain.UserUnitGroup;
+import sk.qbsw.security.core.model.domain.AccountUnitGroup;
 import sk.qbsw.security.management.service.UserPermissionManagementService;
 
 /**
@@ -37,7 +37,7 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The group dao. */
 	@Autowired
@@ -49,7 +49,7 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 
 	/** The cross user unit group dao. */
 	@Autowired
-	private UserUnitGroupDao crossUserUnitGroupDao;
+	private AccountUnitGroupDao crossUserUnitGroupDao;
 
 
 	/* (non-Javadoc)
@@ -65,7 +65,7 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 		}
 
 		//get persisted objects
-		User user = userDao.findById(userId);
+		Account user = userDao.findById(userId);
 		Group group = groupDao.findById(groupId);
 		Unit unit = null;
 
@@ -100,7 +100,7 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 	 */
 	@Override
 	@Transactional
-	public void unsetUserFromGroup (User user, Group group, Unit unit) throws CSecurityException
+	public void unsetUserFromGroup (Account user, Group group, Unit unit) throws CSecurityException
 	{
 		//validates input objects
 		if (user == null || user.getId() == null || group == null || group.getId() == null)
@@ -116,13 +116,13 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 		removeUserUnitGroup(user, group, unit);
 	}
 
-	private void removeUserUnitGroup (User user, Group group, Unit unit)
+	private void removeUserUnitGroup (Account user, Group group, Unit unit)
 	{
 		//find user <-> group mapping records - the list should contains only one record, but the method handles the case if not
-		List<UserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, group);
+		List<AccountUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, group);
 
 		//remove records
-		for (UserUnitGroup userUnitGroupRecord : userUnitGroupRecords)
+		for (AccountUnitGroup userUnitGroupRecord : userUnitGroupRecords)
 		{
 			if (user.getxUserUnitGroups().contains(userUnitGroupRecord))
 			{
@@ -137,7 +137,7 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 	 */
 	@Override
 	@Transactional
-	public void unsetUserFromGroup (User user, Group group) throws CSecurityException
+	public void unsetUserFromGroup (Account user, Group group) throws CSecurityException
 	{
 		unsetUserFromGroup(user, group, null);
 	}
@@ -155,7 +155,7 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 		}
 
 		//get persisted objects
-		User user = userDao.findById(userId);
+		Account user = userDao.findById(userId);
 		Group group = groupDao.findById(groupId);
 		Unit unit = null;
 
@@ -191,10 +191,10 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (User user, Group group, Unit unit) throws CBusinessException
+	public void setUserToGroup (Account user, Group group, Unit unit) throws CBusinessException
 	{
 		//validates input objects
-		if (!User.isKnown(user) || !Group.isKnown(group))
+		if (!Account.isKnown(user) || !Group.isKnown(group))
 		{
 			throw new CSecurityException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -207,7 +207,7 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 		boolean canBeAdded = canBeGroupUnitAssignedToUser(user, group, unit);
 		if (canBeAdded)
 		{
-			UserUnitGroup userUnitGroupRecord = new UserUnitGroup();
+			AccountUnitGroup userUnitGroupRecord = new AccountUnitGroup();
 			userUnitGroupRecord.setUser(user);
 			userUnitGroupRecord.setGroup(group);
 			userUnitGroupRecord.setUnit(unit);
@@ -224,17 +224,17 @@ public class UserPermissionManagementServiceImpl extends AService implements Use
 	 */
 	@Override
 	@Transactional
-	public void setUserToGroup (User user, Group group) throws CBusinessException
+	public void setUserToGroup (Account user, Group group) throws CBusinessException
 	{
 		setUserToGroup(user, group, null);
 	}
 
-	private boolean canBeGroupUnitAssignedToUser (User user, Group group, Unit unit)
+	private boolean canBeGroupUnitAssignedToUser (Account user, Group group, Unit unit)
 	{
 		//find all groups assigned to user
-		List<UserUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, null);
+		List<AccountUnitGroup> userUnitGroupRecords = crossUserUnitGroupDao.findByUserAndUnitAndGroup(user, unit, null);
 
-		for (UserUnitGroup userUnitGroup : userUnitGroupRecords)
+		for (AccountUnitGroup userUnitGroup : userUnitGroupRecords)
 		{
 			if (group.equals(userUnitGroup.getGroup()))
 			{

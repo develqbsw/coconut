@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
@@ -42,7 +42,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public MasterTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, UserDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	public MasterTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
 	{
 		super(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
 	}
@@ -52,7 +52,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	public GeneratedTokenData generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException
 	{
 		MasterToken token = masterTokenDao.findByUserAndDevice(userId, deviceId);
-		User user;
+		Account user;
 		try
 		{
 			user = userDao.findById(userId);
@@ -99,7 +99,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public User getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	public Account getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		MasterToken persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);
 

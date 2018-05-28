@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.UnitService;
 import sk.qbsw.security.management.service.UserManagementService;
 import sk.qbsw.security.management.test.util.DataGenerator;
@@ -84,8 +84,8 @@ public class UnitTestCase
 	{
 		initTest();
 
-		User userWithDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		User userWithoutDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		Account userWithDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Account userWithoutDefaultUnit = userService.getUserByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		//first user
 		List<Unit> units = unitService.getAll(userWithDefaultUnit);

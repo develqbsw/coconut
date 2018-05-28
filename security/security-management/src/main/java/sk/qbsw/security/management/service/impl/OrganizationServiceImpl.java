@@ -10,11 +10,11 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.AddressDao;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Address;
 import sk.qbsw.security.core.model.domain.License;
 import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.service.LicenseGenerator;
 import sk.qbsw.security.management.service.OrganizationService;
 
@@ -41,7 +41,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The group dao. */
 	@Autowired
@@ -56,7 +56,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional
-	public void registerNewOrganization(Organization organization, User user, String group)
+	public void registerNewOrganization(Organization organization, Account user, String group)
 	{
 		organization.setFlagEnabled(true);
 		organizationDao.update(organization);
@@ -71,7 +71,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional
-	public void registerNewOrganization(Organization organization, User user)
+	public void registerNewOrganization(Organization organization, Account user)
 	{
 		organization.setFlagEnabled(true);
 		organizationDao.update(organization);
@@ -210,7 +210,7 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 */
 	@Override
 	@Transactional(readOnly = false)
-	public void registerOrganization(Organization org, User manager)
+	public void registerOrganization(Organization org, Account manager)
 	{
 		// modify organization
 		org.setFlagEnabled(Boolean.TRUE);

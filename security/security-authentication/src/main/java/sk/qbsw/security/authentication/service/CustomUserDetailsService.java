@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * Service for getting user details
@@ -33,7 +33,7 @@ public class CustomUserDetailsService extends AService implements UserDetailsSer
 
 	/** The user service. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	@PostConstruct
 	private void postCondtruct ()
@@ -48,7 +48,7 @@ public class CustomUserDetailsService extends AService implements UserDetailsSer
 	@Transactional (readOnly = true)
 	public UserDetails loadUserByUsername (String username)
 	{
-		User user;
+		Account user;
 
 		try
 		{
@@ -74,7 +74,7 @@ public class CustomUserDetailsService extends AService implements UserDetailsSer
 	 * @param user
 	 * @return
 	 */
-	protected UserDetails constructUserDetails (User user)
+	protected UserDetails constructUserDetails (Account user)
 	{
 		//lazy load of special params
 		//they will be needed

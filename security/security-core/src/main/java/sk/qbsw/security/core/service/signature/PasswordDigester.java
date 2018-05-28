@@ -1,49 +1,49 @@
 package sk.qbsw.security.core.service.signature;
 
 /**
- * Password digester interface 
+ * Password digester interface
+ *
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author Marek Martinkovic
- * 
- * @version 1.14.3
+ * @version 1.19.0
  * @since 1.3.0
  */
 public interface PasswordDigester
 {
 	/**
 	 * Generates password digest
+	 *
 	 * @param password password to digest
 	 * @return generated digest
 	 */
-	public String generateDigest (String password);
+	String generateDigest (String password);
 
 	/**
 	 * Check password.
 	 *
-	 * @param password the password
-	 * @param digest the digest
+	 * @param plainPassword the plain password
+	 * @param encryptedPassword the encrypted password
 	 * @return true, if successful
 	 */
-	public boolean checkPassword (String plainPassword, String encryptedPassword);
+	boolean checkPassword (String plainPassword, String encryptedPassword);
 
 	/**
-	 * Generates password digest
-	 * fall back into legacy code, if custom auth scheme is in configurator
+	 * Generates password digest fall back into legacy code, if custom auth scheme is in configurator
+	 *
 	 * @param login the login
 	 * @param password password to digest
 	 * @return generated digest
 	 */
-	public String generateDigest (String login, String password);
+	String generateDigest (String login, String password);
 
 	/**
-	 * Check password.
-	 * fall back into legacy code, if custom auth scheme is in configurator
+	 * Check password. fall back into legacy code, if custom auth scheme is in configurator
 	 *
-	 * @param login the login
-	 * @param password the password
-	 * @param digest the digest
+	 * @param plainLogin the plain login
+	 * @param plainPassword the plain password
+	 * @param encryptedPassword the encrypted password
 	 * @return true, if successful
 	 */
-	public boolean checkPassword (String plainLogin, String plainPassword, String encryptedPassword);
+	boolean checkPassword (String plainLogin, String plainPassword, String encryptedPassword);
 }

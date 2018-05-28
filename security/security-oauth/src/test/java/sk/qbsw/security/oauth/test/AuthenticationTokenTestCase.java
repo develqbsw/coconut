@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.test.util.DataGenerator;
@@ -33,7 +33,7 @@ public class AuthenticationTokenTestCase
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/** The authentication token service. */
 	@Autowired
@@ -54,7 +54,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(tokenData);
@@ -100,7 +100,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(tokenData);
@@ -120,7 +120,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.generateAuthenticationToken(user.getId(), "123456", DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 	}
 
@@ -135,7 +135,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, "123456", IP_IGNORED);
 	}
 
@@ -150,7 +150,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.revokeAuthenticationToken(user.getId(), DataGenerator.AUTHENTICATION_TOKEN);
 	}
 
@@ -165,7 +165,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.revokeAuthenticationToken(user.getId(), "123456");
 	}
 
@@ -181,7 +181,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
+		Account user = authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(user);
 	}

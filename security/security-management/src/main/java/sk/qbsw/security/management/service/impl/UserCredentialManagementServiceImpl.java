@@ -13,10 +13,10 @@ import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.PasswordFormatException;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.AuthenticationParams;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
+import sk.qbsw.security.core.configuration.SecurityCoreConfigurator;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
 import sk.qbsw.security.management.service.UserCredentialManagementService;
 
@@ -39,7 +39,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserCredentialManagementServiceImpl.class);
 
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	@Autowired
 	private AuthenticationParamsDao authenticationParamsDao;
@@ -48,7 +48,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	private PasswordDigester digester;
 
 	@Autowired
-	private IAuthenticationConfigurator authenticationConfigurator;
+	private SecurityCoreConfigurator securityCoreConfigurator;
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
@@ -56,7 +56,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(password);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		setAuthParamsDigestedPassword(authParams, user.getLogin(), password);
@@ -70,7 +70,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(newPassword);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateCurrentPassword(user.getLogin(), plainCurrentPassword, authParams);
@@ -85,7 +85,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(password);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		setAuthParamsDigestedPassword(authParams, user.getLogin(), password);
@@ -100,7 +100,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(newPassword);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateCurrentPassword(user.getLogin(), plainCurrentPassword, authParams);
@@ -116,7 +116,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(password);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateMail(email, user.getEmail());
@@ -131,7 +131,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(newPassword);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateMail(email, user.getEmail());
@@ -147,7 +147,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(password);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateMail(email, user.getEmail());
@@ -163,7 +163,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	{
 		validatePassword(newPassword);
 
-		User user = findUser(login);
+		Account user = findUser(login);
 		AuthenticationParams authParams = findOrCreateAuthParams(user);
 
 		validateMail(email, user.getEmail());
@@ -178,7 +178,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	@Transactional (rollbackFor = CBusinessException.class)
 	public void changeLogin (Long userId, String login)
 	{
-		User user = userDao.findById(userId);
+		Account user = userDao.findById(userId);
 		user.setLogin(login);
 
 		userDao.update(user);
@@ -187,9 +187,9 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 	@Override
 	public void validatePassword (@CNotLogged @CNotAuditLogged String password) throws PasswordFormatException
 	{
-		if (authenticationConfigurator.getPasswordPattern() != null)
+		if (securityCoreConfigurator.getPasswordPattern() != null)
 		{
-			Matcher matcher = Pattern.compile(authenticationConfigurator.getPasswordPattern()).matcher(password);
+			Matcher matcher = Pattern.compile(securityCoreConfigurator.getPasswordPattern()).matcher(password);
 
 			if (!matcher.matches())
 			{
@@ -198,7 +198,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		}
 	}
 
-	private User findUser (String login) throws CSecurityException
+	private Account findUser (String login) throws CSecurityException
 	{
 		try
 		{
@@ -211,7 +211,7 @@ public class UserCredentialManagementServiceImpl extends AService implements Use
 		}
 	}
 
-	private AuthenticationParams findOrCreateAuthParams (User user)
+	private AuthenticationParams findOrCreateAuthParams (Account user)
 	{
 		try
 		{

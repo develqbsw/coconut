@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.GroupService;
 import sk.qbsw.security.management.test.util.DataGenerator;
 
@@ -49,7 +49,7 @@ public class GroupTestCase
 	private UnitDao unitDao;
 
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/**
 	 * Test initialization.
@@ -91,12 +91,12 @@ public class GroupTestCase
 		initTest();
 
 		Unit unit1 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
-		User user2 = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		Account user2 = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
 
 		List<Group> groups = groupService.getByUnitUser(unit1, user2);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
 
-		User user1 = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Account user1 = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
 		groups = groupService.getByUnitUser(unit1, user1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 

@@ -13,7 +13,7 @@
     <context:component-scan base-package="sk.qbsw.security"/>
     <context:component-scan base-package="sk.qbsw.core.configuration"/>
 
-    <bean id="userDao" class="sk.qbsw.security.core.dao.jpa.UserJpaDao"/>
+    <bean id="userDao" class="sk.qbsw.security.core.dao.AccountJpaDao"/>
     <bean id="authValidationConfiguration" class="sk.qbsw.security.oauth.test.configuration.OAuthValidationTestConfigurationImpl" />
     <bean id="masterTokenDao" class="sk.qbsw.security.oauth.dao.jpa.MasterTokenJpaDaoImpl"/>
     <bean id="authenticationTokenDao" class="sk.qbsw.security.oauth.dao.jpa.AuthenticationTokenJpaDaoImpl"/>

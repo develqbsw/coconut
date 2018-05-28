@@ -13,9 +13,9 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.BlockedLoginDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.BlockedLogin;
-import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.management.service.LoginBlockingService;
 
 /**
@@ -42,7 +42,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#init(int)
@@ -179,7 +179,7 @@ public class LoginBlockingServiceImpl extends AService implements LoginBlockingS
 	 * @throws CSecurityException throws if user doesn't exists
 	 * @throws CSystemException throws if there is any other error
 	 */
-	private User getUserByLogin (String login, String errorMessage) throws CSecurityException
+	private Account getUserByLogin (String login, String errorMessage) throws CSecurityException
 	{
 		try
 		{

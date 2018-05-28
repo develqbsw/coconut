@@ -15,10 +15,10 @@ import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.InvalidUserException;
 import sk.qbsw.security.core.dao.RoleDao;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Role;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * The database authorization service.
@@ -50,7 +50,7 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/* (non-Javadoc)
 	 * @see sk.qbsw.security.core.core.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.security.core.core.model.domain.CRole, java.lang.String, java.lang.String)
@@ -60,7 +60,7 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 	public void checkAccessRights (String login, Role role, String unit, String category) throws CSecurityException
 	{
 		Unit localUnit = getUnitByName(unit);
-		User user;
+		Account user;
 		try
 		{
 			user = getUserByLoginAndUnit(login, localUnit);
@@ -139,9 +139,9 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 	 * @throws NoResultException there is no result
 	 * @throws CSecurityException the login is null
 	 */
-	private User getUserByLoginAndUnit (String login, Unit unit) throws CSecurityException
+	private Account getUserByLoginAndUnit (String login, Unit unit) throws CSecurityException
 	{
-		User user;
+		Account user;
 
 		if (unit == null)
 		{

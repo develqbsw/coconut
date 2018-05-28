@@ -11,8 +11,8 @@ import sk.qbsw.core.base.logging.annotation.CLogged;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.security.authentication.model.spring.CustomUserDetails;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 
 import javax.persistence.NoResultException;
 
@@ -28,7 +28,7 @@ public class PreAuthenticatedUserDetailsService implements AuthenticationUserDet
 {
 	/** The user service. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.AuthenticationUserDetailsService#loadUserDetails(org.springframework.security.core.Authentication)
@@ -43,10 +43,10 @@ public class PreAuthenticatedUserDetailsService implements AuthenticationUserDet
 			throw new UsernameNotFoundException("The user not found");
 		}
 
-		User persistedUser;
+		Account persistedUser;
 		try
 		{
-			persistedUser = userDao.findOneByLogin( ((User) token.getPrincipal()).getLogin());
+			persistedUser = userDao.findOneByLogin( ((Account) token.getPrincipal()).getLogin());
 		}
 		catch (NoResultException | CSecurityException ex)
 		{
