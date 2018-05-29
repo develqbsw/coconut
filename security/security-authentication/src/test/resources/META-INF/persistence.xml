@@ -13,7 +13,6 @@
 		<class>sk.qbsw.security.core.model.domain.Unit</class>
 		<class>sk.qbsw.security.core.model.domain.AuthenticationParams</class>
 		<class>sk.qbsw.security.core.model.domain.AccountUnitGroup</class>
-		<class>sk.qbsw.security.core.model.domain.Address</class>
 		<class>sk.qbsw.security.core.model.domain.BlockedLogin</class>
 		
 		<properties>

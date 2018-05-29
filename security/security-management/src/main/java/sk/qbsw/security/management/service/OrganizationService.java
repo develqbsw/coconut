@@ -1,125 +1,96 @@
 package sk.qbsw.security.management.service;
 
+import sk.qbsw.core.base.exception.CBusinessException;
+import sk.qbsw.core.base.state.ActivityStates;
+import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.model.domain.Organization;
+
 import java.util.List;
 
-import sk.qbsw.security.core.model.domain.Address;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Account;
-
 /**
- * The service for a organizations.
- * 
+ * The organization service.
+ *
  * @author Tomas Leken
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.0.0
  */
 public interface OrganizationService
 {
-
 	/**
-	 * Disable organization.
+	 * Create organization.
 	 *
-	 * @param org the org
-	 */
-	public void disableOrganization(Organization org);
-
-	/**
-	 * Enable organization.
-	 *
-	 * @param org the org
-	 */
-	public void enableOrganization(Organization org);
-
-	/**
-	 * Find by name and return NULL if organization not exist - NOT exeption.
-	 *
-	 * @param longitude - longitude of mobile position
-	 * @param latitude - latitude of mobile position
-	 * @return organization or null if organization not exist
-
-	 * @deprecated the organization name is no longer unique
-	 */
-	@Deprecated
-	public abstract Organization getOrganizationByGPS(Float longitude, Float latitude);
-	
-	/**
-	 * Gets the organization by name.
-	 *
+	 * @param code the code
 	 * @param name the name
-	 * @return the organizations by name
+	 * @param email the email
+	 * @param state the state
+	 * @return the organization
 	 */
-	public abstract List<Organization> getOrganizationByName (String name);
-
-	/**
-	 * Find organization by id.
-	 *
-	 * @param id id of organization
-	 * @return organization
-	 */
-	public abstract Organization getOrganizationById(Long id);
-
-	/**
-	 * Find by name and return NULL if organization not exist - NOT exeption.
-	 *
-	 * @param name the name
-	 * @return organization or null if organization not exist
-	 */
-	public abstract Organization getOrganizationByNameNull(String name);
-
-	/**
-	 * Find all organizations.
-	 *
-	 * @return list of organizations
-	 */
-	public abstract List<Organization> getOrganizations();
-
-	/**
-	 * Find all organizations by name.
-	 *
-	 * @return list of organizations or empty list if there is no such organization
-	 */
-	public abstract List<Organization> getOrganizations(String name);
-
-	/**
-	 * Register new organization and admin user with "ADMINISTRATOR" group
-	 * 	
-	 *
-	 * @param organization the organization
-	 * @param user the user
-	 */
-	public abstract void registerNewOrganization(Organization organization, Account user);
-
-	/**
-	 * Register new organization and admin user with selected group.
-	 *
-	 * @param organization the organization
-	 * @param user the user
-	 * @param group the group
-	 */
-	public abstract void registerNewOrganization(Organization organization, Account user, String group);
+	Organization create (String code, String name, String email, ActivityStates state);
 
 	/**
 	 * Register organization.
 	 *
-	 * @param org the org
-	 * @param manager the manager
+	 * @param code the code
+	 * @param name the name
+	 * @param email the email
+	 * @param account the account
+	 * @param group the group
+	 * @return the organization
+	 * @throws CBusinessException the c business exception
 	 */
-	public void registerOrganization(Organization org, Account manager);
+	Organization register (String code, String name, String email, Account account, String group) throws CBusinessException;
 
 	/**
-	 * Add or update organization address.
+	 * Read organization.
 	 *
-	 * @param organization organization for which is address updated
-	 * @param address address which is added or updated for organization
+	 * @param id the id
+	 * @return the organization
 	 */
-	public void setAddress(Organization organization, Address address);
+	Organization read (Long id);
+
+	/**
+	 * Find by name list.
+	 *
+	 * @param name the name
+	 * @return the list
+	 */
+	List<Organization> findByName (String name);
+
+	/**
+	 * Find all list.
+	 *
+	 * @return the list
+	 */
+	List<Organization> findAll ();
+
+	/**
+	 * Exists by name boolean.
+	 *
+	 * @param name the name
+	 * @return the boolean
+	 */
+	boolean existsByName (String name);
 
 	/**
 	 * Update organization.
 	 *
 	 * @param organization the organization
+	 * @return the organization
 	 */
-	public abstract void updateOrganization(Organization organization);
+	Organization update (Organization organization);
+
+	/**
+	 * Activate.
+	 *
+	 * @param id the id
+	 */
+	void activate (Long id);
+
+	/**
+	 * Inactivate.
+	 *
+	 * @param id the id
+	 */
+	void inactivate (Long id);
 }

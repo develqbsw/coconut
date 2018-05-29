@@ -1,304 +1,213 @@
 --drop all
-DROP SCHEMA IF EXISTS sec CASCADE;
+drop schema if exists sec cascade;
 
 --create schema
-CREATE SCHEMA sec;
+create schema sec;
 
 --create tables and sequence
-CREATE TABLE sec.t_address (
-    pk_id bigint NOT NULL,
-	d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_city character varying(255) NOT NULL,
-    c_house_number character varying(255),
-    c_state character varying(255) NOT NULL,
-    c_street character varying(255),
-    c_zip_code character varying(255) NOT NULL,
-    fk_changed_by bigint,
-    c_operation_id bigint
+create table sec.t_auth_params (
+  pk_id             bigint                 not null,
+  c_password        character varying(255),
+  c_password_digest character varying(255),
+  c_password_type   character varying(255) not null,
+  c_pin             character varying(255),
+  c_valid_from      timestamp with time zone,
+  c_valid_to        timestamp with time zone,
+  fk_account        bigint                 not null
 );
 
-CREATE SEQUENCE sec.t_address_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_auth_params
+  start with 1
+  increment by 1;
 
-CREATE TABLE sec.t_auth_params (
-    pk_id bigint NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_password character varying(255),
-    c_password_digest character varying(255),
-    c_pin character varying(255),
-    c_operation_id bigint,
-    c_password_type character varying(255) NOT NULL,
-    c_valid_from timestamp with time zone,
-    c_valid_to timestamp with time zone,
-    fk_user bigint NOT NULL,
-    fk_changed_by bigint
+create table sec.t_blocked_login (
+  pk_id                 bigint                 not null,
+  c_login               character varying(255) not null,
+  c_ip                  character varying(255),
+  c_blocked_from        timestamp with time zone,
+  c_blocked_to          timestamp with time zone,
+  c_invalid_login_count integer                not null
 );
 
-CREATE SEQUENCE sec.t_auth_params_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_blocked_login
+  start with 1
+  increment by 1;
 
-CREATE TABLE sec.t_blocked_login (
-    pk_id bigint NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_operation_id bigint,
-    c_login character varying(255) NOT NULL,
-    c_ip character varying(255),
-    c_blocked_from timestamp with time zone,
-    c_blocked_to timestamp with time zone,
-    c_invalid_login_count integer NOT NULL,
-    fk_changed_by bigint
+create table sec.t_group (
+  pk_id      bigint                 not null,
+  c_code     character varying(255) not null,
+  c_type     character varying(255) not null,
+  c_category character varying(255)
 );
 
-CREATE SEQUENCE sec.t_blocked_login_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_group
+  start with 1
+  increment by 1;
 
-CREATE TABLE sec.t_group (
-    pk_id bigint NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_category character varying(255),
-    c_code character varying(255),
-    c_flag_system boolean,
-    c_operation_id bigint,
-    fk_changed_by bigint
+create table sec.t_organization (
+  pk_id   bigint                 not null,
+  d_type  character varying(31)  not null,
+  c_code  character varying(255) not null,
+  c_name  character varying(255) not null,
+  c_email character varying(255),
+  c_state character varying(255) not null
 );
 
-CREATE SEQUENCE sec.t_group_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_organization
+  start with 1
+  increment by 1;
 
-CREATE TABLE sec.t_licence (
-    pk_id bigint NOT NULL,
-    d_type character varying(31) NOT NULL,
-    c_operation_id bigint,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_flag_payed boolean,
-    c_key character varying(255),
-    c_price numeric(19,2),
-    c_tax_id character varying(255),
-    c_valid_from timestamp with time zone,
-    c_valid_to timestamp with time zone,
-    fk_organization bigint,
-    fk_changed_by bigint
+create table sec.t_role (
+  pk_id  bigint                 not null,
+  c_code character varying(255) not null
 );
 
-CREATE SEQUENCE sec.t_licence_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_role
+  start with 1
+  increment by 1;
 
-CREATE TABLE sec.t_organization (
-    pk_id bigint NOT NULL,
-	d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_code character varying(255),
-    c_email character varying(255),
-    c_flag_enabled boolean,
-    c_name character varying(255),
-    c_phone character varying(255),
-    c_fax character varying(255),
-    c_operation_id bigint,
-    fk_address bigint,
-    fk_changed_by bigint
+create table sec.t_unit (
+  pk_id           bigint                 not null,
+  d_type          character varying(31)  not null,
+  c_name          character varying(255) not null,
+  fk_organization bigint                 not null
 );
 
-CREATE SEQUENCE sec.t_organization_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_unit
+  start with 1
+  increment by 1;
 
-CREATE TABLE sec.t_role (
-    pk_id bigint NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_code character varying(255),
-    c_operation_id bigint,
-    fk_changed_by bigint,
+create table sec.t_account (
+  pk_id           bigint                 not null,
+  d_type          character varying(31)  not null,
+  c_login         character varying(255) not null,
+  c_email         character varying(255),
+  c_state         character varying(255) not null,
+  c_type          character varying(255) not null,
+  fk_default_unit bigint,
+  fk_organization bigint                 not null
 );
 
-CREATE SEQUENCE sec.t_role_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_account
+  start with 1
+  increment by 1;
 
-CREATE TABLE sec.t_unit (
-    pk_id bigint NOT NULL,
-    d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_name character varying(255) NOT NULL,
-    c_operation_id bigint,
-    fk_address bigint,
-    fk_organization bigint NOT NULL,
-    fk_changed_by bigint
+create table sec.t_x_group_group (
+  fk_group          bigint not null,
+  fk_excluded_group bigint not null
 );
 
-CREATE SEQUENCE sec.t_unit_pk_id_seq START WITH 1 INCREMENT BY 1;
-
-CREATE TABLE sec.t_user (
-    pk_id bigint NOT NULL,
-	d_type character varying(31) NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    c_email character varying(255),
-    c_flag_enabled boolean,
-    c_login character varying(255),
-    c_name character varying(255),
-    c_surname character varying(255),
-    c_type character varying(255),
-    c_degree character varying(255),
-    c_working_position character varying(255),
-    c_operation_id bigint,
-    fk_address bigint,
-    fk_default_unit bigint,
-    fk_organization bigint NOT NULL,
-    fk_changed_by bigint
+create table sec.t_x_group_role (
+  fk_role  bigint not null,
+  fk_group bigint not null
 );
 
-CREATE SEQUENCE sec.t_user_pk_id_seq START WITH 1 INCREMENT BY 1;
-
-CREATE TABLE sec.t_x_group_group (
-    fk_group bigint NOT NULL,
-    fk_excluded_group bigint NOT NULL
+create table sec.t_x_group_unit (
+  fk_unit  bigint not null,
+  fk_group bigint not null
 );
 
-CREATE TABLE sec.t_x_group_role (
-    fk_role bigint NOT NULL,
-    fk_group bigint NOT NULL
+create table sec.t_x_account_unit_group (
+  pk_id      bigint not null,
+  fk_account bigint not null,
+  fk_group   bigint not null,
+  fk_unit    bigint
 );
 
-CREATE TABLE sec.t_x_group_unit (
-    fk_unit bigint NOT NULL,
-    fk_group bigint NOT NULL
-);
-
-CREATE TABLE sec.t_x_group_user (
-    pk_id bigint NOT NULL,
-    c_change_date_time timestamp with time zone NOT NULL,
-    fk_group bigint NOT NULL,
-    fk_unit bigint,
-    fk_user bigint NOT NULL,
-    fk_changed_by bigint,
-    c_operation_id bigint
-);
-
-CREATE SEQUENCE sec.t_x_group_user_pk_id_seq START WITH 1 INCREMENT BY 1;
+create sequence sec.s_x_account_unit_group
+  start with 1
+  increment by 1;
 
 --constraints--
 --primary key
-ALTER TABLE sec.t_address
-    ADD CONSTRAINT pk_address PRIMARY KEY (pk_id);
+alter table sec.t_auth_params
+  add constraint pk_auth_params primary key (pk_id);
 
-ALTER TABLE sec.t_auth_params
-    ADD CONSTRAINT pk_auth_params PRIMARY KEY (pk_id);
+alter table sec.t_blocked_login
+  add constraint pk_blocked_login primary key (pk_id);
 
-ALTER TABLE sec.t_blocked_login
-    ADD CONSTRAINT pk_blocked_login PRIMARY KEY (pk_id);
-    
-ALTER TABLE sec.t_group
-    ADD CONSTRAINT pk_group PRIMARY KEY (pk_id);
+alter table sec.t_group
+  add constraint pk_group primary key (pk_id);
 
-ALTER TABLE sec.t_licence
-    ADD CONSTRAINT pk_licence PRIMARY KEY (pk_id);
+alter table sec.t_organization
+  add constraint pk_organization primary key (pk_id);
 
-ALTER TABLE sec.t_organization
-    ADD CONSTRAINT pk_organization PRIMARY KEY (pk_id);
+alter table sec.t_role
+  add constraint pk_role primary key (pk_id);
 
-ALTER TABLE sec.t_role
-    ADD CONSTRAINT pk_role PRIMARY KEY (pk_id);
+alter table sec.t_unit
+  add constraint pk_unit primary key (pk_id);
 
-ALTER TABLE sec.t_unit
-    ADD CONSTRAINT pk_unit PRIMARY KEY (pk_id);
+alter table sec.t_account
+  add constraint pk_account primary key (pk_id);
 
-ALTER TABLE sec.t_user
-    ADD CONSTRAINT pk_user PRIMARY KEY (pk_id);
+alter table sec.t_x_group_group
+  add constraint pk_x_group_group primary key (fk_group, fk_excluded_group);
 
-ALTER TABLE sec.t_x_group_group
-    ADD CONSTRAINT pk_x_group_group PRIMARY KEY (fk_group, fk_excluded_group);
+alter table sec.t_x_group_role
+  add constraint pk_x_group_role primary key (fk_role, fk_group);
 
-ALTER TABLE sec.t_x_group_role
-    ADD CONSTRAINT pk_x_group_role PRIMARY KEY (fk_role, fk_group);
+alter table sec.t_x_group_unit
+  add constraint pk_x_group_unit primary key (fk_unit, fk_group);
 
-ALTER TABLE sec.t_x_group_unit
-    ADD CONSTRAINT pk_x_group_unit PRIMARY KEY (fk_unit, fk_group);
+alter table sec.t_x_account_unit_group
+  add constraint pk_x_account_unit_group primary key (pk_id);
 
-ALTER TABLE sec.t_x_group_user
-    ADD CONSTRAINT pk_x_group_user PRIMARY KEY (pk_id);
-    
 --unique
-ALTER TABLE sec.t_blocked_login
-    ADD CONSTRAINT uk_blocked_login UNIQUE (c_login, c_ip);
-    
-ALTER TABLE sec.t_group
-    ADD CONSTRAINT uk_group_code UNIQUE (c_code);
+alter table sec.t_blocked_login
+  add constraint uc_blocked_login_login_ip unique (c_login, c_ip);
 
-ALTER TABLE sec.t_role
-    ADD CONSTRAINT uk_role_code UNIQUE (c_code);
+alter table sec.t_group
+  add constraint uc_group_code unique (c_code);
 
-ALTER TABLE sec.t_unit
-    ADD CONSTRAINT uk_unit_name UNIQUE (c_name);
+alter table sec.t_role
+  add constraint uc_role_code unique (c_code);
 
-ALTER TABLE sec.t_user
-    ADD CONSTRAINT uk_user_login UNIQUE (c_login);
+alter table sec.t_unit
+  add constraint uc_unit_name unique (c_name);
+
+alter table sec.t_organization
+  add constraint uc_organization_code unique (c_code);
+
+alter table sec.t_account
+  add constraint uc_account_login unique (c_login);
 
 --foreign key
-ALTER TABLE sec.t_organization
-    ADD CONSTRAINT fk_organization_address FOREIGN KEY (fk_address) REFERENCES sec.t_address(pk_id);
+alter table sec.t_x_group_role
+  add constraint fk_group_role_role foreign key (fk_role) references sec.t_role (pk_id);
 
-ALTER TABLE sec.t_x_group_role
-    ADD CONSTRAINT fk_group_role_role FOREIGN KEY (fk_role) REFERENCES sec.t_role(pk_id);
+alter table sec.t_x_group_role
+  add constraint fk_group_role_group foreign key (fk_group) references sec.t_group (pk_id);
 
-ALTER TABLE sec.t_x_group_role
-    ADD CONSTRAINT fk_group_role_group FOREIGN KEY (fk_group) REFERENCES sec.t_group(pk_id);
+alter table sec.t_x_group_unit
+  add constraint fk_group_unit_unit foreign key (fk_unit) references sec.t_unit (pk_id);
 
-ALTER TABLE sec.t_x_group_unit
-    ADD CONSTRAINT fk_group_unit_unit FOREIGN KEY (fk_unit) REFERENCES sec.t_unit(pk_id);
+alter table sec.t_x_group_group
+  add constraint fk_group_group_group foreign key (fk_group) references sec.t_group (pk_id);
 
-ALTER TABLE sec.t_x_group_group
-    ADD CONSTRAINT fk_group_group_group FOREIGN KEY (fk_group) REFERENCES sec.t_group(pk_id);
+alter table sec.t_x_group_unit
+  add constraint fk_group_unit_group foreign key (fk_group) references sec.t_group (pk_id);
 
-ALTER TABLE sec.t_x_group_unit
-    ADD CONSTRAINT fk_group_unit_group FOREIGN KEY (fk_group) REFERENCES sec.t_group(pk_id);
+alter table sec.t_x_group_group
+  add constraint fk_group_group_excluded_group foreign key (fk_excluded_group) references sec.t_group (pk_id);
 
-ALTER TABLE sec.t_x_group_group
-    ADD CONSTRAINT fk_group_group_excluded_group FOREIGN KEY (fk_excluded_group) REFERENCES sec.t_group(pk_id);
+alter table sec.t_x_account_unit_group
+  add constraint fk_account_unit_group_unit foreign key (fk_unit) references sec.t_unit (pk_id);
 
-ALTER TABLE sec.t_x_group_user
-    ADD CONSTRAINT fk_group_user_unit FOREIGN KEY (fk_unit) REFERENCES sec.t_unit(pk_id);
+alter table sec.t_x_account_unit_group
+  add constraint fk_account_unit_group_account foreign key (fk_account) references sec.t_account (pk_id);
 
-ALTER TABLE sec.t_x_group_user
-    ADD CONSTRAINT fk_group_user_user FOREIGN KEY (fk_user) REFERENCES sec.t_user(pk_id);
+alter table sec.t_x_account_unit_group
+  add constraint fk_account_unit_group_group foreign key (fk_group) references sec.t_group (pk_id);
 
-ALTER TABLE sec.t_x_group_user
-    ADD CONSTRAINT fk_group_user_group FOREIGN KEY (fk_group) REFERENCES sec.t_group(pk_id);
+alter table sec.t_auth_params
+  add constraint fk_auth_params_account foreign key (fk_account) references sec.t_account (pk_id);
 
-ALTER TABLE sec.t_address
-    ADD CONSTRAINT fk_address_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
+alter table sec.t_unit
+  add constraint fk_unit_organization foreign key (fk_organization) references sec.t_organization (pk_id);
 
-ALTER TABLE sec.t_role
-    ADD CONSTRAINT fk_role_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
+alter table sec.t_account
+  add constraint fk_account_default_unit foreign key (fk_default_unit) references sec.t_unit (pk_id);
 
-ALTER TABLE sec.t_licence
-    ADD CONSTRAINT fk_licence_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_unit
-    ADD CONSTRAINT fk_unit_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_group
-    ADD CONSTRAINT fk_group_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_x_group_user
-    ADD CONSTRAINT fk_x_group_user_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_organization
-    ADD CONSTRAINT fk_organization_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_user
-    ADD CONSTRAINT fk_user_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_auth_params
-    ADD CONSTRAINT fk_auth_params_changed_by FOREIGN KEY (fk_changed_by) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_licence
-    ADD CONSTRAINT fk_licence_organization FOREIGN KEY (fk_organization) REFERENCES sec.t_organization(pk_id);
-
-ALTER TABLE sec.t_auth_params
-    ADD CONSTRAINT fk_auth_params_user FOREIGN KEY (fk_user) REFERENCES sec.t_user(pk_id);
-
-ALTER TABLE sec.t_unit
-    ADD CONSTRAINT fk_unit_address FOREIGN KEY (fk_address) REFERENCES sec.t_address(pk_id);
-
-ALTER TABLE sec.t_unit
-    ADD CONSTRAINT fk_unit_organization FOREIGN KEY (fk_organization) REFERENCES sec.t_organization(pk_id);
-
-ALTER TABLE sec.t_user
-    ADD CONSTRAINT fk_user_default_unit FOREIGN KEY (fk_default_unit) REFERENCES sec.t_unit(pk_id);
-
-ALTER TABLE sec.t_user
-    ADD CONSTRAINT fk_user_address FOREIGN KEY (fk_address) REFERENCES sec.t_address(pk_id);
-
-ALTER TABLE sec.t_user
-    ADD CONSTRAINT fk_user_organization FOREIGN KEY (fk_organization) REFERENCES sec.t_organization(pk_id);
+alter table sec.t_account
+  add constraint fk_account_organization foreign key (fk_organization) references sec.t_organization (pk_id);

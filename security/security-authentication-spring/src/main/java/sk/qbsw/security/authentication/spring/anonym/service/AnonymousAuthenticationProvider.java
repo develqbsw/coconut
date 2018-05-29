@@ -4,31 +4,31 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import sk.qbsw.security.authentication.spring.anonym.model.AnonymousAuthenticationToken;
-import sk.qbsw.security.authentication.spring.service.SecurityUserDetailsService;
-import sk.qbsw.security.authentication.spring.model.SecurityUserDetails;
+import sk.qbsw.security.authentication.spring.service.AccountDetailsService;
+import sk.qbsw.security.authentication.spring.model.AccountDetails;
 
 /**
  * The anonymous authentication provider.
  *
  * @author Tomas Lauro
- * @version 1.18.5
+ * @version 1.19.0
  * @since 1.18.4
  */
 public class AnonymousAuthenticationProvider extends org.springframework.security.authentication.AnonymousAuthenticationProvider
 {
 	private static final String DEFAULT_KEY = "anonymousKey";
 
-	private final SecurityUserDetailsService<AnonymousAuthenticationToken> userDetailsService;
+	private final AccountDetailsService<AnonymousAuthenticationToken> accountDetailsService;
 
 	/**
 	 * Instantiates a new Security anonymous authentication provider.
 	 *
-	 * @param userDetailsService the user details service
+	 * @param accountDetailsService the account details service
 	 */
-	public AnonymousAuthenticationProvider (SecurityUserDetailsService<AnonymousAuthenticationToken> userDetailsService)
+	public AnonymousAuthenticationProvider (AccountDetailsService<AnonymousAuthenticationToken> accountDetailsService)
 	{
 		super(DEFAULT_KEY);
-		this.userDetailsService = userDetailsService;
+		this.accountDetailsService = accountDetailsService;
 	}
 
 	public Authentication authenticate (Authentication authentication) throws AuthenticationException
@@ -38,9 +38,9 @@ public class AnonymousAuthenticationProvider extends org.springframework.securit
 			return null;
 		}
 
-		SecurityUserDetails userDetails = userDetailsService.loadUserDetails((AnonymousAuthenticationToken) authentication);
+		AccountDetails accountDetails = accountDetailsService.loadUserDetails((AnonymousAuthenticationToken) authentication);
 
-		AnonymousAuthenticationToken result = new AnonymousAuthenticationToken(DEFAULT_KEY, userDetails, userDetails.getAuthorities(), true);
+		AnonymousAuthenticationToken result = new AnonymousAuthenticationToken(DEFAULT_KEY, accountDetails, accountDetails.getAuthorities(), true);
 		result.setDetails(authentication.getDetails());
 
 		return result;

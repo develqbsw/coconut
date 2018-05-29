@@ -1,115 +1,86 @@
 package sk.qbsw.security.authorization.service;
 
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.core.security.base.exception.InvalidUserException;
-import sk.qbsw.security.core.dao.RoleDao;
-import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.core.security.base.exception.InvalidAccountException;
 import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Role;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.Account;
+
+import javax.persistence.NoResultException;
 
 /**
- * The database authorization service.
+ * The authorization service.
  *
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.6.0
  */
-@Service (value = "authorizationService")
 public class AuthorizationServiceImpl extends AService implements AuthorizationService
 {
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * LOGGER
-	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
-	/** The role dao. */
-	@Autowired
-	private RoleDao roleDao;
+	private final UnitDao unitDao;
 
-	/** The unit dao. */
-	@Autowired
-	private UnitDao unitDao;
+	private final AccountDao accountDao;
 
-	/** The user dao. */
-	@Autowired
-	private AccountDao userDao;
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthorizationService#checkAccessRights(java.lang.String, sk.qbsw.security.core.core.model.domain.CRole, java.lang.String, java.lang.String)
+	/**
+	 * Instantiates a new Authorization service.
+	 *
+	 * @param unitDao the unit dao
+	 * @param accountDao the account dao
 	 */
+	@Autowired
+	public AuthorizationServiceImpl (UnitDao unitDao, AccountDao accountDao)
+	{
+		this.unitDao = unitDao;
+		this.accountDao = accountDao;
+	}
+
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public void checkAccessRights (String login, Role role, String unit, String category) throws CSecurityException
 	{
-		Unit localUnit = getUnitByName(unit);
-		Account user;
+		Unit localUnit = findUnitByName(unit);
+		Account account;
 		try
 		{
-			user = getUserByLoginAndUnit(login, localUnit);
+			account = findAccountByLoginAndUnit(login, localUnit);
 
-			//if the user has not a role throw an exception
-			if (!user.hasRole(role))
+			// if the account has not a role throw an exception
+			if (!account.hasRole(role))
 			{
-				throw new CSecurityException("User has not a role with code " + role.getCode());
+				throw new CSecurityException("Account has not a role with code " + role.getCode());
 			}
 
-			// if the user is not in unit, throw an exception
-			if (localUnit != null && !user.isInUnit(localUnit))
+			// if the account is not in unit, throw an exception
+			if (localUnit != null && !account.isInUnit(localUnit))
 			{
-				throw new CSecurityException("User is not is unit with name " + localUnit.getName());
+				throw new CSecurityException("Account is not is unit with name " + localUnit.getName());
 			}
 
-			// if the user has not category, throw exception
-			if (category != null && !user.hasCategory(category, role))
+			// if the account has not category, throw exception
+			if (category != null && !account.hasCategory(category, role))
 			{
-				throw new CSecurityException("User has not a category with name " + category);
+				throw new CSecurityException("Account has not a category with name " + category);
 			}
 
 		}
 		catch (NoResultException nre)
 		{
-			LOGGER.error("User not found", nre);
-			throw new InvalidUserException("User with login " + login + " not recognised");
+			LOGGER.error("account not found", nre);
+			throw new InvalidAccountException("Account with login " + login + " not recognised");
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthorizationService#getRoleByCode(java.lang.String)
-	 */
-	@Override
-	@Transactional (readOnly = true)
-	public List<Role> getRoleByCode (String code)
-	{
-
-		return roleDao.findByCode(code);
-	}
-
-	/**
-	 * Gets the unit from DB by name.
-	 *
-	 * @param unitName the unit name
-	 * @return the unit by name
-	 * @throws CSecurityException the security exception
-	 */
-	private Unit getUnitByName (String unitName) throws CSecurityException
+	private Unit findUnitByName (String unitName) throws CSecurityException
 	{
 		if (unitName != null)
 		{
@@ -129,35 +100,25 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 		}
 	}
 
-	/**
-	 * Gets the user by login and unit.
-	 *
-	 * @param login the login
-	 * @param unit the unit
-	 * @return the user by login and unit
-	 * 
-	 * @throws NoResultException there is no result
-	 * @throws CSecurityException the login is null
-	 */
-	private Account getUserByLoginAndUnit (String login, Unit unit) throws CSecurityException
+	private Account findAccountByLoginAndUnit (String login, Unit unit) throws CSecurityException
 	{
-		Account user;
+		Account account;
 
 		if (unit == null)
 		{
-			user = userDao.findOneByLogin(login);
+			account = accountDao.findOneByLogin(login);
 		}
 		else
 		{
-			user = userDao.findOneByLoginAndUnit(login, unit);
+			account = accountDao.findOneByLoginAndUnit(login, unit);
 		}
 
 
-		if (user == null)
+		if (account == null)
 		{
-			throw new InvalidUserException("User with login " + login + " not recognised");
+			throw new InvalidAccountException("Account with login " + login + " not recognised");
 		}
-		return user;
+		return account;
 
 	}
 }

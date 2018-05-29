@@ -13,7 +13,10 @@ import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
 import sk.qbsw.security.core.model.filter.AccountAssociationsFilter;
 import sk.qbsw.security.core.model.filter.AccountDetailFilter;
-import sk.qbsw.security.core.model.order.*;
+import sk.qbsw.security.core.model.order.AccountOrderByAttributeSpecifiers;
+import sk.qbsw.security.core.model.order.OrderModel;
+import sk.qbsw.security.core.model.order.OrderSpecification;
+import sk.qbsw.security.core.model.order.OrderSpecifiers;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
 import javax.persistence.NoResultException;
@@ -67,8 +70,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		Account testUser = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
-		Account account = accountDao.findById(testUser.getId());
+		Account testAccount = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
+		Account account = accountDao.findById(testAccount.getId());
 
 		// asserts
 		assertNotNull("No account found", account);
@@ -203,7 +206,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test (expected = NoResultException.class)
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindOneByLoginAndUnitNegativeUserNotInUnit () throws NoResultException, CSecurityException
+	public void testFindOneByLoginAndUnitNegativeAccountNotInUnit () throws NoResultException, CSecurityException
 	{
 		initTest();
 
@@ -355,8 +358,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		// unit and group
 		Unit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
@@ -383,8 +386,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		// unit and group
 		Group group = groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
@@ -406,8 +409,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
 
 		// unit and group
 		Unit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
@@ -455,7 +458,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserDetailFilterPositiveWithOrderModel () throws NoResultException
+	public void testFindByAccountDetailFilterPositiveWithOrderModel () throws NoResultException
 	{
 		initTest();
 
@@ -468,8 +471,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		filter.setOrganization(organizationDao.findByName(DataGenerator.ORGANIZATION_CODE).get(0));
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
 
 		List<Account> accounts = accountDao.findByAccountDetailFilter(filter, orderModel);
 
@@ -486,21 +489,21 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserDetailFilterPositiveNoResultOneWithOrderModel () throws NoResultException
+	public void testFindByAccountDetailFilterPositiveNoResultOneWithOrderModel () throws NoResultException
 	{
 		initTest();
 
 		// filter
 		AccountDetailFilter filter = new AccountDetailFilter();
-		filter.setLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
-		filter.setEmail(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk");
+		filter.setLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
+		filter.setEmail(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP + "@qbsw.sk");
 		filter.setGroupCodePrefix(DataGenerator.FIRST_GROUP_IN_UNIT_CODE.substring(0, 5));
 		filter.setState(ActivityStates.ACTIVE);
 		filter.setOrganization(organizationDao.findByName(DataGenerator.ORGANIZATION_CODE).get(0));
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
 
 		List<Account> accounts = accountDao.findByAccountDetailFilter(filter, orderModel);
 
@@ -516,7 +519,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserDetailFilterPositiveNoDataWithOrderModel () throws NoResultException
+	public void testFindByAccountDetailFilterPositiveNoDataWithOrderModel () throws NoResultException
 	{
 		// without initialization
 
@@ -528,8 +531,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		filter.setState(ActivityStates.ACTIVE);
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
 
 		List<Account> accounts = accountDao.findByAccountDetailFilter(filter, orderModel);
 
@@ -545,13 +548,13 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserDetailFilterPositiveNoneWithoutOrderModel () throws NoResultException
+	public void testFindByAccountDetailFilterPositiveNoneWithoutOrderModel () throws NoResultException
 	{
 		initTest();
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
 
 		List<Account> accounts = accountDao.findByAccountDetailFilter(null, null);
 
@@ -569,7 +572,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserAssociationsFilterPositiveWithOrderModel () throws NoResultException, CSecurityException
+	public void testFindByAccountAssociationsFilterPositiveWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
 
@@ -581,8 +584,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		filter.setState(ActivityStates.ACTIVE);
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
 
 		List<Account> accounts = accountDao.findByAccountAssociationsFilter(filter, orderModel);
 
@@ -599,7 +602,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserAssociationsFilterPositiveNoResultOneWithOrderModel () throws NoResultException, CSecurityException
+	public void testFindByAccountAssociationsFilterPositiveNoResultOneWithOrderModel () throws NoResultException, CSecurityException
 	{
 		initTest();
 
@@ -611,8 +614,8 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		filter.setState(ActivityStates.ACTIVE);
 
 		// order model
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.EMAIL, OrderSpecifiers.ASC));
 
 		List<Account> accounts = accountDao.findByAccountAssociationsFilter(filter, orderModel);
 
@@ -628,7 +631,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUserAssociationsFilterPositiveNoneWithoutOrderModel () throws NoResultException
+	public void testFindByAccountAssociationsFilterPositiveNoneWithoutOrderModel () throws NoResultException
 	{
 		initTest();
 

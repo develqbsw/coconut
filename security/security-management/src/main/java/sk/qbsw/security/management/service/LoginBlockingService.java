@@ -1,110 +1,98 @@
 package sk.qbsw.security.management.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.core.model.domain.BlockedLogin;
 
 /**
- * The Interface LoginBlockingService.
+ * The login blocked service.
+ *
  * @author Dalibor Rak
  * @author Peter Bozik
- * @version 1.12.5
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.12.2
  */
 public interface LoginBlockingService
 {
-
 	/**
-	 * Inits the authentication service - read blockLoginLimit property from system properties or use default.
+	 * Init.
 	 */
-	public void init ();
+	void init ();
 
 	/**
-	 * Inits the authentication service - set blockLoginLimit property from arguments.
+	 * Init.
 	 *
 	 * @param blockLoginLimit the block login limit
 	 */
-	public void init (int blockLoginLimit);
+	void init (int blockLoginLimit);
 
 	/**
-	 * Increase invalid login counter. Primary the blockedLogin is used. If blockedLogin does not exists, it will be created from login and password parameters
-	 * 
-	 * @param blockedLogin
+	 * Increase invalid login counter blocked login.
+	 *
+	 * @param blockedLogin the blocked login
 	 * @param login the login
 	 * @param ip the ip
-	 * @return updated or inserted {@link BlockedLogin}
-	 * @throws CSystemException
-	 * @throws CSecurityException
+	 * @return the blocked login
 	 */
-	public abstract BlockedLogin increaseInvalidLoginCounter (BlockedLogin blockedLogin,String login,String ip) throws CSystemException, CSecurityException;
+	BlockedLogin increaseInvalidLoginCounter (BlockedLogin blockedLogin, String login, String ip);
 
 	/**
 	 * Increase invalid login counter.
 	 *
 	 * @param login the login
 	 * @param ip the ip
-	 * @throws CSystemException throws if there is any other error
-	 * @throws CSecurityException throws if the user with given login doesnt exist
+	 * @throws CSecurityException the c security exception
 	 */
-	public abstract void increaseInvalidLoginCounter (String login, String ip) throws CSystemException, CSecurityException;
+	void increaseInvalidLoginCounter (String login, String ip) throws CSecurityException;
 
 	/**
-	 * Increase invalid login counter. The user parameter on input is not checked and should be obtained before calling this method. Login is not checked for valid user
+	 * Increase invalid login counter without account check.
 	 *
-	 * @param login the login of the user
+	 * @param login the login
 	 * @param ip the ip
-	 * @throws CSystemException throws if there is any other error
-	 * @throws CSecurityException throws if the user with given login doesnt exist
 	 */
-	public abstract void increaseInvalidLoginCounterWithoutUserCheck (String login, String ip) throws CSystemException, CSecurityException;
+	void increaseInvalidLoginCounterWithoutAccountCheck (String login, String ip);
+
+	/**
+	 * Reset invalid login counter.
+	 *
+	 * @param blockedLogin the blocked login
+	 */
+	void resetInvalidLoginCounter (BlockedLogin blockedLogin);
 
 	/**
 	 * Reset invalid login counter.
 	 *
 	 * @param login the login
 	 * @param ip the ip
-	 * @throws CSystemException throws if there is any other error
-	 * @throws CSecurityException throws if the user with given login doesnt exist
+	 * @throws CSecurityException the c security exception
 	 */
-	public abstract void resetInvalidLoginCounter (String login, String ip) throws CSystemException, CSecurityException;
-
-	
-	/**
-	 * Reset invalid login counter.
-	 * @param blockedLogin
-	 * @throws CSystemException
-	 * @throws CSecurityException
-	 */
-	public abstract void resetInvalidLoginCounter (BlockedLogin blockedLogin) throws CSystemException, CSecurityException;
+	void resetInvalidLoginCounter (String login, String ip) throws CSecurityException;
 
 	/**
-	 * Reset invalid login counter. The user parameter on input is not checked and should be obtained before calling this method. Login is not checked for valid user
-	 *
-	 * @param login the login of the user
-	 * @param ip the ip
-	 * @throws CSystemException throws if there is any other error
-	 * @throws CSecurityException throws if the user with given login doesnt exist
-	 */
-	public abstract void resetInvalidLoginCounterWithoutUserCheck (String login, String ip) throws CSystemException, CSecurityException;
-
-	/**
-	 * Checks if is login blocked.
+	 * Reset invalid login counter without account check.
 	 *
 	 * @param login the login
 	 * @param ip the ip
-	 * @return true, if is login blocked
-	 * @throws CSystemException throws if there is any other error
 	 */
-	public abstract boolean isLoginBlocked (String login, String ip) throws CSystemException;
-
+	void resetInvalidLoginCounterWithoutAccountCheck (String login, String ip);
 
 	/**
-	 * finds blocked login by login and ip
-	 * @param login
-	 * @param ip
-	 * @return {@link BlockedLogin} or null if entity does not exist
-	 * @throws CSystemException
+	 * Is login blocked boolean.
+	 *
+	 * @param login the login
+	 * @param ip the ip
+	 * @return the boolean
 	 */
-	public abstract BlockedLogin findBlockedLogin (String login, String ip) throws CSystemException;
+	boolean isLoginBlocked (String login, String ip);
+
+	/**
+	 * Find by login and ip blocked login.
+	 *
+	 * @param login the login
+	 * @param ip the ip
+	 * @return the blocked login
+	 */
+	BlockedLogin findByLoginAndIp (String login, String ip);
 
 }

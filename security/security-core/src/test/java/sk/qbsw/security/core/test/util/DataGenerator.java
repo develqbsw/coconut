@@ -22,26 +22,19 @@ import java.util.Set;
 @Component (value = "dataGenerator")
 public class DataGenerator
 {
-	@Autowired
-	private RoleDao roleDao;
+	private final RoleDao roleDao;
 
-	@Autowired
-	private AccountDao accountDao;
+	private final AccountDao accountDao;
 
-	@Autowired
-	private OrganizationDao orgDao;
+	private final OrganizationDao orgDao;
 
-	@Autowired
-	private UnitDao unitDao;
+	private final UnitDao unitDao;
 
-	@Autowired
-	private GroupDao groupDao;
+	private final GroupDao groupDao;
 
-	@Autowired
-	private AuthenticationParamsDao authenticationParamsDao;
+	private final AuthenticationParamsDao authenticationParamsDao;
 
-	@Autowired
-	private AccountUnitGroupDao accountUnitGroupDao;
+	private final AccountUnitGroupDao accountUnitGroupDao;
 
 	public static final String ORGANIZATION_CODE = "unit_test_organization";
 
@@ -96,6 +89,18 @@ public class DataGenerator
 	public static final String TEST_IP_ONE = "192.168.0.1";
 
 	public static final String TEST_IP_TWO = "192.168.0.2";
+
+	@Autowired
+	public DataGenerator (RoleDao roleDao, AccountDao accountDao, OrganizationDao orgDao, UnitDao unitDao, GroupDao groupDao, AuthenticationParamsDao authenticationParamsDao, AccountUnitGroupDao accountUnitGroupDao)
+	{
+		this.roleDao = roleDao;
+		this.accountDao = accountDao;
+		this.orgDao = orgDao;
+		this.unitDao = unitDao;
+		this.groupDao = groupDao;
+		this.authenticationParamsDao = authenticationParamsDao;
+		this.accountUnitGroupDao = accountUnitGroupDao;
+	}
 
 	@Transactional
 	public void generateDatabaseDataForDatabaseTests ()

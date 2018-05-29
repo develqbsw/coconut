@@ -3,29 +3,29 @@ package sk.qbsw.security.authentication.spring.system.service;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import sk.qbsw.security.authentication.spring.model.SecurityUserDetails;
-import sk.qbsw.security.authentication.spring.service.SecurityUserDetailsService;
+import sk.qbsw.security.authentication.spring.model.AccountDetails;
+import sk.qbsw.security.authentication.spring.service.AccountDetailsService;
 import sk.qbsw.security.authentication.spring.system.model.SystemAuthenticationToken;
 
 /**
  * The system authentication provider.
  *
  * @author Tomas Lauro
- * @version 1.18.6
+ * @version 1.19.0
  * @since 1.18.6
  */
 public class SystemAuthenticationProvider implements AuthenticationProvider
 {
-	private final SecurityUserDetailsService<SystemAuthenticationToken> userDetailsService;
+	private final AccountDetailsService<SystemAuthenticationToken> accountDetailsService;
 
 	/**
 	 * Instantiates a new System authentication provider.
 	 *
-	 * @param userDetailsService the user details service
+	 * @param accountDetailsService the account details service
 	 */
-	public SystemAuthenticationProvider (SecurityUserDetailsService<SystemAuthenticationToken> userDetailsService)
+	public SystemAuthenticationProvider (AccountDetailsService<SystemAuthenticationToken> accountDetailsService)
 	{
-		this.userDetailsService = userDetailsService;
+		this.accountDetailsService = accountDetailsService;
 	}
 
 	@Override
@@ -36,9 +36,9 @@ public class SystemAuthenticationProvider implements AuthenticationProvider
 			return null;
 		}
 
-		SecurityUserDetails userDetails = userDetailsService.loadUserDetails((SystemAuthenticationToken) authentication);
+		AccountDetails accountDetails = accountDetailsService.loadUserDetails((SystemAuthenticationToken) authentication);
 
-		SystemAuthenticationToken result = new SystemAuthenticationToken(userDetails, userDetails.getAuthorities());
+		SystemAuthenticationToken result = new SystemAuthenticationToken(accountDetails, accountDetails.getAuthorities());
 		result.setDetails(authentication.getDetails());
 
 		return result;

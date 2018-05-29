@@ -1,71 +1,70 @@
 package sk.qbsw.security.management.service;
 
-import java.io.Serializable;
-import java.util.List;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
 
+import java.util.List;
+
 /**
- * Service for groups management.
+ * The group service.
  *
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.19.0
  * @since 1.0.0
  */
-public interface GroupService extends Serializable
+public interface GroupService
 {
-
 	/**
-	 * Gets the role group.
+	 * Read group.
 	 *
-	 * @param id the pk id
-	 * @return the role group
+	 * @param id the id
+	 * @return the group
 	 */
-	public Group read (Long id);
+	Group read (Long id);
 
 	/**
-	 * Gets the all.
-	 *
-	 * @return the all
-	 */
-	public abstract List<Group> getAll ();
-
-	/**
-	 * Gets the by code.
+	 * Find by code group.
 	 *
 	 * @param code the code
-	 * @return the by code
+	 * @return the group
+	 * @throws CSecurityException the c security exception
 	 */
-	public abstract List<Group> getByCode (String code);
+	Group findByCode (String code) throws CSecurityException;
 
 	/**
-	 * Gets the by unit.
+	 * Find by unit list.
 	 *
 	 * @param unit the unit
-	 * @return the by unit
+	 * @return the list
 	 */
-	public abstract List<Group> getByUnit (Unit unit);
+	List<Group> findByUnit (Unit unit);
 
 	/**
-	 * get users by unit and user
-	 * 
-	 * @param unit
-	 * @param user
-	 * @return
+	 * Find by unit and account list.
+	 *
+	 * @param unit the unit
+	 * @param account the account
+	 * @return the list
 	 */
-	List<Group> getByUnitUser (Unit unit, Account user);
+	List<Group> findByUnitAndAccount (Unit unit, Account account);
 
 	/**
-	 * Gets the by code and unit.
+	 * Find by code and unit group.
 	 *
 	 * @param code the code
 	 * @param unit the unit
-	 * @return the by code and unit
-	 * @throws CSecurityException throws if the code is null
+	 * @return the group
+	 * @throws CSecurityException the c security exception
 	 */
-	List<Group> getByCodeAndUnit (String code, Unit unit) throws CSecurityException;
+	Group findByCodeAndUnit (String code, Unit unit) throws CSecurityException;
+
+	/**
+	 * Find all list.
+	 *
+	 * @return the list
+	 */
+	List<Group> findAll ();
 }

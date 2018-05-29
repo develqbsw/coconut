@@ -18,6 +18,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-base</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>

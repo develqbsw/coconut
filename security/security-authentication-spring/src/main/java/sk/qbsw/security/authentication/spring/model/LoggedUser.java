@@ -15,7 +15,7 @@ import java.util.Map;
  * @version 1.18.4
  * @since 1.18.0
  */
-public class LoggedUser extends User implements SecurityUserDetails
+public class LoggedUser extends User implements AccountDetails
 {
 	private static final long serialVersionUID = -8482140113909737224L;
 

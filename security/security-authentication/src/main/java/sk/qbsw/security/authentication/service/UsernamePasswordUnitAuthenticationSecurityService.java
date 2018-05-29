@@ -6,7 +6,11 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.authentication.spring.auth.model.UsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.authentication.spring.auth.service.AuthenticationSecurityService;
+import sk.qbsw.security.authentication.spring.model.LoggedUser;
+import sk.qbsw.security.authentication.spring.model.Organization;
+import sk.qbsw.security.authentication.spring.service.AuthorityConverter;
 import sk.qbsw.security.core.model.domain.Account;
 
 /**
@@ -14,24 +18,26 @@ import sk.qbsw.security.core.model.domain.Account;
  *
  * @author Tomas Lauro
  * @author Dalibor Rak
- * 
- * @version 1.13.4
+ * @version 1.19.0
  * @since 1.13.4
  */
 public class UsernamePasswordUnitAuthenticationSecurityService extends AService implements AuthenticationSecurityService
 {
-	private AuthenticationService authenticationService;
-	
-	public UsernamePasswordUnitAuthenticationSecurityService (AuthenticationService authenticationService)
+	private final AuthenticationService authenticationService;
+
+	private final AuthorityConverter authorityConverter;
+
+	public UsernamePasswordUnitAuthenticationSecurityService (AuthenticationService authenticationService, AuthorityConverter authorityConverter)
 	{
 		this.authenticationService = authenticationService;
+		this.authorityConverter = authorityConverter;
 	}
-	
+
 	@Override
-	public Account login (Authentication authentication) throws CSecurityException
+	public LoggedUser authenticate (Authentication authentication) throws CSecurityException
 	{
-		//checks token support
-		if (authentication == null || this.supports(authentication.getClass()) == false)
+		// checks token support
+		if (authentication == null || !this.supports(authentication.getClass()))
 		{
 			throw new CSecurityException(ECoreErrorResponse.UNSUPPORTED_AUTHENTICATION_TOKEN);
 		}
@@ -40,12 +46,26 @@ public class UsernamePasswordUnitAuthenticationSecurityService extends AService 
 
 		if (usernamePasswordAuthentication.getUnit() != null)
 		{
-			return authenticationService.login((String) usernamePasswordAuthentication.getPrincipal(), (String) usernamePasswordAuthentication.getCredentials(), usernamePasswordAuthentication.getUnit());
+			Account account = authenticationService.login((String) usernamePasswordAuthentication.getPrincipal(), (String) usernamePasswordAuthentication.getCredentials(), usernamePasswordAuthentication.getUnit());
+			return convertAccountToLoggedUser(account);
 		}
 		else
 		{
-			return authenticationService.login((String) usernamePasswordAuthentication.getPrincipal(), (String) usernamePasswordAuthentication.getCredentials());
+			Account account = authenticationService.login((String) usernamePasswordAuthentication.getPrincipal(), (String) usernamePasswordAuthentication.getCredentials());
+			return convertAccountToLoggedUser(account);
 		}
+	}
+
+	private LoggedUser convertAccountToLoggedUser (Account account)
+	{
+		Organization organization = Organization.newBuilder() //
+			.id(account.getOrganization().getId()) //
+			.code(account.getOrganization().getCode()) //
+			.name(account.getOrganization().getName()) //
+			.build();
+
+		return new LoggedUser(account.getId(), account.getLogin(), account.getPassword(), authorityConverter.convertRolesToAuthorities(account.exportRoles()), organization);
+
 	}
 
 	@Override

@@ -1,55 +1,49 @@
 package sk.qbsw.security.management.test;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
 import sk.qbsw.security.management.service.GroupService;
 import sk.qbsw.security.management.test.util.DataGenerator;
 
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Checks group service.
  *
- * @autor Tomas Lauro
- * @version 1.7.0
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@Rollback (true)
+@Rollback
 public class GroupTestCase
 {
-	/** The database data generator. */
 	@Autowired
 	private DataGenerator dataGenerator;
 
-	/** The group service. */
 	@Autowired
-	@Qualifier ("cGroupService")
 	private GroupService groupService;
 
-	/** Unit dao. */
 	@Autowired
 	private UnitDao unitDao;
 
 	@Autowired
-	private AccountDao userDao;
+	private AccountDao accountDao;
 
 	/**
 	 * Test initialization.
@@ -61,9 +55,9 @@ public class GroupTestCase
 	}
 
 	/**
-	 * Test get groups by unit.
+	 * Test get by unit.
 	 *
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -72,39 +66,44 @@ public class GroupTestCase
 		initTest();
 
 		Unit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
-		List<Group> groups = groupService.getByUnit(unit);
+		List<Group> groups = groupService.findByUnit(unit);
 
-		//asserts
+		// asserts
 		assertNotNull("Get all groups failed: list of groups is null", groups);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 	}
 
 	/**
-	 * Test get by unit user.
+	 * Test get by unit account.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testGetByUnitUser () throws CSecurityException
+	public void testGetByUnitAccount () throws CSecurityException
 	{
 		initTest();
 
 		Unit unit1 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
-		Account user2 = userDao.findOneByLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		Account account2 = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupService.getByUnitUser(unit1, user2);
+		List<Group> groups = groupService.findByUnitAndAccount(unit1, account2);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
 
-		Account user1 = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
-		groups = groupService.getByUnitUser(unit1, user1);
+		Account account1 = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
+		groups = groupService.findByUnitAndAccount(unit1, account1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 
 		Unit unit2 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
-		groups = groupService.getByUnitUser(unit2, user1);
+		groups = groupService.findByUnitAndAccount(unit2, account1);
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 	}
 
+	/**
+	 * Test get by code and unit.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
 	public void testGetByCodeAndUnit () throws CSecurityException
@@ -113,14 +112,10 @@ public class GroupTestCase
 
 		Unit unit = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
 
-		List<Group> groups = groupService.getByCodeAndUnit(DataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
-		Assert.assertNotNull(groups);
-		Assert.assertEquals(1, groups.size());
+		Group group = groupService.findByCodeAndUnit(DataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
+		Assert.assertNotNull(group);
 	}
 
-	/**
-	 * Inits the test.
-	 */
 	private void initTest ()
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();

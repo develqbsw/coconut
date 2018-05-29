@@ -160,8 +160,8 @@ public class AccountJpaDao extends AEntityQDslDao<Long, Account> implements Acco
 	@Override
 	public List<Account> findAll ()
 	{
-		OrderModel<UserOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
-		orderModel.getOrderSpecification().add(new OrderSpecification<>(UserOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return findByAccountAssociationsFilter(null, orderModel);
 	}

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
-import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.authentication.spring.auth.model.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.core.model.domain.Account;
 
 /**
@@ -73,7 +73,7 @@ public class CDBAuthenticatedWebSession extends AIndySecurityAuthenticatedWebSes
 	@Override
 	public boolean authenticate (AuthenticationSecurityToken authenticationToken)
 	{
-		//get supported token
+		//read supported token
 		UsernamePasswordUnitAuthenticationToken token = getAuthenticationObject(authenticationToken);
 		if (token == null)
 		{

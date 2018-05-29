@@ -14,10 +14,8 @@ import sk.qbsw.security.core.model.domain.Account;
  */
 public abstract class LoginTask implements Runnable
 {
-	/** The name of task. */
 	private String name;
 
-	/** The login count. */
 	private int loginCount;
 
 	/**
@@ -46,9 +44,6 @@ public abstract class LoginTask implements Runnable
 	 */
 	protected abstract void initResources ();
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
 	@Override
 	public void run ()
 	{

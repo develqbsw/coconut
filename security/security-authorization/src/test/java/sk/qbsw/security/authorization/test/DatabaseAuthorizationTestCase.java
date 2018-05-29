@@ -1,49 +1,40 @@
 package sk.qbsw.security.authorization.test;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.authorization.service.AuthorizationService;
 import sk.qbsw.security.authorization.test.util.AuthorizationTestProvider;
 import sk.qbsw.security.authorization.test.util.DataGenerator;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Checks Authorization service for database.
  * 
  * @author Tomas Lauro
- * @version 1.6.0
+ * @version 1.19.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@Rollback (true)
+@Rollback
 public class DatabaseAuthorizationTestCase
 {
-	/** The database data generator. */
 	@Autowired
 	private DataGenerator dataGenerator;
 
-	/** The authorization service. */
 	@Autowired
-	@Qualifier ("authorizationService")
 	private AuthorizationService authorizationService;
 
-	/** The authorization test provider. */
 	@Autowired
 	private AuthorizationTestProvider authorizationTestProvider;
 
-	/**
-	 * Test initialization.
-	 */
 	@Test
 	public void testInitialization ()
 	{
@@ -51,7 +42,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test successful authorization of user with default unit.
+	 * Test successful authorization of account with default unit.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -65,7 +56,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test unsuccessful authorization of user with default unit.
+	 * Test unsuccessful authorization of account with default unit.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -79,7 +70,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test successful authorization of user with unit.
+	 * Test successful authorization of account with unit.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -93,7 +84,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test unsuccessful authorization of user with unit.
+	 * Test unsuccessful authorization of account with unit.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -107,7 +98,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test successful authorization of user with category.
+	 * Test successful authorization of account with category.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -121,7 +112,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test unsuccessful authorization of user with category.
+	 * Test unsuccessful authorization of account with category.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -135,7 +126,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test successful authorization of user with unit and category.
+	 * Test successful authorization of account with unit and category.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -149,7 +140,7 @@ public class DatabaseAuthorizationTestCase
 	}
 
 	/**
-	 * Test unsuccessful authorization of user with unit and category.
+	 * Test unsuccessful authorization of account with unit and category.
 	 *
 	 * @throws CSecurityException the security exception
 	 */

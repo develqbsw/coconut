@@ -5,10 +5,8 @@ package sk.qbsw.core.base.exception;
  * 
  * @author Michal Lacko
  * @author Tomas Lauro
- * 
  * @version 1.13.1
  * @since 1.8.0
- *
  */
 public enum ECoreErrorResponse implements IErrorResponse
 {
@@ -21,22 +19,22 @@ public enum ECoreErrorResponse implements IErrorResponse
 
 	/** The pin wrong. */
 	PIN_WRONG ("9003", "error.wrongpin"),
-	
+
 	/** The unsupported authentication token. */
 	UNSUPPORTED_AUTHENTICATION_TOKEN ("9004", "error.unsupportedauthenticationtoken"),
 
 	ILLEGAL_STATE ("9005", "error.illegalstate"),
-	
+
 	ILLEGAL_ARGUMENT ("9006", "error.illegalargument"),
-	
+
 	INVALID_DATA ("9007", "error.invaliddata"),
 
 	// BUSINESS
 	/** The user already exists. */
-	USER_ALREADY_EXISTS ("10002", "error.security.loginused"),
+	ACCOUNT_ALREADY_EXISTS ("10002", "error.security.loginused"),
 
 	/** The user not all parameters. */
-	USER_NOT_ALL_PARAMETERS ("10003", "error.security.user.notallfields"),
+	ACCOUNT_NOT_ALL_PARAMETERS ("10003", "error.security.user.notallfields"),
 
 	/** The organization not valid. */
 	ORGANIZATION_NOT_VALID ("10004", "error.security.organization.notvalid"),
@@ -69,14 +67,14 @@ public enum ECoreErrorResponse implements IErrorResponse
 	AUTHENTICATION_TOKEN_INVALIDATED ("10013", "error.security.oauth.authenticationtokeninvalidated"),
 
 	/** The user not found. */
-	USER_NOT_FOUND ("10014", "error.security.usernotfound");
+	ACCOUNT_NOT_FOUND ("10014", "error.security.usernotfound");
 
 	/**
 	 * code of the error. This is shot code represent error in application
 	 */
 	private String code;
 
-	/**  this is description of error. */
+	/** this is description of error. */
 	private String messageKey;
 
 	/**
@@ -91,7 +89,8 @@ public enum ECoreErrorResponse implements IErrorResponse
 		this.messageKey = messageKey;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.base.exception.IError#getErrorCode()
 	 */
 	public String getCode ()
@@ -99,7 +98,8 @@ public enum ECoreErrorResponse implements IErrorResponse
 		return code;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.base.exception.IError#getMessage()
 	 */
 	public String getMessageKey ()
@@ -107,7 +107,8 @@ public enum ECoreErrorResponse implements IErrorResponse
 		return messageKey;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override

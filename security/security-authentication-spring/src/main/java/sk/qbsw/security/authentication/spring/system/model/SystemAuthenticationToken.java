@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * The system user authentication token.
+ * The system account authentication token.
  *
  * @author Tomas Lauro
  * @version 1.18.6

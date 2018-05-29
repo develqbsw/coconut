@@ -3,20 +3,21 @@ package sk.qbsw.security.authentication.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
+import sk.qbsw.core.base.state.ActivityStates;
+import sk.qbsw.core.security.base.exception.AccountDisabledException;
+import sk.qbsw.core.security.base.exception.InvalidAccountException;
 import sk.qbsw.core.security.base.exception.InvalidAuthenticationException;
 import sk.qbsw.core.security.base.exception.InvalidPasswordException;
-import sk.qbsw.core.security.base.exception.InvalidUserException;
-import sk.qbsw.core.security.base.exception.UserDisabledException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.*;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
 
@@ -28,43 +29,38 @@ import javax.persistence.PersistenceException;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.0.0
  */
-@Service (value = "cLoginService")
 public class DatabaseAuthenticationServiceImpl extends AService implements AuthenticationService
 {
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
-	/** LOGGER for authentication messages logging. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseAuthenticationServiceImpl.class);
 
-	/** The user dao. */
-	@Autowired
-	private AccountDao userDao;
+	private final AccountDao accountDao;
 
-	/** The unit dao. */
-	@Autowired
-	private UnitDao unitDao;
+	private final UnitDao unitDao;
 
-	/** The authentication params dao. */
-	@Autowired
-	private AuthenticationParamsDao authenticationParamsDao;
+	private final AuthenticationParamsDao authenticationParamsDao;
 
-	/** Password digester *. */
-	@Autowired
-	private transient PasswordDigester digester;
+	private final PasswordDigester digester;
 
 	/**
-	 * Authenticate by digest.
+	 * Instantiates a new Database authentication service.
 	 *
-	 * @param authenticationParams the authentication parameters of user
-	 * @param passwordToCheck the password to check
-	 * @throws InvalidPasswordException the c wrong password exception
+	 * @param accountDao the account dao
+	 * @param unitDao the unit dao
+	 * @param authenticationParamsDao the authentication params dao
+	 * @param digester the digester
 	 */
+	@Autowired
+	public DatabaseAuthenticationServiceImpl (AccountDao accountDao, UnitDao unitDao, AuthenticationParamsDao authenticationParamsDao, PasswordDigester digester)
+	{
+		this.accountDao = accountDao;
+		this.unitDao = unitDao;
+		this.authenticationParamsDao = authenticationParamsDao;
+		this.digester = digester;
+	}
+
 	private void authenticateByPassword (AuthenticationParams authenticationParams, String passwordToCheck) throws InvalidPasswordException
 	{
 		if (authenticationParams.getPassword() == null || !authenticationParams.getPassword().equals(passwordToCheck))
@@ -73,26 +69,16 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 		}
 	}
 
-	/**
-	 * Authenticate by password.
-	 *
-	 * @param authenticationParams the authentication parameters of user
-	 * @param login the login
-	 * @param passwordToCheck the password to check
-	 * @throws InvalidPasswordException the c wrong password exception
-	 */
 	private void authenticateByPasswordDigest (AuthenticationParams authenticationParams, String login, String passwordToCheck) throws InvalidPasswordException
 	{
 		if (authenticationParams.getPasswordDigest() == null || !digester.checkPassword(login, passwordToCheck, authenticationParams.getPasswordDigest()))
 		{
-			throw new InvalidPasswordException("Password dogest doesn't match");
+			throw new InvalidPasswordException("Password digest doesn't match");
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String, sk.qbsw.security.core.core.model.domain.CRole)
-	 */
-	@Transactional (readOnly = true)
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, Role role)
 	{
 		try
@@ -106,40 +92,33 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.winnetou.security.service.IAuthenticationService#canLogin(java.lang.String, java.lang.String)
-	 */
-	@Transactional (readOnly = true)
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Account login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
 		return loginWithUnit(login, password, null);
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#login(java.lang.String, java.lang.String, sk.qbsw.security.core.core.model.domain.CRole)
-	 */
-	@Transactional (readOnly = true)
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Account login (String login, @CNotLogged @CNotAuditLogged String password, Role role) throws CSecurityException
 	{
-		Account user = loginWithUnit(login, password, null);
+		Account account = loginWithUnit(login, password, null);
 
-		if (!user.hasRole(role))
+		if (!account.hasRole(role))
 		{
-			throw new CSecurityException("User has not a role with code " + role.getCode());
+			throw new CSecurityException("Account has not a role with code " + role.getCode());
 		}
 
-		return user;
+		return account;
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#login(java.lang.String, java.lang.String, java.lang.String)
-	 */
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Account login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
-		//checks if the unit exists
-		Unit localUnit = null;
+		// checks if the unit exists
+		Unit localUnit;
 		try
 		{
 			localUnit = unitDao.findOneByName(unit);
@@ -150,101 +129,86 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 			throw new CSecurityException("There is not a unit with name " + unit);
 		}
 
-		//find user
-		Account user = loginWithUnit(login, password, localUnit);
+		// find account
+		Account account = loginWithUnit(login, password, localUnit);
 
-		if (user.isInUnit(localUnit))
+		if (account.isInUnit(localUnit))
 		{
-			return user;
+			return account;
 		}
 		else
 		{
-			throw new CSecurityException("User is not is unit with name " + localUnit.getName());
+			throw new CSecurityException("Account is not is unit with name " + localUnit.getName());
 		}
 	}
 
-	/**
-	 * Login with unit.
-	 *
-	 * @param login the login
-	 * @param password the password
-	 * @param unit the unit - the unit is optional parameter
-	 * @return the user
-	 * @throws UserDisabledException the user is disabled
-	 * @throws InvalidAuthenticationException the user has invalid authentication params
-	 * @throws InvalidUserException the user with given login not found
-	 * @throws InvalidPasswordException the invalid password
-	 */
-	private Account loginWithUnit (String login, String password, Unit unit) throws UserDisabledException, InvalidAuthenticationException, InvalidUserException, InvalidPasswordException
+	private Account loginWithUnit (String login, String password, Unit unit) throws AccountDisabledException, InvalidAuthenticationException, InvalidAccountException, InvalidPasswordException
 	{
-		LOGGER.debug("trying to login user with login {} and unit{} ", new Object[] {login, unit});
+		LOGGER.debug("trying to login account with login {} and unit{} ", new Object[] {login, unit});
 
-		Account user;
+		Account account;
 
 		try
 		{
-			user = userDao.findOneByLoginAndUnit(login, unit);
+			account = accountDao.findOneByLoginAndUnit(login, unit);
 		}
 		catch (NoResultException | CSecurityException e)
 		{
-			LOGGER.error("User not found by unit and login", e);
-			user = null;
+			LOGGER.error("Account not found by unit and login", e);
+			account = null;
 		}
 
-		if (user == null)
+		if (account == null)
 		{
-			throw new InvalidUserException("User not recognised");
+			throw new InvalidAccountException("Account not recognised");
 		}
 		else
 		{
-			AuthenticationParams userAuthParams = null;
+			AuthenticationParams accountAuthParams;
 			try
 			{
-				userAuthParams = authenticationParamsDao.findOneValidByUserId(user.getId());
+				accountAuthParams = authenticationParamsDao.findOneValidByAccountId(account.getId());
 			}
 			catch (NoResultException ex)
 			{
-				LOGGER.debug("The authentication params of user with login {} are invalid", user.getLogin());
+				LOGGER.debug("The authentication params of account with login {} are invalid", account.getLogin());
 				LOGGER.error("Valid authentication params not found", ex);
 
 				throw new InvalidAuthenticationException("Authentication params are invalid");
 			}
 
-			AuthenticationTypes authenticationType = userAuthParams.getAuthenticationType();
+			AuthenticationTypes authenticationType = accountAuthParams.getAuthenticationType();
 			switch (authenticationType)
 			{
 				case BY_PASSWORD_DIGEST:
-					authenticateByPasswordDigest(userAuthParams, login, password);
+					authenticateByPasswordDigest(accountAuthParams, login, password);
 					break;
 				case BY_PASSWORD:
-					authenticateByPassword(userAuthParams, password);
+					authenticateByPassword(accountAuthParams, password);
 					break;
 				default:
 					throw new InvalidPasswordException("Authentication method wrong");
 			}
 
-			// check if user is disabled
-			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
+			// check if account is disabled
+			if ( (account.getOrganization().getState() != null && account.getOrganization().getState().equals(ActivityStates.INACTIVE)) || (account.getState() != null && account.getState().equals(ActivityStates.INACTIVE)))
 			{
-				throw new UserDisabledException("");
+				throw new AccountDisabledException("");
 			}
 		}
 
-		LOGGER.debug("user with login {} and unit{} found. ", new Object[] {login, unit});
+		LOGGER.debug("account with login {} and unit{} found. ", new Object[] {login, unit});
 
-		return user;
+		return account;
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.security.core.core.service.IAuthenticationService#isOnline()
-	 */
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public boolean isOnline ()
 	{
 		try
 		{
-			userDao.countAll();
+			accountDao.countAll();
 			return true;
 		}
 		catch (PersistenceException ex)

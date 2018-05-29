@@ -16,60 +16,66 @@ import java.util.Map;
  * @version 1.13.1
  * @since 1.6.0
  */
-public class OAuthLoggedUser extends LoggedUser {
-    private static final long serialVersionUID = -4382555678527345919L;
+public class OAuthLoggedUser extends LoggedUser
+{
+	private static final long serialVersionUID = -4382555678527345919L;
 
-    @NotNull
-    private OAuthData oauthData;
+	@NotNull
+	private OAuthData oauthData;
 
-    /**
-     * Instantiates a new Logged o auth user.
-     *
-     * @param id           the id
-     * @param username     the username
-     * @param password     the password
-     * @param authorities  the authorities
-     * @param organization the organization
-     * @param oauthData    the oauth data
-     */
-    public OAuthLoggedUser(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData) {
-        super(id, username, password, authorities, organization);
-        this.oauthData = oauthData;
-    }
+	/**
+	 * Instantiates a new Logged o auth user.
+	 *
+	 * @param id the id
+	 * @param username the username
+	 * @param password the password
+	 * @param authorities the authorities
+	 * @param organization the organization
+	 * @param oauthData the oauth data
+	 */
+	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData)
+	{
+		super(id, username, password, authorities, organization);
+		this.oauthData = oauthData;
+	}
 
-    /**
-     * Instantiates a new O auth logged user.
-     *
-     * @param id                    the id
-     * @param username              the username
-     * @param password              the password
-     * @param authorities           the authorities
-     * @param organization          the organization
-     * @param oauthData             the oauth data
-     * @param additionalInformation the additional information
-     */
-    public OAuthLoggedUser(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData, Map<String, Object> additionalInformation) {
-        super(id, username, password, authorities, organization, additionalInformation);
-        this.oauthData = oauthData;
-    }
+	/**
+	 * Instantiates a new O auth logged user.
+	 *
+	 * @param id the id
+	 * @param username the username
+	 * @param password the password
+	 * @param authorities the authorities
+	 * @param organization the organization
+	 * @param oauthData the oauth data
+	 * @param additionalInformation the additional information
+	 */
+	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData, Map<String, Object> additionalInformation)
+	{
+		super(id, username, password, authorities, organization, additionalInformation);
+		this.oauthData = oauthData;
+	}
 
-    /**
-     * Gets oauth data.
-     *
-     * @return the oauth data
-     */
-    public OAuthData getOauthData() {
-        return oauthData;
-    }
+	/**
+	 * Gets oauth data.
+	 *
+	 * @return the oauth data
+	 */
+	public OAuthData getOauthData ()
+	{
+		return oauthData;
+	}
 
-    @Override
-    public boolean equals(Object rhs) {
-        return super.equals(rhs);
-    }
+	@Override
+	public boolean equals (Object rhs)
+	{
+		return super.equals(rhs);
+	}
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
+	@Override
+	public int hashCode ()
+	{
+		return super.hashCode();
+	}
 
 }

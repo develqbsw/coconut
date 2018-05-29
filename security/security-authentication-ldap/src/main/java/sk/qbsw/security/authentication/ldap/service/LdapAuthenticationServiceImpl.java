@@ -1,74 +1,70 @@
 package sk.qbsw.security.authentication.ldap.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
+import sk.qbsw.core.base.state.ActivityStates;
+import sk.qbsw.core.security.base.exception.AccountDisabledException;
+import sk.qbsw.core.security.base.exception.InvalidAccountException;
 import sk.qbsw.core.security.base.exception.InvalidPasswordException;
-import sk.qbsw.core.security.base.exception.InvalidUserException;
-import sk.qbsw.core.security.base.exception.UserDisabledException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
+import sk.qbsw.security.authentication.ldap.configuration.SecurityLdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LDAPInjectionProtector;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
-import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Role;
 import sk.qbsw.security.core.model.domain.Unit;
 
+import javax.persistence.NoResultException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The LDAP authentication service.
- * 
+ *
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.6.0
  */
-@Service (value = "ldapAuthenticationService")
 public class LdapAuthenticationServiceImpl extends AService implements AuthenticationService
 {
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
-	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(LdapAuthenticationServiceImpl.class);
 
-	/** The data. */
-	@Autowired
-	private transient LdapAuthenticationConfigurator data;
+	private final SecurityLdapAuthenticationConfigurator ldapAuthenticationConfigurator;
 
-	/** The unit dao. */
-	@Autowired
-	private UnitDao unitDao;
+	private final UnitDao unitDao;
 
-	/** The user dao. */
-	@Autowired
-	private AccountDao userDao;
+	private final AccountDao accountDao;
 
-	/** The ldap provider. */
-	@Autowired
-	private transient LdapProvider ldapProvider;
+	private final LdapProvider ldapProvider;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#canLogin(java.lang .String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
+	/**
+	 * Instantiates a new Ldap authentication service.
+	 *
+	 * @param ldapAuthenticationConfigurator the ldap authentication configurator
+	 * @param unitDao the unit dao
+	 * @param accountDao the account dao
+	 * @param ldapProvider the ldap provider
 	 */
+	@Autowired
+	public LdapAuthenticationServiceImpl (SecurityLdapAuthenticationConfigurator ldapAuthenticationConfigurator, UnitDao unitDao, AccountDao accountDao, LdapProvider ldapProvider)
+	{
+		this.ldapAuthenticationConfigurator = ldapAuthenticationConfigurator;
+		this.unitDao = unitDao;
+		this.accountDao = accountDao;
+		this.ldapProvider = ldapProvider;
+	}
+
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public boolean canLogin (String login, @CNotLogged @CNotAuditLogged String password, Role role)
 	{
 		try
@@ -77,141 +73,109 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 		}
 		catch (CSecurityException ex)
 		{
-			LOGGER.debug("User is not allowed to login", ex);
+			LOGGER.debug("Account is not allowed to login", ex);
 			return false;
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang. String, java.lang.String)
-	 */
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Account login (String login, @CNotLogged @CNotAuditLogged String password) throws CSecurityException
 	{
-		return loginUser(login, password, null);
+		return loginAccount(login, password, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang. String, java.lang.String, sk.qbsw.core.security.model.domain.CRole)
-	 */
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Account login (String login, @CNotLogged @CNotAuditLogged String password, Role role) throws CSecurityException
 	{
-		Account user = loginUser(login, password, null);
+		Account account = loginAccount(login, password, null);
 
-		// checks if the user has the role
-		if (!user.hasRole(role))
+		// checks if the account has the role
+		if (!account.hasRole(role))
 		{
-			throw new CSecurityException("User " + login + " has no such role");
+			throw new CSecurityException("Account " + login + " has no such role");
 		}
 
-		return user;
+		return account;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#login(java.lang. String, java.lang.String, java.lang.String)
-	 */
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional (rollbackFor = CBusinessException.class)
 	public Account login (String login, @CNotLogged @CNotAuditLogged String password, String unit) throws CSecurityException
 	{
 		Unit databaseUnit = null;
-		Account user = null;
+		Account account = null;
 
 		try
 		{
 			databaseUnit = unitDao.findOneByName(unit);
-			user = loginUser(login, password, databaseUnit);
+			account = loginAccount(login, password, databaseUnit);
 		}
 		catch (NoResultException ex)
 		{
-			LOGGER.debug("User login retry", ex);
-			user = loginUser(login, password, null);
+			LOGGER.debug("Account login retry", ex);
+			account = loginAccount(login, password, null);
 		}
 
-		if (user.isInUnit(databaseUnit))
+		if (account.isInUnit(databaseUnit))
 		{
-			return user;
+			return account;
 		}
 		else
 		{
-			throw new CSecurityException("User is not is unit with name " + unit);
+			throw new CSecurityException("Account is not is unit with name " + unit);
 		}
 	}
 
-	/**
-	 * Login user - if the unit is null, use user default unit (if not null) otherwise use unit.
-	 *
-	 * @param login the login
-	 * @param password the password
-	 * @param unit the unit - optional
-	 * @return the user
-	 * @throws CSecurityException the security exception
-	 */
-	private Account loginUser (String login, String password, Unit unit) throws CSecurityException
+	private Account loginAccount (String login, String password, Unit unit) throws CSecurityException
 	{
-		// gets user from ldap - all information in this object are now from
+		// gets account from ldap - all information in this object are now from
 		// ldap
-		Account user;
+		Account account;
 
 		try
 		{
-			user = userDao.findOneByLoginAndUnit(login, unit);
+			account = accountDao.findOneByLoginAndUnit(login, unit);
 		}
 		catch (NoResultException nre)
 		{
-			LOGGER.debug("User not found", nre);
-			user = null;
+			LOGGER.debug("Account not found", nre);
+			account = null;
 		}
 
-		if (user != null)
+		if (account != null)
 		{
-			// check if user is disabled
-			if ( (user.getOrganization().getFlagEnabled() != null && user.getOrganization().getFlagEnabled().equals(false)) || (user.getFlagEnabled() != null && user.getFlagEnabled().equals(false)))
+			// check if account is disabled
+			if ( (account.getOrganization().getState() != null && account.getOrganization().getState().equals(ActivityStates.INACTIVE)) || (account.getState() != null && account.getState().equals(ActivityStates.INACTIVE)))
 			{
-				throw new UserDisabledException("");
+				throw new AccountDisabledException("");
 			}
 
-			// authenticate user in ldap
-			if (authenticateUser(login, password))
+			// authenticate account in ldap
+			if (authenticateAccount(login, password))
 			{
-				return user;
+				return account;
 			}
 			else
 			{
-				throw new InvalidPasswordException("Password in ldap for user " + login + " doesn't match");
+				throw new InvalidPasswordException("Password in ldap for account " + login + " doesn't match");
 			}
 		}
 		else
 		{
-			throw new InvalidUserException("The user with login " + login + " not found");
+			throw new InvalidAccountException("The account with login " + login + " not found");
 		}
 	}
 
-	/**
-	 * Authenticate user in LDAP.
-	 *
-	 * @param login the login
-	 * @param password the password
-	 * @return true, if successful
-	 * @throws CSecurityException the configuration is corrupted
-	 */
-	private boolean authenticateUser (String login, String password) throws CSecurityException
+	private boolean authenticateAccount (String login, String password) throws CSecurityException
 	{
 		// the exceptions thrown in ldap authentication process
 		List<Throwable> exceptions = new ArrayList<>();
 
-		if (data.getUserSearchBaseDns() != null)
+		if (ldapAuthenticationConfigurator.getAccountSearchBaseDns() != null)
 		{
-			for (String userSearchDn : data.getUserSearchBaseDns())
+			for (String accountSearchDn : ldapAuthenticationConfigurator.getAccountSearchBaseDns())
 			{
 				try
 				{
@@ -219,8 +183,8 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 					LOGGER.debug("LDAP escaped login:" + escapedLogin);
 
 					// authenticate
-					ldapProvider.authenticate(userSearchDn, String.format(data.getUserSearchFilter(), escapedLogin), password);
-					LOGGER.debug("User " + login + " was authenticated by LDAP in tree " + userSearchDn);
+					ldapProvider.authenticate(accountSearchDn, String.format(ldapAuthenticationConfigurator.getAccountSearchFilter(), escapedLogin), password);
+					LOGGER.debug("Account " + login + " was authenticated by LDAP in tree " + accountSearchDn);
 
 					return true;
 				}
@@ -244,11 +208,6 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see sk.qbsw.core.security.service.IAuthenticationService#isOnline()
-	 */
 	@Override
 	public boolean isOnline ()
 	{

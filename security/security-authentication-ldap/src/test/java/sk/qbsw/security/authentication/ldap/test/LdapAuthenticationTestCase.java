@@ -1,86 +1,49 @@
 package sk.qbsw.security.authentication.ldap.test;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.core.security.base.exception.UserDisabledException;
+import sk.qbsw.core.security.base.exception.AccountDisabledException;
 import sk.qbsw.core.testing.mock.IMockHelper;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
 import sk.qbsw.security.authentication.ldap.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;
-import sk.qbsw.security.core.configuration.SecurityCoreConfigurator;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Checks Authentication service for ldap.
  *
- * @autor Tomas Lauro
- * 
- * @version 1.11.10
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-ldap-context.xml"})
-@Rollback (true)
+@Rollback
 public class LdapAuthenticationTestCase
 {
-	/** The database data generator. */
 	@Autowired
 	private DataGenerator dataGenerator;
 
-	/** The authentication service. */
 	@Autowired
-	@Qualifier ("ldapAuthenticationService")
-	private AuthenticationService authenticationService;
+	private AuthenticationService ldapAuthenticationService;
 
-	/** The authentication test provider. */
 	@Autowired
 	private AuthenticationTestProvider authenticationTestProvider;
 
-	/** The ldap provider. */
 	@Autowired
-	@Qualifier ("ldapProviderMock")
 	private LdapProvider ldapProvider;
 
-	/** The ldap configurator. */
-	@Autowired
-	private LdapAuthenticationConfigurator ldapConfigurator;
-
-	/** The Authentication Configurator. */
-	@Autowired
-	private SecurityCoreConfigurator securityCoreConfigurator;
-
-	/** The mock helper. */
 	@Autowired
 	private IMockHelper mockHelper;
-
-	/**
-	 * Inits the test case.
-	 */
-	@Before
-	public void initTestCase ()
-	{
-		ldapConfigurator.setServerName("192.168.123.162");
-		ldapConfigurator.setServerPort(10389);
-		ldapConfigurator.setUserDn("cn=jozko.mrkvicka,ou=users,dc=mfsr,dc=sk");
-		ldapConfigurator.setUserPassword("jozko.mrkvicka");
-		ldapConfigurator.setUserSearchBaseDns("ou=system,dc=mfsr,dc=sk;;ou=users,dc=mfsr,dc=sk".split(";;"));
-		ldapConfigurator.setUserObjectClass("inetOrgPerson");
-		ldapConfigurator.setUserOrganizationId((long) 1);
-		securityCoreConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
-	}
 
 	/**
 	 * Test initialization.
@@ -88,7 +51,7 @@ public class LdapAuthenticationTestCase
 	@Test
 	public void testInitialization ()
 	{
-		assertNotNull("Could not find Authentication service", authenticationService);
+		assertNotNull("Could not find Authentication service", ldapAuthenticationService);
 	}
 
 	/**
@@ -102,12 +65,13 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnit(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnit(ldapAuthenticationService);
 	}
 
 	/**
 	 * Test login without default unit.
-	 * @throws Exception 
+	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -115,12 +79,13 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnit(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnit(ldapAuthenticationService);
 	}
 
 	/**
-	 * Test login with default unit and role. The role should be found - login success.
-	 * @throws Exception 
+	 * Test login with default unit and role positive.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -128,12 +93,13 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndRolePositive(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnitAndRolePositive(ldapAuthenticationService);
 	}
 
 	/**
-	 * Test login with default unit and role. The role should not be found - login fails.
-	 * @throws Exception 
+	 * Test login with default unit and role negative.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional (transactionManager = "transactionManager")
@@ -141,12 +107,13 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndRoleNegative(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnitAndRoleNegative(ldapAuthenticationService);
 	}
 
 	/**
-	 * Test login without default unit and with role. The role should be found - login success.
-	 * @throws Exception 
+	 * Test login without default unit and role positive.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -154,12 +121,13 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndRolePositive(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnitAndRolePositive(ldapAuthenticationService);
 	}
 
 	/**
-	 * Test login without default unit and with role. The role should not be found - login fails.
-	 * @throws Exception 
+	 * Test login without default unit and role negative.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional (transactionManager = "transactionManager")
@@ -167,12 +135,13 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndRoleNegative(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnitAndRoleNegative(ldapAuthenticationService);
 	}
 
 	/**
-	 * Test login with default unit and with unit. The user should be found - login success.
-	 * @throws Exception 
+	 * Test login with default unit and unit.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -180,12 +149,13 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndUnit(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnitAndUnit(ldapAuthenticationService);
 	}
 
 	/**
-	 * Test login without default unit and with unit. The user should be found - login success.
-	 * @throws Exception 
+	 * Test login without default unit and unit.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -193,56 +163,54 @@ public class LdapAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(ldapAuthenticationService);
 	}
 
 	/**
-	 * Test login enabled user in disabled organization.
-	 * @throws Exception 
-	 */
-	@Test (expected = UserDisabledException.class)
-	@Transactional (transactionManager = "transactionManager")
-	public void testLoginEnabledUserDisabledOrganization () throws Exception
-	{
-		initTest();
-
-		authenticationTestProvider.testLoginEnabledUserDisabledOrganization(authenticationService);
-	}
-
-	/**
-	 * Test login disabled user in disabled organization.
-	 * @throws Exception 
-	 */
-	@Test (expected = UserDisabledException.class)
-	@Transactional (transactionManager = "transactionManager")
-	public void testLoginDisabledUserDisabledOrganization () throws Exception
-	{
-		initTest();
-
-		authenticationTestProvider.testLoginDisabledUserDisabledOrganization(authenticationService);
-	}
-
-	/**
-	 * Test login disabled user in enabled organization.
-	 * @throws Exception 
-	 */
-	@Test (expected = UserDisabledException.class)
-	@Transactional (transactionManager = "transactionManager")
-	public void testLoginDisabledUserEnabledOrganization () throws Exception
-	{
-		initTest();
-
-		authenticationTestProvider.testLoginDisabledUserEnabledOrganization(authenticationService);
-	}
-
-	/**
-	 * Inits the test user with default unit.
+	 * Test login enabled account disabled organization.
 	 *
 	 * @throws Exception the exception
 	 */
-	private void initTest () throws Exception
+	@Test (expected = AccountDisabledException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginEnabledAccountDisabledOrganization () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginEnabledAccountDisabledOrganization(ldapAuthenticationService);
+	}
+
+	/**
+	 * Test login disabled account disabled organization.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test (expected = AccountDisabledException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginDisabledAccountDisabledOrganization () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginDisabledAccountDisabledOrganization(ldapAuthenticationService);
+	}
+
+	/**
+	 * Test login disabled account enabled organization.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test (expected = AccountDisabledException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testLoginDisabledAccountEnabledOrganization () throws Exception
+	{
+		initTest();
+
+		authenticationTestProvider.testLoginDisabledAccountEnabledOrganization(ldapAuthenticationService);
+	}
+
+	private void initTest ()
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();
-		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(authenticationService), "ldapProvider", ldapProvider);
+		ReflectionTestUtils.setField(mockHelper.unwrapSpringProxyObject(ldapAuthenticationService), "ldapProvider", ldapProvider);
 	}
 }

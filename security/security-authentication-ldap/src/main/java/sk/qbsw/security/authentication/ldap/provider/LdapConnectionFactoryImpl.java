@@ -1,18 +1,12 @@
 package sk.qbsw.security.authentication.ldap.provider;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.ldap.client.api.DefaultPoolableLdapConnectionFactory;
-import org.apache.directory.ldap.client.api.LdapConnection;
-import org.apache.directory.ldap.client.api.LdapConnectionConfig;
-import org.apache.directory.ldap.client.api.LdapConnectionPool;
-import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.ldap.client.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import sk.qbsw.core.base.service.AService;
-import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConfigurator;
+import sk.qbsw.security.authentication.ldap.configuration.SecurityLdapAuthenticationConfigurator;
 
 /**
  * The factory for LDAP connection.
@@ -21,44 +15,38 @@ import sk.qbsw.security.authentication.ldap.configuration.LdapAuthenticationConf
  * @version 1.13.0
  * @since 1.13.0
  */
-@Component ("ldapConnectionFactory")
-class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactory
+public class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactory
 {
-	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(LdapConnectionFactoryImpl.class);
 
-	/** The configuration data. */
-	@Autowired
-	private LdapAuthenticationConfigurator configurationData;
+	private final SecurityLdapAuthenticationConfigurator configurationData;
 
-	/** The primary server connection pool. */
 	private LdapConnectionPool primaryServerConnectionPool = null;
 
-	/** The secondary server connection pool. */
 	private LdapConnectionPool secondaryServerConnectionPool = null;
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#init()
-	 */
+	@Autowired
+	public LdapConnectionFactoryImpl (SecurityLdapAuthenticationConfigurator configurationData)
+	{
+		this.configurationData = configurationData;
+	}
+
 	@Override
 	public void init ()
 	{
 		if (primaryServerConnectionPool == null)
 		{
-			primaryServerConnectionPool = createPool(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getUserDn(), configurationData.getUserPassword(), configurationData.getUseSslFlag());
+			primaryServerConnectionPool = createPool(configurationData.getServerName(), configurationData.getServerPort(), configurationData.getAccountDn(), configurationData.getAccountPassword(), configurationData.getUseSslFlag());
 			LOGGER.debug("Primary ldap connection pool created.");
 		}
 
 		if (secondaryServerConnectionPool == null && configurationData.getSecondaryServerName() != null)
 		{
-			secondaryServerConnectionPool = createPool(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort(), configurationData.getUserDn(), configurationData.getUserPassword(), configurationData.getUseSslFlag());
+			secondaryServerConnectionPool = createPool(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort(), configurationData.getAccountDn(), configurationData.getAccountPassword(), configurationData.getUseSslFlag());
 			LOGGER.debug("Secondary ldap connection pool created.");
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#uninit()
-	 */
 	@Override
 	public void uninit ()
 	{
@@ -73,7 +61,7 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 			catch (Exception ex)
 			{
 				LOGGER.debug("The ldap primary connection uninit failed", ex);
-				//Do nothing
+				// Do nothing
 			}
 		}
 
@@ -86,20 +74,17 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 			catch (Exception ex)
 			{
 				LOGGER.debug("The ldap secondary connection uninit failed", ex);
-				//Do nothing
+				// Do nothing
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#getConnection()
-	 */
 	@Override
 	public LdapConnectionWrapper getConnection () throws LdapException
 	{
-		LdapConnection connection = null;
+		LdapConnection connection;
 
-		//trying to get connection from primary server
+		// trying to read connection from primary server
 		try
 		{
 			connection = primaryServerConnectionPool.getConnection();
@@ -117,7 +102,7 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 
 			LdapConnectionWrapper connectionModel = new LdapConnectionWrapper();
 			connectionModel.setConnection(connection);
-			connectionModel.setType(LdapConnectionType.PRIMARY);
+			connectionModel.setType(LdapConnectionTypes.PRIMARY);
 
 			return connectionModel;
 		}
@@ -125,26 +110,23 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 		{
 			LOGGER.debug("Secondary ldap connection borrowed.");
 
-			//release connection from primary pool and borrow from secondary pool
+			// release connection from primary pool and borrow from secondary pool
 			primaryServerConnectionPool.releaseConnection(connection);
 			connection = secondaryServerConnectionPool.getConnection();
 			LOGGER.debug("Get connection - the number of active connections in secondary pool is {}", secondaryServerConnectionPool.getNumActive());
 
 			LdapConnectionWrapper connectionModel = new LdapConnectionWrapper();
 			connectionModel.setConnection(connection);
-			connectionModel.setType(LdapConnectionType.SECONDARY);
+			connectionModel.setType(LdapConnectionTypes.SECONDARY);
 
 			return connectionModel;
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#releaseConnection(sk.qbsw.core.security.service.ldap.CLdapConnectionModel)
-	 */
 	@Override
 	public void releaseConnection (LdapConnectionWrapper connection) throws LdapException
 	{
-		if (connection != null && connection.getType().equals(LdapConnectionType.PRIMARY))
+		if (connection != null && connection.getType().equals(LdapConnectionTypes.PRIMARY))
 		{
 			primaryServerConnectionPool.releaseConnection(connection.getConnection());
 			connection.setConnection(null);
@@ -152,7 +134,7 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 
 			LOGGER.debug("Primary ldap connection released.");
 		}
-		else if (connection != null && connection.getType().equals(LdapConnectionType.SECONDARY))
+		else if (connection != null && connection.getType().equals(LdapConnectionTypes.SECONDARY))
 		{
 			secondaryServerConnectionPool.releaseConnection(connection.getConnection());
 			connection.setConnection(null);
@@ -162,14 +144,11 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#getOneTimeConnection()
-	 */
 	@Override
 	public LdapConnectionWrapper getOneTimeConnection () throws LdapException
 	{
-		LdapConnection connection = null;
-		LdapConnection primaryServerPoolConnection = null;
+		LdapConnection connection;
+		LdapConnection primaryServerPoolConnection;
 
 		try
 		{
@@ -183,20 +162,20 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 
 		try
 		{
-			//checks if the connection to primary server is active or not
+			// checks if the connection to primary server is active or not
 			if (primaryServerPoolConnection != null && primaryServerPoolConnection.isConnected())
 			{
 				connection = getLdapConnection(configurationData.getServerName(), configurationData.getServerPort());
 
-				CConnectionCounter.increase();
-				LOGGER.debug("One time connection to primary server created. Connections count is {}", CConnectionCounter.value());
+				ConnectionCounter.increase();
+				LOGGER.debug("One time connection to primary server created. Connections count is {}", ConnectionCounter.value());
 			}
 			else
 			{
 				connection = getLdapConnection(configurationData.getSecondaryServerName(), configurationData.getSecondaryServerPort());
 
-				CConnectionCounter.increase();
-				LOGGER.debug("One time connection to secondary server created. Connections count is {}", CConnectionCounter.value());
+				ConnectionCounter.increase();
+				LOGGER.debug("One time connection to secondary server created. Connections count is {}", ConnectionCounter.value());
 			}
 		}
 		finally
@@ -204,24 +183,21 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 			primaryServerConnectionPool.releaseConnection(primaryServerPoolConnection);
 		}
 
-		//create connection model
+		// create connection model
 		LdapConnectionWrapper connectionModel = new LdapConnectionWrapper();
 		connectionModel.setConnection(connection);
-		connectionModel.setType(LdapConnectionType.ONE_TIME);
+		connectionModel.setType(LdapConnectionTypes.ONE_TIME);
 
 		return connectionModel;
 	}
 
-	private LdapConnection getLdapConnection(String serverName, int serverPort)
+	private LdapConnection getLdapConnection (String serverName, int serverPort)
 	{
 		return new LdapNetworkConnection(serverName, serverPort, configurationData.getUseSslFlag());
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapConnectionFactory#releaseOneTimeConnection(sk.qbsw.core.security.service.ldap.CLdapConnectionModel)
-	 */
 	@Override
-	public void releaseOneTimeConnection (LdapConnectionWrapper connection) throws LdapException
+	public void releaseOneTimeConnection (LdapConnectionWrapper connection)
 	{
 		try
 		{
@@ -233,8 +209,8 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 				connection.setType(null);
 			}
 
-			CConnectionCounter.decrease();
-			LOGGER.debug("One time connection closed. Connections count is {}", CConnectionCounter.value());
+			ConnectionCounter.decrease();
+			LOGGER.debug("One time connection closed. Connections count is {}", ConnectionCounter.value());
 		}
 		catch (Exception e)
 		{
@@ -242,23 +218,13 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 		}
 	}
 
-	/**
-	 * Creates a new LdapConnectionWrapper object.
-	 *
-	 * @param serverName the server name
-	 * @param serverPort the server port
-	 * @param ldapUserDn the ldap user dn
-	 * @param ldapUserPassword the ldap user password
-	 * @param useSslFlag the use ssl flag
-	 * @return the ldap connection pool
-	 */
-	private LdapConnectionPool createPool (String serverName, int serverPort, String ldapUserDn, String ldapUserPassword, boolean useSslFlag)
+	private LdapConnectionPool createPool (String serverName, int serverPort, String ldapAccountDn, String ldapAccountPassword, boolean useSslFlag)
 	{
 		LdapConnectionConfig config = new LdapConnectionConfig();
 		config.setLdapHost(serverName);
 		config.setLdapPort(serverPort);
-		config.setName(ldapUserDn);
-		config.setCredentials(ldapUserPassword);
+		config.setName(ldapAccountDn);
+		config.setCredentials(ldapAccountPassword);
 		config.setUseSsl(useSslFlag);
 
 		DefaultPoolableLdapConnectionFactory factory = new DefaultPoolableLdapConnectionFactory(config);
@@ -269,15 +235,10 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 		return pool;
 	}
 
-	/**
-	 * Config connection pool.
-	 *
-	 * @param connectionPool the connection pool
-	 */
 	private void configConnectionPool (LdapConnectionPool connectionPool)
 	{
-		//this is important - do not change!!!
-		//the connection must be test before borrow - the logic depends on it
+		// this is important - do not change!!!
+		// the connection must be test before borrow - the logic depends on it
 		connectionPool.setTestOnBorrow(true);
 
 		if (configurationData.getPoolMaxIdle() != null)
@@ -302,42 +263,25 @@ class LdapConnectionFactoryImpl extends AService implements LdapConnectionFactor
 	}
 }
 
-/**
- * Connection counter
- * @author Dalibor Rak
- *
- */
-class CConnectionCounter
+class ConnectionCounter
 {
-	/** Local counter of connections*/
 	private static volatile int oneTimeConnectionsCount = 0;
 
-	/** Hide connection counter */
-	private CConnectionCounter ()
+	private ConnectionCounter ()
 	{
 		// hide construction
 	}
 
-	/**
-	 *
-	 */
 	public static void increase ()
 	{
 		oneTimeConnectionsCount++;
 	}
 
-	/**
-	 *
-	 */
 	public static void decrease ()
 	{
 		oneTimeConnectionsCount--;
 	}
 
-	/**
-	 * Reads value
-	 * @return current count of connections
-	 */
 	public static int value ()
 	{
 		return oneTimeConnectionsCount;

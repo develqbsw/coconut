@@ -1,45 +1,33 @@
 package sk.qbsw.security.management.service;
 
-import java.io.Serializable;
-import java.util.List;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.model.domain.Address;
 import sk.qbsw.security.core.model.domain.Unit;
 
+import java.util.List;
+
 /**
- * The Interface UnitService.
- * 
+ * The unit service.
+ *
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.6.0
  */
-public interface UnitService extends Serializable
+public interface UnitService
 {
 	/**
-	 * Gets the all units.
+	 * Find all list.
 	 *
-	 * @return the all units
+	 * @return the list
 	 */
-	public List<Unit> getAll ();
+	List<Unit> findAll ();
 
 	/**
-	 * Gets the all units by user.
+	 * Find by account list.
 	 *
-	 * @param user the user
-	 * @return the all units
-	 * @throws CSecurityException throws if the user is null
+	 * @param account the account
+	 * @return the list
+	 * @throws CSecurityException the c security exception
 	 */
-	public List<Unit> getAll (Account user) throws CSecurityException;
-
-
-	/**
-	 * Add or update unit address
-	 * 
-	 * @param unit unit for which is address updated
-	 * @param address address which is added or updated for unit
-	 */
-	public void setAddress (Unit unit, Address address);
+	List<Unit> findByAccount (Account account) throws CSecurityException;
 }
