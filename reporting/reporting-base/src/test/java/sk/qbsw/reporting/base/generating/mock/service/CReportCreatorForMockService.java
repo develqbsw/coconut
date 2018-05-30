@@ -7,7 +7,7 @@ public class CReportCreatorForMockService
 {
     private volatile int calls = 0;
 
-    public void call()
+    public synchronized void call()
     {
         calls++;
     }
