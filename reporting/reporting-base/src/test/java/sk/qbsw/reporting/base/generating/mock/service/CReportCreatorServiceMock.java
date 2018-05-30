@@ -15,9 +15,9 @@ import sk.qbsw.reporting.base.generating.service.IReportCreator;
 public class CReportCreatorServiceMock implements IReportCreator
 {
     private static volatile int NUMBER_OF_INSTANCES = 0;
-    /**
-     * The Constant LOGGER.
-     */
+
+    private static final Object countLock = new Object();
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CReportCreatorServiceMock.class);
 
     @Autowired
@@ -27,7 +27,10 @@ public class CReportCreatorServiceMock implements IReportCreator
 
     public CReportCreatorServiceMock()
     {
-        CReportCreatorServiceMock.NUMBER_OF_INSTANCES++;
+        synchronized (countLock)
+        {
+            CReportCreatorServiceMock.NUMBER_OF_INSTANCES++;
+        }
     }
 
     public static int getCountOfInstances()
