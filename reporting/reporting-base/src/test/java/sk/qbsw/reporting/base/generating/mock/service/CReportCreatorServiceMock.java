@@ -16,8 +16,6 @@ public class CReportCreatorServiceMock implements IReportCreator
 {
     private static volatile int NUMBER_OF_INSTANCES = 0;
 
-    private static final Object countLock = new Object();
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CReportCreatorServiceMock.class);
 
     @Autowired
@@ -27,10 +25,7 @@ public class CReportCreatorServiceMock implements IReportCreator
 
     public CReportCreatorServiceMock()
     {
-        synchronized (countLock)
-        {
-            CReportCreatorServiceMock.NUMBER_OF_INSTANCES++;
-        }
+        CReportCreatorServiceMock.NUMBER_OF_INSTANCES++;
     }
 
     public static int getCountOfInstances()
