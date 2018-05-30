@@ -1,12 +1,11 @@
 ﻿GRANT USAGE ON SCHEMA sec TO coconut_gw;
 
-GRANT USAGE, SELECT ON SEQUENCE sec.t_auth_params_pk_id_seq TO coconut_gw;
-GRANT USAGE, SELECT ON SEQUENCE sec.t_group_pk_id_seq TO coconut_gw;
-GRANT USAGE, SELECT ON SEQUENCE sec.t_licence_pk_id_seq TO coconut_gw;
-GRANT USAGE, SELECT ON SEQUENCE sec.t_organization_pk_id_seq TO coconut_gw;
-GRANT USAGE, SELECT ON SEQUENCE sec.t_role_pk_id_seq TO coconut_gw;
-GRANT USAGE, SELECT ON SEQUENCE sec.t_unit_pk_id_seq TO coconut_gw;
-GRANT USAGE, SELECT ON SEQUENCE sec.t_user_pk_id_seq TO coconut_gw;
-GRANT USAGE, SELECT ON SEQUENCE sec.t_x_group_user_pk_id_seq TO coconut_gw;
+GRANT USAGE, SELECT ON SEQUENCE sec.s_auth_paramsTO coconut_gw;
+GRANT USAGE, SELECT ON SEQUENCE sec.s_group TO coconut_gw;
+GRANT USAGE, SELECT ON SEQUENCE sec.s_organization TO coconut_gw;
+GRANT USAGE, SELECT ON SEQUENCE sec.s_role TO coconut_gw;
+GRANT USAGE, SELECT ON SEQUENCE sec.s_unit TO coconut_gw;
+GRANT USAGE, SELECT ON SEQUENCE sec.s_account TO coconut_gw;
+GRANT USAGE, SELECT ON SEQUENCE sec.s_x_account_unit_group TO coconut_gw;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA sec TO coconut_gw;

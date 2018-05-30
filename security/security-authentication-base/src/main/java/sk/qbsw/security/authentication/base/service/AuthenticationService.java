@@ -1,58 +1,58 @@
 package sk.qbsw.security.authentication.base.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.User;
-
-import java.io.Serializable;
 
 /**
  * Authentication service
- * 
+ *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.0.0
  */
-public interface AuthenticationService extends Serializable
+public interface AuthenticationService
 {
 	/**
-	 * Authenticates the user
-	 * 
-	 * @param login login of the user
-	 * @param password password of the user
-	 * @return
-	 */
-	User login (String login, String password) throws CSecurityException;
-
-	/**
-	 * Authenticates the user.
+	 * Authenticates the account
 	 *
-	 * @param login login of the user
-	 * @param password password of the user
-	 * @param unit the organization unit
-	 * @return the c user
+	 * @param login login of the account
+	 * @param password password of the account
+	 * @return account account
 	 * @throws CSecurityException the c security exception
 	 */
-	User login (String login, String password, String unit) throws CSecurityException;
+	Account login (String login, String password) throws CSecurityException;
 
 	/**
-	 * Find by login and role user must have login and role
-	 * 
-	 * @param login - login of the user
-	 * @param role - role which must have user
-	 * @param password password of the user
-	 * @return user if user have login and role null otherwise
+	 * Authenticates the account.
+	 *
+	 * @param login login of the account
+	 * @param password password of the account
+	 * @param unit the organization unit
+	 * @return the c account
+	 * @throws CSecurityException the c security exception
 	 */
-	User login (String login, String password, Role role) throws CSecurityException;
+	Account login (String login, String password, String unit) throws CSecurityException;
 
 	/**
-	 * Authenticates the user with his role
-	 * 
-	 * @param login login of the user
-	 * @param role - role which must have user
-	 * @param password password of the user
-	 * @return
+	 * Find by login and role account must have login and role
+	 *
+	 * @param login - login of the account
+	 * @param password password of the account
+	 * @param role - role which must have account
+	 * @return account if account have login and role null otherwise
+	 * @throws CSecurityException the c security exception
+	 */
+	Account login (String login, String password, Role role) throws CSecurityException;
+
+	/**
+	 * Authenticates the account with his role
+	 *
+	 * @param login login of the account
+	 * @param password password of the account
+	 * @param role - role which must have account
+	 * @return boolean boolean
 	 */
 	boolean canLogin (String login, String password, Role role);
 

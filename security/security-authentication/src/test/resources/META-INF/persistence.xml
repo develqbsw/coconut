@@ -6,14 +6,13 @@
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<!-- security -->
-		<class>sk.qbsw.security.core.model.domain.User</class>
+		<class>sk.qbsw.security.core.model.domain.Account</class>
 		<class>sk.qbsw.security.core.model.domain.Role</class>
 		<class>sk.qbsw.security.core.model.domain.Group</class>
 		<class>sk.qbsw.security.core.model.domain.Organization</class>
 		<class>sk.qbsw.security.core.model.domain.Unit</class>
 		<class>sk.qbsw.security.core.model.domain.AuthenticationParams</class>
-		<class>sk.qbsw.security.core.model.domain.UserUnitGroup</class>
-		<class>sk.qbsw.security.core.model.domain.Address</class>
+		<class>sk.qbsw.security.core.model.domain.AccountUnitGroup</class>
 		<class>sk.qbsw.security.core.model.domain.BlockedLogin</class>
 		
 		<properties>

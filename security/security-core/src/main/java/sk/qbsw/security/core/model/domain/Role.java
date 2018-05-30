@@ -1,118 +1,43 @@
-/*
- * Developed by QBSW a.s.
- */
 package sk.qbsw.security.core.model.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+import sk.qbsw.core.base.configuration.DatabaseSchemas;
+import sk.qbsw.core.persistence.model.domain.AEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 /**
- * The Class Role.
+ * The Role.
  *
  * @author Dalibor Rak
- * @version 1.2.1
- * @since 1.0
+ * @author Tomas Lauro
+ * @version 1.19.0
+ * @since 1.19.0
  */
 @Entity
-@Table (name = "t_role", schema = "sec")
-public class Role extends BaseSecurityChangeEntity<Long>
+@Table (name = "t_role", schema = DatabaseSchemas.SECURITY, //
+	uniqueConstraints = @UniqueConstraint (name = "uc_role_code", columnNames = {"c_code"}))
+@Getter
+@Setter
+public class Role extends AEntity<Long>
 {
+	private static final long serialVersionUID = 9197884851803513494L;
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
-	/** The pk id. */
 	@Id
-	@SequenceGenerator (name = "t_role_pkid_generator", sequenceName = "sec.t_role_pk_id_seq")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_role_pkid_generator")
+	@NotNull
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "roleSequenceGenerator")
+	@SequenceGenerator (name = "roleSequenceGenerator", sequenceName = DatabaseSchemas.SECURITY + ".s_role")
 	@Column (name = "pk_id")
 	private Long id;
 
-	/** The code. */
-	@Column (name = "c_code", unique = true)
+	@NotNull
+	@Column (name = "c_code")
 	private String code;
 
-	//bi-directional many-to-many association to Group
-	/** The groups. */
 	@ManyToMany (fetch = FetchType.LAZY)
 	@JoinTable (schema = "sec", name = "t_x_group_role", joinColumns = {@JoinColumn (name = "fk_role")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
 	private Set<Group> groups;
-
-	/**
-	 * Instantiates a new c role.
-	 */
-	public Role ()
-	{
-	}
-
-	/**
-	 * Instantiates a new c role.
-	 *
-	 * @param code the code
-	 */
-	public Role (String code)
-	{
-		this.setCode(code);
-	}
-
-	/**
-	 * Gets the code.
-	 *
-	 * @return the code
-	 */
-	public String getCode ()
-	{
-		return this.code;
-	}
-
-	/**
-	 * Sets the code.
-	 *
-	 * @param code the new code
-	 */
-	public void setCode (String code)
-	{
-		this.code = code;
-	}
-
-	/**
-	 * Gets the groups.
-	 *
-	 * @return the groups
-	 */
-	public Set<Group> getGroups ()
-	{
-		return this.groups;
-	}
-
-	/**
-	 * Sets the groups.
-	 *
-	 * @param groups the new groups
-	 */
-	public void setGroups (Set<Group> groups)
-	{
-		this.groups = groups;
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
-	 */
-	@Override
-	public Long getId ()
-	{
-		return this.id;
-	}
-
 }

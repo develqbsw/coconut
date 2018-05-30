@@ -1,32 +1,26 @@
 package sk.qbsw.security.authentication.test.util;
 
-import static org.junit.Assert.assertNotNull;
+import org.junit.Assert;
+import org.springframework.stereotype.Component;
+import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.model.domain.*;
+import sk.qbsw.security.management.service.AccountCredentialManagementService;
+import sk.qbsw.security.management.service.AccountManagementService;
 
 import java.time.OffsetDateTime;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.springframework.stereotype.Component;
-
-import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.Group;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Role;
-import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
-import sk.qbsw.security.management.service.UserCredentialManagementService;
-import sk.qbsw.security.management.service.UserManagementService;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Provides test for authentication.
  *
  * @author Tomas Lauro
- * @version 1.18.4
+ * @version 1.19.0
  * @since 1.6.0
  */
 @Component
@@ -36,298 +30,302 @@ public class AuthenticationTestProvider
 	 * Test login with default unit.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
-		assertNotNull("Authentication with login and password failed: user is null", user);
-		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
-		Assert.assertEquals("Authentication with login and password failed: number of user groups is not 2", user.getGroups().size(), 2);
+		assertNotNull("Authentication with login and password failed: account is null", account);
+		assertNotNull("Authentication with login and password failed: account groups is null", account.getGroups());
+		Assert.assertEquals("Authentication with login and password failed: number of account groups is not 2", account.getGroups().size(), 2);
 	}
 
 	/**
-	 * Test login with default unit - incorrect password.
+	 * Test login with default unit incorrect password.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithDefaultUnitIncorrectPassword (AuthenticationService authenticationService) throws CSecurityException
 	{
-		authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "incorrectPassword");
+		authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, "incorrectPassword");
 	}
 
 	/**
 	 * Test login without default unit.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithoutDefaultUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		User user = authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE);
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE);
 
-		assertNotNull("Authentication with login and password failed: user is null", user);
-		assertNotNull("Authentication with login and password failed: user groups is null", user.getGroups());
-		Assert.assertEquals("Authentication with login and password failed: number of user groups is not 2", user.getGroups().size(), 2);
+		assertNotNull("Authentication with login and password failed: account is null", account);
+		assertNotNull("Authentication with login and password failed: account groups is null", account.getGroups());
+		Assert.assertEquals("Authentication with login and password failed: number of account groups is not 2", account.getGroups().size(), 2);
 	}
 
 	/**
-	 * Test login with default unit and role. The role should be found - login success.
+	 * Test login with default unit and role positive.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithDefaultUnitAndRolePositive (AuthenticationService authenticationService) throws CSecurityException
 	{
-		Set<String> expectedGroups = new HashSet<String>();
+		Set<String> expectedGroups = new HashSet<>();
 		expectedGroups.add(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
-		Role inputRole = new Role(DataGenerator.FIRST_ROLE_CODE);
+		Role inputRole = new Role();
+		inputRole.setCode(DataGenerator.FIRST_ROLE_CODE);
 
-		testLoginWithRole(authenticationService, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
+		testLoginWithRole(authenticationService, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
 	}
 
 	/**
-	 * Test login with default unit and role. The role should not be found - login fails.
+	 * Test login with default unit and role negative.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithDefaultUnitAndRoleNegative (AuthenticationService authenticationService) throws CSecurityException
 	{
-		Role inputRole = new Role(DataGenerator.SECOND_ROLE_CODE);
-		authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, inputRole);
+		Role inputRole = new Role();
+		inputRole.setCode(DataGenerator.SECOND_ROLE_CODE);
+		authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, inputRole);
 	}
 
 	/**
-	 * Test login without default unit and with role. The role should be found - login success.
+	 * Test login without default unit and role positive.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithoutDefaultUnitAndRolePositive (AuthenticationService authenticationService) throws CSecurityException
 	{
-		Set<String> expectedGroups = new HashSet<String>();
+		Set<String> expectedGroups = new HashSet<>();
 		expectedGroups.add(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE);
 		expectedGroups.add(DataGenerator.SECOND_GROUP_NOT_IN_UNIT_CODE);
-		Role inputRole = new Role(DataGenerator.FIRST_ROLE_CODE);
+		Role inputRole = new Role();
+		inputRole.setCode(DataGenerator.FIRST_ROLE_CODE);
 
-		testLoginWithRole(authenticationService, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
+		testLoginWithRole(authenticationService, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, inputRole, expectedGroups);
 	}
 
 	/**
-	 * Test login without default unit and with role. The role should not be found - login fails.
+	 * Test login without default unit and role negative.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithoutDefaultUnitAndRoleNegative (AuthenticationService authenticationService) throws CSecurityException
 	{
-		Role inputRole = new Role(DataGenerator.SECOND_ROLE_CODE);
-		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, inputRole);
+		Role inputRole = new Role();
+		inputRole.setCode(DataGenerator.SECOND_ROLE_CODE);
+		authenticationService.login(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, inputRole);
 	}
 
 	/**
-	 * Test login with default unit and with unit. The user should be found - login success.
+	 * Test login with default unit and unit.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithDefaultUnitAndUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		Set<String> expectedGroups = new HashSet<String>();
+		Set<String> expectedGroups = new HashSet<>();
 		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
 		expectedGroups.add(DataGenerator.THIRD_GROUP_IN_UNIT_CODE);
 		String unit = DataGenerator.FIRST_UNIT_CODE;
 
-		testLoginWithUnit(authenticationService, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, unit, expectedGroups);
+		testLoginWithUnit(authenticationService, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, unit, expectedGroups);
 	}
 
 	/**
-	 * Test login without default unit and with unit. The user should be found - login success.
+	 * Test login without default unit and unit.
 	 *
 	 * @param authenticationService the authentication service
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	public void testLoginWithoutDefaultUnitAndUnit (AuthenticationService authenticationService) throws CSecurityException
 	{
-		Set<String> expectedGroups = new HashSet<String>();
+		Set<String> expectedGroups = new HashSet<>();
 		expectedGroups.add(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
 		String unit = DataGenerator.FIRST_UNIT_CODE;
 
-		testLoginWithUnit(authenticationService, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, unit, expectedGroups);
+		testLoginWithUnit(authenticationService, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, unit, expectedGroups);
 	}
 
 	/**
-	 * Test change plain text password.
-	 *
-	 * @param authenticationService the authentication service
-	 * @param modifierService the modifier service
-	 * @throws CSecurityException the security exception
-	 */
-	public void testChangePasswordExistingUser (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
-	{
-		String newPassword = "change1Password3ExistingUser@";
-		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
-
-		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
-
-		assertNotNull("The plain text password change failed", user);
-	}
-
-	/**
-	 * Test change password with password validation existing user.
+	 * Test change password existing account.
 	 *
 	 * @param authenticationService the authentication service
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangePasswordWithPasswordValidationExistingUser (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testChangePasswordExistingAccount (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
-		final String newPassword = "change1EncryptedPasswordExistingUser$56";
-		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		String newPassword = "change1Password3ExistingAccount@";
+		modifierService.changePlainPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
 
-		assertNotNull("The plain text password change failed", user);
+		assertNotNull("The plain text password change failed", account);
 	}
 
 	/**
-	 * Test change password with password validation existing user fail.
+	 * Test change password with password validation existing account.
 	 *
 	 * @param authenticationService the authentication service
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangePasswordWithPasswordValidationExistingUserFail (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testChangePasswordWithPasswordValidationExistingAccount (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
-		final String newPassword = "change1EncryptedPasswordExistingUser$56";
-		modifierService.changePlainPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.USER_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", "fail", newPassword);
+		final String newPassword = "change1EncryptedPasswordExistingAccount$56";
+		modifierService.changePlainPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
 
-		assertNotNull("The plain text password change failed", user);
+		assertNotNull("The plain text password change failed", account);
 	}
 
 	/**
-	 * Test change encrypted password.
-	 *
-	 * @param authenticationService the authentication service
-	 * @param modifierService the modifier service
-	 * @throws CSecurityException the security exception
-	 */
-	public void testChangeEncryptedPasswordExistingUser (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
-	{
-		final String newPassword = "change1EncryptedPasswordExistingUser$56";
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
-
-		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
-
-		assertNotNull("The plain text password change failed", user);
-	}
-
-	/**
-	 * Test change encrypted password with password validation existing user.
+	 * Test change password with password validation existing account fail.
 	 *
 	 * @param authenticationService the authentication service
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangeEncryptedPasswordWithPasswordValidationExistingUser (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testChangePasswordWithPasswordValidationExistingAccountFail (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
-		final String newTemporaryPassword = "change1EncryptedPasswordExistingUser$567";
+		final String newPassword = "change1EncryptedPasswordExistingAccount$56";
+		modifierService.changePlainPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", "fail", newPassword);
+
+		// test authentication
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
+
+		assertNotNull("The plain text password change failed", account);
+	}
+
+	/**
+	 * Test change encrypted password existing account.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param modifierService the modifier service
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testChangeEncryptedPasswordExistingAccount (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
+	{
+		final String newPassword = "change1EncryptedPasswordExistingAccount$56";
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
+
+		// test authentication
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
+
+		assertNotNull("The plain text password change failed", account);
+	}
+
+	/**
+	 * Test change encrypted password with password validation existing account.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param modifierService the modifier service
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testChangeEncryptedPasswordWithPasswordValidationExistingAccount (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
+	{
+		final String newTemporaryPassword = "change1EncryptedPasswordExistingAccount$567";
 
 		// set digested password
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newTemporaryPassword);
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newTemporaryPassword);
 
-		final String newPassword = "change1EncryptedPasswordExistingUser$56";
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newTemporaryPassword, newPassword);
+		final String newPassword = "change1EncryptedPasswordExistingAccount$56";
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newTemporaryPassword, newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
 
-		assertNotNull("The plain text password change failed", user);
+		assertNotNull("The plain text password change failed", account);
 	}
 
 	/**
-	 * Test change encrypted password with password validation existing user fail.
+	 * Test change encrypted password with password validation existing account fail.
 	 *
 	 * @param authenticationService the authentication service
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangeEncryptedPasswordWithPasswordValidationExistingUserFail (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testChangeEncryptedPasswordWithPasswordValidationExistingAccountFail (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
-		final String newTemporaryPassword = "change1EncryptedPasswordExistingUser$567";
+		final String newTemporaryPassword = "change1EncryptedPasswordExistingAccount$567";
 
 		// set digested password
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newTemporaryPassword);
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newTemporaryPassword);
 
-		final String newPassword = "change1EncryptedPasswordExistingUser$56";
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, "fail", newPassword);
+		final String newPassword = "change1EncryptedPasswordExistingAccount$56";
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, "fail", newPassword);
 
 		// test authentication
-		User user = authenticationService.login(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, newPassword);
+		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
 
-		assertNotNull("The plain text password change failed", user);
+		assertNotNull("The plain text password change failed", account);
 	}
 
 	/**
-	 * Test change encrypted password with new user.
+	 * Test change encrypted password new account.
 	 *
 	 * @param authenticationService the authentication service
-	 * @param userService the user service
-	 * @param userDao the user dao
+	 * @param accountService the account service
+	 * @param accountDao the account dao
 	 * @param orgDao the org dao
 	 * @param dataGenerator the data generator
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangeEncryptedPasswordNewUser (AuthenticationService authenticationService, UserManagementService userService, UserDao userDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewAccount (AuthenticationService authenticationService, AccountManagementService accountService, AccountDao accountDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
 	{
-		// create new user and needed objects
-		User newUser = dataGenerator.createUser(DataGenerator.USER_WITHOUT_PASSWORD);
-		Organization organization = orgDao.findOneByName(DataGenerator.ORGANIZATION_CODE);
-		String newPassword = "change56%PasswordNewUser";
+		// create new account and needed objects
+		Account newAccount = dataGenerator.createAccount(DataGenerator.ACCOUNT_WITHOUT_PASSWORD);
+		Organization organization = orgDao.findOneByCode(DataGenerator.ORGANIZATION_CODE);
+		String newPassword = "change56%PasswordNewAccount";
 
-		// register user
-		userService.registerNewUser(newUser, newPassword, organization);
+		// register account
+		accountService.register(newAccount, newPassword, organization);
 
-		// flush and clear persistent context - the user's auth params are saved using dao
-		userDao.flush();
-		userDao.clear();
+		// flush and clear persistent context - the account's auth params are saved using dao
+		accountDao.flush();
+		accountDao.clear();
 
 		// test authentication
-		assertNotNull("The encrypted password change failed", authenticationService.login(DataGenerator.USER_WITHOUT_PASSWORD, newPassword));
+		assertNotNull("The encrypted password change failed", authenticationService.login(DataGenerator.ACCOUNT_WITHOUT_PASSWORD, newPassword));
 	}
 
 	/**
-	 * Test change login name of user.
+	 * Test change login.
 	 *
 	 * @param authenticationService the authentication service
-	 * @param userService the user service
-	 * @throws CSecurityException the security exception
+	 * @param accountService the account service
+	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangeLogin (UserCredentialManagementService authenticationService, UserManagementService userService) throws CSecurityException
+	public void testChangeLogin (AccountCredentialManagementService authenticationService, AccountManagementService accountService) throws CSecurityException
 	{
 		String newLogin = "new1Login#";
-		User user = userService.getUserByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Account account = accountService.findByByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
 		// change login
-		authenticationService.changeLogin(user.getId(), newLogin);
+		authenticationService.changeLogin(account.getId(), newLogin);
 
 		// test new and old login
-		User userWithNewLogin = userService.getUserByLogin(newLogin);
-		Assert.assertEquals("There login change failed", user.getId(), userWithNewLogin.getId());
+		Account accountWithNewLogin = accountService.findByByLogin(newLogin);
+		Assert.assertEquals("There login change failed", account.getId(), accountWithNewLogin.getId());
 	}
 
 	/**
-	 * Test if the source is online.
+	 * Test is online.
 	 *
 	 * @param authenticationService the authentication service
 	 */
@@ -343,12 +341,12 @@ public class AuthenticationTestProvider
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidFromAuthParam (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testLoginInvalidFromAuthParam (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().plusHours(2), null);
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().plusHours(2), null);
 
-		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**
@@ -358,12 +356,12 @@ public class AuthenticationTestProvider
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidToAuthParam (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testLoginInvalidToAuthParam (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, OffsetDateTime.now().minusHours(1));
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, OffsetDateTime.now().minusHours(1));
 
-		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**
@@ -373,12 +371,12 @@ public class AuthenticationTestProvider
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testLoginInvalidFromAndToAuthParam (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testLoginInvalidFromAndToAuthParam (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().minusHours(2), OffsetDateTime.now().minusHours(1));
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword, OffsetDateTime.now().minusHours(2), OffsetDateTime.now().minusHours(1));
 
-		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
 	/**
@@ -388,51 +386,38 @@ public class AuthenticationTestProvider
 	 * @param modifierService the modifier service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangePasswordNullFromAndToAuthParam (AuthenticationService authenticationService, UserCredentialManagementService modifierService) throws CSecurityException
+	public void testChangePasswordNullFromAndToAuthParam (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
 	{
 		String newPassword = "new1Login#";
-		modifierService.changeEncryptedPassword(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, null);
+		modifierService.changeEncryptedPassword(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword, null, null);
 
-		authenticationService.login(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
+		authenticationService.login(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, newPassword);
 	}
 
-	/**
-	 * Test login with login, password and role. Return role if found else null.
-	 *
-	 ** @param login The login
-	 * @param password The password
-	 * @param inputRole The input role
-	 * @param expectedGroupsSize The expected size of groups for user
-	 * @throws CSecurityException the security exception
-	 */
 	private void testLoginWithRole (AuthenticationService authenticationService, String login, String password, Role inputRole, Set<String> expectedGroups) throws CSecurityException
 	{
-		// define output role - found in user
+		// define output role - found in account
 		Role outputRole = null;
 
-		// login user
-		User user = authenticationService.login(login, password, inputRole);
-		assertNotNull("Authentication with login, password and role failed: user is null", user);
-		assertNotNull("Authentication with login, password and role failed: user groups is null", user.getGroups());
-		Assert.assertEquals("Authentication with login, password and role failed: number of user groups is not " + expectedGroups.size(), user.getGroups().size(), expectedGroups.size());
+		// login account
+		Account account = authenticationService.login(login, password, inputRole);
+		assertNotNull("Authentication with login, password and role failed: account is null", account);
+		assertNotNull("Authentication with login, password and role failed: account groups is null", account.getGroups());
+		Assert.assertEquals("Authentication with login, password and role failed: number of account groups is not " + expectedGroups.size(), account.getGroups().size(), expectedGroups.size());
 
-		// checks if user has input role
-		Iterator<Group> groupIterator = user.getGroups().iterator();
-		while (groupIterator.hasNext())
+		// checks if account has input role
+		for (Group group : account.getGroups())
 		{
-			Group group = (Group) groupIterator.next();
-			assertNotNull("Authentication with login, password and role failed: user roles in group " + group.getCode() + " is null", group.getRoles());
+			assertNotNull("Authentication with login, password and role failed: account roles in group " + group.getCode() + " is null", group.getRoles());
 
 			// check groups
-			if (expectedGroups.contains(group.getCode()) == false)
+			if (!expectedGroups.contains(group.getCode()))
 			{
 				Assert.fail("Authentication with login, password and role failed: unexpected group with code " + group.getCode());
 			}
 
-			Iterator<Role> roleIterator = group.getRoles().iterator();
-			while (roleIterator.hasNext())
+			for (Role tempOutputRole : group.getRoles())
 			{
-				Role tempOutputRole = (Role) roleIterator.next();
 				if (tempOutputRole.getCode().equals(inputRole.getCode()))
 				{
 					outputRole = tempOutputRole;
@@ -453,43 +438,30 @@ public class AuthenticationTestProvider
 		}
 	}
 
-	/**
-	 * Test login with login, password and unit.
-	 *
-	 * @param login The login
-	 * @param password The password
-	 * @param unit The unit
-	 * @param expectedGroupsSize The expected size of groups for user
-	 * @throws CSecurityException the security exception
-	 */
 	private void testLoginWithUnit (AuthenticationService authenticationService, String login, String password, String unit, Set<String> expectedGroups) throws CSecurityException
 	{
 		Unit outputUnit = null;
 
-		// login user
-		User user = authenticationService.login(login, password, unit);
-		assertNotNull("Authentication with login, password and unit failed: user is null", user);
-		assertNotNull("Authentication with login, password and unit failed: user groups is null", user.getGroups());
-		Assert.assertEquals("Authentication with login, password and unit failed: number of user groups is not " + expectedGroups.size(), user.getGroups().size(), expectedGroups.size());
+		// login account
+		Account account = authenticationService.login(login, password, unit);
+		assertNotNull("Authentication with login, password and unit failed: account is null", account);
+		assertNotNull("Authentication with login, password and unit failed: account groups is null", account.getGroups());
+		Assert.assertEquals("Authentication with login, password and unit failed: number of account groups is not " + expectedGroups.size(), account.getGroups().size(), expectedGroups.size());
 
-		// checks if user has input role
-		Iterator<Group> groupIterator = user.getGroups().iterator();
-		while (groupIterator.hasNext())
+		// checks if account has input role
+		for (Group group : account.getGroups())
 		{
-			Group group = (Group) groupIterator.next();
 			assertNotNull("Authentication with login, password and unit failed: units in group " + group.getCode() + " is null", group.getUnits());
 
 			// check groups
-			if (expectedGroups.contains(group.getCode()) == false)
+			if (!expectedGroups.contains(group.getCode()))
 			{
 				Assert.fail("Authentication with login, password and unit failed: unexpected group with code " + group.getCode());
 			}
 
 			// checks units
-			Iterator<Unit> unitsIterator = group.getUnits().iterator();
-			while (unitsIterator.hasNext())
+			for (Unit tempOutputUnit : group.getUnits())
 			{
-				Unit tempOutputUnit = (Unit) unitsIterator.next();
 				if (tempOutputUnit.getName().equals(unit))
 				{
 					outputUnit = tempOutputUnit;

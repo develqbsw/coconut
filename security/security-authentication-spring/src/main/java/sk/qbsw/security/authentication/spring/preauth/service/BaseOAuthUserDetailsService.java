@@ -25,9 +25,6 @@ import java.util.List;
  */
 public abstract class BaseOAuthUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken>
 {
-	/**
-	 * The Logger.
-	 */
 	protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	public final UserDetails loadUserDetails (PreAuthenticatedAuthenticationToken token) throws AuthenticationException

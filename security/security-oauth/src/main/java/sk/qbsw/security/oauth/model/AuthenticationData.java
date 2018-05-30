@@ -1,5 +1,10 @@
 package sk.qbsw.security.oauth.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -7,11 +12,17 @@ import java.io.Serializable;
  * The authentication data.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.18.2
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthenticationData implements Serializable
 {
+	private static final long serialVersionUID = 5207147948056566911L;
+
 	@NotNull
 	private GeneratedTokenData masterTokenData;
 
@@ -20,85 +31,4 @@ public class AuthenticationData implements Serializable
 
 	@NotNull
 	private AccountData accountData;
-
-	/**
-	 * Instantiates a new Authentication data.
-	 */
-	public AuthenticationData ()
-	{
-	}
-
-	/**
-	 * Instantiates a new Authentication data.
-	 *
-	 * @param masterTokenData the master token data
-	 * @param authenticationTokenData the authentication token data
-	 * @param accountData the account data
-	 */
-	public AuthenticationData (GeneratedTokenData masterTokenData, GeneratedTokenData authenticationTokenData, AccountData accountData)
-	{
-		this.masterTokenData = masterTokenData;
-		this.authenticationTokenData = authenticationTokenData;
-		this.accountData = accountData;
-	}
-
-	/**
-	 * Gets master token result.
-	 *
-	 * @return the master token result
-	 */
-	public GeneratedTokenData getMasterTokenData ()
-	{
-		return masterTokenData;
-	}
-
-	/**
-	 * Sets master token result.
-	 *
-	 * @param masterTokenData the master token result
-	 */
-	public void setMasterTokenData (GeneratedTokenData masterTokenData)
-	{
-		this.masterTokenData = masterTokenData;
-	}
-
-	/**
-	 * Gets authentication token result.
-	 *
-	 * @return the authentication token result
-	 */
-	public GeneratedTokenData getAuthenticationTokenData ()
-	{
-		return authenticationTokenData;
-	}
-
-	/**
-	 * Sets authentication token result.
-	 *
-	 * @param authenticationTokenData the authentication token result
-	 */
-	public void setAuthenticationTokenData (GeneratedTokenData authenticationTokenData)
-	{
-		this.authenticationTokenData = authenticationTokenData;
-	}
-
-	/**
-	 * Gets account data.
-	 *
-	 * @return the account data
-	 */
-	public AccountData getAccountData ()
-	{
-		return accountData;
-	}
-
-	/**
-	 * Sets account data.
-	 *
-	 * @param accountData the account data
-	 */
-	public void setAccountData (AccountData accountData)
-	{
-		this.accountData = accountData;
-	}
 }

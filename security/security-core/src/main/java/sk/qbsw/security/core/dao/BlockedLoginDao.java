@@ -9,11 +9,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
 /**
- * The Interface BlockedLoginDao.
+ * The blocked login dao.
  *
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.12.2
  */
 public interface BlockedLoginDao extends IEntityDao<Long, BlockedLogin>
@@ -24,7 +23,6 @@ public interface BlockedLoginDao extends IEntityDao<Long, BlockedLogin>
 	 * @param login the login (mandatory)
 	 * @param ip the ip (optional)
 	 * @return the authentication black list record
-	 * 
 	 * @throws CSecurityException throws if the login is null
 	 * @throws NonUniqueResultException there is no unique result
 	 * @throws NoResultException there is no result
@@ -37,7 +35,6 @@ public interface BlockedLoginDao extends IEntityDao<Long, BlockedLogin>
 	 * @param login the login (mandatory)
 	 * @param ip the ip (optional)
 	 * @return the count
-	 * 
 	 * @throws CSystemException throws if the login is null
 	 */
 	long countCurrentlyBlockedByLoginAndIp (String login, String ip) throws CSystemException;

@@ -11,17 +11,17 @@ package sk.qbsw.security.oauth.service;
 public interface IdGeneratorService
 {
 	/**
-	 * Gets the generated id.
+	 * Gets generated id.
 	 *
-	 * @param s vstup
-	 * @return guid na zaklade casu a vstupneho stringu hashovane cez sha-256
+	 * @param s the s
+	 * @return the generated id
 	 */
 	String getGeneratedId (String s);
 
 	/**
-	 * Gets the generated id.
+	 * Gets generated id.
 	 *
-	 * @return guid na zaklade casu hashovane cez sha-256
+	 * @return the generated id
 	 */
 	String getGeneratedId ();
 }

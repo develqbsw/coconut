@@ -11,11 +11,9 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  */
 class LdapConnectionWrapper
 {
-	/** The connection. */
 	private LdapConnection connection;
 
-	/** The type. */
-	private LdapConnectionType type;
+	private LdapConnectionTypes type;
 
 	/**
 	 * Gets the connection.
@@ -42,7 +40,7 @@ class LdapConnectionWrapper
 	 *
 	 * @return the type
 	 */
-	public LdapConnectionType getType ()
+	public LdapConnectionTypes getType ()
 	{
 		return type;
 	}
@@ -52,7 +50,7 @@ class LdapConnectionWrapper
 	 *
 	 * @param type the new type
 	 */
-	public void setType (LdapConnectionType type)
+	public void setType (LdapConnectionTypes type)
 	{
 		this.type = type;
 	}

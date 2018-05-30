@@ -1,5 +1,6 @@
 package sk.qbsw.security.authentication.spring.model;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -15,7 +16,8 @@ import java.util.Map;
  * @version 1.18.4
  * @since 1.18.0
  */
-public class LoggedUser extends User implements SecurityUserDetails
+@Getter
+public class LoggedUser extends User implements AccountDetails
 {
 	private static final long serialVersionUID = -8482140113909737224L;
 
@@ -60,36 +62,6 @@ public class LoggedUser extends User implements SecurityUserDetails
 		this.id = id;
 		this.organization = organization;
 		this.additionalInformation = additionalInformation;
-	}
-
-	/**
-	 * Gets id.
-	 *
-	 * @return the id
-	 */
-	public Long getId ()
-	{
-		return id;
-	}
-
-	/**
-	 * Gets organization.
-	 *
-	 * @return the organization
-	 */
-	public Organization getOrganization ()
-	{
-		return organization;
-	}
-
-	/**
-	 * Gets additional information.
-	 *
-	 * @return the additional information
-	 */
-	public Map<String, Object> getAdditionalInformation ()
-	{
-		return additionalInformation;
 	}
 
 	/**

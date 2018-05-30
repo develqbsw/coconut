@@ -63,7 +63,7 @@ public abstract class ASpringSecurityAuthenticatedSession extends AAuthenticated
 	@Override
 	public boolean authenticate (AuthenticationSecurityToken authenticationToken)
 	{
-		//get authentication and checks if it is supported
+		//read authentication and checks if it is supported
 		Authentication authentication = transformAuthenticationObject(authenticationToken);
 		if (authentication == null)
 		{

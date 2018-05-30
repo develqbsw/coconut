@@ -1,10 +1,8 @@
 package sk.qbsw.security.authentication.test;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,11 +12,10 @@ import sk.qbsw.core.security.base.exception.InvalidAuthenticationException;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.authentication.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.test.util.DataGenerator;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.jmx.IAuthenticationConfigurator;
-import sk.qbsw.security.management.service.UserCredentialManagementService;
-import sk.qbsw.security.management.service.UserManagementService;
+import sk.qbsw.security.management.service.AccountCredentialManagementService;
+import sk.qbsw.security.management.service.AccountManagementService;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -26,56 +23,40 @@ import static org.junit.Assert.assertNotNull;
  * Checks Authentication service for database.
  *
  * @author Tomas Lauro
- * @version 1.18.4
+ * @version 1.19.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@Rollback (true)
+@Rollback
 public class DatabaseAuthenticationTestCase
 {
-	/** The database data generator. */
 	@Autowired
 	private DataGenerator dataGenerator;
 
-	/** The authentication service. */
 	@Autowired
-	@Qualifier ("cLoginService")
-	private AuthenticationService authenticationService;
+	private AuthenticationService databaseAuthenticationService;
 
-	/** The authentication service. */
 	@Autowired
-	@Qualifier ("userCredentialManagementService")
-	private UserCredentialManagementService authenticationModifierService;
+	private AccountCredentialManagementService authenticationModifierService;
 
-	/** The authentication test provider. */
 	@Autowired
 	private AuthenticationTestProvider authenticationTestProvider;
 
-	/** The user service. */
 	@Autowired
-	private UserManagementService userService;
+	private AccountManagementService accountService;
 
-	/** The org service. */
 	@Autowired
-	private OrganizationDao orgDao;
+	private OrganizationDao organizationDao;
 
-	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao accountDao;
 
-	/** The Authentication Configurator. */
-	@Autowired
-	private IAuthenticationConfigurator authenticationConfigurator;
-
-	/**
-	 * Inits the test case.
-	 */
-	@Before
-	public void initTestCase ()
-	{
-		authenticationConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
-	}
+	// @Before
+	// public void initTestCase ()
+	// {
+	// securityCoreConfigurator.setPasswordPattern("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,40})");
+	// }
 
 	/**
 	 * Test initialization.
@@ -83,13 +64,13 @@ public class DatabaseAuthenticationTestCase
 	@Test
 	public void testInitialization ()
 	{
-		assertNotNull("Could not find Authentication service", authenticationService);
+		assertNotNull("Could not find Authentication service", databaseAuthenticationService);
 	}
 
 	/**
 	 * Test login with default unit.
 	 *
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -97,13 +78,13 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnit(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnit(databaseAuthenticationService);
 	}
 
 	/**
-	 * Test login with default unit - incorrect password.
+	 * Test login with default unit incorrect password.
 	 *
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional (transactionManager = "transactionManager")
@@ -111,13 +92,13 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnitIncorrectPassword(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnitIncorrectPassword(databaseAuthenticationService);
 	}
 
 	/**
 	 * Test login without default unit.
 	 *
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -125,13 +106,14 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnit(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnit(databaseAuthenticationService);
 	}
 
+
 	/**
-	 * Test login with default unit and role. The role should be found - login success.
+	 * Test login with default unit and role positive.
 	 *
-	 * @throws CSecurityException the security exception
+	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -139,7 +121,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndRolePositive(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnitAndRolePositive(databaseAuthenticationService);
 	}
 
 	/**
@@ -153,7 +135,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndRoleNegative(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnitAndRoleNegative(databaseAuthenticationService);
 	}
 
 	/**
@@ -167,7 +149,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndRolePositive(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnitAndRolePositive(databaseAuthenticationService);
 	}
 
 	/**
@@ -181,11 +163,11 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndRoleNegative(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnitAndRoleNegative(databaseAuthenticationService);
 	}
 
 	/**
-	 * Test login with default unit and with unit. The user should be found - login success.
+	 * Test login with default unit and with unit. The account should be found - login success.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -195,11 +177,11 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithDefaultUnitAndUnit(authenticationService);
+		authenticationTestProvider.testLoginWithDefaultUnitAndUnit(databaseAuthenticationService);
 	}
 
 	/**
-	 * Test login without default unit and with unit. The user should be found - login success.
+	 * Test login without default unit and with unit. The account should be found - login success.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -209,7 +191,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(authenticationService);
+		authenticationTestProvider.testLoginWithoutDefaultUnitAndUnit(databaseAuthenticationService);
 	}
 
 	/**
@@ -219,39 +201,39 @@ public class DatabaseAuthenticationTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangePasswordExistingUser () throws CSecurityException
+	public void testChangePasswordExistingAccount () throws CSecurityException
 	{
 		initTest();
 
-		authenticationTestProvider.testChangePasswordExistingUser(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testChangePasswordExistingAccount(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
-	 * Test change password with password validation existing user.
+	 * Test change password with password validation existing account.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangePasswordWithPasswordValidationExistingUser () throws CSecurityException
+	public void testChangePasswordWithPasswordValidationExistingAccount () throws CSecurityException
 	{
 		initTest();
 
-		authenticationTestProvider.testChangePasswordWithPasswordValidationExistingUser(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testChangePasswordWithPasswordValidationExistingAccount(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
-	 * Test change password with password validation existing user fail.
+	 * Test change password with password validation existing account fail.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangePasswordWithPasswordValidationExistingUserFail () throws CSecurityException
+	public void testChangePasswordWithPasswordValidationExistingAccountFail () throws CSecurityException
 	{
 		initTest();
 
-		authenticationTestProvider.testChangePasswordWithPasswordValidationExistingUserFail(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testChangePasswordWithPasswordValidationExistingAccountFail(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -261,57 +243,57 @@ public class DatabaseAuthenticationTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangeEncryptedPasswordExistingUser () throws CSecurityException
+	public void testChangeEncryptedPasswordExistingAccount () throws CSecurityException
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeEncryptedPasswordExistingUser(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testChangeEncryptedPasswordExistingAccount(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
-	 * Test change encrypted password with password validation existing user.
+	 * Test change encrypted password with password validation existing account.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangeEncryptedPasswordWithPasswordValidationExistingUser () throws CSecurityException
+	public void testChangeEncryptedPasswordWithPasswordValidationExistingAccount () throws CSecurityException
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeEncryptedPasswordWithPasswordValidationExistingUser(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testChangeEncryptedPasswordWithPasswordValidationExistingAccount(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
-	 * Test change encrypted password with password validation existing user fail.
+	 * Test change encrypted password with password validation existing account fail.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test (expected = CSecurityException.class)
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangeEncryptedPasswordWithPasswordValidationExistingUserFail () throws CSecurityException
+	public void testChangeEncryptedPasswordWithPasswordValidationExistingAccountFail () throws CSecurityException
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeEncryptedPasswordWithPasswordValidationExistingUserFail(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testChangeEncryptedPasswordWithPasswordValidationExistingAccountFail(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
-	 * Test change plain text password with new user.
+	 * Test change plain text password with new account.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangeEncryptedPasswordNewUser () throws CSecurityException
+	public void testChangeEncryptedPasswordNewAccount () throws CSecurityException
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeEncryptedPasswordNewUser(authenticationService, userService, userDao, orgDao, dataGenerator);
+		authenticationTestProvider.testChangeEncryptedPasswordNewAccount(databaseAuthenticationService, accountService, accountDao, organizationDao, dataGenerator);
 	}
 
 	/**
-	 * Test change login name of user.
+	 * Test change login name of account.
 	 *
 	 * @throws CSecurityException the security exception
 	 */
@@ -321,13 +303,11 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangeLogin(authenticationModifierService, userService);
+		authenticationTestProvider.testChangeLogin(authenticationModifierService, accountService);
 	}
 
 	/**
 	 * Test if the database is online.
-	 *
-	 * @throws CSecurityException the security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
@@ -335,7 +315,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testIsOnline(authenticationService);
+		authenticationTestProvider.testIsOnline(databaseAuthenticationService);
 	}
 
 	/**
@@ -349,7 +329,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginInvalidFromAuthParam(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testLoginInvalidFromAuthParam(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -363,7 +343,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginInvalidToAuthParam(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testLoginInvalidToAuthParam(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -377,7 +357,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testLoginInvalidFromAndToAuthParam(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testLoginInvalidFromAndToAuthParam(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**
@@ -391,7 +371,7 @@ public class DatabaseAuthenticationTestCase
 	{
 		initTest();
 
-		authenticationTestProvider.testChangePasswordNullFromAndToAuthParam(authenticationService, authenticationModifierService);
+		authenticationTestProvider.testChangePasswordNullFromAndToAuthParam(databaseAuthenticationService, authenticationModifierService);
 	}
 
 	/**

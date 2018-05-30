@@ -1,15 +1,16 @@
 package sk.qbsw.core.security.base.exception;
 
+import sk.qbsw.core.base.exception.CSecurityException;
+
 /**
  * Invalid password exception.
  *
  * @author Tomas Lauro
- * 
- * @version 1.12.2
+ * @version 1.19.0
  * @since 1.12.2
  */
-@SuppressWarnings ({"serial", "deprecation"})
-public class InvalidPasswordException extends WrongPasswordException
+@SuppressWarnings ({"serial"})
+public class InvalidPasswordException extends CSecurityException
 {
 	/**
 	 * Instantiates a new invalid password exception.

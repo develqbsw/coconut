@@ -1,9 +1,5 @@
 package sk.qbsw.security.management.test;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,30 +8,29 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.management.service.OrganizationService;
 import sk.qbsw.security.management.test.util.DataGenerator;
 
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Checks organization service.
  *
- * @autor Tomas Lauro
- * 
- * @version 1.11.5
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@Rollback (true)
+@Rollback
 public class OrganizationTestCase
 {
-	/** The database data generator. */
 	@Autowired
 	private DataGenerator dataGenerator;
 
-	/** The organization service. */
 	@Autowired
 	private OrganizationService organizationService;
 
@@ -49,33 +44,31 @@ public class OrganizationTestCase
 	}
 
 	/**
-	 * Test get all units.
-	 *
-	 * @throws CSecurityException the security exception
+	 * Test read all units.
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testGetAllByName () throws CSecurityException
+	public void testGetAllByName ()
 	{
 		initTest();
 
-		List<Organization> organizations = organizationService.getOrganizations(DataGenerator.ORGANIZATION_CODE);
+		List<Organization> organizations = organizationService.findByName(DataGenerator.ORGANIZATION_CODE);
 
-		//asserts
+		// asserts
 		assertNotNull("List of organizations is null", organizations);
 		Assert.assertSame(1, organizations.size());
 
-		organizations = organizationService.getOrganizations("name");
+		organizations = organizationService.findByName("name");
 
-		//asserts
+		// asserts
 		assertNotNull("List of organizations is null", organizations);
 		Assert.assertSame(0, organizations.size());
 
-		organizations = organizationService.getOrganizations(DataGenerator.ORGANIZATION_2_CLONE_CODE);
+		organizations = organizationService.findByName(DataGenerator.ORGANIZATION_2_CLONE_CODE);
 
-		//asserts
+		// asserts
 		assertNotNull("List of organizations is null", organizations);
-		Assert.assertSame(2, organizations.size());
+		Assert.assertSame(1, organizations.size());
 	}
 
 	/**

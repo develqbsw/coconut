@@ -1,5 +1,10 @@
 package sk.qbsw.security.oauth.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -7,9 +12,13 @@ import java.io.Serializable;
  * The verification data.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.18.2
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VerificationData implements Serializable
 {
 	@NotNull
@@ -17,63 +26,4 @@ public class VerificationData implements Serializable
 
 	@NotNull
 	private VerificationTypes verificationType;
-
-	/**
-	 * Instantiates a new Verification data.
-	 */
-	public VerificationData ()
-	{
-	}
-
-	/**
-	 * Instantiates a new Verification data.
-	 *
-	 * @param accountData the account data
-	 * @param verificationType the verification type
-	 */
-	public VerificationData (AccountData accountData, VerificationTypes verificationType)
-	{
-		this.accountData = accountData;
-		this.verificationType = verificationType;
-	}
-
-	/**
-	 * Gets account data.
-	 *
-	 * @return the account data
-	 */
-	public AccountData getAccountData ()
-	{
-		return accountData;
-	}
-
-	/**
-	 * Sets account data.
-	 *
-	 * @param accountData the account data
-	 */
-	public void setAccountData (AccountData accountData)
-	{
-		this.accountData = accountData;
-	}
-
-	/**
-	 * Gets verification type.
-	 *
-	 * @return the verification type
-	 */
-	public VerificationTypes getVerificationType ()
-	{
-		return verificationType;
-	}
-
-	/**
-	 * Sets verification type.
-	 *
-	 * @param verificationType the verification type
-	 */
-	public void setVerificationType (VerificationTypes verificationType)
-	{
-		this.verificationType = verificationType;
-	}
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package sk.qbsw.security.oauth.dao;
 
 import sk.qbsw.core.base.exception.CBusinessException;
@@ -13,37 +10,37 @@ import java.util.List;
  * The authentication token dao.
  *
  * @author Tomas Lauro
- * @version 1.13.1
+ * @version 1.19.0
  * @since 1.13.1
  */
 public interface AuthenticationTokenDao extends ICrudDao<Long, AuthenticationToken>
 {
 	/**
-	 * Find by user and device.
+	 * Find by account id and device id authentication token.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param deviceId the device id
-	 * @return the c authentication token
+	 * @return the authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	AuthenticationToken findByUserAndDevice (Long userId, String deviceId) throws CBusinessException;
+	AuthenticationToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException;
 
 	/**
-	 * Find by user and token.
+	 * Find by account id and token authentication token.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param token the token
-	 * @return the c authentication token
+	 * @return the authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	AuthenticationToken findByUserAndToken (Long userId, String token) throws CBusinessException;
+	AuthenticationToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException;
 
 	/**
-	 * Find by token and device id.
+	 * Find by token and device id authentication token.
 	 *
 	 * @param token the token
 	 * @param deviceId the device id
-	 * @return the c authentication token
+	 * @return the authentication token
 	 * @throws CBusinessException the c business exception
 	 */
 	AuthenticationToken findByTokenAndDeviceId (String token, String deviceId) throws CBusinessException;

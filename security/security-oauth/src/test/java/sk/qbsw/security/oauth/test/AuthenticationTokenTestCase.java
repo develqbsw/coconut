@@ -1,6 +1,5 @@
 package sk.qbsw.security.oauth.test;
 
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +10,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.dao.UserDao;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.test.util.DataGenerator;
@@ -20,26 +19,23 @@ import sk.qbsw.security.oauth.test.util.DataGenerator;
 /**
  * The authentication token service test case.
  *
- * @autor Tomas Lauro
- * @version 1.13.1
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.13.1
  */
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (locations = {"classpath:/spring/test-context.xml"})
-@Rollback (true)
+@Rollback
 public class AuthenticationTokenTestCase
 {
 	private static final boolean IP_IGNORED = false;
 
-	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao userDao;
 
-	/** The authentication token service. */
 	@Autowired
 	private AuthenticationTokenService authenticationTokenService;
 
-	/** The data generator. */
 	@Autowired
 	private DataGenerator dataGenerator;
 
@@ -54,7 +50,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(tokenData);
@@ -100,13 +96,13 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		GeneratedTokenData tokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(tokenData);
 		Assert.assertNotNull(tokenData.getGeneratedToken());
 		Assert.assertNotNull(tokenData.getInvalidatedToken());
-		Assert.assertTrue(tokenData.getGeneratedToken().equals(DataGenerator.AUTHENTICATION_TOKEN) == false);
+		Assert.assertTrue(!tokenData.getGeneratedToken().equals(DataGenerator.AUTHENTICATION_TOKEN));
 	}
 
 	/**
@@ -120,7 +116,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.generateAuthenticationToken(user.getId(), "123456", DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 	}
 
@@ -135,7 +131,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.generateAuthenticationToken(user.getId(), DataGenerator.MASTER_TOKEN, DataGenerator.DEVICE_ID, "123456", IP_IGNORED);
 	}
 
@@ -150,7 +146,7 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.revokeAuthenticationToken(user.getId(), DataGenerator.AUTHENTICATION_TOKEN);
 	}
 
@@ -165,14 +161,13 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
+		Account user = userDao.findOneByLogin(DataGenerator.FIRST_USER);
 		authenticationTokenService.revokeAuthenticationToken(user.getId(), "123456");
 	}
 
 	/**
-	 * Gets the user by authentication token test.
+	 * Gets user by authentication token test.
 	 *
-	 * @return the user by authentication token test
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test
@@ -181,15 +176,14 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		User user = authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
+		Account user = authenticationTokenService.getAccountByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, DataGenerator.TEST_IP_ONE, IP_IGNORED);
 
 		Assert.assertNotNull(user);
 	}
 
 	/**
-	 * Gets the user by authentication token invalid ip test.
+	 * Gets user by authentication token invalid ip test.
 	 *
-	 * @return the user by authentication token invalid ip test
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
@@ -198,13 +192,12 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, "123", IP_IGNORED);
+		authenticationTokenService.getAccountByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, "123", IP_IGNORED);
 	}
 
 	/**
-	 * Gets the user by authentication token invalid ip null test.
+	 * Gets user by authentication token invalid ip null test.
 	 *
-	 * @return the user by authentication token invalid ip null test
 	 * @throws CBusinessException the c business exception
 	 */
 	@Test (expected = CBusinessException.class)
@@ -213,12 +206,9 @@ public class AuthenticationTokenTestCase
 	{
 		initTest();
 
-		authenticationTokenService.getUserByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, null, IP_IGNORED);
+		authenticationTokenService.getAccountByAuthenticationToken(DataGenerator.AUTHENTICATION_TOKEN, DataGenerator.DEVICE_ID, null, IP_IGNORED);
 	}
 
-	/**
-	 * Inits the test.
-	 */
 	private void initTest ()
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();

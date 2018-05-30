@@ -57,7 +57,7 @@ public abstract class AAuthenticatedWebSession extends AbstractAuthenticatedWebS
 	public abstract boolean authenticate (final AuthenticationSecurityToken authenticationToken);
 
 	/**
-	 * Call signOut() and remove the logon data from where ever they have been persisted (e.g.
+	 * Call signOut() and delete the logon data from where ever they have been persisted (e.g.
 	 * Cookies)
 	 */
 	@Override

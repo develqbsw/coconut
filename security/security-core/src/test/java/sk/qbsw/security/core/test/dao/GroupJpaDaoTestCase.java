@@ -1,46 +1,42 @@
 package sk.qbsw.security.core.test.dao;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.GroupDao;
 import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.dao.UserDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.GroupTypes;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.test.util.DataGenerator;
+
+import javax.persistence.NoResultException;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Checks group jpa dao.
  *
- * @version 1.13.0
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.13.0
- * @autor Tomas Lauro
  */
 public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 {
-	/** The group dao. */
 	@Autowired
 	private GroupDao groupDao;
 
-	/** The unit dao. */
 	@Autowired
 	private UnitDao unitDao;
 
-	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private AccountDao accountDao;
 
 	/**
 	 * Test initialization.
@@ -51,7 +47,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		super.testInitialization();
 		assertNotNull("Could not find group dao", groupDao);
 		assertNotNull("Could not find unit dao", unitDao);
-		assertNotNull("Could not find user dao", userDao);
+		assertNotNull("Could not find account dao", accountDao);
 	}
 
 	/**
@@ -63,9 +59,9 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<Group> groups = groupDao.findByFlagSystem(true);
+		List<Group> groups = groupDao.findByType(GroupTypes.TECHNICAL);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 2, groups.size());
 	}
@@ -79,9 +75,9 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<Group> groups = groupDao.findByFlagSystem(false);
+		List<Group> groups = groupDao.findByType(GroupTypes.STANDARD);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 3, groups.size());
 	}
@@ -97,7 +93,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		List<Group> groups = groupDao.findAll();
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 5, groups.size());
 	}
@@ -115,7 +111,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		Group group = groupDao.findOneByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", group);
 		Assert.assertEquals("Returns invalid groups", DataGenerator.FIRST_GROUP_IN_UNIT_CODE, group.getCode());
 	}
@@ -159,12 +155,12 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		//get unit
+		// get unit
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
 		Group group = groupDao.findOneByCodeAndUnit(DataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", group);
 		Assert.assertEquals("Returns invalid groups", DataGenerator.FIRST_GROUP_IN_UNIT_CODE, group.getCode());
 	}
@@ -182,7 +178,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		Group group = groupDao.findOneByCodeAndUnit(DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE, null);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", group);
 		Assert.assertEquals("Returns invalid groups", DataGenerator.FIRST_GROUP_NOT_IN_UNIT_CODE, group.getCode());
 	}
@@ -226,12 +222,12 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		//get unit
+		// get unit
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
 		List<Group> groups = groupDao.findByUnit(unit);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 2, groups.size());
 	}
@@ -249,89 +245,89 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		List<Group> groups = groupDao.findByUnit(null);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 5, groups.size());
 	}
 
 	/**
-	 * Test find by unit and user positive.
+	 * Test find by unit and account positive.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUnitAndUserPositive () throws CSecurityException
+	public void testFindByUnitAndAccountPositive () throws CSecurityException
 	{
 		initTest();
 
-		//get unit
+		// get unit
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
-		User user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupDao.findByUnitAndUser(unit, user);
+		List<Group> groups = groupDao.findByUnitAndAccount(unit, account);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 2, groups.size());
 	}
 
 	/**
-	 * Test find by unit and user positive only unit.
+	 * Test find by unit and account positive only unit.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUnitAndUserPositiveOnlyUnit () throws CSecurityException
+	public void testFindByUnitAndAccountPositiveOnlyUnit () throws CSecurityException
 	{
 		initTest();
 
-		//get unit
+		// get unit
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupDao.findByUnitAndUser(unit, null);
+		List<Group> groups = groupDao.findByUnitAndAccount(unit, null);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 2, groups.size());
 	}
 
 	/**
-	 * Test find by unit and user positive only user.
+	 * Test find by unit and account positive only account.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUnitAndUserPositiveOnlyUser () throws CSecurityException
+	public void testFindByUnitAndAccountPositiveOnlyAccount () throws CSecurityException
 	{
 		initTest();
 
-		//get unit
-		User user = userDao.findOneByLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE);
+		// get unit
+		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupDao.findByUnitAndUser(null, user);
+		List<Group> groups = groupDao.findByUnitAndAccount(null, account);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 3, groups.size());
 	}
 
 	/**
-	 * Test find by unit and user positive without user and unit.
+	 * Test find by unit and account positive without account and unit.
 	 *
 	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUnitAndUserPositiveWithoutUserAndUnit () throws CSecurityException
+	public void testFindByUnitAndAccountPositiveWithoutAccountAndUnit () throws CSecurityException
 	{
 		initTest();
 
-		List<Group> groups = groupDao.findByUnitAndUser(null, null);
+		List<Group> groups = groupDao.findByUnitAndAccount(null, null);
 
-		//asserts
+		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 5, groups.size());
 	}

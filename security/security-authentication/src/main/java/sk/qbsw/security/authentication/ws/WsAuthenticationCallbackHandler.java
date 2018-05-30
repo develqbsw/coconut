@@ -1,10 +1,6 @@
 package sk.qbsw.security.authentication.ws;
 
-import java.io.IOException;
-
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-
+import com.sun.xml.wss.impl.callback.PasswordValidationCallback;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,10 +9,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ws.soap.security.callback.AbstractCallbackHandler;
+import sk.qbsw.security.authentication.spring.auth.model.UsernamePasswordUnitAuthenticationToken;
 
-import com.sun.xml.wss.impl.callback.PasswordValidationCallback;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import java.io.IOException;
 
-import sk.qbsw.security.authentication.model.spring.UsernamePasswordUnitAuthenticationToken;
 
 /**
  * The callback handler for WS authentication.

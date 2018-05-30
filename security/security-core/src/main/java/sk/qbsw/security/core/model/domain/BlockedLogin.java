@@ -1,186 +1,54 @@
 package sk.qbsw.security.core.model.domain;
 
-import java.time.OffsetDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
+import sk.qbsw.core.base.configuration.DatabaseSchemas;
+import sk.qbsw.core.persistence.model.domain.AEntity;
 
-import com.google.gson.annotations.Expose;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 /**
  * The block list of IP addresses where invalid authentication's data came from.
  * 
  * @author Tomas Lauro
- * 
- * @version 1.12.2
+ * @version 1.19.0
  * @since 1.12.2
  */
 @Entity
-@Table (name = "t_blocked_login", schema = "sec", uniqueConstraints = @UniqueConstraint (columnNames = {"c_login", "c_ip"}))
-public class BlockedLogin extends BaseSecurityChangeEntity<Long>
+@Table (name = "t_blocked_login", schema = DatabaseSchemas.SECURITY, //
+	uniqueConstraints = @UniqueConstraint (name = "uc_blocked_login_login_ip", columnNames = {"c_login", "c_ip"}))
+@Getter
+@Setter
+public class BlockedLogin extends AEntity<Long>
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1021948002972398081L;
+	private static final long serialVersionUID = -8439529532383576544L;
 
-	/** The id. */
 	@Id
-	@SequenceGenerator (name = "t_blocked_login_pkid_generator", sequenceName = "sec.t_blocked_login_pk_id_seq")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "t_blocked_login_pkid_generator")
+	@NotNull
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "blockedLoginSequenceGenerator")
+	@SequenceGenerator (name = "blockedLoginSequenceGenerator", sequenceName = DatabaseSchemas.SECURITY + ".s_blocked_login")
 	@Column (name = "pk_id")
-	@Expose
 	private Long id;
 
-	/** The login. */
-	@Column (name = "c_login", nullable = false)
-	@Expose
+	@NotNull
+	@Column (name = "c_login")
 	private String login;
 
-	/** The ip. */
 	@Column (name = "c_ip")
-	@Expose
 	private String ip;
 
-	/** The blocked from. */
 	@Column (name = "c_blocked_from")
 	@Type (type = "org.hibernate.type.OffsetDateTimeType")
-	@Expose
 	private OffsetDateTime blockedFrom;
 
-	/** The blocked to. */
 	@Column (name = "c_blocked_to")
 	@Type (type = "org.hibernate.type.OffsetDateTimeType")
-	@Expose
 	private OffsetDateTime blockedTo;
 
-	/** The invalid login count. */
-	@Column (name = "c_invalid_login_count", nullable = false)
-	@Expose
+	@NotNull
+	@Column (name = "c_invalid_login_count")
 	private int invalidLoginCount = 0;
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
-	 */
-	@Override
-	public Long getId ()
-	{
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId (Long id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * Gets the login.
-	 *
-	 * @return the login
-	 */
-	public String getLogin ()
-	{
-		return login;
-	}
-
-	/**
-	 * Sets the login.
-	 *
-	 * @param login the new login
-	 */
-	public void setLogin (String login)
-	{
-		this.login = login;
-	}
-
-	/**
-	 * Gets the ip.
-	 *
-	 * @return the ip
-	 */
-	public String getIp ()
-	{
-		return ip;
-	}
-
-	/**
-	 * Sets the ip.
-	 *
-	 * @param ip the new ip
-	 */
-	public void setIp (String ip)
-	{
-		this.ip = ip;
-	}
-
-	/**
-	 * Gets the blocked from.
-	 *
-	 * @return the blocked from
-	 */
-	public OffsetDateTime getBlockedFrom ()
-	{
-		return blockedFrom;
-	}
-
-	/**
-	 * Sets the blocked from.
-	 *
-	 * @param blockedFrom the new blocked from
-	 */
-	public void setBlockedFrom (OffsetDateTime blockedFrom)
-	{
-		this.blockedFrom = blockedFrom;
-	}
-
-	/**
-	 * Gets the blocked to.
-	 *
-	 * @return the blocked to
-	 */
-	public OffsetDateTime getBlockedTo ()
-	{
-		return blockedTo;
-	}
-
-	/**
-	 * Sets the blocked to.
-	 *
-	 * @param blockedTo the new blocked to
-	 */
-	public void setBlockedTo (OffsetDateTime blockedTo)
-	{
-		this.blockedTo = blockedTo;
-	}
-
-	/**
-	 * Gets the invalid login count.
-	 *
-	 * @return the invalid login count
-	 */
-	public int getInvalidLoginCount ()
-	{
-		return invalidLoginCount;
-	}
-
-	/**
-	 * Sets the invalid login count.
-	 *
-	 * @param invalidLoginCount the new invalid login count
-	 */
-	public void setInvalidLoginCount (int invalidLoginCount)
-	{
-		this.invalidLoginCount = invalidLoginCount;
-	}
 }

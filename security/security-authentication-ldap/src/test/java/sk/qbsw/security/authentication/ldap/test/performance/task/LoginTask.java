@@ -2,22 +2,19 @@ package sk.qbsw.security.authentication.ldap.test.performance.task;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
-import sk.qbsw.security.core.model.domain.User;
+import sk.qbsw.security.core.model.domain.Account;
 
 /**
  * The abstract class represents login task for test. The children of this class defines an authentication service.
  *
  * @author Tomas Lauro
- * 
- * @version 1.7.2
+ * @version 1.19.0
  * @since 1.7.2
  */
 public abstract class LoginTask implements Runnable
 {
-	/** The name of task. */
 	private String name;
 
-	/** The login count. */
 	private int loginCount;
 
 	/**
@@ -30,7 +27,6 @@ public abstract class LoginTask implements Runnable
 	{
 		this.name = name;
 		this.loginCount = loginCount;
-		initResources();
 	}
 
 	/**
@@ -39,16 +35,8 @@ public abstract class LoginTask implements Runnable
 	 * @return the user
 	 * @throws CSecurityException the security exception
 	 */
-	protected abstract User authenticate () throws CSecurityException;
+	protected abstract Account authenticate () throws CSecurityException;
 
-	/**
-	 * Inits the resources.
-	 */
-	protected abstract void initResources ();
-
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
 	@Override
 	public void run ()
 	{

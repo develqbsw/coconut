@@ -12,14 +12,13 @@ import sk.qbsw.security.management.service.LoginBlockingService;
 /**
  * Provides test for authentication.
  *
- * @autor Tomas Lauro
- * @version 1.12.2
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.6.0
  */
 @Component
 public class LoginBlockingTestProvider
 {
-
 	/**
 	 * Test blocked login without blocked.
 	 *
@@ -31,33 +30,33 @@ public class LoginBlockingTestProvider
 	 */
 	public void testBlockedLoginWithoutBlocked (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
-		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		// sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
 
-		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		Assert.assertNotNull(recordIpOne);
 		Assert.assertEquals(4, recordIpOne.getInvalidLoginCount());
@@ -79,31 +78,31 @@ public class LoginBlockingTestProvider
 	 */
 	public void testBlockedLoginWithoutBlockedCheckIpNull (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
-		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		// sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
-		boolean isBlocked = loginBlockingService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		boolean isBlocked = loginBlockingService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
 
 		Assert.assertNotNull(recordIpOne);
 		Assert.assertEquals(4, recordIpOne.getInvalidLoginCount());
@@ -125,32 +124,32 @@ public class LoginBlockingTestProvider
 	 */
 	public void testBlockedLoginWithoutBlockedSetIpNull (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		BlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
-		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		// sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
-		boolean isBlockedIpNull = loginBlockingService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		boolean isBlockedIpNull = loginBlockingService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		Assert.assertNotNull(recordIpNull);
 		Assert.assertEquals(4, recordIpNull.getInvalidLoginCount());
@@ -172,37 +171,37 @@ public class LoginBlockingTestProvider
 	 */
 	public void testBlockedLoginWithBlocked (LoginBlockingService loginBlockingService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		//flush 
+		loginBlockingService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
-		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		// sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
-		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		boolean isBlockedIpOne = loginBlockingService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		boolean isBlockedIpTwo = loginBlockingService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		Assert.assertNotNull("The record from ip one is null", recordIpOne);
 		Assert.assertEquals("The expected count of records from ip one is invalid", 5, recordIpOne.getInvalidLoginCount());
@@ -220,40 +219,40 @@ public class LoginBlockingTestProvider
 	 * @param blockedLoginJpaDao the blocked login jpa dao
 	 * @throws CSystemException the c system exception
 	 * @throws CSecurityException the c security exception
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public void testBlockedLoginWithBlockedCheckIpNull (LoginBlockingService blockingLoginService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
-		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpOne = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
-		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		// sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
-		boolean isBlocked = blockingLoginService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
+		boolean isBlocked = blockingLoginService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
 
 		Assert.assertNotNull(recordIpOne);
 		Assert.assertEquals(5, recordIpOne.getInvalidLoginCount());
@@ -275,37 +274,37 @@ public class LoginBlockingTestProvider
 	 */
 	public void testBlockedLoginWithBlockedSetIpNull (LoginBlockingService blockingLoginService, BlockedLoginDao blockedLoginJpaDao) throws CSystemException, CSecurityException, InterruptedException
 	{
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		//flush 
+		blockingLoginService.increaseInvalidLoginCounter(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		// flush
 		blockedLoginJpaDao.flush();
 
-		BlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		BlockedLogin recordIpNull = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		BlockedLogin recordIpTwo = blockedLoginJpaDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
-		//sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
+		// sleep for 1 second to be able to validate blocked login (there is a comparison to dateTime.now() inside)
 		Thread.sleep(1000);
-		boolean isBlockedIpNull = blockingLoginService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, null);
-		boolean isBlockedIpTwo = blockingLoginService.isLoginBlocked(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
+		boolean isBlockedIpNull = blockingLoginService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, null);
+		boolean isBlockedIpTwo = blockingLoginService.isLoginBlocked(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_TWO);
 
 		Assert.assertNotNull(recordIpNull);
 		Assert.assertEquals(5, recordIpNull.getInvalidLoginCount());
@@ -315,5 +314,4 @@ public class LoginBlockingTestProvider
 		Assert.assertEquals(4, recordIpTwo.getInvalidLoginCount());
 		Assert.assertFalse(isBlockedIpTwo);
 	}
-
 }

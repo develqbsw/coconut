@@ -1,29 +1,27 @@
 package sk.qbsw.security.core.test.dao;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Checks organization jpa dao.
  *
- * @version 1.13.0
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.13.0
- * @autor Tomas Lauro
  */
 public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 {
-	/** The organization dao. */
 	@Autowired
 	private OrganizationDao organizationDao;
 
@@ -48,7 +46,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 
 		List<Organization> organizations = organizationDao.findByName(DataGenerator.ORGANIZATION_CODE);
 
-		//asserts
+		// asserts
 		assertNotNull("No organizations found", organizations);
 		Assert.assertEquals("Returns invalid organizations", 1, organizations.size());
 	}
@@ -64,7 +62,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 
 		List<Organization> organizations = organizationDao.findByName(null);
 
-		//asserts
+		// asserts
 		assertNotNull("No organizations found", organizations);
 		Assert.assertEquals("Returns invalid organizations", 0, organizations.size());
 	}
@@ -80,7 +78,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 
 		List<Organization> organizations = organizationDao.findByName("not found");
 
-		//asserts
+		// asserts
 		assertNotNull("No organizations found", organizations);
 		Assert.assertEquals("Returns invalid organizations", 0, organizations.size());
 	}
@@ -96,7 +94,7 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 
 		List<Organization> organizations = organizationDao.findAll();
 
-		//asserts
+		// asserts
 		assertNotNull("No organizations found", organizations);
 		Assert.assertEquals("Returns invalid organizations", 4, organizations.size());
 	}
@@ -108,11 +106,11 @@ public class OrganizationJpaDaoTestCase extends BaseDatabaseTestCase
 	@Transactional (transactionManager = "transactionManager")
 	public void testFindAllPositiveNoResult ()
 	{
-		//without init to database
+		// without init to database
 
 		List<Organization> organizations = organizationDao.findAll();
 
-		//asserts
+		// asserts
 		assertNotNull("No organizations found", organizations);
 		Assert.assertEquals("Returns invalid organizations", 0, organizations.size());
 	}

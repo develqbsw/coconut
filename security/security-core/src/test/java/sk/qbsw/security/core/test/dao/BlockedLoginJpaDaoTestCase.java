@@ -1,30 +1,27 @@
 package sk.qbsw.security.core.test.dao;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.time.OffsetDateTime;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.security.core.dao.BlockedLoginDao;
 import sk.qbsw.security.core.model.domain.BlockedLogin;
 import sk.qbsw.security.core.test.util.DataGenerator;
 
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import java.time.OffsetDateTime;
+
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Checks blocked login jpa dao.
  *
- * @autor Tomas Lauro
- * 
- * @version 1.13.0
+ * @author Tomas Lauro
+ * @version 1.19.0
  * @since 1.13.0
  */
 public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
@@ -56,11 +53,11 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		BlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
+		BlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE);
 
-		//asserts
+		// asserts
 		assertNotNull("No blocked login found", blockedLogin);
-		Assert.assertEquals("Returns invalid blocked login", DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, blockedLogin.getLogin());
+		Assert.assertEquals("Returns invalid blocked login", DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, blockedLogin.getLogin());
 	}
 
 	/**
@@ -76,11 +73,11 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		BlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, null);
+		BlockedLogin blockedLogin = blockedLoginDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, null);
 
-		//asserts
+		// asserts
 		assertNotNull("No blocked login found", blockedLogin);
-		Assert.assertEquals("Returns invalid blocked login", DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, blockedLogin.getLogin());
+		Assert.assertEquals("Returns invalid blocked login", DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, blockedLogin.getLogin());
 	}
 
 	/**
@@ -112,7 +109,7 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		blockedLoginDao.findOneByLoginAndIp(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE);
+		blockedLoginDao.findOneByLoginAndIp(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE);
 	}
 
 	/**
@@ -124,9 +121,9 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		long count = blockedLoginDao.countCurrentlyBlockedByLoginAndIp(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE);
+		long count = blockedLoginDao.countCurrentlyBlockedByLoginAndIp(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE);
 
-		//asserts
+		// asserts
 		assertNotNull("No blocked login found", count);
 		Assert.assertEquals("Returns count value", 1, count);
 	}
@@ -140,9 +137,9 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		long count = blockedLoginDao.countCurrentlyBlockedByLoginAndIp(DataGenerator.USER_WITHOUT_PASSWORD, null);
+		long count = blockedLoginDao.countCurrentlyBlockedByLoginAndIp(DataGenerator.ACCOUNT_WITHOUT_PASSWORD, null);
 
-		//asserts
+		// asserts
 		assertNotNull("No blocked login found", count);
 		Assert.assertEquals("Returns count value", 1, count);
 	}
@@ -156,9 +153,9 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		long count = blockedLoginDao.countCurrentlyBlockedByLoginAndIp(DataGenerator.USER_CREATED, DataGenerator.TEST_IP_ONE);
+		long count = blockedLoginDao.countCurrentlyBlockedByLoginAndIp(DataGenerator.ACCOUNT_CREATED, DataGenerator.TEST_IP_ONE);
 
-		//asserts
+		// asserts
 		assertNotNull("No blocked login found", count);
 		Assert.assertEquals("Returns count value", 0, count);
 	}
@@ -183,16 +180,16 @@ public class BlockedLoginJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		super.initTest();
 
-		BlockedLogin blockedLogin = dataGenerator.createBlockedLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE, 1, null, null);
+		BlockedLogin blockedLogin = dataGenerator.createBlockedLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.TEST_IP_ONE, 1, null, null);
 		blockedLoginDao.update(blockedLogin);
 
-		BlockedLogin blockedLoginWithoutIp = dataGenerator.createBlockedLogin(DataGenerator.USER_WITHOUT_DEFAULT_UNIT_CODE, null, 1, null, null);
+		BlockedLogin blockedLoginWithoutIp = dataGenerator.createBlockedLogin(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, null, 1, null, null);
 		blockedLoginDao.update(blockedLoginWithoutIp);
 
-		BlockedLogin blockedLoginWithDatesOne = dataGenerator.createBlockedLogin(DataGenerator.USER_WITH_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
+		BlockedLogin blockedLoginWithDatesOne = dataGenerator.createBlockedLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP, DataGenerator.TEST_IP_ONE, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
 		blockedLoginDao.update(blockedLoginWithDatesOne);
 
-		BlockedLogin blockedLoginWithDatesTwo = dataGenerator.createBlockedLogin(DataGenerator.USER_WITHOUT_PASSWORD, null, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
+		BlockedLogin blockedLoginWithDatesTwo = dataGenerator.createBlockedLogin(DataGenerator.ACCOUNT_WITHOUT_PASSWORD, null, 5, OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1));
 		blockedLoginDao.update(blockedLoginWithDatesTwo);
 
 		blockedLoginDao.flush();

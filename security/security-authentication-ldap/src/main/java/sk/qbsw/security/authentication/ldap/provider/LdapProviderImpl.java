@@ -1,63 +1,50 @@
 package sk.qbsw.security.authentication.ldap.provider;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.PreDestroy;
-
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
-import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.DefaultModification;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.entry.*;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 
+import javax.annotation.PreDestroy;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * 
- * @version 1.13.0
+ * @version 1.19.0
  * @since 1.6.0
  */
-@Component ("ldapProvider")
 public class LdapProviderImpl extends AService implements LdapProvider
 {
-	/** The logger. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(LdapProviderImpl.class);
 
-	/** The ldap connection factory. */
-	@Autowired
-	private LdapConnectionFactory ldapConnectionFactory;
+	private final LdapConnectionFactory ldapConnectionFactory;
 
 	/**
-	 * Initialize the connections to LDAP server. Must be called before every connect to server.
+	 * Instantiates a new Ldap provider.
 	 *
-	 * @throws LdapException the ldap exception
+	 * @param ldapConnectionFactory the ldap connection factory
 	 */
-	private void init () throws LdapException
+	public LdapProviderImpl (LdapConnectionFactory ldapConnectionFactory)
+	{
+		this.ldapConnectionFactory = ldapConnectionFactory;
+	}
+
+	private void init ()
 	{
 		ldapConnectionFactory.init();
 	}
 
-	/**
-	 * Uninit the connections and set it to null.
-	 */
 	@PreDestroy
 	private void uninit ()
 	{
@@ -66,13 +53,10 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		ldapConnectionFactory.uninit();
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#searchSingleResult(java.lang.String, java.lang.String, org.apache.directory.api.ldap.model.message.SearchScope, java.lang.String)
-	 */
 	@Override
 	public Entry searchSingleResult (String baseDn, String filter, SearchScope scope, String... attributes) throws CBusinessException, LdapException
 	{
-		//init the connection
+		// init the connection
 		init();
 
 		try
@@ -98,13 +82,10 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#searchResults(java.lang.String, java.lang.String, org.apache.directory.api.ldap.model.message.SearchScope, java.lang.String)
-	 */
 	@Override
 	public Set<Entry> searchResults (String baseDn, String filter, SearchScope scope, String... attributes) throws LdapException, CursorException
 	{
-		//init the connection
+		// init the connection
 		init();
 
 		Set<Entry> entries = new HashSet<>();
@@ -134,19 +115,16 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#modifyEntry(java.lang.String, java.lang.String, java.lang.String, sk.qbsw.core.security.service.ldap.CLdapProvider.EModificationOperation)
-	 */
 	@Override
 	public void modifyEntry (String dn, String attributeId, String value, EModificationOperation modificationOperation) throws LdapException
 	{
-		//init the connection
+		// init the connection
 		init();
 
-		//create attribute
+		// create attribute
 		Attribute attribute = new DefaultAttribute(attributeId, value);
 
-		//create modification
+		// create modification
 		Modification modification = new DefaultModification();
 		modification.setAttribute(attribute);
 		modification.setOperation(modificationOperation.getOperation());
@@ -154,7 +132,7 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		LdapConnectionWrapper connection = null;
 		try
 		{
-			//modify
+			// modify
 			connection = ldapConnectionFactory.getConnection();
 			connection.getConnection().modify(dn, modification);
 		}
@@ -164,19 +142,16 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#addEntry(java.lang.String, java.util.Map)
-	 */
 	@Override
 	public void addEntry (String dn, Map<String, byte[][]> attributes) throws LdapException
 	{
-		//init the connection
+		// init the connection
 		init();
 
-		//create entry
+		// create entry
 		Entry entry = new DefaultEntry(dn);
 
-		//add values to entry
+		// add values to entry
 		for (Map.Entry<String, byte[][]> attribute : attributes.entrySet())
 		{
 			entry.add(attribute.getKey(), attribute.getValue());
@@ -185,7 +160,7 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		LdapConnectionWrapper connection = null;
 		try
 		{
-			//add
+			// add
 			connection = ldapConnectionFactory.getConnection();
 			connection.getConnection().add(entry);
 		}
@@ -195,19 +170,16 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#renameEntry(java.lang.String, java.lang.String, boolean)
-	 */
 	@Override
 	public void renameEntry (String dn, String newRdn, boolean deleteOldRdn) throws LdapException
 	{
-		//init the connection
+		// init the connection
 		init();
 
 		LdapConnectionWrapper connection = null;
 		try
 		{
-			//remove
+			// delete
 			connection = ldapConnectionFactory.getConnection();
 			connection.getConnection().rename(dn, newRdn, deleteOldRdn);
 		}
@@ -217,19 +189,16 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#entryExists(java.lang.String)
-	 */
 	@Override
 	public boolean entryExists (String dn) throws LdapException
 	{
-		//init the connection
+		// init the connection
 		init();
 
 		LdapConnectionWrapper connection = null;
 		try
 		{
-			//exists
+			// exists
 			connection = ldapConnectionFactory.getConnection();
 			return connection.getConnection().exists(dn);
 		}
@@ -239,13 +208,10 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#authenticate(java.lang.String, java.lang.String, java.lang.String)
-	 */
 	@Override
 	public synchronized void authenticate (String baseDn, String loginFilter, @CNotLogged @CNotAuditLogged String password) throws LdapException, CBusinessException
 	{
-		//init the connection
+		// init the connection
 		init();
 		LdapConnectionWrapper connection = null;
 
@@ -255,7 +221,7 @@ public class LdapProviderImpl extends AService implements LdapProvider
 
 			if (password != null)
 			{
-				//bind as user (with his DN) to verify password
+				// bind as user (with his DN) to verify password
 				connection = ldapConnectionFactory.getOneTimeConnection();
 				connection.getConnection().bind(ldapUserEntry.getDn().toString(), password);
 			}
@@ -273,9 +239,6 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.security.service.ldap.ILdapProvider#isConnected()
-	 */
 	@Override
 	public boolean isConnected ()
 	{
@@ -304,7 +267,7 @@ public class LdapProviderImpl extends AService implements LdapProvider
 				catch (LdapException ex)
 				{
 					LOGGER.debug("IsConnected method failed", ex);
-					//do nothing
+					// do nothing
 				}
 			}
 		}
@@ -315,13 +278,19 @@ public class LdapProviderImpl extends AService implements LdapProvider
 	 */
 	public enum EModificationOperation
 	{
-		/** The replace attribute. */
+		/**
+		 * The replace attribute.
+		 */
 		REPLACE_ATTRIBUTE (ModificationOperation.REPLACE_ATTRIBUTE),
 
-		/** The add attribute. */
+		/**
+		 * The add attribute.
+		 */
 		ADD_ATTRIBUTE (ModificationOperation.ADD_ATTRIBUTE),
 
-		/** The remove attribute. */
+		/**
+		 * The delete attribute.
+		 */
 		REMOVE_ATTRIBUTE (ModificationOperation.REMOVE_ATTRIBUTE);
 
 		/** The operation. */

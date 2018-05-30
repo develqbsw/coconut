@@ -1,6 +1,3 @@
-/**
- * 
- */
 package sk.qbsw.security.oauth.dao;
 
 import sk.qbsw.core.base.exception.CBusinessException;
@@ -13,48 +10,48 @@ import java.util.List;
  * The master token dao.
  *
  * @author Tomas Lauro
- * @version 1.13.1
+ * @version 1.19.0
  * @since 1.13.1
  */
 public interface MasterTokenDao extends ICrudDao<Long, MasterToken>
 {
 	/**
-	 * Find by user and device.
+	 * Find by account id and device id master token.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param deviceId the device id
-	 * @return the c authentication token
+	 * @return the master token
 	 * @throws CBusinessException the c business exception
 	 */
-	MasterToken findByUserAndDevice (Long userId, String deviceId) throws CBusinessException;
+	MasterToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException;
 
 	/**
-	 * Find by user and token.
+	 * Find by account id and token master token.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param token the token
-	 * @return the c master token
+	 * @return the master token
 	 * @throws CBusinessException the c business exception
 	 */
-	MasterToken findByUserAndToken (Long userId, String token) throws CBusinessException;
+	MasterToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException;
 
 	/**
-	 * Find by user and token and device.
+	 * Find by account id and token and device id master token.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param token the token
 	 * @param deviceId the device id
-	 * @return the c master token
+	 * @return the master token
 	 * @throws CBusinessException the c business exception
 	 */
-	MasterToken findByUserAndTokenAndDevice (Long userId, String token, String deviceId) throws CBusinessException;
+	MasterToken findByAccountIdAndTokenAndDeviceId (Long accountId, String token, String deviceId) throws CBusinessException;
 
 	/**
-	 * Find by token and device id.
+	 * Find by token and device id master token.
 	 *
 	 * @param token the token
 	 * @param deviceId the device id
-	 * @return the c master token
+	 * @return the master token
 	 * @throws CBusinessException the c business exception
 	 */
 	MasterToken findByTokenAndDeviceId (String token, String deviceId) throws CBusinessException;

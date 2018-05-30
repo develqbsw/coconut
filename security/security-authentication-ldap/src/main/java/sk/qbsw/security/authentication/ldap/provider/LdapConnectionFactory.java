@@ -9,7 +9,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  * @version 1.13.0
  * @since 1.13.0
  */
-interface LdapConnectionFactory
+public interface LdapConnectionFactory
 {
 	/**
 	 * Initialize the factory.
