@@ -1,4 +1,4 @@
-package sk.qbsw.security.oauth.service.impl;
+package sk.qbsw.security.oauth.service;
 
 import java.util.UUID;
 

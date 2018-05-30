@@ -1,83 +1,68 @@
 package sk.qbsw.security.oauth.model.domain;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
-
+import sk.qbsw.core.base.configuration.DatabaseSchemas;
 import sk.qbsw.core.persistence.model.domain.AEntity;
 import sk.qbsw.security.core.model.domain.Account;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 /**
  * Security token held for authentication.
  *
  * @author podmajersky
  * @author Tomas Lauro
- * 
- * @version 1.13.1
+ * @version 1.19.0
  * @since 1.13.0
  */
 @Entity
-@Table (name = "t_oauth_token", schema = "sec")
+@Table (name = "t_oauth_token", schema = DatabaseSchemas.SECURITY, //
+	uniqueConstraints = @UniqueConstraint (name = "uc_security_token_token", columnNames = {"c_token"}))
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("security_token")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class SecurityToken extends AEntity<Long> implements Serializable
+@Getter
+@Setter
+public abstract class SecurityToken extends AEntity<Long>
 {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -2280914156927086322L;
 
-	/** The id. */
 	@Id
-	@SequenceGenerator (name = "s_token_pkid_generator", sequenceName = "sec.s_oauth_token")
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "s_token_pkid_generator")
+	@NotNull
+	@SequenceGenerator (name = "tokenSequenceGenerator", sequenceName = DatabaseSchemas.SECURITY + ".s_oauth_token")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "tokenSequenceGenerator")
 	@Column (name = "pk_id")
 	private Long id;
 
-	/** The create date. */
+	@NotNull
 	@Type (type = "org.hibernate.type.OffsetDateTimeType")
-	@Column (name = "c_create_date", nullable = false)
+	@Column (name = "c_create_date")
 	private OffsetDateTime createDate;
 
-	/** The last access date. */
+	@NotNull
 	@Type (type = "org.hibernate.type.OffsetDateTimeType")
-	@Column (name = "c_last_access_date", nullable = false)
+	@Column (name = "c_last_access_date")
 	private OffsetDateTime lastAccessDate;
 
-	/** The token. */
-	@Column (name = "c_token", unique = true, nullable = false)
+	@NotNull
+	@Column (name = "c_token")
 	private String token;
 
-	/** The ip. */
 	@Column (name = "c_ip")
 	private String ip;
 
-	/** The device id. */
-	@Column (name = "c_device_id", nullable = false)
+	@NotNull
+	@Column (name = "c_device_id")
 	private String deviceId;
 
-	/** The user. */
+	@NotNull
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "fk_user", nullable = false)
-	private Account user;
+	@JoinColumn (name = "fk_account")
+	private Account account;
 
 	/**
 	 * On create - set create date and last access date.
@@ -96,145 +81,6 @@ public abstract class SecurityToken extends AEntity<Long> implements Serializabl
 	protected void onUpdate ()
 	{
 		lastAccessDate = OffsetDateTime.now();
-	}
-
-	/* (non-Javadoc)
-	 * @see sk.qbsw.core.persistence.model.domain.IEntity#getId()
-	 */
-	@Override
-	public Long getId ()
-	{
-		return id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId (Long id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * Gets the creates the date.
-	 *
-	 * @return the creates the date
-	 */
-	public OffsetDateTime getCreateDate ()
-	{
-		return createDate;
-	}
-
-	/**
-	 * Sets the creates the date.
-	 *
-	 * @param createDate the new creates the date
-	 */
-	public void setCreateDate (OffsetDateTime createDate)
-	{
-		this.createDate = createDate;
-	}
-
-	/**
-	 * Gets the last access date.
-	 *
-	 * @return the last access date
-	 */
-	public OffsetDateTime getLastAccessDate ()
-	{
-		return lastAccessDate;
-	}
-
-	/**
-	 * Sets the last access date.
-	 *
-	 * @param lastAccessDate the new last access date
-	 */
-	public void setLastAccessDate (OffsetDateTime lastAccessDate)
-	{
-		this.lastAccessDate = lastAccessDate;
-	}
-
-	/**
-	 * Gets the token.
-	 *
-	 * @return the token
-	 */
-	public String getToken ()
-	{
-		return token;
-	}
-
-	/**
-	 * Sets the token.
-	 *
-	 * @param token the new token
-	 */
-	public void setToken (String token)
-	{
-		this.token = token;
-	}
-
-	/**
-	 * Gets the ip.
-	 *
-	 * @return the ip
-	 */
-	public String getIp ()
-	{
-		return ip;
-	}
-
-	/**
-	 * Sets the ip.
-	 *
-	 * @param ip the new ip
-	 */
-	public void setIp (String ip)
-	{
-		this.ip = ip;
-	}
-
-	/**
-	 * Gets the device id.
-	 *
-	 * @return the device id
-	 */
-	public String getDeviceId ()
-	{
-		return deviceId;
-	}
-
-	/**
-	 * Sets the device id.
-	 *
-	 * @param deviceId the new device id
-	 */
-	public void setDeviceId (String deviceId)
-	{
-		this.deviceId = deviceId;
-	}
-
-	/**
-	 * Gets the user.
-	 *
-	 * @return the user
-	 */
-	public Account getUser ()
-	{
-		return user;
-	}
-
-	/**
-	 * Sets the user.
-	 *
-	 * @param user the new user
-	 */
-	public void setUser (Account user)
-	{
-		this.user = user;
 	}
 
 	/**

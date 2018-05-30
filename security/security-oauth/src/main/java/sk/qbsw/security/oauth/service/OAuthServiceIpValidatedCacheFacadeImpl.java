@@ -1,12 +1,10 @@
-package sk.qbsw.security.oauth.service.impl;
+package sk.qbsw.security.oauth.service;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.oauth.model.*;
-import sk.qbsw.security.oauth.service.OAuthService;
-import sk.qbsw.security.oauth.service.OAuthServiceFacade;
 
 import java.util.List;
 
@@ -19,6 +17,11 @@ import java.util.List;
  */
 public class OAuthServiceIpValidatedCacheFacadeImpl extends BaseOAuthServiceCacheFacade implements OAuthServiceFacade
 {
+	/**
+	 * Instantiates a new O auth service ip validated cache facade.
+	 *
+	 * @param oAuthService the o auth service
+	 */
 	public OAuthServiceIpValidatedCacheFacadeImpl (OAuthService oAuthService)
 	{
 		super(oAuthService);

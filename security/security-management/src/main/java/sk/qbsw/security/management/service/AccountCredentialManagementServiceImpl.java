@@ -2,7 +2,6 @@ package sk.qbsw.security.management.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -11,11 +10,11 @@ import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.security.base.exception.PasswordFormatException;
-import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.configuration.SecurityCoreConfigurator;
 import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.AuthenticationParams;
-import sk.qbsw.security.core.configuration.SecurityCoreConfigurator;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
 
 import javax.persistence.NoResultException;
@@ -51,7 +50,6 @@ public class AccountCredentialManagementServiceImpl extends AService implements 
 	 * @param digester the digester
 	 * @param securityCoreConfigurator the security core configurator
 	 */
-	@Autowired
 	public AccountCredentialManagementServiceImpl (AccountDao accountDao, AuthenticationParamsDao authenticationParamsDao, PasswordDigester digester, SecurityCoreConfigurator securityCoreConfigurator)
 	{
 		this.accountDao = accountDao;

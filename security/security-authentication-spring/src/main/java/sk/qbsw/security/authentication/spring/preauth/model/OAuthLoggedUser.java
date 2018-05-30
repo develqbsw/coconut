@@ -1,5 +1,6 @@
 package sk.qbsw.security.authentication.spring.preauth.model;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import sk.qbsw.security.authentication.spring.model.LoggedUser;
 import sk.qbsw.security.authentication.spring.model.Organization;
@@ -13,9 +14,10 @@ import java.util.Map;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.13.1
+ * @version 1.19.0
  * @since 1.6.0
  */
+@Getter
 public class OAuthLoggedUser extends LoggedUser
 {
 	private static final long serialVersionUID = -4382555678527345919L;
@@ -54,16 +56,6 @@ public class OAuthLoggedUser extends LoggedUser
 	{
 		super(id, username, password, authorities, organization, additionalInformation);
 		this.oauthData = oauthData;
-	}
-
-	/**
-	 * Gets oauth data.
-	 *
-	 * @return the oauth data
-	 */
-	public OAuthData getOauthData ()
-	{
-		return oauthData;
 	}
 
 	@Override

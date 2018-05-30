@@ -27,6 +27,12 @@ public class UsernamePasswordUnitAuthenticationSecurityService extends AService 
 
 	private final AuthorityConverter authorityConverter;
 
+	/**
+	 * Instantiates a new Username password unit authentication security service.
+	 *
+	 * @param authenticationService the authentication service
+	 * @param authorityConverter the authority converter
+	 */
 	public UsernamePasswordUnitAuthenticationSecurityService (AuthenticationService authenticationService, AuthorityConverter authorityConverter)
 	{
 		this.authenticationService = authenticationService;
@@ -58,12 +64,7 @@ public class UsernamePasswordUnitAuthenticationSecurityService extends AService 
 
 	private LoggedUser convertAccountToLoggedUser (Account account)
 	{
-		Organization organization = Organization.newBuilder() //
-			.id(account.getOrganization().getId()) //
-			.code(account.getOrganization().getCode()) //
-			.name(account.getOrganization().getName()) //
-			.build();
-
+		Organization organization = new Organization(account.getOrganization().getId(), account.getOrganization().getCode(), account.getOrganization().getName());
 		return new LoggedUser(account.getId(), account.getLogin(), account.getPassword(), authorityConverter.convertRolesToAuthorities(account.exportRoles()), organization);
 
 	}

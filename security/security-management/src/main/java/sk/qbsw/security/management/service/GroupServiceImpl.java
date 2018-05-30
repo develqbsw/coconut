@@ -1,6 +1,5 @@
 package sk.qbsw.security.management.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -24,7 +23,11 @@ public class GroupServiceImpl extends AService implements GroupService
 {
 	private final GroupDao groupDao;
 
-	@Autowired
+	/**
+	 * Instantiates a new Group service.
+	 *
+	 * @param groupDao the group dao
+	 */
 	public GroupServiceImpl (GroupDao groupDao)
 	{
 		this.groupDao = groupDao;

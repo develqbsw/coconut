@@ -7,7 +7,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
@@ -36,7 +35,6 @@ public class LdapProviderImpl extends AService implements LdapProvider
 	 *
 	 * @param ldapConnectionFactory the ldap connection factory
 	 */
-	@Autowired
 	public LdapProviderImpl (LdapConnectionFactory ldapConnectionFactory)
 	{
 		this.ldapConnectionFactory = ldapConnectionFactory;

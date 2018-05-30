@@ -11,42 +11,42 @@ import java.util.List;
  * The master token service.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.13.1
  */
 public interface MasterTokenService
 {
 	/**
-	 * Generate master token and save it.
+	 * Generate master token generated token data.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param deviceId the device id
 	 * @param ip the ip
-	 * @return the generated master token
+	 * @return the generated token data
 	 * @throws CBusinessException the c business exception
 	 */
-	GeneratedTokenData generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException;
+	GeneratedTokenData generateMasterToken (Long accountId, String deviceId, String ip) throws CBusinessException;
 
 	/**
 	 * Revoke master token.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param masterToken the master token
 	 * @throws CBusinessException the c business exception
 	 */
-	void revokeMasterToken (Long userId, String masterToken) throws CBusinessException;
+	void revokeMasterToken (Long accountId, String masterToken) throws CBusinessException;
 
 	/**
-	 * Gets the user by master token.
+	 * Gets account by master token.
 	 *
 	 * @param token the token
 	 * @param deviceId the device id
 	 * @param ip the ip
 	 * @param isIpIgnored the is ip ignored
-	 * @return the user by master token
+	 * @return the account by master token
 	 * @throws CBusinessException the c business exception
 	 */
-	Account getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
+	Account getAccountByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Find expired master tokens list.

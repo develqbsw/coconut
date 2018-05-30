@@ -1,5 +1,6 @@
 package sk.qbsw.security.authentication.spring.auth.model;
 
+import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,6 +14,7 @@ import java.util.Collection;
  * @version 1.19.0
  * @since 1.6.0
  */
+@Getter
 public class UsernamePasswordUnitAuthenticationToken extends UsernamePasswordAuthenticationToken
 {
 	private static final long serialVersionUID = 1L;
@@ -45,15 +47,5 @@ public class UsernamePasswordUnitAuthenticationToken extends UsernamePasswordAut
 		super(principal, credentials);
 
 		this.unit = unit;
-	}
-
-	/**
-	 * Gets the unit.
-	 *
-	 * @return the unit
-	 */
-	public String getUnit ()
-	{
-		return unit;
 	}
 }

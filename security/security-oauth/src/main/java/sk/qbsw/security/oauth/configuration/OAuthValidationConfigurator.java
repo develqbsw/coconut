@@ -4,10 +4,10 @@ package sk.qbsw.security.oauth.configuration;
  * The OAuth validation configuration.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.18.2
  */
-public interface OAuthValidationConfiguration
+public interface OAuthValidationConfigurator
 {
 	/**
 	 * The master token expire limit in hours. @return the master token expire limit

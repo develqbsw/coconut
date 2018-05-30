@@ -2,7 +2,6 @@ package sk.qbsw.security.authentication.ldap.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -54,7 +53,6 @@ public class LdapAuthenticationServiceImpl extends AService implements Authentic
 	 * @param accountDao the account dao
 	 * @param ldapProvider the ldap provider
 	 */
-	@Autowired
 	public LdapAuthenticationServiceImpl (SecurityLdapAuthenticationConfigurator ldapAuthenticationConfigurator, UnitDao unitDao, AccountDao accountDao, LdapProvider ldapProvider)
 	{
 		this.ldapAuthenticationConfigurator = ldapAuthenticationConfigurator;

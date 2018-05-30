@@ -1,13 +1,12 @@
-package sk.qbsw.security.oauth.dao.jpa;
+package sk.qbsw.security.oauth.dao;
 
 import com.querydsl.core.BooleanBuilder;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.security.core.model.domain.QAccount;
+import sk.qbsw.security.core.model.domain.QAccountUnitGroup;
 import sk.qbsw.security.core.model.domain.QGroup;
-import sk.qbsw.security.core.model.domain.QUser;
-import sk.qbsw.security.core.model.domain.QUserUnitGroup;
-import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.model.domain.QMasterToken;
 
@@ -16,15 +15,15 @@ import java.util.List;
 
 /**
  * The master token dao.
- * 
+ *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.13.1
  */
 public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> implements MasterTokenDao
 {
 	/**
-	 * Instantiates a new c master token dao.
+	 * Instantiates a new Master token jpa dao.
 	 */
 	public MasterTokenJpaDaoImpl ()
 	{
@@ -32,9 +31,9 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 	}
 
 	@Override
-	public MasterToken findByUserAndDevice (Long userId, String deviceId) throws CBusinessException
+	public MasterToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException
 	{
-		if (userId == null || deviceId == null)
+		if (accountId == null || deviceId == null)
 		{
 			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -43,17 +42,17 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qMasterToken.user.id.eq(userId));
+		builder.and(qMasterToken.account.id.eq(accountId));
 		builder.and(qMasterToken.deviceId.eq(deviceId));
 
 		// create query
-		return queryFactory.selectFrom(qMasterToken).leftJoin(qMasterToken.user).fetchJoin().where(builder).fetchFirst();
+		return queryFactory.selectFrom(qMasterToken).leftJoin(qMasterToken.account).fetchJoin().where(builder).fetchFirst();
 	}
 
 	@Override
-	public MasterToken findByUserAndToken (Long userId, String token) throws CBusinessException
+	public MasterToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException
 	{
-		if (userId == null || token == null)
+		if (accountId == null || token == null)
 		{
 			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -62,19 +61,19 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qMasterToken.user.id.eq(userId));
+		builder.and(qMasterToken.account.id.eq(accountId));
 		builder.and(qMasterToken.token.eq(token));
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.user).fetchJoin() //
+			.leftJoin(qMasterToken.account).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
 	@Override
-	public MasterToken findByUserAndTokenAndDevice (Long userId, String token, String deviceId) throws CBusinessException
+	public MasterToken findByAccountIdAndTokenAndDeviceId (Long accountId, String token, String deviceId) throws CBusinessException
 	{
-		if (userId == null || token == null || deviceId == null)
+		if (accountId == null || token == null || deviceId == null)
 		{
 			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -83,13 +82,13 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qMasterToken.user.id.eq(userId));
+		builder.and(qMasterToken.account.id.eq(accountId));
 		builder.and(qMasterToken.token.eq(token));
 		builder.and(qMasterToken.deviceId.eq(deviceId));
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.user).fetchJoin() //
+			.leftJoin(qMasterToken.account).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
@@ -102,8 +101,8 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 		}
 
 		QMasterToken qMasterToken = QMasterToken.masterToken;
-		QUser qUser = QUser.user;
-		QUserUnitGroup qUserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QAccount qAccount = QAccount.account;
+		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
 		QGroup qGroup = QGroup.group;
 
 		// create where condition
@@ -113,10 +112,10 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.user, qUser).fetchJoin() //
-			.leftJoin(qUser.organization).fetchJoin() //
-			.leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin() //
-			.leftJoin(qUserUnitGroup.group, qGroup).fetchJoin() //
+			.leftJoin(qMasterToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.organization).fetchJoin() //
+			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
+			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //
 			.where(builder).fetchFirst();
 	}

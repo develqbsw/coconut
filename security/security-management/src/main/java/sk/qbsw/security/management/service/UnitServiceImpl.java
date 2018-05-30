@@ -1,6 +1,5 @@
 package sk.qbsw.security.management.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -27,7 +26,6 @@ public class UnitServiceImpl extends AService implements UnitService
 	 *
 	 * @param unitDao the unit dao
 	 */
-	@Autowired
 	public UnitServiceImpl (UnitDao unitDao)
 	{
 		this.unitDao = unitDao;

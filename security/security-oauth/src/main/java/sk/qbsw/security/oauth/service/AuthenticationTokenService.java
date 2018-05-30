@@ -11,44 +11,44 @@ import java.util.List;
  * The authentication token service.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.13.1
  */
 public interface AuthenticationTokenService
 {
 	/**
-	 * Generate authentication token and save it or replace it, if the token exists.
+	 * Generate authentication token generated token data.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param masterToken the master token
 	 * @param deviceId the device id
 	 * @param ip the ip
 	 * @param isIpIgnored the is ip ignored
-	 * @return the generated authentication token
+	 * @return the generated token data
 	 * @throws CBusinessException the c business exception
 	 */
-	GeneratedTokenData generateAuthenticationToken (Long userId, String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
+	GeneratedTokenData generateAuthenticationToken (Long accountId, String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Revoke authentication token.
 	 *
-	 * @param userId the user id
+	 * @param accountId the account id
 	 * @param authenticationToken the authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	void revokeAuthenticationToken (Long userId, String authenticationToken) throws CBusinessException;
+	void revokeAuthenticationToken (Long accountId, String authenticationToken) throws CBusinessException;
 
 	/**
-	 * Gets the user by authentication token.
+	 * Gets account by authentication token.
 	 *
 	 * @param authenticationToken the authentication token
 	 * @param deviceId the device id
 	 * @param ip the ip
 	 * @param isIpIgnored the is ip ignored
-	 * @return the user by authentication token
+	 * @return the account by authentication token
 	 * @throws CBusinessException the c business exception
 	 */
-	Account getUserByAuthenticationToken (String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
+	Account getAccountByAuthenticationToken (String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Find expired authentication tokens list.

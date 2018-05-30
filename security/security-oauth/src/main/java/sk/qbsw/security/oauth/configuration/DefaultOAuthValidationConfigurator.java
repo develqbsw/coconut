@@ -10,10 +10,10 @@ import javax.annotation.PostConstruct;
  * The default oauth validation configuration.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.18.2
  */
-public class DefaultOAuthValidationConfiguration implements OAuthValidationConfiguration
+public class DefaultOAuthValidationConfigurator implements OAuthValidationConfigurator
 {
 	private final ISystemParameterService systemParameterService;
 
@@ -29,7 +29,7 @@ public class DefaultOAuthValidationConfiguration implements OAuthValidationConfi
 	/** The authentication token change limit. */
 	private Integer authenticationTokenChangeLimit;
 
-	public DefaultOAuthValidationConfiguration (ISystemParameterService systemParameterService)
+	public DefaultOAuthValidationConfigurator (ISystemParameterService systemParameterService)
 	{
 		this.systemParameterService = systemParameterService;
 	}

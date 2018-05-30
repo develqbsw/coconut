@@ -2,7 +2,6 @@ package sk.qbsw.security.authentication.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -52,7 +51,6 @@ public class DatabaseAuthenticationServiceImpl extends AService implements Authe
 	 * @param authenticationParamsDao the authentication params dao
 	 * @param digester the digester
 	 */
-	@Autowired
 	public DatabaseAuthenticationServiceImpl (AccountDao accountDao, UnitDao unitDao, AuthenticationParamsDao authenticationParamsDao, PasswordDigester digester)
 	{
 		this.accountDao = accountDao;

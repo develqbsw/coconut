@@ -1,6 +1,5 @@
 package sk.qbsw.security.management.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.service.AService;
@@ -29,7 +28,6 @@ public class AccountUnitGroupServiceImpl extends AService implements AccountUnit
 	 *
 	 * @param accountUnitGroupDao the account unit group dao
 	 */
-	@Autowired
 	public AccountUnitGroupServiceImpl (AccountUnitGroupDao accountUnitGroupDao)
 	{
 		this.accountUnitGroupDao = accountUnitGroupDao;

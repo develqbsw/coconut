@@ -67,6 +67,11 @@
 			<artifactId>security-management</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-authentication</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Spring -->
 		<dependency>
@@ -133,6 +138,12 @@
 		<dependency>
 			<groupId>com.sun.xml.wsit</groupId>
 			<artifactId>xws-security</artifactId>
+		</dependency>
+
+		<!-- lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 
 		<!-- JUnit and Mockito -->

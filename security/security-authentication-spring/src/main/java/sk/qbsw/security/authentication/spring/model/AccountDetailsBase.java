@@ -1,5 +1,6 @@
 package sk.qbsw.security.authentication.spring.model;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.util.Assert;
@@ -15,6 +16,7 @@ import java.util.*;
  * @version 1.19.0
  * @since 1.18.6
  */
+@Getter
 public abstract class AccountDetailsBase implements AccountDetails
 {
 	private static final long serialVersionUID = -105300727899469649L;
@@ -100,45 +102,6 @@ public abstract class AccountDetailsBase implements AccountDetails
 
 			return g1.getAuthority().compareTo(g2.getAuthority());
 		}
-	}
-
-	/**
-	 * Gets id.
-	 *
-	 * @return the id
-	 */
-	@Override
-	public Long getId ()
-	{
-		return id;
-	}
-
-	/**
-	 * Gets organization.
-	 *
-	 * @return the organization
-	 */
-	@Override
-	public Organization getOrganization ()
-	{
-		return organization;
-	}
-
-	/**
-	 * Gets additional information.
-	 *
-	 * @return the additional information
-	 */
-	@Override
-	public Map<String, Object> getAdditionalInformation ()
-	{
-		return additionalInformation;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities ()
-	{
-		return authorities;
 	}
 
 	/**

@@ -1,11 +1,10 @@
-package sk.qbsw.security.oauth.service.impl;
+package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.oauth.model.AuthenticationData;
 import sk.qbsw.security.oauth.model.ExpiredTokenData;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.VerificationData;
-import sk.qbsw.security.oauth.service.OAuthService;
 
 import java.util.Collections;
 import java.util.List;
@@ -107,7 +106,7 @@ public abstract class BaseOAuthServiceCacheFacade
 	}
 
 	/**
-	 * Base remove expired tokens list.
+	 * Base delete expired tokens list.
 	 *
 	 * @return the list
 	 */
@@ -120,7 +119,7 @@ public abstract class BaseOAuthServiceCacheFacade
 	}
 
 	/**
-	 * Base remove expired token expired token data.
+	 * Base delete expired token expired token data.
 	 *
 	 * @param expiredToken the expired token
 	 * @return the expired token data

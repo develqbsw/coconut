@@ -1,12 +1,10 @@
-package sk.qbsw.security.oauth.service.impl;
+package sk.qbsw.security.oauth.service;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.oauth.model.*;
-import sk.qbsw.security.oauth.service.OAuthService;
-import sk.qbsw.security.oauth.service.OAuthServiceFacade;
 
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class OAuthServiceIpIgnoredCacheFacadeImpl extends BaseOAuthServiceCacheF
 	 *
 	 * @param oAuthService the o auth service
 	 */
-	public OAuthServiceIpIgnoredCacheFacadeImpl(OAuthService oAuthService)
+	public OAuthServiceIpIgnoredCacheFacadeImpl (OAuthService oAuthService)
 	{
 		super(oAuthService);
 	}

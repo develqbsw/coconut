@@ -1,6 +1,5 @@
 package sk.qbsw.security.management.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.service.AService;
@@ -34,7 +33,6 @@ public class OrganizationServiceImpl extends AService implements OrganizationSer
 	 * @param groupService the group service
 	 * @param accountPermissionManagementService the account permission management service
 	 */
-	@Autowired
 	public OrganizationServiceImpl (OrganizationDao organizationDao, GroupService groupService, AccountPermissionManagementService accountPermissionManagementService)
 	{
 		this.organizationDao = organizationDao;

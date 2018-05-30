@@ -2,7 +2,6 @@ package sk.qbsw.security.authorization.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -37,7 +36,6 @@ public class AuthorizationServiceImpl extends AService implements AuthorizationS
 	 * @param unitDao the unit dao
 	 * @param accountDao the account dao
 	 */
-	@Autowired
 	public AuthorizationServiceImpl (UnitDao unitDao, AccountDao accountDao)
 	{
 		this.unitDao = unitDao;

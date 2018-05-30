@@ -1,5 +1,7 @@
 package sk.qbsw.security.authentication.model;
 
+import lombok.Getter;
+
 /**
  * The username, password and unit authentication token.
  * 
@@ -7,6 +9,7 @@ package sk.qbsw.security.authentication.model;
  * @version 1.13.4
  * @since 1.13.4
  */
+@Getter
 public class UsernamePasswordUnitAuthenticationSecurityToken extends UsernamePasswordAuthenticationSecurityToken
 {
 	private static final long serialVersionUID = -996252602003786662L;
@@ -24,15 +27,5 @@ public class UsernamePasswordUnitAuthenticationSecurityToken extends UsernamePas
 	{
 		super(username, password);
 		this.unit = unit;
-	}
-
-	/**
-	 * Gets the unit.
-	 *
-	 * @return the unit
-	 */
-	public String getUnit ()
-	{
-		return unit;
 	}
 }

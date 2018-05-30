@@ -1,13 +1,15 @@
 package sk.qbsw.security.authentication.model;
 
+import lombok.Getter;
 
 /**
  * The abstract authentication token.
  * 
  * @author Tomas Lauro
- * @version 1.13.4
+ * @version 1.19.0
  * @since 1.13.4
  */
+@Getter
 public abstract class BaseAuthenticationSecurityToken implements AuthenticationSecurityToken
 {
 	private static final long serialVersionUID = -8386599362496103338L;
@@ -26,17 +28,5 @@ public abstract class BaseAuthenticationSecurityToken implements AuthenticationS
 	{
 		this.principal = principal;
 		this.credentials = credentials;
-	}
-
-	@Override
-	public Object getCredentials ()
-	{
-		return this.credentials;
-	}
-
-	@Override
-	public Object getPrincipal ()
-	{
-		return this.principal;
 	}
 }

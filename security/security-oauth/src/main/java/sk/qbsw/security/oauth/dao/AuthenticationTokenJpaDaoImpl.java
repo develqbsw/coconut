@@ -1,13 +1,12 @@
-package sk.qbsw.security.oauth.dao.jpa;
+package sk.qbsw.security.oauth.dao;
 
 import com.querydsl.core.BooleanBuilder;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.security.core.model.domain.QAccount;
+import sk.qbsw.security.core.model.domain.QAccountUnitGroup;
 import sk.qbsw.security.core.model.domain.QGroup;
-import sk.qbsw.security.core.model.domain.QUser;
-import sk.qbsw.security.core.model.domain.QUserUnitGroup;
-import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.QAuthenticationToken;
 
@@ -18,23 +17,20 @@ import java.util.List;
  * The authentication token dao.
  * 
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.13.1
  */
 public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, AuthenticationToken> implements AuthenticationTokenDao
 {
-	/**
-	 * Instantiates a new c authentication token dao.
-	 */
 	public AuthenticationTokenJpaDaoImpl ()
 	{
 		super(QAuthenticationToken.authenticationToken, Long.class);
 	}
 
 	@Override
-	public AuthenticationToken findByUserAndDevice (Long userId, String deviceId) throws CBusinessException
+	public AuthenticationToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException
 	{
-		if (userId == null || deviceId == null)
+		if (accountId == null || deviceId == null)
 		{
 			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -43,19 +39,19 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qAuthenticationToken.user.id.eq(userId));
+		builder.and(qAuthenticationToken.account.id.eq(accountId));
 		builder.and(qAuthenticationToken.deviceId.eq(deviceId));
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.user).fetchJoin() //
+			.leftJoin(qAuthenticationToken.account).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
 	@Override
-	public AuthenticationToken findByUserAndToken (Long userId, String token) throws CBusinessException
+	public AuthenticationToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException
 	{
-		if (userId == null || token == null)
+		if (accountId == null || token == null)
 		{
 			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
@@ -64,12 +60,12 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qAuthenticationToken.user.id.eq(userId));
+		builder.and(qAuthenticationToken.account.id.eq(accountId));
 		builder.and(qAuthenticationToken.token.eq(token));
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.user).fetchJoin() //
+			.leftJoin(qAuthenticationToken.account).fetchJoin() //
 			.where(builder).fetchFirst();
 	}
 
@@ -82,8 +78,8 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 		}
 
 		QAuthenticationToken qAuthenticationToken = QAuthenticationToken.authenticationToken;
-		QUser qUser = QUser.user;
-		QUserUnitGroup qUserUnitGroup = QUserUnitGroup.userUnitGroup;
+		QAccount qAccount = QAccount.account;
+		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
 		QGroup qGroup = QGroup.group;
 
 		// create where condition
@@ -93,10 +89,10 @@ public class AuthenticationTokenJpaDaoImpl extends AEntityQDslDao<Long, Authenti
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.user, qUser).fetchJoin() //
-			.leftJoin(qUser.organization).fetchJoin() //
-			.leftJoin(qUser.xUserUnitGroups, qUserUnitGroup).fetchJoin() //
-			.leftJoin(qUserUnitGroup.group, qGroup).fetchJoin() //
+			.leftJoin(qAuthenticationToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.organization).fetchJoin() //
+			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
+			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //
 			.where(builder).fetchFirst();
 	}

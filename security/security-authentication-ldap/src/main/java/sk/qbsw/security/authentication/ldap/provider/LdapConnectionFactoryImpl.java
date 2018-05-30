@@ -4,7 +4,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.ldap.client.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.ldap.configuration.SecurityLdapAuthenticationConfigurator;
 
@@ -25,7 +24,6 @@ public class LdapConnectionFactoryImpl extends AService implements LdapConnectio
 
 	private LdapConnectionPool secondaryServerConnectionPool = null;
 
-	@Autowired
 	public LdapConnectionFactoryImpl (SecurityLdapAuthenticationConfigurator configurationData)
 	{
 		this.configurationData = configurationData;

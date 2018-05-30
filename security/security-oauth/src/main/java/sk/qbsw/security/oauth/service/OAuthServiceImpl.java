@@ -1,4 +1,4 @@
-package sk.qbsw.security.oauth.service.impl;
+package sk.qbsw.security.oauth.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,6 @@ import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.oauth.model.*;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
-import sk.qbsw.security.oauth.service.AuthenticationTokenService;
-import sk.qbsw.security.oauth.service.MasterTokenService;
-import sk.qbsw.security.oauth.service.OAuthService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +37,13 @@ public class OAuthServiceImpl implements OAuthService
 
 	private final AuthenticationService authenticationService;
 
+	/**
+	 * Instantiates a new O auth service.
+	 *
+	 * @param masterTokenService the master token service
+	 * @param authenticationTokenService the authentication token service
+	 * @param authenticationService the authentication service
+	 */
 	public OAuthServiceImpl (MasterTokenService masterTokenService, AuthenticationTokenService authenticationTokenService, AuthenticationService authenticationService)
 	{
 		this.masterTokenService = masterTokenService;
@@ -51,48 +55,48 @@ public class OAuthServiceImpl implements OAuthService
 	@Transactional (rollbackFor = CBusinessException.class)
 	public AuthenticationData authenticate (String login, String password, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		Account user = authenticationService.login(login, password);
+		Account account = authenticationService.login(login, password);
 
-		if (user == null)
+		if (account == null)
 		{
-			throw new CSecurityException(ECoreErrorResponse.USER_NOT_FOUND);
+			throw new CSecurityException(ECoreErrorResponse.ACCOUNT_NOT_FOUND);
 		}
 
 		// generate tokens
-		GeneratedTokenData masterTokenData = masterTokenService.generateMasterToken(user.getId(), deviceId, ip);
-		GeneratedTokenData authenticationTokenData = authenticationTokenService.generateAuthenticationToken(user.getId(), masterTokenData.getGeneratedToken(), deviceId, ip, isIpIgnored);
+		GeneratedTokenData masterTokenData = masterTokenService.generateMasterToken(account.getId(), deviceId, ip);
+		GeneratedTokenData authenticationTokenData = authenticationTokenService.generateAuthenticationToken(account.getId(), masterTokenData.getGeneratedToken(), deviceId, ip, isIpIgnored);
 
 		// create response
-		return new AuthenticationData(masterTokenData, authenticationTokenData, AccountData.build(user, createAdditionalInformation(user.getId())));
+		return new AuthenticationData(masterTokenData, authenticationTokenData, AccountData.build(account, createAdditionalInformation(account.getId())));
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public GeneratedTokenData reauthenticate (String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		Account user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
+		Account account = masterTokenService.getAccountByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
-		if (user == null)
+		if (account == null)
 		{
-			throw new CSecurityException(ECoreErrorResponse.USER_NOT_FOUND);
+			throw new CSecurityException(ECoreErrorResponse.ACCOUNT_NOT_FOUND);
 		}
 
-		return authenticationTokenService.generateAuthenticationToken(user.getId(), masterToken, deviceId, ip, isIpIgnored);
+		return authenticationTokenService.generateAuthenticationToken(account.getId(), masterToken, deviceId, ip, isIpIgnored);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public void invalidate (String masterToken, String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		Account user = masterTokenService.getUserByMasterToken(masterToken, deviceId, ip, isIpIgnored);
+		Account account = masterTokenService.getAccountByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
-		if (user == null)
+		if (account == null)
 		{
-			throw new CSecurityException(ECoreErrorResponse.USER_NOT_FOUND);
+			throw new CSecurityException(ECoreErrorResponse.ACCOUNT_NOT_FOUND);
 		}
 
-		masterTokenService.revokeMasterToken(user.getId(), masterToken);
-		authenticationTokenService.revokeAuthenticationToken(user.getId(), authenticationToken);
+		masterTokenService.revokeMasterToken(account.getId(), masterToken);
+		authenticationTokenService.revokeAuthenticationToken(account.getId(), authenticationToken);
 	}
 
 	@Override
@@ -101,16 +105,16 @@ public class OAuthServiceImpl implements OAuthService
 	{
 		try
 		{
-			Account userByMasterToken = masterTokenService.getUserByMasterToken(token, deviceId, ip, isIpIgnored);
-			Account userByAuthenticationToken = authenticationTokenService.getUserByAuthenticationToken(token, deviceId, ip, isIpIgnored);
+			Account accountByMasterToken = masterTokenService.getAccountByMasterToken(token, deviceId, ip, isIpIgnored);
+			Account accountByAuthenticationToken = authenticationTokenService.getAccountByAuthenticationToken(token, deviceId, ip, isIpIgnored);
 
-			if (userByMasterToken != null)
+			if (accountByMasterToken != null)
 			{
-				return new VerificationData(AccountData.build(userByMasterToken, createAdditionalInformation(userByMasterToken.getId())), VerificationTypes.MASTER_TOKEN_VERIFICATION);
+				return new VerificationData(AccountData.build(accountByMasterToken, createAdditionalInformation(accountByMasterToken.getId())), VerificationTypes.MASTER_TOKEN_VERIFICATION);
 			}
-			else if (userByAuthenticationToken != null)
+			else if (accountByAuthenticationToken != null)
 			{
-				return new VerificationData(AccountData.build(userByAuthenticationToken, createAdditionalInformation(userByAuthenticationToken.getId())), VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
+				return new VerificationData(AccountData.build(accountByAuthenticationToken, createAdditionalInformation(accountByAuthenticationToken.getId())), VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
 			}
 			else
 			{
@@ -148,7 +152,13 @@ public class OAuthServiceImpl implements OAuthService
 		return expiredTokensData;
 	}
 
-	protected Map<String, Object> createAdditionalInformation (Long userId)
+	/**
+	 * Create additional information map.
+	 *
+	 * @param accountId the account id
+	 * @return the map
+	 */
+	protected Map<String, Object> createAdditionalInformation (Long accountId)
 	{
 		return new HashMap<>();
 	}

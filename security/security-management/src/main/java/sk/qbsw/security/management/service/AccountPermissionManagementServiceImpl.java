@@ -1,6 +1,5 @@
 package sk.qbsw.security.management.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
@@ -37,7 +36,14 @@ public class AccountPermissionManagementServiceImpl extends AService implements 
 
 	private final AccountUnitGroupDao accountUnitGroupDao;
 
-	@Autowired
+	/**
+	 * Instantiates a new Account permission management service.
+	 *
+	 * @param accountDao the account dao
+	 * @param groupDao the group dao
+	 * @param unitDao the unit dao
+	 * @param accountUnitGroupDao the account unit group dao
+	 */
 	public AccountPermissionManagementServiceImpl (AccountDao accountDao, GroupDao groupDao, UnitDao unitDao, AccountUnitGroupDao accountUnitGroupDao)
 	{
 		this.accountDao = accountDao;

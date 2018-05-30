@@ -1,7 +1,4 @@
-/**
- * 
- */
-package sk.qbsw.security.oauth.service.impl;
+package sk.qbsw.security.oauth.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +7,12 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
+import sk.qbsw.security.oauth.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
-import sk.qbsw.security.oauth.service.AuthenticationTokenService;
-import sk.qbsw.security.oauth.service.IdGeneratorService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +21,7 @@ import java.util.List;
  * The authentication token service.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.13.1
  */
 public class AuthenticationTokenServiceImpl extends BaseTokenService implements AuthenticationTokenService
@@ -38,25 +33,25 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 	 *
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
-	 * @param userDao the user dao
+	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public AuthenticationTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	public AuthenticationTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public GeneratedTokenData generateAuthenticationToken (Long userId, String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	public GeneratedTokenData generateAuthenticationToken (Long accountId, String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		// get master token and check it
-		MasterToken persistedMasterToken = masterTokenDao.findByUserAndTokenAndDevice(userId, masterToken, deviceId);
+		// read master token and check it
+		MasterToken persistedMasterToken = masterTokenDao.findByAccountIdAndTokenAndDeviceId(accountId, masterToken, deviceId);
 		checkMasterToken(persistedMasterToken, ip, isIpIgnored);
 
-		AuthenticationToken authenticationToken = authenticationTokenDao.findByUserAndDevice(userId, deviceId);
-		Account user = userDao.findById(userId);
+		AuthenticationToken authenticationToken = authenticationTokenDao.findByAccountIdAndDeviceId(accountId, deviceId);
+		Account account = accountDao.findById(accountId);
 
 		// performs checks
 		if (authenticationToken != null)
@@ -64,28 +59,28 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 			authenticationTokenDao.remove(authenticationToken);
 		}
 
-		if (user == null)
+		if (account == null)
 		{
-			LOGGER.error("The user {} not found", userId);
-			throw new CBusinessException(ECoreErrorResponse.USER_NOT_FOUND);
+			LOGGER.error("The account {} not found", accountId);
+			throw new CBusinessException(ECoreErrorResponse.ACCOUNT_NOT_FOUND);
 		}
 
 		AuthenticationToken newAuthenticationToken = new AuthenticationToken();
 		newAuthenticationToken.setDeviceId(deviceId);
 		newAuthenticationToken.setIp(ip);
 		newAuthenticationToken.setToken(idGeneratorService.getGeneratedId());
-		newAuthenticationToken.setUser(user);
+		newAuthenticationToken.setAccount(account);
 
-		// save to database and return token
+		// create to database and return token
 		return new GeneratedTokenData(authenticationTokenDao.update(newAuthenticationToken).getToken(), authenticationToken != null ? authenticationToken.getToken() : null);
 
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public void revokeAuthenticationToken (Long userId, String authenticationToken) throws CBusinessException
+	public void revokeAuthenticationToken (Long accountId, String authenticationToken) throws CBusinessException
 	{
-		AuthenticationToken token = authenticationTokenDao.findByUserAndToken(userId, authenticationToken);
+		AuthenticationToken token = authenticationTokenDao.findByAccountIdAndToken(accountId, authenticationToken);
 
 		// performs checks
 		if (token == null)
@@ -100,14 +95,14 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public Account getUserByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	public Account getAccountByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		AuthenticationToken persistedToken = authenticationTokenDao.findByTokenAndDeviceId(token, deviceId);
 
 		if (persistedToken != null)
 		{
 			checkAuthenticationToken(persistedToken, ip, isIpIgnored);
-			return persistedToken.getUser();
+			return persistedToken.getAccount();
 		}
 		else
 		{

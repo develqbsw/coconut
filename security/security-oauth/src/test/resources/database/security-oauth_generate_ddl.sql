@@ -1,27 +1,29 @@
 --create tables and sequence
-CREATE TABLE sec.t_oauth_token
+create table sec.t_oauth_token
 (
-  pk_id bigint NOT NULL,
-  d_type character varying(31) NOT NULL,
-  c_create_date timestamp with time zone NOT NULL,
-  c_last_access_date timestamp with time zone NOT NULL,
-  c_token character varying(255) NOT NULL,
-  c_ip character varying(255),
-  c_device_id character varying(255) NOT NULL,
-  fk_user bigint NOT NULL
+  pk_id              bigint                   not null,
+  d_type             character varying(31)    not null,
+  c_create_date      timestamp with time zone not null,
+  c_last_access_date timestamp with time zone not null,
+  c_token            character varying(255)   not null,
+  c_ip               character varying(255),
+  c_device_id        character varying(255)   not null,
+  fk_account         bigint                   not null
 );
 
-CREATE SEQUENCE sec.S_OAUTH_TOKEN START WITH 1 INCREMENT BY 1;
+create sequence sec.s_oauth_token
+  start with 1
+  increment by 1;
 
 --constraints--
 --primary key
-ALTER TABLE sec.t_oauth_token
-    ADD CONSTRAINT pk_oauth_token PRIMARY KEY (pk_id);
-    
+alter table sec.t_oauth_token
+  add constraint pkc_oauth_token primary key (pk_id);
+
 --unique
-ALTER TABLE sec.t_oauth_token
-    ADD CONSTRAINT uk_oauth_token_token UNIQUE (c_token);
+alter table sec.t_oauth_token
+  add constraint uc_oauth_token_token unique (c_token);
 
 --foreign key
-ALTER TABLE sec.t_oauth_token
-    ADD CONSTRAINT fk_oauth_token_user FOREIGN KEY (fk_user) REFERENCES sec.t_user (pk_id);
+alter table sec.t_oauth_token
+  add constraint fkc_oauth_token_user foreign key (fk_account) references sec.t_account (pk_id);

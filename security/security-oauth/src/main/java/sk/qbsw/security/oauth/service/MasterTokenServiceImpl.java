@@ -1,7 +1,4 @@
-/**
- * 
- */
-package sk.qbsw.security.oauth.service.impl;
+package sk.qbsw.security.oauth.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,13 +7,11 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.configuration.OAuthValidationConfiguration;
+import sk.qbsw.security.oauth.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
-import sk.qbsw.security.oauth.service.IdGeneratorService;
-import sk.qbsw.security.oauth.service.MasterTokenService;
 
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
@@ -26,7 +21,7 @@ import java.util.List;
  * The master token service.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.13.1
  */
 public class MasterTokenServiceImpl extends BaseTokenService implements MasterTokenService
@@ -34,34 +29,34 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	private static final Logger LOGGER = LoggerFactory.getLogger(MasterTokenServiceImpl.class);
 
 	/**
-	 * Instantiates a new Base token service.
+	 * Instantiates a new Master token service.
 	 *
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
-	 * @param userDao the user dao
+	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public MasterTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao userDao, IdGeneratorService idGeneratorService, OAuthValidationConfiguration validationConfiguration)
+	public MasterTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, userDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public GeneratedTokenData generateMasterToken (Long userId, String deviceId, String ip) throws CBusinessException
+	public GeneratedTokenData generateMasterToken (Long accountId, String deviceId, String ip) throws CBusinessException
 	{
-		MasterToken token = masterTokenDao.findByUserAndDevice(userId, deviceId);
-		Account user;
+		MasterToken token = masterTokenDao.findByAccountIdAndDeviceId(accountId, deviceId);
+		Account account;
 		try
 		{
-			user = userDao.findById(userId);
+			account = accountDao.findById(accountId);
 		}
 		catch (NoResultException ex)
 		{
-			LOGGER.error("The user {} not found", userId);
-			LOGGER.error("The user not found", ex);
-			throw new CBusinessException(ECoreErrorResponse.USER_NOT_FOUND);
+			LOGGER.error("The account {} not found", accountId);
+			LOGGER.error("The account not found", ex);
+			throw new CBusinessException(ECoreErrorResponse.ACCOUNT_NOT_FOUND);
 		}
 
 		// performs checks
@@ -74,18 +69,18 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 		newToken.setDeviceId(deviceId);
 		newToken.setIp(ip);
 		newToken.setToken(idGeneratorService.getGeneratedId());
-		newToken.setUser(user);
+		newToken.setAccount(account);
 
-		// save to database and return token
+		// create to database and return token
 		return new GeneratedTokenData(masterTokenDao.update(newToken).getToken(), token != null ? token.getToken() : null);
 
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public void revokeMasterToken (Long userId, String masterToken) throws CBusinessException
+	public void revokeMasterToken (Long accountId, String masterToken) throws CBusinessException
 	{
-		MasterToken token = masterTokenDao.findByUserAndToken(userId, masterToken);
+		MasterToken token = masterTokenDao.findByAccountIdAndToken(accountId, masterToken);
 
 		// performs checks
 		if (token == null)
@@ -99,15 +94,15 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public Account getUserByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	public Account getAccountByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		MasterToken persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);
 
 		if (persistedToken != null)
 		{
 			checkMasterToken(persistedToken, ip, isIpIgnored);
-			persistedToken.getUser().exportRoles();
-			return persistedToken.getUser();
+			persistedToken.getAccount().exportRoles();
+			return persistedToken.getAccount();
 		}
 		else
 		{

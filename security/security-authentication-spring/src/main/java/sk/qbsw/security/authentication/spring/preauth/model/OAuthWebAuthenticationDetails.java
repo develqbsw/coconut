@@ -1,5 +1,6 @@
 package sk.qbsw.security.authentication.spring.preauth.model;
 
+import lombok.Getter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * @version 1.18.0
  * @since 1.18.0
  */
+@Getter
 public class OAuthWebAuthenticationDetails extends WebAuthenticationDetails
 {
 	private final String deviceId;
@@ -29,26 +31,6 @@ public class OAuthWebAuthenticationDetails extends WebAuthenticationDetails
 		super(request);
 		this.deviceId = deviceId;
 		this.ip = ip;
-	}
-
-	/**
-	 * Gets device id.
-	 *
-	 * @return the device id
-	 */
-	public String getDeviceId ()
-	{
-		return deviceId;
-	}
-
-	/**
-	 * Gets ip.
-	 *
-	 * @return the ip
-	 */
-	public String getIp ()
-	{
-		return ip;
 	}
 
 	@Override

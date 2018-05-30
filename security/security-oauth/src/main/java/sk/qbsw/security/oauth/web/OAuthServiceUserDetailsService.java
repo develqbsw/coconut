@@ -44,17 +44,8 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 
 		AccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
 
-		Organization organization = Organization.newBuilder() //
-			.id(accountData.getOrganization().getId()) //
-			.name(accountData.getOrganization().getName()) //
-			.code(accountData.getOrganization().getCode()) //
-			.build();
-
-		OAuthData oAuthData = OAuthData.newBuilder() //
-			.token((String) token.getPrincipal()) //
-			.deviceId(deviceId) //
-			.ip(ip) //
-			.build();
+		Organization organization = new Organization(accountData.getOrganization().getId(), accountData.getOrganization().getName(), accountData.getOrganization().getCode());
+		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
 
 		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), organization, oAuthData, accountData.getAdditionalInformation());
 	}
