@@ -37,7 +37,7 @@
         <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
         <xws-security.version>1.3.1</xws-security.version>
         <spring.support.version>2.0.8</spring.support.version>
-        <spring.data.release.train.version>Hopper-RELEASE</spring.data.release.train.version>
+        <spring.data.release.train.version>Ingalls-SR12</spring.data.release.train.version>
 
         <!-- Persistence -->
         <hibernate.version>5.2.2.Final</hibernate.version>
