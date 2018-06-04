@@ -1,18 +1,16 @@
 package sk.qbsw.core.persistence.dao.support;
 
-import java.io.Serializable;
-import java.util.List;
-
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-
-import com.querydsl.core.types.Predicate;
-
 import sk.qbsw.core.persistence.model.CJoinDescriptor;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * The join fetch capable querydsl repository.
@@ -25,7 +23,7 @@ import sk.qbsw.core.persistence.model.CJoinDescriptor;
  * @since 1.16.0
  */
 @NoRepositoryBean
-public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends JpaRepository<T, PK>, QueryDslPredicateExecutor<T>
+public interface IFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends JpaRepository<T, PK>, QuerydslPredicateExecutor<T>
 {
 	/**
 	 * Find one.

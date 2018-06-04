@@ -8,19 +8,15 @@ import org.springframework.data.domain.Sort.Direction;
  * The offset and limit based pageable - there is always just one page with whole result set.
  * 
  * @author Tomas Lauro
- *
- * @version 1.16.0
+ * @version 1.19.0
  * @since 1.16.0
  */
 public class COffsetPageRequest implements Pageable
 {
-	/** The offset. */
-	private final int offset;
+	private final long offset;
 
-	/** The limit. */
 	private final int limit;
 
-	/** The sort. */
 	private final Sort sort;
 
 	/**
@@ -29,7 +25,7 @@ public class COffsetPageRequest implements Pageable
 	 * @param offset the offset
 	 * @param limit the limit
 	 */
-	public COffsetPageRequest (int offset, int limit)
+	public COffsetPageRequest (long offset, int limit)
 	{
 		this(offset, limit, null);
 	}
@@ -42,7 +38,7 @@ public class COffsetPageRequest implements Pageable
 	 * @param direction the direction
 	 * @param properties the properties
 	 */
-	public COffsetPageRequest (int offset, int limit, Direction direction, String... properties)
+	public COffsetPageRequest (long offset, int limit, Direction direction, String... properties)
 	{
 		this(offset, limit, new Sort(direction, properties));
 	}
@@ -54,7 +50,7 @@ public class COffsetPageRequest implements Pageable
 	 * @param limit the limit
 	 * @param sort the sort
 	 */
-	public COffsetPageRequest (int offset, int limit, Sort sort)
+	public COffsetPageRequest (long offset, int limit, Sort sort)
 	{
 		if (offset < 0)
 		{
@@ -71,72 +67,48 @@ public class COffsetPageRequest implements Pageable
 		this.sort = sort;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#getPageNumber()
-	 */
 	@Override
 	public int getPageNumber ()
 	{
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#getPageSize()
-	 */
 	@Override
 	public int getPageSize ()
 	{
 		return limit;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#getOffset()
-	 */
 	@Override
-	public int getOffset ()
+	public long getOffset ()
 	{
 		return offset;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#getSort()
-	 */
 	@Override
 	public Sort getSort ()
 	{
 		return sort;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#next()
-	 */
 	@Override
 	public Pageable next ()
 	{
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#previousOrFirst()
-	 */
 	@Override
 	public Pageable previousOrFirst ()
 	{
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#first()
-	 */
 	@Override
 	public Pageable first ()
 	{
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.data.domain.Pageable#hasPrevious()
-	 */
 	@Override
 	public boolean hasPrevious ()
 	{

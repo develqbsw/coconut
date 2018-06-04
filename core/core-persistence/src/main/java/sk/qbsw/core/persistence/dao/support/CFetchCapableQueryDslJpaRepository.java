@@ -1,27 +1,24 @@
 package sk.qbsw.core.persistence.dao.support;
 
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
 import org.springframework.data.jpa.repository.support.Querydsl;
+import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
-
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.JPQLQuery;
-
 import sk.qbsw.core.persistence.model.CJoinDescriptor;
+
+import javax.persistence.EntityManager;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The join fetch capable querydsl repository implementation. 
@@ -33,7 +30,7 @@ import sk.qbsw.core.persistence.model.CJoinDescriptor;
  * @param <PK> the id type
  * @since 1.16.0
  */
-public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends QueryDslJpaRepository<T, PK> implements IFetchCapableQueryDslJpaRepository<T, PK>
+public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends QuerydslJpaRepository<T, PK> implements IFetchCapableQueryDslJpaRepository<T, PK>
 {
 	/** The Constant DEFAULT_ENTITY_PATH_RESOLVER. */
 	//All instance variables are available in super, but they are private
