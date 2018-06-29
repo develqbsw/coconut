@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.reauth.model;
+package sk.qbsw.security.spring.reauth.base.model;
 
 import lombok.Getter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;

@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.reauth.service;
+package sk.qbsw.security.spring.reauth.base.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.AuthenticationUserDetailsSe
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.util.Assert;
-import sk.qbsw.security.spring.reauth.model.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.spring.reauth.base.model.OAuthWebAuthenticationDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,18 +1,18 @@
-package sk.qbsw.security.rest.authentication.web.service;
+package sk.qbsw.security.spring.reauth.rest.service;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import sk.qbsw.security.authentication.spring.model.Organization;
-import sk.qbsw.security.authentication.spring.preauth.model.OAuthData;
-import sk.qbsw.security.authentication.spring.preauth.model.OAuthLoggedUser;
-import sk.qbsw.security.authentication.spring.preauth.model.OAuthWebAuthenticationDetails;
-import sk.qbsw.security.authentication.spring.preauth.service.BaseOAuthUserDetailsService;
 import sk.qbsw.security.rest.authentication.client.AuthenticationClient;
 import sk.qbsw.security.rest.authentication.client.model.CSAccountData;
 import sk.qbsw.security.rest.authentication.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.rest.authentication.client.model.response.VerificationResponseBody;
+import sk.qbsw.security.spring.base.model.Organization;
+import sk.qbsw.security.spring.reauth.base.model.OAuthData;
+import sk.qbsw.security.spring.reauth.base.model.OAuthLoggedUser;
+import sk.qbsw.security.spring.reauth.base.model.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.spring.reauth.base.service.BaseOAuthUserDetailsService;
 
 /**
  * The oauth pre authenticated user details service.

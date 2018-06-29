@@ -1,10 +1,10 @@
-package sk.qbsw.security.spring.reauth.web;
+package sk.qbsw.security.spring.reauth.base.web;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import sk.qbsw.security.spring.base.web.BaseTokenProcessingFilter;
-import sk.qbsw.security.spring.reauth.model.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.spring.reauth.base.model.OAuthWebAuthenticationDetails;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -253,6 +253,11 @@
                 <artifactId>security-spring-base</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-reauth-base</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
 
             <!-- QBSW security integration -->
             <dependency>

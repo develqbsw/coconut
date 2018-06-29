@@ -15,7 +15,9 @@
 	<modules>
 		<module>security-spring-base</module>
 		<module>security-spring-auth</module>
-		<module>security-spring-reauth</module>
+		<module>security-spring-reauth-base</module>
+		<module>security-spring-reauth-local</module>
+		<module>security-spring-reauth-rest</module>
 		<module>security-spring-system</module>
 		<module>security-spring-anonym</module>
 	</modules>

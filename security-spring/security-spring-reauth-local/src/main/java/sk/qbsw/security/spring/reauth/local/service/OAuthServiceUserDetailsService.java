@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.reauth.service;
+package sk.qbsw.security.spring.reauth.local.service;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -8,9 +8,10 @@ import sk.qbsw.security.oauth.model.AccountData;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.OAuthServiceFacade;
 import sk.qbsw.security.spring.base.model.Organization;
-import sk.qbsw.security.spring.reauth.model.OAuthData;
-import sk.qbsw.security.spring.reauth.model.OAuthLoggedUser;
-import sk.qbsw.security.spring.reauth.model.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.spring.reauth.base.model.OAuthData;
+import sk.qbsw.security.spring.reauth.base.model.OAuthLoggedUser;
+import sk.qbsw.security.spring.reauth.base.model.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.spring.reauth.base.service.BaseOAuthUserDetailsService;
 
 /**
  * The oauth pre authenticated user details service.

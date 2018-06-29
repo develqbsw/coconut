@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>security-spring-reauth</artifactId>
-    <name>Security Spring Reauthentication</name>
+    <artifactId>security-spring-reauth-base</artifactId>
+    <name>Security Spring Reauthentication Base</name>
     <packaging>jar</packaging>
 
     <organization>
@@ -20,18 +20,6 @@
         <dependency>
             <groupId>sk.qbsw.core</groupId>
             <artifactId>core-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-oauth</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-authentication</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-authentication-base</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
