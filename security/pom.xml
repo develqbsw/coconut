@@ -23,5 +23,7 @@
 		<module>security-oauth</module>
 		<module>security-ocsp</module>
 		<module>security-web</module>
-	</modules>
+        <module>security-organization-core</module>
+        <module>security-organization-management</module>
+    </modules>
 </project>

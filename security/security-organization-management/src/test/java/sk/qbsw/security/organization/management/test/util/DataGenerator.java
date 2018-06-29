@@ -1,12 +1,29 @@
-package sk.qbsw.security.management.test.util;
+package sk.qbsw.security.organization.management.test.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.state.ActivityStates;
-import sk.qbsw.security.core.dao.*;
-import sk.qbsw.security.core.model.domain.*;
+import sk.qbsw.organization.core.dao.UserDao;
+import sk.qbsw.organization.core.model.domain.User;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.dao.AccountUnitGroupDao;
+import sk.qbsw.security.core.dao.AuthenticationParamsDao;
+import sk.qbsw.security.core.dao.GroupDao;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.RoleDao;
+import sk.qbsw.security.core.dao.UnitDao;
+import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.model.domain.AccountUnitGroup;
+import sk.qbsw.security.core.model.domain.AuthenticationParams;
+import sk.qbsw.security.core.model.domain.BlockedLogin;
+import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.GroupTypes;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.security.core.model.domain.Unit;
+import sk.qbsw.security.organization.core.model.domain.UserAccount;
 
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -16,17 +33,20 @@ import java.util.Set;
  * Generate data in DB for tests.
  *
  * @author Tomas Lauro
+ * @author Tomas Leken
  * @version 1.19.0
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
 public class DataGenerator
 {
+	private final UserDao userDao;
+
 	private final RoleDao roleDao;
 
 	private final AccountDao accountDao;
 
-	private final OrganizationDao orgDao;
+	private final OrganizationDao organizationDao;
 
 	private final UnitDao unitDao;
 
@@ -91,11 +111,12 @@ public class DataGenerator
 	public static final String TEST_IP_TWO = "192.168.0.2";
 
 	@Autowired
-	public DataGenerator (RoleDao roleDao, AccountDao accountDao, OrganizationDao orgDao, UnitDao unitDao, GroupDao groupDao, AuthenticationParamsDao authenticationParamsDao, AccountUnitGroupDao accountUnitGroupDao)
+	public DataGenerator (UserDao userDao, RoleDao roleDao, AccountDao accountDao, OrganizationDao organizationDao, UnitDao unitDao, GroupDao groupDao, AuthenticationParamsDao authenticationParamsDao, AccountUnitGroupDao accountUnitGroupDao)
 	{
+		this.userDao = userDao;
 		this.roleDao = roleDao;
 		this.accountDao = accountDao;
-		this.orgDao = orgDao;
+		this.organizationDao = organizationDao;
 		this.unitDao = unitDao;
 		this.groupDao = groupDao;
 		this.authenticationParamsDao = authenticationParamsDao;
@@ -106,6 +127,10 @@ public class DataGenerator
 	public void generateDatabaseDataForDatabaseTests ()
 	{
 		/** Create data. */
+		// user
+		User firstUser = createUser();
+		User secondUser = createUser();
+
 		// organization
 		Organization organization = createOrganization(ORGANIZATION_CODE);
 		Organization organization2 = createOrganization(ORGANIZATION_2_CODE);
@@ -139,13 +164,13 @@ public class DataGenerator
 		AuthenticationParams authenticationParamDisabledInEnabledOrganization = createAuthenticationParams(ACCOUNT_DISABLED_IN_ENABLED_ORGANIZATION);
 
 		// accounts
-		Account accountWithDefaultUnit = createAccount(ACCOUNT_WITH_DEFAULT_UNIT_CODE);
-		Account accountWithoutDefaultUnit = createAccount(ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE);
-		Account accountWithDefaultUnitNoGroup = createAccount(ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP);
-		Account accountWithoutDefaultUnitNoGroup = createAccount(ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP);
-		Account accountEnabledInDisabledOrganization = createAccount(ACCOUNT_ENABLED_IN_DISABLED_ORGANIZATION);
-		Account accountDisabledInDisabledOrganization = createAccount(ACCOUNT_DISABLED_IN_DISABLED_ORGANIZATION, ActivityStates.INACTIVE);
-		Account accountDisabledInEnabledOrganization = createAccount(ACCOUNT_DISABLED_IN_ENABLED_ORGANIZATION, ActivityStates.INACTIVE);
+		UserAccount accountWithDefaultUnit = createAccount(ACCOUNT_WITH_DEFAULT_UNIT_CODE, firstUser);
+		UserAccount accountWithoutDefaultUnit = createAccount(ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, firstUser);
+		UserAccount accountWithDefaultUnitNoGroup = createAccount(ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP, firstUser);
+		UserAccount accountWithoutDefaultUnitNoGroup = createAccount(ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE_NO_GROUP, firstUser);
+		UserAccount accountEnabledInDisabledOrganization = createAccount(ACCOUNT_ENABLED_IN_DISABLED_ORGANIZATION, firstUser);
+		UserAccount accountDisabledInDisabledOrganization = createAccount(ACCOUNT_DISABLED_IN_DISABLED_ORGANIZATION, ActivityStates.INACTIVE, secondUser);
+		UserAccount accountDisabledInEnabledOrganization = createAccount(ACCOUNT_DISABLED_IN_ENABLED_ORGANIZATION, ActivityStates.INACTIVE, secondUser);
 
 		/** Create connections. */
 		// unit -> organization
@@ -211,10 +236,13 @@ public class DataGenerator
 		authenticationParamDisabledInEnabledOrganization.setAccount(accountDisabledInEnabledOrganization);
 
 		// save data to DB
-		orgDao.update(organization);
-		orgDao.update(organization2);
-		orgDao.update(organization2Clone);
-		orgDao.update(organizationDisabled);
+		userDao.update(firstUser);
+		userDao.update(secondUser);
+
+		organization = organizationDao.update(organization);
+		organizationDao.update(organization2);
+		organizationDao.update(organization2Clone);
+		organizationDao.update(organizationDisabled);
 		roleDao.update(firstRole);
 		roleDao.update(secondRole);
 		firstGroupInUnit = groupDao.update(firstGroupInUnit);
@@ -225,13 +253,13 @@ public class DataGenerator
 		defaultUnit = unitDao.update(defaultUnit);
 		firstUnit = unitDao.update(firstUnit);
 		secondUnit = unitDao.update(secondUnit);
-		accountWithDefaultUnit = accountDao.update(accountWithDefaultUnit);
-		accountWithoutDefaultUnit = accountDao.update(accountWithoutDefaultUnit);
-		accountWithDefaultUnitNoGroup = accountDao.update(accountWithDefaultUnitNoGroup);
-		accountWithoutDefaultUnitNoGroup = accountDao.update(accountWithoutDefaultUnitNoGroup);
-		accountEnabledInDisabledOrganization = accountDao.update(accountEnabledInDisabledOrganization);
-		accountDisabledInDisabledOrganization = accountDao.update(accountDisabledInDisabledOrganization);
-		accountDisabledInEnabledOrganization = accountDao.update(accountDisabledInEnabledOrganization);
+		accountWithDefaultUnit = (UserAccount) accountDao.update(accountWithDefaultUnit);
+		accountWithoutDefaultUnit = (UserAccount) accountDao.update(accountWithoutDefaultUnit);
+		accountWithDefaultUnitNoGroup = (UserAccount) accountDao.update(accountWithDefaultUnitNoGroup);
+		accountWithoutDefaultUnitNoGroup = (UserAccount) accountDao.update(accountWithoutDefaultUnitNoGroup);
+		accountEnabledInDisabledOrganization = (UserAccount) accountDao.update(accountEnabledInDisabledOrganization);
+		accountDisabledInDisabledOrganization = (UserAccount) accountDao.update(accountDisabledInDisabledOrganization);
+		accountDisabledInEnabledOrganization = (UserAccount) accountDao.update(accountDisabledInEnabledOrganization);
 		authenticationParamsDao.update(authenticationParamWithDefaultUnit);
 		authenticationParamsDao.update(authenticationParamWithoutDefaultUnit);
 		authenticationParamsDao.update(authenticationParamWithDefaultUnitNoGroup);
@@ -276,14 +304,16 @@ public class DataGenerator
 		}
 
 		// flush data to hibernate cache
-		orgDao.flush();
+		userDao.flush();
+		organizationDao.flush();
 		roleDao.flush();
 		groupDao.flush();
 		unitDao.flush();
 		authenticationParamsDao.flush();
 		accountDao.flush();
 		// clear cache
-		orgDao.clear();
+		userDao.clear();
+		organizationDao.clear();
 		roleDao.clear();
 		groupDao.clear();
 		unitDao.clear();
@@ -291,14 +321,28 @@ public class DataGenerator
 		accountDao.clear();
 	}
 
+	public User createUser ()
+	{
+		return createUser(ActivityStates.ACTIVE);
+	}
+
+
+	public User createUser (ActivityStates state)
+	{
+		User user = new User();
+		user.setState(state);
+
+		return user;
+	}
+
 	private void setAccountToGroup (Account account, Group group, Unit unit)
-{
-	AccountUnitGroup accountUnitGroup = new AccountUnitGroup();
-	accountUnitGroup.setAccount(account);
-	accountUnitGroup.setGroup(group);
-	accountUnitGroup.setUnit(unit);
-	accountUnitGroupDao.update(accountUnitGroup);
-}
+	{
+		AccountUnitGroup accountUnitGroup = new AccountUnitGroup();
+		accountUnitGroup.setAccount(account);
+		accountUnitGroup.setGroup(group);
+		accountUnitGroup.setUnit(unit);
+		accountUnitGroupDao.update(accountUnitGroup);
+	}
 
 	public Organization createOrganization (String code)
 	{
@@ -342,18 +386,19 @@ public class DataGenerator
 		return unit;
 	}
 
-	public Account createAccount (String code)
+	public UserAccount createAccount (String code, User user)
 	{
-		return createAccount(code, ActivityStates.ACTIVE);
+		return createAccount(code, ActivityStates.ACTIVE, user);
 	}
 
 
-	public Account createAccount (String code, ActivityStates state)
+	public UserAccount createAccount (String code, ActivityStates state, User user)
 	{
-		Account account = new Account();
+		UserAccount account = new UserAccount();
 		account.setLogin(code);
 		account.setEmail(code + "@qbsw.sk");
 		account.setState(state);
+		account.setUser(user);
 
 		return account;
 	}

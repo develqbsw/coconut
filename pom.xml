@@ -26,6 +26,7 @@
         <security.spring.version>${project.version}</security.spring.version>
         <integration.version>${project.version}</integration.version>
         <security.integration.version>${project.version}</security.integration.version>
+        <organization.version>${project.version}</organization.version>
 
         <!-- Java -->
         <java.version>1.8</java.version>
@@ -125,6 +126,7 @@
         <module>indy</module>
         <module>integration</module>
         <module>reporting</module>
+        <module>organization</module>
         <!-- <module>paymentgateway</module> -->
     </modules>
 
@@ -246,6 +248,16 @@
                 <artifactId>security-oauth</artifactId>
                 <version>${security.version}</version>
             </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security</groupId>
+                <artifactId>security-organization-core</artifactId>
+                <version>${security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security</groupId>
+                <artifactId>security-organization-management</artifactId>
+                <version>${security.version}</version>
+            </dependency>
 
             <!-- QBSW security spring -->
             <dependency>
@@ -274,6 +286,18 @@
                 <groupId>sk.qbsw.security.integration</groupId>
                 <artifactId>security-rest-authentication-client</artifactId>
                 <version>${security.integration.version}</version>
+            </dependency>
+
+            <!-- QBSW organization -->
+            <dependency>
+                <groupId>sk.qbsw.organization</groupId>
+                <artifactId>organization-core</artifactId>
+                <version>${organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.organization</groupId>
+                <artifactId>organization-management</artifactId>
+                <version>${organization.version}</version>
             </dependency>
 
             <!-- QBSW indy -->
