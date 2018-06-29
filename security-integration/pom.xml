@@ -13,9 +13,9 @@
 	</parent>
 
 	<modules>
-		<module>security-integration-authentication-client-model</module>
-		<module>security-integration-authentication-client</module>
-		<module>security-integration-authentication-web</module>
-		<module>security-integration-authentication</module>
+		<module>security-rest-authentication-client-model</module>
+		<module>security-rest-authentication-client</module>
+		<module>security-rest-authentication-api</module>
+		<module>security-rest-authentication-web</module>
 	</modules>
 </project>
