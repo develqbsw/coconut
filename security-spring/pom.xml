@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                               http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>sk.qbsw.security.spring</groupId>
+	<artifactId>security-spring-top</artifactId>
+	<name>Security Spring Project</name>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>sk.qbsw</groupId>
+		<artifactId>coconut</artifactId>
+		<version>1.19.0-SNAPSHOT</version>
+	</parent>
+
+	<modules>
+		<module>security-spring-base</module>
+		<module>security-spring-auth</module>
+		<module>security-spring-reauth</module>
+		<module>security-spring-system</module>
+		<module>security-spring-anonym</module>
+	</modules>
+</project>

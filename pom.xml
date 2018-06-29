@@ -23,6 +23,7 @@
         <core.version>${project.version}</core.version>
         <et.version>${project.version}</et.version>
         <security.version>${project.version}</security.version>
+        <security.spring.version>${project.version}</security.spring.version>
         <integration.version>${project.version}</integration.version>
         <security.integration.version>${project.version}</security.integration.version>
 
@@ -117,6 +118,7 @@
     <modules>
         <module>core</module>
         <module>security</module>
+		<module>security-spring</module>
         <module>security-integration</module>
         <module>et</module>
         <module>geolocation</module>
@@ -243,6 +245,13 @@
                 <groupId>sk.qbsw.security</groupId>
                 <artifactId>security-oauth</artifactId>
                 <version>${security.version}</version>
+            </dependency>
+
+            <!-- QBSW security spring -->
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-base</artifactId>
+                <version>${security.spring.version}</version>
             </dependency>
 
             <!-- QBSW security integration -->

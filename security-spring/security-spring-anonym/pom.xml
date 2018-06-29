@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>security-authentication</artifactId>
-    <name>Security Authentication</name>
+    <artifactId>security-spring-anonym</artifactId>
+    <name>Security Spring Anonym</name>
     <packaging>jar</packaging>
 
     <organization>
@@ -11,31 +11,15 @@
     </organization>
 
     <parent>
-        <groupId>sk.qbsw.security</groupId>
-        <artifactId>security-top</artifactId>
+        <groupId>sk.qbsw.security.spring</groupId>
+        <artifactId>security-spring-top</artifactId>
         <version>1.19.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
-        <!-- QBSW -->
         <dependency>
             <groupId>sk.qbsw.core</groupId>
             <artifactId>core-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-persistence</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-testing</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- QBSW security -->
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-base</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security</groupId>
@@ -43,19 +27,18 @@
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-authentication-base</artifactId>
+            <artifactId>security-authentication</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-management</artifactId>
-            <scope>test</scope>
+            <artifactId>security-authentication-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-base</artifactId>
         </dependency>
 
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
+        <!-- spring -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -64,11 +47,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
 
         <!-- lombok -->
         <dependency>
@@ -76,23 +54,10 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- JUnit and Mockito -->
+        <!-- SLF4J -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- jdbc driver -->
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <scope>test</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 
