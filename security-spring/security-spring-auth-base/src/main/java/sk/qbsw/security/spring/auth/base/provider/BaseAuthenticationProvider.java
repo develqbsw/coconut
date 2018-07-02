@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.auth.provider;
+package sk.qbsw.security.spring.auth.base.provider;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.spring.auth.service.AuthenticationSecurityService;
+import sk.qbsw.security.spring.auth.base.service.AuthenticationSecurityService;
 import sk.qbsw.security.spring.base.model.LoggedUser;
 
 import java.util.Collection;

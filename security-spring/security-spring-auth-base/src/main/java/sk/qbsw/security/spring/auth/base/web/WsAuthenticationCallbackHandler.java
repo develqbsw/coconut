@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.auth.web;
+package sk.qbsw.security.spring.auth.base.web;
 
 import com.sun.xml.wss.impl.callback.PasswordValidationCallback;
 import org.springframework.beans.factory.InitializingBean;
@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ws.soap.security.callback.AbstractCallbackHandler;
-import sk.qbsw.security.spring.auth.model.UsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.spring.auth.base.model.UsernamePasswordUnitAuthenticationToken;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;

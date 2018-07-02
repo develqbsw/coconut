@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.auth.service;
+package sk.qbsw.security.spring.auth.base.service;
 
 import org.springframework.security.core.Authentication;
 

@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.auth.service;
+package sk.qbsw.security.spring.auth.local.service;
 
 import org.springframework.security.core.Authentication;
 
@@ -7,7 +7,8 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.spring.auth.model.UsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.spring.auth.base.model.UsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.spring.auth.base.service.AuthenticationSecurityService;
 import sk.qbsw.security.spring.base.model.LoggedUser;
 import sk.qbsw.security.spring.base.model.Organization;
 import sk.qbsw.security.spring.base.service.AuthorityConverter;

@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.auth.model;
+package sk.qbsw.security.spring.auth.base.model;
 
 import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

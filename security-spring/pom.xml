@@ -14,7 +14,8 @@
 
 	<modules>
 		<module>security-spring-base</module>
-		<module>security-spring-auth</module>
+		<module>security-spring-auth-base</module>
+		<module>security-spring-auth-local</module>
 		<module>security-spring-oauth-base</module>
 		<module>security-spring-oauth-local</module>
 		<module>security-spring-oauth-rest</module>
