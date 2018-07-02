@@ -255,7 +255,7 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
-                <artifactId>security-spring-reauth-base</artifactId>
+                <artifactId>security-spring-oauth-base</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
 
