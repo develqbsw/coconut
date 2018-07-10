@@ -1,7 +1,6 @@
 package sk.qbsw.security.spring.auth.local.service;
 
 import org.springframework.security.core.Authentication;
-
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
@@ -10,7 +9,6 @@ import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.spring.auth.base.model.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.spring.auth.base.service.AuthenticationSecurityService;
 import sk.qbsw.security.spring.base.model.LoggedUser;
-import sk.qbsw.security.spring.base.model.Organization;
 import sk.qbsw.security.spring.base.service.AuthorityConverter;
 
 /**
@@ -64,8 +62,8 @@ public class UsernamePasswordUnitAuthenticationSecurityService extends AService 
 
 	private LoggedUser convertAccountToLoggedUser (Account account)
 	{
-		Organization organization = new Organization(account.getOrganization().getId(), account.getOrganization().getCode(), account.getOrganization().getName());
-		return new LoggedUser(account.getId(), account.getLogin(), account.getPassword(), authorityConverter.convertRolesToAuthorities(account.exportRoles()), organization);
+		//Organization organization = new Organization(account.getOrganization().getId(), account.getOrganization().getCode(), account.getOrganization().getName());
+		return new LoggedUser(account.getId(), account.getLogin(), account.getPassword(), authorityConverter.convertRolesToAuthorities(account.exportRoles()));//, organization);
 
 	}
 

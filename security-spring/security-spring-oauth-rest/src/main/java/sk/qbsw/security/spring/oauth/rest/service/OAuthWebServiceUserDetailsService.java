@@ -8,11 +8,10 @@ import sk.qbsw.security.rest.authentication.client.AuthenticationClient;
 import sk.qbsw.security.rest.authentication.client.model.CSAccountData;
 import sk.qbsw.security.rest.authentication.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.rest.authentication.client.model.response.VerificationResponseBody;
-import sk.qbsw.security.spring.base.model.Organization;
-import sk.qbsw.security.spring.oauth.base.model.OAuthData;
 import sk.qbsw.security.spring.oauth.base.model.OAuthLoggedUser;
-import sk.qbsw.security.spring.oauth.base.model.OAuthWebAuthenticationDetails;
-import sk.qbsw.security.spring.oauth.base.service.BaseOAuthUserDetailsService;
+import sk.qbsw.security.spring.oauth.common.model.OAuthData;
+import sk.qbsw.security.spring.oauth.common.model.OAuthWebAuthenticationDetails;
+import sk.qbsw.security.spring.oauth.common.service.BaseOAuthUserDetailsService;
 
 /**
  * The oauth pre authenticated user details service.
@@ -42,11 +41,9 @@ public class OAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsServi
 		String ip = ((OAuthWebAuthenticationDetails) token.getDetails()).getIp();
 
 		CSAccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
-
-		Organization organization = new Organization(accountData.getOrganization().getId(), accountData.getOrganization().getName(), accountData.getOrganization().getCode());
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
 
-		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), organization, oAuthData, accountData.getAdditionalInformation());
+		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
 	}
 
 	private VerificationResponseBody verify (String token, String deviceId, String ip)
