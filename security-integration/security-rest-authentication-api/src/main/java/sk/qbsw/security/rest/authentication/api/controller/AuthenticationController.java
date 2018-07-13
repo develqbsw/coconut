@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.client.model.response.EmptyResponseBody;
-import sk.qbsw.security.oauth.service.OAuthServiceFacade;
+import sk.qbsw.security.oauth.base.service.facade.OAuthServiceFacade;
+import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.rest.authentication.api.mapper.SecurityMapper;
 import sk.qbsw.security.rest.authentication.client.model.configuration.AuthenticationPaths;
 import sk.qbsw.security.rest.authentication.client.model.request.AuthenticationRequestBody;
@@ -36,7 +37,7 @@ import javax.validation.constraints.NotNull;
 @RequestMapping (value = AuthenticationPaths.BASE_PATH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class AuthenticationController
 {
-	private final OAuthServiceFacade oAuthService;
+	private final OAuthServiceFacade<SimpleOrganizationAccountData> oAuthService;
 
 	private final SecurityMapper securityMapper;
 
@@ -49,7 +50,7 @@ public class AuthenticationController
 	 * @param securityMapper the security mapper
 	 */
 	@Autowired
-	public AuthenticationController (OAuthServiceFacade oAuthService, SecurityMapper securityMapper)
+	public AuthenticationController (OAuthServiceFacade<SimpleOrganizationAccountData> oAuthService, SecurityMapper securityMapper)
 	{
 		this.oAuthService = oAuthService;
 		this.securityMapper = securityMapper;

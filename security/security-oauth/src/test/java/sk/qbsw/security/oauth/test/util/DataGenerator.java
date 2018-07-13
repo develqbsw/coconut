@@ -7,8 +7,8 @@ import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.security.core.dao.*;
 import sk.qbsw.security.core.model.domain.*;
-import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
-import sk.qbsw.security.oauth.dao.MasterTokenDao;
+import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
+import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 

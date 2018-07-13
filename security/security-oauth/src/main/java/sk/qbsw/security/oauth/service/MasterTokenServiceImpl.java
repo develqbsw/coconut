@@ -1,20 +1,19 @@
 package sk.qbsw.security.oauth.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.configuration.OAuthValidationConfigurator;
-import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
-import sk.qbsw.security.oauth.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
+import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
+import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.base.service.IdGeneratorService;
+import sk.qbsw.security.oauth.base.service.MasterTokenService;
+import sk.qbsw.security.oauth.base.service.MasterTokenServiceBase;
+import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
+import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 
-import javax.persistence.NoResultException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +23,8 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.13.1
  */
-public class MasterTokenServiceImpl extends BaseTokenService implements MasterTokenService
+public class MasterTokenServiceImpl extends MasterTokenServiceBase<Account, AuthenticationToken, MasterToken> implements MasterTokenService<Account, MasterToken>
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MasterTokenServiceImpl.class);
-
 	/**
 	 * Instantiates a new Master token service.
 	 *
@@ -37,7 +34,7 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public MasterTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public MasterTokenServiceImpl (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
 		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
 	}
@@ -46,100 +43,46 @@ public class MasterTokenServiceImpl extends BaseTokenService implements MasterTo
 	@Transactional (rollbackFor = CBusinessException.class)
 	public GeneratedTokenData generateMasterToken (Long accountId, String deviceId, String ip) throws CBusinessException
 	{
-		MasterToken token = masterTokenDao.findByAccountIdAndDeviceId(accountId, deviceId);
-		Account account;
-		try
-		{
-			account = accountDao.findById(accountId);
-		}
-		catch (NoResultException ex)
-		{
-			LOGGER.error("The account {} not found", accountId);
-			LOGGER.error("The account not found", ex);
-			throw new CBusinessException(ECoreErrorResponse.ACCOUNT_NOT_FOUND);
-		}
+		return super.generateMasterTokenBase(accountId, deviceId, ip);
+	}
 
-		// performs checks
-		if (token != null)
-		{
-			masterTokenDao.remove(token);
-		}
+	@Override
+	protected MasterToken createMasterToken (String deviceId, String ip, String token, Account account)
+	{
+		MasterToken masterToken = new MasterToken();
+		masterToken.setDeviceId(deviceId);
+		masterToken.setIp(ip);
+		masterToken.setToken(idGeneratorService.getGeneratedId());
+		masterToken.setAccount(account);
 
-		MasterToken newToken = new MasterToken();
-		newToken.setDeviceId(deviceId);
-		newToken.setIp(ip);
-		newToken.setToken(idGeneratorService.getGeneratedId());
-		newToken.setAccount(account);
-
-		// create to database and return token
-		return new GeneratedTokenData(masterTokenDao.update(newToken).getToken(), token != null ? token.getToken() : null);
-
+		return masterToken;
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public void revokeMasterToken (Long accountId, String masterToken) throws CBusinessException
 	{
-		MasterToken token = masterTokenDao.findByAccountIdAndToken(accountId, masterToken);
-
-		// performs checks
-		if (token == null)
-		{
-			LOGGER.error("The token {} not found", masterToken);
-			throw new CBusinessException(ECoreErrorResponse.MASTER_TOKEN_NOT_FOUND);
-		}
-
-		masterTokenDao.remove(token);
+		super.revokeMasterTokenBase(accountId, masterToken);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public Account getAccountByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		MasterToken persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);
-
-		if (persistedToken != null)
-		{
-			checkMasterToken(persistedToken, ip, isIpIgnored);
-			persistedToken.getAccount().exportRoles();
-			return persistedToken.getAccount();
-		}
-		else
-		{
-			return null;
-		}
+		return super.getAccountByMasterTokenBase(token, deviceId, ip, isIpIgnored);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public List<MasterToken> findExpiredMasterTokens ()
 	{
-		Integer changeLimit = null;
-		Integer expireLimit = null;
-
-		if (validationConfiguration.getMasterTokenExpireLimit() != null && validationConfiguration.getMasterTokenExpireLimit() > 0)
-		{
-			expireLimit = validationConfiguration.getMasterTokenExpireLimit();
-		}
-		if (validationConfiguration.getMasterTokenChangeLimit() != null && validationConfiguration.getMasterTokenChangeLimit() > 0)
-		{
-			changeLimit = validationConfiguration.getMasterTokenChangeLimit();
-		}
-
-		if (expireLimit != null || changeLimit != null)
-		{
-			return masterTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
-		}
-		else
-		{
-			return new ArrayList<>();
-		}
+		return super.findExpiredMasterTokensBase();
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public Long removeMasterTokens (List<Long> ids)
 	{
-		return masterTokenDao.removeByIds(ids);
+		return super.removeMasterTokensBase(ids);
 	}
 }

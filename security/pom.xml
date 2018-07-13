@@ -20,6 +20,7 @@
 		<module>security-authentication-base</module>
 		<module>security-authentication</module>
 		<module>security-authentication-ldap</module> 
+		<module>security-oauth-base</module>
 		<module>security-oauth</module>
 		<module>security-ocsp</module>
 		<module>security-web</module>

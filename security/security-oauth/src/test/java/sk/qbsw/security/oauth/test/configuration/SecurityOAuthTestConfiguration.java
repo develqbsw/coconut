@@ -10,7 +10,7 @@ import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
 import sk.qbsw.security.oauth.configuration.BaseSecurityOAuthConfiguration;
-import sk.qbsw.security.oauth.configuration.OAuthValidationConfigurator;
+import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 
 /**
  * The base OAuth test configuration.

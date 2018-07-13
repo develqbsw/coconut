@@ -249,6 +249,11 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security</groupId>
+                <artifactId>security-oauth-base</artifactId>
+                <version>${security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security</groupId>
                 <artifactId>security-oauth</artifactId>
                 <version>${security.version}</version>
             </dependency>
@@ -321,6 +326,11 @@
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
                 <artifactId>security-organization-complex-core</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-simple-oauth</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
 
@@ -715,6 +725,11 @@
                 <artifactId>querydsl-apt</artifactId>
                 <version>${querydsl.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-core</artifactId>
+                <version>${querydsl.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.querydsl</groupId>

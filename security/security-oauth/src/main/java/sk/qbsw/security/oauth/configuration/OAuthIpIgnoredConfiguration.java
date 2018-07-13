@@ -1,9 +1,10 @@
 package sk.qbsw.security.oauth.configuration;
 
 import org.springframework.context.annotation.Bean;
-import sk.qbsw.security.oauth.service.OAuthService;
-import sk.qbsw.security.oauth.service.OAuthServiceFacade;
-import sk.qbsw.security.oauth.service.OAuthServiceIpIgnoredCacheFacadeImpl;
+import sk.qbsw.security.oauth.base.model.AccountData;
+import sk.qbsw.security.oauth.base.service.OAuthService;
+import sk.qbsw.security.oauth.base.service.facade.OAuthServiceFacade;
+import sk.qbsw.security.oauth.service.facade.OAuthServiceIpIgnoredCacheFacadeImpl;
 
 /**
  * The default ip ignored OAuth configuration.
@@ -15,7 +16,7 @@ import sk.qbsw.security.oauth.service.OAuthServiceIpIgnoredCacheFacadeImpl;
 public class OAuthIpIgnoredConfiguration extends BaseSecurityOAuthConfiguration
 {
 	@Bean
-	public OAuthServiceFacade oAuthServiceCacheFacade (OAuthService oAuthService)
+	public OAuthServiceFacade oAuthServiceCacheFacade (OAuthService<AccountData> oAuthService)
 	{
 		return new OAuthServiceIpIgnoredCacheFacadeImpl(oAuthService);
 	}

@@ -12,8 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.base.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.test.util.DataGenerator;
 
 /**
@@ -34,7 +35,7 @@ public class AuthenticationTokenTestCase
 	private AccountDao userDao;
 
 	@Autowired
-	private AuthenticationTokenService authenticationTokenService;
+	private AuthenticationTokenService<Account, AuthenticationToken> authenticationTokenService;
 
 	@Autowired
 	private DataGenerator dataGenerator;

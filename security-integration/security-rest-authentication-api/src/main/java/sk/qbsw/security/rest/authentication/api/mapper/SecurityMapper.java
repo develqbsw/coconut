@@ -1,8 +1,8 @@
 package sk.qbsw.security.rest.authentication.api.mapper;
 
-import sk.qbsw.security.oauth.model.AuthenticationData;
-import sk.qbsw.security.oauth.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.base.model.AuthenticationData;
+import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.base.model.VerificationData;
 import sk.qbsw.security.rest.authentication.client.model.response.AuthenticationResponseBody;
 import sk.qbsw.security.rest.authentication.client.model.response.ReauthenticationResponseBody;
 import sk.qbsw.security.rest.authentication.client.model.response.VerificationResponseBody;

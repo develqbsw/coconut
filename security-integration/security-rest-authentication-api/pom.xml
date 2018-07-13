@@ -25,8 +25,8 @@
 
         <!-- QBSW security -->
         <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-oauth</artifactId>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-simple-oauth</artifactId>
         </dependency>
 
         <!-- QBSW integration -->

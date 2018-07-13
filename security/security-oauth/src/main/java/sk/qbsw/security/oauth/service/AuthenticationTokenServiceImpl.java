@@ -1,20 +1,19 @@
 package sk.qbsw.security.oauth.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.configuration.OAuthValidationConfigurator;
-import sk.qbsw.security.oauth.dao.AuthenticationTokenDao;
-import sk.qbsw.security.oauth.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
+import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
+import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.base.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.base.service.AuthenticationTokenServiceBase;
+import sk.qbsw.security.oauth.base.service.IdGeneratorService;
+import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +23,8 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.13.1
  */
-public class AuthenticationTokenServiceImpl extends BaseTokenService implements AuthenticationTokenService
+public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBase<Account, AuthenticationToken, MasterToken> implements AuthenticationTokenService<Account, AuthenticationToken>
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationTokenServiceImpl.class);
-
 	/**
 	 * Instantiates a new Base token service.
 	 *
@@ -37,7 +34,7 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public AuthenticationTokenServiceImpl (MasterTokenDao masterTokenDao, AuthenticationTokenDao authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public AuthenticationTokenServiceImpl (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
 		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
 	}
@@ -46,100 +43,46 @@ public class AuthenticationTokenServiceImpl extends BaseTokenService implements 
 	@Transactional (rollbackFor = CBusinessException.class)
 	public GeneratedTokenData generateAuthenticationToken (Long accountId, String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		// read master token and check it
-		MasterToken persistedMasterToken = masterTokenDao.findByAccountIdAndTokenAndDeviceId(accountId, masterToken, deviceId);
-		checkMasterToken(persistedMasterToken, ip, isIpIgnored);
+		return super.generateAuthenticationTokenBase(accountId, masterToken, deviceId, ip, isIpIgnored);
+	}
 
-		AuthenticationToken authenticationToken = authenticationTokenDao.findByAccountIdAndDeviceId(accountId, deviceId);
-		Account account = accountDao.findById(accountId);
+	@Override
+	protected AuthenticationToken createAuthenticationToken (String deviceId, String ip, String token, Account account)
+	{
+		AuthenticationToken authenticationToken = new AuthenticationToken();
+		authenticationToken.setDeviceId(deviceId);
+		authenticationToken.setIp(ip);
+		authenticationToken.setToken(idGeneratorService.getGeneratedId());
+		authenticationToken.setAccount(account);
 
-		// performs checks
-		if (authenticationToken != null)
-		{
-			authenticationTokenDao.remove(authenticationToken);
-		}
-
-		if (account == null)
-		{
-			LOGGER.error("The account {} not found", accountId);
-			throw new CBusinessException(ECoreErrorResponse.ACCOUNT_NOT_FOUND);
-		}
-
-		AuthenticationToken newAuthenticationToken = new AuthenticationToken();
-		newAuthenticationToken.setDeviceId(deviceId);
-		newAuthenticationToken.setIp(ip);
-		newAuthenticationToken.setToken(idGeneratorService.getGeneratedId());
-		newAuthenticationToken.setAccount(account);
-
-		// create to database and return token
-		return new GeneratedTokenData(authenticationTokenDao.update(newAuthenticationToken).getToken(), authenticationToken != null ? authenticationToken.getToken() : null);
-
+		return authenticationToken;
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public void revokeAuthenticationToken (Long accountId, String authenticationToken) throws CBusinessException
 	{
-		AuthenticationToken token = authenticationTokenDao.findByAccountIdAndToken(accountId, authenticationToken);
-
-		// performs checks
-		if (token == null)
-		{
-			LOGGER.error("The token {} not found", authenticationToken);
-			throw new CBusinessException(ECoreErrorResponse.AUTHENTICATION_TOKEN_NOT_FOUND);
-		}
-
-		authenticationTokenDao.remove(token);
-
+		super.revokeAuthenticationTokenBase(accountId, authenticationToken);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public Account getAccountByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		AuthenticationToken persistedToken = authenticationTokenDao.findByTokenAndDeviceId(token, deviceId);
-
-		if (persistedToken != null)
-		{
-			checkAuthenticationToken(persistedToken, ip, isIpIgnored);
-			return persistedToken.getAccount();
-		}
-		else
-		{
-			return null;
-		}
+		return getAccountByAuthenticationTokenBase(token, deviceId, ip, isIpIgnored);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public List<AuthenticationToken> findExpiredAuthenticationTokens ()
 	{
-		Integer changeLimit = null;
-		Integer expireLimit = null;
-
-		if (validationConfiguration.getAuthenticationTokenExpireLimit() != null && validationConfiguration.getAuthenticationTokenExpireLimit() > 0)
-		{
-			expireLimit = validationConfiguration.getAuthenticationTokenExpireLimit();
-		}
-		if (validationConfiguration.getAuthenticationTokenChangeLimit() != null && validationConfiguration.getAuthenticationTokenChangeLimit() > 0)
-		{
-			changeLimit = validationConfiguration.getAuthenticationTokenChangeLimit();
-		}
-
-		if (expireLimit != null || changeLimit != null)
-		{
-			return authenticationTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
-		}
-		else
-		{
-			return new ArrayList<>();
-		}
+		return findExpiredAuthenticationTokensBase();
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
 	public Long removeAuthenticationTokens (List<Long> ids)
 	{
-		return authenticationTokenDao.removeByIds(ids);
+		return super.removeAuthenticationTokensBase(ids);
 	}
 }

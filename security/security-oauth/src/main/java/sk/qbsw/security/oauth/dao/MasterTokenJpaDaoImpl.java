@@ -1,16 +1,17 @@
 package sk.qbsw.security.oauth.dao;
 
-import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
-import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.QAccount;
 import sk.qbsw.security.core.model.domain.QAccountUnitGroup;
 import sk.qbsw.security.core.model.domain.QGroup;
+import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
+import sk.qbsw.security.oauth.base.dao.MasterTokenJpaDaoBase;
 import sk.qbsw.security.oauth.model.domain.MasterToken;
 import sk.qbsw.security.oauth.model.domain.QMasterToken;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.13.1
  */
-public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> implements MasterTokenDao
+public class MasterTokenJpaDaoImpl extends MasterTokenJpaDaoBase<Account, MasterToken> implements MasterTokenDao<Account, MasterToken>
 {
 	/**
 	 * Instantiates a new Master token jpa dao.
@@ -33,63 +34,43 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 	@Override
 	public MasterToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException
 	{
-		if (accountId == null || deviceId == null)
-		{
-			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
+		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
 
-		QMasterToken qMasterToken = QMasterToken.masterToken;
-
-		// create where condition
-		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qMasterToken.account.id.eq(accountId));
-		builder.and(qMasterToken.deviceId.eq(deviceId));
+		Predicate predicate = super.findByAccountIdAndDeviceIdPredicate(accountId, deviceId);
 
 		// create query
-		return queryFactory.selectFrom(qMasterToken).leftJoin(qMasterToken.account).fetchJoin().where(builder).fetchFirst();
+		return queryFactory.selectFrom(qMasterToken) //
+			.leftJoin(qMasterToken.account).fetchJoin() //
+			.where(predicate) //
+			.fetchFirst();
 	}
 
 	@Override
 	public MasterToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException
 	{
-		if (accountId == null || token == null)
-		{
-			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
+		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
 
-		QMasterToken qMasterToken = QMasterToken.masterToken;
-
-		// create where condition
-		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qMasterToken.account.id.eq(accountId));
-		builder.and(qMasterToken.token.eq(token));
+		Predicate predicate = super.findByAccountIdAndTokenPredicate(accountId, token);
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
 			.leftJoin(qMasterToken.account).fetchJoin() //
-			.where(builder).fetchFirst();
+			.where(predicate) //
+			.fetchFirst();
 	}
 
 	@Override
 	public MasterToken findByAccountIdAndTokenAndDeviceId (Long accountId, String token, String deviceId) throws CBusinessException
 	{
-		if (accountId == null || token == null || deviceId == null)
-		{
-			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
-		}
+		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
 
-		QMasterToken qMasterToken = QMasterToken.masterToken;
-
-		// create where condition
-		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qMasterToken.account.id.eq(accountId));
-		builder.and(qMasterToken.token.eq(token));
-		builder.and(qMasterToken.deviceId.eq(deviceId));
+		Predicate predicate = super.findByAccountIdAndTokenAndDeviceIdPredicate(accountId, token, deviceId);
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
 			.leftJoin(qMasterToken.account).fetchJoin() //
-			.where(builder).fetchFirst();
+			.where(predicate) //
+			.fetchFirst();
 	}
 
 	@Override
@@ -100,59 +81,57 @@ public class MasterTokenJpaDaoImpl extends AEntityQDslDao<Long, MasterToken> imp
 			throw new CBusinessException(ECoreErrorResponse.MISSING_MANDATORY_PARAMETERS);
 		}
 
-		QMasterToken qMasterToken = QMasterToken.masterToken;
+		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
 		QAccount qAccount = QAccount.account;
 		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
 		QGroup qGroup = QGroup.group;
 
-		// create where condition
-		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qMasterToken.token.eq(token));
-		builder.and(qMasterToken.deviceId.eq(deviceId));
+		Predicate predicate = super.findByTokenAndDeviceIdPredicate(token, deviceId);
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
 			.leftJoin(qMasterToken.account, qAccount).fetchJoin() //
-			.leftJoin(qAccount.organization).fetchJoin() //
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //
-			.where(builder).fetchFirst();
+			.where(predicate) //
+			.fetchFirst();
 	}
 
 	@Override
 	public void remove (MasterToken token)
 	{
-		QMasterToken qMasterToken = QMasterToken.masterToken;
+		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
 
-		queryFactory.delete(qMasterToken).where(qMasterToken.id.eq(token.getId())).execute();
+		Predicate predicate = super.removePredicate(token);
+
+		queryFactory.delete(qMasterToken) //
+			.where(predicate) //
+			.execute();
 	}
 
 	@Override
 	public List<MasterToken> findByExpireLimitOrChangeLimit (Integer expireLimit, Integer changeLimit)
 	{
-		QMasterToken qMasterToken = QMasterToken.masterToken;
+		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
 
-		// create where condition
-		BooleanBuilder builder = new BooleanBuilder();
-		if (expireLimit != null)
-		{
-			builder.or(qMasterToken.lastAccessDate.before(OffsetDateTime.now().minusHours(expireLimit)));
-		}
-		if (changeLimit != null)
-		{
-			builder.or(qMasterToken.createDate.before(OffsetDateTime.now().minusHours(changeLimit)));
-		}
+		Predicate predicate = super.findByExpireLimitOrChangeLimitPredicate(expireLimit, changeLimit);
 
 		// create query
-		return queryFactory.selectFrom(qMasterToken).where(builder).fetch();
+		return queryFactory.selectFrom(qMasterToken) //
+			.where(predicate) //
+			.fetch();
 	}
 
 	@Override
 	public Long removeByIds (List<Long> ids)
 	{
-		QMasterToken qMasterToken = QMasterToken.masterToken;
+		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
 
-		return queryFactory.delete(qMasterToken).where(qMasterToken.id.in(ids)).execute();
+		Predicate predicate = super.removeByIdsPredicate(ids);
+
+		return queryFactory.delete(qMasterToken) //
+			.where(predicate) //
+			.execute();
 	}
 }

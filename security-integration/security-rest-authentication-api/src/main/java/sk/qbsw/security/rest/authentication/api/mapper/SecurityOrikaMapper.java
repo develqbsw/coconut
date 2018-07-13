@@ -1,7 +1,9 @@
 package sk.qbsw.security.rest.authentication.api.mapper;
 
 import org.springframework.stereotype.Component;
-import sk.qbsw.security.oauth.model.*;
+import sk.qbsw.security.oauth.base.model.*;
+import sk.qbsw.security.organization.simple.oauth.model.OrganizationData;
+import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.rest.authentication.client.model.CSAccountData;
 import sk.qbsw.security.rest.authentication.client.model.CSGeneratedTokenData;
 import sk.qbsw.security.rest.authentication.client.model.CSSimplifiedOrganization;
@@ -28,7 +30,7 @@ public class SecurityOrikaMapper extends BaseMapper implements SecurityMapper
 	@PostConstruct
 	private void initMapping ()
 	{
-		mapperFactory.classMap(AccountData.class, CSAccountData.class) //
+		mapperFactory.classMap(SimpleOrganizationAccountData.class, CSAccountData.class) //
 			.byDefault() //
 			.register();
 		mapperFactory.classMap(GeneratedTokenData.class, CSGeneratedTokenData.class) //

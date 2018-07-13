@@ -13,6 +13,7 @@
 	</parent>
 
 	<modules>
+		<module>security-organization-simple-oauth</module>
         <module>security-organization-complex-core</module>
         <module>security-organization-complex-management</module>
     </modules>

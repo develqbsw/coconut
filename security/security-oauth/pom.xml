@@ -27,24 +27,18 @@
 			<artifactId>core-persistence</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-oauth-base</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-configuration</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.core</groupId>
-			<artifactId>core-testing</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.core</groupId>
-			<artifactId>core-logging</artifactId>
-			<scope>test</scope>
 		</dependency>
 		
 		<!-- QBSW security -->
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-base</artifactId>
+			<artifactId>security-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
@@ -52,11 +46,8 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-web</artifactId>
+			<artifactId>security-base</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
@@ -76,23 +67,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
+			<artifactId>spring-tx</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.ws</groupId>
-			<artifactId>spring-ws-security</artifactId>
+			<artifactId>spring-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -104,36 +89,28 @@
 			<artifactId>spring-orm</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Apache -->
+		<!-- hibernate -->
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
 		</dependency>
+
+		<!-- Apache -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- SECURITY -->
-		<dependency>
-			<groupId>org.jasypt</groupId>
-			<artifactId>jasypt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.wsit</groupId>
-			<artifactId>xws-security</artifactId>
 		</dependency>
 
 		<!-- lombok -->
@@ -173,34 +150,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- GSON -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-		</dependency>
-
-		<!-- LDAP -->
-		<dependency>
-			<groupId>org.apache.directory.api</groupId>
-			<artifactId>api-all</artifactId>
-		</dependency>
-
-		<!-- Bouncy castle -->
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcpkix-jdk15on</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-		</dependency>
-
-		<!-- Web -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-		</dependency>
-
 		<!-- Query dsl -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
@@ -208,7 +157,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
+			<artifactId>querydsl-core</artifactId>
 		</dependency>
 
 		<!-- SLF4J -->
@@ -227,6 +176,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<resources>
 			<resource>
