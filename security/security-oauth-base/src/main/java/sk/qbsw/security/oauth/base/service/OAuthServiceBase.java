@@ -89,7 +89,7 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 		GeneratedTokenData authenticationTokenData = authenticationTokenService.generateAuthenticationToken(account.getId(), masterTokenData.getGeneratedToken(), deviceId, ip, isIpIgnored);
 
 		// create response
-		return new AuthenticationData<>(masterTokenData, authenticationTokenData, createAccountData(account, createAdditionalInformation(account.getId())));
+		return new AuthenticationData<>(masterTokenData, authenticationTokenData, createAccountData((A) account, createAdditionalInformation(account.getId())));
 	}
 
 	/**
@@ -156,11 +156,11 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 
 			if (accountByMasterToken != null)
 			{
-				return new VerificationData<>(createAccountData(accountByMasterToken, createAdditionalInformation(accountByMasterToken.getId())), VerificationTypes.MASTER_TOKEN_VERIFICATION);
+				return new VerificationData<>(createAccountData((A) accountByMasterToken, createAdditionalInformation(accountByMasterToken.getId())), VerificationTypes.MASTER_TOKEN_VERIFICATION);
 			}
 			else if (accountByAuthenticationToken != null)
 			{
-				return new VerificationData<>(createAccountData(accountByAuthenticationToken, createAdditionalInformation(accountByAuthenticationToken.getId())), VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
+				return new VerificationData<>(createAccountData((A) accountByAuthenticationToken, createAdditionalInformation(accountByAuthenticationToken.getId())), VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
 			}
 			else
 			{
@@ -208,7 +208,7 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 	 * @param additionalInformation the additional information
 	 * @return the d
 	 */
-	protected abstract D createAccountData (Account account, Map<String, Object> additionalInformation);
+	protected abstract D createAccountData (A account, Map<String, Object> additionalInformation);
 
 	/**
 	 * Create additional information map.

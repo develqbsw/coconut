@@ -7,7 +7,7 @@ import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccoun
 import sk.qbsw.security.organization.simple.oauth.service.facade.OAuthServiceIpValidatedCacheFacadeImpl;
 
 /**
- * The default ip validated OAuth configuration.
+ * The simple organization default ip validated OAuth configuration.
  *
  * @author Tomas Lauro
  * @version 1.19.0
@@ -16,7 +16,7 @@ import sk.qbsw.security.organization.simple.oauth.service.facade.OAuthServiceIpV
 public class OAuthIpValidatedConfiguration extends BaseSecurityOAuthConfiguration
 {
 	@Bean
-	public OAuthServiceFacade oAuthServiceCacheFacade (OAuthService<SimpleOrganizationAccountData> oAuthService)
+	public OAuthServiceFacade<SimpleOrganizationAccountData> oAuthServiceCacheFacade (OAuthService<SimpleOrganizationAccountData> oAuthService)
 	{
 		return new OAuthServiceIpValidatedCacheFacadeImpl(oAuthService);
 	}

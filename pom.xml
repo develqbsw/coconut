@@ -333,6 +333,11 @@
                 <artifactId>security-organization-simple-oauth</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-complex-oauth</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
 
             <!-- QBSW security organization spring -->
             <dependency>
@@ -358,6 +363,11 @@
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
                 <artifactId>security-organization-spring-complex-base</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-complex-oauth-base</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
 

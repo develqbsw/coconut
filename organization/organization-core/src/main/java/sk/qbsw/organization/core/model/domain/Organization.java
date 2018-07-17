@@ -1,5 +1,6 @@
 package sk.qbsw.organization.core.model.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import sk.qbsw.core.base.configuration.DatabaseSchemas;
@@ -30,6 +31,7 @@ import java.util.Set;
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
+@EqualsAndHashCode (of = {"code", "name"}, callSuper = false)
 public class Organization extends AEntity<Long>
 {
 	private static final long serialVersionUID = -2623910951096078692L;

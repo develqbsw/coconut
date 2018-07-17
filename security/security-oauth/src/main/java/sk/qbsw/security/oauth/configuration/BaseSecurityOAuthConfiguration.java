@@ -13,6 +13,7 @@ import sk.qbsw.security.oauth.base.configuration.DefaultOAuthValidationConfigura
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
+import sk.qbsw.security.oauth.base.model.AccountData;
 import sk.qbsw.security.oauth.base.service.*;
 import sk.qbsw.security.oauth.dao.AuthenticationTokenJpaDaoImpl;
 import sk.qbsw.security.oauth.dao.MasterTokenJpaDaoImpl;
@@ -50,13 +51,13 @@ public abstract class BaseSecurityOAuthConfiguration extends SecurityCoreConfigu
 	}
 
 	@Bean
-	public AuthenticationTokenDao authenticationTokenDao ()
+	public AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao ()
 	{
 		return new AuthenticationTokenJpaDaoImpl();
 	}
 
 	@Bean
-	public MasterTokenDao masterTokenDao ()
+	public MasterTokenDao<Account, MasterToken> masterTokenDao ()
 	{
 		return new MasterTokenJpaDaoImpl();
 	}
@@ -68,19 +69,19 @@ public abstract class BaseSecurityOAuthConfiguration extends SecurityCoreConfigu
 	}
 
 	@Bean
-	public MasterTokenService masterTokenService (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public MasterTokenService<Account, MasterToken> masterTokenService (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
 		return new MasterTokenServiceImpl(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Bean
-	public AuthenticationTokenService authenticationTokenService (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public AuthenticationTokenService<Account, AuthenticationToken> authenticationTokenService (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
 		return new AuthenticationTokenServiceImpl(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Bean
-	public OAuthService oAuthService (MasterTokenService<Account, MasterToken> masterTokenService, AuthenticationTokenService<Account, AuthenticationToken> authenticationTokenService, AuthenticationService authenticationService)
+	public OAuthService<AccountData> oAuthService (MasterTokenService<Account, MasterToken> masterTokenService, AuthenticationTokenService<Account, AuthenticationToken> authenticationTokenService, AuthenticationService authenticationService)
 	{
 		return new OAuthServiceImpl(masterTokenService, authenticationTokenService, authenticationService);
 	}

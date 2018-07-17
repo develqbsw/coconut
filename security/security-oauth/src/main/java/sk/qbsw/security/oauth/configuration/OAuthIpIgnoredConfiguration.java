@@ -16,7 +16,7 @@ import sk.qbsw.security.oauth.service.facade.OAuthServiceIpIgnoredCacheFacadeImp
 public class OAuthIpIgnoredConfiguration extends BaseSecurityOAuthConfiguration
 {
 	@Bean
-	public OAuthServiceFacade oAuthServiceCacheFacade (OAuthService<AccountData> oAuthService)
+	public OAuthServiceFacade<AccountData> oAuthServiceCacheFacade (OAuthService<AccountData> oAuthService)
 	{
 		return new OAuthServiceIpIgnoredCacheFacadeImpl(oAuthService);
 	}

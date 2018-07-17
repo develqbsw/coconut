@@ -16,7 +16,7 @@ import sk.qbsw.security.oauth.service.facade.OAuthServiceIpValidatedCacheFacadeI
 public class OAuthIpValidatedConfiguration extends BaseSecurityOAuthConfiguration
 {
 	@Bean
-	public OAuthServiceFacade oAuthServiceCacheFacade (OAuthService<AccountData> oAuthService)
+	public OAuthServiceFacade<AccountData> oAuthServiceCacheFacade (OAuthService<AccountData> oAuthService)
 	{
 		return new OAuthServiceIpValidatedCacheFacadeImpl(oAuthService);
 	}
