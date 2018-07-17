@@ -5,9 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:component-scan base-package="sk.qbsw.security.organization.management.test.util"/>
-    
-    <bean class="sk.qbsw.security.organization.management.configuration.SecurityOrganizationManagementConfiguration"/>
+    <bean class="sk.qbsw.security.organization.complex.management.configuration.SecurityOrganizationManagementConfiguration"/>
 
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetObject" ref="loginBlockingService"/>

@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>sk.qbsw.organization</groupId>
-            <artifactId>organization-core</artifactId>
+            <artifactId>organization-complex-core</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.core</groupId>

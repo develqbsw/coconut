@@ -21,7 +21,7 @@ import java.util.Set;
  * @version 1.19.0
  * @since 1.0.0
  */
-@Entity
+@Entity (name = "organization")
 @Table (name = "t_organization", schema = DatabaseSchemas.SECURITY, //
 	uniqueConstraints = @UniqueConstraint (name = "uc_organization_code", columnNames = {"c_code"}))
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)

@@ -1,7 +1,7 @@
 package sk.qbsw.security.organization.complex.management.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.organization.core.model.domain.User;
+import sk.qbsw.organization.complex.core.model.domain.User;
 import sk.qbsw.security.core.model.domain.AccountTypes;
 import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;

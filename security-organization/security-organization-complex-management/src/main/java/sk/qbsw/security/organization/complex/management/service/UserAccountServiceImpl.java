@@ -6,7 +6,7 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.core.base.state.ActivityStates;
-import sk.qbsw.organization.core.model.domain.User;
+import sk.qbsw.organization.complex.core.model.domain.User;
 import sk.qbsw.security.core.model.domain.AccountTypes;
 import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.management.service.AccountManagementService;

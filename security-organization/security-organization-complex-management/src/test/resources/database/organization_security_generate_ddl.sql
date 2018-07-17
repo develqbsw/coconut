@@ -21,9 +21,9 @@ create sequence org.s_organization
 create table org.t_unit (
   pk_id           bigint                 not null,
   d_type          character varying(31)  not null,
-  c_code  character varying(255) not null,
-  c_name  character varying(255) not null,
-  c_state character varying(255) not null,
+  c_code          character varying(255) not null,
+  c_name          character varying(255) not null,
+  c_state         character varying(255) not null,
   fk_organization bigint                 not null
 );
 
@@ -44,7 +44,7 @@ create sequence org.s_user
 
 create table org.t_x_unit_user (
   fk_unit  bigint not null,
-  fk_user bigint not null
+  fk_user  bigint not null
 );
 
 --constraints--
@@ -76,7 +76,7 @@ alter table org.t_x_unit_user
   add constraint fk_unit_user_user foreign key (fk_user) references org.t_user (pk_id);
 
 alter table org.t_unit
-  add constraint fk_unit_organization foreign key (fk_organization) references org.t_organization (pk_id);
+  add constraint fk_org_unit_organization foreign key (fk_organization) references org.t_organization (pk_id);
 
 --alter table org.t_user
 --  add constraint fk_user_organization foreign key (fk_organization) references org.t_organization (pk_id);
@@ -299,3 +299,7 @@ alter table sec.t_account
 
 alter table sec.t_account
   add constraint fk_account_user foreign key (fk_user) references org.t_user (pk_id);
+
+
+--insert into sec.t_organization (pk_id, d_type, c_code, c_name, c_email, c_state)
+--    values (1, 'organization', 'unit_test_organization', 'unit_test_organization', 'unit_test_organization@qbsw.sk', 'ACTIVE');

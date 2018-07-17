@@ -313,12 +313,12 @@
             <!-- QBSW organization -->
             <dependency>
                 <groupId>sk.qbsw.organization</groupId>
-                <artifactId>organization-core</artifactId>
+                <artifactId>organization-complex-core</artifactId>
                 <version>${organization.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.organization</groupId>
-                <artifactId>organization-management</artifactId>
+                <artifactId>organization-complex-management</artifactId>
                 <version>${organization.version}</version>
             </dependency>
 

@@ -13,7 +13,7 @@
     </parent>
 
     <modules>
-        <module>organization-core</module>
-        <module>organization-management</module>
+        <module>organization-complex-core</module>
+        <module>organization-complex-management</module>
     </modules>
 </project>

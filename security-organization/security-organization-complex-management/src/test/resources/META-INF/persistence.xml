@@ -17,12 +17,12 @@
 		<class>sk.qbsw.security.core.model.domain.BlockedLogin</class>
 
 		<!-- organization -->
-		<class>sk.qbsw.organization.core.model.domain.Organization</class>
-		<class>sk.qbsw.organization.core.model.domain.Unit</class>
-		<class>sk.qbsw.organization.core.model.domain.User</class>
+		<class>sk.qbsw.organization.complex.core.model.domain.Organization</class>
+		<class>sk.qbsw.organization.complex.core.model.domain.Unit</class>
+		<class>sk.qbsw.organization.complex.core.model.domain.User</class>
 
 		<!-- security organization -->
-		<class>sk.qbsw.security.organization.core.model.domain.UserAccount</class>
+		<class>sk.qbsw.security.organization.complex.core.model.domain.UserAccount</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />

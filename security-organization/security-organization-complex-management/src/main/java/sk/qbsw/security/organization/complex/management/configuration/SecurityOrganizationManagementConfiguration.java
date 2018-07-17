@@ -3,7 +3,7 @@ package sk.qbsw.security.organization.complex.management.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import sk.qbsw.organization.management.configuration.OrganizationManagementConfiguration;
+import sk.qbsw.organization.complex.management.configuration.OrganizationManagementConfiguration;
 import sk.qbsw.security.management.configuration.SecurityManagementConfiguration;
 import sk.qbsw.security.management.service.AccountManagementService;
 import sk.qbsw.security.organization.complex.core.configuration.SecurityOrganizationCoreConfiguration;

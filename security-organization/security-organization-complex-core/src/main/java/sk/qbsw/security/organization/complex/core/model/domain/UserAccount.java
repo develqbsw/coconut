@@ -2,7 +2,7 @@ package sk.qbsw.security.organization.complex.core.model.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import sk.qbsw.organization.core.model.domain.User;
+import sk.qbsw.organization.complex.core.model.domain.User;
 import sk.qbsw.security.core.model.domain.Account;
 
 import javax.persistence.DiscriminatorValue;
