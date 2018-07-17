@@ -2,8 +2,8 @@ package sk.qbsw.security.organization.complex.oauth.service;
 
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.organization.core.model.domain.Organization;
-import sk.qbsw.organization.core.model.domain.Unit;
+import sk.qbsw.organization.complex.core.model.domain.Organization;
+import sk.qbsw.organization.complex.core.model.domain.Unit;
 import sk.qbsw.security.authentication.base.service.AuthenticationService;
 import sk.qbsw.security.oauth.base.model.AuthenticationData;
 import sk.qbsw.security.oauth.base.model.ExpiredTokenData;
