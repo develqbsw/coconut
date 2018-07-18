@@ -4,21 +4,17 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.organization.complex.core.model.domain.Organization;
 import sk.qbsw.organization.complex.core.model.domain.Unit;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
-import sk.qbsw.security.oauth.base.model.AuthenticationData;
-import sk.qbsw.security.oauth.base.model.ExpiredTokenData;
-import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.base.model.VerificationData;
-import sk.qbsw.security.oauth.base.service.AuthenticationTokenService;
-import sk.qbsw.security.oauth.base.service.MasterTokenService;
-import sk.qbsw.security.oauth.base.service.OAuthService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.oauth.base.service.OAuthServiceBase;
+import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.ExpiredTokenData;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.service.MasterTokenService;
+import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
-import sk.qbsw.security.organization.complex.oauth.model.OrganizationData;
-import sk.qbsw.security.organization.complex.oauth.model.UnitData;
-import sk.qbsw.security.organization.complex.oauth.model.domain.AuthenticationToken;
-import sk.qbsw.security.organization.complex.oauth.model.domain.MasterToken;
+import sk.qbsw.security.organization.complex.oauth.model.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +28,7 @@ import java.util.stream.Collectors;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class OAuthServiceImpl extends OAuthServiceBase<ComplexOrganizationAccountData, UserAccount, AuthenticationToken, MasterToken> implements OAuthService<ComplexOrganizationAccountData>
+public class OAuthServiceImpl extends OAuthServiceBase<UserAccount, ComplexOrganizationAccountData, AuthenticationTokenData, MasterTokenData> implements OAuthService<ComplexOrganizationAccountData>
 {
 	/**
 	 * Instantiates a new O auth service.
@@ -41,7 +37,7 @@ public class OAuthServiceImpl extends OAuthServiceBase<ComplexOrganizationAccoun
 	 * @param authenticationTokenService the authentication token service
 	 * @param authenticationService the authentication service
 	 */
-	public OAuthServiceImpl (MasterTokenService<UserAccount, MasterToken> masterTokenService, AuthenticationTokenService<UserAccount, AuthenticationToken> authenticationTokenService, AuthenticationService authenticationService)
+	public OAuthServiceImpl (MasterTokenService<ComplexOrganizationAccountData, MasterTokenData> masterTokenService, AuthenticationTokenService<ComplexOrganizationAccountData, AuthenticationTokenData> authenticationTokenService, AuthenticationService authenticationService)
 	{
 		super(masterTokenService, authenticationTokenService, authenticationService);
 	}
@@ -89,11 +85,11 @@ public class OAuthServiceImpl extends OAuthServiceBase<ComplexOrganizationAccoun
 
 		if (additionalInformation != null)
 		{
-			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportRoles(), organizationData, additionalInformation);
+			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organizationData, additionalInformation);
 		}
 		else
 		{
-			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportRoles(), organizationData, new HashMap<>());
+			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organizationData, new HashMap<>());
 		}
 	}
 

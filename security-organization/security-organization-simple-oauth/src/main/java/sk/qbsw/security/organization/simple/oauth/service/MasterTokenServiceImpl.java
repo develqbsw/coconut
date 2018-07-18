@@ -4,13 +4,17 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.service.mapper.AccountMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.base.service.IdGeneratorService;
-import sk.qbsw.security.oauth.base.service.MasterTokenService;
 import sk.qbsw.security.oauth.base.service.MasterTokenServiceBase;
+import sk.qbsw.security.oauth.base.service.mapper.MasterTokenMapper;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.service.MasterTokenService;
+import sk.qbsw.security.organization.simple.oauth.model.MasterTokenData;
+import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.organization.simple.oauth.model.domain.MasterToken;
 
@@ -23,7 +27,7 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class MasterTokenServiceImpl extends MasterTokenServiceBase<Account, AuthenticationToken, MasterToken> implements MasterTokenService<Account, MasterToken>
+public class MasterTokenServiceImpl extends MasterTokenServiceBase<Account, AuthenticationToken, MasterToken, SimpleOrganizationAccountData, MasterTokenData> implements MasterTokenService<SimpleOrganizationAccountData, MasterTokenData>
 {
 	/**
 	 * Instantiates a new Master token service.
@@ -34,9 +38,11 @@ public class MasterTokenServiceImpl extends MasterTokenServiceBase<Account, Auth
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public MasterTokenServiceImpl (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public MasterTokenServiceImpl (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, //
+		MasterTokenMapper<Account, MasterToken, SimpleOrganizationAccountData, MasterTokenData> masterTokenMapper, AccountMapper<SimpleOrganizationAccountData, Account> accountMapper, //
+		AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, masterTokenMapper, accountMapper, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Override
@@ -67,14 +73,14 @@ public class MasterTokenServiceImpl extends MasterTokenServiceBase<Account, Auth
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public Account getAccountByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	public SimpleOrganizationAccountData getAccountByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		return super.getAccountByMasterTokenBase(token, deviceId, ip, isIpIgnored);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public List<MasterToken> findExpiredMasterTokens ()
+	public List<MasterTokenData> findExpiredMasterTokens ()
 	{
 		return super.findExpiredMasterTokensBase();
 	}

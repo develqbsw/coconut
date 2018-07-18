@@ -3,11 +3,11 @@ package sk.qbsw.indy.security.session;
 import org.apache.wicket.request.Request;
 import org.springframework.security.core.Authentication;
 
-import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
-import sk.qbsw.security.authentication.model.UsernamePasswordAuthenticationSecurityToken;
-import sk.qbsw.security.authentication.model.UsernamePasswordUnitAuthenticationSecurityToken;
-import sk.qbsw.security.authentication.spring.auth.model.UsernamePasswordUnitAuthenticationToken;
+import sk.qbsw.security.authentication.db.model.AuthenticationSecurityToken;
+import sk.qbsw.security.authentication.db.model.UsernamePasswordAuthenticationSecurityToken;
+import sk.qbsw.security.authentication.db.model.UsernamePasswordUnitAuthenticationSecurityToken;
 import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.spring.auth.base.model.UsernamePasswordUnitAuthenticationToken;
 
 /**
  * Authentication for Wicket using Spring security.

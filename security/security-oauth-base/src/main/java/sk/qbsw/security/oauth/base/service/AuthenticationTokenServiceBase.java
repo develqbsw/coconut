@@ -4,44 +4,59 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.service.mapper.AccountMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.base.model.domain.AuthenticationTokenBase;
 import sk.qbsw.security.oauth.base.model.domain.MasterTokenBase;
+import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapper;
+import sk.qbsw.security.oauth.model.AuthenticationTokenDataBase;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The authentication token service base.
  *
- * @param <A> account type
+ * @param <A> the account type
  * @param <T> the authentication token type
  * @param <M> the master token type
+ * @param <D> the account data type
+ * @param <TD> the authentication token data type
  * @author Tomas Lauro
  * @version 1.19.0
  * @since 1.19.0
  */
-public abstract class AuthenticationTokenServiceBase<A extends Account, T extends AuthenticationTokenBase<A>, M extends MasterTokenBase<A>>extends SecurityTokenServiceBase<A, T, M>
+public abstract class AuthenticationTokenServiceBase<A extends Account, T extends AuthenticationTokenBase<A>, M extends MasterTokenBase<A>, D extends AccountData, TD extends AuthenticationTokenDataBase<D>>extends SecurityTokenServiceBase<A, D, T, M>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationTokenServiceBase.class);
+
+	/**
+	 * The Authentication token mapper.
+	 */
+	protected final AuthenticationTokenMapper<A, T, D, TD> authenticationTokenMapper;
 
 	/**
 	 * Instantiates a new Authentication token service base.
 	 *
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
+	 * @param authenticationTokenMapper the authentication token mapper
+	 * @param accountMapper the account mapper
 	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	protected AuthenticationTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	protected AuthenticationTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, AuthenticationTokenMapper<A, T, D, TD> authenticationTokenMapper, AccountMapper<D, A> accountMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+		this.authenticationTokenMapper = authenticationTokenMapper;
 	}
 
 	/**
@@ -126,14 +141,14 @@ public abstract class AuthenticationTokenServiceBase<A extends Account, T extend
 	 * @return the account by authentication token base
 	 * @throws CBusinessException the c business exception
 	 */
-	protected A getAccountByAuthenticationTokenBase (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	protected D getAccountByAuthenticationTokenBase (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		T persistedToken = authenticationTokenDao.findByTokenAndDeviceId(token, deviceId);
 
 		if (persistedToken != null)
 		{
 			checkAuthenticationToken(persistedToken, ip, isIpIgnored);
-			return persistedToken.getAccount();
+			return accountMapper.mapToAccountData(persistedToken.getAccount());
 		}
 		else
 		{
@@ -146,7 +161,7 @@ public abstract class AuthenticationTokenServiceBase<A extends Account, T extend
 	 *
 	 * @return the list
 	 */
-	protected List<T> findExpiredAuthenticationTokensBase ()
+	protected List<TD> findExpiredAuthenticationTokensBase ()
 	{
 		Integer changeLimit = null;
 		Integer expireLimit = null;
@@ -162,7 +177,7 @@ public abstract class AuthenticationTokenServiceBase<A extends Account, T extend
 
 		if (expireLimit != null || changeLimit != null)
 		{
-			return authenticationTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+			return authenticationTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit).stream().map(authenticationTokenMapper::mapToAuthenticationTokenData).collect(Collectors.toList());
 		}
 		else
 		{

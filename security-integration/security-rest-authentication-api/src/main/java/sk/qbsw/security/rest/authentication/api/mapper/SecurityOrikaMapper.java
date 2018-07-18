@@ -1,7 +1,10 @@
 package sk.qbsw.security.rest.authentication.api.mapper;
 
 import org.springframework.stereotype.Component;
-import sk.qbsw.security.oauth.base.model.*;
+import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.model.VerificationTypes;
 import sk.qbsw.security.organization.simple.oauth.model.OrganizationData;
 import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.rest.authentication.client.model.CSAccountData;
@@ -15,7 +18,7 @@ import sk.qbsw.security.rest.authentication.client.model.response.VerificationRe
 import javax.annotation.PostConstruct;
 
 /**
- * The security orika mapper.
+ * The security orika authenticationTokenMapper.
  * 
  * @author Tomas Lauro
  * @version 1.19.0

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.AccountDisabledException;
 import sk.qbsw.core.testing.mock.IMockHelper;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
 import sk.qbsw.security.authentication.ldap.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;

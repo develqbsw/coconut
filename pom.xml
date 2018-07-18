@@ -229,7 +229,7 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security</groupId>
-                <artifactId>security-authentication-base</artifactId>
+                <artifactId>security-authentication</artifactId>
                 <version>${security.version}</version>
             </dependency>
             <dependency>
@@ -239,7 +239,7 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security</groupId>
-                <artifactId>security-authentication</artifactId>
+                <artifactId>security-authentication-db</artifactId>
                 <version>${security.version}</version>
             </dependency>
             <dependency>
@@ -249,12 +249,17 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security</groupId>
+                <artifactId>security-oauth</artifactId>
+                <version>${security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security</groupId>
                 <artifactId>security-oauth-base</artifactId>
                 <version>${security.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security</groupId>
-                <artifactId>security-oauth</artifactId>
+                <artifactId>security-oauth-db</artifactId>
                 <version>${security.version}</version>
             </dependency>
             <dependency>
@@ -307,6 +312,11 @@
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
                 <artifactId>security-spring-system-base</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-auth-local</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
 

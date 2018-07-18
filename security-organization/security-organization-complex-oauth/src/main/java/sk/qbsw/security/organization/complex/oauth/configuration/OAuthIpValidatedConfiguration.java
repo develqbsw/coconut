@@ -1,8 +1,8 @@
 package sk.qbsw.security.organization.complex.oauth.configuration;
 
 import org.springframework.context.annotation.Bean;
-import sk.qbsw.security.oauth.base.service.OAuthService;
-import sk.qbsw.security.oauth.base.service.facade.OAuthServiceFacade;
+import sk.qbsw.security.oauth.service.OAuthService;
+import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
 import sk.qbsw.security.organization.complex.oauth.service.facade.OAuthServiceIpValidatedCacheFacadeImpl;
 

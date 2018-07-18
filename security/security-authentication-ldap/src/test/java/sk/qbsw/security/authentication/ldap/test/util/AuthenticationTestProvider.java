@@ -3,7 +3,7 @@ package sk.qbsw.security.authentication.ldap.test.util;
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Role;

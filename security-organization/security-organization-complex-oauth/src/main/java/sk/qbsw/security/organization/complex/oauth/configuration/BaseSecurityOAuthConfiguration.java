@@ -4,18 +4,30 @@ import org.springframework.context.annotation.Bean;
 import sk.qbsw.core.configuration.dao.jpa.CSystemParameterDao;
 import sk.qbsw.core.configuration.service.CSystemParameterService;
 import sk.qbsw.core.configuration.service.ISystemParameterService;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.configuration.SecurityCoreConfiguration;
 import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.service.mapper.AccountMapper;
 import sk.qbsw.security.oauth.base.configuration.DefaultOAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.base.service.*;
+import sk.qbsw.security.oauth.base.service.IdGeneratorService;
+import sk.qbsw.security.oauth.base.service.RandomIdGeneratorServiceImpl;
+import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapper;
+import sk.qbsw.security.oauth.base.service.mapper.MasterTokenMapper;
+import sk.qbsw.security.oauth.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.service.MasterTokenService;
+import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
 import sk.qbsw.security.organization.complex.oauth.dao.AuthenticationTokenJpaDaoImpl;
 import sk.qbsw.security.organization.complex.oauth.dao.MasterTokenJpaDaoImpl;
+import sk.qbsw.security.organization.complex.oauth.mapper.AccountMapperImpl;
+import sk.qbsw.security.organization.complex.oauth.mapper.AuthenticationTokenMapperImpl;
+import sk.qbsw.security.organization.complex.oauth.mapper.MasterTokenMapperImpl;
+import sk.qbsw.security.organization.complex.oauth.model.AuthenticationTokenData;
 import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.oauth.model.MasterTokenData;
 import sk.qbsw.security.organization.complex.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.organization.complex.oauth.model.domain.MasterToken;
 import sk.qbsw.security.organization.complex.oauth.service.AuthenticationTokenServiceImpl;
@@ -68,19 +80,37 @@ public abstract class BaseSecurityOAuthConfiguration extends SecurityCoreConfigu
 	}
 
 	@Bean
-	public MasterTokenService<UserAccount, MasterToken> masterTokenService (MasterTokenDao<UserAccount, MasterToken> masterTokenDao, AuthenticationTokenDao<UserAccount, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public AccountMapper<ComplexOrganizationAccountData, UserAccount> accountMapper ()
 	{
-		return new MasterTokenServiceImpl(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
+		return new AccountMapperImpl();
 	}
 
 	@Bean
-	public AuthenticationTokenService<UserAccount, AuthenticationToken> authenticationTokenService (MasterTokenDao<UserAccount, MasterToken> masterTokenDao, AuthenticationTokenDao<UserAccount, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public AuthenticationTokenMapper<UserAccount, AuthenticationToken, ComplexOrganizationAccountData, AuthenticationTokenData> authenticationTokenMapper (AccountMapper<ComplexOrganizationAccountData, UserAccount> accountMapper)
 	{
-		return new AuthenticationTokenServiceImpl(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
+		return new AuthenticationTokenMapperImpl(accountMapper);
 	}
 
 	@Bean
-	public OAuthService<ComplexOrganizationAccountData> oAuthService (MasterTokenService<UserAccount, MasterToken> masterTokenService, AuthenticationTokenService<UserAccount, AuthenticationToken> authenticationTokenService, AuthenticationService authenticationService)
+	public MasterTokenMapper<UserAccount, MasterToken, ComplexOrganizationAccountData, MasterTokenData> masterTokenMapper (AccountMapper<ComplexOrganizationAccountData, UserAccount> accountMapper)
+	{
+		return new MasterTokenMapperImpl(accountMapper);
+	}
+
+	@Bean
+	public MasterTokenService<ComplexOrganizationAccountData, MasterTokenData> masterTokenService (MasterTokenDao<UserAccount, MasterToken> masterTokenDao, AuthenticationTokenDao<UserAccount, AuthenticationToken> authenticationTokenDao, MasterTokenMapper<UserAccount, MasterToken, ComplexOrganizationAccountData, MasterTokenData> masterTokenMapper, AccountMapper<ComplexOrganizationAccountData, UserAccount> accountMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	{
+		return new MasterTokenServiceImpl(masterTokenDao, authenticationTokenDao, masterTokenMapper, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+	}
+
+	@Bean
+	public AuthenticationTokenService<ComplexOrganizationAccountData, AuthenticationTokenData> authenticationTokenService (MasterTokenDao<UserAccount, MasterToken> masterTokenDao, AuthenticationTokenDao<UserAccount, AuthenticationToken> authenticationTokenDao, AuthenticationTokenMapper<UserAccount, AuthenticationToken, ComplexOrganizationAccountData, AuthenticationTokenData> authenticationTokenMapper, AccountMapper<ComplexOrganizationAccountData, UserAccount> accountMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	{
+		return new AuthenticationTokenServiceImpl(masterTokenDao, authenticationTokenDao, authenticationTokenMapper, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+	}
+
+	@Bean
+	public OAuthService<ComplexOrganizationAccountData> oAuthService (MasterTokenService<ComplexOrganizationAccountData, MasterTokenData> masterTokenService, AuthenticationTokenService<ComplexOrganizationAccountData, AuthenticationTokenData> authenticationTokenService, AuthenticationService authenticationService)
 	{
 		return new OAuthServiceImpl(masterTokenService, authenticationTokenService, authenticationService);
 	}

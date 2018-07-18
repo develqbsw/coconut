@@ -3,14 +3,18 @@ package sk.qbsw.security.organization.complex.oauth.service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.service.mapper.AccountMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.base.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.base.service.AuthenticationTokenServiceBase;
 import sk.qbsw.security.oauth.base.service.IdGeneratorService;
+import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapper;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
+import sk.qbsw.security.organization.complex.oauth.model.AuthenticationTokenData;
+import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
 import sk.qbsw.security.organization.complex.oauth.model.domain.AuthenticationToken;
 import sk.qbsw.security.organization.complex.oauth.model.domain.MasterToken;
 
@@ -23,7 +27,7 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBase<UserAccount, AuthenticationToken, MasterToken> implements AuthenticationTokenService<UserAccount, AuthenticationToken>
+public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBase<UserAccount, AuthenticationToken, MasterToken, ComplexOrganizationAccountData, AuthenticationTokenData> implements AuthenticationTokenService<ComplexOrganizationAccountData, AuthenticationTokenData>
 {
 	/**
 	 * Instantiates a new Base token service.
@@ -34,9 +38,11 @@ public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBa
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	public AuthenticationTokenServiceImpl (MasterTokenDao<UserAccount, MasterToken> masterTokenDao, AuthenticationTokenDao<UserAccount, AuthenticationToken> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	public AuthenticationTokenServiceImpl (MasterTokenDao<UserAccount, MasterToken> masterTokenDao, AuthenticationTokenDao<UserAccount, AuthenticationToken> authenticationTokenDao, //
+		AuthenticationTokenMapper<UserAccount, AuthenticationToken, ComplexOrganizationAccountData, AuthenticationTokenData> authenticationTokenMapper, AccountMapper<ComplexOrganizationAccountData, UserAccount> accountMapper, //
+		AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, authenticationTokenMapper, accountMapper, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Override
@@ -67,14 +73,14 @@ public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBa
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public UserAccount getAccountByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	public ComplexOrganizationAccountData getAccountByAuthenticationToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		return getAccountByAuthenticationTokenBase(token, deviceId, ip, isIpIgnored);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public List<AuthenticationToken> findExpiredAuthenticationTokens ()
+	public List<AuthenticationTokenData> findExpiredAuthenticationTokens ()
 	{
 		return findExpiredAuthenticationTokensBase();
 	}

@@ -5,9 +5,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.oauth.base.model.*;
-import sk.qbsw.security.oauth.base.service.OAuthService;
+import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.oauth.base.service.facade.BaseOAuthServiceCacheFacade;
-import sk.qbsw.security.oauth.base.service.facade.OAuthServiceFacade;
+import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
+import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.ExpiredTokenData;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 
 import java.util.List;

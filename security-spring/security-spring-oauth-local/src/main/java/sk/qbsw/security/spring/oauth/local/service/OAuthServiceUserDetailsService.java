@@ -4,9 +4,9 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import sk.qbsw.security.oauth.base.model.AccountData;
-import sk.qbsw.security.oauth.base.model.VerificationData;
-import sk.qbsw.security.oauth.base.service.facade.OAuthServiceFacade;
+import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.spring.oauth.base.model.OAuthLoggedUser;
 import sk.qbsw.security.spring.oauth.common.model.OAuthData;
 import sk.qbsw.security.spring.oauth.common.model.OAuthWebAuthenticationDetails;

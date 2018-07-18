@@ -2,17 +2,20 @@ package sk.qbsw.security.organization.simple.oauth.service;
 
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.base.model.*;
-import sk.qbsw.security.oauth.base.service.AuthenticationTokenService;
-import sk.qbsw.security.oauth.base.service.MasterTokenService;
-import sk.qbsw.security.oauth.base.service.OAuthService;
 import sk.qbsw.security.oauth.base.service.OAuthServiceBase;
+import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.ExpiredTokenData;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.service.MasterTokenService;
+import sk.qbsw.security.oauth.service.OAuthService;
+import sk.qbsw.security.organization.simple.oauth.model.AuthenticationTokenData;
+import sk.qbsw.security.organization.simple.oauth.model.MasterTokenData;
 import sk.qbsw.security.organization.simple.oauth.model.OrganizationData;
 import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
-import sk.qbsw.security.organization.simple.oauth.model.domain.AuthenticationToken;
-import sk.qbsw.security.organization.simple.oauth.model.domain.MasterToken;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.Map;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class OAuthServiceImpl extends OAuthServiceBase<SimpleOrganizationAccountData, Account, AuthenticationToken, MasterToken> implements OAuthService<SimpleOrganizationAccountData>
+public class OAuthServiceImpl extends OAuthServiceBase<Account, SimpleOrganizationAccountData, AuthenticationTokenData, MasterTokenData> implements OAuthService<SimpleOrganizationAccountData>
 {
 	/**
 	 * Instantiates a new O auth service.
@@ -34,7 +37,7 @@ public class OAuthServiceImpl extends OAuthServiceBase<SimpleOrganizationAccount
 	 * @param authenticationTokenService the authentication token service
 	 * @param authenticationService the authentication service
 	 */
-	public OAuthServiceImpl (MasterTokenService<Account, MasterToken> masterTokenService, AuthenticationTokenService<Account, AuthenticationToken> authenticationTokenService, AuthenticationService authenticationService)
+	public OAuthServiceImpl (MasterTokenService<SimpleOrganizationAccountData, MasterTokenData> masterTokenService, AuthenticationTokenService<SimpleOrganizationAccountData, AuthenticationTokenData> authenticationTokenService, AuthenticationService authenticationService)
 	{
 		super(masterTokenService, authenticationTokenService, authenticationService);
 	}
@@ -81,11 +84,11 @@ public class OAuthServiceImpl extends OAuthServiceBase<SimpleOrganizationAccount
 
 		if (additionalInformation != null)
 		{
-			return new SimpleOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportRoles(), organization, additionalInformation);
+			return new SimpleOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organization, additionalInformation);
 		}
 		else
 		{
-			return new SimpleOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportRoles(), organization, new HashMap<>());
+			return new SimpleOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organization, new HashMap<>());
 		}
 	}
 

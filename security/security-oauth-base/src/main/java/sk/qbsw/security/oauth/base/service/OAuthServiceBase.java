@@ -7,12 +7,15 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.security.base.exception.AccessDeniedException;
 import sk.qbsw.core.security.base.exception.AuthenticationException;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.base.model.*;
-import sk.qbsw.security.oauth.base.model.domain.AuthenticationTokenBase;
-import sk.qbsw.security.oauth.base.model.domain.MasterTokenBase;
-import sk.qbsw.security.oauth.base.model.domain.SecurityTokenBase;
+import sk.qbsw.security.oauth.model.ExpiredTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.model.VerificationTypes;
+import sk.qbsw.security.oauth.model.*;
+import sk.qbsw.security.oauth.service.AuthenticationTokenService;
+import sk.qbsw.security.oauth.service.MasterTokenService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,27 +26,27 @@ import java.util.stream.Collectors;
 /**
  * The oauth service base.
  *
- * @param <D> the account data type
  * @param <A> the account type
+ * @param <D> the account data type
  * @param <T> the authentication token type
  * @param <M> the master token type
  * @author Tomas Lauro
  * @version 1.19.0
  * @since 1.19.0
  */
-public abstract class OAuthServiceBase<D extends AccountData, A extends Account, T extends AuthenticationTokenBase<A>, M extends MasterTokenBase<A>>
+public abstract class OAuthServiceBase<A extends Account, D extends AccountData, T extends AuthenticationTokenDataBase<D>, M extends MasterTokenDataBase<D>>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OAuthServiceBase.class);
 
 	/**
 	 * The Master token service.
 	 */
-	protected final MasterTokenService<A, M> masterTokenService;
+	protected final MasterTokenService<D, M> masterTokenService;
 
 	/**
 	 * The Authentication token service.
 	 */
-	protected final AuthenticationTokenService<A, T> authenticationTokenService;
+	protected final AuthenticationTokenService<D, T> authenticationTokenService;
 
 	/**
 	 * The Authentication service.
@@ -57,7 +60,7 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 	 * @param authenticationTokenService the authentication token service
 	 * @param authenticationService the authentication service
 	 */
-	protected OAuthServiceBase (MasterTokenService<A, M> masterTokenService, AuthenticationTokenService<A, T> authenticationTokenService, AuthenticationService authenticationService)
+	protected OAuthServiceBase (MasterTokenService<D, M> masterTokenService, AuthenticationTokenService<D, T> authenticationTokenService, AuthenticationService authenticationService)
 	{
 		this.masterTokenService = masterTokenService;
 		this.authenticationTokenService = authenticationTokenService;
@@ -104,7 +107,7 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 	 */
 	protected GeneratedTokenData reauthenticateBase (String masterToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		Account account = masterTokenService.getAccountByMasterToken(masterToken, deviceId, ip, isIpIgnored);
+		AccountData account = masterTokenService.getAccountByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
 		if (account == null)
 		{
@@ -126,7 +129,7 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 	 */
 	protected void invalidateBase (String masterToken, String authenticationToken, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
-		Account account = masterTokenService.getAccountByMasterToken(masterToken, deviceId, ip, isIpIgnored);
+		AccountData account = masterTokenService.getAccountByMasterToken(masterToken, deviceId, ip, isIpIgnored);
 
 		if (account == null)
 		{
@@ -151,16 +154,18 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 	{
 		try
 		{
-			Account accountByMasterToken = masterTokenService.getAccountByMasterToken(token, deviceId, ip, isIpIgnored);
-			Account accountByAuthenticationToken = authenticationTokenService.getAccountByAuthenticationToken(token, deviceId, ip, isIpIgnored);
+			D accountByMasterToken = masterTokenService.getAccountByMasterToken(token, deviceId, ip, isIpIgnored);
+			D accountByAuthenticationToken = authenticationTokenService.getAccountByAuthenticationToken(token, deviceId, ip, isIpIgnored);
 
 			if (accountByMasterToken != null)
 			{
-				return new VerificationData<>(createAccountData((A) accountByMasterToken, createAdditionalInformation(accountByMasterToken.getId())), VerificationTypes.MASTER_TOKEN_VERIFICATION);
+				accountByMasterToken.setAdditionalInformation(createAdditionalInformation(accountByMasterToken.getId()));
+				return new VerificationData<>(accountByMasterToken, VerificationTypes.MASTER_TOKEN_VERIFICATION);
 			}
 			else if (accountByAuthenticationToken != null)
 			{
-				return new VerificationData<>(createAccountData((A) accountByAuthenticationToken, createAdditionalInformation(accountByAuthenticationToken.getId())), VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
+				accountByAuthenticationToken.setAdditionalInformation(createAdditionalInformation(accountByAuthenticationToken.getId()));
+				return new VerificationData<>(accountByAuthenticationToken, VerificationTypes.AUTHENTICATION_TOKEN_VERIFICATION);
 			}
 			else
 			{
@@ -186,8 +191,8 @@ public abstract class OAuthServiceBase<D extends AccountData, A extends Account,
 
 		List<ExpiredTokenData> expiredTokenData = convertToExpiredTokenData(expiredMasterTokens, expiredAuthenticationTokens);
 
-		masterTokenService.removeMasterTokens(expiredMasterTokens.stream().map(SecurityTokenBase::getId).collect(Collectors.toList()));
-		authenticationTokenService.removeAuthenticationTokens(expiredAuthenticationTokens.stream().map(SecurityTokenBase::getId).collect(Collectors.toList()));
+		masterTokenService.removeMasterTokens(expiredMasterTokens.stream().map(SecurityTokenDataBase::getId).collect(Collectors.toList()));
+		authenticationTokenService.removeAuthenticationTokens(expiredAuthenticationTokens.stream().map(SecurityTokenDataBase::getId).collect(Collectors.toList()));
 
 		return expiredTokenData;
 	}

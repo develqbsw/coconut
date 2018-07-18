@@ -19,10 +19,6 @@
 	<dependencies>
 		<!-- QBSW -->
 		<dependency>
-			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-oauth-base</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-base</artifactId>
 		</dependency>
@@ -48,11 +44,19 @@
 		<!-- QBSW security -->
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-oauth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-oauth-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-base</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-authentication-base</artifactId>
+			<artifactId>security-authentication</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
@@ -69,7 +73,7 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-authentication</artifactId>
+			<artifactId>security-authentication-db</artifactId>
 			<scope>test</scope>
 		</dependency>
 

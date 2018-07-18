@@ -12,7 +12,7 @@ import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.security.base.exception.AccountDisabledException;
 import sk.qbsw.core.security.base.exception.InvalidAccountException;
 import sk.qbsw.core.security.base.exception.InvalidPasswordException;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.configuration.SecurityLdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LDAPInjectionProtector;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;

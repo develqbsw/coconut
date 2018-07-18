@@ -157,6 +157,11 @@ public class Account extends AEntity<Long>
 		return false;
 	}
 
+	public List<String> exportGroups ()
+	{
+		return accountUnitGroups.stream().map(x -> x.getGroup().getCode()).collect(Collectors.toList());
+	}
+
 	public List<String> exportRoles ()
 	{
 		List<String> retVal = new ArrayList<>();

@@ -3,7 +3,7 @@ package sk.qbsw.security.organization.simple.oauth.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sk.qbsw.security.oauth.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountData;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -36,9 +36,9 @@ public class SimpleOrganizationAccountData extends AccountData
 	 * @param organization the organization
 	 * @param additionalInformation the additional information
 	 */
-	public SimpleOrganizationAccountData (Long id, String login, String email, List<String> roles, OrganizationData organization, Map<String, Object> additionalInformation)
+	public SimpleOrganizationAccountData (Long id, String login, String email, List<String> groups, List<String> roles, OrganizationData organization, Map<String, Object> additionalInformation)
 	{
-		super(id, login, email, roles, additionalInformation);
+		super(id, login, email, groups, roles, additionalInformation);
 		this.organization = organization;
 	}
 }

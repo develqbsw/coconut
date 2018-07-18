@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ma.glasnost.orika.MapperFactory;
 
 /**
- * The base orika mapper.
+ * The base orika authenticationTokenMapper.
  * 
  * @author Tomas Lauro
  * @version 1.19.0
@@ -13,7 +13,7 @@ import ma.glasnost.orika.MapperFactory;
  */
 public abstract class BaseMapper
 {
-	/** The mapper factory. */
+	/** The authenticationTokenMapper factory. */
 	@Autowired
 	protected MapperFactory mapperFactory;
 

@@ -1,8 +1,12 @@
 package sk.qbsw.security.oauth.base.service.facade;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.oauth.base.model.*;
-import sk.qbsw.security.oauth.base.service.OAuthService;
+import sk.qbsw.security.oauth.service.OAuthService;
+import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.security.oauth.model.AuthenticationData;
+import sk.qbsw.security.oauth.model.ExpiredTokenData;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.VerificationData;
 
 import java.util.Collections;
 import java.util.List;

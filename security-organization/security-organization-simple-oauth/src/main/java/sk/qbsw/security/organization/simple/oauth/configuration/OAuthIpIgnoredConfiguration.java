@@ -1,8 +1,8 @@
 package sk.qbsw.security.organization.simple.oauth.configuration;
 
 import org.springframework.context.annotation.Bean;
-import sk.qbsw.security.oauth.base.service.OAuthService;
-import sk.qbsw.security.oauth.base.service.facade.OAuthServiceFacade;
+import sk.qbsw.security.oauth.service.OAuthService;
+import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.service.facade.OAuthServiceIpIgnoredCacheFacadeImpl;
 

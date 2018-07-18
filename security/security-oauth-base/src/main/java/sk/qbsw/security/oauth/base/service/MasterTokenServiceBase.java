@@ -4,18 +4,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.service.mapper.AccountMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.base.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.base.model.domain.AuthenticationTokenBase;
 import sk.qbsw.security.oauth.base.model.domain.MasterTokenBase;
+import sk.qbsw.security.oauth.base.service.mapper.MasterTokenMapper;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.model.MasterTokenDataBase;
 
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The master token service.
@@ -27,9 +32,11 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.13.1
  */
-public abstract class MasterTokenServiceBase<A extends Account, T extends AuthenticationTokenBase<A>, M extends MasterTokenBase<A>>extends SecurityTokenServiceBase<A, T, M>
+public abstract class MasterTokenServiceBase<A extends Account, T extends AuthenticationTokenBase<A>, M extends MasterTokenBase<A>, D extends AccountData, MD extends MasterTokenDataBase<D>>extends SecurityTokenServiceBase<A, D, T, M>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MasterTokenServiceBase.class);
+
+	protected final MasterTokenMapper<A, M, D, MD> masterTokenMapper;
 
 	/**
 	 * Instantiates a new Master token service base.
@@ -40,9 +47,10 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	protected MasterTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	protected MasterTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, MasterTokenMapper<A, M, D, MD> masterTokenMapper, AccountMapper<D, A> accountMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+		this.masterTokenMapper = masterTokenMapper;
 	}
 
 	/**
@@ -123,7 +131,7 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 	 * @return the account by master token base
 	 * @throws CBusinessException the c business exception
 	 */
-	protected A getAccountByMasterTokenBase (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
+	protected D getAccountByMasterTokenBase (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException
 	{
 		M persistedToken = masterTokenDao.findByTokenAndDeviceId(token, deviceId);
 
@@ -131,7 +139,7 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 		{
 			checkMasterToken(persistedToken, ip, isIpIgnored);
 			persistedToken.getAccount().exportRoles();
-			return persistedToken.getAccount();
+			return accountMapper.mapToAccountData(persistedToken.getAccount());
 		}
 		else
 		{
@@ -144,7 +152,7 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 	 *
 	 * @return the list
 	 */
-	protected List<M> findExpiredMasterTokensBase ()
+	protected List<MD> findExpiredMasterTokensBase ()
 	{
 		Integer changeLimit = null;
 		Integer expireLimit = null;
@@ -160,7 +168,7 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 
 		if (expireLimit != null || changeLimit != null)
 		{
-			return masterTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit);
+			return masterTokenDao.findByExpireLimitOrChangeLimit(expireLimit, changeLimit).stream().map(masterTokenMapper::mapToMasterTokenData).collect(Collectors.toList());
 		}
 		else
 		{

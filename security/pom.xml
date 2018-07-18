@@ -17,11 +17,12 @@
 		<module>security-core</module>
 		<module>security-management</module>
 		<module>security-authorization</module>
-		<module>security-authentication-base</module>
 		<module>security-authentication</module>
+		<module>security-authentication-db</module>
 		<module>security-authentication-ldap</module> 
-		<module>security-oauth-base</module>
 		<module>security-oauth</module>
+		<module>security-oauth-base</module>
+		<module>security-oauth-db</module>
 		<module>security-ocsp</module>
 		<module>security-web</module>
     </modules>
