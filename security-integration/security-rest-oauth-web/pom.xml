@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>security-spring-oauth-rest</artifactId>
-    <name>Security Spring OAuth REST</name>
+    <artifactId>security-rest-oauth-web</artifactId>
+    <name>Security REST Oauth Web</name>
     <packaging>jar</packaging>
 
     <organization>
@@ -11,52 +11,66 @@
     </organization>
 
     <parent>
-        <groupId>sk.qbsw.security.spring</groupId>
-        <artifactId>security-spring-top</artifactId>
+        <groupId>sk.qbsw.security.integration</groupId>
+        <artifactId>security-integration-top</artifactId>
         <version>1.19.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
+        <!-- qbsw -->
         <dependency>
-            <groupId>sk.qbsw.security.integration</groupId>
-            <artifactId>security-rest-oauth-client-model</artifactId>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-authentication-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-rest-oauth-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-oauth-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-oauth-base</artifactId>
+            <groupId>sk.qbsw.security.integration</groupId>
+            <artifactId>security-rest-oauth-client-model</artifactId>
         </dependency>
 
         <!-- spring -->
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
-
-        <!-- lombok -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
         </dependency>
 
-        <!-- SLF4J -->
+        <!-- servlet api -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
-
     <build>
         <resources>
             <resource>

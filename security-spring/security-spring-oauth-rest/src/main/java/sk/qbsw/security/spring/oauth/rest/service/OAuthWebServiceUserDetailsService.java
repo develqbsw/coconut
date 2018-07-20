@@ -4,10 +4,10 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import sk.qbsw.security.rest.authentication.client.AuthenticationClient;
-import sk.qbsw.security.rest.authentication.client.model.CSAccountData;
-import sk.qbsw.security.rest.authentication.client.model.request.VerifyRequestBody;
-import sk.qbsw.security.rest.authentication.client.model.response.VerificationResponseBody;
+import sk.qbsw.security.rest.oauth.client.base.AuthenticationClient;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
+import sk.qbsw.security.rest.oauth.client.model.request.VerifyRequestBody;
+import sk.qbsw.security.rest.oauth.client.model.response.VerificationResponseBody;
 import sk.qbsw.security.spring.oauth.base.model.OAuthLoggedUser;
 import sk.qbsw.security.spring.oauth.common.model.OAuthData;
 import sk.qbsw.security.spring.oauth.common.model.OAuthWebAuthenticationDetails;
@@ -22,14 +22,14 @@ import sk.qbsw.security.spring.oauth.common.service.BaseOAuthUserDetailsService;
  */
 public class OAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsService
 {
-	private final AuthenticationClient authenticationClient;
+	private final AuthenticationClient<CSAccountData> authenticationClient;
 
 	/**
 	 * Instantiates a new O auth pre authenticated user details service.
 	 *
 	 * @param authenticationClient the authentication client
 	 */
-	public OAuthWebServiceUserDetailsService (AuthenticationClient authenticationClient)
+	public OAuthWebServiceUserDetailsService (AuthenticationClient<CSAccountData> authenticationClient)
 	{
 		super();
 		this.authenticationClient = authenticationClient;

@@ -1,0 +1,37 @@
+package sk.qbsw.security.organization.rest.oauth.simple.api.mapper;
+
+import org.springframework.stereotype.Component;
+import sk.qbsw.security.organization.rest.oauth.client.model.CSSimpleOrganizationAccountData;
+import sk.qbsw.security.organization.rest.oauth.client.model.CSSimplifiedOrganization;
+import sk.qbsw.security.organization.simple.oauth.model.OrganizationData;
+import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
+import sk.qbsw.security.rest.oauth.api.base.mapper.SecurityOrikaBaseMapper;
+
+
+import javax.annotation.PostConstruct;
+
+/**
+ * The type Security orika mapper.
+ *
+ * @author Tomas Leken
+ * @version 1.19.0
+ * @since 1.19.0
+ */
+@Component
+public class SecurityOrikaMapper extends SecurityOrikaBaseMapper<CSSimpleOrganizationAccountData>
+{
+	/**
+	 * Initialise the mapping.
+	 */
+	@PostConstruct
+	private void initMapping ()
+	{
+		mapperFactory.classMap(SimpleOrganizationAccountData.class, CSSimpleOrganizationAccountData.class) //
+			.byDefault() //
+			.register();
+		mapperFactory.classMap(OrganizationData.class, CSSimplifiedOrganization.class) //
+			.byDefault() //
+			.register();
+
+	}
+}

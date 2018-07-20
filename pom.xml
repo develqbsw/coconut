@@ -131,6 +131,7 @@
         <module>organization</module>
         <module>security-organization</module>
 		<module>security-organization-spring</module>
+		<module>security-organization-integration</module>
         <!-- <module>paymentgateway</module> -->
     </modules>
 
@@ -384,12 +385,29 @@
             <!-- QBSW security integration -->
             <dependency>
                 <groupId>sk.qbsw.security.integration</groupId>
-                <artifactId>security-rest-authentication-client-model</artifactId>
+                <artifactId>security-rest-oauth-client-model</artifactId>
                 <version>${security.integration.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.integration</groupId>
-                <artifactId>security-rest-authentication-client</artifactId>
+                <artifactId>security-rest-oauth-client-base</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.integration</groupId>
+                <artifactId>security-rest-oauth-client</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.integration</groupId>
+                <artifactId>security-rest-oauth-api-base</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
+
+            <!-- QBSW security organization integration -->
+            <dependency>
+                <groupId>sk.qbsw.security.organization.integration</groupId>
+                <artifactId>security-organization-rest-oauth-client-model</artifactId>
                 <version>${security.integration.version}</version>
             </dependency>
 

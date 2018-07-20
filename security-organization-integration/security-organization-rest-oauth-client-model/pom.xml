@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>security-spring-oauth-rest</artifactId>
-    <name>Security Spring OAuth REST</name>
+    <artifactId>security-organization-rest-oauth-client-model</artifactId>
+    <name>Security Organization REST Oauth Model</name>
     <packaging>jar</packaging>
 
     <organization>
@@ -11,37 +11,44 @@
     </organization>
 
     <parent>
-        <groupId>sk.qbsw.security.spring</groupId>
-        <artifactId>security-spring-top</artifactId>
+        <groupId>sk.qbsw.security.organization.integration</groupId>
+        <artifactId>security-organization-integration-top</artifactId>
         <version>1.19.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
+        <!-- QBSW -->
+        <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-client-model</artifactId>
+        </dependency>
+
+        <!-- QBSW integration -->
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-rest-oauth-client-model</artifactId>
         </dependency>
+
+        <!-- validation api -->
         <dependency>
-            <groupId>sk.qbsw.security.integration</groupId>
-            <artifactId>security-rest-oauth-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-oauth-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-oauth-base</artifactId>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
 
-        <!-- spring -->
+        <!-- jackson -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
+        <!-- apache -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <!-- lombok -->
@@ -50,13 +57,13 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- SLF4J -->
+        <!-- swagger -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
         </dependency>
-    </dependencies>
 
+    </dependencies>
     <build>
         <resources>
             <resource>
