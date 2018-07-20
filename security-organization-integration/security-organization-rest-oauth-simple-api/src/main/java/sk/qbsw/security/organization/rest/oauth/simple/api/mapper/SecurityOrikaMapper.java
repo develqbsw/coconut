@@ -5,8 +5,7 @@ import sk.qbsw.security.organization.rest.oauth.client.model.CSSimpleOrganizatio
 import sk.qbsw.security.organization.rest.oauth.client.model.CSSimplifiedOrganization;
 import sk.qbsw.security.organization.simple.oauth.model.OrganizationData;
 import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
-import sk.qbsw.security.rest.oauth.api.base.mapper.SecurityOrikaBaseMapper;
-
+import sk.qbsw.security.rest.oauth.api.base.mapper.SecurityOrikaMapperBase;
 
 import javax.annotation.PostConstruct;
 
@@ -18,7 +17,7 @@ import javax.annotation.PostConstruct;
  * @since 1.19.0
  */
 @Component
-public class SecurityOrikaMapper extends SecurityOrikaBaseMapper<CSSimpleOrganizationAccountData>
+public class SecurityOrikaMapper extends SecurityOrikaMapperBase<SimpleOrganizationAccountData, CSSimpleOrganizationAccountData>
 {
 	/**
 	 * Initialise the mapping.

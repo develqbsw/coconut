@@ -53,7 +53,7 @@ public class OAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsServi
 	{
 		try
 		{
-			return authenticationClient.verify(VerifyRequestBody.builder().token(token).deviceId(deviceId).ip(ip).build());
+			return authenticationClient.verify(new VerifyRequestBody(token, deviceId, ip));
 		}
 		catch (Exception ex)
 		{

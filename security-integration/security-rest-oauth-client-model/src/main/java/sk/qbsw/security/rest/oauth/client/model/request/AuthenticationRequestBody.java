@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode (callSuper = true)
 public class AuthenticationRequestBody extends BaseRequestBody
 {

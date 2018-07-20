@@ -5,16 +5,18 @@ import org.springframework.web.bind.annotation.RestController;
 import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.organization.rest.oauth.client.model.CSSimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
-import sk.qbsw.security.rest.oauth.api.base.controller.AuthenticationBaseController;
+import sk.qbsw.security.rest.oauth.api.base.controller.AuthenticationControllerBase;
 import sk.qbsw.security.rest.oauth.api.base.mapper.SecurityMapper;
 
 /**
+ * The type Authentication simple controller.
+ *
  * @author Tomas Leken
  * @version 1.19.0
  * @since 1.19.0
  */
 @RestController
-public class AuthenticationSimpleController extends AuthenticationBaseController<SimpleOrganizationAccountData, CSSimpleOrganizationAccountData>
+public class AuthenticationSimpleController extends AuthenticationControllerBase<SimpleOrganizationAccountData, CSSimpleOrganizationAccountData>
 {
 	/**
 	 * Instantiates a new Authentication controller.
@@ -23,7 +25,7 @@ public class AuthenticationSimpleController extends AuthenticationBaseController
 	 * @param securityMapper the security mapper
 	 */
 	@Autowired
-	public AuthenticationSimpleController (OAuthServiceFacade<SimpleOrganizationAccountData> oAuthService, SecurityMapper securityMapper)
+	public AuthenticationSimpleController (OAuthServiceFacade<SimpleOrganizationAccountData> oAuthService, SecurityMapper<SimpleOrganizationAccountData, CSSimpleOrganizationAccountData> securityMapper)
 	{
 		super(oAuthService, securityMapper);
 	}

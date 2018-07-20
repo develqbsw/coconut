@@ -17,13 +17,11 @@
     </parent>
 
     <dependencies>
-        <!-- QBSW core -->
-        <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-base</artifactId>
-        </dependency>
-
         <!-- QBSW security -->
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-oauth</artifactId>
+        </dependency>
         <dependency>
             <groupId>sk.qbsw.security.organization</groupId>
             <artifactId>security-organization-simple-oauth</artifactId>
@@ -32,7 +30,7 @@
         <!-- QBSW integration -->
         <dependency>
             <groupId>sk.qbsw.security.organization.integration</groupId>
-            <artifactId>security-organization-rest-oauth-client-model</artifactId>
+            <artifactId>security-organization-rest-oauth-simple-client-model</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
@@ -46,71 +44,17 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-
-        <!-- spring security -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-        </dependency>
-
-        <!-- validation api -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
 
         <!-- jackson -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-
-        <!-- junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
         </dependency>
 
         <!-- orika -->

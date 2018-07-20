@@ -407,7 +407,7 @@
             <!-- QBSW security organization integration -->
             <dependency>
                 <groupId>sk.qbsw.security.organization.integration</groupId>
-                <artifactId>security-organization-rest-oauth-client-model</artifactId>
+                <artifactId>security-organization-rest-oauth-simple-client-model</artifactId>
                 <version>${security.integration.version}</version>
             </dependency>
 

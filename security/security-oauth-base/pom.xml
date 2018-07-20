@@ -48,10 +48,6 @@
 			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-authentication</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-web</artifactId>
-		</dependency>
 
 		<!-- Hibernate -->
 		<dependency>

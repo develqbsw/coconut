@@ -19,7 +19,6 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder ()
 @EqualsAndHashCode (callSuper = true)
 public class CSAccountData extends BaseClientEntity
 {

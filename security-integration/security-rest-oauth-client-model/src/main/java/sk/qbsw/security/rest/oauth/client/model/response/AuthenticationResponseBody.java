@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode (callSuper = true)
 public class AuthenticationResponseBody<T extends CSAccountData> extends BaseResponseBody
 {
