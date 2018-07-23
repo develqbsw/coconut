@@ -4,8 +4,8 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import sk.qbsw.security.oauth.model.VerificationData;
-import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.oauth.service.facade.ComplexOrganizationOAuthServiceFacade;
 import sk.qbsw.security.organization.spring.complex.base.model.ComplexOrganization;
 import sk.qbsw.security.organization.spring.complex.base.model.ComplexOrganizationUnit;
 import sk.qbsw.security.organization.spring.complex.oauth.base.model.OAuthLoggedUser;
@@ -25,14 +25,14 @@ import java.util.stream.Collectors;
  */
 public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 {
-	private final OAuthServiceFacade<ComplexOrganizationAccountData> oauthService;
+	private final ComplexOrganizationOAuthServiceFacade<ComplexOrganizationAccountData> oauthService;
 
 	/**
 	 * Instantiates a new O auth service user details service.
 	 *
 	 * @param oauthService the oauth service
 	 */
-	public OAuthServiceUserDetailsService (OAuthServiceFacade<ComplexOrganizationAccountData> oauthService)
+	public OAuthServiceUserDetailsService (ComplexOrganizationOAuthServiceFacade<ComplexOrganizationAccountData> oauthService)
 	{
 		super();
 		this.oauthService = oauthService;

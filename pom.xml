@@ -346,7 +346,17 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-simple-oauth-db</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
                 <artifactId>security-organization-complex-oauth</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-complex-oauth-db</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
 

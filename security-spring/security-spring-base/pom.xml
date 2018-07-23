@@ -54,6 +54,12 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!-- apache -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+
         <!-- SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
