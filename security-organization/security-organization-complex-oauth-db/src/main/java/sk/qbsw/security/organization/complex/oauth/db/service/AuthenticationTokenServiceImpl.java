@@ -11,12 +11,12 @@ import sk.qbsw.security.oauth.base.service.AuthenticationTokenServiceBase;
 import sk.qbsw.security.oauth.base.service.IdGeneratorService;
 import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapper;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
-import sk.qbsw.security.organization.complex.oauth.model.AuthenticationTokenData;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
 import sk.qbsw.security.organization.complex.oauth.db.model.domain.AuthenticationToken;
 import sk.qbsw.security.organization.complex.oauth.db.model.domain.MasterToken;
+import sk.qbsw.security.organization.complex.oauth.model.AuthenticationTokenData;
+import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.oauth.service.ComplexOrganizationAuthenticationTokenService;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBase<UserAccount, AuthenticationToken, MasterToken, ComplexOrganizationAccountData, AuthenticationTokenData> implements AuthenticationTokenService<ComplexOrganizationAccountData, AuthenticationTokenData>
+public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBase<UserAccount, AuthenticationToken, MasterToken, ComplexOrganizationAccountData, AuthenticationTokenData> implements ComplexOrganizationAuthenticationTokenService<ComplexOrganizationAccountData, AuthenticationTokenData>
 {
 	/**
 	 * Instantiates a new Base token service.

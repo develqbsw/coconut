@@ -12,9 +12,9 @@ import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
-import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
 import sk.qbsw.security.organization.complex.oauth.model.*;
+import sk.qbsw.security.organization.complex.oauth.service.ComplexOrganizationOAuthService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class OAuthServiceImpl extends OAuthServiceBase<UserAccount, ComplexOrganizationAccountData, AuthenticationTokenData, MasterTokenData> implements OAuthService<ComplexOrganizationAccountData>
+public class OAuthServiceImpl extends OAuthServiceBase<UserAccount, ComplexOrganizationAccountData, AuthenticationTokenData, MasterTokenData> implements ComplexOrganizationOAuthService<ComplexOrganizationAccountData>
 {
 	/**
 	 * Instantiates a new O auth service.

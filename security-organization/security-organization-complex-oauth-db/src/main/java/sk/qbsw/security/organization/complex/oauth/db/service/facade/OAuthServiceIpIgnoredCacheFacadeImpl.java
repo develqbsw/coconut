@@ -4,15 +4,15 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.oauth.base.model.*;
-import sk.qbsw.security.oauth.service.OAuthService;
+import sk.qbsw.security.oauth.base.model.OAuthCacheNames;
 import sk.qbsw.security.oauth.base.service.facade.BaseOAuthServiceCacheFacade;
-import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.oauth.model.AuthenticationData;
 import sk.qbsw.security.oauth.model.ExpiredTokenData;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.VerificationData;
+import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.oauth.service.facade.ComplexOrganizationOAuthServiceFacade;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class OAuthServiceIpIgnoredCacheFacadeImpl extends BaseOAuthServiceCacheFacade<ComplexOrganizationAccountData> implements OAuthServiceFacade<ComplexOrganizationAccountData>
+public class OAuthServiceIpIgnoredCacheFacadeImpl extends BaseOAuthServiceCacheFacade<ComplexOrganizationAccountData> implements ComplexOrganizationOAuthServiceFacade<ComplexOrganizationAccountData>
 {
 	/**
 	 * Instantiates a new O auth service ip ignored facade.

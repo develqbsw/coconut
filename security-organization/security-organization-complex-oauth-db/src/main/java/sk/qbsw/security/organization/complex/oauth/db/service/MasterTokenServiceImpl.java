@@ -11,12 +11,12 @@ import sk.qbsw.security.oauth.base.service.IdGeneratorService;
 import sk.qbsw.security.oauth.base.service.MasterTokenServiceBase;
 import sk.qbsw.security.oauth.base.service.mapper.MasterTokenMapper;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.service.MasterTokenService;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
-import sk.qbsw.security.organization.complex.oauth.model.MasterTokenData;
 import sk.qbsw.security.organization.complex.oauth.db.model.domain.AuthenticationToken;
 import sk.qbsw.security.organization.complex.oauth.db.model.domain.MasterToken;
+import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.oauth.model.MasterTokenData;
+import sk.qbsw.security.organization.complex.oauth.service.ComplexOrganizationMasterTokenService;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import java.util.List;
  * @version 1.19.0
  * @since 1.19.0
  */
-public class MasterTokenServiceImpl extends MasterTokenServiceBase<UserAccount, AuthenticationToken, MasterToken, ComplexOrganizationAccountData, MasterTokenData> implements MasterTokenService<ComplexOrganizationAccountData, MasterTokenData>
+public class MasterTokenServiceImpl extends MasterTokenServiceBase<UserAccount, AuthenticationToken, MasterToken, ComplexOrganizationAccountData, MasterTokenData> implements ComplexOrganizationMasterTokenService<ComplexOrganizationAccountData, MasterTokenData>
 {
 	/**
 	 * Instantiates a new Master token service.
