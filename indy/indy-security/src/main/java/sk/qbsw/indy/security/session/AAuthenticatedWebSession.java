@@ -7,8 +7,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.request.Request;
 
-import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
-
+import sk.qbsw.security.authentication.db.model.AuthenticationSecurityToken;
 
 /**
  * Basic authenticated web session. Subclasses must provide a method that authenticates the session

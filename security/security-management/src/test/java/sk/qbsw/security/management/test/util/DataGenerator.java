@@ -292,13 +292,13 @@ public class DataGenerator
 	}
 
 	private void setAccountToGroup (Account account, Group group, Unit unit)
-	{
-		AccountUnitGroup accountUnitGroup = new AccountUnitGroup();
-		accountUnitGroup.setAccount(account);
-		accountUnitGroup.setGroup(group);
-		accountUnitGroup.setUnit(unit);
-		accountUnitGroupDao.update(accountUnitGroup);
-	}
+{
+	AccountUnitGroup accountUnitGroup = new AccountUnitGroup();
+	accountUnitGroup.setAccount(account);
+	accountUnitGroup.setGroup(group);
+	accountUnitGroup.setUnit(unit);
+	accountUnitGroupDao.update(accountUnitGroup);
+}
 
 	public Organization createOrganization (String code)
 	{

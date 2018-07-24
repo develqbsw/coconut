@@ -1,20 +1,22 @@
 package sk.qbsw.security.oauth.service;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.model.domain.MasterToken;
+import sk.qbsw.security.oauth.model.MasterTokenDataBase;
 
 import java.util.List;
 
 /**
  * The master token service.
  *
+ * @param <D> the account data type
+ * @param <MD> the master token data type
  * @author Tomas Lauro
  * @version 1.19.0
  * @since 1.13.1
  */
-public interface MasterTokenService
+public interface MasterTokenService<D extends AccountData, MD extends MasterTokenDataBase<D>>
 {
 	/**
 	 * Generate master token generated token data.
@@ -46,14 +48,14 @@ public interface MasterTokenService
 	 * @return the account by master token
 	 * @throws CBusinessException the c business exception
 	 */
-	Account getAccountByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
+	D getAccountByMasterToken (String token, String deviceId, String ip, boolean isIpIgnored) throws CBusinessException;
 
 	/**
 	 * Find expired master tokens list.
 	 *
 	 * @return the list
 	 */
-	List<MasterToken> findExpiredMasterTokens ();
+	List<MD> findExpiredMasterTokens ();
 
 	/**
 	 * Remove master tokens long.

@@ -4,7 +4,7 @@ package sk.qbsw.security.oauth.model;
  * The verification types.
  *
  * @author Tomas Lauro
- * @version 1.18.2
+ * @version 1.19.0
  * @since 1.18.2
  */
 public enum VerificationTypes

@@ -13,9 +13,11 @@
 	</parent>
 
 	<modules>
-		<module>security-rest-authentication-client-model</module>
-		<module>security-rest-authentication-client</module>
-		<module>security-rest-authentication-api</module>
-		<module>security-rest-authentication-web</module>
+		<module>security-rest-oauth-client-model</module>
+		<module>security-rest-oauth-client-base</module>
+		<module>security-rest-oauth-client</module>
+		<module>security-rest-oauth-api-base</module>
+		<module>security-rest-oauth-api</module>
+		<module>security-rest-oauth-web</module>
 	</modules>
 </project>

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sk.qbsw.core.security.base.model.AccountData;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,9 +20,9 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationData implements Serializable
+public class AuthenticationData<D extends AccountData> implements Serializable
 {
-	private static final long serialVersionUID = 5207147948056566911L;
+	private static final long serialVersionUID = 682928597886199156L;
 
 	@NotNull
 	private GeneratedTokenData masterTokenData;
@@ -30,5 +31,5 @@ public class AuthenticationData implements Serializable
 	private GeneratedTokenData authenticationTokenData;
 
 	@NotNull
-	private AccountData accountData;
+	private D accountData;
 }

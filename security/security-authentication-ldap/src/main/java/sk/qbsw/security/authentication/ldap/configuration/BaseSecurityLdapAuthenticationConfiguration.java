@@ -2,7 +2,7 @@ package sk.qbsw.security.authentication.ldap.configuration;
 
 import org.springframework.context.annotation.Bean;
 
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.provider.LdapConnectionFactory;
 import sk.qbsw.security.authentication.ldap.provider.LdapConnectionFactoryImpl;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;

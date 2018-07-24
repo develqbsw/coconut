@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.model.AuthenticationSecurityToken;
+import sk.qbsw.security.authentication.db.model.AuthenticationSecurityToken;
 
 /**
  * Authentication for Wicket using Spring security.

@@ -23,13 +23,6 @@ public interface AccountDetails extends Serializable
 	Long getId ();
 
 	/**
-	 * Gets organization.
-	 *
-	 * @return the organization
-	 */
-	Organization getOrganization ();
-
-	/**
 	 * Gets additional information.
 	 *
 	 * @return the additional information

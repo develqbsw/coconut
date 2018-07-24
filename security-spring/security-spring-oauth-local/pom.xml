@@ -19,11 +19,15 @@
     <dependencies>
         <dependency>
             <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
             <artifactId>security-oauth</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-base</artifactId>
+            <artifactId>security-spring-oauth-common</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
@@ -34,12 +38,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
 
         <!-- SLF4J -->

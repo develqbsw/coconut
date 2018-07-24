@@ -27,11 +27,11 @@
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-authentication</artifactId>
+            <artifactId>security-authentication-db</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-authentication-base</artifactId>
+            <artifactId>security-authentication</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>

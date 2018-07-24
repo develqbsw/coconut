@@ -18,26 +18,18 @@
 
     <dependencies>
         <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-base</artifactId>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-base</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-base</artifactId>
+            <artifactId>security-spring-oauth-common</artifactId>
         </dependency>
 
         <!-- spring -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
         </dependency>
 
         <!-- validation -->

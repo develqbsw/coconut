@@ -25,9 +25,6 @@ public class LoggedUser extends User implements AccountDetails
 	private Long id;
 
 	@NotNull
-	private Organization organization;
-
-	@NotNull
 	private Map<String, Object> additionalInformation = new HashMap<>();
 
 	/**
@@ -37,13 +34,11 @@ public class LoggedUser extends User implements AccountDetails
 	 * @param username the username
 	 * @param password the password
 	 * @param authorities the authorities
-	 * @param organization the organization
 	 */
-	public LoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization)
+	public LoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities)
 	{
 		super(username, password, authorities);
 		this.id = id;
-		this.organization = organization;
 	}
 
 	/**
@@ -53,14 +48,12 @@ public class LoggedUser extends User implements AccountDetails
 	 * @param username the username
 	 * @param password the password
 	 * @param authorities the authorities
-	 * @param organization the organization
 	 * @param additionalInformation the additional information
 	 */
-	public LoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, Map<String, Object> additionalInformation)
+	public LoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Map<String, Object> additionalInformation)
 	{
 		super(username, password, authorities);
 		this.id = id;
-		this.organization = organization;
 		this.additionalInformation = additionalInformation;
 	}
 

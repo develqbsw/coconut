@@ -28,15 +28,15 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-authentication-base</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-authentication</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-authentication-spring</artifactId>
+			<artifactId>security-authentication-db</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security.spring</groupId>
+			<artifactId>security-spring-auth-local</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>

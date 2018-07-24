@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.authentication.base.service.AuthenticationService;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.authentication.ldap.test.util.DataGenerator;
 import sk.qbsw.security.core.model.domain.Account;
 

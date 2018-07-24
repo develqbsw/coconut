@@ -3,7 +3,7 @@ package sk.qbsw.security.spring.oauth.base.model;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import sk.qbsw.security.spring.base.model.LoggedUser;
-import sk.qbsw.security.spring.base.model.Organization;
+import sk.qbsw.security.spring.oauth.common.model.OAuthData;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
@@ -32,12 +32,11 @@ public class OAuthLoggedUser extends LoggedUser
 	 * @param username the username
 	 * @param password the password
 	 * @param authorities the authorities
-	 * @param organization the organization
 	 * @param oauthData the oauth data
 	 */
-	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData)
+	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, OAuthData oauthData)
 	{
-		super(id, username, password, authorities, organization);
+		super(id, username, password, authorities);
 		this.oauthData = oauthData;
 	}
 
@@ -48,13 +47,12 @@ public class OAuthLoggedUser extends LoggedUser
 	 * @param username the username
 	 * @param password the password
 	 * @param authorities the authorities
-	 * @param organization the organization
 	 * @param oauthData the oauth data
 	 * @param additionalInformation the additional information
 	 */
-	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Organization organization, OAuthData oauthData, Map<String, Object> additionalInformation)
+	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, OAuthData oauthData, Map<String, Object> additionalInformation)
 	{
-		super(id, username, password, authorities, organization, additionalInformation);
+		super(id, username, password, authorities, additionalInformation);
 		this.oauthData = oauthData;
 	}
 
