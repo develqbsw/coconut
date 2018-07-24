@@ -3,7 +3,7 @@ package sk.qbsw.security.organization.rest.oauth.simple.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import sk.qbsw.security.organization.rest.oauth.client.model.CSSimpleOrganizationAccountData;
+import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.service.facade.SimpleOrganizationOAuthServiceFacade;
 import sk.qbsw.security.rest.oauth.api.base.controller.AuthenticationControllerBase;

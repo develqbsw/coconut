@@ -19,11 +19,11 @@ import java.util.Set;
  * @version 1.19.0
  * @since 1.19.0
  */
-@Entity
+@Entity (name = "complexUnit")
 @Table (name = "t_unit", schema = DatabaseSchemas.ORGANIZATION, //
 	uniqueConstraints = @UniqueConstraint (name = "uc_unit_code", columnNames = {"c_code"}))
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorValue ("unit")
+@DiscriminatorValue ("unitComplex")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
@@ -34,8 +34,8 @@ public class Unit extends AEntity<Long>
 
 	@Id
 	@NotNull
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "unitSequenceGenerator")
-	@SequenceGenerator (name = "unitSequenceGenerator", sequenceName = DatabaseSchemas.ORGANIZATION + ".s_unit")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "complexUnitSequenceGenerator")
+	@SequenceGenerator (name = "complexUnitSequenceGenerator", sequenceName = DatabaseSchemas.ORGANIZATION + ".s_unit")
 	@Column (name = "pk_id")
 	private Long id;
 

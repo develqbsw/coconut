@@ -22,5 +22,7 @@
 		<module>security-organization-spring-complex-base</module>
 		<module>security-organization-spring-complex-oauth-base</module>
 		<module>security-organization-spring-complex-oauth-local</module>
+		<module>security-organization-spring-complex-anonym-base</module>
+		<module>security-organization-spring-complex-system-base</module>
 	</modules>
 </project>

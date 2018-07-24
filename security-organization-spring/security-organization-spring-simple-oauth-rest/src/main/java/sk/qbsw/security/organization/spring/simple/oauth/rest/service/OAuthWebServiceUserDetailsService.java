@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import sk.qbsw.security.organization.rest.oauth.client.model.CSSimpleOrganizationAccountData;
+import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSimpleOrganizationAccountData;
 import sk.qbsw.security.organization.spring.simple.base.model.SimpleOrganization;
 import sk.qbsw.security.organization.spring.simple.oauth.base.model.OAuthLoggedUser;
 import sk.qbsw.security.rest.oauth.client.base.AuthenticationClient;

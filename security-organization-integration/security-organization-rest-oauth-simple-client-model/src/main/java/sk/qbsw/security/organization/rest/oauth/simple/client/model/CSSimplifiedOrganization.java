@@ -1,4 +1,4 @@
-package sk.qbsw.security.organization.rest.oauth.client.model;
+package sk.qbsw.security.organization.rest.oauth.simple.client.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

@@ -16,5 +16,8 @@
 		<module>security-organization-rest-oauth-simple-client-model</module>
 		<module>security-organization-rest-oauth-simple-client</module>
 		<module>security-organization-rest-oauth-simple-api</module>
+		<module>security-organization-rest-oauth-complex-client-model</module>
+		<module>security-organization-rest-oauth-complex-client</module>
+		<module>security-organization-rest-oauth-complex-api</module>
 	</modules>
 </project>

@@ -1,8 +1,8 @@
-package sk.qbsw.security.organization.rest.oauth.client;
+package sk.qbsw.security.organization.rest.oauth.simple.client;
 
 import org.springframework.web.client.RestTemplate;
 import sk.qbsw.core.client.configuration.UrlConfiguration;
-import sk.qbsw.security.organization.rest.oauth.client.model.CSSimpleOrganizationAccountData;
+import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSimpleOrganizationAccountData;
 import sk.qbsw.security.rest.oauth.client.base.AuthenticationClientIpIgnoredBase;
 
 /**

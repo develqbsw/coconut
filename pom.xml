@@ -420,6 +420,11 @@
                 <artifactId>security-organization-rest-oauth-simple-client-model</artifactId>
                 <version>${security.integration.version}</version>
             </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.integration</groupId>
+                <artifactId>security-organization-rest-oauth-complex-client-model</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
 
             <!-- QBSW indy -->
             <dependency>

@@ -38,8 +38,8 @@ public class Organization extends AEntity<Long>
 
 	@Id
 	@NotNull
-	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "organizationSequenceGenerator")
-	@SequenceGenerator (name = "organizationSequenceGenerator", sequenceName = DatabaseSchemas.ORGANIZATION + ".s_organization")
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "complexOrganizationSequenceGenerator")
+	@SequenceGenerator (name = "complexOrganizationSequenceGenerator", sequenceName = DatabaseSchemas.ORGANIZATION + ".s_organization")
 	@Column (name = "pk_id")
 	private Long id;
 
