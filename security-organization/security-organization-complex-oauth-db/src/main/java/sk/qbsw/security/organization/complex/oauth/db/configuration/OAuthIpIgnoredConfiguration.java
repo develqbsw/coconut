@@ -5,6 +5,7 @@ import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
 import sk.qbsw.security.organization.complex.oauth.db.service.facade.OAuthServiceIpIgnoredCacheFacadeImpl;
+import sk.qbsw.security.organization.complex.oauth.service.facade.ComplexOrganizationOAuthServiceFacade;
 
 /**
  * The complex organization default ip ignored OAuth configuration.
@@ -16,7 +17,7 @@ import sk.qbsw.security.organization.complex.oauth.db.service.facade.OAuthServic
 public class OAuthIpIgnoredConfiguration extends BaseSecurityOAuthConfiguration
 {
 	@Bean
-	public OAuthServiceFacade<ComplexOrganizationAccountData> oAuthServiceCacheFacade (OAuthService<ComplexOrganizationAccountData> oAuthService)
+	public ComplexOrganizationOAuthServiceFacade<ComplexOrganizationAccountData> oAuthServiceCacheFacade (OAuthService<ComplexOrganizationAccountData> oAuthService)
 	{
 		return new OAuthServiceIpIgnoredCacheFacadeImpl(oAuthService);
 	}
