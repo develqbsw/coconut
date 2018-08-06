@@ -24,7 +24,7 @@ public class OrganizationCoreConfiguration
 	}
 
 	@Bean
-	public UnitDao unitDao ()
+	public UnitDao unitComplexDao ()
 	{
 		return new UnitJpaDao();
 	}

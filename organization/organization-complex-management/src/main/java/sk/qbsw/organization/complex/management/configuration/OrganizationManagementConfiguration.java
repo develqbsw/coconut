@@ -28,7 +28,7 @@ public class OrganizationManagementConfiguration extends OrganizationCoreConfigu
 	}
 
 	@Bean
-	public UnitService unitService (UnitDao unitDao, UserDao userDao)
+	public UnitService unitComplexService (UnitDao unitDao, UserDao userDao)
 	{
 		return new UnitServiceImpl(unitDao, userDao);
 	}
