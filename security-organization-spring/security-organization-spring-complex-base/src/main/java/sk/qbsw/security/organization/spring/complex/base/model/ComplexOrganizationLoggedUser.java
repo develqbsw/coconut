@@ -22,36 +22,43 @@ public class ComplexOrganizationLoggedUser extends LoggedUser implements Complex
 	private static final long serialVersionUID = -198736486895065544L;
 
 	@NotNull
+	private Long userId;
+
+	@NotNull
 	private final List<ComplexOrganization> organizations;
 
 	/**
 	 * Instantiates a new Simple organization logged user.
 	 *
-	 * @param id the id
-	 * @param username the username
-	 * @param password the password
-	 * @param authorities the authorities
+	 * @param id            the id
+	 * @param username      the username
+	 * @param password      the password
+	 * @param authorities   the authorities
+	 * @param userId        the user id
 	 * @param organizations the organizations
 	 */
-	public ComplexOrganizationLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, List<ComplexOrganization> organizations)
+	public ComplexOrganizationLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Long userId, List<ComplexOrganization> organizations)
 	{
 		super(id, username, password, authorities);
+		this.userId = userId;
 		this.organizations = organizations;
 	}
 
 	/**
 	 * Instantiates a new Simple organization logged user.
 	 *
-	 * @param id the id
-	 * @param username the username
-	 * @param password the password
-	 * @param authorities the authorities
-	 * @param organizations the organizations
+	 * @param id                    the id
+	 * @param username              the username
+	 * @param password              the password
+	 * @param authorities           the authorities
+	 * @param userId                the user id
+	 * @param organizations         the organizations
 	 * @param additionalInformation the additional information
 	 */
-	public ComplexOrganizationLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, List<ComplexOrganization> organizations, Map<String, Object> additionalInformation)
+	public ComplexOrganizationLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Long userId, List<ComplexOrganization> organizations, Map<String, Object> additionalInformation)
 	{
 		super(id, username, password, authorities, additionalInformation);
+		this.userId = userId;
 		this.organizations = organizations;
 	}
 

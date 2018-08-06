@@ -85,11 +85,11 @@ public class OAuthServiceImpl extends OAuthServiceBase<UserAccount, ComplexOrgan
 
 		if (additionalInformation != null)
 		{
-			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organizationData, additionalInformation);
+			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), account.getUser().getId(), organizationData, additionalInformation);
 		}
 		else
 		{
-			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organizationData, new HashMap<>());
+			return new ComplexOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), account.getUser().getId(), organizationData, new HashMap<>());
 		}
 	}
 

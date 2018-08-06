@@ -29,6 +29,7 @@ public class AccountMapperImpl extends AccountMapperBase<ComplexOrganizationAcco
 		List<OrganizationData> organizationData = unitsByOrganization.entrySet().stream().map(e -> new OrganizationData(e.getKey().getId(), e.getKey().getName(), e.getKey().getCode(), e.getValue().stream().map(u -> new UnitData(u.getId(), u.getName(), u.getCode())).collect(Collectors.toList()))).collect(Collectors.toList());
 
 		ComplexOrganizationAccountData accountData = new ComplexOrganizationAccountData();
+		accountData.setUserId(account.getUser().getId());
 		accountData.setOrganizations(organizationData);
 
 		return accountData;

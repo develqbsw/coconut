@@ -29,33 +29,35 @@ public class OAuthLoggedUser extends ComplexOrganizationLoggedUser
 	/**
 	 * Instantiates a new Logged o auth user.
 	 *
-	 * @param id the id
-	 * @param username the username
-	 * @param password the password
-	 * @param authorities the authorities
+	 * @param id            the id
+	 * @param username      the username
+	 * @param password      the password
+	 * @param authorities   the authorities
+	 * @param userId        the user id
 	 * @param organizations the organizations
-	 * @param oauthData the oauth data
+	 * @param oauthData     the oauth data
 	 */
-	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, List<ComplexOrganization> organizations, OAuthData oauthData)
+	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Long userId, List<ComplexOrganization> organizations, OAuthData oauthData)
 	{
-		super(id, username, password, authorities, organizations);
+		super(id, username, password, authorities, userId, organizations);
 		this.oauthData = oauthData;
 	}
 
 	/**
 	 * Instantiates a new O auth logged user.
 	 *
-	 * @param id the id
-	 * @param username the username
-	 * @param password the password
-	 * @param authorities the authorities
-	 * @param organizations the organizations
-	 * @param oauthData the oauth data
+	 * @param id                    the id
+	 * @param username              the username
+	 * @param password              the password
+	 * @param authorities           the authorities
+	 * @param userId                the user id
+	 * @param organizations         the organizations
+	 * @param oauthData             the oauth data
 	 * @param additionalInformation the additional information
 	 */
-	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, List<ComplexOrganization> organizations, OAuthData oauthData, Map<String, Object> additionalInformation)
+	public OAuthLoggedUser (Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Long userId, List<ComplexOrganization> organizations, OAuthData oauthData, Map<String, Object> additionalInformation)
 	{
-		super(id, username, password, authorities, organizations, additionalInformation);
+		super(id, username, password, authorities, userId, organizations, additionalInformation);
 		this.oauthData = oauthData;
 	}
 

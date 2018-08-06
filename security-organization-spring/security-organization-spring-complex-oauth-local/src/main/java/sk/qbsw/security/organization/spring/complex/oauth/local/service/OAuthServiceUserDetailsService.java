@@ -48,7 +48,7 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 		List<ComplexOrganization> organizations = accountData.getOrganizations().stream().map(o -> new ComplexOrganization(o.getId(), o.getName(), o.getCode(), o.getUnits().stream().map(u -> new ComplexOrganizationUnit(u.getId(), u.getName(), u.getCode())).collect(Collectors.toList()))).collect(Collectors.toList());
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
 
-		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), organizations, oAuthData, accountData.getAdditionalInformation());
+		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), accountData.getUserId(), organizations, oAuthData, accountData.getAdditionalInformation());
 	}
 
 	private VerificationData<ComplexOrganizationAccountData> verify (String token, String deviceId, String ip)
