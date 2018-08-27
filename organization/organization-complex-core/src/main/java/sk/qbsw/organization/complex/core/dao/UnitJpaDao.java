@@ -3,6 +3,7 @@ package sk.qbsw.organization.complex.core.dao;
 import com.querydsl.jpa.impl.JPAQuery;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
+import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
 import sk.qbsw.core.persistence.dao.jpa.qdsl.CQDslDaoHelper;
 import sk.qbsw.organization.complex.core.model.domain.QUnit;
@@ -69,5 +70,16 @@ public class UnitJpaDao extends AEntityQDslDao<Long, Unit> implements UnitDao
 		// create query
 		JPAQuery<Unit> query = queryFactory.selectFrom(qUnit).distinct().leftJoin(qUnit.users, qUser).fetchJoin().where(qUnit.id.eq(id));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
+	}
+
+	@Override
+	public List<Unit> findActive ()
+	{
+		QUnit qUnit = QUnit.unit;
+		QUser qUser = QUser.user;
+
+		// create query
+		JPAQuery<Unit> query = queryFactory.selectFrom(qUnit).distinct().leftJoin(qUnit.users, qUser).fetchJoin().where(qUnit.state.eq(ActivityStates.ACTIVE));
+		return query.fetch();
 	}
 }

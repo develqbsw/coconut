@@ -26,7 +26,7 @@ public interface UnitDao extends IEntityDao<Long, Unit>
 	Unit findOneByCode (String code) throws CSecurityException;
 
 	/**
-	 * Find by user id list.
+	 * Find by user id list.InheritanceType.SINGLE_TABLE
 	 *
 	 * @param userId the user id
 	 * @return the list
@@ -41,4 +41,11 @@ public interface UnitDao extends IEntityDao<Long, Unit>
 	 * @return the unit
 	 */
 	Unit findWithUsers (Long id);
+
+	/**
+	 * Find active list.
+	 *
+	 * @return the list
+	 */
+	List<Unit> findActive ();
 }
