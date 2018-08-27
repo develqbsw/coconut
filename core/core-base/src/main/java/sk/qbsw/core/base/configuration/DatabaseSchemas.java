@@ -23,4 +23,9 @@ public class DatabaseSchemas implements Serializable
 	 * The constant ORGANIZATION.
 	 */
 	public static final String ORGANIZATION = "org";
+
+	/**
+	 * The constant MESSAGING.
+	 */
+	public static final String MESSAGING = "msg";
 }

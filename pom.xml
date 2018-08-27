@@ -121,7 +121,7 @@
     <modules>
         <module>core</module>
         <module>security</module>
-		<module>security-spring</module>
+        <module>security-spring</module>
         <module>security-integration</module>
         <module>et</module>
         <module>geolocation</module>
@@ -130,8 +130,8 @@
         <module>reporting</module>
         <module>organization</module>
         <module>security-organization</module>
-		<module>security-organization-spring</module>
-		<module>security-organization-integration</module>
+        <module>security-organization-spring</module>
+        <module>security-organization-integration</module>
         <!-- <module>paymentgateway</module> -->
     </modules>
 
@@ -451,6 +451,16 @@
             </dependency>
 
             <!-- QBSW integration -->
+            <dependency>
+                <groupId>sk.qbsw.integration</groupId>
+                <artifactId>integration-message</artifactId>
+                <version>${integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.integration</groupId>
+                <artifactId>integration-message-base</artifactId>
+                <version>${integration.version}</version>
+            </dependency>
             <dependency>
                 <groupId>sk.qbsw.integration</groupId>
                 <artifactId>integration-mailchimp-client</artifactId>

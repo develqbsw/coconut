@@ -15,6 +15,9 @@
 	<modules>
 		<module>integration-ftp</module>
 		<module>integration-mail</module>
+		<module>integration-message</module>
+		<module>integration-message-base</module>
+		<module>integration-message-email</module>
 		<module>integration-mailchimp-client</module>
 	</modules>
 </project>
