@@ -1,7 +1,10 @@
 package sk.qbsw.security.organization.complex.core.dao;
 
+import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
+
+import java.util.List;
 
 /**
  * The interface User account dao.
@@ -12,4 +15,5 @@ import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
  */
 public interface UserAccountDao extends IEntityDao<Long, UserAccount>
 {
+	public List<UserAccount> findByUnitCode (String unitCode) throws CSecurityException;
 }
