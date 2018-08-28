@@ -12,6 +12,10 @@ import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
 
 import java.util.List;
 
+import sk.qbsw.core.persistence.dao.jpa.qdsl.AEntityQDslDao;
+import sk.qbsw.security.organization.complex.core.model.domain.QUserAccount;
+import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
+
 /**
  * The type User account jpa dao.
  *

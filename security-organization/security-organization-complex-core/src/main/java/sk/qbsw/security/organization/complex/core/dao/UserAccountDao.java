@@ -5,7 +5,6 @@ import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
 
 import java.util.List;
-
 /**
  * The interface User account dao.
  *
