@@ -22,6 +22,10 @@
 			<groupId>sk.qbsw.core</groupId>
 			<artifactId>core-base</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.core</groupId>
+			<artifactId>core-client-model</artifactId>
+		</dependency>
 
 		<!-- testing -->
 		<dependency>
@@ -49,6 +53,12 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 		</dependency>
 
 		<!-- SLF4J -->
