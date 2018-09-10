@@ -20,6 +20,10 @@
         <!-- QBSW security -->
         <dependency>
             <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
             <artifactId>security-organization-complex-oauth</artifactId>
         </dependency>
 

@@ -16,12 +16,13 @@ import java.util.List;
 /**
  * The account dao.
  *
+ * @param <A> the type parameter
  * @author rosenberg
  * @author Tomas Lauro
  * @version 1.19.0
  * @since 1.0.0
  */
-public interface AccountDao extends IEntityDao<Long, Account>
+public interface AccountDao<A extends Account>extends IEntityDao<Long, A>
 {
 	/**
 	 * Find one by login account.
@@ -31,7 +32,16 @@ public interface AccountDao extends IEntityDao<Long, Account>
 	 * @throws NoResultException the no result exception
 	 * @throws CSecurityException the c security exception
 	 */
-	Account findOneByLogin (String login) throws NoResultException, CSecurityException;
+	A findOneByLogin (String login) throws NoResultException, CSecurityException;
+
+	/**
+	 * Find by uid account.
+	 *
+	 * @param uid the uid
+	 * @return the account
+	 * @throws NoResultException the no result exception
+	 */
+	A findByUid (String uid) throws NoResultException;
 
 	/**
 	 * Find one by login and unit account.
@@ -42,7 +52,7 @@ public interface AccountDao extends IEntityDao<Long, Account>
 	 * @throws NoResultException the no result exception
 	 * @throws CSecurityException the c security exception
 	 */
-	Account findOneByLoginAndUnit (String login, Unit unit) throws NoResultException, CSecurityException;
+	A findOneByLoginAndUnit (String login, Unit unit) throws NoResultException, CSecurityException;
 
 	/**
 	 * Find by pin code list.
@@ -51,7 +61,7 @@ public interface AccountDao extends IEntityDao<Long, Account>
 	 * @return the list
 	 * @throws CSecurityException the c security exception
 	 */
-	List<Account> findByPinCode (String pinCode) throws CSecurityException;
+	List<A> findByPinCode (String pinCode) throws CSecurityException;
 
 	/**
 	 * Count all long.
@@ -69,7 +79,7 @@ public interface AccountDao extends IEntityDao<Long, Account>
 	 * @return the list
 	 * @throws CSecurityException the c security exception
 	 */
-	List<Account> findByUnitAndGroup (Unit unit, Group group, OrderModel<? extends OrderByAttributeSpecifier> orderModel) throws CSecurityException;
+	List<A> findByUnitAndGroup (Unit unit, Group group, OrderModel<? extends OrderByAttributeSpecifier> orderModel) throws CSecurityException;
 
 	/**
 	 * Find by account detail filter list.
@@ -78,7 +88,7 @@ public interface AccountDao extends IEntityDao<Long, Account>
 	 * @param orderModel the order model
 	 * @return the list
 	 */
-	List<Account> findByAccountDetailFilter (AccountDetailFilter filter, OrderModel<? extends OrderByAttributeSpecifier> orderModel);
+	List<A> findByAccountDetailFilter (AccountDetailFilter filter, OrderModel<? extends OrderByAttributeSpecifier> orderModel);
 
 	/**
 	 * Find by account associations filter list.
@@ -87,5 +97,5 @@ public interface AccountDao extends IEntityDao<Long, Account>
 	 * @param orderModel the order model
 	 * @return the list
 	 */
-	List<Account> findByAccountAssociationsFilter (AccountAssociationsFilter filter, OrderModel<? extends OrderByAttributeSpecifier> orderModel);
+	List<A> findByAccountAssociationsFilter (AccountAssociationsFilter filter, OrderModel<? extends OrderByAttributeSpecifier> orderModel);
 }

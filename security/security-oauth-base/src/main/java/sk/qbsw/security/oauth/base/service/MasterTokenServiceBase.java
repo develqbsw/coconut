@@ -7,7 +7,7 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
  * @param <A> the account type
  * @param <T> the authentication token type
  * @param <M> the master token type
+ * @param <D> the type parameter
+ * @param <MD> the type parameter
  * @author Tomas Lauro
  * @version 1.19.0
  * @since 1.13.1
@@ -36,6 +38,9 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MasterTokenServiceBase.class);
 
+	/**
+	 * The Master token mapper.
+	 */
 	protected final MasterTokenMapper<A, M, D, MD> masterTokenMapper;
 
 	/**
@@ -43,13 +48,15 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 	 *
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
+	 * @param masterTokenMapper the master token mapper
+	 * @param accountOutputDataMapper the account output data mapper
 	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	protected MasterTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, MasterTokenMapper<A, M, D, MD> masterTokenMapper, AccountMapper<D, A> accountMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	protected MasterTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, MasterTokenMapper<A, M, D, MD> masterTokenMapper, AccountOutputDataMapper<D, A> accountOutputDataMapper, AccountDao<A> accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, accountOutputDataMapper, accountDao, idGeneratorService, validationConfiguration);
 		this.masterTokenMapper = masterTokenMapper;
 	}
 
@@ -139,7 +146,7 @@ public abstract class MasterTokenServiceBase<A extends Account, T extends Authen
 		{
 			checkMasterToken(persistedToken, ip, isIpIgnored);
 			persistedToken.getAccount().exportRoles();
-			return accountMapper.mapToAccountData(persistedToken.getAccount());
+			return accountOutputDataMapper.mapToAccountOutputData(persistedToken.getAccount());
 		}
 		else
 		{

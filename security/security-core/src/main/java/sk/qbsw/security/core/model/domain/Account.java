@@ -11,15 +11,12 @@ import sk.qbsw.core.persistence.model.domain.AEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * The account.
- * 
+ *
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author Michal Lacko
@@ -28,8 +25,11 @@ import java.util.stream.Collectors;
  */
 @Entity
 @Table (name = "t_account", schema = DatabaseSchemas.SECURITY, //
-	uniqueConstraints = @UniqueConstraint (name = "uc_account_login", columnNames = {"c_login"}))
-@FilterDef (name = "accountDefaultUnitFilter")
+	uniqueConstraints = { //
+		@UniqueConstraint (name = "uc_account_login", columnNames = {"c_login"}), //
+		@UniqueConstraint (name = "uc_account_uid", columnNames = {"c_uid"}) //
+	})
+@FilterDef (name = Account.DEFAULT_UNIT_FILTER_NAME)
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue ("account")
 @DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
@@ -39,12 +39,18 @@ public class Account extends AEntity<Long>
 {
 	private static final long serialVersionUID = 425742764286573960L;
 
+	public static final String DEFAULT_UNIT_FILTER_NAME = "accountDefaultUnitFilter";
+
 	@Id
 	@NotNull
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "accountSequenceGenerator")
 	@SequenceGenerator (name = "accountSequenceGenerator", sequenceName = DatabaseSchemas.SECURITY + ".s_account")
 	@Column (name = "pk_id")
 	private Long id;
+
+	@NotNull
+	@Column (name = "c_uid")
+	private String uid = UUID.randomUUID().toString();
 
 	@NotNull
 	@Column (name = "c_login")
@@ -76,72 +82,32 @@ public class Account extends AEntity<Long>
 	private Set<AuthenticationParams> authenticationParams;
 
 	@OneToMany (mappedBy = "account", fetch = FetchType.LAZY)
-	@Filter (name = "accountDefaultUnitFilter", condition = "( (fk_unit = (select us.fk_default_unit from sec.t_account us where us.pk_id = fk_account)) or ( (select us.fk_default_unit from sec.t_account us where us.pk_id = fk_account) is null and fk_unit is null) )")
+	@Filter (name = DEFAULT_UNIT_FILTER_NAME, condition = "( (fk_unit = (select us.fk_default_unit from sec.t_account us where us.pk_id = fk_account)) or ( (select us.fk_default_unit from sec.t_account us where us.pk_id = fk_account) is null and fk_unit is null) )")
 	private Set<AccountUnitGroup> accountUnitGroups = new HashSet<>();
 
 	public String getPassword ()
 	{
-		if (getAuthenticationParams() != null)
-		{
-			return getAuthenticationParams().getPassword();
-		}
-		else
-		{
-			throw new CSystemException("The user has not a authentication params");
-		}
+		return findAuthenticationParams().getPassword();
 	}
 
 	public String getPasswordDigest ()
 	{
-		if (getAuthenticationParams() != null)
-		{
-			return getAuthenticationParams().getPasswordDigest();
-		}
-		else
-		{
-			throw new CSystemException("The user has not a authentication params");
-		}
+		return findAuthenticationParams().getPasswordDigest();
+	}
+
+	public AuthenticationTypes getAuthenticationType ()
+	{
+		return findAuthenticationParams().getAuthenticationType();
+	}
+
+	public PasswordTypes getPasswordType ()
+	{
+		return findAuthenticationParams().getPasswordType();
 	}
 
 	public Set<Group> getGroups ()
 	{
 		return accountUnitGroups.stream().map(AccountUnitGroup::getGroup).collect(Collectors.toSet());
-	}
-
-	private AuthenticationParams getAuthenticationParams ()
-	{
-		if (authenticationParams.stream().findFirst().isPresent())
-		{
-			return authenticationParams.stream().findFirst().get();
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	public AuthenticationTypes getAuthenticationType ()
-	{
-		if (getAuthenticationParams() != null)
-		{
-			return getAuthenticationParams().getAuthenticationType();
-		}
-		else
-		{
-			throw new CSystemException("The user has not a authentication params");
-		}
-	}
-
-	public PasswordTypes getPasswordType ()
-	{
-		if (getAuthenticationParams() != null)
-		{
-			return getAuthenticationParams().getPasswordType();
-		}
-		else
-		{
-			throw new CSystemException("The user has not a authentication params");
-		}
 	}
 
 	public boolean hasRole (Role role)
@@ -202,5 +168,22 @@ public class Account extends AEntity<Long>
 		}
 
 		return false;
+	}
+
+	private AuthenticationParams getAuthenticationParams ()
+	{
+		return this.authenticationParams.stream().findFirst().orElse(null);
+	}
+
+	private AuthenticationParams findAuthenticationParams ()
+	{
+		if (getAuthenticationParams() != null)
+		{
+			return getAuthenticationParams();
+		}
+		else
+		{
+			throw new CSystemException("The user has not a authentication params");
+		}
 	}
 }

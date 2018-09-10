@@ -5,7 +5,7 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
@@ -34,15 +34,17 @@ public class MasterTokenServiceImpl extends MasterTokenServiceBase<Account, Auth
 	 *
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
+	 * @param masterTokenMapper the master token mapper
+	 * @param accountOutputDataMapper the account output data mapper
 	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
 	public MasterTokenServiceImpl (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, //
-		MasterTokenMapper<Account, MasterToken, AccountData, MasterTokenData> masterTokenMapper, AccountMapper<AccountData, Account> accountMapper, //
+		MasterTokenMapper<Account, MasterToken, AccountData, MasterTokenData> masterTokenMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper, //
 		AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, masterTokenMapper, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, masterTokenMapper, accountOutputDataMapper, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Override

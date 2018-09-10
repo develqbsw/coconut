@@ -10,9 +10,7 @@ import sk.qbsw.core.security.base.exception.AuthenticationException;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.oauth.model.ExpiredTokenData;
-import sk.qbsw.security.oauth.model.VerificationData;
-import sk.qbsw.security.oauth.model.VerificationTypes;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.model.*;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
@@ -54,17 +52,24 @@ public abstract class OAuthServiceBase<A extends Account, D extends AccountData,
 	protected final AuthenticationService authenticationService;
 
 	/**
+	 * The Account output data mapper.
+	 */
+	protected final AccountOutputDataMapper<D, A> accountOutputDataMapper;
+
+	/**
 	 * Instantiates a new O auth service.
 	 *
 	 * @param masterTokenService the master token service
 	 * @param authenticationTokenService the authentication token service
 	 * @param authenticationService the authentication service
+	 * @param accountOutputDataMapper the account output data mapper
 	 */
-	protected OAuthServiceBase (MasterTokenService<D, M> masterTokenService, AuthenticationTokenService<D, T> authenticationTokenService, AuthenticationService authenticationService)
+	protected OAuthServiceBase (MasterTokenService<D, M> masterTokenService, AuthenticationTokenService<D, T> authenticationTokenService, AuthenticationService authenticationService, AccountOutputDataMapper<D, A> accountOutputDataMapper)
 	{
 		this.masterTokenService = masterTokenService;
 		this.authenticationTokenService = authenticationTokenService;
 		this.authenticationService = authenticationService;
+		this.accountOutputDataMapper = accountOutputDataMapper;
 	}
 
 	/**

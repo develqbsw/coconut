@@ -8,7 +8,6 @@ import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Role;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.management.service.AccountCredentialManagementService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -101,17 +100,6 @@ public class AuthenticationTestProvider
 		String unit = DataGenerator.FIRST_UNIT_CODE;
 
 		testLoginWithUnit(authenticationService, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE, unit, expectedGroups);
-	}
-
-	public void testChangePasswordExistingAccount (AuthenticationService authenticationService, AccountCredentialManagementService modifierService) throws CSecurityException
-	{
-		String newPassword = "change1Password3ExistingAccount@";
-		modifierService.changePlainPassword(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk", newPassword);
-
-		// test authentication
-		Account account = authenticationService.login(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, newPassword);
-
-		assertNotNull("The plain text password change failed", account);
 	}
 
 	public void testLoginEnabledAccountDisabledOrganization (AuthenticationService authenticationService) throws CSecurityException

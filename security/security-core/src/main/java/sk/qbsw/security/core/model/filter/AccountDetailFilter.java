@@ -3,7 +3,6 @@ package sk.qbsw.security.core.model.filter;
 import lombok.Getter;
 import lombok.Setter;
 import sk.qbsw.core.base.state.ActivityStates;
-import sk.qbsw.security.core.model.domain.Organization;
 
 /**
  * Account details filter.
@@ -24,5 +23,5 @@ public class AccountDetailFilter
 
 	private String groupCodePrefix;
 
-	private Organization organization;
+	private String organizationCode;
 }

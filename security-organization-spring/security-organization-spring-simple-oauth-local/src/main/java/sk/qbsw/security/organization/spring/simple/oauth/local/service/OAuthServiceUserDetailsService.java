@@ -3,8 +3,9 @@ package sk.qbsw.security.organization.spring.simple.oauth.local.service;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import sk.qbsw.security.oauth.model.VerificationData;
-import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.service.facade.SimpleOrganizationOAuthServiceFacade;
 import sk.qbsw.security.organization.spring.simple.base.model.SimpleOrganization;
 import sk.qbsw.security.organization.spring.simple.oauth.base.model.OAuthLoggedUser;

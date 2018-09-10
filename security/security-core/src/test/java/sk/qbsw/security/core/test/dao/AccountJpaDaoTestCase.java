@@ -34,19 +34,13 @@ import static org.junit.Assert.assertNotNull;
 public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 {
 	@Autowired
-	private AccountDao accountDao;
+	private AccountDao<Account> accountDao;
 
 	@Autowired
 	private UnitDao unitDao;
 
 	@Autowired
 	private GroupDao groupDao;
-
-	@Autowired
-	private OrganizationDao organizationDao;
-
-	@Autowired
-	private RoleDao roleDao;
 
 	/**
 	 * Test initialization.
@@ -468,7 +462,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		filter.setEmail(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE + "@qbsw.sk");
 		filter.setGroupCodePrefix(DataGenerator.FIRST_GROUP_IN_UNIT_CODE.substring(0, 5));
 		filter.setState(ActivityStates.ACTIVE);
-		filter.setOrganization(organizationDao.findByName(DataGenerator.ORGANIZATION_CODE).get(0));
+		filter.setOrganizationCode(DataGenerator.ORGANIZATION_CODE);
 
 		// order model
 		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
@@ -499,7 +493,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		filter.setEmail(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE_NO_GROUP + "@qbsw.sk");
 		filter.setGroupCodePrefix(DataGenerator.FIRST_GROUP_IN_UNIT_CODE.substring(0, 5));
 		filter.setState(ActivityStates.ACTIVE);
-		filter.setOrganization(organizationDao.findByName(DataGenerator.ORGANIZATION_CODE).get(0));
+		filter.setOrganizationCode(DataGenerator.ORGANIZATION_CODE);
 
 		// order model
 		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
@@ -578,9 +572,9 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// filter
 		AccountAssociationsFilter filter = new AccountAssociationsFilter();
-		filter.setGroup(groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE));
-		filter.setRole(roleDao.findOneByCode(DataGenerator.FIRST_ROLE_CODE));
-		filter.setOrganization(organizationDao.findByName(DataGenerator.ORGANIZATION_CODE).get(0));
+		filter.setGroupCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		filter.setRoleCode(DataGenerator.FIRST_ROLE_CODE);
+		filter.setOrganizationCode(DataGenerator.ORGANIZATION_CODE);
 		filter.setState(ActivityStates.ACTIVE);
 
 		// order model
@@ -608,9 +602,9 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// filter
 		AccountAssociationsFilter filter = new AccountAssociationsFilter();
-		filter.setGroup(groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE));
-		filter.setRole(roleDao.findOneByCode(DataGenerator.SECOND_ROLE_CODE)); // incorrect role
-		filter.setOrganization(organizationDao.findByName(DataGenerator.ORGANIZATION_CODE).get(0));
+		filter.setGroupCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
+		filter.setRoleCode(DataGenerator.SECOND_ROLE_CODE); // incorrect role
+		filter.setOrganizationCode(DataGenerator.ORGANIZATION_CODE);
 		filter.setState(ActivityStates.ACTIVE);
 
 		// order model

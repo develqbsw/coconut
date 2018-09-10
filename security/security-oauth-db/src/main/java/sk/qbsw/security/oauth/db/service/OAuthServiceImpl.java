@@ -5,6 +5,7 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.service.OAuthServiceBase;
 import sk.qbsw.security.oauth.db.model.AuthenticationTokenData;
 import sk.qbsw.security.oauth.db.model.MasterTokenData;
@@ -35,10 +36,11 @@ public class OAuthServiceImpl extends OAuthServiceBase<Account, AccountData, Aut
 	 * @param masterTokenService the master token service
 	 * @param authenticationTokenService the authentication token service
 	 * @param authenticationService the authentication service
+	 * @param accountOutputDataMapper the account output data mapper
 	 */
-	public OAuthServiceImpl (MasterTokenService<AccountData, MasterTokenData> masterTokenService, AuthenticationTokenService<AccountData, AuthenticationTokenData> authenticationTokenService, AuthenticationService authenticationService)
+	public OAuthServiceImpl (MasterTokenService<AccountData, MasterTokenData> masterTokenService, AuthenticationTokenService<AccountData, AuthenticationTokenData> authenticationTokenService, AuthenticationService authenticationService, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
 	{
-		super(masterTokenService, authenticationTokenService, authenticationService);
+		super(masterTokenService, authenticationTokenService, authenticationService, accountOutputDataMapper);
 	}
 
 	@Override
@@ -81,11 +83,14 @@ public class OAuthServiceImpl extends OAuthServiceBase<Account, AccountData, Aut
 	{
 		if (additionalInformation != null)
 		{
-			return new AccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), additionalInformation);
+			AccountData accountData = accountOutputDataMapper.mapToAccountOutputData(account);
+			accountData.setAdditionalInformation(additionalInformation);
+
+			return accountData;
 		}
 		else
 		{
-			return new AccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), new HashMap<>());
+			return accountOutputDataMapper.mapToAccountOutputData(account);
 		}
 	}
 

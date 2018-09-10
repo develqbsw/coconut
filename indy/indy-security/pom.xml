@@ -24,7 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-management</artifactId>
+			<artifactId>security-management-db</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>

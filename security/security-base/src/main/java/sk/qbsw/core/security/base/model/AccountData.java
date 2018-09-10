@@ -28,9 +28,15 @@ public class AccountData implements Serializable
 	private Long id;
 
 	@NotNull
+	private String uid;
+
+	@NotNull
 	private String login;
 
 	private String email;
+
+	@NotNull
+	private AccountDataTypes type;
 
 	@NotNull
 	private List<String> groups;

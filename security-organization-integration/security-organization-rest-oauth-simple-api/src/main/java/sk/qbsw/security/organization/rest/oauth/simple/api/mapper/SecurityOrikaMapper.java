@@ -3,8 +3,8 @@ package sk.qbsw.security.organization.rest.oauth.simple.api.mapper;
 import org.springframework.stereotype.Component;
 import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSimpleOrganizationAccountData;
 import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSimplifiedOrganization;
-import sk.qbsw.security.organization.simple.oauth.model.OrganizationData;
-import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationData;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.rest.oauth.api.base.mapper.SecurityOrikaMapperBase;
 
 import javax.annotation.PostConstruct;
@@ -28,7 +28,7 @@ public class SecurityOrikaMapper extends SecurityOrikaMapperBase<SimpleOrganizat
 		mapperFactory.classMap(SimpleOrganizationAccountData.class, CSSimpleOrganizationAccountData.class) //
 			.byDefault() //
 			.register();
-		mapperFactory.classMap(OrganizationData.class, CSSimplifiedOrganization.class) //
+		mapperFactory.classMap(SimpleOrganizationData.class, CSSimplifiedOrganization.class) //
 			.byDefault() //
 			.register();
 

@@ -8,7 +8,7 @@
 	<context:component-scan base-package="sk.qbsw.security.authentication.db.test.util" />
 	
 	<bean class="sk.qbsw.security.authentication.db.configuration.SecurityAuthenticationConfiguration" />
-	<bean class="sk.qbsw.security.management.configuration.SecurityManagementConfiguration" />
+	<bean class="sk.qbsw.security.management.db.configuration.SecurityManagementConfiguration" />
 
 	<bean id="databaseLoginTask" scope="prototype" class="sk.qbsw.security.authentication.db.test.performance.task.DatabaseLoginTask" />
 

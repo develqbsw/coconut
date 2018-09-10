@@ -2,7 +2,7 @@ package sk.qbsw.security.oauth.db.mapper;
 
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapper;
 import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapperBase;
 import sk.qbsw.security.oauth.db.model.AuthenticationTokenData;
@@ -20,11 +20,11 @@ public class AuthenticationTokenMapperImpl extends AuthenticationTokenMapperBase
 	/**
 	 * Instantiates a new Authentication token mapper.
 	 *
-	 * @param accountMapper the account mapper
+	 * @param accountOutputDataMapper the account output data mapper
 	 */
-	public AuthenticationTokenMapperImpl (AccountMapper<AccountData, Account> accountMapper)
+	public AuthenticationTokenMapperImpl (AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
 	{
-		super(accountMapper);
+		super(accountOutputDataMapper);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package sk.qbsw.security.organization.simple.oauth.service.facade;
 
 import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
-import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
 
 /**
  * The simple organization oauth service facade.

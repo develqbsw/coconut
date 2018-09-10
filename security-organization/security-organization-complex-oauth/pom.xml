@@ -27,6 +27,12 @@
 			<artifactId>security-oauth</artifactId>
 		</dependency>
 
+		<!-- QBSW security organization -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-base</artifactId>
+        </dependency>
+
 		<!-- validation -->
 		<dependency>
 			<groupId>javax.validation</groupId>

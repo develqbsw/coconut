@@ -26,6 +26,10 @@
 			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-base</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security.organization</groupId>
+			<artifactId>security-organization-simple-base</artifactId>
+		</dependency>
 
 		<!-- Validation -->
 		<dependency>

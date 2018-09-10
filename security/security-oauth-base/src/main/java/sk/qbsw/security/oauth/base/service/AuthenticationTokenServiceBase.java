@@ -7,7 +7,7 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
@@ -48,14 +48,14 @@ public abstract class AuthenticationTokenServiceBase<A extends Account, T extend
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
 	 * @param authenticationTokenMapper the authentication token mapper
-	 * @param accountMapper the account mapper
+	 * @param accountOutputDataMapper the account output data mapper
 	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	protected AuthenticationTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, AuthenticationTokenMapper<A, T, D, TD> authenticationTokenMapper, AccountMapper<D, A> accountMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	protected AuthenticationTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, AuthenticationTokenMapper<A, T, D, TD> authenticationTokenMapper, AccountOutputDataMapper<D, A> accountOutputDataMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, accountOutputDataMapper, accountDao, idGeneratorService, validationConfiguration);
 		this.authenticationTokenMapper = authenticationTokenMapper;
 	}
 
@@ -148,7 +148,7 @@ public abstract class AuthenticationTokenServiceBase<A extends Account, T extend
 		if (persistedToken != null)
 		{
 			checkAuthenticationToken(persistedToken, ip, isIpIgnored);
-			return accountMapper.mapToAccountData(persistedToken.getAccount());
+			return accountOutputDataMapper.mapToAccountOutputData(persistedToken.getAccount());
 		}
 		else
 		{

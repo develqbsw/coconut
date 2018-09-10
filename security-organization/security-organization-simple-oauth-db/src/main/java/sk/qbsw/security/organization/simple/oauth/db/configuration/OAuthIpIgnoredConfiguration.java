@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 
 import sk.qbsw.security.oauth.service.OAuthService;
 import sk.qbsw.security.organization.simple.oauth.db.service.facade.OAuthServiceIpIgnoredCacheFacadeImpl;
-import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.service.facade.SimpleOrganizationOAuthServiceFacade;
 
 /**

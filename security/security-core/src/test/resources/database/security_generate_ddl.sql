@@ -80,6 +80,7 @@ create sequence sec.s_unit
 create table sec.t_account (
   pk_id           bigint                 not null,
   d_type          character varying(31)  not null,
+  c_uid           character varying(255) not null,
   c_login         character varying(255) not null,
   c_email         character varying(255),
   c_state         character varying(255) not null,
@@ -171,6 +172,9 @@ alter table sec.t_organization
 
 alter table sec.t_account
   add constraint uc_account_login unique (c_login);
+
+alter table sec.t_account
+  add constraint uc_account_uid unique (c_uid);
 
 --foreign key
 alter table sec.t_x_group_role

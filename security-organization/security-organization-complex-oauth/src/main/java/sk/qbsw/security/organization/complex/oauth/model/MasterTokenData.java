@@ -1,6 +1,7 @@
 package sk.qbsw.security.organization.complex.oauth.model;
 
 import sk.qbsw.security.oauth.model.MasterTokenDataBase;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
 
 /**
  * The master token data.

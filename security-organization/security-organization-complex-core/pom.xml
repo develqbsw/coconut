@@ -25,17 +25,27 @@
             <artifactId>core-persistence</artifactId>
         </dependency>
         <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- QBSW security -->
+        <dependency>
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-core</artifactId>
         </dependency>
+
+        <!-- QBSW organization -->
         <dependency>
             <groupId>sk.qbsw.organization</groupId>
             <artifactId>organization-complex-core</artifactId>
         </dependency>
+
+        <!-- QBSW security organization -->
         <dependency>
-            <groupId>sk.qbsw.core</groupId>
-            <artifactId>core-testing</artifactId>
-            <scope>test</scope>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-base</artifactId>
         </dependency>
 
         <!-- spring -->

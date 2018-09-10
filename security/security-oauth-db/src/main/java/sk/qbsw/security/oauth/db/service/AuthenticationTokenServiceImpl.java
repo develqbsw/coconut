@@ -5,18 +5,18 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
+import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
-import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapper;
-import sk.qbsw.security.oauth.db.model.AuthenticationTokenData;
-import sk.qbsw.security.oauth.model.GeneratedTokenData;
-import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.base.service.AuthenticationTokenServiceBase;
 import sk.qbsw.security.oauth.base.service.IdGeneratorService;
-import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
+import sk.qbsw.security.oauth.base.service.mapper.AuthenticationTokenMapper;
+import sk.qbsw.security.oauth.db.model.AuthenticationTokenData;
 import sk.qbsw.security.oauth.db.model.domain.AuthenticationToken;
 import sk.qbsw.security.oauth.db.model.domain.MasterToken;
+import sk.qbsw.security.oauth.model.GeneratedTokenData;
+import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 
 import java.util.List;
 
@@ -34,15 +34,17 @@ public class AuthenticationTokenServiceImpl extends AuthenticationTokenServiceBa
 	 *
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
+	 * @param authenticationTokenMapper the authentication token mapper
+	 * @param accountOutputDataMapper the account output data mapper
 	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
 	public AuthenticationTokenServiceImpl (MasterTokenDao<Account, MasterToken> masterTokenDao, AuthenticationTokenDao<Account, AuthenticationToken> authenticationTokenDao, //
-		AuthenticationTokenMapper<Account, AuthenticationToken, AccountData, AuthenticationTokenData> authenticationTokenMapper, AccountMapper<AccountData, Account> accountMapper, //
+		AuthenticationTokenMapper<Account, AuthenticationToken, AccountData, AuthenticationTokenData> authenticationTokenMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper, //
 		AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
-		super(masterTokenDao, authenticationTokenDao, authenticationTokenMapper, accountMapper, accountDao, idGeneratorService, validationConfiguration);
+		super(masterTokenDao, authenticationTokenDao, authenticationTokenMapper, accountOutputDataMapper, accountDao, idGeneratorService, validationConfiguration);
 	}
 
 	@Override

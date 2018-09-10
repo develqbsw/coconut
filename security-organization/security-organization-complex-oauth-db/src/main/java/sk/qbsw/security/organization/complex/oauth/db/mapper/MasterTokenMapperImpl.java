@@ -1,12 +1,12 @@
 package sk.qbsw.security.organization.complex.oauth.db.mapper;
 
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.service.mapper.MasterTokenMapper;
 import sk.qbsw.security.oauth.base.service.mapper.MasterTokenMapperBase;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
 import sk.qbsw.security.organization.complex.core.model.domain.UserAccount;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
-import sk.qbsw.security.organization.complex.oauth.model.MasterTokenData;
 import sk.qbsw.security.organization.complex.oauth.db.model.domain.MasterToken;
+import sk.qbsw.security.organization.complex.oauth.model.MasterTokenData;
 
 /**
  * The master token mapper implementation.
@@ -20,11 +20,11 @@ public class MasterTokenMapperImpl extends MasterTokenMapperBase<UserAccount, Ma
 	/**
 	 * Instantiates a new Master token mapper.
 	 *
-	 * @param accountMapper the account mapper
+	 * @param accountOutputDataMapper the account output data mapper
 	 */
-	public MasterTokenMapperImpl (AccountMapper<ComplexOrganizationAccountData, UserAccount> accountMapper)
+	public MasterTokenMapperImpl (AccountOutputDataMapper<ComplexOrganizationAccountData, UserAccount> accountOutputDataMapper)
 	{
-		super(accountMapper);
+		super(accountOutputDataMapper);
 	}
 
 	@Override

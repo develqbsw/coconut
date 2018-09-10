@@ -111,6 +111,9 @@
         <!-- Testing -->
         <tempusfugit.version>1.1</tempusfugit.version>
 
+        <!-- firebase -->
+        <firebase-admin.version>6.4.0</firebase-admin.version>
+
         <!-- orika -->
         <orika.version>1.4.6</orika.version>
 
@@ -230,6 +233,16 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security</groupId>
+                <artifactId>security-management-base</artifactId>
+                <version>${security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security</groupId>
+                <artifactId>security-management-db</artifactId>
+                <version>${security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security</groupId>
                 <artifactId>security-authentication</artifactId>
                 <version>${security.version}</version>
             </dependency>
@@ -336,7 +349,17 @@
             <!-- QBSW security organization -->
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
-                <artifactId>security-organization-complex-core</artifactId>
+                <artifactId>security-organization-simple-base</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-simple-core</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-simple-management</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
             <dependency>
@@ -347,6 +370,26 @@
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
                 <artifactId>security-organization-simple-oauth-db</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-complex-base</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-complex-core</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-complex-management</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-complex-management-db</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
             <dependency>
@@ -803,6 +846,13 @@
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-sql-spring</artifactId>
                 <version>${querydsl.version}</version>
+            </dependency>
+
+            <!-- firebase -->
+            <dependency>
+                <groupId>com.google.firebase</groupId>
+                <artifactId>firebase-admin</artifactId>
+                <version>${firebase-admin.version}</version>
             </dependency>
 
             <!-- orika -->

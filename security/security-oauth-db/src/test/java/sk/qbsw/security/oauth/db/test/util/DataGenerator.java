@@ -28,7 +28,7 @@ public class DataGenerator
 {
 	private final RoleDao roleDao;
 
-	private final AccountDao accountDao;
+	private final AccountDao<Account> accountDao;
 
 	private final OrganizationDao orgDao;
 

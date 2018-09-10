@@ -2,13 +2,12 @@ package sk.qbsw.security.oauth.base.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
 import sk.qbsw.security.oauth.base.dao.MasterTokenDao;
@@ -42,14 +41,14 @@ public abstract class SecurityTokenServiceBase<A extends Account, D extends Acco
 	protected final AuthenticationTokenDao<A, T> authenticationTokenDao;
 
 	/**
-	 * The Account authenticationTokenMapper.
+	 * The Account output data mapper.
 	 */
-	protected final AccountMapper<D, A> accountMapper;
+	protected final AccountOutputDataMapper<D, A> accountOutputDataMapper;
 
 	/**
 	 * The Account dao.
 	 */
-	protected final AccountDao accountDao;
+	protected final AccountDao<A> accountDao;
 
 	/**
 	 * The Id generator service.
@@ -66,15 +65,16 @@ public abstract class SecurityTokenServiceBase<A extends Account, D extends Acco
 	 *
 	 * @param masterTokenDao the master token dao
 	 * @param authenticationTokenDao the authentication token dao
+	 * @param accountOutputDataMapper the account output data mapper
 	 * @param accountDao the account dao
 	 * @param idGeneratorService the id generator service
 	 * @param validationConfiguration the validation configuration
 	 */
-	SecurityTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, AccountMapper<D, A> accountMapper, AccountDao accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
+	SecurityTokenServiceBase (MasterTokenDao<A, M> masterTokenDao, AuthenticationTokenDao<A, T> authenticationTokenDao, AccountOutputDataMapper<D, A> accountOutputDataMapper, AccountDao<A> accountDao, IdGeneratorService idGeneratorService, OAuthValidationConfigurator validationConfiguration)
 	{
 		this.masterTokenDao = masterTokenDao;
 		this.authenticationTokenDao = authenticationTokenDao;
-		this.accountMapper = accountMapper;
+		this.accountOutputDataMapper = accountOutputDataMapper;
 		this.accountDao = accountDao;
 		this.idGeneratorService = idGeneratorService;
 		this.validationConfiguration = validationConfiguration;

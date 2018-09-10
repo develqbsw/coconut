@@ -1,9 +1,9 @@
 package sk.qbsw.security.organization.rest.oauth.complex.api.mapper;
 
 import org.springframework.stereotype.Component;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
-import sk.qbsw.security.organization.complex.oauth.model.OrganizationData;
-import sk.qbsw.security.organization.complex.oauth.model.UnitData;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationData;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationUnitData;
 import sk.qbsw.security.organization.rest.oauth.complex.client.model.CSComplexOrganizationAccountData;
 import sk.qbsw.security.organization.rest.oauth.complex.client.model.CSSimplifiedOrganization;
 import sk.qbsw.security.organization.rest.oauth.complex.client.model.CSSimplifiedUnit;
@@ -30,10 +30,10 @@ public class SecurityOrikaMapper extends SecurityOrikaMapperBase<ComplexOrganiza
 		mapperFactory.classMap(ComplexOrganizationAccountData.class, CSComplexOrganizationAccountData.class) //
 			.byDefault() //
 			.register();
-		mapperFactory.classMap(OrganizationData.class, CSSimplifiedOrganization.class) //
+		mapperFactory.classMap(ComplexOrganizationData.class, CSSimplifiedOrganization.class) //
 			.byDefault() //
 			.register();
-		mapperFactory.classMap(UnitData.class, CSSimplifiedUnit.class) //
+		mapperFactory.classMap(ComplexOrganizationUnitData.class, CSSimplifiedUnit.class) //
 			.byDefault() //
 			.register();
 

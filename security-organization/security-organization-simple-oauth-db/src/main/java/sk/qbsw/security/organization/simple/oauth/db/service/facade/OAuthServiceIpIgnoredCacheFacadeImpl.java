@@ -11,7 +11,7 @@ import sk.qbsw.security.oauth.model.ExpiredTokenData;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.OAuthService;
-import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.service.facade.SimpleOrganizationOAuthServiceFacade;
 
 import java.util.List;

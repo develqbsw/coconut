@@ -50,6 +50,11 @@
             <artifactId>security-management</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-management-db</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Spring -->
         <dependency>

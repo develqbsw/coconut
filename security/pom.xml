@@ -16,6 +16,8 @@
 		<module>security-base</module>
 		<module>security-core</module>
 		<module>security-management</module>
+		<module>security-management-base</module>
+		<module>security-management-db</module>
 		<module>security-authorization</module>
 		<module>security-authentication</module>
 		<module>security-authentication-db</module>

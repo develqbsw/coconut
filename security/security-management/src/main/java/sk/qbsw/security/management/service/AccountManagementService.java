@@ -2,144 +2,92 @@ package sk.qbsw.security.management.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.state.ActivityStates;
-import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.model.domain.Group;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Role;
+import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountInputData;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
  * The account management service.
  *
+ * @param <I> the account input data type
+ * @param <O> the account type
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @version 1.19.0
  * @since 1.0.0
  */
-public interface AccountManagementService
+public interface AccountManagementService<I extends AccountInputData, O extends AccountData>
 {
 	/**
-	 * Register account.
+	 * Register o.
 	 *
 	 * @param account the account
 	 * @param password the password
-	 * @param organization the organization
-	 * @return the account
+	 * @return the o
 	 * @throws CSecurityException the c security exception
 	 */
-	Account register (Account account, String password, Organization organization) throws CSecurityException;
+	O register (I account, String password) throws CSecurityException;
 
 	/**
-	 * Register account.
+	 * Register o.
 	 *
 	 * @param account the account
-	 * @param organization the organization
-	 * @return the account
+	 * @return the o
 	 * @throws CSecurityException the c security exception
 	 */
-	Account register (Account account, Organization organization) throws CSecurityException;
+	O register (I account) throws CSecurityException;
 
 	/**
-	 * Read account.
+	 * Find one by id o.
 	 *
 	 * @param id the id
-	 * @return the account
+	 * @return the o
 	 */
-	Account read (Long id);
+	O findOneById (Long id);
+
+	/**
+	 * Find one by login o.
+	 *
+	 * @param login the login
+	 * @return the o
+	 * @throws CSecurityException the c security exception
+	 */
+	O findOneByLogin (String login) throws CSecurityException;
+
+	/**
+	 * Find one by uid o.
+	 *
+	 * @param uid the uid
+	 * @return the o
+	 */
+	O findOneByUid (String uid);
+
+	/**
+	 * Find one by login and state o.
+	 *
+	 * @param login the login
+	 * @param state the state
+	 * @return the o
+	 */
+	O findOneByLoginAndState (String login, ActivityStates state);
+
+	/**
+	 * Find one by login and state and group code prefix o.
+	 *
+	 * @param login the login
+	 * @param state the state
+	 * @param groupCodePrefix the group code prefix
+	 * @return the o
+	 */
+	O findOneByLoginAndStateAndGroupCodePrefix (String login, ActivityStates state, String groupCodePrefix);
 
 	/**
 	 * Find all list.
 	 *
 	 * @return the list
 	 */
-	List<Account> findAll ();
-
-	/**
-	 * Find by organization list.
-	 *
-	 * @param organization the organization
-	 * @return the list
-	 */
-	List<Account> findByOrganization (Organization organization);
-
-	/**
-	 * Find all except account list.
-	 *
-	 * @param organization the organization
-	 * @param group the group
-	 * @param account the account
-	 * @return the list
-	 */
-	List<Account> findAllExceptAccount (Organization organization, Group group, Account account);
-
-	/**
-	 * Find by organization and state list.
-	 *
-	 * @param organization the organization
-	 * @param state the state
-	 * @return the list
-	 */
-	List<Account> findByOrganizationAndState (Organization organization, ActivityStates state);
-
-	/**
-	 * Find by organization and state and group list.
-	 *
-	 * @param organization the organization
-	 * @param state the state
-	 * @param group the group
-	 * @return the list
-	 */
-	List<Account> findByOrganizationAndStateAndGroup (Organization organization, ActivityStates state, Group group);
-
-	/**
-	 * Find by organization and state and group order by organization name and login list.
-	 *
-	 * @param organization the organization
-	 * @param state the state
-	 * @param group the group
-	 * @return the list
-	 */
-	List<Account> findByOrganizationAndStateAndGroupOrderByOrganizationNameAndLogin (Organization organization, ActivityStates state, Group group);
-
-	/**
-	 * Find by organization and role list.
-	 *
-	 * @param organization the organization
-	 * @param role the role
-	 * @return the list
-	 */
-	List<Account> findByOrganizationAndRole (Organization organization, Role role);
-
-	/**
-	 * Find by organization and login and state list.
-	 *
-	 * @param organization the organization
-	 * @param login the login
-	 * @param state the state
-	 * @return the list
-	 */
-	List<Account> findByOrganizationAndLoginAndState (Organization organization, String login, ActivityStates state);
-
-	/**
-	 * Find by login and state list.
-	 *
-	 * @param login the login
-	 * @param state the state
-	 * @return the list
-	 */
-	List<Account> findByLoginAndState (String login, ActivityStates state);
-
-	/**
-	 * Find by login and state and group prefix list.
-	 *
-	 * @param login the login
-	 * @param state the state
-	 * @param groupCodePrefix the group code prefix
-	 * @return the list
-	 */
-	List<Account> findByLoginAndStateAndGroupPrefix (String login, ActivityStates state, String groupCodePrefix);
+	List<O> findAll ();
 
 	/**
 	 * Find by email list.
@@ -147,17 +95,7 @@ public interface AccountManagementService
 	 * @param email the email
 	 * @return the list
 	 */
-	List<Account> findByEmail (String email);
-
-	/**
-	 * Find by by login account.
-	 *
-	 * @param login the login
-	 * @return the account
-	 * @throws NoResultException the no result exception
-	 * @throws CSecurityException the c security exception
-	 */
-	Account findByByLogin (String login) throws NoResultException, CSecurityException;
+	List<O> findByEmail (String email);
 
 	/**
 	 * Exists by login boolean.
@@ -176,26 +114,26 @@ public interface AccountManagementService
 	boolean existsByPin (String pin);
 
 	/**
-	 * Update account.
+	 * Update o.
 	 *
 	 * @param account the account
-	 * @return the account
+	 * @return the o
 	 */
-	Account update (Account account);
+	O update (I account);
 
 	/**
-	 * Activate account.
+	 * Activate o.
 	 *
 	 * @param id the id
-	 * @return the account
+	 * @return the o
 	 */
-	Account activate (Long id);
+	O activate (Long id);
 
 	/**
-	 * Inactivate account.
+	 * Inactivate o.
 	 *
 	 * @param id the id
-	 * @return the account
+	 * @return the o
 	 */
-	Account inactivate (Long id);
+	O inactivate (Long id);
 }

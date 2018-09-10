@@ -2,7 +2,8 @@ package sk.qbsw.security.organization.rest.oauth.complex.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
 import sk.qbsw.security.organization.complex.oauth.service.facade.ComplexOrganizationOAuthServiceFacade;
 import sk.qbsw.security.organization.rest.oauth.complex.client.model.CSComplexOrganizationAccountData;
 import sk.qbsw.security.rest.oauth.api.base.controller.AuthenticationControllerBase;
@@ -21,7 +22,7 @@ public class AuthenticationComplexController extends AuthenticationControllerBas
 	/**
 	 * Instantiates a new Authentication controller.
 	 *
-	 * @param oAuthService   the o auth service
+	 * @param oAuthService the o auth service
 	 * @param securityMapper the security mapper
 	 */
 	@Autowired

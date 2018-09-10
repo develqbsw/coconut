@@ -9,9 +9,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.InvalidAuthenticationException;
-import sk.qbsw.security.authentication.service.AuthenticationService;
+import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.authentication.db.test.util.AuthenticationTestProvider;
 import sk.qbsw.security.authentication.db.test.util.DataGenerator;
+import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.management.service.AccountCredentialManagementService;
@@ -44,7 +46,7 @@ public class DatabaseAuthenticationTestCase
 	private AuthenticationTestProvider authenticationTestProvider;
 
 	@Autowired
-	private AccountManagementService accountService;
+	private AccountManagementService<AccountInputData, AccountData> accountService;
 
 	@Autowired
 	private OrganizationDao organizationDao;

@@ -1,7 +1,7 @@
 package sk.qbsw.security.organization.complex.oauth.service;
 
 import sk.qbsw.security.oauth.service.OAuthService;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
 
 /**
  * The complex organization oauth service.

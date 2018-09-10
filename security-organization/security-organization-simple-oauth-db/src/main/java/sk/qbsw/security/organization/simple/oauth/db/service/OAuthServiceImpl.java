@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.service.OAuthServiceBase;
 import sk.qbsw.security.oauth.model.AuthenticationData;
 import sk.qbsw.security.oauth.model.ExpiredTokenData;
@@ -11,10 +12,9 @@ import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.AuthenticationTokenService;
 import sk.qbsw.security.oauth.service.MasterTokenService;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.model.AuthenticationTokenData;
 import sk.qbsw.security.organization.simple.oauth.model.MasterTokenData;
-import sk.qbsw.security.organization.simple.oauth.model.OrganizationData;
-import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
 import sk.qbsw.security.organization.simple.oauth.service.SimpleOrganizationOAuthService;
 
 import java.util.HashMap;
@@ -36,10 +36,11 @@ public class OAuthServiceImpl extends OAuthServiceBase<Account, SimpleOrganizati
 	 * @param masterTokenService the master token service
 	 * @param authenticationTokenService the authentication token service
 	 * @param authenticationService the authentication service
+	 * @param simpleOrganizationAccountMapperImpl the simple organization account mapper
 	 */
-	public OAuthServiceImpl (MasterTokenService<SimpleOrganizationAccountData, MasterTokenData> masterTokenService, AuthenticationTokenService<SimpleOrganizationAccountData, AuthenticationTokenData> authenticationTokenService, AuthenticationService authenticationService)
+	public OAuthServiceImpl (MasterTokenService<SimpleOrganizationAccountData, MasterTokenData> masterTokenService, AuthenticationTokenService<SimpleOrganizationAccountData, AuthenticationTokenData> authenticationTokenService, AuthenticationService authenticationService, AccountOutputDataMapper<SimpleOrganizationAccountData, Account> simpleOrganizationAccountMapperImpl)
 	{
-		super(masterTokenService, authenticationTokenService, authenticationService);
+		super(masterTokenService, authenticationTokenService, authenticationService, simpleOrganizationAccountMapperImpl);
 	}
 
 	@Override
@@ -80,15 +81,16 @@ public class OAuthServiceImpl extends OAuthServiceBase<Account, SimpleOrganizati
 	@Override
 	protected SimpleOrganizationAccountData createAccountData (Account account, Map<String, Object> additionalInformation)
 	{
-		OrganizationData organization = new OrganizationData(account.getOrganization().getId(), account.getOrganization().getName(), account.getOrganization().getCode());
-
 		if (additionalInformation != null)
 		{
-			return new SimpleOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organization, additionalInformation);
+			SimpleOrganizationAccountData accountData = accountOutputDataMapper.mapToAccountOutputData(account);
+			accountData.setAdditionalInformation(additionalInformation);
+
+			return accountData;
 		}
 		else
 		{
-			return new SimpleOrganizationAccountData(account.getId(), account.getLogin(), account.getEmail(), account.exportGroups(), account.exportRoles(), organization, new HashMap<>());
+			return accountOutputDataMapper.mapToAccountOutputData(account);
 		}
 	}
 

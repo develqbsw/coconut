@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import sk.qbsw.security.oauth.model.VerificationData;
-import sk.qbsw.security.organization.complex.oauth.model.ComplexOrganizationAccountData;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
 import sk.qbsw.security.organization.complex.oauth.service.facade.ComplexOrganizationOAuthServiceFacade;
 import sk.qbsw.security.organization.spring.complex.base.model.ComplexOrganization;
 import sk.qbsw.security.organization.spring.complex.base.model.ComplexOrganizationUnit;

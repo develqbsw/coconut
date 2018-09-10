@@ -1,6 +1,7 @@
 package sk.qbsw.security.organization.complex.oauth.model;
 
 import sk.qbsw.security.oauth.model.AuthenticationTokenDataBase;
+import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
 
 /**
  * The authentication token data.

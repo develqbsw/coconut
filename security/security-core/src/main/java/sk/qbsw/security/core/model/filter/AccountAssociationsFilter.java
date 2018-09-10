@@ -3,10 +3,6 @@ package sk.qbsw.security.core.model.filter;
 import lombok.Getter;
 import lombok.Setter;
 import sk.qbsw.core.base.state.ActivityStates;
-import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.model.domain.Group;
-import sk.qbsw.security.core.model.domain.Organization;
-import sk.qbsw.security.core.model.domain.Role;
 
 /**
  * The account associations filter.
@@ -19,13 +15,13 @@ import sk.qbsw.security.core.model.domain.Role;
 @Setter
 public class AccountAssociationsFilter
 {
-	private Organization organization;
+	private String organizationCode;
 
 	private ActivityStates state;
 
-	private Group group;
+	private String groupCode;
 
-	private Role role;
+	private String roleCode;
 
-	private Account excludedAccount;
+	private String excludedLogin;
 }

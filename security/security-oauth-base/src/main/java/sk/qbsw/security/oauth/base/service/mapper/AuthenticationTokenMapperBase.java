@@ -2,7 +2,7 @@ package sk.qbsw.security.oauth.base.service.mapper;
 
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.service.mapper.AccountMapper;
+import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.oauth.base.model.domain.AuthenticationTokenBase;
 import sk.qbsw.security.oauth.model.AuthenticationTokenDataBase;
 
@@ -22,16 +22,16 @@ public abstract class AuthenticationTokenMapperBase<A extends Account, T extends
 	/**
 	 * The Account mapper.
 	 */
-	protected final AccountMapper<D, A> accountMapper;
+	protected final AccountOutputDataMapper<D, A> accountOutputDataMapper;
 
 	/**
 	 * Instantiates a new Authentication token mapper base.
 	 *
-	 * @param accountMapper the account mapper
+	 * @param accountOutputDataMapper the account output data mapper
 	 */
-	protected AuthenticationTokenMapperBase (AccountMapper<D, A> accountMapper)
+	protected AuthenticationTokenMapperBase (AccountOutputDataMapper<D, A> accountOutputDataMapper)
 	{
-		this.accountMapper = accountMapper;
+		this.accountOutputDataMapper = accountOutputDataMapper;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public abstract class AuthenticationTokenMapperBase<A extends Account, T extends
 		authenticationTokenData.setToken(authenticationToken.getToken());
 		authenticationTokenData.setDeviceId(authenticationToken.getDeviceId());
 		authenticationTokenData.setIp(authenticationToken.getIp());
-		authenticationTokenData.setAccountData(accountMapper.mapToAccountData(authenticationToken.getAccount()));
+		authenticationTokenData.setAccountData(accountOutputDataMapper.mapToAccountOutputData(authenticationToken.getAccount()));
 
 		return authenticationTokenData;
 	}

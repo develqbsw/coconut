@@ -3,6 +3,9 @@ package sk.qbsw.security.authentication.db.test.util;
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountDataTypes;
+import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
@@ -286,15 +289,21 @@ public class AuthenticationTestProvider
 	 * @param dataGenerator the data generator
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangeEncryptedPasswordNewAccount (AuthenticationService authenticationService, AccountManagementService accountService, AccountDao accountDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewAccount (AuthenticationService authenticationService, AccountManagementService<AccountInputData, AccountData> accountService, AccountDao accountDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
 	{
 		// create new account and needed objects
-		Account newAccount = dataGenerator.createAccount(DataGenerator.ACCOUNT_WITHOUT_PASSWORD);
 		Organization organization = orgDao.findOneByCode(DataGenerator.ORGANIZATION_CODE);
+
+		AccountInputData accountInputData = new AccountInputData();
+		accountInputData.setLogin(DataGenerator.ACCOUNT_WITHOUT_PASSWORD);
+		accountInputData.setEmail(DataGenerator.ACCOUNT_WITHOUT_PASSWORD + "@qbsw.sk");
+		accountInputData.setType(AccountDataTypes.PERSONAL);
+		accountInputData.setOrganizationId(organization.getId());
+
 		String newPassword = "change56%PasswordNewAccount";
 
 		// register account
-		accountService.register(newAccount, newPassword, organization);
+		accountService.register(accountInputData, newPassword);
 
 		// flush and clear persistent context - the account's auth params are saved using dao
 		accountDao.flush();
@@ -311,17 +320,17 @@ public class AuthenticationTestProvider
 	 * @param accountService the account service
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangeLogin (AccountCredentialManagementService authenticationService, AccountManagementService accountService) throws CSecurityException
+	public void testChangeLogin (AccountCredentialManagementService authenticationService, AccountManagementService<AccountInputData, AccountData> accountService) throws CSecurityException
 	{
 		String newLogin = "new1Login#";
-		Account account = accountService.findByByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
+		AccountData accountData = accountService.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
 		// change login
-		authenticationService.changeLogin(account.getId(), newLogin);
+		authenticationService.changeLogin(accountData.getId(), newLogin);
 
 		// test new and old login
-		Account accountWithNewLogin = accountService.findByByLogin(newLogin);
-		Assert.assertEquals("There login change failed", account.getId(), accountWithNewLogin.getId());
+		AccountData accountWithNewLogin = accountService.findOneByLogin(newLogin);
+		Assert.assertEquals("There login change failed", accountData.getId(), accountWithNewLogin.getId());
 	}
 
 	/**

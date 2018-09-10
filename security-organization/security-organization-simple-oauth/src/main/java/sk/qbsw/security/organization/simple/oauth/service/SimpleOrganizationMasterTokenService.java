@@ -2,7 +2,7 @@ package sk.qbsw.security.organization.simple.oauth.service;
 
 import sk.qbsw.security.oauth.model.MasterTokenDataBase;
 import sk.qbsw.security.oauth.service.MasterTokenService;
-import sk.qbsw.security.organization.simple.oauth.model.SimpleOrganizationAccountData;
+import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
 
 /**
  * The simple organization master token service.
