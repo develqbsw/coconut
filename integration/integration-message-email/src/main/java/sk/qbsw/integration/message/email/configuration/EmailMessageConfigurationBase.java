@@ -1,11 +1,14 @@
 package sk.qbsw.integration.message.email.configuration;
 
+import java.util.Properties;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import sk.qbsw.core.persistence.dao.support.CFetchCapableQueryDslJpaRepositoryFactoryBean;
 import sk.qbsw.integration.message.email.configuration.properties.EmailNetworkConfiguration;
 import sk.qbsw.integration.message.email.configuration.properties.EmailStorageConfiguration;
@@ -13,8 +16,7 @@ import sk.qbsw.integration.message.email.configuration.properties.ProcessEmailTa
 import sk.qbsw.integration.message.email.repository.EmailRepository;
 import sk.qbsw.integration.message.email.service.ProcessEmailServiceImpl;
 import sk.qbsw.integration.message.email.task.ProcessEmailTask;
-
-import java.util.Properties;
+import sk.qbsw.integration.message.service.ProcessMessageService;
 
 /**
  * The email message configuration base.
@@ -30,9 +32,9 @@ import java.util.Properties;
 public abstract class EmailMessageConfigurationBase
 {
 	@Bean
-	public ProcessEmailTask processEmailTask (ProcessEmailTaskConfiguration processEmailTaskConfiguration, EmailStorageConfiguration emailStorageConfiguration, EmailRepository emailRepository, JavaMailSender mailSender, ResourceLoader resourceLoader)
+	public ProcessEmailTask processEmailTask (ProcessMessageService processMessageService)
 	{
-		return new ProcessEmailTask(processMessageService(processEmailTaskConfiguration, emailStorageConfiguration, emailRepository, mailSender, resourceLoader));
+		return new ProcessEmailTask(processMessageService);
 	}
 
 	@Bean
