@@ -29,7 +29,7 @@ public class MessageState extends AEntity<Long>
 	@Id
 	@NotNull
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "messageStateSequenceGenerator")
-	@SequenceGenerator (name = "messageStateSequenceGenerator", schema = DatabaseSchemas.MESSAGING, sequenceName = "s_message_state")
+	@SequenceGenerator (name = "messageStateSequenceGenerator", sequenceName = DatabaseSchemas.MESSAGING + ".s_message_state")
 	@Column (name = "pk_id")
 	private Long id;
 

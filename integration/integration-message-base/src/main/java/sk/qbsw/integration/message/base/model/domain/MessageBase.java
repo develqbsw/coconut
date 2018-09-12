@@ -35,7 +35,7 @@ public abstract class MessageBase extends AEntity<Long> implements Message, Stat
 	@Id
 	@NotNull
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "messageSequenceGenerator")
-	@SequenceGenerator (name = "messageSequenceGenerator", schema = DatabaseSchemas.MESSAGING, sequenceName = "s_message")
+	@SequenceGenerator (name = "messageSequenceGenerator", sequenceName = DatabaseSchemas.MESSAGING + ".s_message")
 	@Column (name = "pk_id")
 	private Long id;
 

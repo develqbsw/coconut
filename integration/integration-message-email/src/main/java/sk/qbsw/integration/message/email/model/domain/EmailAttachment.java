@@ -26,8 +26,8 @@ public class EmailAttachment extends MessageAttachmentBase
 
 	@Id
 	@NotNull
-	@SequenceGenerator (name = "emailAttachmentSequenceGenerator", sequenceName = DatabaseSchemas.MESSAGING + ".s_email_attachment")
 	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "emailAttachmentSequenceGenerator")
+	@SequenceGenerator (name = "emailAttachmentSequenceGenerator", sequenceName = DatabaseSchemas.MESSAGING + ".s_email_attachment")
 	@Column (name = "pk_id")
 	private Long id;
 
