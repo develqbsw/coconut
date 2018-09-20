@@ -69,7 +69,6 @@ public class ProcessEmailServiceImpl implements ProcessMessageService
 
 		emails.forEach(email -> {
 			sendEmail(email, emailStorageConfiguration.getCompleteAttachmentsFileSystemPath());
-			email.changeState(MessageStates.SENT);
 			emailRepository.save(email);
 		});
 	}
@@ -111,6 +110,8 @@ public class ProcessEmailServiceImpl implements ProcessMessageService
 
 			// send message
 			mailSender.send(message);
+
+			email.changeState(MessageStates.SENT);
 		}
 		catch (MailAuthenticationException | MailSendException e)
 		{
