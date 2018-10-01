@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.base.exception;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 
 /**
  * The invalid account exception.
@@ -19,6 +20,17 @@ public class InvalidAccountException extends CSecurityException
 	 */
 	public InvalidAccountException (String message)
 	{
-		super(message);
+		super(message, ECoreErrorResponse.ACCESS_DENIED);
+	}
+	
+	/**
+	 * Instantiates a new invalid account exception.
+	 *
+	 * @param message the message
+	 * @param errorResponse the error response
+	 */
+	public InvalidAccountException (String message, Throwable errorResponse)
+	{
+		super(message, errorResponse);
 	}
 }

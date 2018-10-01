@@ -67,7 +67,11 @@ public enum ECoreErrorResponse implements IErrorResponse
 	AUTHENTICATION_TOKEN_INVALIDATED ("10013", "error.security.oauth.authenticationtokeninvalidated"),
 
 	/** The user not found. */
-	ACCOUNT_NOT_FOUND ("10014", "error.security.usernotfound");
+	ACCOUNT_NOT_FOUND ("10014", "error.security.usernotfound"),
+	
+	/** The password incorrect format. */
+	PASSWORD_INVALID_FORMAT ("10015", "error.security.invalidpasswordformat"),
+	;
 
 	/**
 	 * code of the error. This is shot code represent error in application

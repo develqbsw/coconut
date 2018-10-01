@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.base.exception;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 
 /**
  * Incorrect password format exception - the password doesn't match pattern.
@@ -21,6 +22,16 @@ public class PasswordFormatException extends CSecurityException
 	 */
 	public PasswordFormatException (String message)
 	{
-		super(message);
+		super(message, ECoreErrorResponse.PASSWORD_INVALID_FORMAT);
+	}
+	
+	/**
+	 * Instantiates a new password format exception.
+	 *
+	 * @param message the message
+	 */
+	public PasswordFormatException (String message, ECoreErrorResponse errorResponse)
+	{
+		super(message, errorResponse);
 	}
 }

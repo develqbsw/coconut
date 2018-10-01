@@ -1,6 +1,7 @@
 package sk.qbsw.core.security.base.exception;
 
 import sk.qbsw.core.base.exception.CSecurityException;
+import sk.qbsw.core.base.exception.ECoreErrorResponse;
 
 /**
  * Invalid password exception.
@@ -19,7 +20,17 @@ public class InvalidPasswordException extends CSecurityException
 	 */
 	public InvalidPasswordException (String message)
 	{
-		super(message);
+		super(message, ECoreErrorResponse.ACCESS_DENIED);
 	}
 
+	/**
+	 * Instantiates a new invalid password exception.
+	 *
+	 * @param message the message
+	 * @param errorResponse the error response
+	 */
+	public InvalidPasswordException (String message, ECoreErrorResponse errorResponse)
+	{
+		super(message, errorResponse);
+	}
 }
