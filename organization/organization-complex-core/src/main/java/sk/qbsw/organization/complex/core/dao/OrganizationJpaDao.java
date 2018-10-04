@@ -53,7 +53,7 @@ public class OrganizationJpaDao extends AEntityQDslDao<Long, Organization> imple
 		QOrganization qOrganization = QOrganization.organization;
 
 		// create query
-		JPAQuery<Organization> query = queryFactory.selectFrom(qOrganization).orderBy(qOrganization.name.asc());
+		JPAQuery<Organization> query = queryFactory.selectFrom(qOrganization).distinct().leftJoin(qOrganization.units).fetchJoin().orderBy(qOrganization.name.asc());
 		return query.fetch();
 	}
 
