@@ -73,7 +73,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 
 	@Override
 	@SuppressWarnings ("unchecked")
-	public A findByUid (String uid) throws NoResultException
+	public A findByUid (String uid)
 	{
 		// get hibernate session from entity manager to set filter
 		Session session = getEntityManager().unwrap(Session.class);
@@ -96,7 +96,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
 				.leftJoin(qGroup.roles).fetchJoin() //
 				.where(qAccount.uid.eq(uid));
-			return (A) CQDslDaoHelper.handleUniqueResultQuery(query);
+			return (A) CQDslDaoHelper.handleUniqueResultQueryByNull(query);
 		}
 		finally
 		{

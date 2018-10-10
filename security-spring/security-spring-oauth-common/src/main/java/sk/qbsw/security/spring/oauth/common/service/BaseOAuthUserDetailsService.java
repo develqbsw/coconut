@@ -2,6 +2,7 @@ package sk.qbsw.security.spring.oauth.common.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.util.Assert;
 import sk.qbsw.security.spring.oauth.common.model.OAuthWebAuthenticationDetails;
 
 import java.util.ArrayList;
@@ -29,8 +29,10 @@ public abstract class BaseOAuthUserDetailsService implements AuthenticationUserD
 
 	public final UserDetails loadUserDetails (PreAuthenticatedAuthenticationToken token) throws AuthenticationException
 	{
-		Assert.notNull(token.getDetails());
-		Assert.isInstanceOf(OAuthWebAuthenticationDetails.class, token.getDetails());
+		if (! (token.getDetails() instanceof OAuthWebAuthenticationDetails))
+		{
+			throw new BadCredentialsException("There are no expected OAuth token details");
+		}
 
 		return createUserDetails(token);
 	}

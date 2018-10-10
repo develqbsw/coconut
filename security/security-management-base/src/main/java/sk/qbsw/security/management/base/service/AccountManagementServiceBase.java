@@ -154,7 +154,7 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 	 * @param accountInputData the account input data
 	 * @throws CSecurityException the c security exception
 	 */
-	protected void validateRegisterInput (AccountInputData accountInputData) throws CSecurityException
+	protected void validateRegisterInput (I accountInputData) throws CSecurityException
 	{
 		// validate account
 		try

@@ -25,6 +25,11 @@ public class AccountInputData implements Serializable
 {
 	private static final long serialVersionUID = 7550450192096285816L;
 
+	/**
+	 * The constant DEFAULT_ORGANIZATION_ID.
+	 */
+	public static final Long DEFAULT_ORGANIZATION_ID = 1L;
+
 	@NotNull (groups = {Update.class})
 	private Long id;
 

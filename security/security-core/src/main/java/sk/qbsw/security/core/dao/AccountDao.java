@@ -39,9 +39,8 @@ public interface AccountDao<A extends Account>extends IEntityDao<Long, A>
 	 *
 	 * @param uid the uid
 	 * @return the account
-	 * @throws NoResultException the no result exception
 	 */
-	A findByUid (String uid) throws NoResultException;
+	A findByUid (String uid);
 
 	/**
 	 * Find one by login and unit account.

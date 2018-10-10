@@ -305,6 +305,16 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-iam-auth-common</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-iam-auth-base</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
                 <artifactId>security-spring-auth-base</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
