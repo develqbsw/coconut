@@ -12,6 +12,7 @@ import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.AuthenticationParams;
 import sk.qbsw.security.core.model.domain.Organization;
@@ -54,6 +55,11 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 	protected final AccountDao<A> accountDao;
 
 	/**
+	 * The User dao.
+	 */
+	protected final UserDao userDao;
+
+	/**
 	 * The Organization dao.
 	 */
 	protected final OrganizationDao organizationDao;
@@ -82,15 +88,17 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 	 * Instantiates a new account management service.
 	 *
 	 * @param accountDao the account dao
+	 * @param userDao the user dao
 	 * @param organizationDao the organization dao
 	 * @param authenticationParamsDao the authentication params dao
 	 * @param authenticationService the authentication service
 	 * @param accountAccountInputDataMapper the account account input data mapper
 	 * @param accountOutputDataMapper the account output data mapper
 	 */
-	public AccountManagementServiceBase (AccountDao<A> accountDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<I, A> accountAccountInputDataMapper, AccountOutputDataMapper<O, A> accountOutputDataMapper)
+	public AccountManagementServiceBase (AccountDao<A> accountDao, UserDao userDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<I, A> accountAccountInputDataMapper, AccountOutputDataMapper<O, A> accountOutputDataMapper)
 	{
 		this.accountDao = accountDao;
+		this.userDao = userDao;
 		this.organizationDao = organizationDao;
 		this.authenticationParamsDao = authenticationParamsDao;
 		this.authenticationService = authenticationService;
@@ -135,6 +143,12 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 
 		// map account
 		A account = accountAccountInputDataMapper.mapToAccount(accountInputData);
+
+		if (account.getUser() != null && account.getUser().getId() == null)
+		{
+			account.setUser(userDao.update(account.getUser()));
+		}
+
 		account = accountDao.update(account);
 
 		// create and create empty authentication params

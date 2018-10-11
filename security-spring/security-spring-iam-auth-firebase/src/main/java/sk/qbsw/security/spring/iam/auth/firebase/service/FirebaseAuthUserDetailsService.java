@@ -1,12 +1,14 @@
 package sk.qbsw.security.spring.iam.auth.firebase.service;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.core.security.base.model.AccountDataTypes;
@@ -74,16 +76,34 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 		}
 	}
 
-	private AccountData findOrCreateAccount (FirebaseToken firebaseToken) throws CBusinessException
+	/**
+	 * Find or create account account data.
+	 *
+	 * @param firebaseToken the firebase token
+	 * @return the account data
+	 * @throws CBusinessException the c business exception
+	 */
+	protected AccountData findOrCreateAccount (FirebaseToken firebaseToken) throws CBusinessException
 	{
 		AccountData accountData = accountManagementService.findOneByUid(firebaseToken.getUid());
 
 		if (accountData == null)
 		{
-			accountData = accountManagementService.register(new AccountInputData(null, firebaseToken.getUid(), firebaseToken.getEmail(), firebaseToken.getEmail(), AccountDataTypes.PERSONAL, AccountInputData.DEFAULT_ORGANIZATION_ID));
+			accountData = accountManagementService.register(createAccountInputData(firebaseToken));
 			accountPermissionManagementService.assignAccountToGroup(accountData.getLogin(), accountPermissionConfiguration.getAccountDefaultGroupCode());
 		}
 
 		return accountManagementService.findOneByLogin(accountData.getLogin());
+	}
+
+	/**
+	 * Create account input data account input data.
+	 *
+	 * @param firebaseToken the firebase token
+	 * @return the account input data
+	 */
+	protected AccountInputData createAccountInputData (FirebaseToken firebaseToken)
+	{
+		return new AccountInputData(null, firebaseToken.getUid(), firebaseToken.getEmail(), firebaseToken.getEmail(), AccountDataTypes.PERSONAL, null, AccountInputData.DEFAULT_ORGANIZATION_ID);
 	}
 }

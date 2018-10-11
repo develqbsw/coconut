@@ -17,6 +17,18 @@ import sk.qbsw.security.core.model.domain.Organization;
  */
 public abstract class AccountInputDataMapperBase<I extends AccountInputData, A extends Account> implements AccountInputDataMapper<I, A>
 {
+	private final UserInputDataMapper userInputDataMapper;
+
+	/**
+	 * Instantiates a new Account input data mapper base.
+	 *
+	 * @param userInputDataMapper the user input data mapper
+	 */
+	protected AccountInputDataMapperBase (UserInputDataMapper userInputDataMapper)
+	{
+		this.userInputDataMapper = userInputDataMapper;
+	}
+
 	@Override
 	public A mapToAccount (I accountInputData)
 	{
@@ -35,6 +47,7 @@ public abstract class AccountInputDataMapperBase<I extends AccountInputData, A e
 		account.setEmail(accountInputData.getEmail());
 		account.setType(mapToAccountType(accountInputData.getType()));
 		account.setOrganization(organization);
+		account.setUser(userInputDataMapper.mapToUser(accountInputData.getUser()));
 
 		return account;
 	}

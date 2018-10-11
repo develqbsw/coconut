@@ -9,7 +9,7 @@ import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.service.signature.PasswordDigester;
-import sk.qbsw.security.oauth.db.configuration.BaseSecurityOAuthConfiguration;
+import sk.qbsw.security.oauth.db.configuration.SecurityOAuthConfigurationBase;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 
 /**
@@ -19,7 +19,7 @@ import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
  * @version 1.19.0
  * @since 1.18.2
  */
-public class SecurityOAuthTestConfiguration extends BaseSecurityOAuthConfiguration
+public class SecurityOAuthTestConfiguration extends SecurityOAuthConfigurationBase
 {
 	@Bean
 	public OAuthValidationConfigurator oAuthValidationConfiguration (ISystemParameterService systemParameterService)

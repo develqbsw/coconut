@@ -25,31 +25,43 @@ import sk.qbsw.security.management.service.AccountPermissionManagementService;
 public class SecurityManagementConfiguration extends SecurityCoreConfiguration
 {
 	@Bean
-	public AccountInputDataMapper<AccountInputData, Account> accountInputDataMapper ()
+	public UserInputDataMapper userInputDataMapper ()
 	{
-		return new AccountInputDataMapperImpl();
+		return new UserInputDataMapperImpl();
 	}
 
 	@Bean
-	public AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper ()
+	public UserOutputDataMapper userOutputDataMapper ()
 	{
-		return new AccountOutputDataMapperImpl();
+		return new UserOutputDataMapperImpl();
 	}
 
 	@Bean
-	public AccountCredentialManagementService accountCredentialManagementService (AccountDao accountDao, AuthenticationParamsDao authenticationParamsDao, PasswordDigester digester, SecurityCoreConfigurator securityCoreConfigurator)
+	public AccountInputDataMapper<AccountInputData, Account> accountInputDataMapper (UserInputDataMapper userInputDataMapper)
+	{
+		return new AccountInputDataMapperImpl(userInputDataMapper);
+	}
+
+	@Bean
+	public AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper (UserOutputDataMapper userOutputDataMapper)
+	{
+		return new AccountOutputDataMapperImpl(userOutputDataMapper);
+	}
+
+	@Bean
+	public AccountCredentialManagementService accountCredentialManagementService (AccountDao<Account> accountDao, AuthenticationParamsDao authenticationParamsDao, PasswordDigester digester, SecurityCoreConfigurator securityCoreConfigurator)
 	{
 		return new AccountCredentialManagementServiceImpl(accountDao, authenticationParamsDao, digester, securityCoreConfigurator);
 	}
 
 	@Bean
-	public AccountManagementService<AccountInputData, AccountData> accountManagementService (AccountDao accountDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<AccountInputData, Account> accountAccountInputDataMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
+	public AccountManagementService<AccountInputData, AccountData> accountManagementService (AccountDao<Account> accountDao, UserDao userDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<AccountInputData, Account> accountAccountInputDataMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
 	{
-		return new AccountManagementServiceImpl(accountDao, organizationDao, authenticationParamsDao, authenticationService, accountAccountInputDataMapper, accountOutputDataMapper);
+		return new AccountManagementServiceImpl(accountDao, userDao, organizationDao, authenticationParamsDao, authenticationService, accountAccountInputDataMapper, accountOutputDataMapper);
 	}
 
 	@Bean
-	public AccountPermissionManagementService accountPermissionManagementService (AccountDao accountDao, GroupDao groupDao, UnitDao unitDao, AccountUnitGroupDao accountUnitGroupDao)
+	public AccountPermissionManagementService accountPermissionManagementService (AccountDao<Account> accountDao, GroupDao groupDao, UnitDao unitDao, AccountUnitGroupDao accountUnitGroupDao)
 	{
 		return new AccountPermissionManagementServiceImpl(accountDao, groupDao, unitDao, accountUnitGroupDao);
 	}

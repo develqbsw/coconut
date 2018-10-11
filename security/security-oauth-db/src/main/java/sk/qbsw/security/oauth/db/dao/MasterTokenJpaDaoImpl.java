@@ -35,12 +35,14 @@ public class MasterTokenJpaDaoImpl extends MasterTokenJpaDaoBase<Account, Master
 	public MasterToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException
 	{
 		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
+		QAccount qAccount = QAccount.account;
 
 		Predicate predicate = super.findByAccountIdAndDeviceIdPredicate(accountId, deviceId);
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.account).fetchJoin() //
+			.leftJoin(qMasterToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(predicate) //
 			.fetchFirst();
 	}
@@ -49,12 +51,14 @@ public class MasterTokenJpaDaoImpl extends MasterTokenJpaDaoBase<Account, Master
 	public MasterToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException
 	{
 		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
+		QAccount qAccount = QAccount.account;
 
 		Predicate predicate = super.findByAccountIdAndTokenPredicate(accountId, token);
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.account).fetchJoin() //
+			.leftJoin(qMasterToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(predicate) //
 			.fetchFirst();
 	}
@@ -63,12 +67,14 @@ public class MasterTokenJpaDaoImpl extends MasterTokenJpaDaoBase<Account, Master
 	public MasterToken findByAccountIdAndTokenAndDeviceId (Long accountId, String token, String deviceId) throws CBusinessException
 	{
 		QMasterToken qMasterToken = new QMasterToken(Q_VARIABLE_NAME);
+		QAccount qAccount = QAccount.account;
 
 		Predicate predicate = super.findByAccountIdAndTokenAndDeviceIdPredicate(accountId, token, deviceId);
 
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
-			.leftJoin(qMasterToken.account).fetchJoin() //
+			.leftJoin(qMasterToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(predicate) //
 			.fetchFirst();
 	}
@@ -94,6 +100,7 @@ public class MasterTokenJpaDaoImpl extends MasterTokenJpaDaoBase<Account, Master
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(predicate) //
 			.fetchFirst();
 	}

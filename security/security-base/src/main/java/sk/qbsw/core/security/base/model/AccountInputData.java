@@ -44,6 +44,8 @@ public class AccountInputData implements Serializable
 	@NotNull (groups = {Create.class, Update.class})
 	private AccountDataTypes type = AccountDataTypes.PERSONAL;
 
+	private UserInputData user;
+
 	// TODO: move to security-organization
 	@NotNull (groups = {Create.class, Update.class})
 	private Long organizationId;

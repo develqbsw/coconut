@@ -34,12 +34,14 @@ public class AuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoBase
 	public AuthenticationToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException
 	{
 		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
+		QAccount qAccount = QAccount.account;
 
 		Predicate predicate = super.findByAccountIdAndDeviceIdPredicate(accountId, deviceId);
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.account).fetchJoin() //
+			.leftJoin(qAuthenticationToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(predicate) //
 			.fetchFirst();
 	}
@@ -48,12 +50,14 @@ public class AuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoBase
 	public AuthenticationToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException
 	{
 		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
+		QAccount qAccount = QAccount.account;
 
 		Predicate predicate = super.findByAccountIdAndTokenPredicate(accountId, token);
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.account).fetchJoin() //
+			.leftJoin(qAuthenticationToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(predicate) //
 			.fetchFirst();
 	}
@@ -74,6 +78,7 @@ public class AuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoBase
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(predicate) //
 			.fetchFirst();
 	}

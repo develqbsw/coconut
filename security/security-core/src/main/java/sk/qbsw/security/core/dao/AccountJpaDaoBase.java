@@ -61,6 +61,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
 				.leftJoin(qGroup.roles).fetchJoin() //
+				.leftJoin(qAccount.user).fetchJoin() //
 				.where(qAccount.id.eq(id));
 			return (A) CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
@@ -95,6 +96,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
 				.leftJoin(qGroup.roles).fetchJoin() //
+				.leftJoin(qAccount.user).fetchJoin() //
 				.where(qAccount.uid.eq(uid));
 			return (A) CQDslDaoHelper.handleUniqueResultQueryByNull(query);
 		}
@@ -160,6 +162,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.fetchJoin().leftJoin(qAccountUnitGroup.group, qGroup) //
 				.fetchJoin().leftJoin(qAccountUnitGroup.unit, qUnit).fetchJoin() //
 				.leftJoin(qGroup.roles).fetchJoin() //
+				.leftJoin(qAccount.user).fetchJoin() //
 				.where(builder);
 			return (A) CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
@@ -235,6 +238,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.unit, qUnit).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(builder);
 
 		// set order
@@ -299,6 +303,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
+				.leftJoin(qAccount.user).fetchJoin() //
 				.where(builder);
 
 			// set order
@@ -372,6 +377,7 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
 				.leftJoin(qGroup.roles, qRole).fetchJoin() //
+				.leftJoin(qAccount.user).fetchJoin() //
 				.where(builder);
 
 			// set order

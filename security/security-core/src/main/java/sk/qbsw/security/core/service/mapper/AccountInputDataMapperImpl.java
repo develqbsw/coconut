@@ -12,6 +12,16 @@ import sk.qbsw.security.core.model.domain.Account;
  */
 public class AccountInputDataMapperImpl extends AccountInputDataMapperBase<AccountInputData, Account> implements AccountInputDataMapper<AccountInputData, Account>
 {
+	/**
+	 * Instantiates a new Account input data mapper base.
+	 *
+	 * @param userInputDataMapper the user input data mapper
+	 */
+	public AccountInputDataMapperImpl (UserInputDataMapper userInputDataMapper)
+	{
+		super(userInputDataMapper);
+	}
+
 	@Override
 	protected Account instantiateAccountWithCustomAttributes (AccountInputData accountInputData)
 	{

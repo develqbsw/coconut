@@ -28,6 +28,10 @@ public class CSAccountData extends BaseClientEntity
 	@NotNull
 	private Long id;
 
+	@ApiModelProperty (required = true, value = "The user uid")
+	@NotNull
+	private String uid;
+
 	@ApiModelProperty (required = true, value = "The login")
 	@NotNull
 	private String login;

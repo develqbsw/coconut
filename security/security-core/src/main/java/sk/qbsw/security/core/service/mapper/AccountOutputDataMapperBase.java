@@ -16,6 +16,13 @@ import sk.qbsw.security.core.model.domain.AccountTypes;
  */
 public abstract class AccountOutputDataMapperBase<O extends AccountData, A extends Account> implements AccountOutputDataMapper<O, A>
 {
+	private final UserOutputDataMapper userOutputDataMapper;
+
+	protected AccountOutputDataMapperBase (UserOutputDataMapper userOutputDataMapper)
+	{
+		this.userOutputDataMapper = userOutputDataMapper;
+	}
+
 	@Override
 	public O mapToAccountOutputData (A account)
 	{
@@ -33,6 +40,7 @@ public abstract class AccountOutputDataMapperBase<O extends AccountData, A exten
 		accountData.setType(mapToAccountDataType(account.getType()));
 		accountData.setGroups(account.exportGroups());
 		accountData.setRoles(account.exportRoles());
+		accountData.setUser(userOutputDataMapper.mapToUserOutputData(account.getUser()));
 
 		return accountData;
 	}

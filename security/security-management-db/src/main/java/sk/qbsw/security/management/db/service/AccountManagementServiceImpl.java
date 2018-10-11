@@ -9,6 +9,7 @@ import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.service.mapper.AccountInputDataMapper;
 import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
@@ -34,15 +35,16 @@ public class AccountManagementServiceImpl extends AccountManagementServiceBase<A
 	 * Instantiates a new account management service.
 	 *
 	 * @param accountDao the account dao
+	 * @param userDao the user dao
 	 * @param organizationDao the organization dao
 	 * @param authenticationParamsDao the authentication params dao
 	 * @param authenticationService the authentication service
 	 * @param accountAccountInputDataMapper the account account input data mapper
 	 * @param accountOutputDataMapper the account output data mapper
 	 */
-	public AccountManagementServiceImpl (AccountDao<Account> accountDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<AccountInputData, Account> accountAccountInputDataMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
+	public AccountManagementServiceImpl (AccountDao<Account> accountDao, UserDao userDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<AccountInputData, Account> accountAccountInputDataMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
 	{
-		super(accountDao, organizationDao, authenticationParamsDao, authenticationService, accountAccountInputDataMapper, accountOutputDataMapper);
+		super(accountDao, userDao, organizationDao, authenticationParamsDao, authenticationService, accountAccountInputDataMapper, accountOutputDataMapper);
 	}
 
 	@Override

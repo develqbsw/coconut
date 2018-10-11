@@ -73,6 +73,12 @@ public abstract class SecurityCoreConfigurationBase<A extends Account>
 	}
 
 	@Bean
+	public UserDao userDao ()
+	{
+		return new UserJpaDao();
+	}
+
+	@Bean
 	public GroupDao groupDao ()
 	{
 		return new GroupJpaDao();

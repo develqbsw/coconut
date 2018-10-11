@@ -53,6 +53,7 @@ public class AccountUnitGroupJpaDao extends AEntityQDslDao<Long, AccountUnitGrou
 			.leftJoin(qAccountUnitGroup.account, qAccount).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.unit, qUnit).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
 			.where(builder);
 		return query.fetch();
 	}

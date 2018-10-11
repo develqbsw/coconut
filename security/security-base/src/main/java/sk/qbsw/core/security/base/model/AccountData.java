@@ -44,6 +44,8 @@ public class AccountData implements Serializable
 	@NotNull
 	private List<String> roles;
 
+	private UserOutputData user;
+
 	@NotNull
 	private Map<String, Object> additionalInformation = new HashMap<>();
 }

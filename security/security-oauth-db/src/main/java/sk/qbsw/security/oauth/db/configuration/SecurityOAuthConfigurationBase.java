@@ -1,6 +1,7 @@
 package sk.qbsw.security.oauth.db.configuration;
 
 import org.springframework.context.annotation.Bean;
+
 import sk.qbsw.core.configuration.dao.jpa.CSystemParameterDao;
 import sk.qbsw.core.configuration.service.CSystemParameterService;
 import sk.qbsw.core.configuration.service.ISystemParameterService;
@@ -11,6 +12,8 @@ import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.service.mapper.AccountOutputDataMapper;
 import sk.qbsw.security.core.service.mapper.AccountOutputDataMapperImpl;
+import sk.qbsw.security.core.service.mapper.UserOutputDataMapper;
+import sk.qbsw.security.core.service.mapper.UserOutputDataMapperImpl;
 import sk.qbsw.security.oauth.base.configuration.DefaultOAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 import sk.qbsw.security.oauth.base.dao.AuthenticationTokenDao;
@@ -41,12 +44,18 @@ import sk.qbsw.security.oauth.service.OAuthService;
  * @version 1.19.0
  * @since 1.18.2
  */
-public abstract class BaseSecurityOAuthConfiguration extends SecurityCoreConfiguration
+public abstract class SecurityOAuthConfigurationBase extends SecurityCoreConfiguration
 {
 	@Bean
-	public AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper ()
+	public UserOutputDataMapper userOutputDataMapper ()
 	{
-		return new AccountOutputDataMapperImpl();
+		return new UserOutputDataMapperImpl();
+	}
+
+	@Bean
+	public AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper (UserOutputDataMapper userOutputDataMapper)
+	{
+		return new AccountOutputDataMapperImpl(userOutputDataMapper);
 	}
 
 	@Bean

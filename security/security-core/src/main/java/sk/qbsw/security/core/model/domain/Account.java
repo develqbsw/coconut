@@ -85,6 +85,10 @@ public class Account extends AEntity<Long>
 	@Filter (name = DEFAULT_UNIT_FILTER_NAME, condition = "( (fk_unit = (select us.fk_default_unit from sec.t_account us where us.pk_id = fk_account)) or ( (select us.fk_default_unit from sec.t_account us where us.pk_id = fk_account) is null and fk_unit is null) )")
 	private Set<AccountUnitGroup> accountUnitGroups = new HashSet<>();
 
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "fk_user")
+	private User user;
+
 	public String getPassword ()
 	{
 		return findAuthenticationParams().getPassword();

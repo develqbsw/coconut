@@ -171,10 +171,21 @@ create table sec.t_account (
   c_type          character varying(255) not null,
   fk_default_unit bigint,
   fk_organization bigint                 not null,
-  fk_user         bigint                 not null
+  fk_user         bigint
 );
 
 create sequence sec.s_account
+  start with 1
+  increment by 1;
+
+create table sec.t_user (
+  pk_id           bigint                 not null,
+  d_type          character varying(31)  not null,
+  c_name          character varying(255) not null,
+  c_surname       character varying(255) not null
+);
+
+create sequence sec.s_user
   start with 1
   increment by 1;
 
@@ -226,6 +237,9 @@ alter table sec.t_unit
 
 alter table sec.t_account
   add constraint pk_account primary key (pk_id);
+
+alter table sec.t_user
+  add constraint pk_user primary key (pk_id);
 
 alter table sec.t_x_group_group
   add constraint pk_x_group_group primary key (fk_group, fk_excluded_group);
@@ -300,6 +314,9 @@ alter table sec.t_account
 
 alter table sec.t_account
   add constraint fk_account_user foreign key (fk_user) references org.t_user (pk_id);
+
+alter table sec.t_account
+  add constraint fk_account_user foreign key (fk_user) references sec.t_user (pk_id);
 
 
 --insert into sec.t_organization (pk_id, d_type, c_code, c_name, c_email, c_state)
