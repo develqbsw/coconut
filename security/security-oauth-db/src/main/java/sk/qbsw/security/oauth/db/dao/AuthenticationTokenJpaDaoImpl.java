@@ -75,6 +75,7 @@ public class AuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoBase
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
 			.leftJoin(qAuthenticationToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.organization).fetchJoin() //
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //

@@ -45,17 +45,6 @@
         <dependency>
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-management-db</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- QBSW organization -->
-        <dependency>
-            <groupId>sk.qbsw.organization</groupId>
-            <artifactId>organization-complex-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.organization</groupId>
-            <artifactId>organization-complex-management</artifactId>
         </dependency>
 
         <!-- QBSW security organization -->

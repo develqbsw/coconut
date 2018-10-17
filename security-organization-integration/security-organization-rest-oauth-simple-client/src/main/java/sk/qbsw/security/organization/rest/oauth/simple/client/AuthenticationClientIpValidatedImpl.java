@@ -1,9 +1,10 @@
 package sk.qbsw.security.organization.rest.oauth.simple.client;
 
 import org.springframework.web.client.RestTemplate;
+
 import sk.qbsw.core.client.configuration.UrlConfiguration;
-import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSimpleOrganizationAccountData;
 import sk.qbsw.security.rest.oauth.client.base.AuthenticationClientIpValidatedBase;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
 
 /**
  * The type Authentication client ip validated.
@@ -12,7 +13,7 @@ import sk.qbsw.security.rest.oauth.client.base.AuthenticationClientIpValidatedBa
  * @version 1.19.0
  * @since 1.19.0
  */
-public class AuthenticationClientIpValidatedImpl extends AuthenticationClientIpValidatedBase<CSSimpleOrganizationAccountData>
+public class AuthenticationClientIpValidatedImpl extends AuthenticationClientIpValidatedBase<CSAccountData>
 {
 
 	/**

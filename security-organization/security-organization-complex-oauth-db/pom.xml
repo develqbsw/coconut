@@ -31,12 +31,6 @@
 			<artifactId>core-configuration</artifactId>
 		</dependency>
 
-		<!-- QBSW organization -->
-        <dependency>
-            <groupId>sk.qbsw.organization</groupId>
-            <artifactId>organization-complex-core</artifactId>
-        </dependency>
-
 		<!-- QBSW security -->
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
@@ -44,7 +38,7 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-oauth-base</artifactId>
+			<artifactId>security-oauth-db</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
@@ -63,10 +57,6 @@
 		<dependency>
 			<groupId>sk.qbsw.security.organization</groupId>
 			<artifactId>security-organization-complex-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security.organization</groupId>
-			<artifactId>security-organization-complex-oauth</artifactId>
 		</dependency>
 
 		<!-- Spring -->

@@ -30,10 +30,6 @@
             <artifactId>security-organization-complex-base</artifactId>
         </dependency>
         <dependency>
-            <groupId>sk.qbsw.security.organization</groupId>
-            <artifactId>security-organization-complex-oauth</artifactId>
-        </dependency>
-        <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
             <artifactId>security-organization-spring-complex-base</artifactId>
         </dependency>

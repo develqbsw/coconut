@@ -97,6 +97,7 @@ public class MasterTokenJpaDaoImpl extends MasterTokenJpaDaoBase<Account, Master
 		// create query
 		return queryFactory.selectFrom(qMasterToken) //
 			.leftJoin(qMasterToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.organization).fetchJoin() //
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //

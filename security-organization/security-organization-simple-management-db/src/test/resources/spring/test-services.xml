@@ -7,5 +7,5 @@
 
     <context:component-scan base-package="sk.qbsw.security.organization.simple.management.db.test.util"/>
     
-    <bean class="sk.qbsw.security.organization.simple.management.db.configuration.SecuritySimpleOrganizationManagementConfiguration"/>
+    <bean class="sk.qbsw.security.organization.simple.management.db.configuration.SPOSecurityManagementConfiguration"/>
 </beans>

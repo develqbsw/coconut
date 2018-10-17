@@ -34,10 +34,6 @@
 		<!-- QBSW security -->
 		<dependency>
 			<groupId>sk.qbsw.security.organization</groupId>
-			<artifactId>security-organization-simple-oauth</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security.organization</groupId>
 			<artifactId>security-organization-simple-core</artifactId>
 		</dependency>
 		<dependency>
@@ -47,6 +43,10 @@
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
 			<artifactId>security-oauth-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sk.qbsw.security</groupId>
+			<artifactId>security-oauth-db</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>

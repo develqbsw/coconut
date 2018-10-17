@@ -3,9 +3,11 @@ package sk.qbsw.security.organization.spring.complex.oauth.local.service;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.security.oauth.model.VerificationData;
-import sk.qbsw.security.organization.complex.base.model.ComplexOrganizationAccountData;
-import sk.qbsw.security.organization.complex.oauth.service.facade.ComplexOrganizationOAuthServiceFacade;
+import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
+import sk.qbsw.security.organization.complex.base.model.CXOOrganizationOutputData;
+import sk.qbsw.security.organization.complex.base.model.CXOUserOutputData;
 import sk.qbsw.security.organization.spring.complex.base.model.ComplexOrganization;
 import sk.qbsw.security.organization.spring.complex.base.model.ComplexOrganizationUnit;
 import sk.qbsw.security.organization.spring.complex.oauth.base.model.OAuthLoggedUser;
@@ -25,14 +27,14 @@ import java.util.stream.Collectors;
  */
 public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 {
-	private final ComplexOrganizationOAuthServiceFacade<ComplexOrganizationAccountData> oauthService;
+	private final OAuthServiceFacade<AccountData> oauthService;
 
 	/**
 	 * Instantiates a new O auth service user details service.
 	 *
 	 * @param oauthService the oauth service
 	 */
-	public OAuthServiceUserDetailsService (ComplexOrganizationOAuthServiceFacade<ComplexOrganizationAccountData> oauthService)
+	public OAuthServiceUserDetailsService (OAuthServiceFacade<AccountData> oauthService)
 	{
 		super();
 		this.oauthService = oauthService;
@@ -43,15 +45,16 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 		String deviceId = ((OAuthWebAuthenticationDetails) token.getDetails()).getDeviceId();
 		String ip = ((OAuthWebAuthenticationDetails) token.getDetails()).getIp();
 
-		ComplexOrganizationAccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
+		AccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
+		List<CXOOrganizationOutputData> organizationsOutputData = ((CXOUserOutputData) accountData.getUser()).getOrganizations();
 
-		List<ComplexOrganization> organizations = accountData.getOrganizations().stream().map(o -> new ComplexOrganization(o.getId(), o.getName(), o.getCode(), o.getUnits().stream().map(u -> new ComplexOrganizationUnit(u.getId(), u.getName(), u.getCode())).collect(Collectors.toList()))).collect(Collectors.toList());
+		List<ComplexOrganization> organizations = organizationsOutputData.stream().map(o -> new ComplexOrganization(o.getId(), o.getName(), o.getCode(), o.getUnits().stream().map(u -> new ComplexOrganizationUnit(u.getId(), u.getName(), u.getCode())).collect(Collectors.toList()))).collect(Collectors.toList());
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
 
-		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), accountData.getUserId(), organizations, oAuthData, accountData.getAdditionalInformation());
+		return new OAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", convertRolesToAuthorities(accountData.getRoles()), accountData.getUser().getId(), organizations, oAuthData, accountData.getAdditionalInformation());
 	}
 
-	private VerificationData<ComplexOrganizationAccountData> verify (String token, String deviceId, String ip)
+	private VerificationData<AccountData> verify (String token, String deviceId, String ip)
 	{
 		try
 		{

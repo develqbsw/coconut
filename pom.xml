@@ -131,7 +131,6 @@
         <module>indy</module>
         <module>integration</module>
         <module>reporting</module>
-        <module>organization</module>
         <module>security-organization</module>
         <module>security-organization-spring</module>
         <module>security-organization-integration</module>
@@ -344,18 +343,6 @@
                 <version>${security.spring.version}</version>
             </dependency>
 
-            <!-- QBSW organization -->
-            <dependency>
-                <groupId>sk.qbsw.organization</groupId>
-                <artifactId>organization-complex-core</artifactId>
-                <version>${organization.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>sk.qbsw.organization</groupId>
-                <artifactId>organization-complex-management</artifactId>
-                <version>${organization.version}</version>
-            </dependency>
-
             <!-- QBSW security organization -->
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
@@ -370,11 +357,6 @@
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
                 <artifactId>security-organization-simple-management</artifactId>
-                <version>${security-organization.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>sk.qbsw.security.organization</groupId>
-                <artifactId>security-organization-simple-oauth</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
             <dependency>
@@ -400,11 +382,6 @@
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
                 <artifactId>security-organization-complex-management-db</artifactId>
-                <version>${security-organization.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>sk.qbsw.security.organization</groupId>
-                <artifactId>security-organization-complex-oauth</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
             <dependency>

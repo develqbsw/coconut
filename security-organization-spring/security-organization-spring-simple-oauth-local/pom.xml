@@ -30,10 +30,6 @@
             <artifactId>security-organization-simple-base</artifactId>
         </dependency>
         <dependency>
-            <groupId>sk.qbsw.security.organization</groupId>
-            <artifactId>security-organization-simple-oauth</artifactId>
-        </dependency>
-        <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-oauth-common</artifactId>
         </dependency>

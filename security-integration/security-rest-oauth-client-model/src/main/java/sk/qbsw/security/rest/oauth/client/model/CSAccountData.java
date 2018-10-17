@@ -43,6 +43,8 @@ public class CSAccountData extends BaseClientEntity
 	@NotNull
 	private List<String> roles;
 
+	private CSUserData user;
+
 	@ApiModelProperty (value = "The additional custom user information")
 	private Map<String, Object> additionalInformation = new HashMap<>();
 }

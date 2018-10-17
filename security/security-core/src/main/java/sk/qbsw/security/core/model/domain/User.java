@@ -7,6 +7,7 @@ import sk.qbsw.core.persistence.model.domain.AEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * The User.
@@ -32,4 +33,7 @@ public class User extends AEntity<Long>
 	@SequenceGenerator (name = "userSequenceGenerator", sequenceName = DatabaseSchemas.SECURITY + ".s_user")
 	@Column (name = "pk_id")
 	private Long id;
+
+	@OneToMany (mappedBy = "user", fetch = FetchType.LAZY)
+	private Set<Account> accounts;
 }

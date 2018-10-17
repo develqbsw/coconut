@@ -19,11 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.security.base.model.AccountData;
-import sk.qbsw.security.core.dao.*;
-import sk.qbsw.security.core.model.domain.*;
-import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountData;
-import sk.qbsw.security.organization.simple.base.model.SimpleOrganizationAccountInputData;
-import sk.qbsw.security.organization.simple.management.SimpleOrganizationAccountManagementService;
+import sk.qbsw.core.security.base.model.AccountInputData;
+import sk.qbsw.security.core.dao.OrganizationDao;
+import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.organization.simple.management.SPOAccountManagementService;
 import sk.qbsw.security.organization.simple.management.db.test.util.DataGenerator;
 
 /**
@@ -42,7 +41,7 @@ public class AccountTestCase
 	private DataGenerator dataGenerator;
 
 	@Autowired
-	private SimpleOrganizationAccountManagementService<SimpleOrganizationAccountInputData, SimpleOrganizationAccountData> accountManagementService;
+	private SPOAccountManagementService<AccountInputData, AccountData> accountManagementService;
 
 	@Autowired
 	private OrganizationDao organizationDao;
@@ -56,7 +55,7 @@ public class AccountTestCase
 	{
 		initTest();
 
-		List<SimpleOrganizationAccountData> accounts = accountManagementService.findByOrganizationCodeAndStateAndGroupCodeOrderByOrganizationNameAndLogin(null, null, null);
+		List<AccountData> accounts = accountManagementService.findByOrganizationCodeAndStateAndGroupCodeOrderByOrganizationNameAndLogin(null, null, null);
 
 		// asserts
 		assertNotNull("Get all accounts order by organization failed: list of accounts is null", accounts);
@@ -76,7 +75,7 @@ public class AccountTestCase
 	{
 		initTest();
 
-		List<SimpleOrganizationAccountData> accounts = accountManagementService.findByOrganizationCodeAndStateAndGroupCode(null, null, DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		List<AccountData> accounts = accountManagementService.findByOrganizationCodeAndStateAndGroupCode(null, null, DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
 		// asserts
 		assertNotNull("Get all accounts by group failed: list of accounts is null", accounts);
@@ -94,7 +93,7 @@ public class AccountTestCase
 	{
 		initTest();
 
-		List<SimpleOrganizationAccountData> accounts = accountManagementService.findByOrganizationCodeAndStateAndGroupCodeOrderByOrganizationNameAndLogin(null, null, DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
+		List<AccountData> accounts = accountManagementService.findByOrganizationCodeAndStateAndGroupCodeOrderByOrganizationNameAndLogin(null, null, DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
 		// asserts
 		assertNotNull("Get all accounts by group failed: list of accounts is null", accounts);
@@ -112,7 +111,7 @@ public class AccountTestCase
 
 		Organization organization = organizationDao.findByName(DataGenerator.ORGANIZATION_CODE).get(0);
 		Organization organization2 = organizationDao.findByName(DataGenerator.ORGANIZATION_2_CODE).get(0);
-		SimpleOrganizationAccountData account = accountManagementService.findOneByOrganizationCodeAndLoginAndState(organization.getCode(), DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, ActivityStates.ACTIVE);
+		AccountData account = accountManagementService.findOneByOrganizationCodeAndLoginAndState(organization.getCode(), DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, ActivityStates.ACTIVE);
 
 		// asserts
 		assertNotNull("Get account by name and organization failed: cannot find accounts", account);
@@ -130,7 +129,7 @@ public class AccountTestCase
 		assertNull("Get account by name and organization failed: found account", account);
 	}
 
-	private void checksGetAllAccountsList (List<SimpleOrganizationAccountData> accounts)
+	private void checksGetAllAccountsList (List<AccountData> accounts)
 	{
 		boolean accountWithDefaultUnitCodePresent = false;
 		boolean accountWithoutDefaultUnitCodePresent = false;

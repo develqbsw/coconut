@@ -21,7 +21,7 @@ public class SecurityOrikaMapper extends SecurityOrikaMapperBase<AccountData, CS
 	 * Initialise the mapping.
 	 */
 	@PostConstruct
-	private void initMapping ()
+	protected void initMapping ()
 	{
 	}
 }

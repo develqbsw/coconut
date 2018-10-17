@@ -22,10 +22,6 @@
             <groupId>sk.qbsw.security.organization</groupId>
             <artifactId>security-organization-simple-base</artifactId>
         </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.organization</groupId>
-            <artifactId>security-organization-simple-oauth</artifactId>
-        </dependency>
 
         <!-- QBSW integration -->
         <dependency>

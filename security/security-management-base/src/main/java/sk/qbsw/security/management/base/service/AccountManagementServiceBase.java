@@ -16,6 +16,7 @@ import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.AuthenticationParams;
 import sk.qbsw.security.core.model.domain.Organization;
+import sk.qbsw.security.core.model.domain.User;
 import sk.qbsw.security.core.model.filter.AccountDetailFilter;
 import sk.qbsw.security.core.model.order.AccountOrderByAttributeSpecifiers;
 import sk.qbsw.security.core.model.order.OrderModel;
@@ -193,6 +194,16 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 			LOGGER.debug("Organization with code {} not found", accountInputData.getOrganizationId());
 			throw new CSecurityException(ECoreErrorResponse.ORGANIZATION_NOT_VALID);
 		}
+	}
+
+	/**
+	 * Find and set user associations.
+	 *
+	 * @param user the user
+	 * @throws CBusinessException the c business exception
+	 */
+	protected void setRegisterUserAssociations (User user) throws CBusinessException
+	{
 	}
 
 	/**

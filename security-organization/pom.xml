@@ -17,13 +17,11 @@
 		<module>security-organization-simple-core</module>
 		<module>security-organization-simple-management</module>
 		<module>security-organization-simple-management-db</module>
-		<module>security-organization-simple-oauth</module>
 		<module>security-organization-simple-oauth-db</module>
 		<module>security-organization-complex-base</module>
         <module>security-organization-complex-core</module>
         <module>security-organization-complex-management</module>
 		<module>security-organization-complex-management-db</module>
-		<module>security-organization-complex-oauth</module>
 		<module>security-organization-complex-oauth-db</module>
     </modules>
 </project>

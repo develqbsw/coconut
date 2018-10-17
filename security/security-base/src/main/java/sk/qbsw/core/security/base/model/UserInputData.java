@@ -1,5 +1,6 @@
 package sk.qbsw.core.security.base.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import static sk.qbsw.core.base.validation.ValidationGroup.Update;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserInputData implements Serializable
 {
 	private static final long serialVersionUID = -9103874418613247759L;

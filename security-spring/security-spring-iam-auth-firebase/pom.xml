@@ -28,10 +28,6 @@
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-iam-auth-common</artifactId>
         </dependency>
         <dependency>

@@ -2,12 +2,14 @@ package sk.qbsw.security.rest.oauth.api.base.mapper;
 
 import ma.glasnost.orika.metadata.TypeBuilder;
 import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.UserOutputData;
 import sk.qbsw.security.oauth.model.AuthenticationData;
 import sk.qbsw.security.oauth.model.GeneratedTokenData;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.model.VerificationTypes;
 import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
 import sk.qbsw.security.rest.oauth.client.model.CSGeneratedTokenData;
+import sk.qbsw.security.rest.oauth.client.model.CSUserData;
 import sk.qbsw.security.rest.oauth.client.model.CSVerificationTypes;
 import sk.qbsw.security.rest.oauth.client.model.response.AuthenticationResponseBody;
 import sk.qbsw.security.rest.oauth.client.model.response.ReauthenticationResponseBody;
@@ -31,7 +33,7 @@ public abstract class SecurityOrikaMapperBase<D extends AccountData, S extends C
 	 * Initialise the mapping.
 	 */
 	@PostConstruct
-	private void initMapping ()
+	protected void initMapping ()
 	{
 		mapperFactory.classMap(AccountData.class, CSAccountData.class) //
 			.byDefault() //
@@ -40,6 +42,18 @@ public abstract class SecurityOrikaMapperBase<D extends AccountData, S extends C
 			.byDefault() //
 			.register();
 		mapperFactory.classMap(VerificationTypes.class, CSVerificationTypes.class) //
+			.byDefault() //
+			.register();
+		initUserMapping();
+
+	}
+
+	/**
+	 * Init user mapping.
+	 */
+	protected void initUserMapping ()
+	{
+		mapperFactory.classMap(UserOutputData.class, CSUserData.class) //
 			.byDefault() //
 			.register();
 	}

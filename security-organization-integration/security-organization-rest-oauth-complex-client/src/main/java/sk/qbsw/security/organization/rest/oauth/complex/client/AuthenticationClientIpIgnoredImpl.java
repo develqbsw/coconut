@@ -2,8 +2,8 @@ package sk.qbsw.security.organization.rest.oauth.complex.client;
 
 import org.springframework.web.client.RestTemplate;
 import sk.qbsw.core.client.configuration.UrlConfiguration;
-import sk.qbsw.security.organization.rest.oauth.complex.client.model.CSComplexOrganizationAccountData;
 import sk.qbsw.security.rest.oauth.client.base.AuthenticationClientIpIgnoredBase;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
 
 /**
  * The type Authentication client ip ignored.
@@ -12,7 +12,7 @@ import sk.qbsw.security.rest.oauth.client.base.AuthenticationClientIpIgnoredBase
  * @version 1.19.0
  * @since 1.19.0
  */
-public class AuthenticationClientIpIgnoredImpl extends AuthenticationClientIpIgnoredBase<CSComplexOrganizationAccountData>
+public class AuthenticationClientIpIgnoredImpl extends AuthenticationClientIpIgnoredBase<CSAccountData>
 {
 	/**
 	 * Instantiates a new Authentication client.
