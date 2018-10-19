@@ -66,6 +66,10 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 			return new IAMAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", authorityConverter.convertRolesToAuthorities(accountData.getRoles()), accountData.getUid(), (String) token.getPrincipal());
 
 		}
+		catch (IllegalArgumentException e)
+		{
+			throw new PreAuthenticatedCredentialsNotFoundException("The firebase token not found", e);
+		}
 		catch (FirebaseAuthException e)
 		{
 			throw new PreAuthenticatedCredentialsNotFoundException("The firebase token processing error", e);
