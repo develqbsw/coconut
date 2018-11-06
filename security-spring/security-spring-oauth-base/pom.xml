@@ -17,6 +17,7 @@
     </parent>
 
     <dependencies>
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-base</artifactId>
@@ -44,7 +45,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- SLF4J -->
+        <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

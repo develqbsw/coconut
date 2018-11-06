@@ -17,6 +17,11 @@
     </parent>
 
     <dependencies>
+        <!-- QBSW security integration -->
+        <dependency>
+            <groupId>sk.qbsw.security.integration</groupId>
+            <artifactId>security-rest-oauth-client-base</artifactId>
+        </dependency>
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-rest-oauth-client-model</artifactId>
@@ -25,6 +30,8 @@
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-rest-oauth-client</artifactId>
         </dependency>
+
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-base</artifactId>
@@ -42,12 +49,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
 
         <!-- SLF4J -->

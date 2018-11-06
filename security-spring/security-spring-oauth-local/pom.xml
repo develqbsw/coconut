@@ -17,6 +17,7 @@
     </parent>
 
     <dependencies>
+        <!-- QBSW security -->
         <dependency>
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-base</artifactId>
@@ -25,6 +26,8 @@
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-oauth</artifactId>
         </dependency>
+
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-oauth-common</artifactId>

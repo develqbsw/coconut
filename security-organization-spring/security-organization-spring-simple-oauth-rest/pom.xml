@@ -17,22 +17,23 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>sk.qbsw.security.integration</groupId>
-            <artifactId>security-rest-oauth-client-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.integration</groupId>
-            <artifactId>security-rest-oauth-client</artifactId>
-        </dependency>
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-oauth-common</artifactId>
         </dependency>
+
+        <!-- QBSW security integration -->
         <dependency>
-            <groupId>sk.qbsw.security.organization.integration</groupId>
-            <artifactId>security-organization-rest-oauth-simple-client-model</artifactId>
+            <groupId>sk.qbsw.security.integration</groupId>
+            <artifactId>security-rest-oauth-client-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.integration</groupId>
+            <artifactId>security-rest-oauth-client-model</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization spring -->
         <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
             <artifactId>security-organization-spring-simple-base</artifactId>
@@ -42,16 +43,16 @@
             <artifactId>security-organization-spring-simple-oauth-base</artifactId>
         </dependency>
 
+        <!-- QBSW security organization integration -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization.integration</groupId>
+            <artifactId>security-organization-rest-oauth-simple-client-model</artifactId>
+        </dependency>
+
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
 
         <!-- SLF4J -->

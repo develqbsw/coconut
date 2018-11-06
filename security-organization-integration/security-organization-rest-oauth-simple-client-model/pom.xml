@@ -17,13 +17,13 @@
     </parent>
 
     <dependencies>
-        <!-- QBSW -->
+        <!-- QBSW core -->
         <dependency>
             <groupId>sk.qbsw.core</groupId>
             <artifactId>core-client-model</artifactId>
         </dependency>
 
-        <!-- QBSW integration -->
+        <!-- QBSW security integration -->
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-rest-oauth-client-model</artifactId>

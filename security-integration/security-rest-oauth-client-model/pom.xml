@@ -17,7 +17,7 @@
     </parent>
 
     <dependencies>
-        <!-- QBSW -->
+        <!-- QBSW core -->
         <dependency>
             <groupId>sk.qbsw.core</groupId>
             <artifactId>core-base</artifactId>

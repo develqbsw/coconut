@@ -19,18 +19,34 @@
     <dependencies>
         <!-- QBSW security -->
         <dependency>
-            <groupId>sk.qbsw.security.organization</groupId>
-            <artifactId>security-organization-complex-base</artifactId>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-oauth</artifactId>
         </dependency>
 
-        <!-- QBSW integration -->
+        <!-- QBSW security integration -->
         <dependency>
-            <groupId>sk.qbsw.security.organization.integration</groupId>
-            <artifactId>security-organization-rest-oauth-complex-client-model</artifactId>
+            <groupId>sk.qbsw.security.integration</groupId>
+            <artifactId>security-rest-oauth-client-model</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-rest-oauth-api-base</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-base</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization integration -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization.integration</groupId>
+            <artifactId>security-organization-rest-oauth-complex-client-model</artifactId>
         </dependency>
 
         <!-- spring -->

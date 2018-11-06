@@ -17,19 +17,28 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>sk.qbsw.security.organization.spring</groupId>
-            <artifactId>security-organization-spring-simple-base</artifactId>
-        </dependency>
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-oauth-common</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization spring -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization.spring</groupId>
+            <artifactId>security-organization-spring-simple-base</artifactId>
         </dependency>
 
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+        </dependency>
+
+        <!-- validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
 
         <!-- lombok -->

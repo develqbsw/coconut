@@ -17,6 +17,7 @@
     </parent>
 
     <dependencies>
+        <!-- QBSW security -->
         <dependency>
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-web</artifactId>
@@ -54,13 +55,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- apache -->
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-
-        <!-- SLF4J -->
+        <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

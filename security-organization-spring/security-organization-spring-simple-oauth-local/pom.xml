@@ -17,6 +17,7 @@
     </parent>
 
     <dependencies>
+        <!-- QBSW security -->
         <dependency>
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-base</artifactId>
@@ -25,14 +26,20 @@
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-oauth</artifactId>
         </dependency>
-        <dependency>
-            <groupId>sk.qbsw.security.organization</groupId>
-            <artifactId>security-organization-simple-base</artifactId>
-        </dependency>
+
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-oauth-common</artifactId>
         </dependency>
+
+        <!-- QBSW security organization  -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-simple-base</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization spring -->
         <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
             <artifactId>security-organization-spring-simple-base</artifactId>
@@ -46,12 +53,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
 
         <!-- SLF4J -->

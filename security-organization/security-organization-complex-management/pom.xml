@@ -19,17 +19,7 @@
     </parent>
 
     <dependencies>
-        <!-- QBSW security -->
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-management</artifactId>
-        </dependency>
-
         <!-- QBSW security organization -->
-        <dependency>
-            <groupId>sk.qbsw.security.organization</groupId>
-            <artifactId>security-organization-complex-base</artifactId>
-        </dependency>
         <dependency>
             <groupId>sk.qbsw.security.organization</groupId>
             <artifactId>security-organization-complex-core</artifactId>

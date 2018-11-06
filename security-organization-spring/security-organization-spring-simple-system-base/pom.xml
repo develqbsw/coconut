@@ -17,13 +17,16 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>sk.qbsw.security.organization.spring</groupId>
-            <artifactId>security-organization-spring-simple-base</artifactId>
-        </dependency>
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-system-common</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization spring -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization.spring</groupId>
+            <artifactId>security-organization-spring-simple-base</artifactId>
         </dependency>
 
         <!-- spring -->
@@ -32,13 +35,7 @@
             <artifactId>spring-security-core</artifactId>
         </dependency>
 
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <!-- SLF4J -->
+        <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

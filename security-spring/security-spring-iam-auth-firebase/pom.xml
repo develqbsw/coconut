@@ -17,14 +17,26 @@
     </parent>
 
     <dependencies>
+        <!-- QBSW core -->
         <dependency>
-            <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-base</artifactId>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-base</artifactId>
         </dependency>
 
+        <!-- QBSW security -->
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-base</artifactId>
+        </dependency>
         <dependency>
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-management</artifactId>
+        </dependency>
+
+        <!-- QBSW security spring -->
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-base</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
@@ -38,7 +50,7 @@
         <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
+            <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -55,25 +67,7 @@
             <artifactId>firebase-admin</artifactId>
         </dependency>
 
-        <!-- Web -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
-        <!-- validation -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <!-- SLF4J -->
+        <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

@@ -1,77 +1,85 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>security-organization-rest-oauth-simple-client</artifactId>
-	<name>Security Organization REST Oauth Simple Client</name>
-	<packaging>jar</packaging>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>security-organization-rest-oauth-simple-client</artifactId>
+    <name>Security Organization REST Oauth Simple Client</name>
+    <packaging>jar</packaging>
 
-	<organization>
-		<name>QBSW a.s.</name>
-		<url>http://www.qbsw.sk</url>
-	</organization>
+    <organization>
+        <name>QBSW a.s.</name>
+        <url>http://www.qbsw.sk</url>
+    </organization>
 
-	<parent>
-		<groupId>sk.qbsw.security.organization.integration</groupId>
-		<artifactId>security-organization-integration-top</artifactId>
-		<version>1.19.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>sk.qbsw.security.organization.integration</groupId>
+        <artifactId>security-organization-integration-top</artifactId>
+        <version>1.19.0-SNAPSHOT</version>
+    </parent>
 
-	<dependencies>
-		<!-- qbsw -->
-		<dependency>
-			<groupId>sk.qbsw.core</groupId>
-			<artifactId>core-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security.integration</groupId>
-			<artifactId>security-rest-oauth-client-base</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>sk.qbsw.security.organization.integration</groupId>
-			<artifactId>security-organization-rest-oauth-simple-client-model</artifactId>
-		</dependency>
+    <dependencies>
+        <!-- QBSW core -->
+        <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-client</artifactId>
+        </dependency>
 
-		<!-- spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-	</dependencies>
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.properties</include>
-				</includes>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven-source-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<inherited>true</inherited>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${compiler.version}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<optimize>true</optimize>
-					<debug>true</debug>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+        <!-- QBSW security integration -->
+        <dependency>
+            <groupId>sk.qbsw.security.integration</groupId>
+            <artifactId>security-rest-oauth-client-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.integration</groupId>
+            <artifactId>security-rest-oauth-client-model</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization integration -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization.integration</groupId>
+            <artifactId>security-organization-rest-oauth-simple-client-model</artifactId>
+        </dependency>
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <optimize>true</optimize>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
