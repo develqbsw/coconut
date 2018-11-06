@@ -61,8 +61,10 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
 				.leftJoin(qGroup.roles).fetchJoin() //
-				.leftJoin(qAccount.user).fetchJoin() //
 				.where(qAccount.id.eq(id));
+
+			leftJoinFetchUser((JPAQuery<A>) query, qAccount);
+
 			return (A) CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
 		finally
@@ -96,8 +98,10 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
 				.leftJoin(qGroup.roles).fetchJoin() //
-				.leftJoin(qAccount.user).fetchJoin() //
 				.where(qAccount.uid.eq(uid));
+
+			leftJoinFetchUser((JPAQuery<A>) query, qAccount);
+
 			return (A) CQDslDaoHelper.handleUniqueResultQueryByNull(query);
 		}
 		finally
@@ -162,8 +166,10 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.fetchJoin().leftJoin(qAccountUnitGroup.group, qGroup) //
 				.fetchJoin().leftJoin(qAccountUnitGroup.unit, qUnit).fetchJoin() //
 				.leftJoin(qGroup.roles).fetchJoin() //
-				.leftJoin(qAccount.user).fetchJoin() //
 				.where(builder);
+
+			leftJoinFetchUser((JPAQuery<A>) query, qAccount);
+
 			return (A) CQDslDaoHelper.handleUniqueResultQuery(query);
 		}
 		finally
@@ -238,8 +244,9 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.unit, qUnit).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
-			.leftJoin(qAccount.user).fetchJoin() //
 			.where(builder);
+
+		leftJoinFetchUser((JPAQuery<A>) query, qAccount);
 
 		// set order
 		if (orderModel != null)
@@ -303,8 +310,9 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
-				.leftJoin(qAccount.user).fetchJoin() //
 				.where(builder);
+
+			leftJoinFetchUser((JPAQuery<A>) query, qAccount);
 
 			// set order
 			if (orderModel != null)
@@ -377,8 +385,9 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 				.leftJoin(qAccountUnitGroup.unit).fetchJoin() //
 				.leftJoin(qGroup.roles, qRole).fetchJoin() //
-				.leftJoin(qAccount.user).fetchJoin() //
 				.where(builder);
+
+			leftJoinFetchUser((JPAQuery<A>) query, qAccount);
 
 			// set order
 			if (orderModel != null)
@@ -393,6 +402,11 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 			// disable filter
 			session.disableFilter(Account.DEFAULT_UNIT_FILTER_NAME);
 		}
+	}
+
+	protected void leftJoinFetchUser (JPAQuery<A> query, QAccount qAccount)
+	{
+		query.leftJoin(qAccount.user).fetchJoin();
 	}
 
 	protected abstract QAccount instantiateAccountEntityPath ();

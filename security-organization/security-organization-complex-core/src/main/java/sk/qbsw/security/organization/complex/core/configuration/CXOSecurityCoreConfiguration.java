@@ -2,6 +2,8 @@ package sk.qbsw.security.organization.complex.core.configuration;
 
 import org.springframework.context.annotation.Bean;
 import sk.qbsw.security.core.configuration.SecurityCoreConfiguration;
+import sk.qbsw.security.core.dao.AccountDao;
+import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.organization.complex.core.dao.*;
 
 
@@ -14,6 +16,13 @@ import sk.qbsw.security.organization.complex.core.dao.*;
  */
 public class CXOSecurityCoreConfiguration extends SecurityCoreConfiguration
 {
+	@Bean
+	@Override
+	public AccountDao<Account> accountDao ()
+	{
+		return new CXOAccountJpaDao();
+	}
+
 	@Bean
 	public CXOOrganizationDao cxoOrganizationDao ()
 	{
