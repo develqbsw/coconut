@@ -59,14 +59,14 @@ public class CXOAccountManagementServiceImpl extends AccountManagementServiceBas
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public AccountData register (AccountInputData accountInputData, String password) throws CSecurityException
+	public AccountData register (AccountInputData accountInputData, String password) throws CBusinessException
 	{
 		return super.registerBase(accountInputData, password);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public AccountData register (AccountInputData accountInputData) throws CSecurityException
+	public AccountData register (AccountInputData accountInputData) throws CBusinessException
 	{
 		return super.registerBase(accountInputData);
 	}

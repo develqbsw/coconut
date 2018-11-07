@@ -115,7 +115,7 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 	 * @return the o
 	 * @throws CSecurityException the c security exception
 	 */
-	protected O registerBase (I accountInputData, String password) throws CSecurityException
+	protected O registerBase (I accountInputData, String password) throws CBusinessException
 	{
 		// register new account with empty password
 		O accountData = registerBase(accountInputData);
@@ -138,7 +138,7 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 	 * @return the o
 	 * @throws CSecurityException the c security exception
 	 */
-	protected O registerBase (I accountInputData) throws CSecurityException
+	protected O registerBase (I accountInputData) throws CBusinessException
 	{
 		validateRegisterInput(accountInputData);
 
@@ -147,6 +147,7 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 
 		if (account.getUser() != null && account.getUser().getId() == null)
 		{
+			setRegisterUserAssociations(account.getUser());
 			account.setUser(userDao.update(account.getUser()));
 		}
 

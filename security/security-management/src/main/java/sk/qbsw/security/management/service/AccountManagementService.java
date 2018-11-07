@@ -1,5 +1,6 @@
 package sk.qbsw.security.management.service;
 
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.security.base.model.AccountData;
@@ -27,7 +28,7 @@ public interface AccountManagementService<I extends AccountInputData, O extends 
 	 * @return the o
 	 * @throws CSecurityException the c security exception
 	 */
-	O register (I account, String password) throws CSecurityException;
+	O register (I account, String password) throws CBusinessException;
 
 	/**
 	 * Register o.
@@ -36,7 +37,7 @@ public interface AccountManagementService<I extends AccountInputData, O extends 
 	 * @return the o
 	 * @throws CSecurityException the c security exception
 	 */
-	O register (I account) throws CSecurityException;
+	O register (I account) throws CBusinessException;
 
 	/**
 	 * Find one by id o.

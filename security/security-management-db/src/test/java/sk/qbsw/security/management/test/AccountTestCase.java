@@ -74,7 +74,7 @@ public class AccountTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testCreateUserWithPassword () throws CSecurityException
+	public void testCreateUserWithPassword () throws CBusinessException
 	{
 		initTest();
 
@@ -100,7 +100,7 @@ public class AccountTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testCreateAccountWithoutPassword () throws CSecurityException
+	public void testCreateAccountWithoutPassword () throws CBusinessException
 	{
 		initTest();
 
