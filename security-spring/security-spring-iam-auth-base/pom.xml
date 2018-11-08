@@ -18,6 +18,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-base</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-base</artifactId>
         </dependency>
@@ -26,6 +31,10 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
         </dependency>
 
         <!-- validation -->

@@ -2,6 +2,7 @@ package sk.qbsw.security.authentication.db.test.util;
 
 import org.junit.Assert;
 import org.springframework.stereotype.Component;
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.model.AccountData;
 import sk.qbsw.core.security.base.model.AccountDataTypes;
@@ -289,7 +290,7 @@ public class AuthenticationTestProvider
 	 * @param dataGenerator the data generator
 	 * @throws CSecurityException the c security exception
 	 */
-	public void testChangeEncryptedPasswordNewAccount (AuthenticationService authenticationService, AccountManagementService<AccountInputData, AccountData> accountService, AccountDao accountDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CSecurityException
+	public void testChangeEncryptedPasswordNewAccount (AuthenticationService authenticationService, AccountManagementService<AccountInputData, AccountData> accountService, AccountDao accountDao, OrganizationDao orgDao, DataGenerator dataGenerator) throws CBusinessException
 	{
 		// create new account and needed objects
 		Organization organization = orgDao.findOneByCode(DataGenerator.ORGANIZATION_CODE);

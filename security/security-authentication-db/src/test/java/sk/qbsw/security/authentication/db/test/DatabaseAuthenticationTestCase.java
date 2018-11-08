@@ -7,6 +7,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.security.base.exception.InvalidAuthenticationException;
 import sk.qbsw.core.security.base.model.AccountData;
@@ -287,7 +288,7 @@ public class DatabaseAuthenticationTestCase
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testChangeEncryptedPasswordNewAccount () throws CSecurityException
+	public void testChangeEncryptedPasswordNewAccount () throws CBusinessException
 	{
 		initTest();
 
