@@ -46,7 +46,7 @@ public abstract class IAMAuthUserDetailsServiceBase<T> implements Authentication
 	{
 		try
 		{
-			TokenData tokenData = verifyToken((String) token.getPrincipal());
+			TokenData<T> tokenData = verifyToken((String) token.getPrincipal());
 
 			AccountData accountData = findOrCreateAccount(tokenData);
 
@@ -68,7 +68,7 @@ public abstract class IAMAuthUserDetailsServiceBase<T> implements Authentication
 	 * @param tokenData the token data
 	 * @return the account input data
 	 */
-	protected AccountInputData createAccountInputData (TokenData tokenData)
+	protected AccountInputData createAccountInputData (TokenData<T> tokenData)
 	{
 		return new AccountInputData(null, tokenData.getUid(), tokenData.getLogin(), tokenData.getEmail(), AccountDataTypes.PERSONAL, null, AccountInputData.DEFAULT_ORGANIZATION_ID);
 	}
