@@ -8,7 +8,7 @@ import sk.qbsw.security.core.model.domain.Account;
  * The abstract class represents login task for test. The children of this class defines an authentication service.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.7.2
  */
 public abstract class LoginTask implements Runnable

@@ -8,7 +8,7 @@ import java.util.Collection;
  * The anonymous authentication token.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.4
  */
 public class AnonymousAuthenticationToken extends org.springframework.security.authentication.AnonymousAuthenticationToken

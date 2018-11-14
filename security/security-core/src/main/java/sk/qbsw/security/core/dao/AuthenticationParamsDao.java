@@ -10,7 +10,7 @@ import javax.persistence.NonUniqueResultException;
  * The authentication params dao.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.6.0
  */
 public interface AuthenticationParamsDao extends IEntityDao<Long, AuthenticationParams>

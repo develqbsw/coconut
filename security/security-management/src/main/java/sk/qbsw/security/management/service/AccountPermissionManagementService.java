@@ -9,7 +9,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
  * @author Dalibor Rak
  * @author farkas.roman
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.0
  */
 public interface AccountPermissionManagementService

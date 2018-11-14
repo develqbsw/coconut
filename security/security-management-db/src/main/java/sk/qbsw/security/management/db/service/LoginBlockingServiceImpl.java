@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
  *
  * @author Tomas Lauro
  * @author Peter Bozik
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.12.2
  */
 public class LoginBlockingServiceImpl extends AService implements LoginBlockingService

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort.Direction;
  * The offset and limit based pageable - there is always just one page with whole result set.
  * 
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.16.0
  */
 public class COffsetPageRequest implements Pageable

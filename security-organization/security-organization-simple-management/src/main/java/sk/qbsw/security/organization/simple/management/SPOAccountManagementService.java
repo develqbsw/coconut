@@ -14,8 +14,8 @@ import java.util.List;
  * @param <O> the simple organization account output type
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public interface SPOAccountManagementService<I extends AccountInputData, O extends AccountData>extends AccountManagementService<I, O>
 {

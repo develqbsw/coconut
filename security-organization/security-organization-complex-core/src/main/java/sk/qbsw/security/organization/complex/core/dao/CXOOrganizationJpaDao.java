@@ -15,7 +15,7 @@ import java.util.List;
  * @author rosenberg
  * @author Tomas Lauro
  * @author Tomas Leken
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class CXOOrganizationJpaDao extends AEntityQDslDao<Long, CXOOrganization> implements CXOOrganizationDao

@@ -12,8 +12,8 @@ import java.util.Map;
  * The complex organization anonymous account.
  *
  * @author Tomas Leken
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class AnonymousAccount extends BaseComplexOrganizationAccountDetails
 {

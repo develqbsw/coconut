@@ -4,7 +4,7 @@ package sk.qbsw.security.core.model.order;
  * The order specification.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @param <S> the order by attribute specifier
  * @since 1.13.0
  */

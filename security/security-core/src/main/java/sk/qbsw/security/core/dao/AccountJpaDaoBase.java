@@ -22,7 +22,7 @@ import java.util.List;
  * @param <A> the type parameter
  * @author rosenberg
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao<Long, A> implements AccountDao<A>

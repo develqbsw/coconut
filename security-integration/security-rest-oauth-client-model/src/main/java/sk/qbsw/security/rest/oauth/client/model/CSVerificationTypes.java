@@ -4,7 +4,7 @@ package sk.qbsw.security.rest.oauth.client.model;
  * The client verification types.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.2
  */
 public enum CSVerificationTypes

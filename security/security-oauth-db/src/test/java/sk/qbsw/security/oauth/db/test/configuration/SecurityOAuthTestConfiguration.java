@@ -16,7 +16,7 @@ import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
  * The base OAuth test configuration.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.2
  */
 public class SecurityOAuthTestConfiguration extends SecurityOAuthConfigurationBase

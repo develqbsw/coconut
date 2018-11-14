@@ -16,7 +16,7 @@ import java.util.List;
  * The account unit group implementation.
  *
  * @author farkas.roman
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.7.0
  */
 public class AccountUnitGroupServiceImpl extends AService implements AccountUnitGroupService

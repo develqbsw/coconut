@@ -11,8 +11,8 @@ import javax.annotation.PostConstruct;
  * The security orika mapper.
  *
  * @author Tomas Leken
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 @Component
 public class SecurityOrikaMapper extends SecurityOrikaMapperBase<AccountData, CSAccountData>

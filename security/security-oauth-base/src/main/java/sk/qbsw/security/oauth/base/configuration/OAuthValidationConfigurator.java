@@ -4,7 +4,7 @@ package sk.qbsw.security.oauth.base.configuration;
  * The OAuth validation configuration.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.2
  */
 public interface OAuthValidationConfigurator

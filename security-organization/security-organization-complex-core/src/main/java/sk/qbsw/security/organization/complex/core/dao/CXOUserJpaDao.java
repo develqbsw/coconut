@@ -15,8 +15,8 @@ import java.util.List;
  * The complex organization user jpa dao.
  *
  * @author Tomas Leken
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class CXOUserJpaDao extends AEntityQDslDao<Long, CXOUser> implements CXOUserDao
 {

@@ -17,7 +17,7 @@ import sk.qbsw.security.management.service.AccountPermissionManagementService;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author farkas.roman
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class AccountPermissionManagementServiceImpl extends AccountPermissionManagementServiceBase<Account> implements AccountPermissionManagementService

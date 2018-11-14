@@ -9,7 +9,7 @@ import sk.qbsw.security.spring.base.model.LoggedUser;
  * The authentication service - abstraction layer above the core authentication service.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.4
  */
 public interface AuthenticationSecurityService

@@ -10,8 +10,8 @@ import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
  * The complex organization default ip ignored OAuth configuration.
  *
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class CXOOAuthIpIgnoredConfiguration extends CXOSecurityOAuthConfigurationBase
 {

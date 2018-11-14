@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  * @author Tomas Leken
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public abstract class AccountManagementServiceBase<I extends AccountInputData, O extends AccountData, A extends Account>extends AService

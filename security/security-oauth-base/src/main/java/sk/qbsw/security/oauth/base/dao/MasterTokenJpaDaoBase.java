@@ -19,7 +19,7 @@ import java.util.List;
  * @param <A> the account type
  * @param <T> the token type
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.1
  */
 public abstract class MasterTokenJpaDaoBase<A extends Account, T extends MasterTokenBase<A>>extends AEntityQDslDao<Long, T>

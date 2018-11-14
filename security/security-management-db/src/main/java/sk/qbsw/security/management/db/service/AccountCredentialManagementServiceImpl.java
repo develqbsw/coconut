@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class AccountCredentialManagementServiceImpl extends AccountCredentialManagementServiceBase<Account> implements AccountCredentialManagementService

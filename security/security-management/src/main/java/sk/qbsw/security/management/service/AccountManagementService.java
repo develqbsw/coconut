@@ -15,7 +15,7 @@ import java.util.List;
  * @param <O> the account type
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public interface AccountManagementService<I extends AccountInputData, O extends AccountData>

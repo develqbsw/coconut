@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
  * The default oauth validation configuration.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.2
  */
 public class DefaultOAuthValidationConfigurator implements OAuthValidationConfigurator

@@ -32,8 +32,8 @@ import sk.qbsw.security.organization.complex.management.service.CXOUserService;
  * The complex organization security management configuration.
  *
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class CXOSecurityManagementConfiguration extends CXOSecurityCoreConfiguration
 {

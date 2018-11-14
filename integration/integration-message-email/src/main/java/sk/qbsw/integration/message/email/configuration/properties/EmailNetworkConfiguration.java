@@ -4,8 +4,8 @@ package sk.qbsw.integration.message.email.configuration.properties;
  * The email network configuration.
  *
  * @author Tomas Leken
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public interface EmailNetworkConfiguration
 {

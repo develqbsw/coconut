@@ -25,7 +25,7 @@ import java.util.Map;
  * The oauth service implementation.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.1
  */
 public class OAuthServiceImpl extends OAuthServiceBase<Account, AccountData, AuthenticationTokenData, MasterTokenData> implements OAuthService<AccountData>

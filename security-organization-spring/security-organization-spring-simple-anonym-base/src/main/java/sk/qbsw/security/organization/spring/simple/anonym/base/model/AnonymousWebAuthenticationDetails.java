@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
  * This WebAuthenticationDetails implementation allows for storing a organization id.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.4
  */
 public class AnonymousWebAuthenticationDetails extends WebAuthenticationDetails

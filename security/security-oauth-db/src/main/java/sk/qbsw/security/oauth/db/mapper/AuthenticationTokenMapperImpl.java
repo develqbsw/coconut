@@ -12,8 +12,8 @@ import sk.qbsw.security.oauth.db.model.domain.AuthenticationToken;
  * The authentication token mapper implementation.
  *
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class AuthenticationTokenMapperImpl extends AuthenticationTokenMapperBase<Account, AuthenticationToken, AccountData, AuthenticationTokenData> implements AuthenticationTokenMapper<Account, AuthenticationToken, AccountData, AuthenticationTokenData>
 {

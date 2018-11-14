@@ -11,8 +11,8 @@ import sk.qbsw.security.core.dao.UnitDao;
  * The security authorization configuration.
  * 
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class SecurityAuthorizationConfiguration extends SecurityCoreConfiguration
 {

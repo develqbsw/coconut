@@ -9,7 +9,7 @@ import java.util.List;
  * The order model.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @param <S> the order by attribute specifier
  * @since 1.13.0
  */

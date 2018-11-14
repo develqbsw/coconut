@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
  * Blocked login DAO implementation.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.12.2
  */
 public class BlockedLoginJpaDao extends AEntityQDslDao<Long, BlockedLogin> implements BlockedLoginDao

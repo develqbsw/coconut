@@ -20,7 +20,7 @@ import java.util.List;
  * The oauth service cache facade implementation.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.2
  */
 public class OAuthServiceIpValidatedCacheFacadeImpl extends BaseOAuthServiceCacheFacade<AccountData> implements OAuthServiceFacade<AccountData>

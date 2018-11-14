@@ -13,8 +13,8 @@ import sk.qbsw.security.oauth.model.MasterTokenDataBase;
  * @param <D> the account data type
  * @param <MD> the master token data type
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public interface MasterTokenMapper<A extends Account, M extends MasterTokenBase<A>, D extends AccountData, MD extends MasterTokenDataBase<D>>
 {

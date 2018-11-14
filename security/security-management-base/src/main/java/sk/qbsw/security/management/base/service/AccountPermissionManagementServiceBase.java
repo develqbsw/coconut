@@ -23,7 +23,7 @@ import java.util.Set;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author farkas.roman
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public abstract class AccountPermissionManagementServiceBase<A extends Account>extends AService

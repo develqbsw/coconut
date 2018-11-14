@@ -5,7 +5,7 @@ package sk.qbsw.security.core.configuration.model;
  *
  * @author Marek Martinkovic
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.14.3
  */
 public enum AdditionalAuthenticationParamsTypes

@@ -10,7 +10,7 @@ import sk.qbsw.security.spring.base.model.AccountDetails;
  *
  * @param <T> the type parameter
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.4
  */
 public interface AccountDetailsService<T extends Authentication>

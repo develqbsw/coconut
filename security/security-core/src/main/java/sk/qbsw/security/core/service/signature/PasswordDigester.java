@@ -6,7 +6,7 @@ package sk.qbsw.security.core.service.signature;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author Marek Martinkovic
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.3.0
  */
 public interface PasswordDigester

@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
  * Checks unit service.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)

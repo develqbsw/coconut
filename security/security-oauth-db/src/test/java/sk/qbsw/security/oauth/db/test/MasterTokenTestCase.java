@@ -21,7 +21,7 @@ import sk.qbsw.security.oauth.service.MasterTokenService;
  * The master token service test case.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.1
  */
 @RunWith (SpringJUnit4ClassRunner.class)

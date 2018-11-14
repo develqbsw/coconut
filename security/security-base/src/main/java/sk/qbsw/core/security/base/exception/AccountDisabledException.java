@@ -7,7 +7,7 @@ import sk.qbsw.core.base.exception.ECoreErrorResponse;
  * The Class AccountDisabledException.
  * 
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.7.0
  */
 @SuppressWarnings ("serial")

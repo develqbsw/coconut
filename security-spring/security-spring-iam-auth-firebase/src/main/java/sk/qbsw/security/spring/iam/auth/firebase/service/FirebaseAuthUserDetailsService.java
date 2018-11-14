@@ -18,7 +18,7 @@ import sk.qbsw.security.spring.iam.auth.base.service.IAMAuthUserDetailsServiceBa
  * The oauth pre authenticated user details service.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.18.0
  */
 public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBase<FirebaseToken>

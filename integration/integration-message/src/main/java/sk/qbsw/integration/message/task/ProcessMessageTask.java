@@ -6,8 +6,8 @@ import sk.qbsw.integration.message.service.ProcessMessageService;
  * The process message task.
  *
  * @author Tomas Leken
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public abstract class ProcessMessageTask
 {

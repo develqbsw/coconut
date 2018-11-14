@@ -12,8 +12,8 @@ import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
  * The type Authentication controller.
  *
  * @author Tomas Leken
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 @RestController
 public class AuthenticationController extends AuthenticationControllerBase<AccountData, CSAccountData>

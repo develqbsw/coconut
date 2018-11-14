@@ -5,7 +5,7 @@ package sk.qbsw.core.security.base.model;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.6.0
  */
 public enum AccountDataTypes

@@ -14,8 +14,8 @@ import java.util.List;
  * The email repository implementation.
  *
  * @author Tomas Leken
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class EmailRepositoryImpl extends AQDslDao<Long, Email> implements EmailRepositoryExtension
 {

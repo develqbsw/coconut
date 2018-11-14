@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @param <A> the type parameter
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public abstract class AccountCredentialManagementServiceBase<A extends Account>extends AService

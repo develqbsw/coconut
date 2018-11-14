@@ -24,7 +24,7 @@ import java.util.List;
  * The master token service.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.1
  */
 public class MasterTokenServiceImpl extends MasterTokenServiceBase<Account, AuthenticationToken, MasterToken, AccountData, MasterTokenData> implements MasterTokenService<AccountData, MasterTokenData>

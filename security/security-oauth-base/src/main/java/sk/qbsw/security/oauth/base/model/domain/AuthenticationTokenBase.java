@@ -8,8 +8,8 @@ import javax.persistence.Entity;
  * The base authentication token.
  *
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 @Entity
 public abstract class AuthenticationTokenBase<A extends Account>extends SecurityTokenBase<A>

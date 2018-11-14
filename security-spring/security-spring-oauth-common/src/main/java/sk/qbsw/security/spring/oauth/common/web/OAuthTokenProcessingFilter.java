@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * The token processing filter intended to use directly with service layer.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.0
  */
 public class OAuthTokenProcessingFilter extends TokenProcessingFilterBase<OAuthRequestSecurityHeader>

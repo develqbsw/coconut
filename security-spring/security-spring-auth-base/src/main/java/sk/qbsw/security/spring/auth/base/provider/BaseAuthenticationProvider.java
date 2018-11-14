@@ -16,7 +16,7 @@ import java.util.Collection;
  *
  * @author Dalibor Rak
  * @author Tomas lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.6.0
  */
 public abstract class BaseAuthenticationProvider implements AuthenticationProvider

@@ -16,7 +16,7 @@ import sk.qbsw.security.spring.base.service.AuthorityConverter;
  *
  * @author Tomas Lauro
  * @author Dalibor Rak
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.4
  */
 public class UsernamePasswordUnitAuthenticationSecurityService extends AService implements AuthenticationSecurityService

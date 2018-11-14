@@ -23,7 +23,7 @@ import sk.qbsw.security.oauth.base.model.domain.SecurityTokenBase;
  * @param <T> the authentication token type
  * @param <M> the master token type
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.1
  */
 public abstract class SecurityTokenServiceBase<A extends Account, D extends AccountData, T extends AuthenticationTokenBase<A>, M extends MasterTokenBase<A>>

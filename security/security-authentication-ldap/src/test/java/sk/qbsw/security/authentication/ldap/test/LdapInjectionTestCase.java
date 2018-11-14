@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
  * The ldap injection test case.
  *
  * @author Dalibor Rak
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.12.3
  */
 public class LdapInjectionTestCase

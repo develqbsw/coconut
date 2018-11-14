@@ -16,8 +16,8 @@ import java.util.Map;
  * The security core configuration base.
  * 
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public abstract class SecurityCoreConfigurationBase<A extends Account>
 {

@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @param <D> the type parameter
  * @param <MD> the type parameter
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.1
  */
 public abstract class MasterTokenServiceBase<A extends Account, T extends AuthenticationTokenBase<A>, M extends MasterTokenBase<A>, D extends AccountData, MD extends MasterTokenDataBase<D>>extends SecurityTokenServiceBase<A, D, T, M>

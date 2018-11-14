@@ -26,7 +26,7 @@ import java.util.List;
  * @author Tomas Leken
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class AccountManagementServiceImpl extends AccountManagementServiceBase<AccountInputData, AccountData, Account> implements AccountManagementService<AccountInputData, AccountData>

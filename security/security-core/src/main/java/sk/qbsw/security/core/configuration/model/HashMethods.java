@@ -8,7 +8,7 @@ import sk.qbsw.core.base.exception.CSystemException;
  * The hash method to hash data.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.8.0
  */
 public enum HashMethods

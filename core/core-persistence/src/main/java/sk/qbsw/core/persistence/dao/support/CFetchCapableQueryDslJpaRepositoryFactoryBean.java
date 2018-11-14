@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @param <I> the type parameter
  * @author Adrian Lopez (http://stackoverflow.com/a/21630123)
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.16.0
  */
 public class CFetchCapableQueryDslJpaRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable>extends JpaRepositoryFactoryBean<R, T, I>

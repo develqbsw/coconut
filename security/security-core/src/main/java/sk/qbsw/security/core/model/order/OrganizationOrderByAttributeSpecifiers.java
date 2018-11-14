@@ -10,7 +10,7 @@ import sk.qbsw.security.core.model.domain.QOrganization;
  * The organization order by attribute specifier.
  * 
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.13.0
  */
 public enum OrganizationOrderByAttributeSpecifiers implements OrderByAttributeSpecifier

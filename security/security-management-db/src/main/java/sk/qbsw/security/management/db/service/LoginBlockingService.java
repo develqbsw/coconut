@@ -9,7 +9,7 @@ import sk.qbsw.security.core.model.domain.BlockedLogin;
  * @author Dalibor Rak
  * @author Peter Bozik
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.12.2
  */
 public interface LoginBlockingService

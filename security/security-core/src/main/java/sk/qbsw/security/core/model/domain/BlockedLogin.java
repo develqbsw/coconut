@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * The block list of IP addresses where invalid authentication's data came from.
  * 
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.12.2
  */
 @Entity

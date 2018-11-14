@@ -11,7 +11,7 @@ import sk.qbsw.security.core.model.domain.Account;
  * The database login task for test.
  *
  * @author Tomas Lauro
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.7.2
  */
 class DatabaseLoginTask extends LoginTask implements Runnable

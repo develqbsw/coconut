@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author Michal Lacko
- * @version 1.19.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 @Entity

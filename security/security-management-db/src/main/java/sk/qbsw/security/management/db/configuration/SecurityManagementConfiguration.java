@@ -19,8 +19,8 @@ import sk.qbsw.security.management.service.AccountPermissionManagementService;
  * The security management configuration.
  * 
  * @author Tomas Lauro
- * @version 1.19.0
- * @since 1.19.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 public class SecurityManagementConfiguration extends SecurityCoreConfiguration
 {
