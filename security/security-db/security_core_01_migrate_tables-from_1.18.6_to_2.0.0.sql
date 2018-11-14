@@ -108,6 +108,10 @@ alter table sec.t_auth_params
   drop column c_operation_id,
   drop column fk_changed_by;
 
+-- rename constraints
+alter table sec.t_auth_params
+  rename constraint fk_authparams_user to fk_authparams_account;
+
 -- **** account table ****
 -- add state
 alter table sec.t_user
@@ -154,9 +158,15 @@ alter table sec.t_user
   drop column fk_address,
   drop column fk_changed_by;
 
--- rename table
+-- rename table and constraints
 alter table sec.t_user
   rename to t_account;
+alter table sec.t_account
+  rename constraint fk_user_organization to fk_account_organization;
+alter table sec.t_account
+  rename constraint pk_user to pk_account;
+alter table sec.t_account
+  rename constraint fk_user_defaultunit to fk_account_defaultunit;
 
 -- **** account unit group table ****
 -- rename user
@@ -169,9 +179,13 @@ alter table sec.t_x_group_user
   drop column c_operation_id,
   drop column fk_changed_by;
 
--- rename table
+-- rename table and constraints
 alter table sec.t_x_group_user
   rename to t_x_account_unit_group;
+alter table sec.t_x_account_unit_group
+  rename constraint pk_x_group_user to pk_x_group_account;
+alter table sec.t_x_account_unit_group
+  rename constraint fk_groupuser_user to fk_groupuser_account;
 
 -- **** blocked login table ****
 -- rename unique
@@ -187,3 +201,36 @@ alter table sec.t_blocked_login
 -- **** drop tables ****
 drop table sec.t_address;
 drop table sec.t_licence;
+
+-- **** alter account with uid and add user ****
+-- create user
+create table sec.t_user
+(
+    pk_id bigint not null,
+    d_type character varying(31) not null
+);
+alter table sec.t_user
+    add constraint pk_user primary key (pk_id);
+
+alter table sec.t_user owner to :adm_user;
+grant all on table sec.t_user to :adm_user;
+grant select, update, insert, delete on table sec.t_user to :gw_user;
+grant select on table sec.t_user to :preview_user;
+
+-- add user to account
+alter table sec.t_account
+  add column fk_user bigint;
+alter table sec.t_account
+  add constraint fk_account_user foreign key (fk_user) references sec.t_user(pk_id);
+
+-- add uid to account
+create extension if not exists "uuid-ossp";
+
+alter table sec.t_account
+  add column c_uid character varying(255);
+
+update sec.t_account
+  set c_uid = uuid_generate_v4();
+
+alter table sec.t_account
+  alter c_uid set not null;
