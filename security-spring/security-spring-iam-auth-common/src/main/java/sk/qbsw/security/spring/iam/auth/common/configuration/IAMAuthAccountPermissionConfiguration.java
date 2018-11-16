@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.iam.auth.base.configuration;
+package sk.qbsw.security.spring.iam.auth.common.configuration;
 
 import java.io.Serializable;
 

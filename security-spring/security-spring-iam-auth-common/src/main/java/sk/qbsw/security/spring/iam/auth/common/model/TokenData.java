@@ -1,4 +1,4 @@
-package sk.qbsw.security.spring.iam.auth.base.model;
+package sk.qbsw.security.spring.iam.auth.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

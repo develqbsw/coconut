@@ -23,7 +23,7 @@ public class IAMAuthUserDetailsChecker extends AccountStatusUserDetailsChecker
 
 		try
 		{
-			FirebaseAuth.getInstance().verifyIdToken( ((IAMAuthLoggedUser) user).getToken(), true);
+			FirebaseAuth.getInstance().verifyIdToken( ((IAMAuthLoggedUser) user).getIamAuthData().getToken(), true);
 		}
 		catch (FirebaseAuthException e)
 		{

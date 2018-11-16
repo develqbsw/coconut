@@ -10,8 +10,8 @@ import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.management.service.AccountManagementService;
 import sk.qbsw.security.management.service.AccountPermissionManagementService;
 import sk.qbsw.security.spring.base.service.AuthorityConverter;
-import sk.qbsw.security.spring.iam.auth.base.configuration.IAMAuthAccountPermissionConfiguration;
-import sk.qbsw.security.spring.iam.auth.base.model.TokenData;
+import sk.qbsw.security.spring.iam.auth.common.configuration.IAMAuthAccountPermissionConfiguration;
+import sk.qbsw.security.spring.iam.auth.common.model.TokenData;
 import sk.qbsw.security.spring.iam.auth.base.service.IAMAuthUserDetailsServiceBase;
 
 /**

@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>security-spring-iam-auth-common</artifactId>
-    <name>Security Spring OAuth IAM Auth Common</name>
+    <artifactId>security-organization-spring-complex-iam-auth-base</artifactId>
+    <name>Security Organization Spring Complex IAM Auth Base</name>
     <packaging>jar</packaging>
 
     <organization>
@@ -11,35 +11,35 @@
     </organization>
 
     <parent>
-        <groupId>sk.qbsw.security.spring</groupId>
-        <artifactId>security-spring-top</artifactId>
+        <groupId>sk.qbsw.security.organization.spring</groupId>
+        <artifactId>security-organization-spring-top</artifactId>
         <version>2.1.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-base</artifactId>
-        </dependency>
+        <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-base</artifactId>
+            <artifactId>security-spring-iam-auth-common</artifactId>
         </dependency>
+
+        <!-- QBSW security organization -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-base</artifactId>
+        </dependency>
+
+        <!-- QBSW security organization spring -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization.spring</groupId>
+            <artifactId>security-organization-spring-complex-base</artifactId>
+        </dependency>
+
 
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-        </dependency>
-
-        <!-- Web -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
         <!-- validation -->
@@ -54,7 +54,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- logging -->
+        <!-- SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

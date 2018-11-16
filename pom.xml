@@ -422,6 +422,11 @@
                 <artifactId>security-organization-spring-complex-oauth-base</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-complex-iam-auth-base</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
 
             <!-- QBSW security integration -->
             <dependency>

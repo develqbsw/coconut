@@ -20,6 +20,7 @@
 		<module>security-organization-spring-simple-anonym-base</module>
 		<module>security-organization-spring-simple-system-base</module>
 		<module>security-organization-spring-complex-base</module>
+		<module>security-organization-spring-complex-iam-auth-base</module>
 		<module>security-organization-spring-complex-oauth-base</module>
 		<module>security-organization-spring-complex-oauth-local</module>
 		<module>security-organization-spring-complex-anonym-base</module>
