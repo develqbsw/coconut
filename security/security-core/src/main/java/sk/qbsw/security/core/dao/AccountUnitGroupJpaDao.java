@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author farkas.roman
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.7.0
  */
 public class AccountUnitGroupJpaDao extends AEntityQDslDao<Long, AccountUnitGroup> implements AccountUnitGroupDao
@@ -26,7 +26,7 @@ public class AccountUnitGroupJpaDao extends AEntityQDslDao<Long, AccountUnitGrou
 	}
 
 	@Override
-	public List<AccountUnitGroup> findByAccountAndUnitAndGroup (Account account, Unit unit, Group group)
+	public List<AccountUnitGroup> findByAccountIdAndUnitAndGroup (Long accountId, Unit unit, Group group)
 	{
 		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
 		QAccount qAccount = QAccount.account;
@@ -35,9 +35,9 @@ public class AccountUnitGroupJpaDao extends AEntityQDslDao<Long, AccountUnitGrou
 
 		// create where condition
 		BooleanBuilder builder = new BooleanBuilder();
-		if (account != null)
+		if (accountId != null)
 		{
-			builder.and(qAccount.eq(account));
+			builder.and(qAccount.id.eq(accountId));
 		}
 		if (unit != null)
 		{

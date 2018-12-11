@@ -1,6 +1,8 @@
 package sk.qbsw.security.core.service.mapper;
 
+import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountDataStates;
 import sk.qbsw.core.security.base.model.AccountDataTypes;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.AccountTypes;
@@ -18,6 +20,11 @@ public abstract class AccountOutputDataMapperBase<O extends AccountData, A exten
 {
 	private final UserOutputDataMapper userOutputDataMapper;
 
+	/**
+	 * Instantiates a new Account output data mapper base.
+	 *
+	 * @param userOutputDataMapper the user output data mapper
+	 */
 	protected AccountOutputDataMapperBase (UserOutputDataMapper userOutputDataMapper)
 	{
 		this.userOutputDataMapper = userOutputDataMapper;
@@ -38,6 +45,7 @@ public abstract class AccountOutputDataMapperBase<O extends AccountData, A exten
 		accountData.setLogin(account.getLogin());
 		accountData.setEmail(account.getEmail());
 		accountData.setType(mapToAccountDataType(account.getType()));
+		accountData.setState(mapToAccountDataState(account.getState()));
 		accountData.setGroups(account.exportGroups());
 		accountData.setRoles(account.exportRoles());
 		accountData.setUser(userOutputDataMapper.mapToUserOutputData(account.getUser()));
@@ -55,6 +63,19 @@ public abstract class AccountOutputDataMapperBase<O extends AccountData, A exten
 				return AccountDataTypes.TECHNICAL;
 			default:
 				throw new IllegalArgumentException("Invalid account type: " + accountType.name());
+		}
+	}
+
+	private AccountDataStates mapToAccountDataState (ActivityStates state)
+	{
+		switch (state)
+		{
+			case ACTIVE:
+				return AccountDataStates.ACTIVE;
+			case INACTIVE:
+				return AccountDataStates.INACTIVE;
+			default:
+				throw new IllegalArgumentException("Invalid account state: " + state.name());
 		}
 	}
 

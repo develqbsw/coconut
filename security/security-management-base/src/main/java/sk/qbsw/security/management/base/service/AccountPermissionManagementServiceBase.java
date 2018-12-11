@@ -23,7 +23,7 @@ import java.util.Set;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author farkas.roman
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.0.0
  */
 public abstract class AccountPermissionManagementServiceBase<A extends Account>extends AService
@@ -135,7 +135,7 @@ public abstract class AccountPermissionManagementServiceBase<A extends Account>e
 	private boolean canBeGroupUnitAssignedToAccount (A account, Group group, Unit unit)
 	{
 		// find all groups assigned to account
-		List<AccountUnitGroup> accountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(account, unit, null);
+		List<AccountUnitGroup> accountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(account.getId(), unit, null);
 
 		for (AccountUnitGroup accountUnitGroup : accountUnitGroups)
 		{
@@ -217,7 +217,7 @@ public abstract class AccountPermissionManagementServiceBase<A extends Account>e
 	private void removeAccountUnitGroup (A account, Group group, Unit unit)
 	{
 		// find account <-> group mapping records - the list should contains only one record, but the method handles the case if not
-		List<AccountUnitGroup> accountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(account, unit, group);
+		List<AccountUnitGroup> accountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(account.getId(), unit, group);
 
 		// delete records
 		for (AccountUnitGroup accountUnitGroup : accountUnitGroups)

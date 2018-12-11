@@ -243,7 +243,7 @@ public class AccountTestCase
 		// unset group
 		accountPermissionManagementService.unassignAccountFromGroup(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.FIRST_GROUP_IN_UNIT_CODE, DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<AccountUnitGroup> result = accountUnitGroupDao.findByAccountAndUnitAndGroup(testAccount, testUnit, testGroup);
+		List<AccountUnitGroup> result = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(testAccount.getId(), testUnit, testGroup);
 
 		// asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);
@@ -269,7 +269,7 @@ public class AccountTestCase
 		// set group
 		accountPermissionManagementService.assignAccountToGroup(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, DataGenerator.THIRD_GROUP_IN_UNIT_CODE, DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<AccountUnitGroup> result = accountUnitGroupDao.findByAccountAndUnitAndGroup(testAccount, testUnit, testGroup);
+		List<AccountUnitGroup> result = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(testAccount.getId(), testUnit, testGroup);
 
 		// asserts
 		assertNotNull("Test unset group failed: cannot find result ", result);

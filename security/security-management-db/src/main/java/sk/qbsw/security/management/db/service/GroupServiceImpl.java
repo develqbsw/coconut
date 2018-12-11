@@ -5,7 +5,6 @@ import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.GroupDao;
-import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
 
@@ -16,7 +15,7 @@ import java.util.List;
  *
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.0.0
  */
 public class GroupServiceImpl extends AService implements GroupService
@@ -56,9 +55,9 @@ public class GroupServiceImpl extends AService implements GroupService
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public List<Group> findByUnitAndAccount (Unit unit, Account account)
+	public List<Group> findByUnitAndAccountId (Unit unit, Long accountId)
 	{
-		return groupDao.findByUnitAndAccount(unit, account);
+		return groupDao.findByUnitAndAccountId(unit, accountId);
 	}
 
 	@Override

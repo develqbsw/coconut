@@ -265,7 +265,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupDao.findByUnitAndAccount(unit, account);
+		List<Group> groups = groupDao.findByUnitAndAccountId(unit, account.getId());
 
 		// asserts
 		assertNotNull("No groups found", groups);
@@ -286,7 +286,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		// get unit
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupDao.findByUnitAndAccount(unit, null);
+		List<Group> groups = groupDao.findByUnitAndAccountId(unit, null);
 
 		// asserts
 		assertNotNull("No groups found", groups);
@@ -307,7 +307,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		// get unit
 		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupDao.findByUnitAndAccount(null, account);
+		List<Group> groups = groupDao.findByUnitAndAccountId(null, account.getId());
 
 		// asserts
 		assertNotNull("No groups found", groups);
@@ -325,7 +325,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<Group> groups = groupDao.findByUnitAndAccount(null, null);
+		List<Group> groups = groupDao.findByUnitAndAccountId(null, null);
 
 		// asserts
 		assertNotNull("No groups found", groups);

@@ -35,7 +35,7 @@ drop sequence sec.t_address_pk_id_seq;
 drop sequence sec.t_licence_pk_id_seq;
 
 -- **** add user sequence ****
-crate sequence sec.s_user start with 1 increment by 50;
+create sequence sec.s_user start with 1 increment by 50;
 
 alter table sec.s_user  owner to :adm_user;
 grant all on sequence sec.s_user to :adm_user;

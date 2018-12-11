@@ -112,7 +112,7 @@ public class GroupJpaDao extends AEntityQDslDao<Long, Group> implements GroupDao
 	}
 
 	@Override
-	public List<Group> findByUnitAndAccount (Unit unit, Account account)
+	public List<Group> findByUnitAndAccountId (Unit unit, Long accountId)
 	{
 		QGroup qGroup = QGroup.group;
 		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
@@ -125,9 +125,9 @@ public class GroupJpaDao extends AEntityQDslDao<Long, Group> implements GroupDao
 		{
 			builder.and(qUnit.eq(unit));
 		}
-		if (account != null)
+		if (accountId != null)
 		{
-			builder.and(qAccount.eq(account));
+			builder.and(qAccount.id.eq(accountId));
 		}
 
 		// create query

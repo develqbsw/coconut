@@ -87,15 +87,15 @@ public class GroupTestCase
 		Unit unit1 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
 		Account account2 = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupService.findByUnitAndAccount(unit1, account2);
+		List<Group> groups = groupService.findByUnitAndAccountId(unit1, account2.getId());
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
 
 		Account account1 = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
-		groups = groupService.findByUnitAndAccount(unit1, account1);
+		groups = groupService.findByUnitAndAccountId(unit1, account1.getId());
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 
 		Unit unit2 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
-		groups = groupService.findByUnitAndAccount(unit2, account1);
+		groups = groupService.findByUnitAndAccountId(unit2, account1.getId());
 		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
 	}
 

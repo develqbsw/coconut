@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
  * Checks cross table userUnitGroup dao.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.13.0
  */
 public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
@@ -70,7 +70,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 		Group group = groupDao.findOneByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(account, unit, group);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(account.getId(), unit, group);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
@@ -91,7 +91,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 		Group group = groupDao.findOneByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(account, null, group);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(account.getId(), null, group);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
@@ -112,7 +112,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE);
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(account, unit, null);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(account.getId(), unit, null);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
@@ -133,7 +133,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 		Group group = groupDao.findOneByCode(DataGenerator.SECOND_GROUP_IN_UNIT_CODE);
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(null, unit, group);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(null, unit, group);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
@@ -153,7 +153,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(account, null, null);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(account.getId(), null, null);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
@@ -173,7 +173,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		Group group = groupDao.findOneByCode(DataGenerator.FIRST_GROUP_IN_UNIT_CODE);
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(null, null, group);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(null, null, group);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
@@ -193,7 +193,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(null, unit, null);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(null, unit, null);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
@@ -211,7 +211,7 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 	{
 		initTest();
 
-		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountAndUnitAndGroup(null, null, null);
+		List<AccountUnitGroup> xAccountUnitGroups = accountUnitGroupDao.findByAccountIdAndUnitAndGroup(null, null, null);
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);

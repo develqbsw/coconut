@@ -1,7 +1,6 @@
 package sk.qbsw.security.management.db.service;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
 
@@ -12,7 +11,7 @@ import java.util.List;
  *
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.0.0
  */
 public interface GroupService
@@ -46,10 +45,10 @@ public interface GroupService
 	 * Find by unit and account list.
 	 *
 	 * @param unit the unit
-	 * @param account the account
+	 * @param accountId the account id
 	 * @return the list
 	 */
-	List<Group> findByUnitAndAccount (Unit unit, Account account);
+	List<Group> findByUnitAndAccountId (Unit unit, Long accountId);
 
 	/**
 	 * Find by code and unit group.

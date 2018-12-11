@@ -4,7 +4,6 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.service.AService;
 import sk.qbsw.security.core.dao.AccountUnitGroupDao;
-import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.AccountUnitGroup;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
@@ -55,16 +54,16 @@ public class AccountUnitGroupServiceImpl extends AService implements AccountUnit
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public List<AccountUnitGroup> findByAccount (Account account)
+	public List<AccountUnitGroup> findByAccountId (Long accountId)
 	{
-		return findByAccountAndUnitAndGroup(account, null, null);
+		return findByAccountIdAndUnitAndGroup(accountId, null, null);
 	}
 
 	@Override
 	@Transactional (rollbackFor = CBusinessException.class)
-	public List<AccountUnitGroup> findByAccountAndUnitAndGroup (Account account, Unit unit, Group group)
+	public List<AccountUnitGroup> findByAccountIdAndUnitAndGroup (Long accountId, Unit unit, Group group)
 	{
-		return accountUnitGroupDao.findByAccountAndUnitAndGroup(account, unit, group);
+		return accountUnitGroupDao.findByAccountIdAndUnitAndGroup(accountId, unit, group);
 	}
 
 	@Override

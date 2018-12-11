@@ -39,6 +39,9 @@ public class AccountData implements Serializable
 	private AccountDataTypes type;
 
 	@NotNull
+	private AccountDataStates state;
+
+	@NotNull
 	private List<String> groups;
 
 	@NotNull

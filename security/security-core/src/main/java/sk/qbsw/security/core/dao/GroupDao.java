@@ -2,7 +2,6 @@ package sk.qbsw.security.core.dao;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.persistence.dao.IEntityDao;
-import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.GroupTypes;
 import sk.qbsw.security.core.model.domain.Unit;
@@ -59,8 +58,8 @@ public interface GroupDao extends IEntityDao<Long, Group>
 	 * Find by unit and user list.
 	 *
 	 * @param unit the unit
-	 * @param account the account
+	 * @param accountId the account id
 	 * @return the list
 	 */
-	List<Group> findByUnitAndAccount (Unit unit, Account account);
+	List<Group> findByUnitAndAccountId (Unit unit, Long accountId);
 }
