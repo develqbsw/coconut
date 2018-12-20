@@ -150,6 +150,10 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 			setRegisterUserAssociations(account.getUser());
 			account.setUser(userDao.update(account.getUser()));
 		}
+		else if (account.getUser() != null && account.getUser().getId() != null)
+		{
+			account.setUser(userDao.findById(account.getUser().getId()));
+		}
 
 		account = accountDao.update(account);
 

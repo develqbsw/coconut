@@ -1,6 +1,8 @@
 package sk.qbsw.security.organization.complex.oauth.db.dao;
 
 import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPADeleteClause;
+import com.querydsl.jpa.impl.JPAQuery;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.QAccount;
@@ -19,7 +21,7 @@ import java.util.List;
  * The complex organization authentication token dao.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 2.0.0
  */
 public class CXOAuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoBase<Account, AuthenticationToken> implements AuthenticationTokenDao<Account, AuthenticationToken>
@@ -35,33 +37,64 @@ public class CXOAuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoB
 	@Override
 	public AuthenticationToken findByAccountIdAndDeviceId (Long accountId, String deviceId) throws CBusinessException
 	{
-		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
-
-		Predicate predicate = super.findByAccountIdAndDeviceIdPredicate(accountId, deviceId);
-
-		// create query
-		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.account).fetchJoin() //
-			.where(predicate) //
-			.fetchFirst();
+		return createQueryWithUser(super.findByAccountIdAndDeviceIdPredicate(accountId, deviceId)).fetchFirst();
 	}
 
 	@Override
 	public AuthenticationToken findByAccountIdAndToken (Long accountId, String token) throws CBusinessException
 	{
-		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
-
-		Predicate predicate = super.findByAccountIdAndTokenPredicate(accountId, token);
-
-		// create query
-		return queryFactory.selectFrom(qAuthenticationToken) //
-			.leftJoin(qAuthenticationToken.account).fetchJoin() //
-			.where(predicate) //
-			.fetchFirst();
+		return createQueryWithUser(super.findByAccountIdAndTokenPredicate(accountId, token)).fetchFirst();
 	}
 
 	@Override
 	public AuthenticationToken findByTokenAndDeviceId (String token, String deviceId) throws CBusinessException
+	{
+		return createQueryWithAll(super.findByTokenAndDeviceIdPredicate(token, deviceId)).fetchFirst();
+	}
+
+	@Override
+	public List<AuthenticationToken> findByExpireLimitOrChangeLimit (Integer expireLimit, Integer changeLimit)
+	{
+		return createQueryWithAll(super.findByExpireLimitOrChangeLimitPredicate(expireLimit, changeLimit)).fetch();
+	}
+
+	@Override
+	public void remove (AuthenticationToken token)
+	{
+		createDeleteClause(super.removePredicate(token)).execute();
+	}
+
+	@Override
+	public Long removeByIds (List<Long> ids)
+	{
+		return createDeleteClause(super.removeByIdsPredicate(ids)).execute();
+	}
+
+	/**
+	 * Create query with user jpa query.
+	 *
+	 * @param predicate the predicate
+	 * @return the jpa query
+	 */
+	protected JPAQuery<AuthenticationToken> createQueryWithUser (Predicate predicate)
+	{
+		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
+		QAccount qAccount = QAccount.account;
+
+		// create query
+		return queryFactory.selectFrom(qAuthenticationToken) //
+			.leftJoin(qAuthenticationToken.account, qAccount).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
+			.where(predicate);
+	}
+
+	/**
+	 * Create query with all jpa query.
+	 *
+	 * @param predicate the predicate
+	 * @return the jpa query
+	 */
+	protected JPAQuery<AuthenticationToken> createQueryWithAll (Predicate predicate)
 	{
 		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
 		QAccount qAccount = QAccount.account;
@@ -69,8 +102,6 @@ public class CXOAuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoB
 		QCXOUnit qUnit = QCXOUnit.cXOUnit;
 		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
 		QGroup qGroup = QGroup.group;
-
-		Predicate predicate = super.findByTokenAndDeviceIdPredicate(token, deviceId);
 
 		// create query
 		return queryFactory.selectFrom(qAuthenticationToken) //
@@ -81,44 +112,20 @@ public class CXOAuthenticationTokenJpaDaoImpl extends AuthenticationTokenJpaDaoB
 			.leftJoin(qAccount.accountUnitGroups, qAccountUnitGroup).fetchJoin() //
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qGroup.roles).fetchJoin() //
-			.where(predicate) //
-			.fetchFirst();
+			.where(predicate);
 	}
 
-	@Override
-	public void remove (AuthenticationToken token)
+	/**
+	 * Create delete clause jpa delete clause.
+	 *
+	 * @param predicate the predicate
+	 * @return the jpa delete clause
+	 */
+	protected JPADeleteClause createDeleteClause (Predicate predicate)
 	{
 		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
-
-		Predicate predicate = super.removePredicate(token);
-
-		queryFactory.delete(qAuthenticationToken) //
-			.where(predicate) //
-			.execute();
-	}
-
-	@Override
-	public List<AuthenticationToken> findByExpireLimitOrChangeLimit (Integer expireLimit, Integer changeLimit)
-	{
-		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
-
-		Predicate predicate = super.findByExpireLimitOrChangeLimitPredicate(expireLimit, changeLimit);
-
-		// create query
-		return queryFactory.selectFrom(qAuthenticationToken) //
-			.where(predicate) //
-			.fetch();
-	}
-
-	@Override
-	public Long removeByIds (List<Long> ids)
-	{
-		QAuthenticationToken qAuthenticationToken = new QAuthenticationToken(Q_VARIABLE_NAME);
-
-		Predicate predicate = super.removeByIdsPredicate(ids);
 
 		return queryFactory.delete(qAuthenticationToken) //
-			.where(predicate) //
-			.execute();
+			.where(predicate);
 	}
 }
