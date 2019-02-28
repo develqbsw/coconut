@@ -58,6 +58,8 @@ public abstract class AccountInputDataMapperBase<I extends AccountInputData, A e
 		{
 			case PERSONAL:
 				return AccountTypes.PERSONAL;
+			case ANONYMOUS:
+				return AccountTypes.ANONYMOUS;
 			case TECHNICAL:
 				return AccountTypes.TECHNICAL;
 			default:

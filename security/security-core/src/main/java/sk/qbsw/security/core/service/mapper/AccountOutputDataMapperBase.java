@@ -59,6 +59,8 @@ public abstract class AccountOutputDataMapperBase<O extends AccountData, A exten
 		{
 			case PERSONAL:
 				return AccountDataTypes.PERSONAL;
+			case ANONYMOUS:
+				return AccountDataTypes.ANONYMOUS;
 			case TECHNICAL:
 				return AccountDataTypes.TECHNICAL;
 			default:

@@ -11,12 +11,17 @@ package sk.qbsw.core.security.base.model;
 public enum AccountDataTypes
 {
 	/**
-	 * The technical account.
-	 */
-	TECHNICAL,
-
-	/**
 	 * The personal account.
 	 */
-	PERSONAL
+	PERSONAL,
+
+	/**
+	 * Anonymous account data types.
+	 */
+	ANONYMOUS,
+
+	/**
+	 * The technical account.
+	 */
+	TECHNICAL
 }
