@@ -5,7 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import sk.qbsw.security.spring.oauth.common.model.OAuthRequestSecurityHeader;
-import sk.qbsw.security.spring.base.web.TokenProcessingFilterBase;
+import sk.qbsw.security.spring.common.web.TokenProcessingFilterBase;
 import sk.qbsw.security.spring.oauth.common.model.OAuthWebAuthenticationDetails;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;
 

@@ -1,6 +1,7 @@
 package sk.qbsw.security.spring.auth.local.service;
 
 import org.springframework.security.core.Authentication;
+
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.service.AService;
@@ -8,8 +9,8 @@ import sk.qbsw.security.authentication.service.AuthenticationService;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.spring.auth.base.model.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.spring.auth.base.service.AuthenticationSecurityService;
-import sk.qbsw.security.spring.base.model.LoggedUser;
-import sk.qbsw.security.spring.base.service.AuthorityConverter;
+import sk.qbsw.security.spring.common.model.LoggedAccount;
+import sk.qbsw.security.spring.common.service.AuthorityConverter;
 
 /**
  * The spring authentication service uses the authentication service to authenticate user.
@@ -38,7 +39,7 @@ public class UsernamePasswordUnitAuthenticationSecurityService extends AService 
 	}
 
 	@Override
-	public LoggedUser authenticate (Authentication authentication) throws CSecurityException
+	public LoggedAccount authenticate (Authentication authentication) throws CSecurityException
 	{
 		// checks token support
 		if (authentication == null || !this.supports(authentication.getClass()))
@@ -51,19 +52,19 @@ public class UsernamePasswordUnitAuthenticationSecurityService extends AService 
 		if (usernamePasswordAuthentication.getUnit() != null)
 		{
 			Account account = authenticationService.login((String) usernamePasswordAuthentication.getPrincipal(), (String) usernamePasswordAuthentication.getCredentials(), usernamePasswordAuthentication.getUnit());
-			return convertAccountToLoggedUser(account);
+			return convertAccountToLoggedAccount(account);
 		}
 		else
 		{
 			Account account = authenticationService.login((String) usernamePasswordAuthentication.getPrincipal(), (String) usernamePasswordAuthentication.getCredentials());
-			return convertAccountToLoggedUser(account);
+			return convertAccountToLoggedAccount(account);
 		}
 	}
 
-	private LoggedUser convertAccountToLoggedUser (Account account)
+	private LoggedAccount convertAccountToLoggedAccount (Account account)
 	{
-		//Organization organization = new Organization(account.getOrganization().getId(), account.getOrganization().getCode(), account.getOrganization().getName());
-		return new LoggedUser(account.getId(), account.getLogin(), account.getPassword(), authorityConverter.convertRolesToAuthorities(account.exportRoles()));//, organization);
+		// Organization organization = new Organization(account.getOrganization().getId(), account.getOrganization().getCode(), account.getOrganization().getName());
+		return new LoggedAccount(account.getId(), account.getLogin(), account.getPassword(), authorityConverter.convertRolesToAuthorities(account.exportRoles()));// , organization);
 
 	}
 

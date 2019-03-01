@@ -17,10 +17,28 @@
     </parent>
 
     <dependencies>
+        <!-- QBSW security-->
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-base</artifactId>
+        </dependency>
+
         <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-iam-auth-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-iam-auth-base</artifactId>
         </dependency>
 
         <!-- QBSW security organization -->
@@ -32,9 +50,16 @@
         <!-- QBSW security organization spring -->
         <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
+            <artifactId>security-organization-spring-complex-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.organization.spring</groupId>
             <artifactId>security-organization-spring-complex-base</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>sk.qbsw.security.organization.spring</groupId>
+            <artifactId>security-organization-spring-complex-iam-auth-common</artifactId>
+        </dependency>
 
         <!-- spring -->
         <dependency>

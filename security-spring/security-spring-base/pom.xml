@@ -20,33 +20,13 @@
         <!-- QBSW security -->
         <dependency>
             <groupId>sk.qbsw.security</groupId>
-            <artifactId>security-web</artifactId>
+            <artifactId>security-base</artifactId>
         </dependency>
 
-        <!-- Spring -->
+        <!-- qbsw security spring -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
-
-        <!-- Web -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
-        <!-- validation -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-common</artifactId>
         </dependency>
 
         <!-- lombok -->

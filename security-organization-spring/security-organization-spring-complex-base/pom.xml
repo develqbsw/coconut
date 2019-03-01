@@ -17,10 +17,26 @@
     </parent>
 
     <dependencies>
-        <!-- QBSW security spring -->
+        <!-- qbsw security organization -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-base</artifactId>
+        </dependency>
+
+        <!-- qbsw security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-common</artifactId>
+        </dependency>
+
+        <!-- qbsw security organization spring -->
+        <dependency>
+            <groupId>sk.qbsw.security.organization.spring</groupId>
+            <artifactId>security-organization-spring-complex-common</artifactId>
         </dependency>
 
         <!-- Spring -->

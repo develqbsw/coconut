@@ -4,7 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import sk.qbsw.security.spring.auth.base.model.UsernamePasswordUnitAuthenticationToken;
 import sk.qbsw.security.spring.auth.base.service.AuthenticationSecurityService;
-import sk.qbsw.security.spring.base.model.LoggedUser;
+import sk.qbsw.security.spring.common.model.LoggedAccount;
 
 import java.util.Collection;
 
@@ -35,13 +35,13 @@ public class UsernamePasswordUnitAuthenticationProvider extends BaseAuthenticati
 	}
 
 	@Override
-	protected Authentication populateAuthentication (Authentication authentication, LoggedUser authenticatedUser, Collection<GrantedAuthority> authorities)
+	protected Authentication populateAuthentication (Authentication authentication, LoggedAccount authenticatedAccount, Collection<GrantedAuthority> authorities)
 	{
 		// read supported authentication
 		UsernamePasswordUnitAuthenticationToken usernameAuthentication = (UsernamePasswordUnitAuthenticationToken) authentication;
 
 		// create fully populated authentication
-		UsernamePasswordUnitAuthenticationToken populatedAuthentication = new UsernamePasswordUnitAuthenticationToken(authenticatedUser, usernameAuthentication.getCredentials(), authorities, usernameAuthentication.getUnit());
+		UsernamePasswordUnitAuthenticationToken populatedAuthentication = new UsernamePasswordUnitAuthenticationToken(authenticatedAccount, usernameAuthentication.getCredentials(), authorities, usernameAuthentication.getUnit());
 		populatedAuthentication.setDetails(usernameAuthentication.getDetails());
 
 		// return value

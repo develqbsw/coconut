@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.userdetails.UserDetails;
-import sk.qbsw.security.spring.iam.auth.base.model.IAMAuthLoggedUser;
+import sk.qbsw.security.spring.iam.auth.common.model.IAMAuthLoggedAccount;
 
 /**
  * The IAM auth user details checker.
@@ -23,7 +23,7 @@ public class IAMAuthUserDetailsChecker extends AccountStatusUserDetailsChecker
 
 		try
 		{
-			FirebaseAuth.getInstance().verifyIdToken( ((IAMAuthLoggedUser) user).getIamAuthData().getToken(), true);
+			FirebaseAuth.getInstance().verifyIdToken( ((IAMAuthLoggedAccount) user).getIamAuthData().getToken(), true);
 		}
 		catch (FirebaseAuthException e)
 		{

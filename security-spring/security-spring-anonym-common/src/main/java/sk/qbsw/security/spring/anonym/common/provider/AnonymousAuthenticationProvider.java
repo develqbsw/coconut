@@ -4,8 +4,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import sk.qbsw.security.spring.anonym.common.model.AnonymousAuthenticationToken;
-import sk.qbsw.security.spring.base.model.AccountDetails;
-import sk.qbsw.security.spring.base.service.AccountDetailsService;
+import sk.qbsw.security.spring.common.model.AccountDetails;
+import sk.qbsw.security.spring.common.service.AccountDetailsService;
 
 /**
  * The anonymous authentication provider.

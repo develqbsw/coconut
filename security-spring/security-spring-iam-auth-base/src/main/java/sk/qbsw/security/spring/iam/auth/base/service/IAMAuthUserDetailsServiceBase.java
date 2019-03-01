@@ -1,13 +1,13 @@
 package sk.qbsw.security.spring.iam.auth.base.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import sk.qbsw.core.security.base.model.AccountData;
-import sk.qbsw.security.spring.base.service.AuthorityConverter;
-import sk.qbsw.security.spring.iam.auth.base.model.IAMAuthLoggedUser;
+import sk.qbsw.core.security.base.model.UserOutputData;
+import sk.qbsw.security.spring.base.mapper.UserDataMapper;
+import sk.qbsw.security.spring.common.service.AuthorityConverter;
 import sk.qbsw.security.spring.iam.auth.common.model.IAMAuthData;
-import sk.qbsw.security.spring.iam.auth.common.service.IAMAuthUserDetailsServiceCommon;
+import sk.qbsw.security.spring.iam.auth.common.model.IAMAuthLoggedAccount;
 
 /**
  * The IAM authentication pre authenticated user details service.
@@ -17,26 +17,24 @@ import sk.qbsw.security.spring.iam.auth.common.service.IAMAuthUserDetailsService
  * @version 2.1.0
  * @since 2.0.0
  */
-public abstract class IAMAuthUserDetailsServiceBase<T> extends IAMAuthUserDetailsServiceCommon<T>
+public abstract class IAMAuthUserDetailsServiceBase<T>extends IAMAuthUserDetailsServiceCommon<T>
 {
-	/**
-	 * The Logger.
-	 */
-	protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	protected final UserDataMapper<UserOutputData> userDataMapper;
 
 	/**
 	 * Instantiates a new Iam auth user details service base.
 	 *
 	 * @param authorityConverter the authority converter
 	 */
-	public IAMAuthUserDetailsServiceBase (AuthorityConverter authorityConverter)
+	public IAMAuthUserDetailsServiceBase (AuthorityConverter authorityConverter, UserDataMapper<UserOutputData> userDataMapper)
 	{
 		super(authorityConverter);
+		this.userDataMapper = userDataMapper;
 	}
 
 	@Override
 	protected UserDetails createUserDetails (AccountData accountData, IAMAuthData iamAuthData)
 	{
-		return new IAMAuthLoggedUser(accountData.getId(), accountData.getLogin(), "N/A", authorityConverter.convertRolesToAuthorities(accountData.getRoles()), iamAuthData);
+		return new IAMAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", userDataMapper.mapToUserData(accountData.getUser()), authorityConverter.convertRolesToAuthorities(accountData.getRoles()), iamAuthData);
 	}
 }

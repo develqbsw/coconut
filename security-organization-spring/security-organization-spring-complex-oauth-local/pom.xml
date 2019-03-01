@@ -42,11 +42,15 @@
         <!-- QBSW security organization spring -->
         <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
+            <artifactId>security-organization-spring-complex-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.organization.spring</groupId>
             <artifactId>security-organization-spring-complex-base</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
-            <artifactId>security-organization-spring-complex-oauth-base</artifactId>
+            <artifactId>security-organization-spring-complex-oauth-common</artifactId>
         </dependency>
 
         <!-- spring -->

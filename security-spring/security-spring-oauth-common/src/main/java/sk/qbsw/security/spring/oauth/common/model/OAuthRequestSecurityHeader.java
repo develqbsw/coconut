@@ -3,7 +3,7 @@ package sk.qbsw.security.spring.oauth.common.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import sk.qbsw.security.spring.base.model.RequestSecurityHeader;
+import sk.qbsw.security.spring.common.model.RequestSecurityHeader;
 
 /**
  * The request security base.
