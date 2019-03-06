@@ -23,7 +23,6 @@
 		<module>security-organization-spring-complex-common</module>
 		<module>security-organization-spring-complex-base</module>
 		<module>security-organization-spring-complex-iam-auth-common</module>
-		<module>security-organization-spring-complex-iam-auth-base</module>
 		<module>security-organization-spring-complex-oauth-common</module>
 		<module>security-organization-spring-complex-oauth-local</module>
 		<module>security-organization-spring-complex-anonym-common</module>
