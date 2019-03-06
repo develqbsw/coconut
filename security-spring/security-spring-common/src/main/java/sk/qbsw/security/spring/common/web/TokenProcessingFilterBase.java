@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+import sk.qbsw.security.spring.common.configuration.AuthHeaderConfiguration;
 import sk.qbsw.security.spring.common.model.RequestSecurityHeader;
 import sk.qbsw.security.web.filter.MDCFilter;
 
@@ -19,21 +20,29 @@ import java.io.IOException;
 /**
  * The abstract authentication token processing filter.
  *
+ * @param <H> the type parameter
  * @author Tomas Lauro
  * @version 2.1.0
  * @since 1.18.0
  */
 public abstract class TokenProcessingFilterBase<H extends RequestSecurityHeader>extends GenericFilterBean
 {
-	protected static final String REQUEST_SECURITY_HEADER_TOKEN_NAME = "token";
-
 	protected final Logger LOCAL_LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	private final AuthenticationManager authenticationManager;
 
-	public TokenProcessingFilterBase (AuthenticationManager authenticationManager)
+	protected final AuthHeaderConfiguration authHeaderConfiguration;
+
+	/**
+	 * Instantiates a new Token processing filter base.
+	 *
+	 * @param authenticationManager the authentication manager
+	 * @param authHeaderConfiguration the auth header configuration
+	 */
+	public TokenProcessingFilterBase (AuthenticationManager authenticationManager, AuthHeaderConfiguration authHeaderConfiguration)
 	{
 		this.authenticationManager = authenticationManager;
+		this.authHeaderConfiguration = authHeaderConfiguration;
 	}
 
 	@Override
@@ -65,14 +74,39 @@ public abstract class TokenProcessingFilterBase<H extends RequestSecurityHeader>
 		chain.doFilter(request, response);
 	}
 
+	/**
+	 * Handle exceptions.
+	 *
+	 * @param e the e
+	 * @param securityHeader the security header
+	 */
 	protected void handleExceptions (Exception e, H securityHeader)
 	{
 		LOCAL_LOGGER.error("Exception was thrown when processing request with security data: {}.", securityHeader, e);
 	}
 
+	/**
+	 * Parse security header h.
+	 *
+	 * @param request the request
+	 * @return the h
+	 */
 	protected abstract H parseSecurityHeader (HttpServletRequest request);
 
+	/**
+	 * Validate security header boolean.
+	 *
+	 * @param securityHeader the security header
+	 * @return the boolean
+	 */
 	protected abstract boolean validateSecurityHeader (H securityHeader);
 
+	/**
+	 * Create authentication token authentication.
+	 *
+	 * @param securityHeader the security header
+	 * @param request the request
+	 * @return the authentication
+	 */
 	public abstract Authentication createAuthenticationToken (H securityHeader, HttpServletRequest request);
 }

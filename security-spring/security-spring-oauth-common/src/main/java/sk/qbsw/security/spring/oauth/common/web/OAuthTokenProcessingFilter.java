@@ -4,8 +4,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import sk.qbsw.security.spring.oauth.common.model.OAuthRequestSecurityHeader;
 import sk.qbsw.security.spring.common.web.TokenProcessingFilterBase;
+import sk.qbsw.security.spring.oauth.common.configuration.OAuthHeaderConfiguration;
+import sk.qbsw.security.spring.oauth.common.model.OAuthRequestSecurityHeader;
 import sk.qbsw.security.spring.oauth.common.model.OAuthWebAuthenticationDetails;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;
 
@@ -15,33 +16,29 @@ import javax.servlet.http.HttpServletRequest;
  * The token processing filter intended to use directly with service layer.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.13.0
  */
 public class OAuthTokenProcessingFilter extends TokenProcessingFilterBase<OAuthRequestSecurityHeader>
 {
-	/**
-	 * The constant REQUEST_SECURITY_HEADER_DEVICE_ID_NAME.
-	 */
-	protected static final String REQUEST_SECURITY_HEADER_DEVICE_ID_NAME = "device-id";
-
 	private final CHttpClientAddressRetriever ipRetriever;
 
 	/**
 	 * Instantiates a new O auth token processing filter.
 	 *
 	 * @param authManager the auth manager
+	 * @param oAuthHeaderConfiguration the o auth header configuration
 	 */
-	public OAuthTokenProcessingFilter (AuthenticationManager authManager)
+	public OAuthTokenProcessingFilter (AuthenticationManager authManager, OAuthHeaderConfiguration oAuthHeaderConfiguration)
 	{
-		super(authManager);
+		super(authManager, oAuthHeaderConfiguration);
 		this.ipRetriever = new CHttpClientAddressRetriever();
 	}
 
 	@Override
 	protected OAuthRequestSecurityHeader parseSecurityHeader (HttpServletRequest request)
 	{
-		return new OAuthRequestSecurityHeader(request.getHeader(REQUEST_SECURITY_HEADER_TOKEN_NAME), request.getHeader(REQUEST_SECURITY_HEADER_DEVICE_ID_NAME), ipRetriever.getClientIpAddress(request));
+		return new OAuthRequestSecurityHeader(request.getHeader(authHeaderConfiguration.getRequestSecurityHeaderTokenName()), request.getHeader( ((OAuthHeaderConfiguration) authHeaderConfiguration).getRequestSecurityHeaderDeviceIdName()), ipRetriever.getClientIpAddress(request));
 	}
 
 	@Override
