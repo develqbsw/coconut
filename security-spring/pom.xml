@@ -23,6 +23,7 @@
 		<module>security-spring-iam-auth-common</module>
 		<module>security-spring-iam-auth-base</module>
 		<module>security-spring-iam-auth-firebase</module>
+		<module>security-spring-iam-auth-ms</module>
 		<module>security-spring-anonym-common</module>
 		<module>security-spring-system-common</module>
 	</modules>
