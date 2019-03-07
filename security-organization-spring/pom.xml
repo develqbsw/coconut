@@ -13,17 +13,19 @@
 	</parent>
 
 	<modules>
+		<module>security-organization-spring-simple-common</module>
 		<module>security-organization-spring-simple-base</module>
-		<module>security-organization-spring-simple-oauth-base</module>
+		<module>security-organization-spring-simple-oauth-common</module>
 		<module>security-organization-spring-simple-oauth-local</module>
 		<module>security-organization-spring-simple-oauth-rest</module>
-		<module>security-organization-spring-simple-anonym-base</module>
-		<module>security-organization-spring-simple-system-base</module>
+		<module>security-organization-spring-simple-anonym-common</module>
+		<module>security-organization-spring-simple-system-common</module>
+		<module>security-organization-spring-complex-common</module>
 		<module>security-organization-spring-complex-base</module>
-		<module>security-organization-spring-complex-iam-auth-base</module>
-		<module>security-organization-spring-complex-oauth-base</module>
+		<module>security-organization-spring-complex-iam-auth-common</module>
+		<module>security-organization-spring-complex-oauth-common</module>
 		<module>security-organization-spring-complex-oauth-local</module>
-		<module>security-organization-spring-complex-anonym-base</module>
-		<module>security-organization-spring-complex-system-base</module>
+		<module>security-organization-spring-complex-anonym-common</module>
+		<module>security-organization-spring-complex-system-common</module>
 	</modules>
 </project>

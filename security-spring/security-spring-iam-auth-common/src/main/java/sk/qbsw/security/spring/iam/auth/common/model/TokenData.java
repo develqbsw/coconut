@@ -28,4 +28,7 @@ public class TokenData<T>
 
 	@NotNull
 	private T data;
+
+	@NotNull
+	private String value;
 }

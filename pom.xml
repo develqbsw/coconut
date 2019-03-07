@@ -115,6 +115,9 @@
         <!-- firebase -->
         <firebase-admin.version>6.4.0</firebase-admin.version>
 
+        <!-- jjwt -->
+        <jjwt.version>0.10.6</jjwt.version>
+
         <!-- orika -->
         <orika.version>1.4.6</orika.version>
 
@@ -290,17 +293,17 @@
             <!-- QBSW security spring -->
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-common</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
                 <artifactId>security-spring-base</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
                 <artifactId>security-spring-oauth-common</artifactId>
-                <version>${security.spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>sk.qbsw.security.spring</groupId>
-                <artifactId>security-spring-oauth-base</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
             <dependency>
@@ -325,17 +328,7 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
-                <artifactId>security-spring-anonym-base</artifactId>
-                <version>${security.spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>sk.qbsw.security.spring</groupId>
                 <artifactId>security-spring-system-common</artifactId>
-                <version>${security.spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>sk.qbsw.security.spring</groupId>
-                <artifactId>security-spring-system-base</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
             <dependency>
@@ -394,22 +387,32 @@
             <!-- QBSW security organization spring -->
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-simple-common</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
                 <artifactId>security-organization-spring-simple-base</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
-                <artifactId>security-organization-spring-simple-anonym-base</artifactId>
+                <artifactId>security-organization-spring-simple-anonym-common</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
-                <artifactId>security-organization-spring-simple-system-base</artifactId>
+                <artifactId>security-organization-spring-simple-system-common</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
-                <artifactId>security-organization-spring-simple-oauth-base</artifactId>
+                <artifactId>security-organization-spring-simple-oauth-common</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-complex-common</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
             <dependency>
@@ -419,7 +422,12 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
-                <artifactId>security-organization-spring-complex-oauth-base</artifactId>
+                <artifactId>security-organization-spring-complex-oauth-common</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-complex-iam-auth-common</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
             <dependency>
@@ -851,6 +859,25 @@
                 <groupId>com.google.firebase</groupId>
                 <artifactId>firebase-admin</artifactId>
                 <version>${firebase-admin.version}</version>
+            </dependency>
+
+            <!-- jjwt -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!-- orika -->

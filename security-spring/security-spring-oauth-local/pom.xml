@@ -30,11 +30,11 @@
         <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-oauth-common</artifactId>
+            <artifactId>security-spring-base</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
-            <artifactId>security-spring-oauth-base</artifactId>
+            <artifactId>security-spring-oauth-common</artifactId>
         </dependency>
 
         <!-- spring -->

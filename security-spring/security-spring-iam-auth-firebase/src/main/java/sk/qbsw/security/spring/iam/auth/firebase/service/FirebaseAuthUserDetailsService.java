@@ -1,24 +1,32 @@
 package sk.qbsw.security.spring.iam.auth.firebase.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountDataTypes;
 import sk.qbsw.core.security.base.model.AccountInputData;
+import sk.qbsw.core.security.base.model.UserOutputData;
 import sk.qbsw.security.management.service.AccountManagementService;
 import sk.qbsw.security.management.service.AccountPermissionManagementService;
-import sk.qbsw.security.spring.base.service.AuthorityConverter;
-import sk.qbsw.security.spring.iam.auth.common.configuration.IAMAuthAccountPermissionConfiguration;
-import sk.qbsw.security.spring.iam.auth.common.model.TokenData;
+import sk.qbsw.security.spring.base.mapper.UserDataMapper;
+import sk.qbsw.security.spring.common.service.AuthorityConverter;
 import sk.qbsw.security.spring.iam.auth.base.service.IAMAuthUserDetailsServiceBase;
+import sk.qbsw.security.spring.iam.auth.common.configuration.IAMAuthAccountPermissionConfiguration;
+import sk.qbsw.security.spring.iam.auth.common.model.IAMAuthData;
+import sk.qbsw.security.spring.iam.auth.common.model.IAMAuthLoggedAccount;
+import sk.qbsw.security.spring.iam.auth.common.model.TokenData;
 
 /**
  * The oauth pre authenticated user details service.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.18.0
  */
 public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBase<FirebaseToken>
@@ -29,17 +37,22 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 
 	private final IAMAuthAccountPermissionConfiguration accountPermissionConfiguration;
 
+	private final UserDataMapper<UserOutputData> userDataMapper;
+
 	/**
 	 * Instantiates a new O auth service user details service.
 	 *
-	 * @param accountManagementService           the account management service
+	 * @param accountManagementService the account management service
 	 * @param accountPermissionManagementService the account permission management service
-	 * @param authorityConverter                 the authority converter
-	 * @param accountPermissionConfiguration     the account permissions configuration
+	 * @param authorityConverter the authority converter
+	 * @param accountPermissionConfiguration the account permissions configuration
+	 * @param userDataMapper the user data mapper
 	 */
-	public FirebaseAuthUserDetailsService (AccountManagementService<AccountInputData, AccountData> accountManagementService, AccountPermissionManagementService accountPermissionManagementService, AuthorityConverter authorityConverter, IAMAuthAccountPermissionConfiguration accountPermissionConfiguration)
+	public FirebaseAuthUserDetailsService (AccountManagementService<AccountInputData, AccountData> accountManagementService, AccountPermissionManagementService accountPermissionManagementService, //
+		AuthorityConverter authorityConverter, IAMAuthAccountPermissionConfiguration accountPermissionConfiguration, UserDataMapper<UserOutputData> userDataMapper)
 	{
 		super(authorityConverter);
+		this.userDataMapper = userDataMapper;
 		this.accountManagementService = accountManagementService;
 		this.accountPermissionManagementService = accountPermissionManagementService;
 		this.accountPermissionConfiguration = accountPermissionConfiguration;
@@ -51,7 +64,7 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 		try
 		{
 			FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token);
-			return new TokenData<>(firebaseToken.getUid(), firebaseToken.getEmail(), firebaseToken.getEmail(), firebaseToken);
+			return new TokenData<>(firebaseToken.getUid(), firebaseToken.getEmail(), firebaseToken.getEmail(), firebaseToken, token);
 		}
 		catch (FirebaseAuthException e)
 		{
@@ -60,7 +73,7 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 	}
 
 	@Override
-	protected AccountData findOrCreateAccount (TokenData<FirebaseToken> tokenData) throws CBusinessException
+	protected UserDetails createUserDetails (TokenData<FirebaseToken> tokenData) throws CBusinessException
 	{
 		AccountData accountData = accountManagementService.findOneByUid(tokenData.getUid());
 
@@ -70,6 +83,20 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 			accountPermissionManagementService.assignAccountToGroup(accountData.getLogin(), accountPermissionConfiguration.getAccountDefaultGroupCode());
 		}
 
-		return accountManagementService.findOneByLogin(accountData.getLogin());
+		AccountData currentAccountData = accountManagementService.findOneByLogin(accountData.getLogin());
+		IAMAuthData iamAuthData = new IAMAuthData(currentAccountData.getUid(), tokenData.getValue());
+
+		return new IAMAuthLoggedAccount(currentAccountData.getId(), currentAccountData.getLogin(), "N/A", userDataMapper.mapToUserData(currentAccountData.getUser()), authorityConverter.convertRolesToAuthorities(currentAccountData.getRoles()), iamAuthData);
+	}
+
+	/**
+	 * Create account input data account input data.
+	 *
+	 * @param tokenData the token data
+	 * @return the account input data
+	 */
+	protected AccountInputData createAccountInputData (TokenData<FirebaseToken> tokenData)
+	{
+		return new AccountInputData(null, tokenData.getUid(), tokenData.getLogin(), tokenData.getEmail(), AccountDataTypes.PERSONAL, null, AccountInputData.DEFAULT_ORGANIZATION_ID);
 	}
 }

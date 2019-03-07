@@ -7,7 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.spring.auth.base.service.AuthenticationSecurityService;
-import sk.qbsw.security.spring.base.model.LoggedUser;
+import sk.qbsw.security.spring.common.model.LoggedAccount;
 
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ import java.util.Collection;
  *
  * @author Dalibor Rak
  * @author Tomas lauro
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.6.0
  */
 public abstract class BaseAuthenticationProvider implements AuthenticationProvider
@@ -41,8 +41,8 @@ public abstract class BaseAuthenticationProvider implements AuthenticationProvid
 		{
 			if (this.supports(authentication.getClass()) && authenticationSecurityService.supports(authentication.getClass()))
 			{
-				LoggedUser authenticatedUser = authenticationSecurityService.authenticate(authentication);
-				retVal = populateAuthentication(authentication, authenticatedUser, authenticatedUser.getAuthorities());
+				LoggedAccount authenticatedAccount = authenticationSecurityService.authenticate(authentication);
+				retVal = populateAuthentication(authentication, authenticatedAccount, authenticatedAccount.getAuthorities());
 			}
 		}
 		catch (CSecurityException e)
@@ -57,9 +57,9 @@ public abstract class BaseAuthenticationProvider implements AuthenticationProvid
 	 * Populate authentication token with security data. The result should be the fully populated authentication to be used in security context.
 	 *
 	 * @param authentication the input authentication token
-	 * @param authenticatedUser the authenticated user from security service
+	 * @param authenticatedAccount the authenticated account
 	 * @param authorities the authorities list of authorities
 	 * @return the fully populated authentication token
 	 */
-	protected abstract Authentication populateAuthentication (Authentication authentication, LoggedUser authenticatedUser, Collection<GrantedAuthority> authorities);
+	protected abstract Authentication populateAuthentication (Authentication authentication, LoggedAccount authenticatedAccount, Collection<GrantedAuthority> authorities);
 }

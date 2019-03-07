@@ -20,6 +20,14 @@
         <!-- QBSW security spring -->
         <dependency>
             <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
+            <artifactId>security-spring-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.spring</groupId>
             <artifactId>security-spring-oauth-common</artifactId>
         </dependency>
 
@@ -36,11 +44,11 @@
         <!-- QBSW security organization spring -->
         <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
-            <artifactId>security-organization-spring-simple-base</artifactId>
+            <artifactId>security-organization-spring-simple-common</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.security.organization.spring</groupId>
-            <artifactId>security-organization-spring-simple-oauth-base</artifactId>
+            <artifactId>security-organization-spring-simple-oauth-common</artifactId>
         </dependency>
 
         <!-- QBSW security organization integration -->

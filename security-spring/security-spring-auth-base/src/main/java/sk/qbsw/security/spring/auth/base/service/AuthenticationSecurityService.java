@@ -3,7 +3,7 @@ package sk.qbsw.security.spring.auth.base.service;
 import org.springframework.security.core.Authentication;
 
 import sk.qbsw.core.base.exception.CSecurityException;
-import sk.qbsw.security.spring.base.model.LoggedUser;
+import sk.qbsw.security.spring.common.model.LoggedAccount;
 
 /**
  * The authentication service - abstraction layer above the core authentication service.
@@ -18,10 +18,10 @@ public interface AuthenticationSecurityService
 	 * Authenticates the user.
 	 *
 	 * @param authentication the authentication
-	 * @return the user
+	 * @return the logged account
 	 * @throws CSecurityException the security exception
 	 */
-	LoggedUser authenticate (Authentication authentication) throws CSecurityException;
+	LoggedAccount authenticate (Authentication authentication) throws CSecurityException;
 
 	/**
 	 * Checks if the authentication service supports give authentication token.
