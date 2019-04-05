@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>et-rquery-brw-binding</artifactId>
+    <name>ET Request Query Brw Binding Module</name>
+    <packaging>jar</packaging>
+
+    <organization>
+        <name>QBSW a.s.</name>
+        <url>http://www.qbsw.sk</url>
+    </organization>
+
+    <parent>
+        <groupId>sk.qbsw.et</groupId>
+        <artifactId>et-top</artifactId>
+        <version>2.2.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <!-- qbsw -->
+        <dependency>
+            <groupId>sk.qbsw.core</groupId>
+            <artifactId>core-persistence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.et</groupId>
+            <artifactId>et-rquery-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>sk.qbsw.et</groupId>
+            <artifactId>et-rquery-brw-client</artifactId>
+        </dependency>
+
+        <!-- querydsl -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <optimize>true</optimize>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

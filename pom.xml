@@ -496,6 +496,26 @@
 
             <!-- QBSW integration -->
             <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-core</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-brw-client</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-brw-binding</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-brw-api</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>sk.qbsw.integration</groupId>
                 <artifactId>integration-message</artifactId>
                 <version>${integration.version}</version>

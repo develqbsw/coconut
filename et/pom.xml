@@ -13,6 +13,10 @@
 	</parent>
 
 	<modules>
+		<module>et-rquery-core</module>
+		<module>et-rquery-brw-binding</module>
+		<module>et-rquery-brw-client</module>
+		<module>et-rquery-brw-api</module>
 		<module>et-browser-client</module>
 		<module>et-browser-core</module>
 		<module>et-browser-api</module>
