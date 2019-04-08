@@ -9,24 +9,48 @@ package sk.qbsw.et.rquery.core.model;
  */
 public enum CoreOperator
 {
-	/** The eq. */
+	/**
+	 * The eq.
+	 */
 	EQ,
 
-	/** The ne. */
+	/**
+	 * The ne.
+	 */
 	NE,
 
-	/** The gt. */
+	/**
+	 * The gt.
+	 */
 	GT,
 
-	/** The goe. */
+	/**
+	 * The goe.
+	 */
 	GOE,
 
-	/** The lt. */
+	/**
+	 * The lt.
+	 */
 	LT,
 
-	/** The loe. */
+	/**
+	 * The loe.
+	 */
 	LOE,
 
-	/** The like ignore case. */
+	/**
+	 * In core operator.
+	 */
+	IN,
+
+	/**
+	 * Not in core operator.
+	 */
+	NOT_IN,
+
+	/**
+	 * The like ignore case.
+	 */
 	LIKE_IGNORE_CASE
 }

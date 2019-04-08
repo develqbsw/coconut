@@ -7,7 +7,7 @@ package sk.qbsw.et.rquery.core.exception;
  * @version 2.1.0
  * @since 2.1.0
  */
-public class RQUnsupportedPropertyException extends RQBusinessException
+public class RQUnsupportedPropertyException extends RQSystemException
 {
 	private static final RQError ERROR = RQError.UNSUPPORTED_PROPERTY;
 
@@ -29,16 +29,5 @@ public class RQUnsupportedPropertyException extends RQBusinessException
 	public RQUnsupportedPropertyException ()
 	{
 		super(ERROR);
-	}
-
-	/**
-	 * Instantiates a new Rq unsupported property exception.
-	 *
-	 * @param message the message
-	 * @param cause the cause
-	 */
-	public RQUnsupportedPropertyException (String message, Throwable cause)
-	{
-		super(message, cause, ERROR);
 	}
 }

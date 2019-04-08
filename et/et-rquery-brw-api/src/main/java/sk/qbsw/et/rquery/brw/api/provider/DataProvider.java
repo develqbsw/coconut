@@ -5,7 +5,6 @@ import sk.qbsw.et.rquery.brw.client.model.request.BrowserRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -35,52 +34,46 @@ public interface DataProvider<F extends Filterable, K extends Serializable, E ex
 	 *
 	 * @param request the request
 	 * @return the c brw dto
-	 * @throws RQBusinessException the rq business exception
 	 */
-	BrowserData<E> findBrowserData (BrowserRequestBody<F> request) throws RQBusinessException;
+	BrowserData<E> findBrowserData (BrowserRequestBody<F> request);
 
 	/**
 	 * Count data long.
 	 *
 	 * @param request the request
 	 * @return the long
-	 * @throws RQBusinessException the rq business exception
 	 */
-	long countData (CountRequestBody<F> request) throws RQBusinessException;
+	long countData (CountRequestBody<F> request);
 
 	/**
 	 * Find filtered data list.
 	 *
 	 * @param request the request
 	 * @return the list
-	 * @throws RQBusinessException the rq business exception
 	 */
-	List<E> findFilteredData (FilterRequestBody<F> request) throws RQBusinessException;
+	List<E> findFilteredData (FilterRequestBody<F> request);
 
 	/**
 	 * Find distinct browser data c brw dto.
 	 *
 	 * @param request the request
 	 * @return the c brw dto
-	 * @throws RQBusinessException the rq business exception
 	 */
-	BrowserData<E> findDistinctBrowserData (BrowserRequestBody<F> request) throws RQBusinessException;
+	BrowserData<E> findDistinctBrowserData (BrowserRequestBody<F> request);
 
 	/**
 	 * Count distinct data long.
 	 *
 	 * @param request the request
 	 * @return the long
-	 * @throws RQBusinessException the rq business exception
 	 */
-	long countDistinctData (CountRequestBody<F> request) throws RQBusinessException;
+	long countDistinctData (CountRequestBody<F> request);
 
 	/**
 	 * Find distinct filtered data list.
 	 *
 	 * @param request the request
 	 * @return the list
-	 * @throws RQBusinessException the rq business exception
 	 */
-	List<E> findDistinctFilteredData (FilterRequestBody<F> request) throws RQBusinessException;
+	List<E> findDistinctFilteredData (FilterRequestBody<F> request);
 }

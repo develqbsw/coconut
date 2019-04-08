@@ -9,30 +9,48 @@ package sk.qbsw.et.rquery.brw.client.model;
  */
 public enum Operator
 {
-	/** The eq. */
+	/**
+	 * The eq.
+	 */
 	EQ,
 
-	/** The ne. */
+	/**
+	 * The ne.
+	 */
 	NE,
 
-	/** The gt. */
+	/**
+	 * The gt.
+	 */
 	GT,
 
-	/** The goe. */
+	/**
+	 * The goe.
+	 */
 	GOE,
 
-	/** The lt. */
+	/**
+	 * The lt.
+	 */
 	LT,
 
-	/** The loe. */
+	/**
+	 * The loe.
+	 */
 	LOE,
 
-	/** The like ignore case. */
-	LIKE_IGNORE_CASE,
+	/**
+	 * In operator.
+	 */
+	IN,
 
-	/** The is null. */
-	IS_NULL,
+	/**
+	 * Not in operator.
+	 */
+	NOT_IN,
 
-	/** The is not null. */
-	IS_NOT_NULL
+	/**
+	 * The like ignore case.
+	 */
+	LIKE_IGNORE_CASE
 }

@@ -8,6 +8,8 @@ import sk.qbsw.et.rquery.brw.client.model.Operator;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The filter criterion.
@@ -29,7 +31,7 @@ public class FilterCriterion<F extends Filterable> implements Serializable
 	@NotNull
 	private F property;
 
-	private String value;
+	private List<String> values = new ArrayList<>();
 
 	@NotNull
 	private Operator operator;
@@ -47,14 +49,14 @@ public class FilterCriterion<F extends Filterable> implements Serializable
 	 *
 	 * @param logicalOperator the logical operator
 	 * @param variable the variable
-	 * @param value the value
+	 * @param values the values
 	 * @param operator the operator
 	 */
-	public FilterCriterion (LogicalOperator logicalOperator, F variable, String value, Operator operator)
+	public FilterCriterion (LogicalOperator logicalOperator, F variable, List<String> values, Operator operator)
 	{
 		this.logicalOperator = logicalOperator;
 		this.property = variable;
-		this.value = value;
+		this.values = values;
 		this.operator = operator;
 	}
 }

@@ -10,7 +10,6 @@ import sk.qbsw.et.rquery.brw.client.model.LogicalOperator;
 import sk.qbsw.et.rquery.brw.client.model.criteria.FilterCriteria;
 import sk.qbsw.et.rquery.brw.client.model.criteria.FilterCriterion;
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 import sk.qbsw.et.rquery.core.predicate.ComparisonPredicateBuilder;
 
@@ -41,7 +40,7 @@ public class FilterCriteriaConverterImpl implements FilterCriteriaConverter
 	}
 
 	@Override
-	public <F extends Filterable, C extends CoreFilterable> Predicate convertToPredicate (FilterCriteria<F> filterCriteria, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException
+	public <F extends Filterable, C extends CoreFilterable> Predicate convertToPredicate (FilterCriteria<F> filterCriteria, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper)
 	{
 		BooleanBuilder predicateBuilder = new BooleanBuilder();
 		BooleanBuilder orBuilder = new BooleanBuilder();
@@ -51,14 +50,14 @@ public class FilterCriteriaConverterImpl implements FilterCriteriaConverter
 			if (filterCriterion.getLogicalOperator().equals(LogicalOperator.OR))
 			{
 				// just add to or builder
-				orBuilder.or(comparisonPredicateBuilder.buildPredicate(filterableMapper.mapToCoreFilterable(filterCriterion.getProperty()), filterCriterion.getValue(), operatorMapper.mapToCoreOperator(filterCriterion.getOperator()), mapping));
+				orBuilder.or(comparisonPredicateBuilder.buildPredicate(filterableMapper.mapToCoreFilterable(filterCriterion.getProperty()), filterCriterion.getValues(), operatorMapper.mapToCoreOperator(filterCriterion.getOperator()), mapping));
 			}
 
 			if (filterCriterion.getLogicalOperator().equals(LogicalOperator.AND))
 			{
 				// add current orbuilder to predicate and create new one
 				predicateBuilder.and(orBuilder.getValue());
-				orBuilder = new BooleanBuilder().or(comparisonPredicateBuilder.buildPredicate(filterableMapper.mapToCoreFilterable(filterCriterion.getProperty()), filterCriterion.getValue(), operatorMapper.mapToCoreOperator(filterCriterion.getOperator()), mapping));
+				orBuilder = new BooleanBuilder().or(comparisonPredicateBuilder.buildPredicate(filterableMapper.mapToCoreFilterable(filterCriterion.getProperty()), filterCriterion.getValues(), operatorMapper.mapToCoreOperator(filterCriterion.getOperator()), mapping));
 			}
 		}
 

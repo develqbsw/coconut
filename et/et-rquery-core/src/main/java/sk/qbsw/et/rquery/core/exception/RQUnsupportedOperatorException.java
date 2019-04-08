@@ -7,7 +7,7 @@ package sk.qbsw.et.rquery.core.exception;
  * @version 2.1.0
  * @since 2.1.0
  */
-public class RQUnsupportedOperatorException extends RQBusinessException
+public class RQUnsupportedOperatorException extends RQSystemException
 {
 	private static final long serialVersionUID = 1481917257208646420L;
 
@@ -29,16 +29,5 @@ public class RQUnsupportedOperatorException extends RQBusinessException
 	public RQUnsupportedOperatorException ()
 	{
 		super(ERROR);
-	}
-
-	/**
-	 * Instantiates a new Rq unsupported operator exception.
-	 *
-	 * @param message the message
-	 * @param cause the cause
-	 */
-	public RQUnsupportedOperatorException (String message, Throwable cause)
-	{
-		super(message, cause, ERROR);
 	}
 }

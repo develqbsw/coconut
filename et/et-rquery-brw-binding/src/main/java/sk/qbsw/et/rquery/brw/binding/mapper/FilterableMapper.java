@@ -1,7 +1,6 @@
 package sk.qbsw.et.rquery.brw.binding.mapper;
 
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
-import sk.qbsw.et.rquery.core.exception.RQUnsupportedPropertyException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 
 /**
@@ -20,7 +19,6 @@ public interface FilterableMapper<F extends Filterable, C extends CoreFilterable
 	 *
 	 * @param filterable the filterable
 	 * @return the c
-	 * @throws RQUnsupportedPropertyException the rq unsupported property exception
 	 */
-	C mapToCoreFilterable (F filterable) throws RQUnsupportedPropertyException;
+	C mapToCoreFilterable (F filterable);
 }

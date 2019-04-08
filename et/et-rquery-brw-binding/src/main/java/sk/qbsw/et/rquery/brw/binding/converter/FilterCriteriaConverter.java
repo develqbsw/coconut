@@ -6,7 +6,6 @@ import sk.qbsw.et.rquery.brw.binding.mapper.FilterableMapper;
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
 import sk.qbsw.et.rquery.brw.client.model.criteria.FilterCriteria;
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 
 /**
@@ -27,7 +26,6 @@ public interface FilterCriteriaConverter
 	 * @param mapping the mapping
 	 * @param filterableMapper the filterable mapper
 	 * @return the predicate
-	 * @throws RQBusinessException the rq business exception
 	 */
-	<F extends Filterable, C extends CoreFilterable> Predicate convertToPredicate (FilterCriteria<F> filterCriteria, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException;
+	<F extends Filterable, C extends CoreFilterable> Predicate convertToPredicate (FilterCriteria<F> filterCriteria, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper);
 }

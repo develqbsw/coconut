@@ -2,20 +2,24 @@ package sk.qbsw.et.rquery.core.predicate;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.*;
+import org.apache.commons.collections.CollectionUtils;
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
 import sk.qbsw.et.rquery.core.configuration.expression.EntityPropertyEnumExpression;
 import sk.qbsw.et.rquery.core.configuration.expression.EntityPropertyTypeExpression;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 import sk.qbsw.et.rquery.core.exception.RQUndefinedEntityMappingException;
 import sk.qbsw.et.rquery.core.exception.RQUnsupportedOperatorException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 import sk.qbsw.et.rquery.core.model.CoreFilterableType;
 import sk.qbsw.et.rquery.core.model.CoreOperator;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The default single predicate builder.
@@ -30,11 +34,12 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends CoreFilterable> Predicate buildTypePredicate (EntityPathBase path, String value, CoreOperator operator, F property, EntityConfiguration<F> mapping) throws RQBusinessException
+	public <F extends CoreFilterable> Predicate buildTypePredicate (EntityPathBase path, List<String> values, CoreOperator operator, F property, EntityConfiguration<F> mapping)
 	{
-		if (value != null)
+		if (CollectionUtils.isNotEmpty(values))
 		{
-			Class<?> convertedValue = getTypeFromMapping(property, (CoreFilterableType) Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(property, mapping), value), mapping);
+			List<Class<?>> convertedValues = values.stream().map(v -> getTypeFromMapping(property, (CoreFilterableType) Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(property, mapping), v), mapping)).collect(Collectors.toList());
+			Class<?> convertedValue = convertedValues.get(0);
 
 			switch (operator)
 			{
@@ -42,6 +47,10 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 					return path.instanceOf(convertedValue);
 				case NE:
 					return path.instanceOf(convertedValue).not();
+				case IN:
+					return path.instanceOfAny(convertedValues.toArray(new Class[0]));
+				case NOT_IN:
+					return path.instanceOfAny(convertedValues.toArray(new Class[0])).not();
 				default:
 					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
 			}
@@ -63,134 +72,116 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 
 	@Override
 	@SuppressWarnings ("unchecked")
-	public <F extends CoreFilterable> Predicate buildEnumPredicate (EnumPath path, String value, CoreOperator operator, F property, EntityConfiguration<F> mapping) throws RQBusinessException
+	public <F extends CoreFilterable> Predicate buildEnumPredicate (EnumPath path, List<String> values, CoreOperator operator, F property, EntityConfiguration<F> mapping)
 	{
-		Enum<? extends Enum<?>> enumValue = value != null ? Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(property, mapping), value) : null;
-		return buildComparablePredicate(path, enumValue, operator);
+		List<Enum> convertedValues = (List<Enum>) values.stream().map(e -> Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(property, mapping), e)).collect(Collectors.toList());
+		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
-	public Predicate buildBooleanPredicate (BooleanPath path, String value, CoreOperator operator) throws RQUnsupportedOperatorException
+	public Predicate buildBooleanPredicate (BooleanPath path, List<String> values, CoreOperator operator)
 	{
-		Boolean convertedValue = value != null ? Boolean.valueOf(value) : null;
-		return buildComparablePredicate(path, convertedValue, operator);
+		List<Boolean> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Boolean::parseBoolean).collect(Collectors.toList()) : new ArrayList<>();
+		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
-	public Predicate buildDatePredicate (DatePath<LocalDate> path, String value, CoreOperator operator) throws RQUnsupportedOperatorException
+	public Predicate buildDatePredicate (DatePath<LocalDate> path, List<String> values, CoreOperator operator)
 	{
-		LocalDate convertedValue = value != null ? LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE) : null;
-		return buildComparablePredicate(path, convertedValue, operator);
+		List<LocalDate> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(d -> LocalDate.parse(d, DateTimeFormatter.ISO_LOCAL_DATE)).collect(Collectors.toList()) : new ArrayList<>();
+		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
-	public Predicate buildTimePredicate (TimePath<LocalTime> path, String value, CoreOperator operator) throws RQUnsupportedOperatorException
+	public Predicate buildTimePredicate (TimePath<LocalTime> path, List<String> values, CoreOperator operator)
 	{
-		LocalTime convertedValue = value != null ? LocalTime.parse(value, DateTimeFormatter.ISO_LOCAL_TIME) : null;
-		return buildComparablePredicate(path, convertedValue, operator);
+		List<LocalTime> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(d -> LocalTime.parse(d, DateTimeFormatter.ISO_LOCAL_TIME)).collect(Collectors.toList()) : new ArrayList<>();
+		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
-	public Predicate buildDateTimePredicate (DateTimePath<OffsetDateTime> path, String value, CoreOperator operator) throws RQUnsupportedOperatorException
+	public Predicate buildDateTimePredicate (DateTimePath<OffsetDateTime> path, List<String> values, CoreOperator operator)
 	{
-		OffsetDateTime convertedValue = value != null ? OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME) : null;
-		return buildComparablePredicate(path, convertedValue, operator);
+		List<OffsetDateTime> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(d -> OffsetDateTime.parse(d, DateTimeFormatter.ISO_OFFSET_DATE_TIME)).collect(Collectors.toList()) : new ArrayList<>();
+		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
-	public Predicate buildStringPredicate (StringPath path, String value, CoreOperator operator) throws RQUnsupportedOperatorException
+	public Predicate buildStringPredicate (StringPath path, List<String> values, CoreOperator operator)
 	{
 		try
 		{
-			return buildComparablePredicate(path, value, operator);
+			return buildComparablePredicate(path, values, operator);
 		}
-		catch (RQBusinessException ex)
+		catch (RQUnsupportedOperatorException ex)
 		{
-			switch (operator)
+			if (CollectionUtils.isNotEmpty(values) && CoreOperator.LIKE_IGNORE_CASE.equals(operator))
 			{
-				case LIKE_IGNORE_CASE:
-					return path.containsIgnoreCase(value);
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
+				return path.containsIgnoreCase(values.get(0));
+			}
+			else
+			{
+				throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
 			}
 		}
 	}
 
 	@Override
-	@SuppressWarnings ({"Duplicates"})
-	public Predicate buildNumberPredicate (NumberPath<Long> path, String value, CoreOperator operator) throws RQUnsupportedOperatorException
+	public Predicate buildShortPredicate (NumberPath<Short> path, List<String> values, CoreOperator operator)
 	{
-		if (value != null)
-		{
-			Long convertedValue = Long.parseLong(value);
-
-			switch (operator)
-			{
-				case EQ:
-					return path.eq(convertedValue);
-				case NE:
-					return path.ne(convertedValue);
-				case GT:
-					return path.gt(convertedValue);
-				case GOE:
-					return path.goe(convertedValue);
-				case LT:
-					return path.lt(convertedValue);
-				case LOE:
-					return path.loe(convertedValue);
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
-		}
-		else
-		{
-			switch (operator)
-			{
-				case EQ:
-					return path.isNull();
-				case NE:
-					return path.isNotNull();
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
-		}
+		List<Short> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Short::parseShort).collect(Collectors.toList()) : new ArrayList<>();
+		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@Override
-	@SuppressWarnings ("unchecked")
-	public Predicate buildSimpleExpressionPredicate (SimpleExpression path, String value, CoreOperator operator) throws RQUnsupportedOperatorException
+	public Predicate buildBytePredicate (NumberPath<Byte> path, List<String> values, CoreOperator operator)
 	{
-		if (value != null)
-		{
-			switch (operator)
-			{
-				case EQ:
-					return path.eq(value);
-				case NE:
-					return path.ne(value);
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
-		}
-		else
-		{
-			switch (operator)
-			{
-				case EQ:
-					return path.isNull();
-				case NE:
-					return path.isNotNull();
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
-		}
+		List<Byte> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Byte::parseByte).collect(Collectors.toList()) : new ArrayList<>();
+		return buildNumberPredicate(path, convertedValues, operator);
+	}
+
+	@Override
+	public Predicate buildIntegerPredicate (NumberPath<Integer> path, List<String> values, CoreOperator operator)
+	{
+		List<Integer> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Integer::parseInt).collect(Collectors.toList()) : new ArrayList<>();
+		return buildNumberPredicate(path, convertedValues, operator);
+	}
+
+	@Override
+	public Predicate buildLongPredicate (NumberPath<Long> path, List<String> values, CoreOperator operator)
+	{
+		List<Long> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Long::parseLong).collect(Collectors.toList()) : new ArrayList<>();
+		return buildNumberPredicate(path, convertedValues, operator);
+	}
+
+	@Override
+	public Predicate buildFloatPredicate (NumberPath<Float> path, List<String> values, CoreOperator operator)
+	{
+		List<Float> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Float::parseFloat).collect(Collectors.toList()) : new ArrayList<>();
+		return buildNumberPredicate(path, convertedValues, operator);
+	}
+
+	@Override
+	public Predicate buildDoublePredicate (NumberPath<Double> path, List<String> values, CoreOperator operator)
+	{
+		List<Double> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Double::parseDouble).collect(Collectors.toList()) : new ArrayList<>();
+		return buildNumberPredicate(path, convertedValues, operator);
+	}
+
+	@Override
+	public Predicate buildBigDecimalPredicate (NumberPath<BigDecimal> path, List<String> values, CoreOperator operator)
+	{
+		List<BigDecimal> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(BigDecimal::new).collect(Collectors.toList()) : new ArrayList<>();
+		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@SuppressWarnings ({"Duplicates"})
-	private <T extends Comparable, E extends ComparableExpression<T>> Predicate buildComparablePredicate (E path, T value, CoreOperator operator) throws RQUnsupportedOperatorException
+	private <T extends Number & Comparable<?>> Predicate buildNumberPredicate (NumberPath<T> path, List<T> values, CoreOperator operator)
 	{
-		if (value != null)
+		if (CollectionUtils.isNotEmpty(values))
 		{
+			T value = values.get(0);
+
 			switch (operator)
 			{
 				case EQ:
@@ -205,6 +196,10 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 					return path.lt(value);
 				case LOE:
 					return path.loe(value);
+				case IN:
+					return path.in(values);
+				case NOT_IN:
+					return path.notIn(values);
 				default:
 					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
 			}
@@ -223,7 +218,86 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 		}
 	}
 
-	private <F extends CoreFilterable> Class<?> getTypeFromMapping (final F property, final CoreFilterableType type, final EntityConfiguration<F> entityMapping) throws RQUndefinedEntityMappingException
+	@Override
+	@SuppressWarnings ("unchecked")
+	public Predicate buildSimpleExpressionPredicate (SimpleExpression path, List<String> values, CoreOperator operator)
+	{
+		if (CollectionUtils.isNotEmpty(values))
+		{
+			String value = values.get(0);
+
+			switch (operator)
+			{
+				case EQ:
+					return path.eq(value);
+				case NE:
+					return path.ne(value);
+				case IN:
+					return path.in(values);
+				case NOT_IN:
+					return path.notIn(values);
+				default:
+					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
+			}
+		}
+		else
+		{
+			switch (operator)
+			{
+				case EQ:
+					return path.isNull();
+				case NE:
+					return path.isNotNull();
+				default:
+					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
+			}
+		}
+	}
+
+	@SuppressWarnings ({"Duplicates"})
+	private <T extends Comparable, E extends ComparableExpression<T>> Predicate buildComparablePredicate (E path, List<T> values, CoreOperator operator)
+	{
+		if (CollectionUtils.isNotEmpty(values))
+		{
+			T value = values.get(0);
+
+			switch (operator)
+			{
+				case EQ:
+					return path.eq(value);
+				case NE:
+					return path.ne(value);
+				case GT:
+					return path.gt(value);
+				case GOE:
+					return path.goe(value);
+				case LT:
+					return path.lt(value);
+				case LOE:
+					return path.loe(value);
+				case IN:
+					return path.in(values);
+				case NOT_IN:
+					return path.notIn(values);
+				default:
+					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
+			}
+		}
+		else
+		{
+			switch (operator)
+			{
+				case EQ:
+					return path.isNull();
+				case NE:
+					return path.isNotNull();
+				default:
+					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
+			}
+		}
+	}
+
+	private <F extends CoreFilterable> Class<?> getTypeFromMapping (final F property, final CoreFilterableType type, final EntityConfiguration<F> entityMapping)
 	{
 		if (entityMapping.getExpression(property) instanceof EntityPropertyTypeExpression)
 		{
@@ -233,7 +307,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 		throw new RQUndefinedEntityMappingException("The entity property identity type not found for property: " + property);
 	}
 
-	private <F extends CoreFilterable> Class<? extends Enum<?>> getEnumTypeFromMapping (final F property, final EntityConfiguration<F> entityMapping) throws RQUndefinedEntityMappingException
+	private <F extends CoreFilterable> Class<? extends Enum<?>> getEnumTypeFromMapping (final F property, final EntityConfiguration<F> entityMapping)
 	{
 		if (entityMapping.getExpression(property) instanceof EntityPropertyEnumExpression)
 		{

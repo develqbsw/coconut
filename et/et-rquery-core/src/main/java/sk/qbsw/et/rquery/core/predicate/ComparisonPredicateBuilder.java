@@ -1,11 +1,11 @@
 package sk.qbsw.et.rquery.core.predicate;
 
 import com.querydsl.core.types.Predicate;
-
+import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 import sk.qbsw.et.rquery.core.model.CoreOperator;
-import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
+
+import java.util.List;
 
 /**
  * The default comparison predicate builder implementation.
@@ -21,11 +21,10 @@ public interface ComparisonPredicateBuilder
 	 *
 	 * @param <F> the type parameter
 	 * @param property the property
-	 * @param value the value
+	 * @param values the values
 	 * @param operator the operator
 	 * @param mapping the mapping
 	 * @return the predicate
-	 * @throws RQBusinessException the rq business exception
 	 */
-	<F extends CoreFilterable> Predicate buildPredicate (F property, String value, CoreOperator operator, EntityConfiguration<F> mapping) throws RQBusinessException;
+	<F extends CoreFilterable> Predicate buildPredicate (F property, List<String> values, CoreOperator operator, EntityConfiguration<F> mapping);
 }

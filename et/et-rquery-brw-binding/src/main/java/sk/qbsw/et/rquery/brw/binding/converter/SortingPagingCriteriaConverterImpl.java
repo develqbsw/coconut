@@ -7,8 +7,8 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QSort;
-import sk.qbsw.et.rquery.brw.binding.model.OffsetPageable;
 import sk.qbsw.et.rquery.brw.binding.mapper.FilterableMapper;
+import sk.qbsw.et.rquery.brw.binding.model.OffsetPageable;
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
 import sk.qbsw.et.rquery.brw.client.model.NullPrecedence;
 import sk.qbsw.et.rquery.brw.client.model.SortDirection;
@@ -16,7 +16,6 @@ import sk.qbsw.et.rquery.brw.client.model.criteria.Paging;
 import sk.qbsw.et.rquery.brw.client.model.criteria.SortingCriteria;
 import sk.qbsw.et.rquery.brw.client.model.criteria.SortingCriterion;
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 import sk.qbsw.et.rquery.core.exception.RQUndefinedEntityMappingException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 
@@ -33,7 +32,7 @@ import java.util.List;
 public class SortingPagingCriteriaConverterImpl implements SortingPagingCriteriaConverter
 {
 	@Override
-	public <F extends Filterable, C extends CoreFilterable> Pageable convertToPageable (SortingCriteria<F> sortingCriteria, Paging paging, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException
+	public <F extends Filterable, C extends CoreFilterable> Pageable convertToPageable (SortingCriteria<F> sortingCriteria, Paging paging, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper)
 	{
 		if (sortingCriteria.getCriteria().isEmpty())
 		{
@@ -46,7 +45,7 @@ public class SortingPagingCriteriaConverterImpl implements SortingPagingCriteria
 	}
 
 	@Override
-	public <F extends Filterable, C extends CoreFilterable> Sort convertToSort (SortingCriteria<F> sortingCriteria, final EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException
+	public <F extends Filterable, C extends CoreFilterable> Sort convertToSort (SortingCriteria<F> sortingCriteria, final EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper)
 	{
 		List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
 
@@ -58,7 +57,8 @@ public class SortingPagingCriteriaConverterImpl implements SortingPagingCriteria
 		return new QSort(orderSpecifiers);
 	}
 
-	private <F extends Filterable, C extends CoreFilterable> OrderSpecifier<?> convertToOrderSpecifier (final SortingCriterion<F> sortingCriterion, final EntityConfiguration<C> entityMapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException
+	@SuppressWarnings ("unchecked")
+	private <F extends Filterable, C extends CoreFilterable> OrderSpecifier<?> convertToOrderSpecifier (final SortingCriterion<F> sortingCriterion, final EntityConfiguration<C> entityMapping, FilterableMapper<F, C> filterableMapper)
 	{
 		final Order order = convertDirectionToOrder(sortingCriterion.getDirection());
 		final NullHandling nullHandling = convertNullPrecedenceToNullHandling(sortingCriterion.getNullPrecedence());
@@ -90,7 +90,7 @@ public class SortingPagingCriteriaConverterImpl implements SortingPagingCriteria
 		}
 	}
 
-	private <F extends Filterable, C extends CoreFilterable> SimpleExpression<?> getExpressionFromMapping (final F property, final EntityConfiguration<C> entityMapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException
+	private <F extends Filterable, C extends CoreFilterable> SimpleExpression<?> getExpressionFromMapping (final F property, final EntityConfiguration<C> entityMapping, FilterableMapper<F, C> filterableMapper)
 	{
 		SimpleExpression<?> expression = entityMapping.getExpression(filterableMapper.mapToCoreFilterable(property)).getExpression();
 

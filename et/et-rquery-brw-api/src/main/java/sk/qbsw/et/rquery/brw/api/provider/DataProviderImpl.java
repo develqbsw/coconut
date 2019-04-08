@@ -6,7 +6,6 @@ import sk.qbsw.et.rquery.brw.client.model.request.BrowserRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,37 +41,37 @@ public class DataProviderImpl<F extends Filterable, K extends Serializable, E ex
 	}
 
 	@Override
-	public BrowserData<E> findBrowserData (BrowserRequestBody<F> request) throws RQBusinessException
+	public BrowserData<E> findBrowserData (BrowserRequestBody<F> request)
 	{
 		return dataBinder.findBrowserData(request, false);
 	}
 
 	@Override
-	public long countData (CountRequestBody<F> request) throws RQBusinessException
+	public long countData (CountRequestBody<F> request)
 	{
 		return dataBinder.countData(request, false);
 	}
 
 	@Override
-	public List<E> findFilteredData (FilterRequestBody<F> request) throws RQBusinessException
+	public List<E> findFilteredData (FilterRequestBody<F> request)
 	{
 		return dataBinder.findFilteredData(request, false);
 	}
 
 	@Override
-	public BrowserData<E> findDistinctBrowserData (BrowserRequestBody<F> request) throws RQBusinessException
+	public BrowserData<E> findDistinctBrowserData (BrowserRequestBody<F> request)
 	{
 		return dataBinder.findBrowserData(request, true);
 	}
 
 	@Override
-	public long countDistinctData (CountRequestBody<F> request) throws RQBusinessException
+	public long countDistinctData (CountRequestBody<F> request)
 	{
 		return dataBinder.countData(request, true);
 	}
 
 	@Override
-	public List<E> findDistinctFilteredData (FilterRequestBody<F> request) throws RQBusinessException
+	public List<E> findDistinctFilteredData (FilterRequestBody<F> request)
 	{
 		return dataBinder.findFilteredData(request, true);
 	}

@@ -7,7 +7,7 @@ package sk.qbsw.et.rquery.core.exception;
  * @version 2.1.0
  * @since 2.1.0
  */
-public class RQUndefinedEntityMappingException extends RQBusinessException
+public class RQUndefinedEntityMappingException extends RQSystemException
 {
 	private static final long serialVersionUID = 7329606376468938876L;
 
@@ -29,16 +29,5 @@ public class RQUndefinedEntityMappingException extends RQBusinessException
 	public RQUndefinedEntityMappingException ()
 	{
 		super(ERROR);
-	}
-
-	/**
-	 * Instantiates a new Rq undefined entity mapping exception.
-	 *
-	 * @param message the message
-	 * @param cause the cause
-	 */
-	public RQUndefinedEntityMappingException (String message, Throwable cause)
-	{
-		super(message, cause, ERROR);
 	}
 }

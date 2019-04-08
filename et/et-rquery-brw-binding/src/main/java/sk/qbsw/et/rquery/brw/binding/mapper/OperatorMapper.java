@@ -1,7 +1,6 @@
 package sk.qbsw.et.rquery.brw.binding.mapper;
 
 import sk.qbsw.et.rquery.brw.client.model.Operator;
-import sk.qbsw.et.rquery.core.exception.RQUnsupportedOperatorException;
 import sk.qbsw.et.rquery.core.model.CoreOperator;
 
 /**
@@ -18,7 +17,6 @@ public interface OperatorMapper
 	 *
 	 * @param operator the operator
 	 * @return the core operator
-	 * @throws RQUnsupportedOperatorException the rq unsupported operator exception
 	 */
-	CoreOperator mapToCoreOperator (Operator operator) throws RQUnsupportedOperatorException;
+	CoreOperator mapToCoreOperator (Operator operator);
 }

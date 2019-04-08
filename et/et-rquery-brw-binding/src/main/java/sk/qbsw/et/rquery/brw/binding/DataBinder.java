@@ -5,7 +5,6 @@ import sk.qbsw.et.rquery.brw.client.model.request.BrowserRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -36,9 +35,8 @@ public interface DataBinder<F extends Filterable, K extends Serializable, E exte
 	 * @param request the request
 	 * @param distinct the distinct
 	 * @return the browser data
-	 * @throws RQBusinessException the rq business exception
 	 */
-	BrowserData<E> findBrowserData (BrowserRequestBody<F> request, boolean distinct) throws RQBusinessException;
+	BrowserData<E> findBrowserData (BrowserRequestBody<F> request, boolean distinct);
 
 	/**
 	 * Count data long.
@@ -46,9 +44,8 @@ public interface DataBinder<F extends Filterable, K extends Serializable, E exte
 	 * @param request the request
 	 * @param distinct the distinct
 	 * @return the long
-	 * @throws RQBusinessException the rq business exception
 	 */
-	long countData (CountRequestBody<F> request, boolean distinct) throws RQBusinessException;
+	long countData (CountRequestBody<F> request, boolean distinct);
 
 	/**
 	 * Find filtered data list.
@@ -56,7 +53,6 @@ public interface DataBinder<F extends Filterable, K extends Serializable, E exte
 	 * @param request the request
 	 * @param distinct the distinct
 	 * @return the list
-	 * @throws RQBusinessException the rq business exception
 	 */
-	List<E> findFilteredData (FilterRequestBody<F> request, boolean distinct) throws RQBusinessException;
+	List<E> findFilteredData (FilterRequestBody<F> request, boolean distinct);
 }

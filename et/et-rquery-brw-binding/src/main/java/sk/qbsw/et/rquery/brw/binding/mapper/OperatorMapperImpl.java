@@ -14,7 +14,7 @@ import sk.qbsw.et.rquery.core.model.CoreOperator;
 public class OperatorMapperImpl implements OperatorMapper
 {
 	@Override
-	public CoreOperator mapToCoreOperator (Operator operator) throws RQUnsupportedOperatorException
+	public CoreOperator mapToCoreOperator (Operator operator)
 	{
 		switch (operator)
 		{
@@ -30,6 +30,10 @@ public class OperatorMapperImpl implements OperatorMapper
 				return CoreOperator.LT;
 			case LOE:
 				return CoreOperator.LOE;
+			case IN:
+				return CoreOperator.IN;
+			case NOT_IN:
+				return CoreOperator.NOT_IN;
 			case LIKE_IGNORE_CASE:
 				return CoreOperator.LIKE_IGNORE_CASE;
 			default:

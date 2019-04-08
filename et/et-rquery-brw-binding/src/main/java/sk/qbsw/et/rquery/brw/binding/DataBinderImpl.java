@@ -15,7 +15,6 @@ import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
 import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 
 import java.io.Serializable;
@@ -69,7 +68,7 @@ public class DataBinderImpl<F extends Filterable, C extends CoreFilterable, K ex
 	}
 
 	@Override
-	public BrowserData<E> findBrowserData (BrowserRequestBody<F> request, boolean distinct) throws RQBusinessException
+	public BrowserData<E> findBrowserData (BrowserRequestBody<F> request, boolean distinct)
 	{
 		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
 		Pageable pageable = sortingPagingCriteriaConverter.convertToPageable(request.getSortingCriteria(), request.getPaging(), configuration, filterableMapper);
@@ -80,7 +79,7 @@ public class DataBinderImpl<F extends Filterable, C extends CoreFilterable, K ex
 	}
 
 	@Override
-	public long countData (CountRequestBody<F> request, boolean distinct) throws RQBusinessException
+	public long countData (CountRequestBody<F> request, boolean distinct)
 	{
 		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
 		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
@@ -89,7 +88,7 @@ public class DataBinderImpl<F extends Filterable, C extends CoreFilterable, K ex
 	}
 
 	@Override
-	public List<E> findFilteredData (FilterRequestBody<F> request, boolean distinct) throws RQBusinessException
+	public List<E> findFilteredData (FilterRequestBody<F> request, boolean distinct)
 	{
 		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
 		Sort sort = sortingPagingCriteriaConverter.convertToSort(request.getSortingCriteria(), configuration, filterableMapper);

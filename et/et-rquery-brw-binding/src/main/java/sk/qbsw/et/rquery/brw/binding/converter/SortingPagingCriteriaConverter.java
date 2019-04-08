@@ -8,7 +8,6 @@ import sk.qbsw.et.rquery.brw.client.model.Filterable;
 import sk.qbsw.et.rquery.brw.client.model.criteria.Paging;
 import sk.qbsw.et.rquery.brw.client.model.criteria.SortingCriteria;
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
-import sk.qbsw.et.rquery.core.exception.RQBusinessException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 
 /**
@@ -30,9 +29,8 @@ public interface SortingPagingCriteriaConverter
 	 * @param mapping the mapping
 	 * @param filterableMapper the filterable mapper
 	 * @return the pageable
-	 * @throws RQBusinessException the rq business exception
 	 */
-	<F extends Filterable, C extends CoreFilterable> Pageable convertToPageable (SortingCriteria<F> sortingCriteria, Paging paging, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException;
+	<F extends Filterable, C extends CoreFilterable> Pageable convertToPageable (SortingCriteria<F> sortingCriteria, Paging paging, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper);
 
 	/**
 	 * Convert to sort sort.
@@ -43,7 +41,6 @@ public interface SortingPagingCriteriaConverter
 	 * @param mapping the mapping
 	 * @param filterableMapper the filterable mapper
 	 * @return the sort
-	 * @throws RQBusinessException the rq business exception
 	 */
-	<F extends Filterable, C extends CoreFilterable> Sort convertToSort (SortingCriteria<F> sortingCriteria, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper) throws RQBusinessException;
+	<F extends Filterable, C extends CoreFilterable> Sort convertToSort (SortingCriteria<F> sortingCriteria, EntityConfiguration<C> mapping, FilterableMapper<F, C> filterableMapper);
 }
