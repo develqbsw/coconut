@@ -14,8 +14,8 @@ import sk.qbsw.et.rquery.core.model.CoreFilterable;
  * The default sorting and paging criteria converter.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public interface SortingPagingCriteriaConverter
 {

@@ -10,10 +10,10 @@ import sk.qbsw.et.rquery.brw.binding.converter.FilterCriteriaConverter;
 import sk.qbsw.et.rquery.brw.binding.converter.SortingPagingCriteriaConverter;
 import sk.qbsw.et.rquery.brw.binding.mapper.FilterableMapper;
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
-import sk.qbsw.et.rquery.brw.client.model.request.BrowserRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
+import sk.qbsw.et.rquery.brw.client.model.request.CountDataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.DataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.PageableDataRequestBody;
+import sk.qbsw.et.rquery.client.model.PageableData;
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 
@@ -28,8 +28,8 @@ import java.util.List;
  * @param <K> the primary key type
  * @param <E> the entity type
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public class DataBinderImpl<F extends Filterable, C extends CoreFilterable, K extends Serializable, E extends Serializable> implements DataBinder<F, K, E>
 {
@@ -68,32 +68,32 @@ public class DataBinderImpl<F extends Filterable, C extends CoreFilterable, K ex
 	}
 
 	@Override
-	public BrowserData<E> findBrowserData (BrowserRequestBody<F> request, boolean distinct)
-	{
-		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
-		Pageable pageable = sortingPagingCriteriaConverter.convertToPageable(request.getSortingCriteria(), request.getPaging(), configuration, filterableMapper);
-		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
-
-		Page<E> result = repository.findAll(distinct, predicate, pageable, joinDescriptors);
-		return new BrowserData<>(result.getContent(), result.getTotalElements());
-	}
-
-	@Override
-	public long countData (CountRequestBody<F> request, boolean distinct)
-	{
-		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
-		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
-
-		return repository.count(distinct, predicate, joinDescriptors);
-	}
-
-	@Override
-	public List<E> findFilteredData (FilterRequestBody<F> request, boolean distinct)
+	public List<E> findData (DataRequestBody<F> request, boolean distinct)
 	{
 		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
 		Sort sort = sortingPagingCriteriaConverter.convertToSort(request.getSortingCriteria(), configuration, filterableMapper);
 		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
 
 		return repository.findAll(distinct, predicate, sort, joinDescriptors);
+	}
+
+	@Override
+	public PageableData<E> findPageableData (PageableDataRequestBody<F> request, boolean distinct)
+	{
+		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
+		Pageable pageable = sortingPagingCriteriaConverter.convertToPageable(request.getSortingCriteria(), request.getPaging(), configuration, filterableMapper);
+		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
+
+		Page<E> result = repository.findAll(distinct, predicate, pageable, joinDescriptors);
+		return new PageableData<>(result.getContent(), result.getTotalElements());
+	}
+
+	@Override
+	public long countData (CountDataRequestBody<F> request, boolean distinct)
+	{
+		Predicate predicate = filterCriteriaConverter.convertToPredicate(request.getFilterCriteria(), configuration, filterableMapper);
+		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
+
+		return repository.count(distinct, predicate, joinDescriptors);
 	}
 }

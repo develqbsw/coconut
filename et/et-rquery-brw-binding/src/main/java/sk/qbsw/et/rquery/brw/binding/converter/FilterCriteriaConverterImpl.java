@@ -18,8 +18,8 @@ import sk.qbsw.et.rquery.core.predicate.ComparisonPredicateBuilder;
  * The default filter criteria converter implementation.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public class FilterCriteriaConverterImpl implements FilterCriteriaConverter
 {

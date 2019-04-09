@@ -13,8 +13,8 @@ import java.util.Map;
  *
  * @param <F> the filterable
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public class EntityConfiguration<F extends CoreFilterable>
 {

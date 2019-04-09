@@ -4,8 +4,8 @@ package sk.qbsw.et.rquery.core.model;
  * The filtering operator.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public enum CoreOperator
 {
@@ -48,6 +48,16 @@ public enum CoreOperator
 	 * Not in core operator.
 	 */
 	NOT_IN,
+
+	/**
+	 * Like core operator.
+	 */
+	LIKE,
+
+	/**
+	 * Not like core operator.
+	 */
+	NOT_LIKE,
 
 	/**
 	 * The like ignore case.

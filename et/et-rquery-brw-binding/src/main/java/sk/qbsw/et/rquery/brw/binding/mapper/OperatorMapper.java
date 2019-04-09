@@ -7,8 +7,8 @@ import sk.qbsw.et.rquery.core.model.CoreOperator;
  * The operator mapper.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public interface OperatorMapper
 {

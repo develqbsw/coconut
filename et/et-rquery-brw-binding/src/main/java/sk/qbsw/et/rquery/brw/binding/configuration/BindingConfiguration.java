@@ -8,32 +8,32 @@ import sk.qbsw.et.rquery.brw.binding.converter.SortingPagingCriteriaConverter;
 import sk.qbsw.et.rquery.brw.binding.converter.SortingPagingCriteriaConverterImpl;
 import sk.qbsw.et.rquery.brw.binding.mapper.OperatorMapper;
 import sk.qbsw.et.rquery.brw.binding.mapper.OperatorMapperImpl;
-import sk.qbsw.et.rquery.core.configuration.RQCoreConfiguration;
+import sk.qbsw.et.rquery.core.configuration.CoreConfiguration;
 import sk.qbsw.et.rquery.core.predicate.ComparisonPredicateBuilder;
 
 /**
  * The request query binding configuration.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
-public class RQBindingConfiguration extends RQCoreConfiguration
+public class BindingConfiguration extends CoreConfiguration
 {
 	@Bean
-	public OperatorMapper operatorMapper ()
+	public OperatorMapper brwOperatorMapper ()
 	{
 		return new OperatorMapperImpl();
 	}
 
 	@Bean
-	public FilterCriteriaConverter filterCriteriaConverter (ComparisonPredicateBuilder comparisonPredicateBuilder, OperatorMapper operatorMapper)
+	public FilterCriteriaConverter brwFilterCriteriaConverter (ComparisonPredicateBuilder comparisonPredicateBuilder, OperatorMapper operatorMapper)
 	{
 		return new FilterCriteriaConverterImpl(comparisonPredicateBuilder, operatorMapper);
 	}
 
 	@Bean
-	public SortingPagingCriteriaConverter sortingPagingCriteriaConverter ()
+	public SortingPagingCriteriaConverter brwSortingPagingCriteriaConverter ()
 	{
 		return new SortingPagingCriteriaConverterImpl();
 	}

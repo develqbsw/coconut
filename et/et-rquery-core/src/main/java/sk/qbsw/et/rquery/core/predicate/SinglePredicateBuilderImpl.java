@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
  * The default single predicate builder.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 {
@@ -67,7 +67,6 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
 			}
 		}
-
 	}
 
 	@Override
@@ -115,14 +114,25 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 		}
 		catch (RQUnsupportedOperatorException ex)
 		{
-			if (CollectionUtils.isNotEmpty(values) && CoreOperator.LIKE_IGNORE_CASE.equals(operator))
+			if (CollectionUtils.isNotEmpty(values))
 			{
-				return path.containsIgnoreCase(values.get(0));
+				String searchValue = values.get(0).replace("*", "%");
+
+				if (CollectionUtils.isNotEmpty(values) && CoreOperator.LIKE.equals(operator))
+				{
+					return path.like(searchValue);
+				}
+				if (CollectionUtils.isNotEmpty(values) && CoreOperator.NOT_LIKE.equals(operator))
+				{
+					return path.notLike(searchValue);
+				}
+				if (CollectionUtils.isNotEmpty(values) && CoreOperator.LIKE_IGNORE_CASE.equals(operator))
+				{
+					return path.likeIgnoreCase(searchValue);
+				}
 			}
-			else
-			{
-				throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+
+			throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
 		}
 	}
 

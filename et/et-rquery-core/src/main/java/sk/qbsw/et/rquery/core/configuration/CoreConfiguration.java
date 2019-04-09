@@ -11,10 +11,10 @@ import sk.qbsw.et.rquery.core.predicate.SinglePredicateBuilderImpl;
  * The request query core configuration.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
-public class RQCoreConfiguration
+public class CoreConfiguration
 {
 	@Bean
 	public SinglePredicateBuilder singlePredicateBuilder ()

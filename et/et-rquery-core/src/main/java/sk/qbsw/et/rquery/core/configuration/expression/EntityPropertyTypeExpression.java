@@ -10,8 +10,8 @@ import java.util.Map;
  * The querydsl expression with type informations.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 @Getter
 public class EntityPropertyTypeExpression extends EntityPropertyEnumExpression

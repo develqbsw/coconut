@@ -4,8 +4,8 @@ package sk.qbsw.et.rquery.brw.client.model;
  * The filtering operator.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public enum Operator
 {
@@ -48,6 +48,16 @@ public enum Operator
 	 * Not in operator.
 	 */
 	NOT_IN,
+
+	/**
+	 * Like operator.
+	 */
+	LIKE,
+
+	/**
+	 * Not like operator.
+	 */
+	NOT_LIKE,
 
 	/**
 	 * The like ignore case.

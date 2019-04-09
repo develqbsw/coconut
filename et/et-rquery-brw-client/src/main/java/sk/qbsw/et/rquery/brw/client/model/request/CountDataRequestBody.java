@@ -10,17 +10,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
- * The count request body.
+ * The count data request body.
  *
  * @param <F> the filterable type
  * @author Peter Bozik
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 @Getter
 @Setter
-public class CountRequestBody<F extends Filterable>extends BaseRequestBody
+public class CountDataRequestBody<F extends Filterable>extends BaseRequestBody
 {
 	private static final long serialVersionUID = 2184850074033502510L;
 

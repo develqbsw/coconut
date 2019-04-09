@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                               http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>sk.qbsw.et</groupId>
-	<artifactId>et-top</artifactId>
-	<name>ET Project</name>
-	<packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>sk.qbsw.et</groupId>
+    <artifactId>et-top</artifactId>
+    <name>ET Project</name>
+    <packaging>pom</packaging>
 
-	<parent>
-		<groupId>sk.qbsw</groupId>
-		<artifactId>coconut</artifactId>
-		<version>2.2.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>sk.qbsw</groupId>
+        <artifactId>coconut</artifactId>
+        <version>2.2.0-SNAPSHOT</version>
+    </parent>
 
-	<modules>
-		<module>et-rquery-core</module>
-		<module>et-rquery-brw-binding</module>
-		<module>et-rquery-brw-client</module>
-		<module>et-rquery-brw-api</module>
-		<module>et-browser-client</module>
-		<module>et-browser-core</module>
-		<module>et-browser-api</module>
-	</modules>
+    <modules>
+        <module>et-rquery-core</module>
+		<module>et-rquery-client</module>
+        <module>et-rquery-brw-binding</module>
+        <module>et-rquery-brw-client</module>
+        <module>et-rquery-brw-api</module>
+        <module>et-rquery-rsql-binding</module>
+		<module>et-rquery-rsql-api</module>
+        <module>et-browser-client</module>
+        <module>et-browser-core</module>
+        <module>et-browser-api</module>
+    </modules>
 </project>

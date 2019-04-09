@@ -1,10 +1,10 @@
 package sk.qbsw.et.rquery.brw.api.provider;
 
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
-import sk.qbsw.et.rquery.brw.client.model.request.BrowserRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
+import sk.qbsw.et.rquery.brw.client.model.request.CountDataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.DataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.PageableDataRequestBody;
+import sk.qbsw.et.rquery.client.model.PageableData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.List;
  * @param <K> the primary key type
  * @param <E> the entity type
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public interface DataProvider<F extends Filterable, K extends Serializable, E extends Serializable>
 {
@@ -30,12 +30,20 @@ public interface DataProvider<F extends Filterable, K extends Serializable, E ex
 	E findOne (K id);
 
 	/**
-	 * Find browser data c brw dto.
+	 * Find data list.
 	 *
 	 * @param request the request
-	 * @return the c brw dto
+	 * @return the list
 	 */
-	BrowserData<E> findBrowserData (BrowserRequestBody<F> request);
+	List<E> findData (DataRequestBody<F> request);
+
+	/**
+	 * Find pageable data pageable data.
+	 *
+	 * @param request the request
+	 * @return the pageable data
+	 */
+	PageableData<E> findPageableData (PageableDataRequestBody<F> request);
 
 	/**
 	 * Count data long.
@@ -43,23 +51,23 @@ public interface DataProvider<F extends Filterable, K extends Serializable, E ex
 	 * @param request the request
 	 * @return the long
 	 */
-	long countData (CountRequestBody<F> request);
+	long countData (CountDataRequestBody<F> request);
 
 	/**
-	 * Find filtered data list.
+	 * Find distinct data list.
 	 *
 	 * @param request the request
 	 * @return the list
 	 */
-	List<E> findFilteredData (FilterRequestBody<F> request);
+	List<E> findDistinctData (DataRequestBody<F> request);
 
 	/**
-	 * Find distinct browser data c brw dto.
+	 * Find distinct pageable data pageable data.
 	 *
 	 * @param request the request
-	 * @return the c brw dto
+	 * @return the pageable data
 	 */
-	BrowserData<E> findDistinctBrowserData (BrowserRequestBody<F> request);
+	PageableData<E> findDistinctPageableData (PageableDataRequestBody<F> request);
 
 	/**
 	 * Count distinct data long.
@@ -67,13 +75,5 @@ public interface DataProvider<F extends Filterable, K extends Serializable, E ex
 	 * @param request the request
 	 * @return the long
 	 */
-	long countDistinctData (CountRequestBody<F> request);
-
-	/**
-	 * Find distinct filtered data list.
-	 *
-	 * @param request the request
-	 * @return the list
-	 */
-	List<E> findDistinctFilteredData (FilterRequestBody<F> request);
+	long countDistinctData (CountDataRequestBody<F> request);
 }

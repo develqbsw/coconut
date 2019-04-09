@@ -1,10 +1,10 @@
 package sk.qbsw.et.rquery.brw.binding;
 
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
-import sk.qbsw.et.rquery.brw.client.model.request.BrowserRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
+import sk.qbsw.et.rquery.brw.client.model.request.CountDataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.DataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.PageableDataRequestBody;
+import sk.qbsw.et.rquery.client.model.PageableData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.List;
  * @param <K> the primary key type
  * @param <E> the entity type
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public interface DataBinder<F extends Filterable, K extends Serializable, E extends Serializable>
 {
@@ -30,13 +30,22 @@ public interface DataBinder<F extends Filterable, K extends Serializable, E exte
 	E findOne (K id);
 
 	/**
-	 * Find browser data browser data.
+	 * Find data list.
 	 *
 	 * @param request the request
 	 * @param distinct the distinct
-	 * @return the browser data
+	 * @return the list
 	 */
-	BrowserData<E> findBrowserData (BrowserRequestBody<F> request, boolean distinct);
+	List<E> findData (DataRequestBody<F> request, boolean distinct);
+
+	/**
+	 * Find pageable data pageable data.
+	 *
+	 * @param request the request
+	 * @param distinct the distinct
+	 * @return the pageable data
+	 */
+	PageableData<E> findPageableData (PageableDataRequestBody<F> request, boolean distinct);
 
 	/**
 	 * Count data long.
@@ -45,14 +54,6 @@ public interface DataBinder<F extends Filterable, K extends Serializable, E exte
 	 * @param distinct the distinct
 	 * @return the long
 	 */
-	long countData (CountRequestBody<F> request, boolean distinct);
+	long countData (CountDataRequestBody<F> request, boolean distinct);
 
-	/**
-	 * Find filtered data list.
-	 *
-	 * @param request the request
-	 * @param distinct the distinct
-	 * @return the list
-	 */
-	List<E> findFilteredData (FilterRequestBody<F> request, boolean distinct);
 }

@@ -8,8 +8,8 @@ import lombok.Getter;
  * The querydsl expression with enum class.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 @Getter
 public class EntityPropertyEnumExpression extends EntityPropertyExpression

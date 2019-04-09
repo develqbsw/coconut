@@ -22,7 +22,7 @@
         <!-- qbsw -->
         <dependency>
             <groupId>sk.qbsw.et</groupId>
-            <artifactId>et-rquery-core</artifactId>
+            <artifactId>et-rquery-client</artifactId>
         </dependency>
         <dependency>
             <groupId>sk.qbsw.et</groupId>

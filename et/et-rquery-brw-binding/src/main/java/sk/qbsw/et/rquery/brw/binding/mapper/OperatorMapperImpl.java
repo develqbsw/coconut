@@ -8,8 +8,8 @@ import sk.qbsw.et.rquery.core.model.CoreOperator;
  * The operator mapper implementation.
  *
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public class OperatorMapperImpl implements OperatorMapper
 {
@@ -34,6 +34,10 @@ public class OperatorMapperImpl implements OperatorMapper
 				return CoreOperator.IN;
 			case NOT_IN:
 				return CoreOperator.NOT_IN;
+			case LIKE:
+				return CoreOperator.LIKE;
+			case NOT_LIKE:
+				return CoreOperator.NOT_LIKE;
 			case LIKE_IGNORE_CASE:
 				return CoreOperator.LIKE_IGNORE_CASE;
 			default:

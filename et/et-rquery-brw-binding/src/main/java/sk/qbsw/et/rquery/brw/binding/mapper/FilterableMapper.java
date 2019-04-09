@@ -9,8 +9,8 @@ import sk.qbsw.et.rquery.core.model.CoreFilterable;
  * @param <F> the property type
  * @param <C> the core property type
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public interface FilterableMapper<F extends Filterable, C extends CoreFilterable>
 {

@@ -2,10 +2,10 @@ package sk.qbsw.et.rquery.brw.api.provider;
 
 import sk.qbsw.et.rquery.brw.binding.DataBinder;
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
-import sk.qbsw.et.rquery.brw.client.model.request.BrowserRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.CountRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.request.FilterRequestBody;
-import sk.qbsw.et.rquery.brw.client.model.response.BrowserData;
+import sk.qbsw.et.rquery.brw.client.model.request.CountDataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.DataRequestBody;
+import sk.qbsw.et.rquery.brw.client.model.request.PageableDataRequestBody;
+import sk.qbsw.et.rquery.client.model.PageableData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,8 +17,8 @@ import java.util.List;
  * @param <K> the primary key type
  * @param <E> the entity type
  * @author Tomas Lauro
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 public class DataProviderImpl<F extends Filterable, K extends Serializable, E extends Serializable> implements DataProvider<F, K, E>
 {
@@ -41,38 +41,38 @@ public class DataProviderImpl<F extends Filterable, K extends Serializable, E ex
 	}
 
 	@Override
-	public BrowserData<E> findBrowserData (BrowserRequestBody<F> request)
+	public List<E> findData (DataRequestBody<F> request)
 	{
-		return dataBinder.findBrowserData(request, false);
+		return dataBinder.findData(request, false);
 	}
 
 	@Override
-	public long countData (CountRequestBody<F> request)
+	public PageableData<E> findPageableData (PageableDataRequestBody<F> request)
+	{
+		return dataBinder.findPageableData(request, false);
+	}
+
+	@Override
+	public long countData (CountDataRequestBody<F> request)
 	{
 		return dataBinder.countData(request, false);
 	}
 
 	@Override
-	public List<E> findFilteredData (FilterRequestBody<F> request)
+	public List<E> findDistinctData (DataRequestBody<F> request)
 	{
-		return dataBinder.findFilteredData(request, false);
+		return dataBinder.findData(request, true);
 	}
 
 	@Override
-	public BrowserData<E> findDistinctBrowserData (BrowserRequestBody<F> request)
+	public PageableData<E> findDistinctPageableData (PageableDataRequestBody<F> request)
 	{
-		return dataBinder.findBrowserData(request, true);
+		return dataBinder.findPageableData(request, true);
 	}
 
 	@Override
-	public long countDistinctData (CountRequestBody<F> request)
+	public long countDistinctData (CountDataRequestBody<F> request)
 	{
 		return dataBinder.countData(request, true);
-	}
-
-	@Override
-	public List<E> findDistinctFilteredData (FilterRequestBody<F> request)
-	{
-		return dataBinder.findFilteredData(request, true);
 	}
 }
