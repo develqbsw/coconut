@@ -23,8 +23,9 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The base rest template factory.
@@ -95,7 +96,7 @@ public abstract class BaseRestTemplateFactory implements FactoryBean<RestTemplat
 	 */
 	protected List<HttpMessageConverter<?>> addCustomConverters ()
 	{
-		return Arrays.asList(new FormHttpMessageConverter());
+		return Stream.of(new FormHttpMessageConverter()).collect(Collectors.toList());
 	}
 
 	/**
