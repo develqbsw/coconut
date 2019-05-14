@@ -27,7 +27,7 @@ public class OffsetPageable implements Pageable
 	 */
 	public OffsetPageable (long offset, int limit)
 	{
-		this(offset, limit, null);
+		this(offset, limit, Sort.unsorted());
 	}
 
 	/**
