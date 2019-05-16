@@ -6,6 +6,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
 import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountDataTypes;
 import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
@@ -23,7 +24,8 @@ import java.util.List;
  * The simple organization account management service.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Tomas Leken
+ * @version 2.2.0
  * @since 2.0.0
  */
 public class SPOAccountManagementServiceImpl extends SPOAccountManagementServiceBase<AccountInputData, AccountData, Account> implements SPOAccountManagementService<AccountInputData, AccountData>
@@ -199,5 +201,12 @@ public class SPOAccountManagementServiceImpl extends SPOAccountManagementService
 	public List<AccountData> findByOrganizationCodeAndRoleCode (String organizationCode, String roleCode)
 	{
 		return super.findByOrganizationCodeAndRoleCodeBase(organizationCode, roleCode);
+	}
+
+	@Override
+	@Transactional (rollbackFor = CBusinessException.class)
+	public List<AccountData> findByTypeAndOrganizationCode (AccountDataTypes type, String organizationCode)
+	{
+		return super.findByTypeAndOrganizationCode(type, organizationCode);
 	}
 }

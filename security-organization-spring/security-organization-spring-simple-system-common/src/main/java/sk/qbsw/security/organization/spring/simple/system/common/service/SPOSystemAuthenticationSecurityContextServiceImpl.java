@@ -10,7 +10,8 @@ import sk.qbsw.security.spring.system.common.model.SystemAuthenticationToken;
  * The system authentication context service.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @author Tomas Leken
+ * @version 2.2.0
  * @since 1.18.6
  */
 public class SPOSystemAuthenticationSecurityContextServiceImpl implements SPOSystemAuthenticationSecurityContextService
@@ -27,10 +28,10 @@ public class SPOSystemAuthenticationSecurityContextServiceImpl implements SPOSys
 		this.systemAuthenticationProvider = systemAuthenticationProvider;
 	}
 
-	public void createAuthentication (Long organizationId)
+	public void createAuthentication (String organizationCode)
 	{
 		SystemAuthenticationToken authenticationToken = new SystemAuthenticationToken();
-		authenticationToken.setDetails(organizationId);
+		authenticationToken.setDetails(organizationCode);
 
 		Authentication populatedAuthentication = systemAuthenticationProvider.authenticate(authenticationToken);
 		SecurityContextHolder.getContext().setAuthentication(populatedAuthentication);

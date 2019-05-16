@@ -22,7 +22,8 @@ import java.util.List;
  * @param <A> the type parameter
  * @author rosenberg
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Tomas Leken
+ * @version 2.2.0
  * @since 1.0.0
  */
 public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao<Long, A> implements AccountDao<A>
@@ -374,6 +375,11 @@ public abstract class AccountJpaDaoBase<A extends Account>extends AEntityQDslDao
 				if (filter.getExcludedLogin() != null)
 				{
 					builder.and(qAccount.login.ne(filter.getExcludedLogin()));
+				}
+
+				if (filter.getType() != null)
+				{
+					builder.and(qAccount.type.eq(filter.getType()));
 				}
 			}
 

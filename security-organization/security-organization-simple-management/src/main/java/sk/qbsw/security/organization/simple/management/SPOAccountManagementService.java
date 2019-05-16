@@ -2,6 +2,7 @@ package sk.qbsw.security.organization.simple.management;
 
 import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountDataTypes;
 import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.management.service.AccountManagementService;
 
@@ -14,10 +15,11 @@ import java.util.List;
  * @param <O> the simple organization account output type
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Tomas Leken
+ * @version 2.2.0
  * @since 2.0.0
  */
-public interface SPOAccountManagementService<I extends AccountInputData, O extends AccountData>extends AccountManagementService<I, O>
+public interface SPOAccountManagementService<I extends AccountInputData, O extends AccountData> extends AccountManagementService<I, O>
 {
 	/**
 	 * Find one by organization code and login and state o.
@@ -84,4 +86,13 @@ public interface SPOAccountManagementService<I extends AccountInputData, O exten
 	 * @return the list
 	 */
 	List<O> findByOrganizationCodeAndRoleCode (String organizationCode, String roleCode);
+
+	/**
+	 * Find by type and organization code list.
+	 *
+	 * @param type             the type
+	 * @param organizationCode the organization code
+	 * @return the list
+	 */
+	List<O> findByTypeAndOrganizationCode (AccountDataTypes type, String organizationCode);
 }

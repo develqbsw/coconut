@@ -15,13 +15,15 @@ import sk.qbsw.security.management.db.configuration.SecurityManagementConfigurat
 import sk.qbsw.security.management.service.AccountCredentialManagementService;
 import sk.qbsw.security.management.service.AccountManagementService;
 import sk.qbsw.security.organization.simple.core.service.mapper.SPOUserOutputDataMapperImpl;
+import sk.qbsw.security.organization.simple.management.SPOAccountManagementService;
 import sk.qbsw.security.organization.simple.management.db.service.SPOAccountManagementServiceImpl;
 
 /**
  * The simple organization security management configuration.
  * 
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Tomas Leken
+ * @version 2.2.0
  * @since 2.0.0
  */
 public class SPOSecurityManagementConfiguration extends SecurityManagementConfiguration
@@ -34,7 +36,7 @@ public class SPOSecurityManagementConfiguration extends SecurityManagementConfig
 	}
 
 	@Bean
-	public AccountManagementService<AccountInputData, AccountData> accountManagementService (AccountDao<Account> accountDao, UserDao userDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<AccountInputData, Account> accountAccountInputDataMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
+	public SPOAccountManagementService<AccountInputData, AccountData> accountManagementService (AccountDao<Account> accountDao, UserDao userDao, OrganizationDao organizationDao, AuthenticationParamsDao authenticationParamsDao, AccountCredentialManagementService authenticationService, AccountInputDataMapper<AccountInputData, Account> accountAccountInputDataMapper, AccountOutputDataMapper<AccountData, Account> accountOutputDataMapper)
 	{
 		return new SPOAccountManagementServiceImpl(accountDao, userDao, organizationDao, authenticationParamsDao, authenticationService, accountAccountInputDataMapper, accountOutputDataMapper);
 	}

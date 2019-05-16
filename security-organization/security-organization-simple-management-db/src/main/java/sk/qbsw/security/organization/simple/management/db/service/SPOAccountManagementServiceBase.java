@@ -2,12 +2,14 @@ package sk.qbsw.security.organization.simple.management.db.service;
 
 import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountDataTypes;
 import sk.qbsw.core.security.base.model.AccountInputData;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.AuthenticationParamsDao;
 import sk.qbsw.security.core.dao.OrganizationDao;
 import sk.qbsw.security.core.dao.UserDao;
 import sk.qbsw.security.core.model.domain.Account;
+import sk.qbsw.security.core.model.domain.AccountTypes;
 import sk.qbsw.security.core.model.filter.AccountAssociationsFilter;
 import sk.qbsw.security.core.model.filter.AccountDetailFilter;
 import sk.qbsw.security.core.model.order.*;
@@ -27,7 +29,8 @@ import java.util.stream.Collectors;
  * @param <O> the account output type
  * @param <A> the account type
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Tomas Leken
+ * @version 2.2.0
  * @since 2.0.0
  */
 public abstract class SPOAccountManagementServiceBase<I extends AccountInputData, O extends AccountData, A extends Account>extends AccountManagementServiceBase<I, O, A>
@@ -188,6 +191,25 @@ public abstract class SPOAccountManagementServiceBase<I extends AccountInputData
 		{
 			filter.setRoleCode(roleCode);
 		}
+
+		return accountDao.findByAccountAssociationsFilter(filter, orderModel).stream().map(accountOutputDataMapper::mapToAccountOutputData).collect(Collectors.toList());
+	}
+
+	/**
+	 * Find by type and organization code list.
+	 *
+	 * @param type             the type
+	 * @param organizationCode the organization code
+	 * @return the list
+	 */
+	protected List<O> findByTypeAndOrganizationCode (AccountDataTypes type, String organizationCode)
+	{
+		AccountAssociationsFilter filter = new AccountAssociationsFilter();
+		filter.setOrganizationCode(organizationCode);
+		filter.setType(AccountTypes.valueOf(type.name()));
+
+		OrderModel<AccountOrderByAttributeSpecifiers> orderModel = new OrderModel<>();
+		orderModel.getOrderSpecification().add(new OrderSpecification<>(AccountOrderByAttributeSpecifiers.LOGIN, OrderSpecifiers.ASC));
 
 		return accountDao.findByAccountAssociationsFilter(filter, orderModel).stream().map(accountOutputDataMapper::mapToAccountOutputData).collect(Collectors.toList());
 	}
