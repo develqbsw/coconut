@@ -123,6 +123,9 @@
 
         <!-- lombok -->
         <lombok.version>1.16.20</lombok.version>
+
+        <!-- RSQL -->
+        <rsql-parser.version>2.0.0</rsql-parser.version>
     </properties>
 
     <modules>
@@ -478,6 +481,41 @@
             </dependency>
 
             <!-- QBSW et -->
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-core</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-client</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-brw-client</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-brw-binding</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-brw-api</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-rsql-binding</artifactId>
+                <version>${et.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.et</groupId>
+                <artifactId>et-rquery-rsql-api</artifactId>
+                <version>${et.version}</version>
+            </dependency>
             <dependency>
                 <groupId>sk.qbsw.et</groupId>
                 <artifactId>et-browser-client</artifactId>
@@ -956,6 +994,13 @@
                         <groupId>log4j</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!-- RSQL -->
+            <dependency>
+                <groupId>cz.jirutka.rsql</groupId>
+                <artifactId>rsql-parser</artifactId>
+                <version>${rsql-parser.version}</version>
             </dependency>
 
             <!-- swagger -->
