@@ -1,5 +1,6 @@
 package sk.qbsw.et.rquery.rsql.binding;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
@@ -70,8 +71,7 @@ public class DataBinderImpl<C extends CoreFilterable, K extends Serializable, E 
 	@Override
 	public List<E> findData (String query, Sort sort, boolean distinct)
 	{
-		Node rootNode = parser.parse(query);
-		Predicate predicate = rootNode.accept(visitor);
+		Predicate predicate = createPredicate(query);
 		Sort convertedSort = pageableConverter.convertToSort(sort, configuration, mapper);
 
 		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
@@ -82,8 +82,7 @@ public class DataBinderImpl<C extends CoreFilterable, K extends Serializable, E 
 	@Override
 	public PageableData<E> findPageableData (String query, Pageable pageable, boolean distinct)
 	{
-		Node rootNode = parser.parse(query);
-		Predicate predicate = rootNode.accept(visitor);
+		Predicate predicate = createPredicate(query);
 		Pageable convertedPageable = pageableConverter.convertToPageable(pageable, configuration, mapper);
 
 		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
@@ -95,11 +94,23 @@ public class DataBinderImpl<C extends CoreFilterable, K extends Serializable, E 
 	@Override
 	public long countData (String query, boolean distinct)
 	{
-		Node rootNode = parser.parse(query);
-		Predicate predicate = rootNode.accept(visitor);
+		Predicate predicate = createPredicate(query);
 
 		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
 
 		return repository.count(distinct, predicate, joinDescriptors);
+	}
+
+	private Predicate createPredicate (String query)
+	{
+		if (query != null)
+		{
+			Node rootNode = parser.parse(query);
+			return rootNode.accept(visitor);
+		}
+		else
+		{
+			return new BooleanBuilder();
+		}
 	}
 }
