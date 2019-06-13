@@ -4,6 +4,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSPOAccountData;
 import sk.qbsw.security.organization.rest.oauth.simple.client.model.CSSPOUserData;
 import sk.qbsw.security.organization.spring.simple.common.model.SPOUserData;
 import sk.qbsw.security.organization.spring.simple.oauth.common.model.SPOOAuthLoggedAccount;
@@ -20,12 +21,12 @@ import sk.qbsw.security.spring.oauth.common.service.BaseOAuthUserDetailsService;
  * The oauth pre authenticated user details service.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.2.0
  * @since 1.18.0
  */
 public class SPOOAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsService
 {
-	private final AuthenticationClient<CSAccountData> authenticationClient;
+	private final AuthenticationClient<CSSPOAccountData> authenticationClient;
 
 	private final UserDataMapper<CSSPOUserData> userDataMapper;
 
@@ -35,7 +36,7 @@ public class SPOOAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsSe
 	 * @param authenticationClient the authentication client
 	 * @param userDataMapper the user data mapper
 	 */
-	public SPOOAuthWebServiceUserDetailsService (AuthenticationClient<CSAccountData> authenticationClient, UserDataMapper<CSSPOUserData> userDataMapper)
+	public SPOOAuthWebServiceUserDetailsService (AuthenticationClient<CSSPOAccountData> authenticationClient, UserDataMapper<CSSPOUserData> userDataMapper)
 	{
 		super();
 		this.authenticationClient = authenticationClient;
@@ -58,7 +59,12 @@ public class SPOOAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsSe
 	{
 		try
 		{
-			return authenticationClient.verify(new VerifyRequestBody(token, deviceId, ip));
+			// convert response with CSSPOAccountData to response with CSAccountData - to unify interface of spring integration
+			VerificationResponseBody<CSSPOAccountData> response = authenticationClient.verify(new VerifyRequestBody(token, deviceId, ip));
+			return new VerificationResponseBody<>( //
+				new CSAccountData(response.getAccountData().getId(), response.getAccountData().getUid(), response.getAccountData().getLogin(), response.getAccountData().getEmail(), response.getAccountData().getRoles(), response.getAccountData().getUser(), response.getAccountData().getAdditionalInformation()), //
+				response.getVerificationType() //
+			);
 		}
 		catch (Exception ex)
 		{
