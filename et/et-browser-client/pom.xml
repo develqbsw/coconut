@@ -15,7 +15,7 @@
     <parent>
         <groupId>sk.qbsw.et</groupId>
         <artifactId>et-top</artifactId>
-        <version>2.2.0</version>
+        <version>2.2.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
