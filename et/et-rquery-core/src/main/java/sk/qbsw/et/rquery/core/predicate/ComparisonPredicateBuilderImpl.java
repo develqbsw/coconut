@@ -9,6 +9,7 @@ import sk.qbsw.et.rquery.core.model.CoreOperator;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The default comparison predicate builder implementation.
@@ -19,6 +20,8 @@ import java.util.List;
  */
 public class ComparisonPredicateBuilderImpl implements ComparisonPredicateBuilder
 {
+	private static final String NULL_STRING = "null";
+
 	private final SinglePredicateBuilder singlePredicateBuilder;
 
 	/**
@@ -36,24 +39,31 @@ public class ComparisonPredicateBuilderImpl implements ComparisonPredicateBuilde
 	public <F extends CoreFilterable> Predicate buildPredicate (F property, List<String> values, CoreOperator operator, EntityConfiguration<F> mapping)
 	{
 		final SimpleExpression<?> expression = getExpressionFromMapping(property, mapping);
+		final List<String> normalizedValues = normalizeValues(values);
 		Predicate predicate;
 
-		if ( (predicate = buildTypePredicate(expression, property, values, operator, mapping)) != null)
+		if ( (predicate = buildTypePredicate(expression, property, normalizedValues, operator, mapping)) != null)
 		{
 			return predicate;
 		}
-		else if ( (predicate = buildComparablePredicate(expression, property, values, operator, mapping)) != null)
+		else if ( (predicate = buildComparablePredicate(expression, property, normalizedValues, operator, mapping)) != null)
 		{
 			return predicate;
 		}
-		else if ( (predicate = buildNumberPredicate(expression, values, operator)) != null)
+		else if ( (predicate = buildNumberPredicate(expression, normalizedValues, operator)) != null)
 		{
 			return predicate;
 		}
 		else
 		{
-			return singlePredicateBuilder.buildSimpleExpressionPredicate(expression, values, operator);
+			return singlePredicateBuilder.buildSimpleExpressionPredicate(expression, normalizedValues, operator);
 		}
+	}
+
+	private List<String> normalizeValues (List<String> values)
+	{
+		// replace null string with null
+		return values.stream().map(s -> s != null && s.equalsIgnoreCase(NULL_STRING) ? null : s).collect(Collectors.toList());
 	}
 
 	private <F extends CoreFilterable> Predicate buildTypePredicate (SimpleExpression<?> expression, F property, List<String> values, CoreOperator operator, EntityConfiguration<F> mapping)

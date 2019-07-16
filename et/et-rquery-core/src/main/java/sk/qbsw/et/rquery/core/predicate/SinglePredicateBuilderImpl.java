@@ -36,7 +36,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@SuppressWarnings ("unchecked")
 	public <F extends CoreFilterable> Predicate buildTypePredicate (EntityPathBase path, List<String> values, CoreOperator operator, F property, EntityConfiguration<F> mapping)
 	{
-		if (CollectionUtils.isNotEmpty(values))
+		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
 		{
 			List<Class<?>> convertedValues = values.stream().map(v -> getTypeFromMapping(property, (CoreFilterableType) Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(property, mapping), v), mapping)).collect(Collectors.toList());
 			Class<?> convertedValue = convertedValues.get(0);
@@ -114,7 +114,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 		}
 		catch (RQUnsupportedOperatorException ex)
 		{
-			if (CollectionUtils.isNotEmpty(values))
+			if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
 			{
 				String searchValue = values.get(0).replace("*", "%");
 
@@ -188,7 +188,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@SuppressWarnings ({"Duplicates"})
 	private <T extends Number & Comparable<?>> Predicate buildNumberPredicate (NumberPath<T> path, List<T> values, CoreOperator operator)
 	{
-		if (CollectionUtils.isNotEmpty(values))
+		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
 		{
 			T value = values.get(0);
 
@@ -232,7 +232,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@SuppressWarnings ("unchecked")
 	public Predicate buildSimpleExpressionPredicate (SimpleExpression path, List<String> values, CoreOperator operator)
 	{
-		if (CollectionUtils.isNotEmpty(values))
+		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
 		{
 			String value = values.get(0);
 
@@ -267,7 +267,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@SuppressWarnings ({"Duplicates"})
 	private <T extends Comparable, E extends ComparableExpression<T>> Predicate buildComparablePredicate (E path, List<T> values, CoreOperator operator)
 	{
-		if (CollectionUtils.isNotEmpty(values))
+		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
 		{
 			T value = values.get(0);
 
