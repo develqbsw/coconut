@@ -36,7 +36,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@SuppressWarnings ("unchecked")
 	public <F extends CoreFilterable> Predicate buildTypePredicate (EntityPathBase path, List<String> values, CoreOperator operator, F property, EntityConfiguration<F> mapping)
 	{
-		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
+		if (checkIsNotEmptyWithoutNullValues(values))
 		{
 			List<Class<?>> convertedValues = values.stream().map(v -> getTypeFromMapping(property, (CoreFilterableType) Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(property, mapping), v), mapping)).collect(Collectors.toList());
 			Class<?> convertedValue = convertedValues.get(0);
@@ -80,28 +80,28 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@Override
 	public Predicate buildBooleanPredicate (BooleanPath path, List<String> values, CoreOperator operator)
 	{
-		List<Boolean> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Boolean::parseBoolean).collect(Collectors.toList()) : new ArrayList<>();
+		List<Boolean> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(Boolean::parseBoolean).collect(Collectors.toList()) : new ArrayList<>();
 		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildDatePredicate (DatePath<LocalDate> path, List<String> values, CoreOperator operator)
 	{
-		List<LocalDate> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(d -> LocalDate.parse(d, DateTimeFormatter.ISO_LOCAL_DATE)).collect(Collectors.toList()) : new ArrayList<>();
+		List<LocalDate> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(d -> LocalDate.parse(d, DateTimeFormatter.ISO_LOCAL_DATE)).collect(Collectors.toList()) : new ArrayList<>();
 		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildTimePredicate (TimePath<LocalTime> path, List<String> values, CoreOperator operator)
 	{
-		List<LocalTime> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(d -> LocalTime.parse(d, DateTimeFormatter.ISO_LOCAL_TIME)).collect(Collectors.toList()) : new ArrayList<>();
+		List<LocalTime> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(d -> LocalTime.parse(d, DateTimeFormatter.ISO_LOCAL_TIME)).collect(Collectors.toList()) : new ArrayList<>();
 		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildDateTimePredicate (DateTimePath<OffsetDateTime> path, List<String> values, CoreOperator operator)
 	{
-		List<OffsetDateTime> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(d -> OffsetDateTime.parse(d, DateTimeFormatter.ISO_OFFSET_DATE_TIME)).collect(Collectors.toList()) : new ArrayList<>();
+		List<OffsetDateTime> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(d -> OffsetDateTime.parse(d, DateTimeFormatter.ISO_OFFSET_DATE_TIME)).collect(Collectors.toList()) : new ArrayList<>();
 		return buildComparablePredicate(path, convertedValues, operator);
 	}
 
@@ -114,19 +114,19 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 		}
 		catch (RQUnsupportedOperatorException ex)
 		{
-			if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
+			if (checkIsNotEmptyWithoutNullValues(values))
 			{
 				String searchValue = values.get(0).replace("*", "%");
 
-				if (CollectionUtils.isNotEmpty(values) && CoreOperator.LIKE.equals(operator))
+				if (CoreOperator.LIKE.equals(operator))
 				{
 					return path.like(searchValue);
 				}
-				if (CollectionUtils.isNotEmpty(values) && CoreOperator.NOT_LIKE.equals(operator))
+				if (CoreOperator.NOT_LIKE.equals(operator))
 				{
 					return path.notLike(searchValue);
 				}
-				if (CollectionUtils.isNotEmpty(values) && CoreOperator.LIKE_IGNORE_CASE.equals(operator))
+				if (CoreOperator.LIKE_IGNORE_CASE.equals(operator))
 				{
 					return path.likeIgnoreCase(searchValue);
 				}
@@ -139,56 +139,56 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@Override
 	public Predicate buildShortPredicate (NumberPath<Short> path, List<String> values, CoreOperator operator)
 	{
-		List<Short> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Short::parseShort).collect(Collectors.toList()) : new ArrayList<>();
+		List<Short> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(Short::parseShort).collect(Collectors.toList()) : new ArrayList<>();
 		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildBytePredicate (NumberPath<Byte> path, List<String> values, CoreOperator operator)
 	{
-		List<Byte> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Byte::parseByte).collect(Collectors.toList()) : new ArrayList<>();
+		List<Byte> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(Byte::parseByte).collect(Collectors.toList()) : new ArrayList<>();
 		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildIntegerPredicate (NumberPath<Integer> path, List<String> values, CoreOperator operator)
 	{
-		List<Integer> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Integer::parseInt).collect(Collectors.toList()) : new ArrayList<>();
+		List<Integer> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(Integer::parseInt).collect(Collectors.toList()) : new ArrayList<>();
 		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildLongPredicate (NumberPath<Long> path, List<String> values, CoreOperator operator)
 	{
-		List<Long> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Long::parseLong).collect(Collectors.toList()) : new ArrayList<>();
+		List<Long> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(Long::parseLong).collect(Collectors.toList()) : new ArrayList<>();
 		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildFloatPredicate (NumberPath<Float> path, List<String> values, CoreOperator operator)
 	{
-		List<Float> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Float::parseFloat).collect(Collectors.toList()) : new ArrayList<>();
+		List<Float> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(Float::parseFloat).collect(Collectors.toList()) : new ArrayList<>();
 		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildDoublePredicate (NumberPath<Double> path, List<String> values, CoreOperator operator)
 	{
-		List<Double> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(Double::parseDouble).collect(Collectors.toList()) : new ArrayList<>();
+		List<Double> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(Double::parseDouble).collect(Collectors.toList()) : new ArrayList<>();
 		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@Override
 	public Predicate buildBigDecimalPredicate (NumberPath<BigDecimal> path, List<String> values, CoreOperator operator)
 	{
-		List<BigDecimal> convertedValues = CollectionUtils.isNotEmpty(values) ? values.stream().map(BigDecimal::new).collect(Collectors.toList()) : new ArrayList<>();
+		List<BigDecimal> convertedValues = checkIsNotEmptyWithoutNullValues(values) ? values.stream().map(BigDecimal::new).collect(Collectors.toList()) : new ArrayList<>();
 		return buildNumberPredicate(path, convertedValues, operator);
 	}
 
 	@SuppressWarnings ({"Duplicates"})
 	private <T extends Number & Comparable<?>> Predicate buildNumberPredicate (NumberPath<T> path, List<T> values, CoreOperator operator)
 	{
-		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
+		if (checkIsNotEmptyWithoutNullValues(values))
 		{
 			T value = values.get(0);
 
@@ -232,7 +232,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@SuppressWarnings ("unchecked")
 	public Predicate buildSimpleExpressionPredicate (SimpleExpression path, List<String> values, CoreOperator operator)
 	{
-		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
+		if (checkIsNotEmptyWithoutNullValues(values))
 		{
 			String value = values.get(0);
 
@@ -267,7 +267,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	@SuppressWarnings ({"Duplicates"})
 	private <T extends Comparable, E extends ComparableExpression<T>> Predicate buildComparablePredicate (E path, List<T> values, CoreOperator operator)
 	{
-		if (CollectionUtils.isNotEmpty(values) && !values.contains(null))
+		if (checkIsNotEmptyWithoutNullValues(values))
 		{
 			T value = values.get(0);
 
@@ -325,5 +325,10 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 		}
 
 		throw new RQUndefinedEntityMappingException("The entity property identity enum not found for property: " + property);
+	}
+
+	private <T> boolean checkIsNotEmptyWithoutNullValues (List<T> values)
+	{
+		return CollectionUtils.isNotEmpty(values) && !values.contains(null);
 	}
 }
