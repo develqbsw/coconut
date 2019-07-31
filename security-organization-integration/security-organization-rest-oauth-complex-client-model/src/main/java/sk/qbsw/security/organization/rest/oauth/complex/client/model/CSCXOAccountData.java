@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountDataStates;
 
 import java.util.List;
 import java.util.Map;
@@ -33,13 +34,14 @@ public class CSCXOAccountData extends CSAccountData
 	 * @param uid the uid
 	 * @param login the login
 	 * @param email the email
+	 * @param state the state
 	 * @param roles the roles
 	 * @param user the user
 	 * @param additionalInformation the additional information
 	 */
-	public CSCXOAccountData (Long id, String uid, String login, String email, List<String> roles, CSCXOUserData user, Map<String, Object> additionalInformation)
+	public CSCXOAccountData (Long id, String uid, String login, String email, CSAccountDataStates state, List<String> roles, CSCXOUserData user, Map<String, Object> additionalInformation)
 	{
-		super(id, uid, login, email, roles, user, additionalInformation);
+		super(id, uid, login, email, state, roles, user, additionalInformation);
 		this.user = user;
 	}
 }

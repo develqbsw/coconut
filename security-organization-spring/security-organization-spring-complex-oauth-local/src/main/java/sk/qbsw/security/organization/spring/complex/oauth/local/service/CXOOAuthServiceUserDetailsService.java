@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import sk.qbsw.core.security.base.model.AccountData;
+import sk.qbsw.core.security.base.model.AccountDataStates;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.organization.complex.base.model.CXOUserOutputData;
@@ -50,7 +51,8 @@ public class CXOOAuthServiceUserDetailsService extends BaseOAuthUserDetailsServi
 
 		CXOUserData userData = (CXOUserData) userDataMapper.mapToUserData((CXOUserOutputData) accountData.getUser());
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
-		return new CXOOAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", userData, convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
+		return new CXOOAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", accountData.getState().equals(AccountDataStates.ACTIVE), //
+			userData, convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
 	}
 
 	private VerificationData<AccountData> verify (String token, String deviceId, String ip)

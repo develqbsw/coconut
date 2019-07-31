@@ -14,7 +14,7 @@ import java.util.Map;
  * User details for spring Security.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.2.0
  * @since 1.6.0
  */
 @Getter
@@ -47,6 +47,23 @@ public class SPOOAuthLoggedAccount extends SPOLoggedAccount
 	 * @param id the id
 	 * @param username the username
 	 * @param password the password
+	 * @param enabled the enabled
+	 * @param user the user
+	 * @param authorities the authorities
+	 * @param oauthData the oauth data
+	 */
+	public SPOOAuthLoggedAccount (Long id, String username, String password, boolean enabled, SPOUserData user, Collection<? extends GrantedAuthority> authorities, OAuthData oauthData)
+	{
+		super(id, username, password, enabled, user, authorities);
+		this.oauthData = oauthData;
+	}
+
+	/**
+	 * Instantiates a new Spoo auth logged account.
+	 *
+	 * @param id the id
+	 * @param username the username
+	 * @param password the password
 	 * @param user the user
 	 * @param authorities the authorities
 	 * @param oauthData the oauth data
@@ -55,6 +72,24 @@ public class SPOOAuthLoggedAccount extends SPOLoggedAccount
 	public SPOOAuthLoggedAccount (Long id, String username, String password, SPOUserData user, Collection<? extends GrantedAuthority> authorities, OAuthData oauthData, Map<String, Object> additionalInformation)
 	{
 		super(id, username, password, user, authorities, additionalInformation);
+		this.oauthData = oauthData;
+	}
+
+	/**
+	 * Instantiates a new Spoo auth logged account.
+	 *
+	 * @param id the id
+	 * @param username the username
+	 * @param password the password
+	 * @param enabled the enabled
+	 * @param user the user
+	 * @param authorities the authorities
+	 * @param oauthData the oauth data
+	 * @param additionalInformation the additional information
+	 */
+	public SPOOAuthLoggedAccount (Long id, String username, String password, boolean enabled, SPOUserData user, Collection<? extends GrantedAuthority> authorities, OAuthData oauthData, Map<String, Object> additionalInformation)
+	{
+		super(id, username, password, enabled, user, authorities, additionalInformation);
 		this.oauthData = oauthData;
 	}
 

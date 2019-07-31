@@ -12,7 +12,7 @@ import java.util.Map;
  * The complex organization logged account.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.2.0
  * @since 2.0.0
  */
 @Getter
@@ -40,6 +40,21 @@ public class CXOLoggedAccount extends LoggedAccount implements AccountDetails
 	 * @param id the id
 	 * @param username the username
 	 * @param password the password
+	 * @param enabled the enabled
+	 * @param user the user
+	 * @param authorities the authorities
+	 */
+	public CXOLoggedAccount (Long id, String username, String password, boolean enabled, CXOUserData user, Collection<? extends GrantedAuthority> authorities)
+	{
+		super(id, username, password, enabled, user, authorities);
+	}
+
+	/**
+	 * Instantiates a new Cxo logged account.
+	 *
+	 * @param id the id
+	 * @param username the username
+	 * @param password the password
 	 * @param user the user
 	 * @param authorities the authorities
 	 * @param additionalInformation the additional information
@@ -47,6 +62,22 @@ public class CXOLoggedAccount extends LoggedAccount implements AccountDetails
 	public CXOLoggedAccount (Long id, String username, String password, CXOUserData user, Collection<? extends GrantedAuthority> authorities, Map<String, Object> additionalInformation)
 	{
 		super(id, username, password, user, authorities, additionalInformation);
+	}
+
+	/**
+	 * Instantiates a new Cxo logged account.
+	 *
+	 * @param id the id
+	 * @param username the username
+	 * @param password the password
+	 * @param enabled the enabled
+	 * @param user the user
+	 * @param authorities the authorities
+	 * @param additionalInformation the additional information
+	 */
+	public CXOLoggedAccount (Long id, String username, String password, boolean enabled, CXOUserData user, Collection<? extends GrantedAuthority> authorities, Map<String, Object> additionalInformation)
+	{
+		super(id, username, password, enabled, user, authorities, additionalInformation);
 	}
 
 	@Override

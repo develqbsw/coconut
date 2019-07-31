@@ -10,6 +10,7 @@ import sk.qbsw.security.organization.spring.simple.common.model.SPOUserData;
 import sk.qbsw.security.organization.spring.simple.oauth.common.model.SPOOAuthLoggedAccount;
 import sk.qbsw.security.rest.oauth.client.base.AuthenticationClient;
 import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountDataStates;
 import sk.qbsw.security.rest.oauth.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.rest.oauth.client.model.response.VerificationResponseBody;
 import sk.qbsw.security.spring.base.mapper.UserDataMapper;
@@ -52,7 +53,8 @@ public class SPOOAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsSe
 
 		SPOUserData userData = (SPOUserData) userDataMapper.mapToUserData((CSSPOUserData) accountData.getUser());
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
-		return new SPOOAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", userData, convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
+		return new SPOOAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", accountData.getState().equals(CSAccountDataStates.ACTIVE), //
+			userData, convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
 	}
 
 	private VerificationResponseBody<CSAccountData> verify (String token, String deviceId, String ip)
@@ -62,7 +64,8 @@ public class SPOOAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsSe
 			// convert response with CSSPOAccountData to response with CSAccountData - to unify interface of spring integration
 			VerificationResponseBody<CSSPOAccountData> response = authenticationClient.verify(new VerifyRequestBody(token, deviceId, ip));
 			return new VerificationResponseBody<>( //
-				new CSAccountData(response.getAccountData().getId(), response.getAccountData().getUid(), response.getAccountData().getLogin(), response.getAccountData().getEmail(), response.getAccountData().getRoles(), response.getAccountData().getUser(), response.getAccountData().getAdditionalInformation()), //
+				new CSAccountData(response.getAccountData().getId(), response.getAccountData().getUid(), response.getAccountData().getLogin(), response.getAccountData().getEmail(), response.getAccountData().getState(), //
+					response.getAccountData().getRoles(), response.getAccountData().getUser(), response.getAccountData().getAdditionalInformation()), //
 				response.getVerificationType() //
 			);
 		}

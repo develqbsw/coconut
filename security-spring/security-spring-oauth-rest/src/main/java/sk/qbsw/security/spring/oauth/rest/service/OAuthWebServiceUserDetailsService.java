@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import sk.qbsw.security.rest.oauth.client.base.AuthenticationClient;
 import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountDataStates;
 import sk.qbsw.security.rest.oauth.client.model.CSUserData;
 import sk.qbsw.security.rest.oauth.client.model.request.VerifyRequestBody;
 import sk.qbsw.security.rest.oauth.client.model.response.VerificationResponseBody;
@@ -49,7 +50,8 @@ public class OAuthWebServiceUserDetailsService extends BaseOAuthUserDetailsServi
 		CSAccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
 
-		return new OAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", userDataMapper.mapToUserData(accountData.getUser()), convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
+		return new OAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", accountData.getState().equals(CSAccountDataStates.ACTIVE), //
+			userDataMapper.mapToUserData(accountData.getUser()), convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
 	}
 
 	private VerificationResponseBody verify (String token, String deviceId, String ip)

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * The internal jwt claims.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.2.0
  * @since 2.1.0
  */
 public interface InternalJwtClaims extends Serializable
@@ -38,6 +38,13 @@ public interface InternalJwtClaims extends Serializable
 	 * @return the email
 	 */
 	String getEmail ();
+
+	/**
+	 * Gets state.
+	 *
+	 * @return the state
+	 */
+	String getState ();
 
 	/**
 	 * Gets roles.

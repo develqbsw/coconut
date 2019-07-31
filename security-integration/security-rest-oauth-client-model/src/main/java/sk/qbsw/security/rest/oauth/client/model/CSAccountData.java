@@ -1,7 +1,10 @@
 package sk.qbsw.security.rest.oauth.client.model;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import sk.qbsw.core.client.model.BaseClientEntity;
 
 import javax.validation.constraints.NotNull;
@@ -13,7 +16,7 @@ import java.util.Map;
  * The account data.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.2.0
  * @since 1.18.0
  */
 @Data
@@ -38,6 +41,10 @@ public class CSAccountData extends BaseClientEntity
 
 	@ApiModelProperty (value = "The user email")
 	private String email;
+
+	@ApiModelProperty (required = true, value = "The state")
+	@NotNull
+	private CSAccountDataStates state;
 
 	@ApiModelProperty (required = true, value = "The user roles")
 	@NotNull

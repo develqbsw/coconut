@@ -8,10 +8,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 
 import sk.qbsw.core.base.exception.CBusinessException;
-import sk.qbsw.core.security.base.model.AccountData;
-import sk.qbsw.core.security.base.model.AccountDataTypes;
-import sk.qbsw.core.security.base.model.AccountInputData;
-import sk.qbsw.core.security.base.model.UserOutputData;
+import sk.qbsw.core.security.base.model.*;
 import sk.qbsw.security.management.service.AccountManagementService;
 import sk.qbsw.security.management.service.AccountPermissionManagementService;
 import sk.qbsw.security.spring.base.mapper.UserDataMapper;
@@ -26,7 +23,7 @@ import sk.qbsw.security.spring.iam.auth.common.model.TokenData;
  * The oauth pre authenticated user details service.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.2.0
  * @since 1.18.0
  */
 public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBase<FirebaseToken>
@@ -86,7 +83,8 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 		AccountData currentAccountData = accountManagementService.findOneByLogin(accountData.getLogin());
 		IAMAuthData iamAuthData = new IAMAuthData(currentAccountData.getUid(), tokenData.getValue());
 
-		return new IAMAuthLoggedAccount(currentAccountData.getId(), currentAccountData.getLogin(), "N/A", userDataMapper.mapToUserData(currentAccountData.getUser()), authorityConverter.convertRolesToAuthorities(currentAccountData.getRoles()), iamAuthData);
+		return new IAMAuthLoggedAccount(currentAccountData.getId(), currentAccountData.getLogin(), "N/A", accountData.getState().equals(AccountDataStates.ACTIVE), //
+			userDataMapper.mapToUserData(currentAccountData.getUser()), authorityConverter.convertRolesToAuthorities(currentAccountData.getRoles()), iamAuthData);
 	}
 
 	/**

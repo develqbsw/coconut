@@ -5,10 +5,12 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.security.spring.base.mapper.UserDataMapper;
+import sk.qbsw.security.spring.common.model.AccountDataStates;
 import sk.qbsw.security.spring.common.service.AuthorityConverter;
 import sk.qbsw.security.spring.iam.auth.base.service.IAMAuthUserDetailsServiceBase;
 import sk.qbsw.security.spring.iam.auth.common.configuration.InternalJwtConfiguration;
@@ -16,14 +18,15 @@ import sk.qbsw.security.spring.iam.auth.common.model.IAMAuthData;
 import sk.qbsw.security.spring.iam.auth.common.model.IAMAuthLoggedAccount;
 import sk.qbsw.security.spring.iam.auth.common.model.TokenData;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
  * The IAM authentication pre authenticated user details service.
  *
  * @author Tomas Lauro
- * @version 0.1.0
- * @since 0.1.0
+ * @version 2.2.0
+ * @since 2.0.0
  */
 public class MSAuthUserDetailsService extends IAMAuthUserDetailsServiceBase<Jws<Claims>>
 {
@@ -60,6 +63,7 @@ public class MSAuthUserDetailsService extends IAMAuthUserDetailsServiceBase<Jws<
 			checkContainsClaim(jws.getBody(), internalJwtConfiguration.getClaims().getId());
 			checkContainsClaim(jws.getBody(), internalJwtConfiguration.getClaims().getUid());
 			checkContainsClaim(jws.getBody(), internalJwtConfiguration.getClaims().getLogin());
+			checkContainsClaim(jws.getBody(), internalJwtConfiguration.getClaims().getState());
 			checkContainsClaim(jws.getBody(), internalJwtConfiguration.getClaims().getRoles());
 
 			return new TokenData<>( //
@@ -100,18 +104,14 @@ public class MSAuthUserDetailsService extends IAMAuthUserDetailsServiceBase<Jws<
 	@Override
 	protected UserDetails createUserDetails (TokenData<Jws<Claims>> tokenData) throws CBusinessException
 	{
-		IAMAuthData iamAuthData = new IAMAuthData( //
-			getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getUid(), String.class), //
-			tokenData.getValue() //
-		);
+		String uid = getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getUid(), String.class);
+		Long id = getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getId(), Long.class);
+		String login = getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getLogin(), String.class);
+		String state = getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getState(), String.class);
+		Collection<GrantedAuthority> authorities = authorityConverter.convertRolesToAuthorities(getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getRoles(), List.class));
 
-		return new IAMAuthLoggedAccount( //
-			getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getId(), Long.class), //
-			getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getLogin(), String.class), //
-			"N/A", //
-			userDataMapper.mapToUserData(tokenData.getData().getBody()), //
-			authorityConverter.convertRolesToAuthorities(getClaim(tokenData.getData().getBody(), internalJwtConfiguration.getClaims().getRoles(), List.class)), //
-			iamAuthData //
-		);
+		IAMAuthData iamAuthData = new IAMAuthData(uid, tokenData.getValue());
+		return new IAMAuthLoggedAccount(id, login, "N/A", state != null && AccountDataStates.valueOf(state).equals(AccountDataStates.ACTIVE), //
+			userDataMapper.mapToUserData(tokenData.getData().getBody()), authorities, iamAuthData);
 	}
 }
