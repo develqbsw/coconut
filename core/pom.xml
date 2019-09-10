@@ -25,5 +25,6 @@
 		<module>core-logging</module>
 		<module>core-monitoring</module>
 		<module>core-image</module>
+		<module>core-filesystem</module>
 	</modules>
 </project>
