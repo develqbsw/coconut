@@ -1,6 +1,5 @@
 package sk.qbsw.et.rquery.brw.binding.mapper;
 
-import sk.qbsw.et.rquery.brw.client.model.Operator;
 import sk.qbsw.et.rquery.core.model.CoreOperator;
 
 /**
@@ -18,5 +17,5 @@ public interface OperatorMapper
 	 * @param operator the operator
 	 * @return the core operator
 	 */
-	CoreOperator mapToCoreOperator (Operator operator);
+	CoreOperator mapToCoreOperator (String operator);
 }

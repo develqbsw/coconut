@@ -1,66 +1,73 @@
 package sk.qbsw.et.rquery.core.model;
 
+import java.util.List;
+
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.StringPath;
+
 /**
  * The filtering operator.
  *
- * @author Tomas Lauro
- * @version 2.2.0
- * @since 2.2.0
+ * @author David Durcak
+ * @version 2.2.3
+ * @since 2.2.3
  */
-public enum CoreOperator
+public interface CoreOperator
 {
 	/**
-	 * The eq.
+	 * Get predicate for given path in case of null value
+	 *
+	 * @param path the path
+	 * @return the predicate
 	 */
-	EQ,
+	Predicate getNullValuePredicate (SimpleExpression path);
 
 	/**
-	 * The ne.
+	 * Get predicate for given path in case of type values
+	 *
+	 * @param path the path
+	 * @param types the types
+	 * @return the predicate
 	 */
-	NE,
+	Predicate getTypePredicate (EntityPathBase path, List<Class<?>> types);
 
 	/**
-	 * The gt.
+	 * Get predicate for given path in case of string value
+	 *
+	 * @param path the path
+	 * @param value the value
+	 * @return the predicate
 	 */
-	GT,
+	Predicate getStringPredicate (StringPath path, String value);
 
 	/**
-	 * The goe.
+	 * Get predicate for given string path in case of number value
+	 *
+	 * @param path the path
+	 * @param values the values
+	 * @return the predicate
 	 */
-	GOE,
+	<T extends Number & Comparable<?>> Predicate getNumberPredicate (NumberPath<T> path, List<T> values);
 
 	/**
-	 * The lt.
+	 * Get predicate for given simple expression path in case of string values
+	 *
+	 * @param path the path
+	 * @param values the values
+	 * @return the predicate
 	 */
-	LT,
+	Predicate getSimpleExpressionPredicate (SimpleExpression path, List<String> values);
 
 	/**
-	 * The loe.
+	 * Get predicate for given path in case of comparable value
+	 *
+	 * @param path the path
+	 * @param values the values
+	 * @return the predicate
 	 */
-	LOE,
-
-	/**
-	 * In core operator.
-	 */
-	IN,
-
-	/**
-	 * Not in core operator.
-	 */
-	NOT_IN,
-
-	/**
-	 * Like core operator.
-	 */
-	LIKE,
-
-	/**
-	 * Not like core operator.
-	 */
-	NOT_LIKE,
-
-	/**
-	 * The like ignore case.
-	 */
-	LIKE_IGNORE_CASE
+	<T extends Comparable, E extends ComparableExpression<T>> Predicate getComparablePredicate (E path, List<T> values);
 }

@@ -23,7 +23,10 @@ public abstract class ExtendedRSQLOperators extends RSQLOperators
 
 	public static Set<ComparisonOperator> defaultOperators ()
 	{
-		return new HashSet<>(asList(EQUAL, NOT_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, IN, NOT_IN, //
-			LIKE, NOT_LIKE, LIKE_IGNORE_CASE));
+		Set<ComparisonOperator> s = new HashSet<>(RSQLOperators.defaultOperators());
+		s.addAll(asList(LIKE, NOT_LIKE, LIKE_IGNORE_CASE));
+
+		return s;
+
 	}
 }

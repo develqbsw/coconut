@@ -44,6 +44,19 @@ public class FilterCriteria<F extends Filterable> implements Serializable
 	 */
 	public void addFilterCriterion (LogicalOperator logicalOperator, F column, List<String> values, Operator operator)
 	{
+		addFilterCriterion(logicalOperator, column, values, operator.name());
+	}
+
+	/**
+	 * Adds the filter criterion.
+	 *
+	 * @param logicalOperator the logical operator
+	 * @param column the column
+	 * @param values the values
+	 * @param operator the operator
+	 */
+	public void addFilterCriterion (LogicalOperator logicalOperator, F column, List<String> values, String operator)
+	{
 		criteria.add(new FilterCriterion<>(logicalOperator, column, values, operator));
 	}
 }

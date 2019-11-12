@@ -3,6 +3,7 @@ package sk.qbsw.et.rquery.rsql.binding.mapper;
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import sk.qbsw.et.rquery.core.exception.RQUnsupportedOperatorException;
 import sk.qbsw.et.rquery.core.model.CoreOperator;
+import sk.qbsw.et.rquery.core.model.DefaultCoreOperator;
 import sk.qbsw.et.rquery.rsql.binding.operator.ExtendedRSQLOperators;
 
 /**
@@ -19,47 +20,47 @@ public class OperatorMapperImpl implements OperatorMapper
 	{
 		if (ExtendedRSQLOperators.EQUAL.equals(operator))
 		{
-			return CoreOperator.EQ;
+			return DefaultCoreOperator.EQ;
 		}
 		else if (ExtendedRSQLOperators.NOT_EQUAL.equals(operator))
 		{
-			return CoreOperator.NE;
+			return DefaultCoreOperator.NE;
 		}
 		else if (ExtendedRSQLOperators.GREATER_THAN.equals(operator))
 		{
-			return CoreOperator.GT;
+			return DefaultCoreOperator.GT;
 		}
 		else if (ExtendedRSQLOperators.GREATER_THAN_OR_EQUAL.equals(operator))
 		{
-			return CoreOperator.GOE;
+			return DefaultCoreOperator.GOE;
 		}
 		else if (ExtendedRSQLOperators.LESS_THAN.equals(operator))
 		{
-			return CoreOperator.LT;
+			return DefaultCoreOperator.LT;
 		}
 		else if (ExtendedRSQLOperators.LESS_THAN_OR_EQUAL.equals(operator))
 		{
-			return CoreOperator.LOE;
+			return DefaultCoreOperator.LOE;
 		}
 		else if (ExtendedRSQLOperators.IN.equals(operator))
 		{
-			return CoreOperator.IN;
+			return DefaultCoreOperator.IN;
 		}
 		else if (ExtendedRSQLOperators.NOT_IN.equals(operator))
 		{
-			return CoreOperator.NOT_IN;
+			return DefaultCoreOperator.NOT_IN;
 		}
 		else if (ExtendedRSQLOperators.LIKE.equals(operator))
 		{
-			return CoreOperator.LIKE;
+			return DefaultCoreOperator.LIKE;
 		}
 		else if (ExtendedRSQLOperators.NOT_LIKE.equals(operator))
 		{
-			return CoreOperator.NOT_LIKE;
+			return DefaultCoreOperator.NOT_LIKE;
 		}
 		else if (ExtendedRSQLOperators.LIKE_IGNORE_CASE.equals(operator))
 		{
-			return CoreOperator.LIKE_IGNORE_CASE;
+			return DefaultCoreOperator.LIKE_IGNORE_CASE;
 		}
 		else
 		{

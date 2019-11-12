@@ -1,15 +1,16 @@
 package sk.qbsw.et.rquery.brw.client.model.criteria;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 import sk.qbsw.et.rquery.brw.client.model.Filterable;
 import sk.qbsw.et.rquery.brw.client.model.LogicalOperator;
 import sk.qbsw.et.rquery.brw.client.model.Operator;
-
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The filter criterion.
@@ -34,7 +35,7 @@ public class FilterCriterion<F extends Filterable> implements Serializable
 	private List<String> values = new ArrayList<>();
 
 	@NotNull
-	private Operator operator;
+	private String operator;
 
 	/**
 	 * Instantiates a new Filter criterion.
@@ -53,6 +54,19 @@ public class FilterCriterion<F extends Filterable> implements Serializable
 	 * @param operator the operator
 	 */
 	public FilterCriterion (LogicalOperator logicalOperator, F variable, List<String> values, Operator operator)
+	{
+		this(logicalOperator, variable, values, operator.name());
+	}
+
+	/**
+	 * Instantiates a new Filter criterion.
+	 *
+	 * @param logicalOperator the logical operator
+	 * @param variable the variable
+	 * @param values the values
+	 * @param operator the operator
+	 */
+	public FilterCriterion (LogicalOperator logicalOperator, F variable, List<String> values, String operator)
 	{
 		this.logicalOperator = logicalOperator;
 		this.property = variable;

@@ -11,6 +11,7 @@ import sk.qbsw.et.rquery.core.exception.RQUnsupportedOperatorException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 import sk.qbsw.et.rquery.core.model.CoreFilterableType;
 import sk.qbsw.et.rquery.core.model.CoreOperator;
+import sk.qbsw.et.rquery.core.model.DefaultCoreOperator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
  */
 public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 {
-	private static final String UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE = "Unsupported operator with type predicate: ";
+	public static final String UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE = "Unsupported operator with type predicate: ";
 
 	@Override
 	@SuppressWarnings ("unchecked")
@@ -39,33 +40,12 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 		if (checkIsNotEmptyWithoutNullValues(values))
 		{
 			List<Class<?>> convertedValues = values.stream().map(v -> getTypeFromMapping(property, (CoreFilterableType) Enum.valueOf((Class<? extends Enum>) getEnumTypeFromMapping(property, mapping), v), mapping)).collect(Collectors.toList());
-			Class<?> convertedValue = convertedValues.get(0);
 
-			switch (operator)
-			{
-				case EQ:
-					return path.instanceOf(convertedValue);
-				case NE:
-					return path.instanceOf(convertedValue).not();
-				case IN:
-					return path.instanceOfAny(convertedValues.toArray(new Class[0]));
-				case NOT_IN:
-					return path.instanceOfAny(convertedValues.toArray(new Class[0])).not();
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getTypePredicate(path, convertedValues);
 		}
 		else
 		{
-			switch (operator)
-			{
-				case EQ:
-					return path.isNull();
-				case NE:
-					return path.isNotNull();
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getNullValuePredicate(path);
 		}
 	}
 
@@ -118,18 +98,7 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 			{
 				String searchValue = values.get(0).replace("*", "%");
 
-				if (CoreOperator.LIKE.equals(operator))
-				{
-					return path.like(searchValue);
-				}
-				if (CoreOperator.NOT_LIKE.equals(operator))
-				{
-					return path.notLike(searchValue);
-				}
-				if (CoreOperator.LIKE_IGNORE_CASE.equals(operator))
-				{
-					return path.likeIgnoreCase(searchValue);
-				}
+				return operator.getStringPredicate(path, searchValue);
 			}
 
 			throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
@@ -190,41 +159,11 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	{
 		if (checkIsNotEmptyWithoutNullValues(values))
 		{
-			T value = values.get(0);
-
-			switch (operator)
-			{
-				case EQ:
-					return path.eq(value);
-				case NE:
-					return path.ne(value);
-				case GT:
-					return path.gt(value);
-				case GOE:
-					return path.goe(value);
-				case LT:
-					return path.lt(value);
-				case LOE:
-					return path.loe(value);
-				case IN:
-					return path.in(values);
-				case NOT_IN:
-					return path.notIn(values);
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getNumberPredicate(path, values);
 		}
 		else
 		{
-			switch (operator)
-			{
-				case EQ:
-					return path.isNull();
-				case NE:
-					return path.isNotNull();
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getNullValuePredicate(path);
 		}
 	}
 
@@ -234,33 +173,11 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	{
 		if (checkIsNotEmptyWithoutNullValues(values))
 		{
-			String value = values.get(0);
-
-			switch (operator)
-			{
-				case EQ:
-					return path.eq(value);
-				case NE:
-					return path.ne(value);
-				case IN:
-					return path.in(values);
-				case NOT_IN:
-					return path.notIn(values);
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getSimpleExpressionPredicate(path, values);
 		}
 		else
 		{
-			switch (operator)
-			{
-				case EQ:
-					return path.isNull();
-				case NE:
-					return path.isNotNull();
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getNullValuePredicate(path);
 		}
 	}
 
@@ -269,41 +186,11 @@ public class SinglePredicateBuilderImpl implements SinglePredicateBuilder
 	{
 		if (checkIsNotEmptyWithoutNullValues(values))
 		{
-			T value = values.get(0);
-
-			switch (operator)
-			{
-				case EQ:
-					return path.eq(value);
-				case NE:
-					return path.ne(value);
-				case GT:
-					return path.gt(value);
-				case GOE:
-					return path.goe(value);
-				case LT:
-					return path.lt(value);
-				case LOE:
-					return path.loe(value);
-				case IN:
-					return path.in(values);
-				case NOT_IN:
-					return path.notIn(values);
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getComparablePredicate(path, values);
 		}
 		else
 		{
-			switch (operator)
-			{
-				case EQ:
-					return path.isNull();
-				case NE:
-					return path.isNotNull();
-				default:
-					throw new RQUnsupportedOperatorException(UNSUPPORTED_OPERATOR_EXCEPTION_MESSAGE + operator);
-			}
+			return operator.getNullValuePredicate(path);
 		}
 	}
 
