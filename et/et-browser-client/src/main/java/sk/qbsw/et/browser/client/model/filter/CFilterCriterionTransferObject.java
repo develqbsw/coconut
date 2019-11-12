@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package sk.qbsw.et.browser.client.model.filter;
 
@@ -40,7 +40,7 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 
 	/** The operator. */
 	@NotNull
-	private EOperator operator;
+	private String operator;
 
 	/**
 	 * Instantiates a new c filter criterion transfer object.
@@ -59,7 +59,7 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	 * @param valueType the value type
 	 * @param operator the operator
 	 */
-	public CFilterCriterionTransferObject (ELogicalOperator logicalOperator, F variable, String value, EValueType valueType, EOperator operator)
+	public CFilterCriterionTransferObject (ELogicalOperator logicalOperator, F variable, String value, EValueType valueType, String operator)
 	{
 		this.logicalOperator = logicalOperator;
 		this.property = variable;
@@ -93,7 +93,7 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	 *
 	 * @return the operator
 	 */
-	public EOperator getOperator ()
+	public String getOperator ()
 	{
 		return operator;
 	}
@@ -113,7 +113,7 @@ public class CFilterCriterionTransferObject<F extends IFilterable> implements Se
 	 *
 	 * @param operator the new operator
 	 */
-	public void setOperator (EOperator operator)
+	public void setOperator (String operator)
 	{
 		this.operator = operator;
 	}

@@ -96,11 +96,11 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 * @throws CBrwBusinessException 
 	 */
 	@SuppressWarnings ({"unchecked", "rawtypes"})
-	private <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
+	protected <F extends IFilterable> Predicate convertFilterCriterionToPredicate (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
 	{
 		final SimpleExpression<?> expression = getExpressionFromMapping(filterCriterion.getProperty(), mapping);
 		final CValueAndTypePair valueAndTypePair = parseValueFromFilterCriterion(filterCriterion, mapping);
-		final EOperator operator = filterCriterion.getOperator();
+		final EOperator operator = EOperator.valueOf(filterCriterion.getOperator());
 
 		if (EValueType.TYPE.equals(valueAndTypePair.getType()))
 		{
@@ -194,7 +194,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 * @throws CBrwBusinessException the c brw business exception
 	 */
 	@SuppressWarnings ({"unchecked", "rawtypes"})
-	private <F extends IFilterable> CValueAndTypePair parseValueFromFilterCriterion (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
+	protected <F extends IFilterable> CValueAndTypePair parseValueFromFilterCriterion (final CFilterCriterionTransferObject<F> filterCriterion, final CBrwEntityMapping<F> mapping) throws CBrwBusinessException
 	{
 		if (filterCriterion.getValue() != null)
 		{
@@ -344,7 +344,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 	 * @return the expression from mapping
 	 * @throws CBrwUndefinedEntityMappingException the c brw undefined variable mapping exception
 	 */
-	private <F extends IFilterable> SimpleExpression<?> getExpressionFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
+	protected <F extends IFilterable> SimpleExpression<?> getExpressionFromMapping (final F property, final CBrwEntityMapping<F> entityMapping) throws CBrwUndefinedEntityMappingException
 	{
 		SimpleExpression<?> expression = entityMapping.getExpression(property).getExpression();
 
@@ -398,7 +398,7 @@ public class CBrwDataConverter implements IBrwDataConverter
 	/**
 	 * The Class CValueAndTypePair.
 	 */
-	private class CValueAndTypePair
+	protected class CValueAndTypePair
 	{
 		private final Serializable value;
 

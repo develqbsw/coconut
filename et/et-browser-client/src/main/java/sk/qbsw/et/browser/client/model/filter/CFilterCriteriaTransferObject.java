@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package sk.qbsw.et.browser.client.model.filter;
 
@@ -42,6 +42,19 @@ public class CFilterCriteriaTransferObject<F extends IFilterable> implements Ser
 	 * @param operator the operator
 	 */
 	public void addFilterCriterion (ELogicalOperator logicalOperator, F column, String value, EValueType valueType, EOperator operator)
+	{
+		addFilterCriterion(logicalOperator, column, value, valueType, operator.name());
+	}
+
+	/**
+	 * Adds the filter criterion.
+	 *
+	 * @param column the column
+	 * @param stringValue the string value
+	 * @param numberValue the number value
+	 * @param operator the operator
+	 */
+	public void addFilterCriterion (ELogicalOperator logicalOperator, F column, String value, EValueType valueType, String operator)
 	{
 		criteria.add(new CFilterCriterionTransferObject<>(logicalOperator, column, value, valueType, operator));
 	}
