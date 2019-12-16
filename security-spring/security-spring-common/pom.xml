@@ -13,7 +13,7 @@
     <parent>
         <groupId>sk.qbsw.security.spring</groupId>
         <artifactId>security-spring-top</artifactId>
-        <version>2.2.3-SNAPSHOT</version>
+        <version>2.3.0</version>
     </parent>
 
     <dependencies>
