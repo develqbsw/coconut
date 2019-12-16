@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>sk.qbsw.core</groupId>
 		<artifactId>core-top</artifactId>
-		<version>2.3.0</version>
+		<version>2.3.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
