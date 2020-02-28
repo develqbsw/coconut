@@ -1,13 +1,18 @@
 package sk.qbsw.et.rquery.rsql.binding;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-import cz.jirutka.rsql.parser.RSQLParser;
-import cz.jirutka.rsql.parser.ast.Node;
-import cz.jirutka.rsql.parser.ast.RSQLVisitor;
+import java.io.Serializable;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
+import cz.jirutka.rsql.parser.ast.RSQLVisitor;
 import sk.qbsw.core.persistence.dao.support.IFetchCapableQueryDslJpaRepository;
 import sk.qbsw.core.persistence.model.CJoinDescriptor;
 import sk.qbsw.et.rquery.client.model.PageableData;
@@ -15,9 +20,7 @@ import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 import sk.qbsw.et.rquery.rsql.binding.converter.PageableConverter;
 import sk.qbsw.et.rquery.rsql.binding.mapper.FilterableMapper;
-
-import java.io.Serializable;
-import java.util.List;
+import sk.qbsw.et.rquery.rsql.binding.model.OffsetPageable;
 
 /**
  * The data binding implementation.
@@ -26,7 +29,7 @@ import java.util.List;
  * @param <K> the primary key type
  * @param <E> the entity type
  * @author Tomas Lauro
- * @version 2.2.0
+ * @version 2.3.1
  * @since 2.2.0
  */
 public class DataBinderImpl<C extends CoreFilterable, K extends Serializable, E extends Serializable> implements DataBinder<K, E>
@@ -82,9 +85,20 @@ public class DataBinderImpl<C extends CoreFilterable, K extends Serializable, E 
 	@Override
 	public PageableData<E> findPageableData (String query, Pageable pageable, boolean distinct)
 	{
-		Predicate predicate = createPredicate(query);
 		Pageable convertedPageable = pageableConverter.convertToPageable(pageable, configuration, mapper);
+		return findConvertedPageableData(query, convertedPageable, distinct);
+	}
 
+	@Override
+	public PageableData<E> findPageableData (String query, OffsetPageable pageable, boolean distinct)
+	{
+		Pageable convertedPageable = pageableConverter.convertToPageable(pageable, configuration, mapper);
+		return findConvertedPageableData(query, convertedPageable, distinct);
+	}
+
+	private PageableData<E> findConvertedPageableData (String query, Pageable convertedPageable, boolean distinct)
+	{
+		Predicate predicate = createPredicate(query);
 		CJoinDescriptor[] joinDescriptors = configuration.getJoins().toArray(new CJoinDescriptor[0]);
 
 		Page<E> result = repository.findAll(distinct, predicate, convertedPageable, joinDescriptors);

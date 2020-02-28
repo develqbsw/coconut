@@ -1,9 +1,11 @@
 package sk.qbsw.core.persistence.dao.support;
 
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.JPQLQuery;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -13,15 +15,16 @@ import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
+
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.JPQLQuery;
+
 import sk.qbsw.core.persistence.model.CJoinDescriptor;
 
-import javax.persistence.EntityManager;
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-
 /**
- * The join fetch capable querydsl repository implementation. 
+ * The join fetch capable querydsl repository implementation.
  *
  * @author Adrian Lopez (http://stackoverflow.com/a/21630123)
  * @author Tomas Lauro
@@ -33,7 +36,7 @@ import java.util.List;
 public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>extends QuerydslJpaRepository<T, PK> implements IFetchCapableQueryDslJpaRepository<T, PK>
 {
 	/** The Constant DEFAULT_ENTITY_PATH_RESOLVER. */
-	//All instance variables are available in super, but they are private
+	// All instance variables are available in super, but they are private
 	private static final EntityPathResolver DEFAULT_ENTITY_PATH_RESOLVER = SimpleEntityPathResolver.INSTANCE;
 
 	/** The path. */
@@ -71,7 +74,8 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		this.querydsl = new Querydsl(entityManager, builder);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findOne(java.io.Serializable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
@@ -80,7 +84,8 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		return createFetchQuery(false, this.builder.get("id").eq(id), joinDescriptors).select(path).fetchOne();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.dao.support.CJoinDescriptor[])
 	 */
 	@Override
@@ -89,7 +94,8 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		return findAll(false, predicate, pageable, joinDescriptors);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort, sk.qbsw.et.browser.core.model.CEntityJoin[])
 	 */
 	@Override
@@ -97,8 +103,9 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	{
 		return findAll(false, predicate, sort, joinDescriptors);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.support.IFetchCapableQueryDslJpaRepository#findAll(org.springframework.data.domain.Sort, sk.qbsw.core.persistence.model.CJoinDescriptor[])
 	 */
 	@Override
@@ -107,7 +114,8 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		return findAll(false, null, sort, joinDescriptors);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Pageable, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
@@ -117,12 +125,19 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		JPQLQuery<T> query = querydsl.applyPagination(pageable, createFetchQuery(distinct, predicate, joinDescriptors));
 
 		Long total = countQuery.fetchCount();
-		List<T> content = total > pageable.getOffset() ? query.fetch() : Collections.<T>emptyList();
-
-		return new PageImpl<>(content, pageable, total);
+		if (pageable.isPaged())
+		{
+			List<T> content = total > pageable.getOffset() ? query.fetch() : Collections.<T>emptyList();
+			return new PageImpl<>(content, pageable, total);
+		}
+		else
+		{
+			return new PageImpl<>(query.fetch(), pageable, total);
+		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, com.querydsl.core.types.Predicate, org.springframework.data.domain.Sort, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
@@ -130,8 +145,9 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	{
 		return executeSorted(createFetchQuery(distinct, predicate, joinDescriptors).select(path), sort);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.persistence.dao.support.IFetchCapableQueryDslJpaRepository#findAll(boolean, org.springframework.data.domain.Sort, sk.qbsw.core.persistence.model.CJoinDescriptor[])
 	 */
 	@Override
@@ -141,7 +157,8 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 	}
 
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#count(com.querydsl.core.types.Predicate, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
@@ -150,7 +167,8 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 		return createFetchCountQuery(false, predicate, joinDescriptors).fetchCount();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.et.browser.core.dao.support.IFetchCapableQueryDslJpaRepository#count(boolean, com.querydsl.core.types.Predicate, sk.qbsw.et.browser.core.model.CJoinDescriptor[])
 	 */
 	@Override
@@ -174,7 +192,7 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 
 		if (distinct)
 		{
-			countQuery.distinct(); //add distinct
+			countQuery.distinct(); // add distinct
 		}
 
 		for (CJoinDescriptor<?> joinDescriptor : joinDescriptors)
@@ -198,7 +216,7 @@ public class CFetchCapableQueryDslJpaRepository<T, PK extends Serializable>exten
 
 		if (distinct)
 		{
-			query.distinct(); //add distinct
+			query.distinct(); // add distinct
 		}
 
 		for (CJoinDescriptor<?> joinDescriptor : joinDescriptors)

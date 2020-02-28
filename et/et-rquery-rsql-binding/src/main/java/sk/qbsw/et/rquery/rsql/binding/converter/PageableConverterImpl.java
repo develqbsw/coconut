@@ -1,26 +1,30 @@
 package sk.qbsw.et.rquery.rsql.binding.converter;
 
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.OrderSpecifier.NullHandling;
-import com.querydsl.core.types.dsl.SimpleExpression;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QSort;
+
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.OrderSpecifier.NullHandling;
+import com.querydsl.core.types.dsl.SimpleExpression;
+
 import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
 import sk.qbsw.et.rquery.core.exception.RQUndefinedEntityMappingException;
 import sk.qbsw.et.rquery.core.model.CoreFilterable;
 import sk.qbsw.et.rquery.rsql.binding.mapper.FilterableMapper;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import sk.qbsw.et.rquery.rsql.binding.model.OffsetPageRequest;
+import sk.qbsw.et.rquery.rsql.binding.model.OffsetPageable;
 
 /**
  * The default pageable converter implementation.
  *
  * @author Tomas Lauro
- * @version 2.2.0
+ * @version 2.3.1
  * @since 2.2.0
  */
 public class PageableConverterImpl implements PageableConverter
@@ -29,6 +33,12 @@ public class PageableConverterImpl implements PageableConverter
 	public <C extends CoreFilterable> Pageable convertToPageable (Pageable pageable, EntityConfiguration<C> configuration, FilterableMapper<C> mapper)
 	{
 		return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), convertToSort(pageable.getSort(), configuration, mapper));
+	}
+
+	@Override
+	public <C extends CoreFilterable> Pageable convertToPageable (OffsetPageable pageable, EntityConfiguration<C> configuration, FilterableMapper<C> mapper)
+	{
+		return OffsetPageRequest.of(pageable.getOffset(), pageable.getPageSize(), convertToSort(pageable.getSort(), configuration, mapper));
 	}
 
 	@Override
