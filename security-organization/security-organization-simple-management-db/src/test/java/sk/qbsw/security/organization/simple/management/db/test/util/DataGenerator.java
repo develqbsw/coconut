@@ -16,7 +16,8 @@ import java.util.Set;
  * Generate data in DB for tests.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -117,12 +118,12 @@ public class DataGenerator
 		Role secondRole = createRole(SECOND_ROLE_CODE);
 
 		// groups
-		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL);
-		Group secondGroupInUnit = createGroup(SECOND_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL);
-		Group thirdGroupInUnit = createGroup(THIRD_GROUP_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD);
+		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL, ActivityStates.ACTIVE);
+		Group secondGroupInUnit = createGroup(SECOND_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL, ActivityStates.ACTIVE);
+		Group thirdGroupInUnit = createGroup(THIRD_GROUP_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD, ActivityStates.ACTIVE);
 
-		Group firstGroupNotInUnit = createGroup(FIRST_GROUP_NOT_IN_UNIT_CODE, null, GroupTypes.STANDARD);
-		Group secondGroupNotInUnit = createGroup(SECOND_GROUP_NOT_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD);
+		Group firstGroupNotInUnit = createGroup(FIRST_GROUP_NOT_IN_UNIT_CODE, null, GroupTypes.STANDARD, ActivityStates.ACTIVE);
+		Group secondGroupNotInUnit = createGroup(SECOND_GROUP_NOT_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD, ActivityStates.ACTIVE);
 
 		// units
 		Unit defaultUnit = createUnit(DEFAULT_UNIT_CODE);
@@ -324,12 +325,13 @@ public class DataGenerator
 		return role;
 	}
 
-	public Group createGroup (String code, String category, GroupTypes type)
+	public Group createGroup (String code, String category, GroupTypes type, ActivityStates state)
 	{
 		Group group = new Group();
 		group.setCode(code);
 		group.setCategory(category);
 		group.setType(type);
+		group.setState(state);
 
 		return group;
 	}

@@ -3,6 +3,7 @@ package sk.qbsw.security.core.model.domain;
 import lombok.Getter;
 import lombok.Setter;
 import sk.qbsw.core.base.configuration.DatabaseSchemas;
+import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.persistence.model.domain.AEntity;
 
 import javax.persistence.*;
@@ -15,7 +16,8 @@ import java.util.Set;
  *
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.0.0
  */
 @Entity
@@ -47,6 +49,11 @@ public class Group extends AEntity<Long>
 
 	@Column (name = "c_category")
 	private String category;
+
+	@NotNull
+	@Column (name = "c_state")
+	@Enumerated (EnumType.STRING)
+	private ActivityStates state = ActivityStates.ACTIVE;
 
 	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
 	private Set<Role> roles;

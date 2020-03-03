@@ -10,7 +10,8 @@ import sk.qbsw.security.core.model.domain.Role;
  * Provides test for authorization.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.6.0
  */
 @Component
@@ -118,5 +119,18 @@ public class AuthorizationTestProvider
 		Role role = new Role();
 		role.setCode(DataGenerator.SECOND_ROLE_CODE);
 		authorizationService.checkAccessRights(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE, role, DataGenerator.SECOND_UNIT_CODE, DataGenerator.FIRST_CATEGORY_CODE);
+	}
+
+	/**
+	 * Test authorization with inactive group.
+	 *
+	 * @param authorizationService the authorization service
+	 * @throws CSecurityException the c security exception
+	 */
+	public void testAuthorizationWithInactiveGroupNegative (AuthorizationService authorizationService) throws CSecurityException
+	{
+		Role role = new Role();
+		role.setCode(DataGenerator.THIRD_ROLE_CODE);
+		authorizationService.checkAccessRights(DataGenerator.ACCOUNT_WITH_INACTIVE_GROUP, role, null, null);
 	}
 }

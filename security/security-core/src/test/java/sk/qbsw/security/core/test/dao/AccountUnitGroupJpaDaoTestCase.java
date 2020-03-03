@@ -24,7 +24,8 @@ import static org.junit.Assert.assertNotNull;
  * Checks cross table userUnitGroup dao.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.13.0
  */
 public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
@@ -215,6 +216,6 @@ public class AccountUnitGroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No xAccountUnitGroups found", xAccountUnitGroups);
-		Assert.assertEquals("Returns invalid xAccountUnitGroups", 17, xAccountUnitGroups.size());
+		Assert.assertEquals("Returns invalid xAccountUnitGroups", 19, xAccountUnitGroups.size());
 	}
 }

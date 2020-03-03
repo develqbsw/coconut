@@ -20,7 +20,8 @@ import java.util.Set;
  * Generate data in DB for tests.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.13.1
  */
 @Component (value = "oauthDataGenerator")
@@ -150,7 +151,7 @@ public class DataGenerator
 		Role firstRole = createRole(FIRST_ROLE_CODE);
 
 		// groups
-		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL);
+		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL, ActivityStates.ACTIVE);
 
 		// units
 		Unit defaultUnit = createUnit(DEFAULT_UNIT_CODE);
@@ -281,12 +282,13 @@ public class DataGenerator
 		return role;
 	}
 
-	private Group createGroup (String code, String category, GroupTypes type)
+	private Group createGroup (String code, String category, GroupTypes type, ActivityStates state)
 	{
 		Group group = new Group();
 		group.setCode(code);
 		group.setCategory(category);
 		group.setType(type);
+		group.setState(state);
 
 		return group;
 	}

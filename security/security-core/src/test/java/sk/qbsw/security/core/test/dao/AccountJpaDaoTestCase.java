@@ -27,9 +27,10 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Checks account dao.
  *
- * @version 2.0.0
+ * @version 2.5.0
  * @since 1.13.0
  * @author Tomas Lauro
+ * @author Michal Slezák
  */
 public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 {
@@ -306,7 +307,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		long countAll = accountDao.countAll();
 
 		// asserts
-		Assert.assertEquals("Returns invalid accounts number", 7, countAll);
+		Assert.assertEquals("Returns invalid accounts number", 8, countAll);
 	}
 
 	/**
@@ -322,7 +323,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No accounts found", accounts);
-		Assert.assertEquals("Returns invalid accounts", 7, accounts.size());
+		Assert.assertEquals("Returns invalid accounts", 8, accounts.size());
 	}
 
 	/**
@@ -554,7 +555,7 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No accounts found", accounts);
-		Assert.assertEquals("Returns invalid accounts", 7, accounts.size());
+		Assert.assertEquals("Returns invalid accounts", 8, accounts.size());
 	}
 
 
@@ -633,6 +634,6 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No accounts found", accounts);
-		Assert.assertEquals("Returns invalid accounts", 7, accounts.size());
+		Assert.assertEquals("Returns invalid accounts", 8, accounts.size());
 	}
 }

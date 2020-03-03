@@ -21,9 +21,10 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Checks role dao.
  *
- * @version 1.13.0
+ * @version 2.5.0
  * @since 1.13.0
  * @author Tomas Lauro
+ * @author Michal Slezák
  */
 public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 {
@@ -130,5 +131,22 @@ public class RoleJpaDaoTestCase extends BaseDatabaseTestCase
 		initTest();
 
 		roleDao.findOneByCode(null);
+	}
+
+	/**
+	 * Test find roles within invalid group by account positive.
+	 *
+	 * @throws CSecurityException the c security exception
+	 */
+	@Test
+	@Transactional (transactionManager = "transactionManager")
+	public void testFindByAccountWithInactiveGroupPositive () throws CSecurityException
+	{
+		initTest();
+
+		Account account = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_INACTIVE_GROUP);
+		List<Role> roles = roleDao.findByAccount(account);
+
+		Assert.assertEquals("Returns invalid number of roles!", 1, roles.size());
 	}
 }

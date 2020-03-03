@@ -37,7 +37,8 @@ create table sec.t_group (
   pk_id      bigint                 not null,
   c_code     character varying(255) not null,
   c_type     character varying(255) not null,
-  c_category character varying(255)
+  c_category character varying(255),
+  c_state    character varying(255) not null
 );
 
 create sequence sec.s_group

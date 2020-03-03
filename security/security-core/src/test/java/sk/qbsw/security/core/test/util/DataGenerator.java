@@ -16,7 +16,8 @@ import java.util.Set;
  * Generate data in DB for tests.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.6.0
  */
 @Component (value = "dataGenerator")
@@ -48,11 +49,15 @@ public class DataGenerator
 
 	public static final String SECOND_ROLE_CODE = "unit_test_role_2";
 
+	public static final String THIRD_ROLE_CODE = "unit_test_role_3";
+
 	public static final String FIRST_GROUP_IN_UNIT_CODE = "unit_test_group_in_unit_1";
 
 	public static final String SECOND_GROUP_IN_UNIT_CODE = "unit_test_group_in_unit_2";
 
 	public static final String THIRD_GROUP_IN_UNIT_CODE = "unit_test_group_in_unit_3";
+
+	public static final String INACTIVE_GROUP = "unit_test_inactive_group";
 
 	public static final String FIRST_GROUP_NOT_IN_UNIT_CODE = "unit_test_group_not_in_unit_1";
 
@@ -67,6 +72,8 @@ public class DataGenerator
 	public static final String FIRST_UNIT_CODE = "unit_test_unit_1";
 
 	public static final String SECOND_UNIT_CODE = "unit_test_unit_2";
+
+	public static final String THIRD_UNIT_CODE = "unit_test_unit_3";
 
 	public static final String ACCOUNT_CREATED = "unit_test_account_created";
 
@@ -85,6 +92,8 @@ public class DataGenerator
 	public static final String ACCOUNT_DISABLED_IN_DISABLED_ORGANIZATION = "unit_test_account_disabled_in_disabled_organization";
 
 	public static final String ACCOUNT_DISABLED_IN_ENABLED_ORGANIZATION = "unit_test_account_disabled_in_enabled_organization";
+
+	public static final String ACCOUNT_WITH_INACTIVE_GROUP = "unit_test_account_with_inactive_group";
 
 	public static final String TEST_IP_ONE = "192.168.0.1";
 
@@ -115,19 +124,24 @@ public class DataGenerator
 		// roles
 		Role firstRole = createRole(FIRST_ROLE_CODE);
 		Role secondRole = createRole(SECOND_ROLE_CODE);
+		Role thirdRole = createRole(THIRD_ROLE_CODE);
 
 		// groups
-		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL);
-		Group secondGroupInUnit = createGroup(SECOND_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL);
-		Group thirdGroupInUnit = createGroup(THIRD_GROUP_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD);
+		Group firstGroupInUnit = createGroup(FIRST_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL, ActivityStates.ACTIVE);
+		Group secondGroupInUnit = createGroup(SECOND_GROUP_IN_UNIT_CODE, FIRST_CATEGORY_CODE, GroupTypes.TECHNICAL, ActivityStates.ACTIVE);
+		Group thirdGroupInUnit = createGroup(THIRD_GROUP_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD, ActivityStates.ACTIVE);
 
-		Group firstGroupNotInUnit = createGroup(FIRST_GROUP_NOT_IN_UNIT_CODE, null, GroupTypes.STANDARD);
-		Group secondGroupNotInUnit = createGroup(SECOND_GROUP_NOT_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD);
+		Group firstGroupNotInUnit = createGroup(FIRST_GROUP_NOT_IN_UNIT_CODE, null, GroupTypes.STANDARD, ActivityStates.ACTIVE);
+		Group secondGroupNotInUnit = createGroup(SECOND_GROUP_NOT_IN_UNIT_CODE, SECOND_CATEGORY_CODE, GroupTypes.STANDARD, ActivityStates.ACTIVE);
+
+		Group inactiveGroup = createGroup(INACTIVE_GROUP, null, GroupTypes.STANDARD, ActivityStates.INACTIVE);
 
 		// units
 		Unit defaultUnit = createUnit(DEFAULT_UNIT_CODE);
 		Unit firstUnit = createUnit(FIRST_UNIT_CODE);
 		Unit secondUnit = createUnit(SECOND_UNIT_CODE);
+
+		Unit thirdUnit = createUnit(THIRD_UNIT_CODE);
 
 		// authentication params
 		AuthenticationParams authenticationParamWithDefaultUnit = createAuthenticationParams(ACCOUNT_WITH_DEFAULT_UNIT_CODE, "1111", null, null);
@@ -137,6 +151,7 @@ public class DataGenerator
 		AuthenticationParams authenticationParamEnabledInDisabledOrganization = createAuthenticationParams(ACCOUNT_ENABLED_IN_DISABLED_ORGANIZATION);
 		AuthenticationParams authenticationParamDisabledInDisabledOrganization = createAuthenticationParams(ACCOUNT_DISABLED_IN_DISABLED_ORGANIZATION);
 		AuthenticationParams authenticationParamDisabledInEnabledOrganization = createAuthenticationParams(ACCOUNT_DISABLED_IN_ENABLED_ORGANIZATION);
+		AuthenticationParams authenticationParamWithInvalidGroup = createAuthenticationParams(ACCOUNT_WITH_INACTIVE_GROUP);
 
 		// accounts
 		Account accountWithDefaultUnit = createAccount(ACCOUNT_WITH_DEFAULT_UNIT_CODE);
@@ -146,12 +161,14 @@ public class DataGenerator
 		Account accountEnabledInDisabledOrganization = createAccount(ACCOUNT_ENABLED_IN_DISABLED_ORGANIZATION);
 		Account accountDisabledInDisabledOrganization = createAccount(ACCOUNT_DISABLED_IN_DISABLED_ORGANIZATION, ActivityStates.INACTIVE);
 		Account accountDisabledInEnabledOrganization = createAccount(ACCOUNT_DISABLED_IN_ENABLED_ORGANIZATION, ActivityStates.INACTIVE);
+		Account accountWithInvalidGroup = createAccount(ACCOUNT_WITH_INACTIVE_GROUP, ActivityStates.ACTIVE);
 
 		/** Create connections. */
 		// unit -> organization
 		defaultUnit.setOrganization(organization);
 		firstUnit.setOrganization(organization);
 		secondUnit.setOrganization(organization);
+		thirdUnit.setOrganization(organization);
 
 		// group <-> unit
 		Set<Group> groupsForDefaultUnit = new HashSet<>();
@@ -161,14 +178,19 @@ public class DataGenerator
 		Set<Group> groupsForFirstUnit = new HashSet<>();
 		groupsForFirstUnit.add(secondGroupInUnit);
 		groupsForFirstUnit.add(thirdGroupInUnit);
+		groupsForDefaultUnit.add(inactiveGroup);
 
 		Set<Group> groupsForSecondUnit = new HashSet<>();
 		groupsForSecondUnit.add(firstGroupInUnit);
 		groupsForSecondUnit.add(thirdGroupInUnit);
 
+		Set<Group> groupsForThirdUnit = new HashSet<>();
+		groupsForThirdUnit.add(inactiveGroup);
+
 		defaultUnit.setGroups(groupsForDefaultUnit);
 		firstUnit.setGroups(groupsForFirstUnit);
 		secondUnit.setGroups(groupsForSecondUnit);
+		thirdUnit.setGroups(groupsForThirdUnit);
 
 		// group <-> role
 		Set<Group> groupsForFirstRole = new HashSet<>();
@@ -180,8 +202,12 @@ public class DataGenerator
 		Set<Group> groupsForSecondRole = new HashSet<>();
 		groupsForSecondRole.add(thirdGroupInUnit);
 
+		Set<Group> groupsForThirdRole = new HashSet<>();
+		groupsForThirdRole.add(inactiveGroup);
+
 		firstRole.setGroups(groupsForFirstRole);
 		secondRole.setGroups(groupsForSecondRole);
+		thirdRole.setGroups(groupsForThirdRole);
 
 		// account -> organization
 		accountWithDefaultUnit.setOrganization(organization);
@@ -192,6 +218,8 @@ public class DataGenerator
 		accountDisabledInDisabledOrganization.setOrganization(organizationDisabled);
 		accountDisabledInEnabledOrganization.setOrganization(organization);
 
+		accountWithInvalidGroup.setOrganization(organization);
+
 		// account -> defaultUnit
 		accountWithDefaultUnit.setDefaultUnit(defaultUnit);
 		accountWithoutDefaultUnit.setDefaultUnit(null);
@@ -200,6 +228,8 @@ public class DataGenerator
 		accountEnabledInDisabledOrganization.setDefaultUnit(null);
 		accountDisabledInDisabledOrganization.setDefaultUnit(null);
 		accountDisabledInEnabledOrganization.setDefaultUnit(null);
+
+		accountWithInvalidGroup.setDefaultUnit(null);
 
 		// account -> authenticationParams
 		authenticationParamWithDefaultUnit.setAccount(accountWithDefaultUnit);
@@ -210,6 +240,8 @@ public class DataGenerator
 		authenticationParamDisabledInDisabledOrganization.setAccount(accountDisabledInDisabledOrganization);
 		authenticationParamDisabledInEnabledOrganization.setAccount(accountDisabledInEnabledOrganization);
 
+		authenticationParamWithInvalidGroup.setAccount(accountWithInvalidGroup);
+
 		// save data to DB
 		orgDao.update(organization);
 		orgDao.update(organization2);
@@ -217,14 +249,17 @@ public class DataGenerator
 		orgDao.update(organizationDisabled);
 		roleDao.update(firstRole);
 		roleDao.update(secondRole);
+		roleDao.update(thirdRole);
 		firstGroupInUnit = groupDao.update(firstGroupInUnit);
 		secondGroupInUnit = groupDao.update(secondGroupInUnit);
 		thirdGroupInUnit = groupDao.update(thirdGroupInUnit);
 		firstGroupNotInUnit = groupDao.update(firstGroupNotInUnit);
 		secondGroupNotInUnit = groupDao.update(secondGroupNotInUnit);
+		inactiveGroup = groupDao.update(inactiveGroup);
 		defaultUnit = unitDao.update(defaultUnit);
 		firstUnit = unitDao.update(firstUnit);
 		secondUnit = unitDao.update(secondUnit);
+		thirdUnit = unitDao.update(thirdUnit);
 		accountWithDefaultUnit = accountDao.update(accountWithDefaultUnit);
 		accountWithoutDefaultUnit = accountDao.update(accountWithoutDefaultUnit);
 		accountWithDefaultUnitNoGroup = accountDao.update(accountWithDefaultUnitNoGroup);
@@ -232,6 +267,7 @@ public class DataGenerator
 		accountEnabledInDisabledOrganization = accountDao.update(accountEnabledInDisabledOrganization);
 		accountDisabledInDisabledOrganization = accountDao.update(accountDisabledInDisabledOrganization);
 		accountDisabledInEnabledOrganization = accountDao.update(accountDisabledInEnabledOrganization);
+		accountWithInvalidGroup = accountDao.update(accountWithInvalidGroup);
 		authenticationParamsDao.update(authenticationParamWithDefaultUnit);
 		authenticationParamsDao.update(authenticationParamWithoutDefaultUnit);
 		authenticationParamsDao.update(authenticationParamWithDefaultUnitNoGroup);
@@ -239,6 +275,7 @@ public class DataGenerator
 		authenticationParamsDao.update(authenticationParamEnabledInDisabledOrganization);
 		authenticationParamsDao.update(authenticationParamDisabledInDisabledOrganization);
 		authenticationParamsDao.update(authenticationParamDisabledInEnabledOrganization);
+		authenticationParamsDao.update(authenticationParamWithInvalidGroup);
 
 		// group <-> account
 		// |
@@ -268,6 +305,9 @@ public class DataGenerator
 			setAccountToGroup(accountDisabledInDisabledOrganization, secondGroupNotInUnit, null);
 
 			setAccountToGroup(accountDisabledInEnabledOrganization, secondGroupNotInUnit, null);
+
+			setAccountToGroup(accountWithInvalidGroup, inactiveGroup, thirdUnit);
+			setAccountToGroup(accountWithInvalidGroup, firstGroupNotInUnit, null);
 
 		}
 		catch (Exception e)
@@ -324,12 +364,13 @@ public class DataGenerator
 		return role;
 	}
 
-	public Group createGroup (String code, String category, GroupTypes type)
+	public Group createGroup (String code, String category, GroupTypes type, ActivityStates state)
 	{
 		Group group = new Group();
 		group.setCode(code);
 		group.setCategory(category);
 		group.setType(type);
+		group.setState(state);
 
 		return group;
 	}

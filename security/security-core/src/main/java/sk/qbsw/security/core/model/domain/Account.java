@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
  * @author Dalibor Rak
  * @author Tomas Lauro
  * @author Michal Lacko
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.0.0
  */
 @Entity
@@ -114,9 +115,14 @@ public class Account extends AEntity<Long>
 		return accountUnitGroups.stream().map(AccountUnitGroup::getGroup).collect(Collectors.toSet());
 	}
 
+	public Set<Group> getActiveGroups ()
+	{
+		return accountUnitGroups.stream().filter(accountUnitGroup -> accountUnitGroup.getGroup().getState().equals(ActivityStates.ACTIVE)).map(AccountUnitGroup::getGroup).collect(Collectors.toSet());
+	}
+
 	public boolean hasRole (Role role)
 	{
-		for (Group group : getGroups())
+		for (Group group : getActiveGroups())
 		{
 			if (group.hasRole(role))
 			{
@@ -129,14 +135,16 @@ public class Account extends AEntity<Long>
 
 	public List<String> exportGroups ()
 	{
-		return accountUnitGroups.stream().map(x -> x.getGroup().getCode()).collect(Collectors.toList());
+		return accountUnitGroups.stream()
+			.filter(x -> ActivityStates.ACTIVE.equals(x.getGroup().getState()))
+			.map(x -> x.getGroup().getCode()).collect(Collectors.toList());
 	}
 
 	public List<String> exportRoles ()
 	{
 		List<String> retVal = new ArrayList<>();
 
-		for (Group group : getGroups())
+		for (Group group : getActiveGroups())
 		{
 			Set<Role> roles = group.getRoles();
 			for (Role role : roles)
@@ -150,7 +158,7 @@ public class Account extends AEntity<Long>
 
 	public boolean isInUnit (Unit unit)
 	{
-		for (Group group : getGroups())
+		for (Group group : getActiveGroups())
 		{
 			if (group.hasUnit(unit))
 			{
@@ -163,7 +171,7 @@ public class Account extends AEntity<Long>
 
 	public boolean hasCategory (String category, Role role)
 	{
-		for (Group group : getGroups())
+		for (Group group : getActiveGroups())
 		{
 			if (group.hasCategory(category, role))
 			{

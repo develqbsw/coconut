@@ -24,7 +24,8 @@ import static org.junit.Assert.assertNotNull;
  * Checks group jpa dao.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.13.0
  */
 public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
@@ -79,7 +80,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No groups found", groups);
-		Assert.assertEquals("Returns invalid groups", 3, groups.size());
+		Assert.assertEquals("Returns invalid groups", 4, groups.size());
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No groups found", groups);
-		Assert.assertEquals("Returns invalid groups", 5, groups.size());
+		Assert.assertEquals("Returns invalid groups", 6, groups.size());
 	}
 
 	/**
@@ -229,7 +230,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No groups found", groups);
-		Assert.assertEquals("Returns invalid groups", 2, groups.size());
+		Assert.assertEquals("Returns invalid groups", 3, groups.size());
 	}
 
 	/**
@@ -247,7 +248,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No groups found", groups);
-		Assert.assertEquals("Returns invalid groups", 5, groups.size());
+		Assert.assertEquals("Returns invalid groups", 6, groups.size());
 	}
 
 	/**
@@ -287,7 +288,6 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
 		List<Group> groups = groupDao.findByUnitAndAccountId(unit, null);
-
 		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 2, groups.size());
@@ -329,6 +329,6 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 		// asserts
 		assertNotNull("No groups found", groups);
-		Assert.assertEquals("Returns invalid groups", 5, groups.size());
+		Assert.assertEquals("Returns invalid groups", 6, groups.size());
 	}
 }

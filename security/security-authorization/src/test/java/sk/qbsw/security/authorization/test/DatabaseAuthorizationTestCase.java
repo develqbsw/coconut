@@ -18,7 +18,8 @@ import static org.junit.Assert.assertNotNull;
  * Checks Authorization service for database.
  * 
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.6.0
  */
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -151,6 +152,20 @@ public class DatabaseAuthorizationTestCase
 		initTest();
 
 		authorizationTestProvider.testAuthorizationWithUnitAndCategoryNegative(authorizationService);
+	}
+
+	/**
+	 * Test unsuccessful authorization of account with role within inactive group.
+	 *
+	 * @throws CSecurityException the security exception
+	 */
+	@Test (expected = CSecurityException.class)
+	@Transactional (transactionManager = "transactionManager")
+	public void testAuthorizationWithInactiveGroupNegative () throws CSecurityException
+	{
+		initTest();
+
+		authorizationTestProvider.testAuthorizationWithInactiveGroupNegative(authorizationService);
 	}
 
 	/**
