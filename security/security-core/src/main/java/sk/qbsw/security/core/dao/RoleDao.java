@@ -8,13 +8,15 @@ import sk.qbsw.security.core.model.domain.Account;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The role dao.
  *
  * @author rosenberg
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal SLezák
+ * @version 2.5.0
  * @since 1.0.0
  */
 public interface RoleDao extends IEntityDao<Long, Role>
@@ -38,4 +40,12 @@ public interface RoleDao extends IEntityDao<Long, Role>
 	 * @throws CSecurityException the c security exception
 	 */
 	Role findOneByCode (String code) throws NonUniqueResultException, NoResultException, CSecurityException;
+
+	/**
+	 * Find all by id in.
+	 *
+	 * @param roleIds the role id-s
+	 * @return the list
+	 */
+	List<Role> findAllByIdIn(Set<Long> roleIds);
 }

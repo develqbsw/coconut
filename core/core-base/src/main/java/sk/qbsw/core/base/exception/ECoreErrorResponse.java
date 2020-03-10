@@ -5,7 +5,8 @@ package sk.qbsw.core.base.exception;
  * 
  * @author Michal Lacko
  * @author Tomas Lauro
- * @version 1.13.1
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.8.0
  */
 public enum ECoreErrorResponse implements IErrorResponse
@@ -71,6 +72,18 @@ public enum ECoreErrorResponse implements IErrorResponse
 	
 	/** The password incorrect format. */
 	PASSWORD_INVALID_FORMAT ("10015", "error.security.invalidpasswordformat"),
+
+	/** The group not found. */
+	GROUP_NOT_FOUND ("10016", "error.security.groupnotfound"),
+
+	/** The role not found. */
+	ROLE_NOT_FOUND ("10017", "error.security.rolenotfound"),
+
+	/** The unit not found. */
+	UNIT_NOT_FOUND ("10018", "error.security.unitnotfound"),
+
+	/** The user not found. */
+	USER_NOT_FOUND ("10019", "error.security.usernotfound"),
 	;
 
 	/**

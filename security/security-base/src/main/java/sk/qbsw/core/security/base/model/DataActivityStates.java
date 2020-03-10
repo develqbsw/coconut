@@ -1,13 +1,13 @@
 package sk.qbsw.core.security.base.model;
 
 /**
- * The account data states.
+ * The data activity states.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.5.0
  * @since 2.1.0
  */
-public enum AccountDataStates
+public enum DataActivityStates
 {
 	/**
 	 * Active account data states.

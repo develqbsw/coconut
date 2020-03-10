@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import sk.qbsw.core.security.base.model.AccountData;
-import sk.qbsw.core.security.base.model.AccountDataStates;
+import sk.qbsw.core.security.base.model.DataActivityStates;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
 import sk.qbsw.security.organization.simple.base.model.SPOUserOutputData;
@@ -51,7 +51,7 @@ public class SPOOAuthServiceUserDetailsService extends BaseOAuthUserDetailsServi
 
 		SPOUserData userData = (SPOUserData) userDataMapper.mapToUserData((SPOUserOutputData) accountData.getUser());
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
-		return new SPOOAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", accountData.getState().equals(AccountDataStates.ACTIVE), //
+		return new SPOOAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", accountData.getState().equals(DataActivityStates.ACTIVE), //
 			userData, convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
 	}
 

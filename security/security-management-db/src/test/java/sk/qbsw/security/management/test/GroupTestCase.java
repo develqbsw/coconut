@@ -1,5 +1,9 @@
 package sk.qbsw.security.management.test;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,18 +12,15 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.security.core.dao.AccountDao;
 import sk.qbsw.security.core.dao.UnitDao;
 import sk.qbsw.security.core.model.domain.Account;
-import sk.qbsw.security.core.model.domain.Group;
 import sk.qbsw.security.core.model.domain.Unit;
-import sk.qbsw.security.management.db.service.GroupService;
+import sk.qbsw.security.management.model.GroupManageableOutputData;
+import sk.qbsw.security.management.service.GroupManagementService;
 import sk.qbsw.security.management.test.util.DataGenerator;
-
-import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Checks group service.
@@ -37,7 +38,7 @@ public class GroupTestCase
 	private DataGenerator dataGenerator;
 
 	@Autowired
-	private GroupService groupService;
+	private GroupManagementService groupManagementService;
 
 	@Autowired
 	private UnitDao unitDao;
@@ -51,7 +52,7 @@ public class GroupTestCase
 	@Test
 	public void testInitialization ()
 	{
-		assertNotNull("Could not find group service", groupService);
+		assertNotNull("Could not find group service", groupManagementService);
 	}
 
 	/**
@@ -66,11 +67,11 @@ public class GroupTestCase
 		initTest();
 
 		Unit unit = unitDao.findOneByName(DataGenerator.FIRST_UNIT_CODE);
-		List<Group> groups = groupService.findByUnit(unit);
+		List<GroupManageableOutputData> groups = groupManagementService.findByUnitId(unit.getId());
 
 		// asserts
 		assertNotNull("Get all groups failed: list of groups is null", groups);
-		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
+		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", 2, groups.size());
 	}
 
 	/**
@@ -87,16 +88,16 @@ public class GroupTestCase
 		Unit unit1 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
 		Account account2 = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITHOUT_DEFAULT_UNIT_CODE);
 
-		List<Group> groups = groupService.findByUnitAndAccountId(unit1, account2.getId());
-		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", groups.size(), 0);
+		List<GroupManageableOutputData> groups = groupManagementService.findByUnitIdAndAccountId(unit1.getId(), account2.getId());
+		Assert.assertEquals("Get all groups failed: the size of list of groups is not 0", 0, groups.size());
 
 		Account account1 = accountDao.findOneByLogin(DataGenerator.ACCOUNT_WITH_DEFAULT_UNIT_CODE);
-		groups = groupService.findByUnitAndAccountId(unit1, account1.getId());
-		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
+		groups = groupManagementService.findByUnitIdAndAccountId(unit1.getId(), account1.getId());
+		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", 2, groups.size());
 
 		Unit unit2 = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
-		groups = groupService.findByUnitAndAccountId(unit2, account1.getId());
-		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", groups.size(), 2);
+		groups = groupManagementService.findByUnitIdAndAccountId(unit2.getId(), account1.getId());
+		Assert.assertEquals("Get all groups failed: the size of list of groups is not 2", 2, groups.size());
 	}
 
 	/**
@@ -110,14 +111,16 @@ public class GroupTestCase
 	{
 		initTest();
 
-		Unit unit = unitDao.findOneByName(DataGenerator.SECOND_UNIT_CODE);
+		Unit unit = unitDao.findOneByName("UNIT");
 
-		Group group = groupService.findByCodeAndUnit(DataGenerator.FIRST_GROUP_IN_UNIT_CODE, unit);
-		Assert.assertNotNull(group);
+		GroupManageableOutputData groupManageable = groupManagementService.findByCodeAndUnitId("CODE", null);
+		Assert.assertNotNull(groupManageable);
 	}
 
 	private void initTest ()
 	{
 		dataGenerator.generateDatabaseDataForDatabaseTests();
+
+		dataGenerator.generateDatabaseDataWithGroupManageableForDatabaseTests();
 	}
 }

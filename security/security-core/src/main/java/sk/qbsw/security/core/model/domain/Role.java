@@ -37,7 +37,6 @@ public class Role extends AEntity<Long>
 	@Column (name = "c_code")
 	private String code;
 
-	@ManyToMany (fetch = FetchType.LAZY)
-	@JoinTable (schema = "sec", name = "t_x_group_role", joinColumns = {@JoinColumn (name = "fk_role")}, inverseJoinColumns = {@JoinColumn (name = "fk_group")})
+	@ManyToMany (mappedBy = "roles", fetch = FetchType.LAZY)
 	private Set<Group> groups;
 }

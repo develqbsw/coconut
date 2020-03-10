@@ -11,6 +11,7 @@ import sk.qbsw.security.core.model.domain.*;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The role jpa dao.
@@ -66,5 +67,23 @@ public class RoleJpaDao extends AEntityQDslDao<Long, Role> implements RoleDao
 		// create query
 		JPAQuery<Role> query = queryFactory.selectFrom(qRole).where(qRole.code.eq(code));
 		return CQDslDaoHelper.handleUniqueResultQuery(query);
+	}
+
+	@Override
+	public List<Role> findAllByIdIn (Set<Long> roleIds)
+	{
+		QRole qRole = QRole.role;
+		QGroup qGroup = QGroup.group;
+		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
+		QAccount qAccount = QAccount.account;
+
+		// create query
+		JPAQuery<Role> query = queryFactory.selectFrom(qRole).distinct()
+			.leftJoin(qRole.groups, qGroup)
+			.leftJoin(qGroup.accountUnitGroups, qAccountUnitGroup)
+			.leftJoin(qAccountUnitGroup.account, qAccount)
+			.where(qRole.id.in(roleIds));
+
+		return query.fetch();
 	}
 }

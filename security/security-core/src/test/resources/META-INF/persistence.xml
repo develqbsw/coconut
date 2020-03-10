@@ -5,6 +5,7 @@
 	<persistence-unit name="persistenceContext"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
 		<!-- security -->
 		<class>sk.qbsw.security.core.model.domain.Account</class>
 		<class>sk.qbsw.security.core.model.domain.Role</class>

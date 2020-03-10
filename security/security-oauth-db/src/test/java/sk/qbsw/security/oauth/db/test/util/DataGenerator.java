@@ -179,10 +179,10 @@ public class DataGenerator
 		groupsForDefaultUnit.add(firstGroupInUnit);
 
 		// group <-> role
-		Set<Group> groupsForFirstRole = new HashSet<>();
-		groupsForFirstRole.add(firstGroupInUnit);
+		Set<Role> firstRoleSet = new HashSet<>();
+		firstRoleSet.add(firstRole);
 
-		firstRole.setGroups(groupsForFirstRole);
+		firstGroupInUnit.setRoles(firstRoleSet);
 
 		// user -> organization
 		firstUser.setOrganization(organization);

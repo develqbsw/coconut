@@ -12,7 +12,8 @@ import java.util.List;
  *
  * @author farkas.roman
  * @author Tomas Lauro
- * @version 2.1.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.7.0
  */
 public class AccountUnitGroupJpaDao extends AEntityQDslDao<Long, AccountUnitGroup> implements AccountUnitGroupDao
@@ -55,6 +56,24 @@ public class AccountUnitGroupJpaDao extends AEntityQDslDao<Long, AccountUnitGrou
 			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
 			.leftJoin(qAccount.user).fetchJoin() //
 			.where(builder);
+		return query.fetch();
+	}
+
+	@Override
+	public List<AccountUnitGroup> findByGroupId (Long groupId)
+	{
+		QAccountUnitGroup qAccountUnitGroup = QAccountUnitGroup.accountUnitGroup;
+		QAccount qAccount = QAccount.account;
+		QUnit qUnit = QUnit.unit;
+		QGroup qGroup = QGroup.group;
+
+		// create query
+		JPAQuery<AccountUnitGroup> query = queryFactory.selectFrom(qAccountUnitGroup).distinct() //
+			.leftJoin(qAccountUnitGroup.account, qAccount).fetchJoin() //
+			.leftJoin(qAccountUnitGroup.unit, qUnit).fetchJoin() //
+			.leftJoin(qAccountUnitGroup.group, qGroup).fetchJoin() //
+			.leftJoin(qAccount.user).fetchJoin() //
+			.where(qGroup.id.eq(groupId));
 		return query.fetch();
 	}
 }

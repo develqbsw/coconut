@@ -12,12 +12,14 @@ import sk.qbsw.security.core.model.domain.Unit;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The unit jpa dao.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.6.0
  */
 public class UnitJpaDao extends AEntityQDslDao<Long, Unit> implements UnitDao
@@ -59,6 +61,17 @@ public class UnitJpaDao extends AEntityQDslDao<Long, Unit> implements UnitDao
 
 		// create query
 		JPAQuery<Unit> query = queryFactory.selectFrom(qUnit).distinct().join(qUnit.accountUnitGroups, qAccountUnitGroup).join(qAccountUnitGroup.account, qAccount).where(qAccount.id.eq(accountId)).orderBy(qUnit.name.asc());
+		return query.fetch();
+	}
+
+	@Override
+	public List<Unit> findAllByIdIn (Set<Long> unitIds)
+	{
+		QUnit qUnit = QUnit.unit;
+
+		// create query
+		JPAQuery<Unit> query = queryFactory.selectFrom(qUnit).distinct().where(qUnit.id.in(unitIds));
+
 		return query.fetch();
 	}
 }

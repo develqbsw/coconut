@@ -83,7 +83,7 @@ public class FirebaseAuthUserDetailsService extends IAMAuthUserDetailsServiceBas
 		AccountData currentAccountData = accountManagementService.findOneByLogin(accountData.getLogin());
 		IAMAuthData iamAuthData = new IAMAuthData(currentAccountData.getUid(), tokenData.getValue());
 
-		return new IAMAuthLoggedAccount(currentAccountData.getId(), currentAccountData.getLogin(), "N/A", accountData.getState().equals(AccountDataStates.ACTIVE), //
+		return new IAMAuthLoggedAccount(currentAccountData.getId(), currentAccountData.getLogin(), "N/A", accountData.getState().equals(DataActivityStates.ACTIVE), //
 			userDataMapper.mapToUserData(currentAccountData.getUser()), authorityConverter.convertRolesToAuthorities(currentAccountData.getRoles()), iamAuthData);
 	}
 

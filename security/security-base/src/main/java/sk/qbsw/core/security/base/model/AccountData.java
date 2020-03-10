@@ -1,18 +1,19 @@
 package sk.qbsw.core.security.base.model;
 
-import lombok.*;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
+import lombok.*;
+
 /**
  * The account data.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.5.0
  * @since 1.18.2
  */
 @Getter
@@ -39,7 +40,7 @@ public class AccountData implements Serializable
 	private AccountDataTypes type;
 
 	@NotNull
-	private AccountDataStates state;
+	private DataActivityStates state;
 
 	@NotNull
 	private List<String> groups;

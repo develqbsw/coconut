@@ -172,17 +172,18 @@ public class DataGenerator
 		secondUnit.setGroups(groupsForSecondUnit);
 
 		// group <-> role
-		Set<Group> groupsForFirstRole = new HashSet<>();
-		groupsForFirstRole.add(firstGroupInUnit);
-		groupsForFirstRole.add(secondGroupInUnit);
-		groupsForFirstRole.add(firstGroupNotInUnit);
-		groupsForFirstRole.add(secondGroupNotInUnit);
+		Set<Role> firstRoleSet = new HashSet<>();
+		firstRoleSet.add(firstRole);
 
-		Set<Group> groupsForSecondRole = new HashSet<>();
-		groupsForSecondRole.add(thirdGroupInUnit);
+		Set<Role> secondRoleSet = new HashSet<>();
+		secondRoleSet.add(secondRole);
 
-		firstRole.setGroups(groupsForFirstRole);
-		secondRole.setGroups(groupsForSecondRole);
+		firstGroupInUnit.setRoles(firstRoleSet);
+		secondGroupInUnit.setRoles(firstRoleSet);
+		firstGroupNotInUnit.setRoles(firstRoleSet);
+		secondGroupNotInUnit.setRoles(firstRoleSet);
+
+		thirdGroupInUnit.setRoles(secondRoleSet);
 
 		// account -> organization
 		accountWithDefaultUnit.setOrganization(organization);

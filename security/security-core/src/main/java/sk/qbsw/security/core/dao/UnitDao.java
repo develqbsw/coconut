@@ -5,12 +5,14 @@ import sk.qbsw.core.persistence.dao.IEntityDao;
 import sk.qbsw.security.core.model.domain.Unit;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The unit dao.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.6.0
  */
 public interface UnitDao extends IEntityDao<Long, Unit>
@@ -32,4 +34,12 @@ public interface UnitDao extends IEntityDao<Long, Unit>
 	 * @throws CSecurityException the c security exception
 	 */
 	List<Unit> findByAccountId (Long accountId) throws CSecurityException;
+
+	/**
+	 * Find all by id-s in.
+	 *
+	 * @param unitIds the unit ids
+	 * @return the list
+	 */
+	List<Unit> findAllByIdIn (Set<Long> unitIds);
 }

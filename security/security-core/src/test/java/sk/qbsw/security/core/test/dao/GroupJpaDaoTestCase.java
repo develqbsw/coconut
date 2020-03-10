@@ -235,12 +235,10 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 	/**
 	 * Test find by unit positive no unit.
-	 *
-	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUnitPositiveNoUnit () throws CSecurityException
+	public void testFindByUnitPositiveNoUnit ()
 	{
 		initTest();
 
@@ -288,6 +286,7 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 		Unit unit = unitDao.findOneByName(DataGenerator.DEFAULT_UNIT_CODE);
 
 		List<Group> groups = groupDao.findByUnitAndAccountId(unit, null);
+
 		// asserts
 		assertNotNull("No groups found", groups);
 		Assert.assertEquals("Returns invalid groups", 2, groups.size());
@@ -316,12 +315,10 @@ public class GroupJpaDaoTestCase extends BaseDatabaseTestCase
 
 	/**
 	 * Test find by unit and account positive without account and unit.
-	 *
-	 * @throws CSecurityException the c security exception
 	 */
 	@Test
 	@Transactional (transactionManager = "transactionManager")
-	public void testFindByUnitAndAccountPositiveWithoutAccountAndUnit () throws CSecurityException
+	public void testFindByUnitAndAccountPositiveWithoutAccountAndUnit ()
 	{
 		initTest();
 

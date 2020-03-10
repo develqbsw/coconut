@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import sk.qbsw.core.security.base.model.AccountData;
-import sk.qbsw.core.security.base.model.AccountDataStates;
+import sk.qbsw.core.security.base.model.DataActivityStates;
 import sk.qbsw.core.security.base.model.UserOutputData;
 import sk.qbsw.security.oauth.model.VerificationData;
 import sk.qbsw.security.oauth.service.facade.OAuthServiceFacade;
@@ -49,7 +49,7 @@ public class OAuthServiceUserDetailsService extends BaseOAuthUserDetailsService
 		AccountData accountData = verify((String) token.getPrincipal(), deviceId, ip).getAccountData();
 		OAuthData oAuthData = new OAuthData((String) token.getPrincipal(), deviceId, ip);
 
-		return new OAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", accountData.getState().equals(AccountDataStates.ACTIVE), //
+		return new OAuthLoggedAccount(accountData.getId(), accountData.getLogin(), "N/A", accountData.getState().equals(DataActivityStates.ACTIVE), //
 			userDataMapper.mapToUserData(accountData.getUser()), convertRolesToAuthorities(accountData.getRoles()), oAuthData, accountData.getAdditionalInformation());
 	}
 

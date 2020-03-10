@@ -12,7 +12,8 @@ import java.util.List;
  *
  * @author farkas.roman
  * @author Tomas Lauro
- * @version 2.1.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.7.0
  */
 public interface AccountUnitGroupDao extends IEntityDao<Long, AccountUnitGroup>
@@ -26,4 +27,12 @@ public interface AccountUnitGroupDao extends IEntityDao<Long, AccountUnitGroup>
 	 * @return the list of records
 	 */
 	List<AccountUnitGroup> findByAccountIdAndUnitAndGroup (Long accountId, Unit unit, Group group);
+
+	/**
+	 * Find by group id.
+	 *
+	 * @param groupId the group id
+	 * @return the list of records
+	 */
+	List<AccountUnitGroup> findByGroupId (Long groupId);
 }

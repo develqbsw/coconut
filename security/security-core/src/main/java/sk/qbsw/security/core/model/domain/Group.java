@@ -1,15 +1,16 @@
 package sk.qbsw.security.core.model.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 import sk.qbsw.core.base.configuration.DatabaseSchemas;
 import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.core.persistence.model.domain.AEntity;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The group.
@@ -23,6 +24,9 @@ import java.util.Set;
 @Entity
 @Table (name = "t_group", schema = DatabaseSchemas.SECURITY, //
 	uniqueConstraints = @UniqueConstraint (name = "uc_group_code", columnNames = {"c_code"}))
+@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue ("group")
+@DiscriminatorColumn (name = "d_type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 public class Group extends AEntity<Long>
@@ -47,15 +51,16 @@ public class Group extends AEntity<Long>
 	@Enumerated (EnumType.STRING)
 	private GroupTypes type = GroupTypes.STANDARD;
 
-	@Column (name = "c_category")
-	private String category;
-
 	@NotNull
 	@Column (name = "c_state")
 	@Enumerated (EnumType.STRING)
 	private ActivityStates state = ActivityStates.ACTIVE;
 
-	@ManyToMany (mappedBy = "groups", fetch = FetchType.LAZY)
+	@Column (name = "c_category")
+	private String category;
+
+	@ManyToMany (fetch = FetchType.LAZY)
+	@JoinTable (schema = "sec", name = "t_x_group_role", joinColumns = {@JoinColumn (name = "fk_group")}, inverseJoinColumns = {@JoinColumn (name = "fk_role")})
 	private Set<Role> roles;
 
 	@OneToMany (mappedBy = "group", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -67,7 +72,7 @@ public class Group extends AEntity<Long>
 	// this association excludes group in other words if user have one group then can't have groups which are associated with this group through this association
 	@ManyToMany (fetch = FetchType.LAZY)
 	@JoinTable (schema = DatabaseSchemas.SECURITY, name = "t_x_group_group", joinColumns = {@JoinColumn (name = "fk_group")}, inverseJoinColumns = {@JoinColumn (name = "fk_excluded_group")})
-	private Set<Group> excludedGroups;
+	private Set<Group> excludedGroups = new HashSet<>();
 
 	/**
 	 * Has role boolean.

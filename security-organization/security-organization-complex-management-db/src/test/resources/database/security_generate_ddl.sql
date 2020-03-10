@@ -38,7 +38,8 @@ create table sec.t_group (
   c_code     character varying(255) not null,
   c_type     character varying(255) not null,
   c_category character varying(255),
-  c_state    character varying(255) not null
+  c_state    character varying(255) not null,
+  d_type     character varying(20)  not null
 );
 
 create sequence sec.s_group

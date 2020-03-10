@@ -7,6 +7,7 @@ import sk.qbsw.security.core.model.domain.GroupTypes;
 import sk.qbsw.security.core.model.domain.Unit;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The group dao.
@@ -14,7 +15,8 @@ import java.util.List;
  * @author rosenberg
  * @author lacko
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.0.0
  */
 public interface GroupDao extends IEntityDao<Long, Group>
@@ -62,4 +64,20 @@ public interface GroupDao extends IEntityDao<Long, Group>
 	 * @return the list
 	 */
 	List<Group> findByUnitAndAccountId (Unit unit, Long accountId);
+
+	/**
+	 * Find all by id-s in.
+	 *
+	 * @param groupIds the group ids
+	 * @return the list
+	 */
+	List<Group> findAllByIdIn (Set<Long> groupIds);
+
+	/**
+	 * Delete by id.
+	 *
+	 * @param id the id
+	 * @return the long
+	 */
+	long deleteById (Long id);
 }

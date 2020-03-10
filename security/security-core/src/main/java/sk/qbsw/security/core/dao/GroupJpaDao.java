@@ -1,6 +1,7 @@
 package sk.qbsw.security.core.dao;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
@@ -11,6 +12,7 @@ import sk.qbsw.security.core.model.domain.*;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The group jpa dao.
@@ -18,7 +20,8 @@ import java.util.List;
  * @author Ladislav Rosenberg
  * @author Dalibor Rak
  * @author Tomas Lauro
- * @version 2.0.0
+ * @author Michal Slezák
+ * @version 2.5.0
  * @since 1.0.0
  */
 public class GroupJpaDao extends AEntityQDslDao<Long, Group> implements GroupDao
@@ -133,5 +136,27 @@ public class GroupJpaDao extends AEntityQDslDao<Long, Group> implements GroupDao
 		// create query
 		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).distinct().leftJoin(qGroup.accountUnitGroups, qAccountUnitGroup).fetchJoin().leftJoin(qAccountUnitGroup.unit, qUnit).fetchJoin().leftJoin(qAccountUnitGroup.account, qAccount).fetchJoin().where(builder).orderBy(qGroup.code.asc());
 		return query.fetch();
+	}
+
+	@Override
+	public List<Group> findAllByIdIn (Set<Long> groupIds)
+	{
+		QGroup qGroup = QGroup.group;
+
+		// create query
+		JPAQuery<Group> query = queryFactory.selectFrom(qGroup).distinct().where(qGroup.id.in(groupIds));
+
+		return query.fetch();
+	}
+
+	@Override
+	public long deleteById (Long id)
+	{
+		QGroup qGroup = QGroup.group;
+
+		// create query
+		JPADeleteClause deleteClause = queryFactory.delete(qGroup).where(qGroup.id.eq(id));
+
+		return deleteClause.execute();
 	}
 }

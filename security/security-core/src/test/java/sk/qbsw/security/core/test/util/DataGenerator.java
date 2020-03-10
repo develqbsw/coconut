@@ -33,6 +33,8 @@ public class DataGenerator
 
 	private final GroupDao groupDao;
 
+	private final UserDao userDao;
+
 	private final AuthenticationParamsDao authenticationParamsDao;
 
 	private final AccountUnitGroupDao accountUnitGroupDao;
@@ -100,13 +102,14 @@ public class DataGenerator
 	public static final String TEST_IP_TWO = "192.168.0.2";
 
 	@Autowired
-	public DataGenerator (RoleDao roleDao, AccountDao accountDao, OrganizationDao orgDao, UnitDao unitDao, GroupDao groupDao, AuthenticationParamsDao authenticationParamsDao, AccountUnitGroupDao accountUnitGroupDao)
+	public DataGenerator (RoleDao roleDao, AccountDao accountDao, OrganizationDao orgDao, UnitDao unitDao, GroupDao groupDao, UserDao userDao, AuthenticationParamsDao authenticationParamsDao, AccountUnitGroupDao accountUnitGroupDao)
 	{
 		this.roleDao = roleDao;
 		this.accountDao = accountDao;
 		this.orgDao = orgDao;
 		this.unitDao = unitDao;
 		this.groupDao = groupDao;
+		this.userDao = userDao;
 		this.authenticationParamsDao = authenticationParamsDao;
 		this.accountUnitGroupDao = accountUnitGroupDao;
 	}
@@ -193,21 +196,18 @@ public class DataGenerator
 		thirdUnit.setGroups(groupsForThirdUnit);
 
 		// group <-> role
-		Set<Group> groupsForFirstRole = new HashSet<>();
-		groupsForFirstRole.add(firstGroupInUnit);
-		groupsForFirstRole.add(secondGroupInUnit);
-		groupsForFirstRole.add(firstGroupNotInUnit);
-		groupsForFirstRole.add(secondGroupNotInUnit);
+		Set<Role> firstRoleSet = new HashSet<>();
+		firstRoleSet.add(firstRole);
 
-		Set<Group> groupsForSecondRole = new HashSet<>();
-		groupsForSecondRole.add(thirdGroupInUnit);
+		Set<Role> secondRoleSet = new HashSet<>();
+		secondRoleSet.add(secondRole);
 
-		Set<Group> groupsForThirdRole = new HashSet<>();
-		groupsForThirdRole.add(inactiveGroup);
+		firstGroupInUnit.setRoles(firstRoleSet);
+		secondGroupInUnit.setRoles(firstRoleSet);
+		firstGroupNotInUnit.setRoles(firstRoleSet);
+		secondGroupNotInUnit.setRoles(firstRoleSet);
 
-		firstRole.setGroups(groupsForFirstRole);
-		secondRole.setGroups(groupsForSecondRole);
-		thirdRole.setGroups(groupsForThirdRole);
+		thirdGroupInUnit.setRoles(secondRoleSet);
 
 		// account -> organization
 		accountWithDefaultUnit.setOrganization(organization);
@@ -316,6 +316,7 @@ public class DataGenerator
 		}
 
 		// flush data to hibernate cache
+		userDao.flush();
 		orgDao.flush();
 		roleDao.flush();
 		groupDao.flush();
@@ -323,6 +324,7 @@ public class DataGenerator
 		authenticationParamsDao.flush();
 		accountDao.flush();
 		// clear cache
+		userDao.clear();
 		orgDao.clear();
 		roleDao.clear();
 		groupDao.clear();

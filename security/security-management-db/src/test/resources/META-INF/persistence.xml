@@ -5,6 +5,10 @@
 	<persistence-unit name="persistenceContext"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<!-- group -->
+		<class>sk.qbsw.security.management.db.model.domain.GroupManageable</class>
+
 		<!-- security -->
 		<class>sk.qbsw.security.core.model.domain.Account</class>
 		<class>sk.qbsw.security.core.model.domain.Role</class>
