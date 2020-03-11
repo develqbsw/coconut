@@ -1,7 +1,12 @@
 package sk.qbsw.security.organization.complex.management.db.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.exception.CSecurityException;
 import sk.qbsw.core.base.exception.ECoreErrorResponse;
@@ -23,10 +28,6 @@ import sk.qbsw.security.organization.complex.base.model.CXOUserInputData;
 import sk.qbsw.security.organization.complex.core.dao.CXOUnitDao;
 import sk.qbsw.security.organization.complex.core.model.domain.CXOUnit;
 import sk.qbsw.security.organization.complex.core.model.domain.CXOUser;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * The complex organization account management service.
@@ -92,7 +93,10 @@ public class CXOAccountManagementServiceImpl extends AccountManagementServiceBas
 
 		for (CXOUnit inputUnit : cxoUser.getUnits())
 		{
-			units.add(unitDao.findOneByCode(inputUnit.getCode()));
+			CXOUnit unit = unitDao.findOneByCode(inputUnit.getCode());
+			unit.getUsers().add(cxoUser);
+
+			units.add(unit);
 		}
 
 		cxoUser.setUnits(units);

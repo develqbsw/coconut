@@ -147,8 +147,8 @@ public abstract class AccountManagementServiceBase<I extends AccountInputData, O
 
 		if (account.getUser() != null && account.getUser().getId() == null)
 		{
-			setRegisterUserAssociations(account.getUser());
 			account.setUser(userDao.update(account.getUser()));
+			setRegisterUserAssociations(account.getUser());
 		}
 		else if (account.getUser() != null && account.getUser().getId() != null)
 		{
