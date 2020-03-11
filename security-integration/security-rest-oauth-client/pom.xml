@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>sk.qbsw.security.integration</groupId>
 		<artifactId>security-integration-top</artifactId>
-		<version>2.3.1-SNAPSHOT</version>
+		<version>2.3.1</version>
 	</parent>
 
 	<dependencies>
