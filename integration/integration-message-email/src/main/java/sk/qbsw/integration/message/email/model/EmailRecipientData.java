@@ -1,25 +1,25 @@
 package sk.qbsw.integration.message.email.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import sk.qbsw.integration.message.base.model.MessageTypes;
-import sk.qbsw.integration.message.model.RecipientDataBase;
-
-import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import lombok.*;
+import sk.qbsw.integration.message.base.model.MessageTypes;
+import sk.qbsw.integration.message.model.RecipientDataBase;
 
 /**
  * The email recipient data.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.4.0
  * @since 2.0.0
  */
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @EqualsAndHashCode (callSuper = true)
 public class EmailRecipientData extends RecipientDataBase
 {

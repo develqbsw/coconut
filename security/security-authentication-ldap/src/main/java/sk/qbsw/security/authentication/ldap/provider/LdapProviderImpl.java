@@ -1,5 +1,12 @@
 package sk.qbsw.security.authentication.ldap.provider;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.PreDestroy;
+
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.*;
@@ -7,21 +14,17 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import sk.qbsw.core.base.exception.CBusinessException;
 import sk.qbsw.core.base.logging.annotation.CNotAuditLogged;
 import sk.qbsw.core.base.logging.annotation.CNotLogged;
 import sk.qbsw.core.base.service.AService;
 
-import javax.annotation.PreDestroy;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * The ldap provider implementation.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.4.0
  * @since 1.6.0
  */
 public class LdapProviderImpl extends AService implements LdapProvider
@@ -108,7 +111,14 @@ public class LdapProviderImpl extends AService implements LdapProvider
 		{
 			if (cursor != null)
 			{
-				cursor.close();
+				try
+				{
+					cursor.close();
+				}
+				catch (IOException e)
+				{
+					LOGGER.warn("The LDAP cursor cannot be closed");
+				}
 			}
 
 			ldapConnectionFactory.releaseConnection(connection);

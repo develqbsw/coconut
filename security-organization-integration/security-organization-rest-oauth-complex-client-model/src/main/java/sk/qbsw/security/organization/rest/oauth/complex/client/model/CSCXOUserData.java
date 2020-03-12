@@ -1,24 +1,25 @@
 package sk.qbsw.security.organization.rest.oauth.complex.client.model;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import sk.qbsw.security.rest.oauth.client.model.CSUserData;
-
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+import sk.qbsw.security.rest.oauth.client.model.CSUserData;
 
 /**
  * The complex organization user data.
  *
  * @author Tomas Leken
- * @version 2.0.0
+ * @version 2.4.0
  * @since 2.0.0
  */
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @EqualsAndHashCode (callSuper = true)
 public class CSCXOUserData extends CSUserData
 {

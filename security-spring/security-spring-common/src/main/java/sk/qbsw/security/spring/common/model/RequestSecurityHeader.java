@@ -1,20 +1,22 @@
 package sk.qbsw.security.spring.common.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
-
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * The request security base.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.4.0
  * @since 2.0.0
  */
-@Data
 @AllArgsConstructor
+@Getter
+@EqualsAndHashCode
 @ToString
 public class RequestSecurityHeader implements Serializable
 {

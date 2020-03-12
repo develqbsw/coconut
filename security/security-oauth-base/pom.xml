@@ -106,7 +106,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>${build-helper-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>add-source</id>
@@ -141,7 +140,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven-source-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -155,7 +153,6 @@
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${compiler.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>

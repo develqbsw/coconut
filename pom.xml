@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                               http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>sk.qbsw</groupId>
     <artifactId>coconut</artifactId>
     <version>2.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CoconutTree</name>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.9.RELEASE</version>
+    </parent>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- compiling projects -->
-        <compiler.version>3.5.1</compiler.version>
-
-        <!-- Maven -->
-        <maven-apt-plugin.version>1.0.4</maven-apt-plugin.version>
-        <maven-source-plugin.version>2.4</maven-source-plugin.version>
-        <build-helper-plugin.version>1.10</build-helper-plugin.version>
-
-        <!-- QBSW dependences -->
+        <!-- QBSW dependencies -->
         <indy.version>${project.version}</indy.version>
         <core.version>${project.version}</core.version>
         <et.version>${project.version}</et.version>
@@ -30,102 +29,45 @@
         <security-organization.version>${project.version}</security-organization.version>
         <security-organization-spring.version>${project.version}</security-organization-spring.version>
 
+        <!-- Maven -->
+        <maven-apt-plugin.version>1.0.4</maven-apt-plugin.version>
+
         <!-- Java -->
         <java.version>1.8</java.version>
         <javaee.version>7.0</javaee.version>
-        <aspectj.version>1.8.9</aspectj.version>
 
-        <!-- Spring -->
-        <spring.version>4.3.2.RELEASE</spring.version>
-        <spring.security.version>4.1.3.RELEASE</spring.security.version>
-        <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
-        <xws-security.version>1.3.1</xws-security.version>
-        <spring.support.version>2.0.8</spring.support.version>
-        <spring.data.release.train.version>Kay-SR6</spring.data.release.train.version>
-
-        <!-- Persistence -->
-        <hibernate.version>5.2.2.Final</hibernate.version>
-        <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
-        <querydsl.version>4.1.3</querydsl.version>
-        <postgresql-driver.version>9.4.1209</postgresql-driver.version>
-        <hsqldb-driver.version>2.4.1</hsqldb-driver.version>
-
-        <!-- Servlet and http components -->
-        <servlet-api.version>3.1.0</servlet-api.version>
-        <httpclient.version>4.5.2</httpclient.version>
-        <httpcore.version>4.4.4</httpcore.version>
-        <httpmime.version>4.5.2</httpmime.version>
-
-        <!-- validation -->
-        <validation-api.version>1.1.0.Final</validation-api.version>
-        <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
-
-        <!-- swagger -->
-        <swagger.version>1.5.10</swagger.version>
-
-        <!-- Logging -->
-        <log4j.version>1.2.17</log4j.version>
-        <slf4j.version>1.7.21</slf4j.version>
-
-        <!-- Testing -->
-        <junit.version>4.12</junit.version>
-        <mockito.version>1.10.19</mockito.version>
-
-        <!-- Communication -->
-        <mail.version>1.4.7</mail.version>
+        <!-- Presentation layer -->
+        <wicketstuff.minis>6.30.0</wicketstuff.minis>
+        <wicket.version>6.30.0</wicket.version>
+        <swagger.version>1.6.0</swagger.version>
+        <melody.version>1.82.0</melody.version>
+        <rsql-parser.version>2.0.0</rsql-parser.version>
         <velocity.version>1.7</velocity.version>
 
-        <!-- Apache utils -->
+        <!-- Security and encryption -->
+        <xws-security.version>1.3.1</xws-security.version>
+        <bouncy-castle.version>1.64</bouncy-castle.version>
+        <jasypt.version>1.9.3</jasypt.version>
+
+        <!-- Service layer -->
+        <orika.version>1.4.6</orika.version>
+        <quartz.version>2.3.2</quartz.version>
+        <jjwt.version>0.11.0</jjwt.version>
+        <java-uuid-generator.version>4.0.1</java-uuid-generator.version>
+        <xstream.version>1.4.9</xstream.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
-        <commons-lang3.version>3.4</commons-lang3.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <commons-codec.version>1.10</commons-codec.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-
-        <!-- json and xml -->
-        <gson.version>2.6.2</gson.version>
-        <jackson.version>2.8.4</jackson.version>
-        <xstream.version>1.4.9</xstream.version>
-
-        <!-- uuid generator -->
-        <java-uuid-generator.version>3.1.4</java-uuid-generator.version>
-
-        <!-- melody -->
-        <melody.version>1.56.0</melody.version>
-
-        <!-- Apache directory API - LDAP -->
-        <directory.api.version>1.0.0-M33</directory.api.version>
-
-        <!-- Encryption -->
-        <bouncy-castle.version>1.54</bouncy-castle.version>
-        <jasypt.version>1.9.2</jasypt.version>
-        <jsch.ssh2.version>0.1.53</jsch.ssh2.version>
-
-        <!-- quartz -->
-        <quartz.version>2.2.2</quartz.version>
-
-        <!-- Wicket -->
-        <wicketstuff.minis>6.22.0</wicketstuff.minis>
-        <wicket.version>6.22.0</wicket.version>
 
         <!-- Testing -->
         <tempusfugit.version>1.1</tempusfugit.version>
+        <log4j.version>1.2.17</log4j.version>
 
-        <!-- firebase -->
-        <firebase-admin.version>6.4.0</firebase-admin.version>
-
-        <!-- jjwt -->
-        <jjwt.version>0.10.6</jjwt.version>
-
-        <!-- orika -->
-        <orika.version>1.4.6</orika.version>
-
-        <!-- lombok -->
-        <lombok.version>1.16.20</lombok.version>
-
-        <!-- RSQL -->
-        <rsql-parser.version>2.0.0</rsql-parser.version>
+        <!-- Integrations -->
+        <firebase-admin.version>6.12.2</firebase-admin.version>
+        <directory.api.version>1.0.3</directory.api.version>
+        <jsch.ssh2.version>0.1.55</jsch.ssh2.version>
     </properties>
 
     <modules>
@@ -159,15 +101,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Spring data compatibility definition -->
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-releasetrain</artifactId>
-                <version>${spring.data.release.train.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-
             <!-- QBSW -->
             <dependency>
                 <groupId>sk.qbsw.core</groupId>
@@ -549,199 +482,14 @@
                 <version>${integration.version}</version>
             </dependency>
 
-            <!-- security -->
+            <!-- Java -->
             <dependency>
-                <groupId>org.jasypt</groupId>
-                <artifactId>jasypt</artifactId>
-                <version>${jasypt.version}</version>
+                <groupId>javax</groupId>
+                <artifactId>javaee-web-api</artifactId>
+                <version>${javaee.version}</version>
             </dependency>
 
-            <!-- JSON -->
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-
-            <!-- MAIL -->
-            <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>mail</artifactId>
-                <version>${mail.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity</artifactId>
-                <version>${velocity.version}</version>
-            </dependency>
-
-            <!-- Apache commons -->
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>${commons-lang.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-dbcp</groupId>
-                <artifactId>commons-dbcp</artifactId>
-                <version>${commons-dbcp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>${commons-codec.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>${commons-collections.version}</version>
-            </dependency>
-
-            <!-- Apache HTTP -->
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore</artifactId>
-                <version>${httpcore.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpmime</artifactId>
-                <version>${httpmime.version}</version>
-            </dependency>
-
-            <!-- SFTP -->
-            <dependency>
-                <groupId>com.jcraft</groupId>
-                <artifactId>jsch</artifactId>
-                <version>${jsch.ssh2.version}</version>
-            </dependency>
-
-            <!-- SPRING -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-orm</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.ws</groupId>
-                <artifactId>spring-ws-security</artifactId>
-                <version>${spring.ws.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-support</artifactId>
-                <version>${spring.support.version}</version>
-            </dependency>
-
-            <!-- spring security -->
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security.oauth</groupId>
-                <artifactId>spring-security-oauth2</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <!-- wicket -->
+            <!-- Presentation layer -->
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-core</artifactId>
@@ -787,119 +535,65 @@
                 <artifactId>wicketstuff-minis</artifactId>
                 <version>${wicketstuff.minis}</version>
             </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bull.javamelody</groupId>
+                <artifactId>javamelody-core</artifactId>
+                <version>${melody.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.jirutka.rsql</groupId>
+                <artifactId>rsql-parser</artifactId>
+                <version>${rsql-parser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
 
-            <!-- JAVAX -->
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${servlet-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-web-api</artifactId>
-                <version>${javaee.version}</version>
-            </dependency>
+            <!-- Security and encryption -->
             <dependency>
                 <groupId>com.sun.xml.wsit</groupId>
                 <artifactId>xws-security</artifactId>
                 <version>${xws-security.version}</version>
             </dependency>
-
-            <!-- log4j and it's dependencies -->
             <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>${bouncy-castle.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncy-castle.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
+                <groupId>org.jasypt</groupId>
+                <artifactId>jasypt</artifactId>
+                <version>${jasypt.version}</version>
             </dependency>
 
-            <!-- testing -->
+            <!-- Service layer -->
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>${mockito.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.tempus-fugit</groupId>
-                <artifactId>tempus-fugit</artifactId>
-                <version>${tempusfugit.version}</version>
-            </dependency>
-
-            <!-- jdbc drivers -->
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql-driver.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hsqldb</groupId>
-                <artifactId>hsqldb</artifactId>
-                <version>${hsqldb-driver.version}</version>
-            </dependency>
-
-            <!-- Hibernate, JPA -->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>${hibernate.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>${hibernate-jpa-2.1-api.version}</version>
-            </dependency>
-
-            <!-- Query dsl -->
-            <dependency>
-                <groupId>com.querydsl</groupId>
-                <artifactId>querydsl-apt</artifactId>
-                <version>${querydsl.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.querydsl</groupId>
-                <artifactId>querydsl-core</artifactId>
-                <version>${querydsl.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.querydsl</groupId>
-                <artifactId>querydsl-jpa</artifactId>
-                <version>${querydsl.version}</version>
+                <groupId>ma.glasnost.orika</groupId>
+                <artifactId>orika-core</artifactId>
+                <version>${orika.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-sql-spring</artifactId>
                 <version>${querydsl.version}</version>
             </dependency>
-
-            <!-- firebase -->
             <dependency>
-                <groupId>com.google.firebase</groupId>
-                <artifactId>firebase-admin</artifactId>
-                <version>${firebase-admin.version}</version>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
             </dependency>
-
-            <!-- jjwt -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-api</artifactId>
@@ -917,73 +611,6 @@
                 <version>${jjwt.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
-            <!-- orika -->
-            <dependency>
-                <groupId>ma.glasnost.orika</groupId>
-                <artifactId>orika-core</artifactId>
-                <version>${orika.version}</version>
-            </dependency>
-
-            <!-- quartz -->
-            <dependency>
-                <groupId>org.quartz-scheduler</groupId>
-                <artifactId>quartz</artifactId>
-                <version>${quartz.version}</version>
-            </dependency>
-
-            <!-- AspectJ -->
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjrt</artifactId>
-                <version>${aspectj.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>${aspectj.version}</version>
-            </dependency>
-
-            <!-- validation -->
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${validation-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate-validator.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <!-- Parsers - XML, ... -->
-            <dependency>
-                <groupId>com.thoughtworks.xstream</groupId>
-                <artifactId>xstream</artifactId>
-                <version>${xstream.version}</version>
-            </dependency>
-
-            <!-- LDAP API -->
-            <dependency>
-                <groupId>org.apache.directory.api</groupId>
-                <artifactId>api-all</artifactId>
-                <version>${directory.api.version}</version>
-            </dependency>
-
-            <!-- Bouncy Castle -->
-            <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcpkix-jdk15on</artifactId>
-                <version>${bouncy-castle.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
-                <version>${bouncy-castle.version}</version>
-            </dependency>
-
-            <!-- uuid generator -->
             <dependency>
                 <groupId>com.fasterxml.uuid</groupId>
                 <artifactId>java-uuid-generator</artifactId>
@@ -995,40 +622,59 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
-            <!-- RSQL -->
             <dependency>
-                <groupId>cz.jirutka.rsql</groupId>
-                <artifactId>rsql-parser</artifactId>
-                <version>${rsql-parser.version}</version>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>${xstream.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>${commons-dbcp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${commons-collections.version}</version>
             </dependency>
 
-            <!-- swagger -->
+            <!-- Testing -->
             <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.version}</version>
+                <groupId>com.google.code.tempus-fugit</groupId>
+                <artifactId>tempus-fugit</artifactId>
+                <version>${tempusfugit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
             </dependency>
 
-            <!-- tools -->
+            <!-- Integrations -->
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-                <scope>provided</scope>
+                <groupId>com.google.firebase</groupId>
+                <artifactId>firebase-admin</artifactId>
+                <version>${firebase-admin.version}</version>
             </dependency>
-
-            <!-- monitoring -->
             <dependency>
-                <groupId>net.bull.javamelody</groupId>
-                <artifactId>javamelody-core</artifactId>
-                <version>${melody.version}</version>
+                <groupId>org.apache.directory.api</groupId>
+                <artifactId>api-all</artifactId>
+                <version>${directory.api.version}</version>
             </dependency>
-
             <dependency>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${build-helper-plugin.version}</version>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>${jsch.ssh2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

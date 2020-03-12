@@ -1,25 +1,24 @@
 package sk.qbsw.security.organization.rest.oauth.simple.client.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
-import sk.qbsw.security.rest.oauth.client.model.CSAccountDataStates;
-
 import java.util.List;
 import java.util.Map;
+
+import lombok.*;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountData;
+import sk.qbsw.security.rest.oauth.client.model.CSAccountDataStates;
 
 /**
  * The simple organization account data - use only in client implementation, do not use in controller (in controller, the userData is mapped by mapper).
  *
  * @author Tomas Lauro
- * @version 2.2.0
+ * @version 2.4.0
  * @since 2.2.0
  */
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @EqualsAndHashCode (callSuper = true)
 public class CSSPOAccountData extends CSAccountData
 {

@@ -1,8 +1,6 @@
 package sk.qbsw.security.oauth.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import sk.qbsw.core.security.base.model.AccountData;
 
 import java.time.OffsetDateTime;
@@ -12,11 +10,13 @@ import java.time.OffsetDateTime;
  *
  * @param <D> the account data type
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.4.0
  * @since 2.0.0
  */
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @EqualsAndHashCode (callSuper = true)
 public abstract class AuthenticationTokenDataBase<D extends AccountData>extends SecurityTokenDataBase<D>
 {

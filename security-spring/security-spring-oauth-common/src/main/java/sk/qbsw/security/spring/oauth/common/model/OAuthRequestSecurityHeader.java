@@ -1,7 +1,7 @@
 package sk.qbsw.security.spring.oauth.common.model;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import sk.qbsw.security.spring.common.model.RequestSecurityHeader;
 
@@ -9,12 +9,12 @@ import sk.qbsw.security.spring.common.model.RequestSecurityHeader;
  * The request security base.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.4.0
  * @since 2.0.0
  */
-@Data
-@ToString
+@Getter
 @EqualsAndHashCode (callSuper = true)
+@ToString
 public class OAuthRequestSecurityHeader extends RequestSecurityHeader
 {
 	private final String deviceId;
