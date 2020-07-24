@@ -393,9 +393,16 @@ public class DataGenerator
 
 	public Account createAccount (String code, ActivityStates state)
 	{
+		return createAccount(code, code, null, state);
+	}
+
+	public Account createAccount (String code, String uid, Organization organization, ActivityStates state)
+	{
 		Account account = new Account();
 		account.setLogin(code);
 		account.setEmail(code + "@qbsw.sk");
+		account.setUid(uid);
+		account.setOrganization(organization);
 		account.setState(state);
 
 		return account;

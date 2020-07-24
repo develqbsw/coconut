@@ -187,10 +187,10 @@ alter table sec.t_organization
   add constraint uc_organization_code unique (c_code);
 
 alter table sec.t_account
-  add constraint uc_account_login unique (c_login);
+  add constraint uc_account_login unique (c_login, fk_organization);
 
 alter table sec.t_account
-  add constraint uc_account_uid unique (c_uid);
+  add constraint uc_account_uid unique (c_uid, fk_organization);
 
 --foreign key
 alter table sec.t_x_group_role

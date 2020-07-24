@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 @Entity
 @Table (name = "t_account", schema = DatabaseSchemas.SECURITY, //
 	uniqueConstraints = { //
-		@UniqueConstraint (name = "uc_account_login", columnNames = {"c_login"}), //
-		@UniqueConstraint (name = "uc_account_uid", columnNames = {"c_uid"}) //
+		@UniqueConstraint (name = "uc_account_login", columnNames = {"c_login", "fk_organization"}), //
+		@UniqueConstraint (name = "uc_account_uid", columnNames = {"c_uid", "fk_organization"}) //
 	})
 @FilterDef (name = Account.DEFAULT_UNIT_FILTER_NAME)
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)

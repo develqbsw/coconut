@@ -10,6 +10,7 @@ import sk.qbsw.core.base.state.ActivityStates;
 import sk.qbsw.security.core.dao.*;
 import sk.qbsw.security.core.model.domain.Account;
 import sk.qbsw.security.core.model.domain.Group;
+import sk.qbsw.security.core.model.domain.Organization;
 import sk.qbsw.security.core.model.domain.Unit;
 import sk.qbsw.security.core.model.filter.AccountAssociationsFilter;
 import sk.qbsw.security.core.model.filter.AccountDetailFilter;
@@ -21,6 +22,7 @@ import sk.qbsw.security.core.test.util.DataGenerator;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -42,6 +44,9 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 
 	@Autowired
 	private GroupDao groupDao;
+
+	@Autowired
+	private OrganizationDao organizationDao;
 
 	/**
 	 * Test initialization.
@@ -635,5 +640,34 @@ public class AccountJpaDaoTestCase extends BaseDatabaseTestCase
 		// asserts
 		assertNotNull("No accounts found", accounts);
 		Assert.assertEquals("Returns invalid accounts", 8, accounts.size());
+	}
+
+	@Test
+	@Transactional (transactionManager = "transactionManager")
+	public void testAccountUniquenessPositive () {
+
+		initTest();
+
+		Organization o1 = organizationDao.findOneByCode(DataGenerator.ORGANIZATION_CODE);
+		Organization o2 = organizationDao.findOneByCode(DataGenerator.ORGANIZATION_2_CODE);
+
+		String uniqueUid1 = UUID.randomUUID().toString();
+
+
+		Account a1O1 = dataGenerator.createAccount(uniqueUid1, uniqueUid1, o1, ActivityStates.ACTIVE);
+
+		Long a1O1Id = accountDao.create(a1O1);
+		accountDao.flush();
+
+		assertNotNull("Created account a1O1 id is null", a1O1Id);
+
+
+		Account a1O2 = dataGenerator.createAccount(uniqueUid1, uniqueUid1, o2, ActivityStates.ACTIVE);
+
+		Long a1O2Id = accountDao.create(a1O2);
+		accountDao.flush();
+
+		assertNotNull("Created account a1O1 id is null", a1O2Id);
+
 	}
 }
