@@ -6,6 +6,9 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:component-scan base-package="sk.qbsw.security.organization.simple.management.db.test.util"/>
-    
-    <bean class="sk.qbsw.security.organization.simple.management.db.configuration.SPOSecurityManagementConfiguration"/>
+
+    <bean class="sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfigurationCommon"/>
+    <bean class="sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfiguration"/>
+    <bean class="sk.qbsw.security.management.db.autoconfigure.SecurityManagementAutoConfigurationCommon"/>
+    <bean class="sk.qbsw.security.organization.simple.management.db.autoconfigure.SPOSecurityManagementAutoConfiguration"/>
 </beans>

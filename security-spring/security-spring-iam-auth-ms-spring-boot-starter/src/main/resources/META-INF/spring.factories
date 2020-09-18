@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+sk.qbsw.security.spring.common.autoconfigure.SecuritySpringCommonAutoConfiguration,\
+sk.qbsw.security.spring.iam.auth.common.autoconfigure.SecuritySpringIamAuthCommonAutoConfiguration,\
+sk.qbsw.security.spring.iam.auth.ms.autoconfigure.SecuritySpringIamAuthMsAutoConfiguration

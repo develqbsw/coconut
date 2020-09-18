@@ -32,6 +32,10 @@
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-management</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-management-db</artifactId>
+        </dependency>
 
         <!-- QBSW security spring -->
         <dependency>
@@ -47,6 +51,12 @@
             <artifactId>security-spring-iam-auth-base</artifactId>
         </dependency>
 
+        <!-- spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+
         <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -59,6 +69,10 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
         </dependency>
 
         <!-- firebase -->

@@ -1,0 +1,11 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfigurationCommon,\
+sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfiguration,\
+sk.qbsw.security.organization.simple.authentication.db.autoconfigure.SPOSecurityAuthenticationAutoConfiguration,\
+sk.qbsw.security.oauth.db.autoconfigure.SecurityOAuthAutoConfigurationCommon,\
+sk.qbsw.security.organization.simple.oauth.db.autoconfigure.SPOSecurityOAuthAutoConfigurationBase,\
+sk.qbsw.security.organization.simple.oauth.db.autoconfigure.SPOSecurityOAuthAutoConfiguration,\
+sk.qbsw.security.spring.common.autoconfigure.SecuritySpringCommonAutoConfiguration,\
+sk.qbsw.security.spring.oauth.common.autoconfigure.SecuritySpringOAuthCommonAutoConfiguration,\
+sk.qbsw.security.organization.spring.simple.base.autoconfigure.SPOSecuritySpringBaseAutoConfiguration,\
+sk.qbsw.security.organization.spring.simple.oauth.local.autoconfigure.SPOSecuritySpringOAuthLocalAutoConfiguration

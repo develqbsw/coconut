@@ -42,11 +42,21 @@
             <groupId>sk.qbsw.security.organization</groupId>
             <artifactId>security-organization-complex-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-oauth-db</artifactId>
+        </dependency>
 
         <!-- QBSW security organization integration -->
         <dependency>
             <groupId>sk.qbsw.security.organization.integration</groupId>
             <artifactId>security-organization-rest-oauth-complex-client-model</artifactId>
+        </dependency>
+
+        <!-- spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
         <!-- spring -->

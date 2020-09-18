@@ -26,6 +26,10 @@
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-oauth</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-oauth-db</artifactId>
+        </dependency>
 
         <!-- QBSW integration -->
         <dependency>
@@ -35,6 +39,12 @@
         <dependency>
             <groupId>sk.qbsw.security.integration</groupId>
             <artifactId>security-rest-oauth-api-base</artifactId>
+        </dependency>
+
+        <!-- spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
         <!-- spring -->

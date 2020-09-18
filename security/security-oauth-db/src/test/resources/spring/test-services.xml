@@ -6,6 +6,13 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:component-scan base-package="sk.qbsw.security.oauth.db.test.util"/>
+
+    <bean class="sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfigurationCommon"/>
+    <bean class="sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfiguration"/>
+    <bean class="sk.qbsw.security.authentication.db.autoconfigure.SecurityAuthenticationAutoConfiguration"/>
+    <bean class="sk.qbsw.security.oauth.db.autoconfigure.SecurityOAuthAutoConfigurationCommon"/>
+    <bean class="sk.qbsw.security.oauth.db.autoconfigure.SecurityOAuthAutoConfigurationBase"/>
+    <bean class="sk.qbsw.security.oauth.db.autoconfigure.SecurityOAuthAutoConfiguration"/>
     <bean id="authValidationConfiguration" class="sk.qbsw.security.oauth.db.test.configuration.SecurityOAuthTestConfiguration"/>
-    
+
 </beans>

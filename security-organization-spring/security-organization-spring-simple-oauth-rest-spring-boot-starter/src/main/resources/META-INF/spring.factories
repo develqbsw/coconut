@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+sk.qbsw.security.rest.oauth.client.base.autoconfigure.SecurityRestOAuthClientBaseAutoConfiguration,\
+sk.qbsw.security.organization.rest.oauth.simple.client.autoconfigure.SPOSecurityRestOAuthClientAutoConfiguration,\
+sk.qbsw.security.spring.common.autoconfigure.SecuritySpringCommonAutoConfiguration,\
+sk.qbsw.security.spring.oauth.common.autoconfigure.SecuritySpringOAuthCommonAutoConfiguration,\
+sk.qbsw.security.organization.spring.simple.oauth.rest.autoconfigure.SPOSecuritySpringOAuthRestAutoConfiguration

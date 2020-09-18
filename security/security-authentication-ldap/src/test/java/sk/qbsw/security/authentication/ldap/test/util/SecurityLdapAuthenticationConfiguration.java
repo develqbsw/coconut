@@ -3,7 +3,7 @@ package sk.qbsw.security.authentication.ldap.test.util;
 import org.springframework.context.annotation.Bean;
 import sk.qbsw.core.base.exception.CSystemException;
 import sk.qbsw.core.testing.mock.CMockitoFactoryBean;
-import sk.qbsw.security.authentication.ldap.configuration.BaseSecurityLdapAuthenticationConfiguration;
+import sk.qbsw.security.authentication.ldap.autoconfigure.BaseSecurityLdapAuthenticationAutoConfiguration;
 import sk.qbsw.security.authentication.ldap.configuration.SecurityLdapAuthenticationConfigurator;
 import sk.qbsw.security.authentication.ldap.provider.LdapConnectionFactory;
 import sk.qbsw.security.authentication.ldap.provider.LdapProvider;
@@ -16,7 +16,7 @@ import sk.qbsw.security.authentication.ldap.provider.LdapProviderImpl;
  * @version 2.0.0
  * @since 2.0.0
  */
-public class SecurityLdapAuthenticationConfiguration extends BaseSecurityLdapAuthenticationConfiguration
+public class SecurityLdapAuthenticationConfiguration extends BaseSecurityLdapAuthenticationAutoConfiguration
 {
 	@Bean
 	public LdapProvider ldapProvider (LdapConnectionFactory ldapConnectionFactory)

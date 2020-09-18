@@ -18,6 +18,7 @@
 		<module>security-management</module>
 		<module>security-management-base</module>
 		<module>security-management-db</module>
+		<module>security-management-db-spring-boot-starter</module>
 		<module>security-authorization</module>
 		<module>security-authentication</module>
 		<module>security-authentication-db</module>
@@ -25,6 +26,7 @@
 		<module>security-oauth</module>
 		<module>security-oauth-base</module>
 		<module>security-oauth-db</module>
+		<module>security-oauth-db-spring-boot-starter</module>
 		<module>security-ocsp</module>
 		<module>security-web</module>
     </modules>

@@ -26,6 +26,10 @@
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-oauth</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security</groupId>
+            <artifactId>security-oauth-db</artifactId>
+        </dependency>
 
         <!-- QBSW security spring -->
         <dependency>
@@ -37,10 +41,20 @@
             <artifactId>security-spring-oauth-common</artifactId>
         </dependency>
 
+        <!-- spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
         </dependency>
 
         <!-- SLF4J -->

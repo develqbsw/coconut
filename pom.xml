@@ -244,12 +244,32 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-oauth-local</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-oauth-rest</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
                 <artifactId>security-spring-iam-auth-common</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.spring</groupId>
                 <artifactId>security-spring-iam-auth-base</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-iam-auth-firebase</artifactId>
+                <version>${security.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.spring</groupId>
+                <artifactId>security-spring-iam-auth-ms</artifactId>
                 <version>${security.spring.version}</version>
             </dependency>
             <dependency>
@@ -286,7 +306,17 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-simple-authentication-db</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
                 <artifactId>security-organization-simple-management</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-simple-management-db</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
             <dependency>
@@ -302,6 +332,11 @@
             <dependency>
                 <groupId>sk.qbsw.security.organization</groupId>
                 <artifactId>security-organization-complex-core</artifactId>
+                <version>${security-organization.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization</groupId>
+                <artifactId>security-organization-complex-authentication-db</artifactId>
                 <version>${security-organization.version}</version>
             </dependency>
             <dependency>
@@ -348,6 +383,16 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-simple-oauth-local</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-simple-oauth-rest</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
                 <artifactId>security-organization-spring-complex-common</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
@@ -359,6 +404,11 @@
             <dependency>
                 <groupId>sk.qbsw.security.organization.spring</groupId>
                 <artifactId>security-organization-spring-complex-oauth-common</artifactId>
+                <version>${security-organization-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.spring</groupId>
+                <artifactId>security-organization-spring-complex-oauth-local</artifactId>
                 <version>${security-organization-spring.version}</version>
             </dependency>
             <dependency>
@@ -393,6 +443,11 @@
                 <artifactId>security-rest-oauth-api-base</artifactId>
                 <version>${security.integration.version}</version>
             </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.integration</groupId>
+                <artifactId>security-rest-oauth-api</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
 
             <!-- QBSW security organization integration -->
             <dependency>
@@ -402,7 +457,22 @@
             </dependency>
             <dependency>
                 <groupId>sk.qbsw.security.organization.integration</groupId>
+                <artifactId>security-organization-rest-oauth-simple-client</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.integration</groupId>
+                <artifactId>security-organization-rest-oauth-simple-api</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.integration</groupId>
                 <artifactId>security-organization-rest-oauth-complex-client-model</artifactId>
+                <version>${security.integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>sk.qbsw.security.organization.integration</groupId>
+                <artifactId>security-organization-rest-oauth-complex-api</artifactId>
                 <version>${security.integration.version}</version>
             </dependency>
 

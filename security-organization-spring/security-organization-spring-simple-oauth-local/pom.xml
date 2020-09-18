@@ -38,6 +38,10 @@
             <groupId>sk.qbsw.security.organization</groupId>
             <artifactId>security-organization-simple-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-simple-oauth-db</artifactId>
+        </dependency>
 
         <!-- QBSW security organization spring -->
         <dependency>
@@ -57,6 +61,10 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
         </dependency>
 
         <!-- SLF4J -->
