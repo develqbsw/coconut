@@ -19,11 +19,15 @@
 		<module>security-spring-auth-local</module>
 		<module>security-spring-oauth-common</module>
 		<module>security-spring-oauth-local</module>
+		<module>security-spring-oauth-local-spring-boot-starter</module>
 		<module>security-spring-oauth-rest</module>
+		<module>security-spring-oauth-rest-spring-boot-starter</module>
 		<module>security-spring-iam-auth-common</module>
 		<module>security-spring-iam-auth-base</module>
 		<module>security-spring-iam-auth-firebase</module>
+		<module>security-spring-iam-auth-firebase-spring-boot-starter</module>
 		<module>security-spring-iam-auth-ms</module>
+		<module>security-spring-iam-auth-ms-spring-boot-starter</module>
 		<module>security-spring-anonym-common</module>
 		<module>security-spring-system-common</module>
 	</modules>

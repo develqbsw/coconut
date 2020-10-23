@@ -3,13 +3,7 @@ package sk.qbsw.security.oauth.db.test.configuration;
 import org.springframework.context.annotation.Bean;
 
 import sk.qbsw.core.configuration.service.ISystemParameterService;
-import sk.qbsw.security.authentication.service.AuthenticationService;
-import sk.qbsw.security.authentication.db.service.DatabaseAuthenticationServiceImpl;
-import sk.qbsw.security.core.dao.AccountDao;
-import sk.qbsw.security.core.dao.AuthenticationParamsDao;
-import sk.qbsw.security.core.dao.UnitDao;
-import sk.qbsw.security.core.service.signature.PasswordDigester;
-import sk.qbsw.security.oauth.db.configuration.SecurityOAuthConfigurationBase;
+import sk.qbsw.security.oauth.db.autoconfigure.SecurityOAuthAutoConfigurationBase;
 import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
 
 /**
@@ -19,7 +13,7 @@ import sk.qbsw.security.oauth.base.configuration.OAuthValidationConfigurator;
  * @version 2.0.0
  * @since 1.18.2
  */
-public class SecurityOAuthTestConfiguration extends SecurityOAuthConfigurationBase
+public class SecurityOAuthTestConfiguration extends SecurityOAuthAutoConfigurationBase
 {
 	@Bean
 	public OAuthValidationConfigurator oAuthValidationConfiguration (ISystemParameterService systemParameterService)
@@ -50,11 +44,5 @@ public class SecurityOAuthTestConfiguration extends SecurityOAuthConfigurationBa
 				return 3;
 			}
 		};
-	}
-
-	@Bean
-	public AuthenticationService authenticationService (AccountDao accountDao, UnitDao unitDao, AuthenticationParamsDao authenticationParamsDao, PasswordDigester digester)
-	{
-		return new DatabaseAuthenticationServiceImpl(accountDao, unitDao, authenticationParamsDao, digester);
 	}
 }

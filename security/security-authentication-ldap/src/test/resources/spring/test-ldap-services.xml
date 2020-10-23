@@ -8,6 +8,8 @@
 	<context:component-scan base-package="sk.qbsw.security.authentication.ldap.test.util" />
 	<context:component-scan base-package="sk.qbsw.core.testing.mock" />
 
+	<bean class="sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfigurationCommon"/>
+	<bean class="sk.qbsw.security.core.autoconfigure.SecurityCoreAutoConfiguration"/>
 	<bean class="sk.qbsw.security.authentication.ldap.test.util.SecurityLdapAuthenticationConfiguration" />
 	
 	<bean class="sk.qbsw.security.authentication.ldap.test.performance.task.LdapLoginTask" id="ldapLoginTask" scope="prototype"/>

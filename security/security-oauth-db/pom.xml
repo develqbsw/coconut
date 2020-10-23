@@ -54,12 +54,11 @@
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-management-db</artifactId>
-			<scope>test</scope>
+			<artifactId>security-authentication-db</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>sk.qbsw.security</groupId>
-			<artifactId>security-authentication-db</artifactId>
+			<artifactId>security-management-db</artifactId>
 			<scope>test</scope>
 		</dependency>
 

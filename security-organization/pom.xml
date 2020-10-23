@@ -15,13 +15,19 @@
 	<modules>
 		<module>security-organization-simple-base</module>
 		<module>security-organization-simple-core</module>
+		<module>security-organization-simple-authentication-db</module>
 		<module>security-organization-simple-management</module>
 		<module>security-organization-simple-management-db</module>
+		<module>security-organization-simple-management-db-spring-boot-starter</module>
 		<module>security-organization-simple-oauth-db</module>
+		<module>security-organization-simple-oauth-db-spring-boot-starter</module>
 		<module>security-organization-complex-base</module>
         <module>security-organization-complex-core</module>
+		<module>security-organization-complex-authentication-db</module>
         <module>security-organization-complex-management</module>
 		<module>security-organization-complex-management-db</module>
+		<module>security-organization-complex-management-db-spring-boot-starter</module>
 		<module>security-organization-complex-oauth-db</module>
+		<module>security-organization-complex-oauth-db-spring-boot-starter</module>
     </modules>
 </project>

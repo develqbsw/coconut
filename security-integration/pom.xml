@@ -18,6 +18,7 @@
 		<module>security-rest-oauth-client</module>
 		<module>security-rest-oauth-api-base</module>
 		<module>security-rest-oauth-api</module>
+		<module>security-rest-oauth-api-spring-boot-starter</module>
 		<module>security-rest-oauth-web</module>
 	</modules>
 </project>

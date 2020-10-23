@@ -48,6 +48,10 @@
             <groupId>sk.qbsw.security</groupId>
             <artifactId>security-oauth-db</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-complex-authentication-db</artifactId>
+        </dependency>
 
         <!-- QBSW security organization -->
         <dependency>

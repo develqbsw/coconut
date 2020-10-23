@@ -40,6 +40,10 @@
             <groupId>sk.qbsw.security.organization</groupId>
             <artifactId>security-organization-simple-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sk.qbsw.security.organization</groupId>
+            <artifactId>security-organization-simple-authentication-db</artifactId>
+        </dependency>
 
         <!-- Spring -->
         <dependency>
