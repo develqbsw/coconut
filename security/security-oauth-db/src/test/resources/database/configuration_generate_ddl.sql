@@ -21,7 +21,7 @@ create table cfg.t_system_parameter (
 
 create sequence cfg.t_system_parameter_pk_id_seq
   start with 1
-  increment by 1;
+  increment by 50;
 
 --constraints--
 --primary key

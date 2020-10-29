@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort.Direction;
  * The offset and size based pageable - there is always just one page with whole result set.
  * 
  * @author Tomas Lauro
- * @version 2.3.1
+ * @version 2.6.0
  * @since 2.3.1
  */
 public class OffsetPageRequest implements OffsetPageable
@@ -52,7 +52,7 @@ public class OffsetPageRequest implements OffsetPageable
 	 */
 	public static OffsetPageRequest of (long offset, int size, Direction direction, String... properties)
 	{
-		return new OffsetPageRequest(offset, size, new Sort(direction, properties));
+		return new OffsetPageRequest(offset, size, Sort.by(direction, properties));
 	}
 
 	/**

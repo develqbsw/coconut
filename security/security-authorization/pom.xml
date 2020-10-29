@@ -48,12 +48,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- hibernate -->
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-        </dependency>
-
         <!-- JUnit and Mockito -->
         <dependency>
             <groupId>junit</groupId>
