@@ -85,6 +85,10 @@
 					<target>${java.version}</target>
 					<optimize>true</optimize>
 					<debug>true</debug>
+					<compilerArgs>
+						<arg>--add-exports</arg>
+						<arg>java.base/sun.security.provider.certpath=ALL-UNNAMED</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>

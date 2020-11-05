@@ -82,6 +82,12 @@
 			<artifactId>swagger-annotations</artifactId>
 		</dependency>
 
+		<!-- javax -->
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+		</dependency>
+
 		<!-- aspectj -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
