@@ -4,16 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * The Class FileUtils.
  * 
  * @author farkas.roman
  * @author Tomas Lauro
- * @version 2.3.0
+ * @version 2.6.0
  * @since 2.3.0
- *
  */
 public class FileUtils
 {

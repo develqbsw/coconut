@@ -1,12 +1,7 @@
 package sk.qbsw.core.base.encryption;
 
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.InvalidParameterException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
+import java.security.*;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -15,7 +10,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import sk.qbsw.core.base.exception.CSecurityException;
 
@@ -23,7 +18,7 @@ import sk.qbsw.core.base.exception.CSecurityException;
  * Tool for encryption and decryption using AES algorithm.
  *
  * @author Dalibor Rak
- * @version 1.12.0
+ * @version 2.6.0
  * @since 1.12.0
  */
 public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<byte[], byte[]>
@@ -79,7 +74,8 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.base.encryption.IDecryptor#decrypt(java.lang.Object)
 	 */
 	@Override
@@ -100,7 +96,8 @@ public class CAESCryptoTool implements IEncryptor<byte[], byte[]>, IDecryptor<by
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see sk.qbsw.core.base.encryption.IEncryptor#encrypt(java.lang.Object)
 	 */
 	@Override

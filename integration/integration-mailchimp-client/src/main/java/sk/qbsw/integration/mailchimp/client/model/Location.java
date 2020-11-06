@@ -5,14 +5,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The mailchimp location.
  * 
  * @author Juraj Vrabec
- * 
- * @version 1.17.0
+ * @version 2.6.0
  * @since 1.17.0
  */
 public class Location extends BaseEntity
@@ -21,28 +20,28 @@ public class Location extends BaseEntity
 	private static final long serialVersionUID = 2067624274179186536L;
 
 	/** The location latitude. */
-	@ApiModelProperty (required = false, value = "The location latitude.")
+	@Schema (description = "The location latitude.")
 	private Double latitude;
 
 	/** The location longitude. */
-	@ApiModelProperty (required = false, value = "The location longitude.")
+	@Schema (description = "The location longitude.")
 	private Double longitude;
 
 	/** The time difference in hours from GMT. */
-	@ApiModelProperty (required = false, value = "The time difference in hours from GMT.")
+	@Schema (description = "The time difference in hours from GMT.")
 	private Integer gmtoff;
 
 	/** The offset for timezones where daylight saving time is observed. */
-	@ApiModelProperty (required = false, value = "The offset for timezones where daylight saving time is observed.")
+	@Schema (description = "The offset for timezones where daylight saving time is observed.")
 	private Integer dstoff;
 
 	/** The unique code for the location country. */
-	@ApiModelProperty (required = false, value = "The unique code for the location country.")
+	@Schema (description = "The unique code for the location country.")
 	@JsonProperty (value = "country_code")
 	private String countryCode;
 
 	/** The timezone for the location.. */
-	@ApiModelProperty (required = false, value = "The timezone for the location.")
+	@Schema (description = "The timezone for the location.")
 	private String timezone;
 
 	/**
@@ -165,7 +164,8 @@ public class Location extends BaseEntity
 		this.timezone = timezone;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -187,7 +187,8 @@ public class Location extends BaseEntity
 		return new EqualsBuilder().append(latitude, castOther.latitude).append(longitude, castOther.longitude).append(gmtoff, castOther.gmtoff).append(dstoff, castOther.dstoff).append(countryCode, castOther.countryCode).append(timezone, castOther.timezone).isEquals();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

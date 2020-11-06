@@ -1,22 +1,23 @@
 package sk.qbsw.core.client.model.response;
 
-import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The error response body - it contains the code and the message.
  *
  * @author Tomas Lauro
- * @version 1.18.0
+ * @version 2.6.0
  * @since 1.18.0
  */
 public class ErrorResponseBody extends BaseResponseBody
 {
-	@ApiModelProperty (required = true, value = "The error code")
+	@Schema (required = true, description = "The error code")
 	private String code;
 
-	@ApiModelProperty (required = true, value = "The error message")
+	@Schema (required = true, description = "The error message")
 	private String message;
 
 	/**

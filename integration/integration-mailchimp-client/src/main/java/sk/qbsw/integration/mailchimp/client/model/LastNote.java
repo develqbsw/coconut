@@ -5,14 +5,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The mailchimp last note.
  * 
  * @author Juraj Vrabec
- * 
- * @version 1.17.0
+ * @version 2.6.0
  * @since 1.17.0
  */
 public class LastNote extends BaseEntity
@@ -21,22 +20,22 @@ public class LastNote extends BaseEntity
 	private static final long serialVersionUID = -5492932472006858217L;
 
 	/** The note id. */
-	@ApiModelProperty (required = false, value = "The note id.")
+	@Schema (description = "The note id.")
 	@JsonProperty (value = "note_id")
 	private Integer noteId;
 
 	/** The date and time the note was created. */
-	@ApiModelProperty (required = false, value = "The date and time the note was created.")
+	@Schema (description = "The date and time the note was created.")
 	@JsonProperty (value = "created_at")
 	private String createdAt;
 
 	/** The author of the note. */
-	@ApiModelProperty (required = false, value = "The author of the note.")
+	@Schema (description = "The author of the note.")
 	@JsonProperty (value = "created_by")
 	private String createdBy;
 
 	/** The content of the note. */
-	@ApiModelProperty (required = false, value = "The content of the note.")
+	@Schema (description = "The content of the note.")
 	private String note;
 
 	/**
@@ -119,7 +118,8 @@ public class LastNote extends BaseEntity
 		this.note = note;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -141,7 +141,8 @@ public class LastNote extends BaseEntity
 		return new EqualsBuilder().append(noteId, castOther.noteId).append(createdAt, castOther.createdAt).append(createdBy, castOther.createdBy).append(note, castOther.note).isEquals();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

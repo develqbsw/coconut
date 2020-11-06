@@ -1,24 +1,25 @@
 package sk.qbsw.core.client.model.response.sync;
 
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import sk.qbsw.core.client.model.response.BaseResponseBody;
 
-import javax.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
+import sk.qbsw.core.client.model.response.BaseResponseBody;
 
 /**
  * The synchronization response body.
  *
  * @author Tomas Lauro
- * @version 1.18.0
+ * @version 2.6.0
  * @since 1.18.0
  */
 public abstract class SyncDataResponseBody extends BaseResponseBody
 {
 	private static final long serialVersionUID = 3962724756112763241L;
 
-	@ApiModelProperty (required = true, value = "The last update of the entity in iso format")
+	@Schema (required = true, description = "The last update of the entity in iso format")
 	@NotNull
 	private String lastUpdated;
 

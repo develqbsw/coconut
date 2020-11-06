@@ -1,23 +1,24 @@
 package sk.qbsw.core.client.model.response;
 
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The simple alter collection response body - returns only the count of the affected entity.
  *
  * @author Tomas Lauro
- * @version 1.18.0
+ * @version 2.6.0
  * @since 1.18.0
  */
 public class SimpleAlterCollectionResponseBody extends BaseResponseBody
 {
 	private static final long serialVersionUID = -121171424136795364L;
 
-	@ApiModelProperty (required = true, value = "The count of the affected entity")
+	@Schema (required = true, description = "The count of the affected entity")
 	@NotNull
 	private Integer affectedCount;
 

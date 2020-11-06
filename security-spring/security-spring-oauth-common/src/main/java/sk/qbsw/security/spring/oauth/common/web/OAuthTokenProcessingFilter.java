@@ -1,22 +1,23 @@
 package sk.qbsw.security.spring.oauth.common.web;
 
-import org.apache.commons.lang.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+
 import sk.qbsw.security.spring.common.web.TokenProcessingFilterBase;
 import sk.qbsw.security.spring.oauth.common.configuration.OAuthHeaderConfiguration;
 import sk.qbsw.security.spring.oauth.common.model.OAuthRequestSecurityHeader;
 import sk.qbsw.security.spring.oauth.common.model.OAuthWebAuthenticationDetails;
 import sk.qbsw.security.web.CHttpClientAddressRetriever;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * The token processing filter intended to use directly with service layer.
  *
  * @author Tomas Lauro
- * @version 2.1.0
+ * @version 2.6.0
  * @since 1.13.0
  */
 public class OAuthTokenProcessingFilter extends TokenProcessingFilterBase<OAuthRequestSecurityHeader>

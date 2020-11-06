@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import sk.qbsw.security.rest.oauth.client.model.CSUserData;
 
@@ -13,7 +13,7 @@ import sk.qbsw.security.rest.oauth.client.model.CSUserData;
  * The complex organization user data.
  *
  * @author Tomas Leken
- * @version 2.4.0
+ * @version 2.6.0
  * @since 2.0.0
  */
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class CSCXOUserData extends CSUserData
 {
 	private static final long serialVersionUID = 2118214771564519058L;
 
-	@ApiModelProperty (required = true, value = "The organizations")
+	@Schema (required = true, description = "The organizations")
 	@NotNull
 	private List<CSCXOOrganizationData> organizations = new ArrayList<>();
 
