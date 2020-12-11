@@ -20,7 +20,7 @@ CREATE TABLE log.t_audit_log (
     c_uuid character varying(1024)
 );
 
-CREATE SEQUENCE log.t_audit_log_pk_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE log.t_audit_log_pk_id_seq START WITH 1 INCREMENT BY 50;
 
 CREATE TABLE log.t_installation_log (
     pk_id bigint NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE log.t_installation_log (
     c_version character varying(255) NOT NULL
 );
 
-CREATE SEQUENCE log.t_installation_log_pk_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE log.t_installation_log_pk_id_seq START WITH 1 INCREMENT BY 50;
 
 --constraints--
 --primary key

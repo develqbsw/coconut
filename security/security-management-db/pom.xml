@@ -66,12 +66,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- hibernate -->
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-        </dependency>
-
         <!-- Query dsl -->
         <dependency>
             <groupId>com.querydsl</groupId>
@@ -170,8 +164,8 @@
             </plugin>
             <plugin>
                 <groupId>com.mysema.maven</groupId>
-                <artifactId>maven-apt-plugin</artifactId>
-                <version>${maven-apt-plugin.version}</version>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>${apt-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>

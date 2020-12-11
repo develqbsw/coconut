@@ -4,12 +4,12 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import sk.qbsw.integration.mailchimp.client.model.BaseEntity;
 import sk.qbsw.integration.mailchimp.client.model.Location;
 
@@ -18,7 +18,7 @@ import sk.qbsw.integration.mailchimp.client.model.Location;
  *
  * @author Juraj Vrabec
  * 
- * @version 1.17.0
+ * @version 2.6.0
  * @since 1.17.0
  */
 public class MailchimpAddListMemberRequestBody extends BaseEntity
@@ -27,59 +27,59 @@ public class MailchimpAddListMemberRequestBody extends BaseEntity
 	private static final long serialVersionUID = -2447928182404463523L;
 
 	/** Email address for a subscriber. */
-	@ApiModelProperty (required = true, value = "Email address for a subscriber.")
+	@Schema (required = true, description = "Email address for a subscriber.")
 	@NotNull
 	@JsonProperty (value = "email_address")
 	private String emailAddress;
 
 	/** Type of email this member asked to get (‘html’ or ‘text’). */
-	@ApiModelProperty (required = false, value = "Type of email this member asked to get (‘html’ or ‘text’).")
+	@Schema (description = "Type of email this member asked to get (‘html’ or ‘text’).")
 	@JsonProperty (value = "email_type")
 	private String emailType;
 
 	/** Subscriber’s current status. Possible Values: subscribed, unsubscribed, cleaned, pending, transactional. */
-	@ApiModelProperty (required = true, value = "Subscriber’s current status. Possible Values: subscribed, unsubscribed, cleaned, pending, transactional.")
+	@Schema (required = true, description = "Subscriber’s current status. Possible Values: subscribed, unsubscribed, cleaned, pending, transactional.")
 	@NotNull
 	private String status;
 
 	/** An individual merge var and value for a member. */
-	@ApiModelProperty (required = false, value = "An individual merge var and value for a member.")
+	@Schema (description = "An individual merge var and value for a member.")
 	@JsonProperty (value = "merge_fields")
 	private Map<String, String> mergeFields;
 
 	/** The key of this object’s properties is the ID of the interest in question. */
-	@ApiModelProperty (required = false, value = "The key of this object’s properties is the ID of the interest in question.")
+	@Schema (description = "The key of this object’s properties is the ID of the interest in question.")
 	private Map<String, Boolean> interests;
 
 	/** If set/detected, the subscriber’s language. */
-	@ApiModelProperty (required = false, value = "If set/detected, the subscriber’s language.")
+	@Schema (description = "If set/detected, the subscriber’s language.")
 	private String language;
 
 	/** VIP status for subscriber. */
-	@ApiModelProperty (required = false, value = "VIP status for subscriber.")
+	@Schema (description = "VIP status for subscriber.")
 	private Boolean vip;
 
 	/** Subscriber location information. */
-	@ApiModelProperty (required = false, value = "Subscriber location information.")
+	@Schema (description = "Subscriber location information.")
 	private Location location;
 
 	/** IP address the subscriber signed up from. */
-	@ApiModelProperty (required = false, value = "IP address the subscriber signed up from.")
+	@Schema (description = "IP address the subscriber signed up from.")
 	@JsonProperty (value = "ip_signup")
 	private String ipSignup;
 
 	/** The date and time the subscriber signed up for the list. */
-	@ApiModelProperty (required = false, value = "The date and time the subscriber signed up for the list.")
+	@Schema (description = "The date and time the subscriber signed up for the list.")
 	@JsonProperty (value = "timestamp_signup")
 	private String timestampSignup;
 
 	/** The IP address the subscriber used to confirm their opt-in status. */
-	@ApiModelProperty (required = false, value = "The IP address the subscriber used to confirm their opt-in status.")
+	@Schema (description = "The IP address the subscriber used to confirm their opt-in status.")
 	@JsonProperty (value = "ip_opt")
 	private String ipOpt;
 
 	/** The date and time the subscribe confirmed their opt-in status. */
-	@ApiModelProperty (required = false, value = "The date and time the subscribe confirmed their opt-in status.")
+	@Schema (description = "The date and time the subscribe confirmed their opt-in status.")
 	@JsonProperty (value = "timestamp_opt")
 	private String timestampOpt;
 

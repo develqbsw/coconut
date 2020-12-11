@@ -16,7 +16,7 @@ CREATE TABLE apsys.t_attachment (
     fk_mail bigint NOT NULL
 );
 
-CREATE SEQUENCE apsys.t_attachment_pk_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE apsys.t_attachment_pk_id_seq START WITH 1 INCREMENT BY 50;
 
 CREATE TABLE apsys.t_mail (
 	pk_id bigint NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE apsys.t_mail (
     c_to character varying(255)
 );
 
-CREATE SEQUENCE apsys.t_mail_pk_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE apsys.t_mail_pk_id_seq START WITH 1 INCREMENT BY 50;
 
 --constraints--
 --primary key

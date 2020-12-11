@@ -1,16 +1,19 @@
 package sk.qbsw.security.rest.oauth.client.model;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
-import sk.qbsw.core.client.model.BaseClientEntity;
-
 import javax.validation.constraints.NotNull;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import sk.qbsw.core.client.model.BaseClientEntity;
 
 /**
  * The client side generated token data.
  *
  * @author Tomas Lauro
- * @version 2.0.0
+ * @version 2.6.0
  * @since 1.18.2
  */
 @Data
@@ -21,10 +24,10 @@ public class CSGeneratedTokenData extends BaseClientEntity
 {
 	private static final long serialVersionUID = -3487173802800870802L;
 
-	@ApiModelProperty (required = true, value = "The generated token")
+	@Schema (required = true, description = "The generated token")
 	@NotNull
 	private String generatedToken;
 
-	@ApiModelProperty (value = "The invalidated token")
+	@Schema (description = "The invalidated token")
 	private String invalidatedToken;
 }

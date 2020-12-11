@@ -2,7 +2,7 @@ package sk.qbsw.security.organization.rest.oauth.simple.client.model;
 
 import javax.validation.constraints.NotNull;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import sk.qbsw.security.rest.oauth.client.model.CSUserData;
 
@@ -10,7 +10,7 @@ import sk.qbsw.security.rest.oauth.client.model.CSUserData;
  * The simple organization user data.
  *
  * @author Tomas Leken
- * @version 2.4.0
+ * @version 2.6.0
  * @since 2.0.0
  */
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class CSSPOUserData extends CSUserData
 {
 	private static final long serialVersionUID = -743135861898539506L;
 
-	@ApiModelProperty (required = true, value = "The organization")
+	@Schema (required = true, description = "The organization")
 	@NotNull
 	private CSSPOOrganizationData organization;
 

@@ -1,18 +1,5 @@
 package sk.qbsw.et.rquery.core.predicate;
 
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.*;
-import org.apache.commons.collections.CollectionUtils;
-import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
-import sk.qbsw.et.rquery.core.configuration.expression.EntityPropertyEnumExpression;
-import sk.qbsw.et.rquery.core.configuration.expression.EntityPropertyTypeExpression;
-import sk.qbsw.et.rquery.core.exception.RQUndefinedEntityMappingException;
-import sk.qbsw.et.rquery.core.exception.RQUnsupportedOperatorException;
-import sk.qbsw.et.rquery.core.model.CoreFilterable;
-import sk.qbsw.et.rquery.core.model.CoreFilterableType;
-import sk.qbsw.et.rquery.core.model.CoreOperator;
-import sk.qbsw.et.rquery.core.model.DefaultCoreOperator;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,11 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.*;
+
+import sk.qbsw.et.rquery.core.configuration.EntityConfiguration;
+import sk.qbsw.et.rquery.core.configuration.expression.EntityPropertyEnumExpression;
+import sk.qbsw.et.rquery.core.configuration.expression.EntityPropertyTypeExpression;
+import sk.qbsw.et.rquery.core.exception.RQUndefinedEntityMappingException;
+import sk.qbsw.et.rquery.core.exception.RQUnsupportedOperatorException;
+import sk.qbsw.et.rquery.core.model.CoreFilterable;
+import sk.qbsw.et.rquery.core.model.CoreFilterableType;
+import sk.qbsw.et.rquery.core.model.CoreOperator;
+
 /**
  * The default single predicate builder.
  *
  * @author Tomas Lauro
- * @version 2.2.0
+ * @version 2.6.0
  * @since 2.2.0
  */
 public class SinglePredicateBuilderImpl implements SinglePredicateBuilder

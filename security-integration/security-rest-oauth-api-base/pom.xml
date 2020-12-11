@@ -61,6 +61,12 @@
             <artifactId>spring-web</artifactId>
         </dependency>
 
+        <!-- javax -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+
         <!-- validation api -->
         <dependency>
             <groupId>javax.validation</groupId>

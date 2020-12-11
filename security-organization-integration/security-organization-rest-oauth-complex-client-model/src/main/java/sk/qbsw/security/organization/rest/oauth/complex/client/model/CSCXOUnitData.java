@@ -1,19 +1,19 @@
 package sk.qbsw.security.organization.rest.oauth.complex.client.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotNull;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import sk.qbsw.core.client.model.BaseClientEntity;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * The type Cs simplified unit.
  *
  * @author Tomas Leken
- * @version 2.0.0
+ * @version 2.6.0
  * @since 2.0.0
  */
 @Data
@@ -24,15 +24,15 @@ public class CSCXOUnitData extends BaseClientEntity
 {
 	private static final long serialVersionUID = -8801189653320932871L;
 
-	@ApiModelProperty (required = true, value = "The identifier")
+	@Schema (required = true, description = "The identifier")
 	@NotNull
 	private Long id;
 
-	@ApiModelProperty (value = "The unit name")
+	@Schema (description = "The unit name")
 	@NotNull
 	private String name;
 
-	@ApiModelProperty (value = "The unit code")
+	@Schema (description = "The unit code")
 	@NotNull
 	private String code;
 }

@@ -19,7 +19,7 @@ CREATE TABLE cfg.t_system_parameter (
     c_encrypted_value character varying(255)
 );
 
-CREATE SEQUENCE cfg.t_system_parameter_pk_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE cfg.t_system_parameter_pk_id_seq START WITH 1 INCREMENT BY 50;
 
 --constraints--
 --primary key

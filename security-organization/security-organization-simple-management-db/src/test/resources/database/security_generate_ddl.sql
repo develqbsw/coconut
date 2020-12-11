@@ -18,7 +18,7 @@ create table sec.t_auth_params (
 
 create sequence sec.s_auth_params
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_blocked_login (
   pk_id                 bigint                 not null,
@@ -31,7 +31,7 @@ create table sec.t_blocked_login (
 
 create sequence sec.s_blocked_login
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_group (
   pk_id      bigint                 not null,
@@ -44,7 +44,7 @@ create table sec.t_group (
 
 create sequence sec.s_group
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_organization (
   pk_id   bigint                 not null,
@@ -57,7 +57,7 @@ create table sec.t_organization (
 
 create sequence sec.s_organization
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_role (
   pk_id  bigint                 not null,
@@ -66,7 +66,7 @@ create table sec.t_role (
 
 create sequence sec.s_role
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_unit (
   pk_id           bigint                 not null,
@@ -77,7 +77,7 @@ create table sec.t_unit (
 
 create sequence sec.s_unit
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_account (
   pk_id           bigint                 not null,
@@ -94,7 +94,7 @@ create table sec.t_account (
 
 create sequence sec.s_account
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_user (
   pk_id           bigint                 not null,
@@ -105,7 +105,7 @@ create table sec.t_user (
 
 create sequence sec.s_user
   start with 1
-  increment by 1;
+  increment by 50;
 
 create table sec.t_x_group_group (
   fk_group          bigint not null,
@@ -131,7 +131,7 @@ create table sec.t_x_account_unit_group (
 
 create sequence sec.s_x_account_unit_group
   start with 1
-  increment by 1;
+  increment by 50;
 
 --constraints--
 --primary key

@@ -8,19 +8,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
-import sk.qbsw.integration.mailchimp.client.model.BaseEntity;
-import sk.qbsw.integration.mailchimp.client.model.LastNote;
-import sk.qbsw.integration.mailchimp.client.model.Link;
-import sk.qbsw.integration.mailchimp.client.model.Location;
-import sk.qbsw.integration.mailchimp.client.model.Stats;
+import io.swagger.v3.oas.annotations.media.Schema;
+import sk.qbsw.integration.mailchimp.client.model.*;
 
 /**
  * The mailchimp add list member response body.
  *
  * @author Juraj Vrabec
- * 
- * @version 1.17.0
+ * @version 2.6.0
  * @since 1.17.0
  */
 public class MailchimpAddListMemberResponseBody extends BaseEntity
@@ -29,100 +24,100 @@ public class MailchimpAddListMemberResponseBody extends BaseEntity
 	private static final long serialVersionUID = -5943804213950865293L;
 
 	/** The MD5 hash of the lowercase version of the list member’s email address. */
-	@ApiModelProperty (required = false, value = "The MD5 hash of the lowercase version of the list member’s email address.")
+	@Schema (description = "The MD5 hash of the lowercase version of the list member’s email address.")
 	private String id;
 
 	/** Email address for a subscriber. */
-	@ApiModelProperty (required = false, value = "Email address for a subscriber.")
+	@Schema (description = "Email address for a subscriber.")
 	@JsonProperty (value = "email_address")
 	private String emailAddress;
 
 	/** An identifier for the address across all of MailChimp. */
-	@ApiModelProperty (required = false, value = "An identifier for the address across all of MailChimp.")
+	@Schema (description = "An identifier for the address across all of MailChimp.")
 	@JsonProperty (value = "unique_email_id")
 	private String uniqueEmailId;
 
 	/** Type of email this member asked to get (‘html’ or ‘text’). */
-	@ApiModelProperty (required = false, value = "Type of email this member asked to get (‘html’ or ‘text’).")
+	@Schema (description = "Type of email this member asked to get (‘html’ or ‘text’).")
 	@JsonProperty (value = "email_type")
 	private String emailType;
 
 	/** Subscriber’s current status. Possible Values: subscribed, unsubscribed, cleaned, pending, transactional. */
-	@ApiModelProperty (required = false, value = "Subscriber’s current status. Possible Values: subscribed, unsubscribed, cleaned, pending, transactional.")
+	@Schema (description = "Subscriber’s current status. Possible Values: subscribed, unsubscribed, cleaned, pending, transactional.")
 	private String status;
 
 	/** An individual merge var and value for a member. */
-	@ApiModelProperty (required = false, value = "An individual merge var and value for a member.")
+	@Schema (description = "An individual merge var and value for a member.")
 	@JsonProperty (value = "merge_fields")
 	private Map<String, String> mergeFields;
 
 	/** The key of this object’s properties is the ID of the interest in question. */
-	@ApiModelProperty (required = false, value = "The key of this object’s properties is the ID of the interest in question.")
+	@Schema (description = "The key of this object’s properties is the ID of the interest in question.")
 	private Map<String, String> interests;
 
 	/** Open and click rates for this subscriber. */
-	@ApiModelProperty (required = false, value = "Open and click rates for this subscriber.")
+	@Schema (description = "Open and click rates for this subscriber.")
 	private Stats stats;
 
 	/** IP address the subscriber signed up from. */
-	@ApiModelProperty (required = false, value = "IP address the subscriber signed up from.")
+	@Schema (description = "IP address the subscriber signed up from.")
 	@JsonProperty (value = "ip_signup")
 	private String ipSignup;
 
 	/** The date and time the subscriber signed up for the list. */
-	@ApiModelProperty (required = false, value = "The date and time the subscriber signed up for the list.")
+	@Schema (description = "The date and time the subscriber signed up for the list.")
 	@JsonProperty (value = "timestamp_signup")
 	private String timestampSignup;
 
 	/** The IP address the subscriber used to confirm their opt-in status. */
-	@ApiModelProperty (required = false, value = "The IP address the subscriber used to confirm their opt-in status.")
+	@Schema (description = "The IP address the subscriber used to confirm their opt-in status.")
 	@JsonProperty (value = "ip_opt")
 	private String ipOpt;
 
 	/** The date and time the subscribe confirmed their opt-in status. */
-	@ApiModelProperty (required = false, value = "The date and time the subscribe confirmed their opt-in status.")
+	@Schema (description = "The date and time the subscribe confirmed their opt-in status.")
 	@JsonProperty (value = "timestamp_opt")
 	private String timestampOpt;
 
 	/** Star rating for this member, between 1 and 5. */
-	@ApiModelProperty (required = false, value = "Star rating for this member, between 1 and 5.")
+	@Schema (description = "Star rating for this member, between 1 and 5.")
 	@JsonProperty (value = "member_rating")
 	private Integer memberRating;
 
 	/** The date and time the member’s info was last changed. */
-	@ApiModelProperty (required = false, value = "The date and time the member’s info was last changed.")
+	@Schema (description = "The date and time the member’s info was last changed.")
 	@JsonProperty (value = "last_changed")
 	private String lastChanged;
 
 	/** If set/detected, the subscriber’s language.e */
-	@ApiModelProperty (required = false, value = "If set/detected, the subscriber’s language.e")
+	@Schema (description = "If set/detected, the subscriber’s language.e")
 	private String language;
 
 	/** VIP status for subscriber. */
-	@ApiModelProperty (required = false, value = "VIP status for subscriber.")
+	@Schema (description = "VIP status for subscriber.")
 	private Boolean vip;
 
 	/** The list member’s email client. */
-	@ApiModelProperty (required = false, value = "The list member’s email client.")
+	@Schema (description = "The list member’s email client.")
 	@JsonProperty (value = "email_client")
 	private String emailClient;
 
 	/** Subscriber location information. */
-	@ApiModelProperty (required = false, value = "Subscriber location information.")
+	@Schema (description = "Subscriber location information.")
 	private Location location;
 
 	/** The most recent Note added about this member. */
-	@ApiModelProperty (required = false, value = "The most recent Note added about this member.")
+	@Schema (description = "The most recent Note added about this member.")
 	@JsonProperty (value = "last_note")
 	private LastNote lastNote;
 
 	/** The list id. */
-	@ApiModelProperty (required = false, value = "The list id.")
+	@Schema (description = "The list id.")
 	@JsonProperty (value = "list_id")
 	private String listId;
 
 	/** A list of link types and descriptions for the API schema documents. */
-	@ApiModelProperty (required = false, value = "A list of link types and descriptions for the API schema documents.")
+	@Schema (description = "A list of link types and descriptions for the API schema documents.")
 	@JsonProperty (value = "_links")
 	private List<Link> links;
 
@@ -546,7 +541,8 @@ public class MailchimpAddListMemberResponseBody extends BaseEntity
 		this.links = links;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -568,7 +564,8 @@ public class MailchimpAddListMemberResponseBody extends BaseEntity
 		return new EqualsBuilder().append(id, castOther.id).append(emailAddress, castOther.emailAddress).append(uniqueEmailId, castOther.uniqueEmailId).append(emailType, castOther.emailType).append(status, castOther.status).append(mergeFields, castOther.mergeFields).append(interests, castOther.interests).append(stats, castOther.stats).append(ipSignup, castOther.ipSignup).append(timestampSignup, castOther.timestampSignup).append(ipOpt, castOther.ipOpt).append(timestampOpt, castOther.timestampOpt).append(memberRating, castOther.memberRating).append(lastChanged, castOther.lastChanged).append(language, castOther.language).append(vip, castOther.vip).append(emailClient, castOther.emailClient).append(location, castOther.location).append(lastNote, castOther.lastNote).append(listId, castOther.listId).append(links, castOther.links).isEquals();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

@@ -5,14 +5,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The mailchimp stats.
  * 
  * @author Juraj Vrabec
- * 
- * @version 1.17.0
+ * @version 2.6.0
  * @since 1.17.0
  */
 public class Stats extends BaseEntity
@@ -21,12 +20,12 @@ public class Stats extends BaseEntity
 	private static final long serialVersionUID = -5667166008120920013L;
 
 	/** The avg open rate. */
-	@ApiModelProperty (required = false, value = "A subscriber’s average open rate.")
+	@Schema (description = "A subscriber’s average open rate.")
 	@JsonProperty (value = "avg_open_rate")
 	private Double avgOpenRate;
 
 	/** The avg click rate. */
-	@ApiModelProperty (required = false, value = "A subscriber’s average clickthrough rate.")
+	@Schema (description = "A subscriber’s average clickthrough rate.")
 	@JsonProperty (value = "avg_click_rate")
 	private Double avgClickRate;
 
@@ -70,7 +69,8 @@ public class Stats extends BaseEntity
 		this.avgClickRate = avgClickRate;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -92,7 +92,8 @@ public class Stats extends BaseEntity
 		return new EqualsBuilder().append(avgOpenRate, castOther.avgOpenRate).append(avgClickRate, castOther.avgClickRate).isEquals();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

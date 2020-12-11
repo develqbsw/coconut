@@ -13,7 +13,7 @@ create table sec.t_oauth_token
 
 create sequence sec.s_oauth_token
   start with 1
-  increment by 1;
+  increment by 50;
 
 --constraints--
 --primary key
