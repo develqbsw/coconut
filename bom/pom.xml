@@ -13,7 +13,7 @@
     </organization>
 
     <properties>
-        <coconut.version>2.6.0-SNAPSHOT</coconut.version>
+        <coconut.version>2.6.0</coconut.version>
     </properties>
 
     <distributionManagement>
